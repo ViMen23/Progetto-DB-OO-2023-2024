@@ -55,15 +55,66 @@ public class Player
 	}
 
 	// set methods
-
-/*
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		try {
+			Check.checkPlayerName(name, getSurname(), getBDate(), getSDate(), getCountry());
 
+			this.name = name;
 		}
-		catch () {}
+		catch (Exception e) {System.out.println(e);}
 	}
-*/
+
+	public void setSurname(String surname)
+	{
+		try {
+			Check.checkPlayerSurname(getName(), surname, getBDate(), getSDate(), getCountry());
+
+			this.surname = surname;
+		}
+		catch (Exception e) {System.out.println(e);}
+	}
+
+	public void setBDate(LocalDate bDate)
+	{
+		try {
+			Check.checkPlayerBDate(getName(), getSurname(), bDate, getSDate(), getRDate(), getCountry());
+
+			this.bDate = bDate;
+		}
+		catch (Exception e) {System.out.println(e);}
+	}
+
+	public void setSDate(LocalDate sDate)
+	{
+		try {
+			Check.checkPlayerSDate(getName(), getSurname(), getBDate(), sDate, getRDate(), getCountry());
+
+			this.sDate = sDate;
+		}
+		catch (Exception e) {System.out.println(e);}
+	}
+
+	public void setRDate(LocalDate rDate)
+	{
+		try {
+			Check.checkPlayerRDate(getBDate(), getSDate(), rDate);
+
+			this.rDate = rDate;
+		}
+		catch (Exception e) {System.out.println(e);}
+	}
+
+	public void setCountry(Country country)
+	{
+		try {
+			Check.checkPlayerCountry(getName(), getSurname(), getBDate(), getSDate(), country);
+
+			this.country = country;
+		}
+		catch (Exception e) {System.out.println(e);}
+	}
+
 	// print method
 	// TODO locale
 	@Override

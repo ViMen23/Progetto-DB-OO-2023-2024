@@ -285,4 +285,58 @@ public class Check
 		checkPlayerUnique(name, surname, bDate, sDate, country);
 	}
 
+	// check player name
+	public static void checkPlayerName(String name, String surname, LocalDate bDate,
+																		 LocalDate sDate, Country country) throws Exception
+	{
+		checkString(name);
+		checkPlayerUnique(name, surname, bDate, sDate, country);
+	}
+
+	// check player surname
+	public static void checkPlayerSurname(String name, String surname, LocalDate bDate,
+																		 		LocalDate sDate, Country country) throws Exception
+	{
+		checkString(surname);
+		checkPlayerUnique(name, surname, bDate, sDate, country);
+	}
+
+	// check player birthdate
+	public static void checkPlayerBDate(String name, String surname, LocalDate bDate,
+																			LocalDate sDate, LocalDate rDate, Country country) throws Exception
+	{
+		checkNull(bDate);
+		checkPlayerBDateSDate(bDate, sDate);
+		if (rDate != null) {checkPlayerBDateRDate(bDate, rDate);}
+		checkPlayerUnique(name, surname, bDate, sDate, country);
+	}
+
+	// check player start date
+	public static void checkPlayerSDate(String name, String surname, LocalDate bDate,
+																			LocalDate sDate, LocalDate rDate, Country country) throws Exception
+	{
+		checkNull(sDate);
+		checkPlayerBDateSDate(bDate, sDate);
+		if (rDate != null) {checkPlayerSDateRDate(sDate, rDate);}
+		checkPlayerUnique(name, surname, bDate, sDate, country);
+	}
+
+	// check player retirement date
+	public static void checkPlayerRDate(LocalDate bDate, LocalDate sDate, LocalDate rDate) throws Exception
+	{
+		if (rDate != null) {
+			checkPlayerBDateRDate(bDate, rDate);
+			checkPlayerSDateRDate(sDate, rDate);
+		}
+	}
+
+	// check player country
+	public static void checkPlayerCountry(String name, String surname, LocalDate bDate,
+																				LocalDate sDate, Country country) throws Exception
+	{
+		checkNull(country);
+		checkCountryExist(country);
+		checkPlayerUnique(name, surname, bDate, sDate, country);
+	}
+
 }
