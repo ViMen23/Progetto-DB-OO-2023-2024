@@ -1,0 +1,7 @@
+
+
+java:S13191"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Ì›ì¶8×±É¹À1
+U
+java:S1068"3Remove this unused "ruoliCalciatore" private field.(¯òÃ¬øÿÿÿÿ8ã±É¹À1
+V
+java:S1144"4Remove this unused private "Calciatore" constructor.(§÷†”ùÿÿÿÿ8ã±É¹À1

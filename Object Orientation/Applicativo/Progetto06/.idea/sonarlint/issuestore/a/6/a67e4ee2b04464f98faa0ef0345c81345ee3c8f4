@@ -1,0 +1,13 @@
+
+’
+java:S1319"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(ôöüŠúÿÿÿÿ8™áí¸À1
+’
+java:S1319$"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(¨›ÕŸûÿÿÿÿ8šáí¸À1
+Œ
+java:S1319'"pThe return type of this method should be an interface such as "List" rather than the implementation "ArrayList".(Ğıºq8šáí¸À1
+
+java:S13191"sThe type of "competizioniSquadra" should be an interface such as "List" rather than the implementation "ArrayList".(§å¦8šáí¸À1
+‰
+java:S13193"mThe type of "trofeiSquadra" should be an interface such as "List" rather than the implementation "ArrayList".(©îÎ8šáí¸À1
+S
+java:S1144"1Remove this unused private "Squadra" constructor.(à°óàùÿÿÿÿ8§áí¸À1

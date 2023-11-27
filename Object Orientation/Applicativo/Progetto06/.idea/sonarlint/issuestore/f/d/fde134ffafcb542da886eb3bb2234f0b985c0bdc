@@ -1,0 +1,10 @@
+
+
+java:S1488A"_Immediately return this expression instead of assigning it to the temporary variable "toPrint".(ών­ªόÿÿÿÿ8Μ¬ύ¶ΐ1
+v
+java:S1104	"YMake maxNumPartite a static final constant or non-public and provide accessors if needed.(¬ÿƒα8Ν¬ύ¶ΐ1
+€
+java:S1104
+"^Make numeroPartecipanti a static final constant or non-public and provide accessors if needed.(¶ΓΎϋÿÿÿÿ8Ξ¬ύ¶ΐ1
+X
+java:S1144"6Remove this unused private "Competizione" constructor.(δ®ονώÿÿÿÿ8η¬ύ¶ΐ1
