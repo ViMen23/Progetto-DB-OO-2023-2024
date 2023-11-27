@@ -1,54 +1,0 @@
-
-Œ
-java:S1319"jThe type of "listaPaesi" should be an interface such as "List" rather than the implementation "ArrayList".(ù®³şÿÿÿÿ8ªŠŒ¹À1
-“
-java:S1319"qThe type of "listaCompetizioni" should be an interface such as "List" rather than the implementation "ArrayList".(µª…¬ıÿÿÿÿ8«ŠŒ¹À1
-ˆ
-java:S1319"kThe type of "listaTrofei" should be an interface such as "List" rather than the implementation "ArrayList".(»Ê±ª8«ŠŒ¹À1
-
-java:S1319	"lThe type of "listaSquadre" should be an interface such as "List" rather than the implementation "ArrayList".(½¦¨éûÿÿÿÿ8«ŠŒ¹À1
-‘
-java:S1319
-"oThe type of "listaCalciatori" should be an interface such as "List" rather than the implementation "ArrayList".(²ÏŸ¢úÿÿÿÿ8«ŠŒ¹À1
-‘
-java:S1319"tThe type of "listaCaratteristiche" should be an interface such as "List" rather than the implementation "ArrayList".(´»–8«ŠŒ¹À1
-’
-java:S1319"pThe type of "listaStatistiche" should be an interface such as "List" rather than the implementation "ArrayList".(ê‡Çøÿÿÿÿ8«ŠŒ¹À1
-‡
-java:S1319"jThe type of "listaRuoli" should be an interface such as "List" rather than the implementation "ArrayList".(Ì‹¯œ8 œË¹À1
-x
-java:S1104"VMake listaPaesi a static final constant or non-public and provide accessors if needed.(ù®³şÿÿÿÿ8¬ŠŒ¹À1
-
-java:S1104"]Make listaCompetizioni a static final constant or non-public and provide accessors if needed.(µª…¬ıÿÿÿÿ8¬ŠŒ¹À1
-t
-java:S1104"WMake listaTrofei a static final constant or non-public and provide accessors if needed.(»Ê±ª8¬ŠŒ¹À1
-z
-java:S1104	"XMake listaSquadre a static final constant or non-public and provide accessors if needed.(½¦¨éûÿÿÿÿ8¬ŠŒ¹À1
-}
-java:S1104
-"[Make listaCalciatori a static final constant or non-public and provide accessors if needed.(²ÏŸ¢úÿÿÿÿ8¬ŠŒ¹À1
-}
-java:S1104"`Make listaCaratteristiche a static final constant or non-public and provide accessors if needed.(´»–8¬ŠŒ¹À1
-~
-java:S1104"\Make listaStatistiche a static final constant or non-public and provide accessors if needed.(ê‡Çøÿÿÿÿ8¬ŠŒ¹À1
-s
-java:S1104"VMake listaRuoli a static final constant or non-public and provide accessors if needed.(Ì‹¯œ8¡œË¹À1
-R
-java:S1444"0Make this "public static listaPaesi" field final(ù®³şÿÿÿÿ8¬ŠŒ¹À1
-Y
-java:S1444"7Make this "public static listaCompetizioni" field final(µª…¬ıÿÿÿÿ8¬ŠŒ¹À1
-N
-java:S1444"1Make this "public static listaTrofei" field final(»Ê±ª8¬ŠŒ¹À1
-T
-java:S1444	"2Make this "public static listaSquadre" field final(½¦¨éûÿÿÿÿ8¬ŠŒ¹À1
-W
-java:S1444
-"5Make this "public static listaCalciatori" field final(²ÏŸ¢úÿÿÿÿ8­ŠŒ¹À1
-W
-java:S1444":Make this "public static listaCaratteristiche" field final(´»–8­ŠŒ¹À1
-X
-java:S1444"6Make this "public static listaStatistiche" field final(ê‡Çøÿÿÿÿ8­ŠŒ¹À1
-M
-java:S1444"0Make this "public static listaRuoli" field final(Ì‹¯œ8¢œË¹À1
-\
-java:S1118":Add a private constructor to hide the implicit public one.(Ù³Æßøÿÿÿÿ8°ŠŒ¹À1
