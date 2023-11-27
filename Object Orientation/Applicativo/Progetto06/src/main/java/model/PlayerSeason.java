@@ -2,7 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-public class PlayerSeason {
+public class PlayerSeason
+{
 	private int sYear;
 	private int eYear;
 	private Team team;
@@ -28,7 +29,8 @@ public class PlayerSeason {
 	}
 
 	// method to create player season statistic
-	private void createStatisticL(String role) {
+	private void createStatisticL(String role)
+	{
 		String allRole = "PDCA";
 		// create general statistics
 		for (Attribute statistic : Static.statisticL) {
@@ -50,7 +52,8 @@ public class PlayerSeason {
 	}
 
 	// method to create player season characteristic
-	private void createCharacteristicL(String role) {
+	private void createCharacteristicL(String role)
+	{
 		String allRole = "PDCA";
 		// create general characteristic
 		for (Attribute characteristic : Static.characteristicL) {
@@ -85,7 +88,8 @@ public class PlayerSeason {
 
 	// print method
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String toPrint;
 		toPrint  = "\nPLAYER SEASON";
 		toPrint += "\n\tStart year : " + getSYear();
@@ -112,4 +116,5 @@ public class PlayerSeason {
 
 		return toPrint;
 	}
+
 }

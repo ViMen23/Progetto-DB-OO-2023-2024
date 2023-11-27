@@ -82,7 +82,8 @@ public class Country
 	// print method
 	// TODO locale
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String toPrint;
 		toPrint  = "\nCOUNTRY";
 		toPrint  += "\n\t" + getCode() + " - " + getNation() + " [" + getContinent() + "]";

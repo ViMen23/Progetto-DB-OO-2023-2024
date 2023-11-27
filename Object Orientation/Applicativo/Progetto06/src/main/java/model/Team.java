@@ -2,7 +2,8 @@ package model;
 
 import java.util.ArrayList;
 
-public class Team {
+public class Team
+{
 	private String name;
 	private final boolean club; // true Club team, false National team
 	private Country country;
@@ -103,4 +104,5 @@ public class Team {
 
 		return toPrint;
 	}
+
 }

@@ -2,19 +2,22 @@ package model;
 
 import java.util.ArrayList;
 
-public class Trophy {
+public class Trophy
+{
 	private String name;
 	private boolean individual; // false team trophy, true individual trophy
 	private int year;
 	private ArrayList<Competition> competitionL = new ArrayList<>();
 
 	// constructor
-	private Trophy(String name, boolean individual, int year, Competition competition) {
+	private Trophy(String name, boolean individual, int year, Competition competition)
+	{
 		this(name, individual, year);
 		this.competitionL.add(competition);
 	}
 
-	private Trophy(String name, boolean individual, int year) {
+	private Trophy(String name, boolean individual, int year)
+	{
 		this.name       = name;
 		this.individual = individual;
 		this.year       = year;
@@ -41,7 +44,8 @@ public class Trophy {
 
 	// print method
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String toPrint;
 		toPrint  = "\nTROPHY";
 		toPrint += "\n\tName : " + getName();
@@ -50,4 +54,5 @@ public class Trophy {
 
 		return toPrint;
 	}
+
 }

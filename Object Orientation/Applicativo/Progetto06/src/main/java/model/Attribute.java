@@ -1,6 +1,7 @@
 package model;
 
-public class Attribute {
+public class Attribute
+{
 	private boolean stat; // false characteristic, true statistic
 	private String role;
 	private String name;

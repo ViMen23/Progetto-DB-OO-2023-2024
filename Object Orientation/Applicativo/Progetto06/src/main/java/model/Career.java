@@ -2,7 +2,8 @@ package model;
 
 import java.time.LocalDate;
 
-public class Career {
+public class Career
+{
 	private Team team;
 	private Player player;
 	private LocalDate sDate;
@@ -28,7 +29,8 @@ public class Career {
 
 	// print method
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String toPrint;
 		toPrint  = "\nCAREER";
 		toPrint += "\n\tTeam       : " + getTeam().getName();
@@ -39,6 +41,4 @@ public class Career {
 		return toPrint;
 	}
 
-
 }
-

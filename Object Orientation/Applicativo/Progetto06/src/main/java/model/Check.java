@@ -6,7 +6,8 @@ import java.time.Period;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Check {
+public class Check
+{
 
 	// TODO locale for all messages
 
@@ -94,7 +95,8 @@ public class Check {
 	}
 
 	// nation uniqueness check
-	public static void checkCountryNationUnique(String nation) throws InstanceAlreadyExistsException {
+	public static void checkCountryNationUnique(String nation) throws InstanceAlreadyExistsException
+	{
 		for (Country country : Static.countryL) {
 			if ( country.getNation().equalsIgnoreCase(nation) ) {
 				throw new InstanceAlreadyExistsException("ERROR. Nation already exists.");
@@ -282,4 +284,5 @@ public class Check {
 		checkCountryExist(country);
 		checkPlayerUnique(name, surname, bDate, sDate, country);
 	}
+
 }

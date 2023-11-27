@@ -3,7 +3,8 @@ package model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-public class Player {
+public class Player
+{
 	private String name;
 	private String surname;
 	private LocalDate bDate; // birthdate

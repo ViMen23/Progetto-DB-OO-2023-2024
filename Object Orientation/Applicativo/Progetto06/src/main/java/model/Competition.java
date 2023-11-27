@@ -1,6 +1,7 @@
 package model;
 
-public class Competition {
+public class Competition
+{
 	private String name;
 	private boolean club; // false national competition, true club competition
 	private boolean championship; // false tournament competition, true championship competition
@@ -70,7 +71,8 @@ public class Competition {
 
 	// print method
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		String toPrint;
 		toPrint  = "\nCOMPETITION";
 		toPrint += "\n\tName                           : " + getName();
