@@ -9,7 +9,10 @@ public class Career
 	private LocalDate sDate;
 	private LocalDate eDate;
 
-	// constructor
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
 	private Career(Team team, Player player, LocalDate sDate, LocalDate eDate)
 	{
 		this.team   = team;
@@ -21,13 +24,19 @@ public class Career
 		this.player.addCareer(this);
 	}
 
-	// get methods
+	//----------------------------------------------------------
+	// GET METHODS
+	//----------------------------------------------------------
+
 	public Team getTeam() {return team;}
 	public Player getPlayer() {return player;}
 	public LocalDate getSDate() {return sDate;}
 	public LocalDate getEDate() {return eDate;}
 
-	// print method
+	//----------------------------------------------------------
+	// PRINT METHODS
+	//----------------------------------------------------------
+
 	@Override
 	public String toString()
 	{

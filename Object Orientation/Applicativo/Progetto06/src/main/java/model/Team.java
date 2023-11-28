@@ -8,10 +8,13 @@ public class Team
 	private final boolean club; // true Club team, false National team
 	private Country country;
 	private ArrayList<Competition> competitionL = new ArrayList<>();
-	private ArrayList<Trophy> trophyL             = new ArrayList<>();
-	private ArrayList<Career> careerL = new ArrayList<>();
+	private ArrayList<Trophy> trophyL           = new ArrayList<>();
+	private ArrayList<Career> careerL           = new ArrayList<>();
 
-	// constructor
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
 	private Team(String name, boolean club, Country country)
 	{
 		this.name    = name;
@@ -19,7 +22,10 @@ public class Team
 		this.country = country;
 	}
 
-	// get methods
+	//----------------------------------------------------------
+	// GET METHODS
+	//----------------------------------------------------------
+
 	public String getName() {return name;}
 	public boolean isClub() {return club;}
 	public Country getCountry() {return country;}
@@ -81,6 +87,9 @@ public class Team
 		else {System.out.println("It is not possible to change the country of a national team.");}
 	}
 
+	//----------------------------------------------------------
+	// PRINT METHODS
+	//----------------------------------------------------------
 
 	// method to print team type
 	public String printTeamType()

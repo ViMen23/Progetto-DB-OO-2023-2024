@@ -2,34 +2,42 @@ package model;
 
 public class Attribute
 {
-	private boolean stat; // false characteristic, true statistic
-	private String role;
+	private Boolean statistic;
+	private Boolean characteristic;
+	private Role role;
 	private String name;
-	private int value;
+	private Integer value;
 
-	// constructor
-	private Attribute(boolean stat, String role, String name)
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
+	private Attribute(Boolean statistic, Boolean characteristic, Role role, String name)
 	{
-		this.stat = stat;
-		this.name  = name;
-		this.role  = role;
-		this.value = 0; // set value initially to zero
+		this.statistic      = statistic;
+		this.characteristic = characteristic;
+		this.name           = name;
+		this.role           = role;
+		this.value          = -1; // set value initially to an illegal value
 	}
 
 	// get methods
-	public boolean isStat() {return stat;}
-	public String getName() {return name;}
-	public String getRole() {return role;}
-	public int getValue() {return value;}
+
+	public Boolean isStatistic() { return statistic; }
+	public Boolean isCharacteristic() { return characteristic; }
+	public String getName() { return name; }
+	public Role getRole() { return role; }
+	public Integer getValue() { return value; }
 
 	// method to create a new attribute
-	public static Attribute createAttribute(boolean stat, String role, String name)
+	public static Attribute createAttribute(Boolean statistic, Boolean characteristic, Role role, String name)
 	{
 		// TODO input control
-		Attribute attribute = new Attribute(stat, role, name);
-		if (stat) {
-			Static.statisticL.add(attribute);}
-		else { Static.characteristicL.add(attribute);}
+		Attribute attribute = new Attribute(statistic, characteristic, role, name);
+
+		if (statistic) { Static.statisticL.add(attribute); }
+		else if (characteristic) { Static.characteristicL.add(attribute); }
+
 		return attribute;
 		// TODO set triggers for all players
 	}
@@ -37,10 +45,10 @@ public class Attribute
 	// method to print attribute type
 	public String printAttributeType()
 	{
-		String toPrint;
+		String toPrint = "";
 
-		if (this.isStat()) {toPrint = "Statistic";}
-		else {toPrint = "Characteristic";}
+		if (this.isStatistic()) { toPrint += "Statistic"; }
+		else if (this.isCharacteristic()) { toPrint += "Characteristic"; }
 
 		return toPrint;
 	}
@@ -53,6 +61,7 @@ public class Attribute
 		toPrint  = "\nATTRIBUTE";
 		toPrint += "\n\tType : " + printAttributeType();
 		toPrint += "\n\tName : " + getName();
+		toPrint += "\n\tRole : " + getRole().getCodeType();
 
 		return toPrint;
 	}

@@ -4,87 +4,91 @@ import java.util.ArrayList;
 
 public class PlayerSeason
 {
-	private int sYear;
-	private int eYear;
+	private Integer sYear;
+	private Integer eYear;
+	private Competition competition;
 	private Team team;
 	private Player player;
-	private char foot;
-	private String role;
-	private ArrayList<Attribute> statisticL      = new ArrayList<>();
-	private ArrayList<Attribute> characteristicL = new ArrayList<>();
-	private ArrayList<Trophy>    trophyL         = new ArrayList<>();
+	private ArrayList<Attribute> statisticL = new ArrayList<Attribute>();
 
-	// constructor
-	private PlayerSeason(int sYear, Team team, Player player, char foot, String role )
+
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
+	private PlayerSeason(Integer sYear, Competition competition, Team team, Player player)
 	{
-		this.sYear  = sYear;
-		this.eYear  = this.sYear + 1;
-		this.team   = team;
-		this.player = player;
-		this.foot   = foot;
-		this.role   = role;
+		this.sYear       = sYear;
+		this.eYear       = this.sYear + 1;
+		this.competition = competition;
+		this.team        = team;
+		this.player      = player;
 
-		createStatisticL(this.role);
-		createCharacteristicL(this.role);
+		this.createStatisticL(this.getPlayer());
 	}
 
-	// method to create player season statistic
-	private void createStatisticL(String role)
+
+	//----------------------------------------------------------
+	// CREATE NEW STATISTIC METHOD
+	//----------------------------------------------------------
+
+	private void createStatisticL(Player player)
 	{
-		String allRole = "PDCA";
 		// create general statistics
 		for (Attribute statistic : Static.statisticL) {
-			if (statistic.getRole().equalsIgnoreCase(allRole) ) {
+			if (statistic.getRole() == null) {
 				this.statisticL.add(
-								Attribute.createAttribute(true, statistic.getRole(), statistic.getName())
+								Attribute.createAttribute(true, false, statistic.getRole(), statistic.getName())
 				);
 			}
 		}
 
 		// create role specific statistic
-		for (Attribute statistic : Static.statisticL) {
-			if (statistic.getRole().contains(role)) {
-				this.statisticL.add(
-								Attribute.createAttribute(true, statistic.getRole(), statistic.getName())
-				);
+
+		// create a list of distinct role type code for player
+		ArrayList<String> distinctRoleTypeCode = new ArrayList<String>();
+
+		for (Role role : player.getRoleL()) {
+			if (!distinctRoleTypeCode.contains(role.getCodeType())) { distinctRoleTypeCode.add(role.getCodeType()); }
+		}
+
+		for (String roleTypeCode : distinctRoleTypeCode) {
+			for (Attribute statistic : Static.statisticL) {
+				if (roleTypeCode.equalsIgnoreCase(statistic.getRole().getCodeType())) {
+					this.statisticL.add(
+									Attribute.createAttribute(true, false, statistic.getRole(), statistic.getName())
+					);
+				}
 			}
 		}
+
 	}
 
-	// method to create player season characteristic
-	private void createCharacteristicL(String role)
+	//----------------------------------------------------------
+	// GET METHODS
+	//----------------------------------------------------------
+
+	public Integer getSYear() { return sYear; }
+	public Integer getEYear() { return eYear; }
+	public Competition getCompetition() { return competition; }
+	public Team getTeam() { return team; }
+	public Player getPlayer() { return player; }
+	public ArrayList<Attribute> getStatisticL() { return statisticL; }
+
+	//----------------------------------------------------------
+	// PRINT METHODS
+	//----------------------------------------------------------
+
+	// method to print season
+	public String printSeason()
 	{
-		String allRole = "PDCA";
-		// create general characteristic
-		for (Attribute characteristic : Static.characteristicL) {
-			if (characteristic.getRole().equalsIgnoreCase(allRole)) {
-				this.characteristicL.add(
-								Attribute.createAttribute( false, characteristic.getRole(), characteristic.getName())
-				);
-			}
-		}
+		String toPrint = "";
 
-		// create role specific characteristic
-		for (Attribute characteristic: Static.characteristicL) {
-			if (characteristic.getRole().contains(role)) {
-				this.characteristicL.add(
-								Attribute.createAttribute(false, characteristic.getRole(), characteristic.getName())
-				);
-			}
-		}
+		if (this.getSYear().equals(this.getEYear())) { toPrint += this.getSYear(); }
+		else { toPrint += this.getSYear() + "-" + getEYear(); }
+
+		return toPrint;
 	}
-
-	// get methods
-	public int getSYear() {return sYear;}
-	public int getEYear() {return eYear;}
-	public Team getTeam() {return team;}
-	public Player getPlayer() {return player;}
-	public char getFoot() {return foot;}
-	public String getRole() {return role;}
-	public ArrayList<Attribute> getStatisticL() {return statisticL;}
-	public ArrayList<Attribute> getCharacteristicL() {return characteristicL;}
-	public ArrayList<Trophy> getTrophyL() {return trophyL;}
-
 
 	// print method
 	@Override
@@ -92,26 +96,14 @@ public class PlayerSeason
 	{
 		String toPrint;
 		toPrint  = "\nPLAYER SEASON";
-		toPrint += "\n\tStart year : " + getSYear();
-		toPrint += "\n\tEnd year   : " + getEYear();
-		toPrint += "\n\tTeam       : " + getTeam().getName();
-		toPrint += "\n\tPlayer     : "  + getPlayer().getSurname();
-		toPrint += "\n\tFoot       : " + getFoot();
-		toPrint += "\n\tRole       : " + getRole();
+		toPrint += "\n\tSeason      : " + getSYear() + "-" + getEYear();
+		toPrint += "\n\tCompetition : " + getCompetition();
+		toPrint += "\n\tTeam        : " + getTeam().getName();
+		toPrint += "\n\tPlayer      : "  + getPlayer().getSurname();
 
 		toPrint += "\n\tSTATISTIC";
 		for (Attribute statistic : getStatisticL()) {
 			toPrint += "\n\t\t" + statistic.getName() + ": " + statistic.getValue();
-		}
-
-		toPrint += "\n\tCHARACTERISTIC";
-		for (Attribute characteristic : getCharacteristicL()) {
-			toPrint += "\n\t\t" + characteristic.getName() + ": " + characteristic.getValue();
-		}
-
-		toPrint += "\n\tTROPHY";
-		for (Trophy trophy : getTrophyL()) {
-			toPrint += "\n\t\t" + trophy.getName();
 		}
 
 		return toPrint;

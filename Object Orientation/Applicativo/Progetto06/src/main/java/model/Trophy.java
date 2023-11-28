@@ -7,9 +7,12 @@ public class Trophy
 	private String name;
 	private boolean individual; // false team trophy, true individual trophy
 	private int year;
-	private ArrayList<Competition> competitionL = new ArrayList<>();
+	private ArrayList<Competition> competitionL = new ArrayList<Competition>();
 
-	// constructor
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
 	private Trophy(String name, boolean individual, int year, Competition competition)
 	{
 		this(name, individual, year);
@@ -25,19 +28,26 @@ public class Trophy
 		Static.trophyL.add(this);
 	}
 
-	// get methods
-	public String getName() {return name;}
-	public boolean isIndividual() {return individual;}
-	public int getYear() {return year;}
-	public ArrayList<Competition> getCompetitionL() {return competitionL;}
+	//----------------------------------------------------------
+	// GET METHODS
+	//----------------------------------------------------------
+
+	public String getName() { return name; }
+	public boolean isIndividual() { return individual; }
+	public int getYear() { return year; }
+	public ArrayList<Competition> getCompetitionL() { return competitionL; }
+
+	//----------------------------------------------------------
+	// PRINT METHODS
+	//----------------------------------------------------------
 
 	// method to print trophy type
 	public String printTrophyType()
 	{
 		String toPrint;
 
-		if (this.isIndividual()) {toPrint = "Individual";}
-		else {toPrint = "Team";}
+		if (this.isIndividual()) { toPrint = "Individual"; }
+		else { toPrint = "Team"; }
 
 		return toPrint;
 	}

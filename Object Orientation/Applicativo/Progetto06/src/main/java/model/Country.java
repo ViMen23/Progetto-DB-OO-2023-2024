@@ -7,7 +7,10 @@ public class Country
 	private String continent;
 	private Team team;
 
-	// constructor
+	//----------------------------------------------------------
+	// CONSTRUCTOR
+	//----------------------------------------------------------
+
 	private Country(String code, String nation, String continent)
 	{
 		this.code      = code;
@@ -15,14 +18,19 @@ public class Country
 		this.continent = continent;
 	}
 
-	// get methods
+	//----------------------------------------------------------
+	// GET METHODS
+	//----------------------------------------------------------
+
 	public String getCode() {return code;}
 	public String getNation() {return nation;}
 	public String getContinent() {return continent;}
 	public Team getTeam() {return team;}
 
+	//----------------------------------------------------------
+	// SET METHODS
+	//----------------------------------------------------------
 
-	// set methods
 	public void setCode(String code)
 	{
 		try {
@@ -53,7 +61,10 @@ public class Country
 		catch (Exception e) {System.out.println(e);}
 	}
 
-	// method to create a new Country
+	//----------------------------------------------------------
+	// METHOD TO CREATE A NEW COUNTRY
+	//----------------------------------------------------------
+
 	public static Country createCountry(String code, String nation, String continent)
 	{
 		try {
@@ -74,12 +85,18 @@ public class Country
 		}
 	}
 
-	// method to add a national team to a country
+	//----------------------------------------------------------
+	// METHOD TO ADD A NATIONAL TEAM TO A COUNTRY
+	//----------------------------------------------------------
+
 	public void addNationalTeam(Team team) {
 		this.team = team;
 	}
 
-	// print method
+	//----------------------------------------------------------
+	// PRINT METHODS
+	//----------------------------------------------------------
+
 	// TODO locale
 	@Override
 	public String toString()
