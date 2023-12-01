@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +17,8 @@ public class LoginUsername {
 	private JPanel loginPanel;
 	private JPanel registratiPanel;
 
+	public Controller controller = new Controller();
+
 	public LoginUsername() {
 		registratiJButton.addActionListener(new ActionListener() {
 			@Override
@@ -24,6 +28,21 @@ public class LoginUsername {
 				frame.setVisible(false);
 			}
 		});
+		avantiJButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				String check = userJTextField.getText();
+				if ( ( controller.controlloFormatoUsername(check) == true ) && ( controller.controlloUsername( check ) == true ) ){
+					LoginPassword loginPassword = new LoginPassword(frame, check, controller);
+					frame.setVisible(false);
+				}
+				else{
+					JOptionPane.showMessageDialog(null, "\nUsername non esiste o inserito male, prova a registrarti prima");
+				}
+			}
+		}
+		);
 	}
 
 	public static JFrame frame;
