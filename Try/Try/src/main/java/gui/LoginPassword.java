@@ -58,10 +58,11 @@ public class LoginPassword {
 					loginUsernameFrame.setVisible(false);
 					loginPasswordFrame.setVisible(false);
 					loginUsernameFrame.dispose();
-					loginUsernameFrame.dispose();
+					loginPasswordFrame.dispose();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "\nPassword sbagliata, riprovare");
+
 				}
 			}
 		});

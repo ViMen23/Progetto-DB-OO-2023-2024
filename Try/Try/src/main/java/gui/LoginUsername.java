@@ -26,8 +26,8 @@ public class LoginUsername {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				RegistrationUsername registrationUsername = new RegistrationUsername(frame, controller);
-				frame.setVisible(false);
+				RegistrationUsername registrationUsername = new RegistrationUsername(loginUsernameFrame, controller);
+				loginUsernameFrame.setVisible(false);
 			}
 		});
 		avantiJButton.addActionListener(new ActionListener() {
@@ -37,8 +37,8 @@ public class LoginUsername {
 				String username = userJTextField.getText();
 
 				if (controller.usernameIsValid(username) && controller.controlloUsername(username)){
-					LoginPassword loginPassword = new LoginPassword(frame, username, controller);
-					frame.setVisible(false);
+					LoginPassword loginPassword = new LoginPassword(loginUsernameFrame, username, controller);
+					loginUsernameFrame.setVisible(false);
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "\nUsername errato.");
@@ -51,19 +51,19 @@ public class LoginUsername {
 			@Override
 			public void keyTyped(KeyEvent e)
 			{
-				if( e.getKeyChar() == '\n'){
+				if (e.getKeyChar() == '\n') {
 					avantiJButton.doClick();
 				}
 			}
 		});
 	}
 
-	public static JFrame frame;
+	public static JFrame loginUsernameFrame;
 	public static void main(String[] args) {
-		frame = new JFrame("Welcome");
-		frame.setContentPane(new LoginUsername().generalPanel);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
+		loginUsernameFrame = new JFrame("Welcome");
+		loginUsernameFrame.setContentPane(new LoginUsername().generalPanel);
+		loginUsernameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginUsernameFrame.pack();
+		loginUsernameFrame.setVisible(true);
 	}
 }

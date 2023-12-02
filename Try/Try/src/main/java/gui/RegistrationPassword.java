@@ -124,13 +124,11 @@ public class RegistrationPassword {
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				if( e.getStateChange() == ItemEvent.SELECTED){
+				if(e.getStateChange() == ItemEvent.SELECTED){
 					setPasswordJTextField.setEchoChar((char)0);
-					confirmPasswordPanel.setVisible(false);
 				}
 				else{
 					setPasswordJTextField.setEchoChar('•');
-					confirmPasswordPanel.setVisible(true);
 				}
 			}
 		});
@@ -149,7 +147,7 @@ public class RegistrationPassword {
 		setPasswordJTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if( e.getKeyChar() == '\n' && confirmPasswordPanel.isVisible() == false){
+				if(e.getKeyChar() == '\n' && !confirmPasswordPanel.isVisible()){
 					avantiJButton.doClick();
 				}
 			}
@@ -157,7 +155,7 @@ public class RegistrationPassword {
 		confirmPasswordJTextField.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyTyped(KeyEvent e) {
-				if( e.getKeyChar() == '\n'){
+				if(e.getKeyChar() == '\n'){
 					avantiJButton.doClick();
 				}
 			}
