@@ -17,30 +17,30 @@ public class LoginPassword {
 	private JButton returnLoginJButton;
 	private JPasswordField passwordJTextField;
 
-	public JFrame lUFrame;
-	public JFrame lPFrame;
+	public JFrame loginUsernameFrame;
+	public JFrame loginPasswordFrame;
 	private String username;
 	public Controller controller;
 
 	// passanto alla finestra password chi l'ha chiamata,
 	// l'username valido e il controller così che ci sia solo un controller in giro
-	public LoginPassword(JFrame lUFrame, String username, Controller controller)
+	public LoginPassword(JFrame loginUsernameFrame, String username, Controller controller)
 	{
-		this.lUFrame = lUFrame;
-		lPFrame = new JFrame("Password");
-		lPFrame.setContentPane(generalPanel);
-		lPFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		lPFrame.pack();
-		lPFrame.setVisible(true);
+		this.loginUsernameFrame = loginUsernameFrame;
+		loginPasswordFrame = new JFrame("Password");
+		loginPasswordFrame.setContentPane(generalPanel);
+		loginPasswordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		loginPasswordFrame.pack();
+		loginPasswordFrame.setVisible(true);
 		this.username = username;
 		this.controller = controller;
 
 		returnLoginJButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				lUFrame.setVisible(true);
-				lPFrame.setVisible(false);
-				lPFrame.dispose();
+				loginUsernameFrame.setVisible(true);
+				loginPasswordFrame.setVisible(false);
+				loginPasswordFrame.dispose();
 			}
 		});
 

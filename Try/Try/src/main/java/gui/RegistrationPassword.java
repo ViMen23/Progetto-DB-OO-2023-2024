@@ -21,24 +21,25 @@ public class RegistrationPassword {
 	private JPasswordField confirmPasswordJTextField;
 	private JPanel confirmPasswordPanel;
 
-	public JFrame loginFrame;
-	public JFrame callingFrame;
-	public JFrame calledFrame;
+	public JFrame loginUsernameFrame;
+	public JFrame registrationUsernameFrame;
+	public JFrame registrationPasswordFrame;
 	private String username;
 	public Controller controller;
 
-	public RegistrationPassword(JFrame loginFrame, JFrame callingFrame, String username, Controller controller)
+	public RegistrationPassword(JFrame loginUsernameFrame, JFrame registrationUsernameFrame,
+															String username, Controller controller)
 	{
-		this.loginFrame = loginFrame;
-		this.callingFrame = callingFrame;
+		this.loginUsernameFrame = loginUsernameFrame;
+		this.registrationUsernameFrame = registrationUsernameFrame;
 		this.username = username;
 		this.controller = controller;
 
-		calledFrame = new JFrame("Password");
-		calledFrame.setContentPane(generalPanel);
-		calledFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		calledFrame.pack();
-		calledFrame.setVisible(true);
+		registrationPasswordFrame = new JFrame("Password");
+		registrationPasswordFrame.setContentPane(generalPanel);
+		registrationPasswordFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		registrationPasswordFrame.pack();
+		registrationPasswordFrame.setVisible(true);
 
 		avantiJButton.addActionListener(new ActionListener() {
 			@Override
@@ -54,9 +55,9 @@ public class RegistrationPassword {
 						message += "\n\nVerrai indirizzato alla pagina di login per effettuare l'accesso.";
 						JOptionPane.showMessageDialog(null, message);
 
-						loginFrame.setVisible(true);
-						calledFrame.setVisible(false);
-						calledFrame.dispose();
+						loginUsernameFrame.setVisible(true);
+						registrationPasswordFrame.setVisible(false);
+						registrationPasswordFrame.dispose();
 					}
 					else {
 						String message = "\nPassword inserita non valida.";
@@ -69,9 +70,11 @@ public class RegistrationPassword {
 						message += "\n\nRiprovare.";
 						JOptionPane.showMessageDialog(null, message);
 
-						RegistrationPassword registrationPassword = new RegistrationPassword(loginFrame, calledFrame, username, controller);
-						calledFrame.setVisible(false);
-						calledFrame.dispose();
+						RegistrationPassword registrationPassword = new RegistrationPassword(
+										loginUsernameFrame, registrationPasswordFrame, username, controller);
+
+						registrationPasswordFrame.setVisible(false);
+						registrationPasswordFrame.dispose();
 					}
 				}
 				else {
@@ -79,9 +82,11 @@ public class RegistrationPassword {
 					message += "\n\nRiprovare.";
 					JOptionPane.showMessageDialog(null, message);
 
-					RegistrationPassword registrationPassword = new RegistrationPassword(loginFrame, calledFrame, username, controller);
-					calledFrame.setVisible(false);
-					calledFrame.dispose();
+					RegistrationPassword registrationPassword = new RegistrationPassword(
+									loginUsernameFrame, registrationPasswordFrame, username, controller);
+
+					registrationPasswordFrame.setVisible(false);
+					registrationPasswordFrame.dispose();
 				}
 			}
 		});

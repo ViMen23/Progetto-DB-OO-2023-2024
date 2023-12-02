@@ -17,25 +17,25 @@ public class RegistrationUsername {
 	private JLabel returnLoginJLabel;
 	private JButton returnLoginJButton;
 
-	public JFrame lUFrame;
-	public JFrame rUFrame;
+	public JFrame loginUsernameFrame;
+	public JFrame registrationUsernameFrame;
 	public Controller controller;
 
-	public RegistrationUsername(JFrame lUFrame, Controller controller) {
-		this.lUFrame= lUFrame;
+	public RegistrationUsername(JFrame loginUsernameFrame, Controller controller) {
+		this.loginUsernameFrame = loginUsernameFrame;
 		this.controller = controller;
-		rUFrame = new JFrame("Registration");
-		rUFrame.setContentPane(generalPanel);
-		rUFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		rUFrame.pack();
-		rUFrame.setVisible(true);
+		registrationUsernameFrame = new JFrame("Registration");
+		registrationUsernameFrame.setContentPane(generalPanel);
+		registrationUsernameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		registrationUsernameFrame.pack();
+		registrationUsernameFrame.setVisible(true);
 
 		returnLoginJButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent) {
-				lUFrame.setVisible(true);
-				rUFrame.setVisible(false);
-				rUFrame.dispose();
+				loginUsernameFrame.setVisible(true);
+				registrationUsernameFrame.setVisible(false);
+				registrationUsernameFrame.dispose();
 			}
 		});
 		avantiJButton.addActionListener(new ActionListener() {
@@ -44,8 +44,9 @@ public class RegistrationUsername {
 				String username = userJTextField.getText();
 
 				if (controller.usernameIsValid(username) && controller.usernameIsAvailable(username)) {
-					RegistrationPassword registrationPassword = new RegistrationPassword(lUFrame, rUFrame, username, controller);
-					rUFrame.setVisible(false);
+					RegistrationPassword registrationPassword = new RegistrationPassword(
+									loginUsernameFrame, registrationUsernameFrame, username, controller);
+					registrationUsernameFrame.setVisible(false);
 				}
 				else {
 					String message = "";
