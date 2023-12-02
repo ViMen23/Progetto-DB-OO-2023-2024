@@ -24,7 +24,7 @@ public class LoginUsername {
 			@Override
 			public void actionPerformed(ActionEvent actionEvent)
 			{
-				RegistrationUsername registrationUsername = new RegistrationUsername(frame);
+				RegistrationUsername registrationUsername = new RegistrationUsername(frame, controller);
 				frame.setVisible(false);
 			}
 		});
@@ -32,14 +32,16 @@ public class LoginUsername {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String check = userJTextField.getText();
-				if ( ( controller.controlloFormatoUsername(check) == true ) && ( controller.controlloUsername( check ) == true ) ){
-					LoginPassword loginPassword = new LoginPassword(frame, check, controller);
+				String username = userJTextField.getText();
+
+				if (controller.usernameIsValid(username) && controller.controlloUsername(username)){
+					LoginPassword loginPassword = new LoginPassword(frame, username, controller);
 					frame.setVisible(false);
 				}
 				else{
-					JOptionPane.showMessageDialog(null, "\nUsername non esiste o inserito male, prova a registrarti prima");
+					JOptionPane.showMessageDialog(null, "\nUsername errato.");
 				}
+
 			}
 		}
 		);

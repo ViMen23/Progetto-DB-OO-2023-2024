@@ -9,8 +9,8 @@ import java.sql.SQLException;
 		private static ConnessioneDatabase instance;
 		public Connection connection = null;
 		private String nome = "postgres";
-		private String password = "qwerty";
-		private String url = "jdbc:postgresql://localhost:5432/second_try";
+		private String password = "qwerty1234!";
+		private String url = "jdbc:postgresql://localhost:5432/ProgettoCalciatori01";
 		private String driver = "org.postgresql.Driver";
 
 		// COSTRUTTORE

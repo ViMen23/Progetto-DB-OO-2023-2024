@@ -26,16 +26,23 @@ public class ImplementazioneControlloPasswordDAO implements LoginPasswordDAO
 	{
 		Integer value = 0;
 		try {
-			PreparedStatement controlloUsernamePS = connection.prepareStatement(
-					"SELECT COUNT(*) AS result FROM utente WHERE username =" +username+ "AND password =" + password);
+			String query = "";
+
+			query += "SELECT COUNT(*) AS result";
+			query += " FROM utente";
+			query += " WHERE username = '" + username + "' AND password = '" + password + "'";
+
+			PreparedStatement controlloUsernamePS = connection.prepareStatement(query);
+
 			ResultSet rs = controlloUsernamePS.executeQuery();
 			rs.next();
 			value = rs.getInt("result");
+
 			rs.close();
 			controlloUsernamePS.close();
 			connection.close();
-
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
 		if( value == 1){

@@ -1,7 +1,10 @@
 package controller;
 
+import dao.AggiungiUtenteDAO;
 import dao.LoginPasswordDAO;
 import dao.LoginUsernameDAO;
+import dao.RegistrationUsernameDAO;
+import implementazionePostgresDao.ImplementazioneAggiungiUtenteDAO;
 import implementazionePostgresDao.ImplementazioneControlloPasswordDAO;
 import implementazionePostgresDao.ImplementazioneControlloUsernameDAO;
 
@@ -19,7 +22,7 @@ public class Controller
 	}
 
 	// controllo se l'username sia ben formato
-	public Boolean controlloFormatoUsername(String username)
+	public Boolean usernameIsValid(String username)
 	{
 			String regex = "^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$";
 			Pattern pattern = Pattern.compile( regex, Pattern.CASE_INSENSITIVE );
@@ -35,12 +38,28 @@ public class Controller
 		return controllo.controlloPasswordDB(username,password);
 	}
 
-	public boolean controlloFormatoPassword(String password)
+	public boolean passwordIsValid(String password)
 	{
-		String regex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[~`!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\"/?.>,<])[A-Za-z\\d~`!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\"/?.>,<]{8,255}$";
+		String regex = "";
+		regex += "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)";
+		regex += "(?=.*[~`!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\"/?.>,<])";
+		regex += "[A-Za-z\\d~`!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:'\"/?.>,<]{8,255}$";
+
 		Pattern pattern = Pattern.compile( regex, Pattern.CASE_INSENSITIVE );
 		Matcher matcher = pattern.matcher( password );
 
 		return ( matcher.matches() );
+	}
+
+	public boolean usernameIsAvailable(String username)
+	{
+		RegistrationUsernameDAO controllo = new ImplementazioneControlloUsernameDAO();
+		return controllo.usernameDisponibileDB(username);
+	}
+
+	public void aggiungiUtente(String username, String password)
+	{
+		AggiungiUtenteDAO interfaccia = new ImplementazioneAggiungiUtenteDAO();
+		interfaccia.addUserDB(username, password);
 	}
 }
