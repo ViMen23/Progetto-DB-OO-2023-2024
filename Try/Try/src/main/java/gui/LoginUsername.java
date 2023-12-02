@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -60,9 +61,11 @@ public class LoginUsername {
 
 	public static JFrame loginUsernameFrame;
 	public static void main(String[] args) {
+
 		loginUsernameFrame = new JFrame("Welcome");
 		loginUsernameFrame.setContentPane(new LoginUsername().generalPanel);
 		loginUsernameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
 		loginUsernameFrame.pack();
 		loginUsernameFrame.setVisible(true);
 	}

@@ -32,7 +32,7 @@ public class Controller
 	}
 
 	// controllo se la password esiste nel database
-	public Boolean controlloPassword(String username, String password)
+	public Integer controlloPassword(String username, String password)
 	{
 		LoginPasswordDAO controllo = new ImplementazioneControlloPasswordDAO();
 		return controllo.controlloPasswordDB(username,password);

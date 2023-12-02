@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="gui.HomeUser3">
+  <grid id="27dc6" binding="generalJPanel" layout-manager="GridBagLayout">
+    <constraints>
+      <xy x="81" y="64" width="1620" height="962"/>
+    </constraints>
+    <properties>
+      <alignmentX value="0.5"/>
+      <alignmentY value="0.5"/>
+      <autoscrolls value="false"/>
+      <background color="-14724771"/>
+      <font size="22"/>
+      <inheritsPopupMenu value="false"/>
+      <preferredSize width="1420" height="912"/>
+      <toolTipText value=""/>
+    </properties>
+    <border type="none" title="Calciatori" title-justification="2" title-position="2">
+      <font size="48"/>
+      <title-color color="-196611"/>
+    </border>
+    <children>
+      <grid id="ae5c4" binding="menuJPanel" layout-manager="GridBagLayout">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.5" weighty="0.5"/>
+        </constraints>
+        <properties>
+          <font size="22"/>
+          <opaque value="false"/>
+          <preferredSize width="1410" height="46"/>
+          <requestFocusEnabled value="true"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <component id="a3735" class="javax.swing.JButton" binding="homeJButton">
+            <constraints>
+              <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.2" weighty="0.2"/>
+            </constraints>
+            <properties>
+              <font/>
+              <text value="Home"/>
+            </properties>
+          </component>
+          <component id="cc01" class="javax.swing.JLabel" binding="stagioneJLabel">
+            <constraints>
+              <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="20" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <font/>
+              <foreground color="-196611"/>
+              <text value="Stagione"/>
+            </properties>
+          </component>
+          <component id="a5e2" class="javax.swing.JComboBox" binding="stagioneJomboBox">
+            <constraints>
+              <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <editable value="true"/>
+              <font/>
+            </properties>
+          </component>
+          <component id="5703a" class="javax.swing.JLabel" binding="paeseJLabel">
+            <constraints>
+              <grid row="0" column="3" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="30" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <font/>
+              <foreground color="-196611"/>
+              <text value="Paese"/>
+            </properties>
+          </component>
+          <component id="ae9ed" class="javax.swing.JComboBox" binding="paeseJComboBox">
+            <constraints>
+              <grid row="0" column="4" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <editable value="true"/>
+              <font/>
+            </properties>
+          </component>
+          <component id="8ad1e" class="javax.swing.JLabel" binding="competizioneJLabel">
+            <constraints>
+              <grid row="0" column="5" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="30" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <font/>
+              <foreground color="-196611"/>
+              <text value="Competizione"/>
+            </properties>
+          </component>
+          <component id="1972d" class="javax.swing.JComboBox" binding="competizioneLComboBox">
+            <constraints>
+              <grid row="0" column="6" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <editable value="true"/>
+              <font/>
+            </properties>
+          </component>
+          <component id="51d9c" class="javax.swing.JLabel" binding="societaJLabel">
+            <constraints>
+              <grid row="0" column="7" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <font/>
+              <foreground color="-196611"/>
+              <text value="Societa"/>
+            </properties>
+          </component>
+          <component id="6049a" class="javax.swing.JComboBox" binding="societaJComboBox">
+            <constraints>
+              <grid row="0" column="8" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="50" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <editable value="true"/>
+              <font/>
+            </properties>
+          </component>
+          <component id="aef0e" class="javax.swing.JLabel" binding="giocatoreJLabel">
+            <constraints>
+              <grid row="0" column="9" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="0" right="30" weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <font/>
+              <foreground color="-196611"/>
+              <text value="Giocatore"/>
+            </properties>
+          </component>
+          <component id="586b8" class="javax.swing.JComboBox" binding="giocatoreJComboBox">
+            <constraints>
+              <grid row="0" column="10" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+              <gridbag weightx="0.5" weighty="0.5"/>
+            </constraints>
+            <properties>
+              <editable value="true"/>
+              <font/>
+            </properties>
+          </component>
+        </children>
+      </grid>
+    </children>
+  </grid>
+</form>

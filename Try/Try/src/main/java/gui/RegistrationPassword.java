@@ -126,9 +126,11 @@ public class RegistrationPassword {
 			{
 				if(e.getStateChange() == ItemEvent.SELECTED){
 					setPasswordJTextField.setEchoChar((char)0);
+					confirmPasswordPanel.setVisible(false);
 				}
 				else{
 					setPasswordJTextField.setEchoChar('•');
+					confirmPasswordPanel.setVisible(true);
 				}
 			}
 		});
@@ -166,6 +168,7 @@ public class RegistrationPassword {
 			{
 				if( e.getStateChange() == ItemEvent.SELECTED){
 					confirmPasswordJTextField.setEchoChar((char)0);
+
 				}
 				else{
 					confirmPasswordJTextField.setEchoChar('•');

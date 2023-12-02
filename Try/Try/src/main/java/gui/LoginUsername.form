@@ -19,8 +19,8 @@
     <children>
       <grid id="7fcaf" binding="loginPanel" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag top="0" left="0" bottom="100" right="0" weightx="0.0" weighty="0.0"/>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="1" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="300" left="0" bottom="0" right="0" weightx="1.0" weighty="1.0"/>
         </constraints>
         <properties>
           <opaque value="false"/>
@@ -30,9 +30,10 @@
           <component id="811a" class="javax.swing.JLabel" binding="welcomeJLabel">
             <constraints>
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+              <gridbag top="0" left="0" bottom="30" right="0" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties>
+              <alignmentX value="0.5"/>
               <background color="-14724771"/>
               <font size="22"/>
               <foreground color="-196611"/>
@@ -43,7 +44,7 @@
           <component id="176ea" class="javax.swing.JButton" binding="avantiJButton">
             <constraints>
               <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="4" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="50" right="0" weightx="0.0" weighty="0.0"/>
+              <gridbag top="0" left="0" bottom="50" right="0" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties>
               <borderPainted value="true"/>
@@ -53,23 +54,23 @@
           </component>
           <component id="7a9d" class="javax.swing.JTextField" binding="userJTextField">
             <constraints>
-              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+              <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="0" indent="0" use-parent-layout="false">
                 <preferred-size width="150" height="-1"/>
               </grid>
-              <gridbag top="0" left="0" bottom="30" right="0" weightx="0.0" weighty="0.0"/>
+              <gridbag top="0" left="0" bottom="30" right="0" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties>
               <background color="-196611"/>
-              <columns value="10"/>
+              <columns value="20"/>
               <font size="20"/>
               <inheritsPopupMenu value="false"/>
-              <margin top="3" left="8" bottom="3" right="8"/>
+              <margin top="3" left="9" bottom="3" right="9"/>
             </properties>
           </component>
           <component id="de237" class="javax.swing.JLabel" binding="userJLabel">
             <constraints>
-              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-              <gridbag top="0" left="0" bottom="10" right="0" weightx="0.0" weighty="0.0"/>
+              <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+              <gridbag top="0" left="0" bottom="10" right="0" weightx="0.5" weighty="0.5"/>
             </constraints>
             <properties>
               <background color="-14724771"/>
@@ -87,8 +88,8 @@
       </grid>
       <grid id="c26c6" binding="registratiPanel" layout-manager="GridBagLayout">
         <constraints>
-          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
-          <gridbag weightx="0.0" weighty="0.0"/>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="2" fill="0" indent="0" use-parent-layout="false"/>
+          <gridbag top="0" left="0" bottom="100" right="0" weightx="0.5" weighty="0.5"/>
         </constraints>
         <properties>
           <opaque value="false"/>

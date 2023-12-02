@@ -52,7 +52,7 @@ public class LoginPassword {
 			{
 				String password = String.valueOf(passwordJTextField.getPassword());
 
-				if (controller.passwordIsValid(password) && controller.controlloPassword(username, password)){
+				if (controller.passwordIsValid(password) && controller.controlloPassword(username, password) >= 0){
 					JOptionPane.showMessageDialog(null, "\nAccesso avvenuto con successo");
 
 					loginUsernameFrame.setVisible(false);
@@ -62,7 +62,6 @@ public class LoginPassword {
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "\nPassword sbagliata, riprovare");
-
 				}
 			}
 		});

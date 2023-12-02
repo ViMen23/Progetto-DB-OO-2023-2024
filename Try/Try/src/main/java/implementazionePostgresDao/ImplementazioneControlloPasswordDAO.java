@@ -22,21 +22,25 @@ public class ImplementazioneControlloPasswordDAO implements LoginPasswordDAO
 	}
 
 	@Override
-	public Boolean controlloPasswordDB(String username, String password)
+	public Integer controlloPasswordDB(String username, String password)
 	{
-		Integer value = 0;
+		Integer value = -1;
 		try {
 			String query = "";
 
-			query += "SELECT COUNT(*) AS result";
+			query += "SELECT privilegio";
 			query += " FROM utente";
 			query += " WHERE username = '" + username + "' AND password = '" + password + "'";
 
 			PreparedStatement controlloUsernamePS = connection.prepareStatement(query);
 
 			ResultSet rs = controlloUsernamePS.executeQuery();
+
 			rs.next();
-			value = rs.getInt("result");
+
+			if (rs.next()) {
+				value = rs.getInt("privilegio");
+			}
 
 			rs.close();
 			controlloUsernamePS.close();
@@ -45,11 +49,7 @@ public class ImplementazioneControlloPasswordDAO implements LoginPasswordDAO
 		catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
-		if( value == 1){
-			return true;
-		}
-		else{
-			return false;
-		}
+
+		return value;
 	}
 }

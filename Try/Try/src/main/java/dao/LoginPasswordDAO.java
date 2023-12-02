@@ -2,5 +2,5 @@ package dao;
 
 public interface LoginPasswordDAO
 {
-	public Boolean controlloPasswordDB(String username, String password);
+	public Integer controlloPasswordDB(String username, String password);
 }
