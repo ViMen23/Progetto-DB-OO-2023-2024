@@ -3,8 +3,7 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 
 public class RegistrationPassword {
 	private JPanel generalPanel;
@@ -20,6 +19,8 @@ public class RegistrationPassword {
 	private JLabel cPasswordJLabel;
 	private JPasswordField confirmPasswordJTextField;
 	private JPanel confirmPasswordPanel;
+	private JCheckBox showFirstPasswordCheckBox;
+	private JCheckBox ShowConfirmPasswordCheckBox;
 
 	public JFrame loginUsernameFrame;
 	public JFrame registrationUsernameFrame;
@@ -43,18 +44,58 @@ public class RegistrationPassword {
 
 		avantiJButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent actionEvent) {
+			public void actionPerformed(ActionEvent actionEvent)
+			{
 				String password1 = String.valueOf(setPasswordJTextField.getPassword());
-				String password2 = String.valueOf(confirmPasswordJTextField.getPassword());
 
-				if (password1.equals(password2)) {
+				if (confirmPasswordPanel.isVisible() == true){
+					String password2 = String.valueOf(confirmPasswordJTextField.getPassword());
+					if (password1.equals(password2)) {
+						if (controller.passwordIsValid(password1)) {
+							controller.aggiungiUtente(username, password1);
+							String message = "\nRegistrazione avvenuta con successo.";
+							message += "\n\nVerrai indirizzato alla pagina di login per effettuare l'accesso.";
+							JOptionPane.showMessageDialog(null, message);
+							loginUsernameFrame.setVisible(true);
+							registrationPasswordFrame.setVisible(false);
+							registrationPasswordFrame.dispose();
+						}
+						else {
+							String message = "\nPassword inserita non valida.";
+							message += "\n\nLa password deve essere lunga almeno 8 caratteri";
+							message += "\nLa password deve contenere:";
+							message += "\n\t1. Almeno una lettera minuscola";
+							message += "\n\t2. Almeno una lettera maiuscola";
+							message += "\n\t3. Almeno un numero";
+							message += "\n\t1. Almeno un carattere speciale";
+							message += "\n\nRiprovare.";
+							JOptionPane.showMessageDialog(null, message);
+
+							RegistrationPassword registrationPassword = new RegistrationPassword(
+									loginUsernameFrame, registrationPasswordFrame, username, controller);
+
+							registrationPasswordFrame.setVisible(false);
+							registrationPasswordFrame.dispose();
+						}
+					}
+					else {
+						String message = "\nLe due password inserite non combaciano.";
+						message += "\n\nRiprovare.";
+						JOptionPane.showMessageDialog(null, message);
+
+						RegistrationPassword registrationPassword = new RegistrationPassword(
+								loginUsernameFrame, registrationPasswordFrame, username, controller);
+
+						registrationPasswordFrame.setVisible(false);
+						registrationPasswordFrame.dispose();
+					}
+				}
+				else{
 					if (controller.passwordIsValid(password1)) {
 						controller.aggiungiUtente(username, password1);
-
 						String message = "\nRegistrazione avvenuta con successo.";
 						message += "\n\nVerrai indirizzato alla pagina di login per effettuare l'accesso.";
 						JOptionPane.showMessageDialog(null, message);
-
 						loginUsernameFrame.setVisible(true);
 						registrationPasswordFrame.setVisible(false);
 						registrationPasswordFrame.dispose();
@@ -71,22 +112,65 @@ public class RegistrationPassword {
 						JOptionPane.showMessageDialog(null, message);
 
 						RegistrationPassword registrationPassword = new RegistrationPassword(
-										loginUsernameFrame, registrationPasswordFrame, username, controller);
+								loginUsernameFrame, registrationPasswordFrame, username, controller);
 
 						registrationPasswordFrame.setVisible(false);
 						registrationPasswordFrame.dispose();
 					}
 				}
-				else {
-					String message = "\nLe due password inserite non combaciano.";
-					message += "\n\nRiprovare.";
-					JOptionPane.showMessageDialog(null, message);
+			}
+		});
+		showFirstPasswordCheckBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				if( e.getStateChange() == ItemEvent.SELECTED){
+					setPasswordJTextField.setEchoChar((char)0);
+					confirmPasswordPanel.setVisible(false);
+				}
+				else{
+					setPasswordJTextField.setEchoChar('•');
+					confirmPasswordPanel.setVisible(true);
+				}
+			}
+		});
+		returnLoginJButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				loginUsernameFrame.setVisible(true);
+				registrationPasswordFrame.setVisible(false);
+				registrationUsernameFrame.setVisible(false);
+				registrationPasswordFrame.dispose();
+				registrationUsernameFrame.dispose();
 
-					RegistrationPassword registrationPassword = new RegistrationPassword(
-									loginUsernameFrame, registrationPasswordFrame, username, controller);
-
-					registrationPasswordFrame.setVisible(false);
-					registrationPasswordFrame.dispose();
+			}
+		});
+		setPasswordJTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if( e.getKeyChar() == '\n' && confirmPasswordPanel.isVisible() == false){
+					avantiJButton.doClick();
+				}
+			}
+		});
+		confirmPasswordJTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if( e.getKeyChar() == '\n'){
+					avantiJButton.doClick();
+				}
+			}
+		});
+		ShowConfirmPasswordCheckBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				if( e.getStateChange() == ItemEvent.SELECTED){
+					confirmPasswordJTextField.setEchoChar((char)0);
+				}
+				else{
+					confirmPasswordJTextField.setEchoChar('•');
 				}
 			}
 		});

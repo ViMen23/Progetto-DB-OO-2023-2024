@@ -3,6 +3,8 @@ package gui;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import controller.Controller;
 
@@ -54,10 +56,18 @@ public class RegistrationUsername {
 					message += "\n\nL'username deve avere lunghezza compresa tra i 4 e 20 caratteri.";
 					message += "\n\tL'username deve essere composto da:";
 					message += "\n\t1. Caratteri alfanumerici";
-					message += "\n\t2. Punti e/o undersore";
+					message += "\n\t2. Punti e/o underscore";
 					message += "\n\nRiprovare.";
 
 					JOptionPane.showMessageDialog(null, message);
+				}
+			}
+		});
+		userJTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if( e.getKeyChar() == '\n'){
+					avantiJButton.doClick();
 				}
 			}
 		});

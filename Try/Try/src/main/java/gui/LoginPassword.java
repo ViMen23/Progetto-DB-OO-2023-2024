@@ -3,8 +3,8 @@ package gui;
 import controller.Controller;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.*;
+import java.awt.event.*;
 
 public class LoginPassword {
 	private JPanel generalPanel;
@@ -16,6 +16,7 @@ public class LoginPassword {
 	private JLabel returnLoginJLabel;
 	private JButton returnLoginJButton;
 	private JPasswordField passwordJTextField;
+	private JCheckBox showPasswordCheckBox;
 
 	public JFrame loginUsernameFrame;
 	public JFrame loginPasswordFrame;
@@ -41,6 +42,7 @@ public class LoginPassword {
 				loginUsernameFrame.setVisible(true);
 				loginPasswordFrame.setVisible(false);
 				loginPasswordFrame.dispose();
+
 			}
 		});
 
@@ -52,9 +54,34 @@ public class LoginPassword {
 
 				if (controller.passwordIsValid(password) && controller.controlloPassword(username, password)){
 					JOptionPane.showMessageDialog(null, "\nAccesso avvenuto con successo");
+
+					loginUsernameFrame.setVisible(false);
+					loginPasswordFrame.setVisible(false);
+					loginUsernameFrame.dispose();
+					loginUsernameFrame.dispose();
 				}
 				else{
 					JOptionPane.showMessageDialog(null, "\nPassword sbagliata, riprovare");
+				}
+			}
+		});
+
+		showPasswordCheckBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				if( e.getStateChange() == ItemEvent.SELECTED){
+					passwordJTextField.setEchoChar((char)0);
+				}
+				else
+					passwordJTextField.setEchoChar('•');
+			}
+		});
+		passwordJTextField.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if( e.getKeyChar() == '\n'){
+					avantiJButton.doClick();
 				}
 			}
 		});
