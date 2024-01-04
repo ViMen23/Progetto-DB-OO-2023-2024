@@ -10,12 +10,15 @@
 -- YEAR       : 2023-2024
 ------------------------------------------------------------------------------------------
 
+--****************************************************************************************
+--* SCHEMA
+--****************************************************************************************
 
 ------------------------------------------------------------------------------------------
 -- PREPARING SCHEMA
 ------------------------------------------------------------------------------------------
-DROP SCHEMA public CASCADE;
-CREATE SCHEMA public;
+DROP SCHEMA IF EXISTS fp CASCADE;
+CREATE SCHEMA fp;
 ------------------------------------------------------------------------------------------
 
 
@@ -29,7 +32,7 @@ CREATE SCHEMA public;
 ------------------------------------------------------------------------------------------
 -- domanin values will be dates previous of current date 
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_date AS date
+CREATE DOMAIN fpdb.fp.dm_date AS date
 CHECK
 (
 	value <= current_date
@@ -42,7 +45,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- domanin values will be not negative small integer previous of current year
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_year AS smallint
+CREATE DOMAIN fpdb.fp.dm_year AS smallint
 CHECK
 (
 	value >= 0
@@ -57,7 +60,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- domain values will be string of uppercase alphabetic char of lenght in [1, 20] 
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_code AS varchar(20)
+CREATE DOMAIN fpdb.fp.dm_code AS varchar(20)
 CHECK
 (
 	value ~ '(?=^[A-Z]{1,20}$)'
@@ -68,7 +71,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR SIMPLE ENGLISH STRING: dm_sp_string
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_sp_string AS varchar(100)
+CREATE DOMAIN fpdb.fp.dm_sp_string AS varchar(100)
 CHECK
 (
 	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]'
@@ -82,7 +85,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR ENGLISH STRING: dm_en_string
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_en_string AS varchar(100)
+CREATE DOMAIN fpdb.fp.dm_en_string AS varchar(100)
 CHECK
 (
 	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]'
@@ -97,7 +100,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR ALPHANUMERIC ENGLISH STRING: dm_an_string
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_an_string AS varchar(100)
+CREATE DOMAIN fpdb.fp.dm_an_string AS varchar(100)
 CHECK
 (
 	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF0-9]'
@@ -112,7 +115,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR USERNAME: dm_username
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_username AS varchar(20)
+CREATE DOMAIN fpdb.fp.dm_username AS varchar(20)
 CHECK
 (
 	value ~ '(^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
@@ -123,7 +126,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR PASSWORD: dm_password
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_password AS varchar(20)
+CREATE DOMAIN fpdb.fp.dm_password AS varchar(20)
 CHECK
 (
 	value ~ '(^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)'
@@ -136,7 +139,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- DOMAIN FOR UNSIGNED INTEGER: dm_unsigned
 ------------------------------------------------------------------------------------------
-CREATE DOMAIN dm_unsigned AS smallint
+CREATE DOMAIN fpdb.fp.dm_unsigned AS smallint
 CHECK
 (
 	value >= 0
@@ -152,7 +155,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR COUNTRY: ty_country
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_country AS ENUM
+CREATE TYPE fpdb.fp.ty_country AS ENUM
 (
 	'NATION',
 	'CONTINENT',
@@ -164,7 +167,7 @@ CREATE TYPE ty_country AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR TEAM: ty_team
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_team AS ENUM
+CREATE TYPE fpdb.fp.ty_team AS ENUM
 (
 	'CLUB',
 	'NATIONAL'
@@ -175,7 +178,7 @@ CREATE TYPE ty_team AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR COMPETITION: ty_competition
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_competition AS ENUM
+CREATE TYPE fpdb.fp.ty_competition AS ENUM
 (
 	'INDIVIDUAL',
 	'LEAGUE',
@@ -188,7 +191,7 @@ CREATE TYPE ty_competition AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR SEX: ty_sex
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_sex AS ENUM
+CREATE TYPE fpdb.fp.ty_sex AS ENUM
 (
 	'FEMALE',
 	'MALE'
@@ -199,7 +202,7 @@ CREATE TYPE ty_sex AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR FOOT: ty_foot
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_foot AS ENUM
+CREATE TYPE fpdb.fp.ty_foot AS ENUM
 (
 	'BOTH',
 	'LEFT',
@@ -211,7 +214,7 @@ CREATE TYPE ty_foot AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR ROLE: ty_role
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_role AS ENUM
+CREATE TYPE fpdb.fp.ty_role AS ENUM
 (
 	'GK', -- GK : goalkeeper
 	'DF', -- DF : defender
@@ -224,7 +227,7 @@ CREATE TYPE ty_role AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR TROPHY: ty_trophy
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_trophy AS ENUM
+CREATE TYPE fpdb.fp.ty_trophy AS ENUM
 (
 	'PLAYER',
 	'TEAM'
@@ -235,7 +238,7 @@ CREATE TYPE ty_trophy AS ENUM
 ------------------------------------------------------------------------------------------
 -- ENUM TYPE FOR TAG: ty_tag
 ------------------------------------------------------------------------------------------
-CREATE TYPE ty_tag AS ENUM
+CREATE TYPE fpdb.fp.ty_tag AS ENUM
 (
 	'MENTAL',
 	'TECHNIQUE',
@@ -260,16 +263,16 @@ CREATE TYPE ty_tag AS ENUM
 ------------------------------------------------------------------------------------------
 -- the position of a football player on the football pitch
 ------------------------------------------------------------------------------------------
-CREATE TABLE position
+CREATE TABLE fpdb.fp.position
 (
-	role	ty_role			NOT NULL, -- role code
-	code	dm_code			NOT NULL, -- position code
-	name	dm_sp_string	NOT NULL  -- position name
+	role	fpdb.fp.ty_role			NOT NULL, -- role code
+	code	fpdb.fp.dm_code			NOT NULL, -- position code
+	name	fpdb.fp.dm_sp_string	NOT NULL  -- position name
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	position
+ALTER TABLE	fpdb.fp.position
 ADD CONSTRAINT pk_position
 PRIMARY KEY
 (
@@ -278,7 +281,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	position
+ALTER TABLE	fpdb.fp.position
 ADD CONSTRAINT uq_position
 UNIQUE
 (
@@ -293,19 +296,19 @@ UNIQUE
 -- a country represents an abstract concept that summarizes the concept
 -- of a nation, continent and even the world
 ------------------------------------------------------------------------------------------
-CREATE TABLE country
+CREATE TABLE fpdb.fp.country
 (
-	type		ty_country		NOT NULL, -- country type
-	code		dm_code			NOT NULL, -- country code
-	name		dm_en_string	NOT NULL, -- country name
-	s_year		dm_year			NOT NULL, -- country foundation year
-	e_year		dm_year					, -- country suppression year
-	super		dm_code					  -- containing country code
+	type		fpdb.fp.ty_country		NOT NULL, -- country type
+	code		fpdb.fp.dm_code			NOT NULL, -- country code
+	name		fpdb.fp.dm_en_string	NOT NULL, -- country name
+	s_year		fpdb.fp.dm_year			NOT NULL, -- country foundation year
+	e_year		fpdb.fp.dm_year					, -- country suppression year
+	super		fpdb.fp.dm_code					  -- containing country code
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT pk_country
 PRIMARY KEY
 (
@@ -314,7 +317,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT uq_country_name
 UNIQUE
 (
@@ -323,7 +326,7 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT uq_country_type
 UNIQUE
 (
@@ -335,7 +338,7 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 -- check whether the country currently exists or it was suppressed after being founded
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT ck_country_year
 CHECK
 (
@@ -346,13 +349,13 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT fk_country_country
 FOREIGN KEY
 (
 	super
 )
-REFERENCES country
+REFERENCES fpdb.fp.country
 (
 	code
 )
@@ -364,7 +367,7 @@ ON UPDATE CASCADE;
 -- checks that a nation or continent is contained in a country
 -- and that the world is not contained in any country
 ------------------------------------------------------------------------------------------
-ALTER TABLE	country
+ALTER TABLE	fpdb.fp.country
 ADD CONSTRAINT ck_country_fk
 CHECK
 (
@@ -382,29 +385,32 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- a football player
 ------------------------------------------------------------------------------------------
-CREATE TABLE player
+CREATE TABLE fpdb.fp.player
 (
-	id		serial			NOT NULL, -- id player
-	f_name	dm_en_string	NOT NULL, -- first name
-	m_name	dm_en_string			, -- mid name
-	l_name	dm_en_string	NOT NULL, -- last name
-	sex		ty_sex			NOT NULL, -- sex
-	b_date	dm_date			NOT NULL, -- birth date
-	s_date	dm_date			NOT NULL, -- debut date
-	e_date	dm_date					, -- retired date
-	foot	ty_foot			NOT NULL, -- preferred foot
-	country	dm_code			NOT NULL  -- birth country
+	id		serial					NOT NULL, -- id player
+	f_name	fpdb.fp.dm_en_string	NOT NULL, -- first name
+	m_name	fpdb.fp.dm_en_string			, -- mid name
+	l_name	fpdb.fp.dm_en_string	NOT NULL, -- last name
+	sex		fpdb.fp.ty_sex			NOT NULL, -- sex
+	b_date	fpdb.fp.dm_date			NOT NULL, -- birth date
+	s_date	fpdb.fp.dm_date			NOT NULL, -- debut date
+	e_date	fpdb.fp.dm_date					, -- retired date
+	foot	fpdb.fp.ty_foot			NOT NULL, -- preferred foot
+	country	fpdb.fp.dm_code			NOT NULL  -- birth country
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player
+ALTER TABLE fpdb.fp.player
 ADD CONSTRAINT pk_player
-PRIMARY KEY (id);
+PRIMARY KEY
+(
+	id
+);
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player
+ALTER TABLE	fpdb.fp.player
 ADD CONSTRAINT uq_player
 UNIQUE NULLS NOT DISTINCT
 (
@@ -419,13 +425,13 @@ UNIQUE NULLS NOT DISTINCT
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player
+ALTER TABLE	fpdb.fp.player
 ADD CONSTRAINT fk_player_country
 FOREIGN KEY
 (
 	country
 )
-REFERENCES country
+REFERENCES fpdb.fp.country
 (
 	code
 )
@@ -434,7 +440,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player
+ALTER TABLE	fpdb.fp.player
 ADD CONSTRAINT ck_player_start_age
 CHECK
 (
@@ -445,7 +451,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	 player
+ALTER TABLE	 fpdb.fp.player
 ADD CONSTRAINT ck_player_end_date
 CHECK
 (
@@ -463,21 +469,21 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- a football team
 ------------------------------------------------------------------------------------------
-CREATE TABLE team
+CREATE TABLE fpdb.fp.team
 (
-	id 		serial			NOT NULL,
-	type	ty_team			NOT NULL,
-	name	dm_an_string	NOT NULL,
-	max_age	dm_unsigned				,
-	sex		ty_sex			NOT NULL,
-	s_year	dm_year			NOT NULL,
-	e_year	dm_year					,
-	country	dm_code			NOT NULL
+	id 		serial					NOT NULL,
+	type	fpdb.fp.ty_team			NOT NULL,
+	name	fpdb.fp.dm_an_string	NOT NULL,
+	max_age	fpdb.fp.dm_unsigned				,
+	sex		fpdb.fp.ty_sex			NOT NULL,
+	s_year	fpdb.fp.dm_year			NOT NULL,
+	e_year	fpdb.fp.dm_year					,
+	country	fpdb.fp.dm_code			NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team
+ALTER TABLE	fpdb.fp.team
 ADD CONSTRAINT pk_team
 PRIMARY KEY
 (
@@ -486,7 +492,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team
+ALTER TABLE	fpdb.fp.team
 ADD CONSTRAINT uq_team
 UNIQUE NULLS NOT DISTINCT
 (
@@ -498,13 +504,13 @@ UNIQUE NULLS NOT DISTINCT
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team
+ALTER TABLE	fpdb.fp.team
 ADD CONSTRAINT fk_team_country
 FOREIGN KEY
 (
 	country
 )
-REFERENCES country
+REFERENCES fpdb.fp.country
 (
 	code
 )
@@ -513,7 +519,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team
+ALTER TABLE	fpdb.fp.team
 ADD CONSTRAINT ck_team_year
 CHECK
 (
@@ -533,20 +539,20 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE confederation
+CREATE TABLE fpdb.fp.confederation
 (
-	code	dm_code 		NOT NULL,
-	name	dm_en_string	NOT NULL,
-	type	ty_country		NOT NULL,
-	country	dm_code			NOT NULL,
-	s_year	dm_year			NOT NULL,
-	e_year	dm_year					,
-	super	dm_code				
+	code	fpdb.fp.dm_code 		NOT NULL,
+	name	fpdb.fp.dm_en_string	NOT NULL,
+	type	fpdb.fp.ty_country		NOT NULL,
+	country	fpdb.fp.dm_code			NOT NULL,
+	s_year	fpdb.fp.dm_year			NOT NULL,
+	e_year	fpdb.fp.dm_year					,
+	super	fpdb.fp.dm_code				
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT pk_confederation
 PRIMARY KEY
 (
@@ -555,7 +561,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT uq_confederation
 UNIQUE
 (
@@ -565,7 +571,7 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT ck_confederation_year
 CHECK
 (
@@ -576,14 +582,14 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT fk_confederation_country
 FOREIGN KEY
 (
 	type,
 	country
 )
-REFERENCES country
+REFERENCES fpdb.fp.country
 (
 	type,
 	code
@@ -593,13 +599,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT fk_confederation_confederation
 FOREIGN KEY
 (
 	super
 )
-REFERENCES confederation
+REFERENCES fpdb.fp.confederation
 (
 	code
 )
@@ -608,7 +614,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	confederation
+ALTER TABLE	fpdb.fp.confederation
 ADD CONSTRAINT ck_confederation_super
 CHECK
 (
@@ -628,16 +634,16 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE player_position
+CREATE TABLE fpdb.fp.player_position
 (
 	player		integer		NOT NULL			 ,
-	position	dm_code		NOT NULL			 ,
-	n_match		dm_unsigned	NOT NULL	DEFAULT 0	
+	position	fpdb.fp.dm_code		NOT NULL			 ,
+	n_match		fpdb.fp.dm_unsigned	NOT NULL	DEFAULT 0	
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_position
+ALTER TABLE fpdb.fp.player_position
 ADD CONSTRAINT pk_player_position
 PRIMARY KEY
 (
@@ -647,13 +653,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_position
+ALTER TABLE fpdb.fp.player_position
 ADD CONSTRAINT player_position_fk_player
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -662,13 +668,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_position
+ALTER TABLE fpdb.fp.player_position
 ADD CONSTRAINT fk_player_position_position
 FOREIGN KEY
 (
 	position
 )
-REFERENCES position
+REFERENCES fpdb.fp.position
 (
 	code
 )
@@ -683,15 +689,15 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE player_country
+CREATE TABLE fpdb.fp.player_country
 (
 	player	integer	NOT NULL,
-	country	dm_code	NOT NULL
+	country	fpdb.fp.dm_code	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_country
+ALTER TABLE fpdb.fp.player_country
 ADD CONSTRAINT pk_player_country
 PRIMARY KEY
 (
@@ -701,13 +707,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_country
+ALTER TABLE fpdb.fp.player_country
 ADD CONSTRAINT fk_player_country_player
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -716,13 +722,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 		
 ------------------------------------------------------------------------------------------
-ALTER TABLE player_country
+ALTER TABLE fpdb.fp.player_country
 ADD CONSTRAINT fk_player_country_country
 FOREIGN KEY
 (
 	country
 )
-REFERENCES country
+REFERENCES fpdb.fp.country
 (
 	code
 )
@@ -739,24 +745,24 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE competition
+CREATE TABLE fpdb.fp.competition
 (
-	id				serial			NOT NULL,
-	confederation	dm_code			NOT NULL,
-	team_type		ty_team					,
-	type			ty_competition	NOT NULL,
-	name			dm_an_string	NOT NULL,
-	max_age			dm_unsigned				,
-	sex				ty_sex			NOT NULL,
-	tier			dm_unsigned				,
-	frequency		dm_unsigned		NOT NULL,
-	s_year			dm_year			NOT NULL,
-	e_year			dm_year				
+	id				serial					NOT NULL,
+	confederation	fpdb.fp.dm_code			NOT NULL,
+	team_type		fpdb.fp.ty_team					,
+	type			fpdb.fp.ty_competition	NOT NULL,
+	name			fpdb.fp.dm_an_string	NOT NULL,
+	max_age			fpdb.fp.dm_unsigned				,
+	sex				fpdb.fp.ty_sex			NOT NULL,
+	tier			fpdb.fp.dm_unsigned				,
+	frequency		fpdb.fp.dm_unsigned		NOT NULL,
+	s_year			fpdb.fp.dm_year			NOT NULL,
+	e_year			fpdb.fp.dm_year				
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT pk_competition
 UNIQUE
 (
@@ -765,7 +771,7 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT uq_competition_name
 UNIQUE
 (
@@ -775,7 +781,7 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT uq_competition_tier
 UNIQUE NULLS NOT DISTINCT
 (
@@ -788,13 +794,13 @@ UNIQUE NULLS NOT DISTINCT
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT fk_competition_confederation
 FOREIGN KEY
 (
 	confederation
 )
-REFERENCES confederation
+REFERENCES fpdb.fp.confederation
 (
 	code
 )
@@ -803,7 +809,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT ck_competition_type
 CHECK
 (
@@ -814,7 +820,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT ck_competition_national_team
 CHECK
 (
@@ -825,7 +831,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition 
+ALTER TABLE	fpdb.fp.competition 
 ADD CONSTRAINT ck_competition_year
 CHECK
 (
@@ -846,17 +852,17 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE tag
+CREATE TABLE fpdb.fp.tag
 (
-	id		integer			NOT NULL,
-	type	ty_tag			NOT NULL,
-	tag		dm_en_string	NOT NULL,
-	desc	dm_en_string
+	id		integer					NOT NULL,
+	type	fpdb.fp.ty_tag			NOT NULL,
+	tag		fpdb.fp.dm_en_string	NOT NULL,
+	descr	fpdb.fp.dm_en_string
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	tag
+ALTER TABLE	fpdb.fp.tag
 ADD CONSTRAINT pk_tag
 PRIMARY KEY
 (
@@ -865,7 +871,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	tag
+ALTER TABLE	fpdb.fp.tag
 ADD CONSTRAINT uq_tag
 UNIQUE
 (
@@ -880,18 +886,18 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE competition_edition
+CREATE TABLE fpdb.fp.competition_edition
 (
-	competition		integer		NOT NULL,
-	s_year			dm_year		NOT NULL,
-	e_year			dm_year		NOT NULL,
-	n_competitor	dm_unsigned	NOT NULL,
-	n_max_match		dm_unsigned			
+	competition		integer				NOT NULL,
+	s_year			fpdb.fp.dm_year		NOT NULL,
+	e_year			fpdb.fp.dm_year		NOT NULL,
+	n_competitor	fpdb.fp.dm_unsigned	NOT NULL,
+	n_max_match		fpdb.fp.dm_unsigned			
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition_edition
+ALTER TABLE	fpdb.fp.competition_edition
 ADD CONSTRAINT pk_competition_edition
 PRIMARY KEY
 (
@@ -902,13 +908,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition_edition
+ALTER TABLE	fpdb.fp.competition_edition
 ADD CONSTRAINT fk_competition_edition_competition
 FOREIGN KEY
 (
 	competition
 )
-REFERENCES competition
+REFERENCES fpdb.fp.competition
 (
 	id
 )
@@ -917,7 +923,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	competition_edition
+ALTER TABLE	fpdb.fp.competition_edition
 ADD CONSTRAINT ck_competition_edition_year
 CHECK
 (
@@ -939,18 +945,18 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE team_competition_edition
+CREATE TABLE fpdb.fp.team_competition_edition
 (
-	competition	integer		NOT NULL,
-	s_year		dm_year		NOT NULL,
-	e_year		dm_year		NOT NULL,
-	team		integer		NOT NULL,
-	n_match		dm_unsigned	NOT NULL
+	competition	integer				NOT NULL,
+	s_year		fpdb.fp.dm_year		NOT NULL,
+	e_year		fpdb.fp.dm_year		NOT NULL,
+	team		integer				NOT NULL,
+	n_match		fpdb.fp.dm_unsigned	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_competition_edition
+ALTER TABLE	fpdb.fp.team_competition_edition
 ADD CONSTRAINT pk_team_competition_edition
 PRIMARY KEY
 (
@@ -962,7 +968,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_competition_edition
+ALTER TABLE	fpdb.fp.team_competition_edition
 ADD CONSTRAINT fk_team_competition_edition_competition_edition
 FOREIGN KEY
 (
@@ -970,7 +976,7 @@ FOREIGN KEY
 	s_year,
 	e_year
 )
-REFERENCES competition_edition
+REFERENCES fpdb.fp.competition_edition
 (
 	competition,
 	s_year,
@@ -981,13 +987,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_competition_edition
+ALTER TABLE	fpdb.fp.team_competition_edition
 ADD CONSTRAINT fk_team_competition_edition_team
 FOREIGN KEY
 (
 	team
 )
-REFERENCES team
+REFERENCES fpdb.fp.team
 (
 	id
 )
@@ -1007,17 +1013,17 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE player_competition_edition
+CREATE TABLE fpdb.fp.player_competition_edition
 (
-	competition	integer	NOT NULL,
-	s_year		dm_year	NOT NULL,
-	e_year		dm_year	NOT NULL,
-	player		integer	NOT NULL
+	competition	integer			NOT NULL,
+	s_year		fpdb.fp.dm_year	NOT NULL,
+	e_year		fpdb.fp.dm_year	NOT NULL,
+	player		integer			NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_competition_edition
+ALTER TABLE	fpdb.fp.player_competition_edition
 ADD CONSTRAINT pk_player_competition_edition
 PRIMARY KEY
 (
@@ -1029,7 +1035,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_competition_edition
+ALTER TABLE	fpdb.fp.player_competition_edition
 ADD CONSTRAINT fk_player_competition_edition_competition_edition
 FOREIGN KEY
 (
@@ -1037,7 +1043,7 @@ FOREIGN KEY
 	s_year,
 	e_year
 )
-REFERENCES competition_edition
+REFERENCES fpdb.fp.competition_edition
 (
 	competition,
 	s_year,
@@ -1048,13 +1054,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_competition_edition
+ALTER TABLE	fpdb.fp.player_competition_edition
 ADD CONSTRAINT fk_player_competition_edition_team
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -1074,19 +1080,19 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE trophy
+CREATE TABLE fpdb.fp.trophy
 (
-	id			serial			NOT NULL,
-	competition	integer			NOT NULL,
-	s_year		dm_year			NOT NULL,
-	e_year		dm_year			NOT NULL,
-	type		ty_trophy		NOT NULL,
-	name		dm_an_string	NOT NULL
+	id			serial					NOT NULL,
+	competition	integer					NOT NULL,
+	s_year		fpdb.fp.dm_year			NOT NULL,
+	e_year		fpdb.fp.dm_year			NOT NULL,
+	type		fpdb.fp.ty_trophy		NOT NULL,
+	name		fpdb.fp.dm_an_string	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	trophy
+ALTER TABLE	fpdb.fp.trophy
 ADD CONSTRAINT pk_trophy
 PRIMARY KEY
 (
@@ -1095,7 +1101,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 	
 ------------------------------------------------------------------------------------------
-ALTER TABLE	trophy
+ALTER TABLE	fpdb.fp.trophy
 ADD CONSTRAINT fk_trophy_competition_edition
 FOREIGN KEY
 (
@@ -1103,7 +1109,7 @@ FOREIGN KEY
 	s_year,
 	e_year
 )
-REFERENCES competition_edition
+REFERENCES fpdb.fp.competition_edition
 (
 	competition,
 	s_year,
@@ -1123,7 +1129,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE team_trophy
+CREATE TABLE fpdb.fp.team_trophy
 (
 	trophy	integer	NOT NULL,
 	team	integer	NOT NULL
@@ -1131,7 +1137,7 @@ CREATE TABLE team_trophy
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_trophy
+ALTER TABLE	fpdb.fp.team_trophy
 ADD CONSTRAINT pk_team_trophy
 PRIMARY KEY
 (
@@ -1141,13 +1147,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_trophy
+ALTER TABLE	fpdb.fp.team_trophy
 ADD CONSTRAINT fk_team_trophy_trophy
 FOREIGN KEY
 (
 	trophy
 )
-REFERENCES trophy
+REFERENCES fpdb.fp.trophy
 (
 	id
 )
@@ -1156,13 +1162,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	team_trophy
+ALTER TABLE	fpdb.fp.team_trophy
 ADD CONSTRAINT fk_team_trophy_team
 FOREIGN KEY
 (
 	team
 )
-REFERENCES team
+REFERENCES fpdb.fp.team
 (
 	id
 )
@@ -1177,7 +1183,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE player_trophy
+CREATE TABLE fpdb.fp.player_trophy
 (
 	trophy	integer	NOT NULL,
 	player	integer	NOT NULL
@@ -1185,7 +1191,7 @@ CREATE TABLE player_trophy
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_trophy
+ALTER TABLE	fpdb.fp.player_trophy
 ADD CONSTRAINT pk_player_trophy
 PRIMARY KEY
 (
@@ -1195,13 +1201,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_trophy
+ALTER TABLE	fpdb.fp.player_trophy
 ADD CONSTRAINT fk_player_trophy_trophy
 FOREIGN KEY
 (
 	trophy
 )
-REFERENCES trophy
+REFERENCES fpdb.fp.trophy
 (
 	id
 )
@@ -1210,13 +1216,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_trophy
+ALTER TABLE	fpdb.fp.player_trophy
 ADD CONSTRAINT fk_player_trophy_team
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -1231,7 +1237,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE player_tag
+CREATE TABLE fpdb.fp.player_tag
 (
 	tag		integer	NOT NULL,
 	player	integer	NOT NULL
@@ -1239,7 +1245,7 @@ CREATE TABLE player_tag
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_tag
+ALTER TABLE	fpdb.fp.player_tag
 ADD CONSTRAINT pk_player_tag
 PRIMARY KEY
 (
@@ -1249,13 +1255,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_tag
+ALTER TABLE	fpdb.fp.player_tag
 ADD CONSTRAINT fk_player_tag_tag
 FOREIGN KEY
 (
 	tag
 )
-REFERENCES tag
+REFERENCES fpdb.fp.tag
 (
 	id
 )
@@ -1264,13 +1270,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	player_tag
+ALTER TABLE	fpdb.fp.player_tag
 ADD CONSTRAINT fk_player_tag_player
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -1285,17 +1291,17 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE play
+CREATE TABLE fpdb.fp.play
 (
-	s_date	dm_date	NOT NULL,
-	e_date	date	NOT NULL,
-	team	integer	NOT NULL,
-	player	integer	NOT NULL
+	s_date	fpdb.fp.dm_date	NOT NULL,
+	e_date	date			NOT NULL,
+	team	integer			NOT NULL,
+	player	integer			NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	play
+ALTER TABLE	fpdb.fp.play
 ADD CONSTRAINT pk_play
 PRIMARY KEY
 (
@@ -1307,13 +1313,13 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	play
+ALTER TABLE	fpdb.fp.play
 ADD CONSTRAINT fk_play_team
 FOREIGN KEY
 (
 	team
 )
-REFERENCES team
+REFERENCES fpdb.fp.team
 (
 	id
 )
@@ -1322,13 +1328,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	play
+ALTER TABLE	fpdb.fp.play
 ADD CONSTRAINT fk_play_player
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -1337,7 +1343,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 	
 ------------------------------------------------------------------------------------------
-ALTER TABLE	play
+ALTER TABLE	fpdb.fp.play
 ADD CONSTRAINT ck_play_date
 CHECK
 (
@@ -1354,28 +1360,28 @@ CHECK
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE ply_pos_season_stat
+CREATE TABLE fpdb.fp.ply_pos_season_stat
 (
-	competition		integer		NOT NULL,
-	s_year			dm_year		NOT NULL,
-	e_year			dm_year		NOT NULL,
-	team			integer		NOT NULL,
-	player			integer		NOT NULL,
-	position		dm_code		NOT NULL,
-	match			dm_unsigned			,
-	goal			dm_unsigned			,
-	assist			dm_unsigned			,
-	penalty_scored	dm_unsigned			,
-	yellow_card		dm_unsigned			,
-	red_card		dm_unsigned			,
-	goal_conceded	dm_unsigned			,
-	clean_sheet		dm_unsigned			,
-	penalty_saved	dm_unsigned	
+	competition		integer				NOT NULL,
+	s_year			fpdb.fp.dm_year		NOT NULL,
+	e_year			fpdb.fp.dm_year		NOT NULL,
+	team			integer				NOT NULL,
+	player			integer				NOT NULL,
+	position		fpdb.fp.dm_code		NOT NULL,
+	match			fpdb.fp.dm_unsigned			,
+	goal			fpdb.fp.dm_unsigned			,
+	assist			fpdb.fp.dm_unsigned			,
+	penalty_scored	fpdb.fp.dm_unsigned			,
+	yellow_card		fpdb.fp.dm_unsigned			,
+	red_card		fpdb.fp.dm_unsigned			,
+	goal_conceded	fpdb.fp.dm_unsigned			,
+	clean_sheet		fpdb.fp.dm_unsigned			,
+	penalty_saved	fpdb.fp.dm_unsigned	
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	ply_pos_season_stat
+ALTER TABLE	fpdb.fp.ply_pos_season_stat
 ADD CONSTRAINT pk_ply_pos_season_stat
 PRIMARY KEY
 (
@@ -1389,7 +1395,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	ply_pos_season_stat
+ALTER TABLE	fpdb.fp.ply_pos_season_stat
 ADD CONSTRAINT fk_ply_pos_season_stat_team_competition_edition
 FOREIGN KEY
 (
@@ -1398,7 +1404,7 @@ FOREIGN KEY
 	e_year,
 	team
 )
-REFERENCES team_competition_edition
+REFERENCES fpdb.fp.team_competition_edition
 (
 	competition,
 	s_year,
@@ -1409,13 +1415,13 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	ply_pos_season_stat
+ALTER TABLE	fpdb.fp.ply_pos_season_stat
 ADD CONSTRAINT fk_ply_pos_season_stat_player
 FOREIGN KEY
 (
 	player
 )
-REFERENCES player
+REFERENCES fpdb.fp.player
 (
 	id
 )
@@ -1424,13 +1430,13 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	ply_pos_season_stat
+ALTER TABLE	fpdb.fp.ply_pos_season_stat
 ADD CONSTRAINT fk_ply_pos_season_stat_position
 FOREIGN KEY
 (
 	position
 )
-REFERENCES position
+REFERENCES fpdb.fp.position
 (
 	code
 )
@@ -1447,17 +1453,17 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
-CREATE TABLE account
+CREATE TABLE fpdb.fp.account
 (
-	id			serial			NOT NULL				,
-	username	dm_username		NOT NULL				,
-	password	dm_password		NOT NULL				,
-	privilege	dm_unsigned		NOT NULL	DEFAULT 0					
+	id			serial					NOT NULL				,
+	username	fpdb.fp.dm_username		NOT NULL				,
+	password	fpdb.fp.dm_password		NOT NULL				,
+	privilege	fpdb.fp.dm_unsigned		NOT NULL	DEFAULT 0					
 );
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
-ALTER TABLE	account
+ALTER TABLE	fpdb.fp.account
 ADD CONSTRAINT pk_account
 PRIMARY KEY
 (
@@ -1466,7 +1472,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 	
 ------------------------------------------------------------------------------------------
-ALTER TABLE	account
+ALTER TABLE	fpdb.fp.account
 ADD CONSTRAINT uq_account
 UNIQUE
 (
