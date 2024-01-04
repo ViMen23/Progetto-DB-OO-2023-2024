@@ -118,6 +118,37 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
 
+------------------------------------------------------------------------------------------
+-- FUNCTION: get_country_name
+------------------------------------------------------------------------------------------
+-- input   : country_code code  
+-- returns : country_name dm_enstr
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.get_country_name
+(
+	IN  c_code fpdb.fp.cty.code%TYPE
+)
+RETURNS void
+AS
+$$
+DECLARE
+	c_name fpdb.fp.cty.name%TYPE;
+BEGIN
+
+	SELECT c.name
+	INTO c_name
+	FROM fpdb.fp.cty AS c
+	WHERE c.code = c_code;
+	
+	RETURN c_name;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 -- FUNCTION: in_correct_country
@@ -130,8 +161,8 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION fpdb.fp.in_correct_country
 (
-	IN in_ct fpdb.fp.cty.code%TYPE,
-	IN su_ct fpdb.fp.cty.code%TYPE
+	IN in_ct fpdb.fp.cty.type%TYPE,
+	IN su_ct fpdb.fp.cty.type%TYPE
 )
 RETURNS boolean
 AS
@@ -224,6 +255,41 @@ LANGUAGE plpgsql;
 
 
 ------------------------------------------------------------------------------------------
+-- FUNCTION: is_range1_in_range2
+------------------------------------------------------------------------------------------
+-- input   : start_range1 integer, end_range1 integer, 
+-- 			 start_range2 integer, end_range2 integer  
+-- returns : boolean
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.is_range1_in_range2
+(
+	IN start_range1 integer,
+	IN end_range1 integer
+	IN start_range2 integer,
+	IN end_range2 integer
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+BEGIN
+
+	IF ( int4range(start_range1, end_range1) <@ int4range(start_range2, end_range2) ) THEN
+		RETURN TRUE;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
 -- FUNCTION: is_born
 ------------------------------------------------------------------------------------------
 -- input   : birth_date date, country_code code  
@@ -260,3 +326,114 @@ END;
 $$
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: is_cteam_after_cty
+------------------------------------------------------------------------------------------
+-- input   : s_year dm_year, e_year dm_year, country_code dm_code  
+-- returns : boolean
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.is_cteam_after_cty -- TODO: generalize this name
+(
+	IN in_s_year fpdb.fp.team.s_year%TYPE,
+	IN in_e_year fpdb.fp.team.e_year%TYPE,
+	IN c_code fpdb.fp.team.cty%TYPE
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	s_year fpdb.fp.cty.s_year%TYPE := NULL;
+	e_year fpdb.fp.cty.e_year%TYPE := NULL;
+
+BEGIN
+
+	fpdb.fp.get_country_range(c_code, s_year, e_year);
+	
+	IF ( fpdb.fp.is_range1_in_range2( in_s_year, in_e_year, s_year, e_year ) ) THEN
+		RETURN TRUE;
+	END IF;
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: is_nteam_after_cty
+------------------------------------------------------------------------------------------
+-- input   : s_year dm_year, e_year dm_year, country_code dm_code  
+-- returns : boolean
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.is_nteam_after_cty
+(
+	IN in_s_year fpdb.fp.team.s_year%TYPE,
+	IN in_e_year fpdb.fp.team.e_year%TYPE,
+	IN c_code fpdb.fp.team.cty%TYPE
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	s_year fpdb.fp.cty.s_year%TYPE := NULL;
+	e_year fpdb.fp.cty.e_year%TYPE := NULL;
+
+BEGIN
+
+	fpdb.fp.get_country_range(c_code, s_year, e_year);
+	
+	IF ( fpdb.fp.is_element_in_range( in_s_year, s_year, e_year ) AND
+		 ( e_year IS NOT DISTINCT FROM in_e_year ) ) THEN
+		RETURN TRUE;
+	END IF;
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: get_confederation_type
+------------------------------------------------------------------------------------------
+-- input   : confederation code
+-- returns : confederation type
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.get_confederation_type
+(
+	IN conf_code fpdb.fp.conf.code%TYPE
+)
+RETURNS fpdb.fp.conf.type%TYPE
+AS
+$$
+DECLARE
+
+	conf_type fpdb.fp.conf.type%TYPE;
+
+BEGIN
+
+	SELECT c.type
+	INTO conf_type
+	FROM fpdb.fp.conf AS c
+	WHERE c.code = conf_code;
+	
+	RETURN conf_type;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+

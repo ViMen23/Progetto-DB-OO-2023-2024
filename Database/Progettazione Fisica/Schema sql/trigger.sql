@@ -119,6 +119,94 @@ EXECUTE FUNCTION fpdb.fp.tf_new_player();
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
+-- TRIGGER FUNCTION: tf_new_team
+------------------------------------------------------------------------------------------
+-- trigger function for trigger new_team
+--------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.tf_new_team()
+RETURNS trigger
+AS
+$$
+DECLARE
+	
+BEGIN
+
+	IF ( NEW.type = 'CLUB' ) THEN
+		IF ( fpdb.fp.is_nation( NEW.cty ) AND
+			fpdb.fp.is_cteam_after_cty( NEW.s_year, NEW.e_year, NEW.cty ) ) THEN
+			
+			RETURN NEW;
+		END IF;
+	ELSE
+		IF
+		( 
+			( fpdb.fp.is_nation( NEW.cty ) ) AND
+			( fpdb.fp.get_country_name( NEW.cty ) = NEW.name ) AND
+			( fpdb.fp.is_nteam_after_cty( NEW.s_year, NEW.e_year, NEW.cty ) )
+			
+		) THEN
+			RETURN NEW;
+		END IF;
+	END IF;
+	
+	RETURN NULL;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+------------------------------------------------------------------------------------------
+-- TRIGGER: new_national_team
+------------------------------------------------------------------------------------------
+-- TODO: comment trigger
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER fpdb.fp.new_team
+BEFOR INSERT ON fpdb.fp.team
+FOR EACH ROW
+EXECUTE FUNCTION fpdb.fp.tf_new_team();
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- TRIGGER FUNCTION: tf_new_conf
+------------------------------------------------------------------------------------------
+-- trigger function for trigger new_conf
+--------------------------------------------------------------
+CREATE OR REPLACE FUNCTION fpdb.fp.tf_new_conf()
+RETURNS trigger
+AS
+$$
+DECLARE
+	
+BEGIN
+	IF
+	( 
+		(fpdb.fp.in_correct_country(NEW.type, fpdb.fp.get_confederation_type(NEW.super) ) )
+		AND
+		( fpdb.fp.is_cteam_after_cty( NEW.s_year, NEW.e_year, NEW.cty ) ) 
+	) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+END;
+$$
+LANGUAGE plpgsql;
+
+
+------------------------------------------------------------------------------------------
+-- TRIGGER: new_conf
+------------------------------------------------------------------------------------------
+-- TODO: comment trigger
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER fpdb.fp.new_conf
+BEFOR INSERT ON fpdb.fp.conf
+FOR EACH ROW
+EXECUTE FUNCTION fpdb.fp.tf_new_conf();
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
 -- TRIGGER: team_nation
 ------------------------------------------------------------------------------------------
 -- trigger to check that a new country to be inserted that is not of type world
@@ -169,6 +257,18 @@ $$
 LANGUAGE plpgsql;
 
 ------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
 CREATE OR REPLACE FUNCTION is_nation_function() RETURNS trigger AS
 $$
 DECLARE
