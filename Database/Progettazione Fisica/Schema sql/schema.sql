@@ -18,6 +18,7 @@
 -- PREPARING SCHEMA
 ------------------------------------------------------------------------------------------
 DROP SCHEMA IF EXISTS fp CASCADE;
+DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA fp;
 ------------------------------------------------------------------------------------------
 
@@ -265,8 +266,8 @@ CREATE TYPE fpdb.fp.ty_tag AS ENUM
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.pos
 (
-	role	fpdb.fp.ty_role			NOT NULL, -- role code
-	code	fpdb.fp.dm_code			NOT NULL, -- position code
+	role	fpdb.fp.ty_role		NOT NULL, -- role code
+	code	fpdb.fp.dm_code		NOT NULL, -- position code
 	name	fpdb.fp.dm_spstr	NOT NULL  -- position name
 );
 ------------------------------------------------------------------------------------------
@@ -298,12 +299,12 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.cty
 (
-	type		fpdb.fp.ty_cty		NOT NULL, -- country type
-	code		fpdb.fp.dm_code			NOT NULL, -- country code
-	name		fpdb.fp.dm_enstr	NOT NULL, -- country name
-	s_year		fpdb.fp.dm_year			NOT NULL, -- country foundation year
-	e_year		fpdb.fp.dm_year					, -- country suppression year
-	super		fpdb.fp.dm_code					  -- containing country code
+	type	fpdb.fp.ty_cty		NOT NULL, -- country type
+	code	fpdb.fp.dm_code		NOT NULL, -- country code
+	name	fpdb.fp.dm_enstr	NOT NULL, -- country name
+	s_year	fpdb.fp.dm_year		NOT NULL, -- country foundation year
+	e_year	fpdb.fp.dm_year				, -- country suppression year
+	super	fpdb.fp.dm_code				  -- containing country code
 );
 ------------------------------------------------------------------------------------------
 
@@ -387,16 +388,16 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.fply
 (
-	id		serial					NOT NULL, -- id player
+	id		serial				NOT NULL, -- id player
 	f_name	fpdb.fp.dm_enstr	NOT NULL, -- first name
 	m_name	fpdb.fp.dm_enstr			, -- mid name
 	l_name	fpdb.fp.dm_enstr	NOT NULL, -- last name
-	sex		fpdb.fp.ty_sex			NOT NULL, -- sex
-	b_date	fpdb.fp.dm_date			NOT NULL, -- birth date
-	s_date	fpdb.fp.dm_date			NOT NULL, -- debut date
-	e_date	fpdb.fp.dm_date					, -- retired date
-	foot	fpdb.fp.ty_foot			NOT NULL, -- preferred foot
-	cty	fpdb.fp.dm_code			NOT NULL  -- birth country
+	sex		fpdb.fp.ty_sex		NOT NULL, -- sex
+	b_date	fpdb.fp.dm_date		NOT NULL, -- birth date
+	s_date	fpdb.fp.dm_date		NOT NULL, -- debut date
+	e_date	fpdb.fp.dm_date				, -- retired date
+	foot	fpdb.fp.ty_foot		NOT NULL, -- preferred foot
+	cty		fpdb.fp.dm_code		NOT NULL  -- birth country
 );
 ------------------------------------------------------------------------------------------
 
@@ -471,14 +472,14 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.team
 (
-	id 		serial					NOT NULL,
-	type	fpdb.fp.ty_team			NOT NULL,
+	id 		serial				NOT NULL,
+	type	fpdb.fp.ty_team		NOT NULL,
 	name	fpdb.fp.dm_anstr	NOT NULL,
 	m_age	fpdb.fp.dm_uint				,
-	sex		fpdb.fp.ty_sex			NOT NULL,
-	s_year	fpdb.fp.dm_year			NOT NULL,
-	e_year	fpdb.fp.dm_year					,
-	cty	fpdb.fp.dm_code			NOT NULL
+	sex		fpdb.fp.ty_sex		NOT NULL,
+	s_year	fpdb.fp.dm_year		NOT NULL,
+	e_year	fpdb.fp.dm_year				,
+	cty		fpdb.fp.dm_code		NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -541,12 +542,12 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.conf
 (
-	code	fpdb.fp.dm_code 		NOT NULL,
+	code	fpdb.fp.dm_code 	NOT NULL,
 	name	fpdb.fp.dm_enstr	NOT NULL,
 	type	fpdb.fp.ty_cty		NOT NULL,
-	cty	fpdb.fp.dm_code			NOT NULL,
-	s_year	fpdb.fp.dm_year			NOT NULL,
-	e_year	fpdb.fp.dm_year					,
+	cty		fpdb.fp.dm_code		NOT NULL,
+	s_year	fpdb.fp.dm_year		NOT NULL,
+	e_year	fpdb.fp.dm_year				,
 	super	fpdb.fp.dm_code				
 );
 ------------------------------------------------------------------------------------------
@@ -636,9 +637,9 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.fply_pos
 (
-	fply		integer		NOT NULL			 ,
-	pos	fpdb.fp.dm_code		NOT NULL			 ,
-	n_mtc		fpdb.fp.dm_uint	NOT NULL	DEFAULT 0	
+	fply	integer			NOT NULL			 ,
+	pos		fpdb.fp.dm_code	NOT NULL			 ,
+	n_mtc	fpdb.fp.dm_uint	NOT NULL	DEFAULT 0	
 );
 ------------------------------------------------------------------------------------------
 
@@ -691,8 +692,8 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.fply_cty
 (
-	fply	integer	NOT NULL,
-	cty	fpdb.fp.dm_code	NOT NULL
+	fply	integer			NOT NULL,
+	cty		fpdb.fp.dm_code	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -747,17 +748,17 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.comp
 (
-	id				serial					NOT NULL,
-	conf	fpdb.fp.dm_code			NOT NULL,
-	t_type		fpdb.fp.ty_team					,
-	type			fpdb.fp.ty_comp	NOT NULL,
-	name			fpdb.fp.dm_anstr	NOT NULL,
-	m_age			fpdb.fp.dm_uint				,
-	sex				fpdb.fp.ty_sex			NOT NULL,
-	tier			fpdb.fp.dm_uint				,
-	freq		fpdb.fp.dm_uint		NOT NULL,
-	s_year			fpdb.fp.dm_year			NOT NULL,
-	e_year			fpdb.fp.dm_year				
+	id		serial				NOT NULL,
+	conf	fpdb.fp.dm_code		NOT NULL,
+	t_type	fpdb.fp.ty_team				,
+	type	fpdb.fp.ty_comp		NOT NULL,
+	name	fpdb.fp.dm_anstr	NOT NULL,
+	m_age	fpdb.fp.dm_uint				,
+	sex		fpdb.fp.ty_sex		NOT NULL,
+	tier	fpdb.fp.dm_uint				,
+	freq	fpdb.fp.dm_uint		NOT NULL,
+	s_year	fpdb.fp.dm_year		NOT NULL,
+	e_year	fpdb.fp.dm_year				
 );
 ------------------------------------------------------------------------------------------
 
@@ -854,10 +855,10 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.tag
 (
-	id		integer					NOT NULL,
-	type	fpdb.fp.ty_tag			NOT NULL,
+	id		integer				NOT NULL,
+	type	fpdb.fp.ty_tag		NOT NULL,
 	tag		fpdb.fp.dm_enstr	NOT NULL,
-	dsc	fpdb.fp.dm_enstr
+	dsc		fpdb.fp.dm_enstr
 );
 ------------------------------------------------------------------------------------------
 
@@ -888,11 +889,11 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.comp_ed
 (
-	comp		integer				NOT NULL,
-	s_year			fpdb.fp.dm_year		NOT NULL,
-	e_year			fpdb.fp.dm_year		NOT NULL,
+	comp	integer			NOT NULL,
+	s_year	fpdb.fp.dm_year	NOT NULL,
+	e_year	fpdb.fp.dm_year	NOT NULL,
 	n_team	fpdb.fp.dm_uint	NOT NULL,
-	m_mtc		fpdb.fp.dm_uint			
+	m_mtc	fpdb.fp.dm_uint			
 );
 ------------------------------------------------------------------------------------------
 
@@ -947,11 +948,11 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.t_comp_ed
 (
-	comp	integer				NOT NULL,
-	s_year		fpdb.fp.dm_year		NOT NULL,
-	e_year		fpdb.fp.dm_year		NOT NULL,
-	team		integer				NOT NULL,
-	n_mtc		fpdb.fp.dm_uint	NOT NULL
+	comp	integer			NOT NULL,
+	s_year	fpdb.fp.dm_year	NOT NULL,
+	e_year	fpdb.fp.dm_year	NOT NULL,
+	team	integer			NOT NULL,
+	n_mtc	fpdb.fp.dm_uint	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -1016,9 +1017,9 @@ ON UPDATE CASCADE;
 CREATE TABLE fpdb.fp.p_comp_ed
 (
 	comp	integer			NOT NULL,
-	s_year		fpdb.fp.dm_year	NOT NULL,
-	e_year		fpdb.fp.dm_year	NOT NULL,
-	fply		integer			NOT NULL
+	s_year	fpdb.fp.dm_year	NOT NULL,
+	e_year	fpdb.fp.dm_year	NOT NULL,
+	fply	integer			NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -1082,12 +1083,12 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.tpy
 (
-	id			serial					NOT NULL,
-	comp	integer					NOT NULL,
-	s_year		fpdb.fp.dm_year			NOT NULL,
-	e_year		fpdb.fp.dm_year			NOT NULL,
-	type		fpdb.fp.ty_tpy		NOT NULL,
-	name		fpdb.fp.dm_anstr	NOT NULL
+	id		serial				NOT NULL,
+	comp	integer				NOT NULL,
+	s_year	fpdb.fp.dm_year		NOT NULL,
+	e_year	fpdb.fp.dm_year		NOT NULL,
+	type	fpdb.fp.ty_tpy		NOT NULL,
+	name	fpdb.fp.dm_anstr	NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -1131,7 +1132,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.t_tpy
 (
-	tpy	integer	NOT NULL,
+	tpy		integer	NOT NULL,
 	team	integer	NOT NULL
 );
 ------------------------------------------------------------------------------------------
@@ -1185,7 +1186,7 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.p_tpy
 (
-	tpy	integer	NOT NULL,
+	tpy		integer	NOT NULL,
 	fply	integer	NOT NULL
 );
 ------------------------------------------------------------------------------------------
@@ -1362,20 +1363,20 @@ CHECK
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.p_pos_t_comp_ed
 (
-	comp		integer				NOT NULL,
-	s_year			fpdb.fp.dm_year		NOT NULL,
-	e_year			fpdb.fp.dm_year		NOT NULL,
-	team			integer				NOT NULL,
-	fply			integer				NOT NULL,
-	pos		fpdb.fp.dm_code		NOT NULL,
-	mtc			fpdb.fp.dm_uint			,
-	goal			fpdb.fp.dm_uint			,
-	ass			fpdb.fp.dm_uint			,
+	comp	integer			NOT NULL,
+	s_year	fpdb.fp.dm_year	NOT NULL,
+	e_year	fpdb.fp.dm_year	NOT NULL,
+	team	integer			NOT NULL,
+	fply	integer			NOT NULL,
+	pos		fpdb.fp.dm_code	NOT NULL,
+	mtc		fpdb.fp.dm_uint			,
+	goal	fpdb.fp.dm_uint			,
+	ass		fpdb.fp.dm_uint			,
 	p_scr	fpdb.fp.dm_uint			,
-	y_crd		fpdb.fp.dm_uint			,
-	r_crd		fpdb.fp.dm_uint			,
+	y_crd	fpdb.fp.dm_uint			,
+	r_crd	fpdb.fp.dm_uint			,
 	g_cnc	fpdb.fp.dm_uint			,
-	c_sht		fpdb.fp.dm_uint			,
+	c_sht	fpdb.fp.dm_uint			,
 	p_svd	fpdb.fp.dm_uint	
 );
 ------------------------------------------------------------------------------------------
@@ -1455,10 +1456,10 @@ ON UPDATE CASCADE;
 ------------------------------------------------------------------------------------------
 CREATE TABLE fpdb.fp.usr
 (
-	id			serial					NOT NULL				,
-	name	fpdb.fp.dm_usr		NOT NULL				,
-	pwd	fpdb.fp.dm_pwd		NOT NULL				,
-	per	fpdb.fp.dm_uint		NOT NULL	DEFAULT 0					
+	id		serial			NOT NULL				,
+	name	fpdb.fp.dm_usr	NOT NULL				,
+	pwd		fpdb.fp.dm_pwd	NOT NULL				,
+	per		fpdb.fp.dm_uint	NOT NULL	DEFAULT 0					
 );
 ------------------------------------------------------------------------------------------
 
