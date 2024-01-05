@@ -68,7 +68,7 @@ AS
 $$
 DECLARE
 
-	country_type fpdb.fp.cty.type%TYPE;
+	country_type fp.cty.type%TYPE ; -- TODO: Error in pgadmin ho dovuto togliere fpdb
 
 BEGIN
 
@@ -81,6 +81,7 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT -- the function returns null when one or more inputs of the function is null
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
@@ -90,7 +91,7 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 -- input   : country_code code
 -- output  : s_year dm_year, e_year dm_year  
--- returns : none
+-- returns : record
 ------------------------------------------------------------------------------------------
 -- TODO: comment function
 ------------------------------------------------------------------------------------------
@@ -98,9 +99,9 @@ CREATE OR REPLACE FUNCTION fpdb.fp.get_country_range
 (
 	IN  c_code fpdb.fp.cty.code%TYPE,
 	OUT s_year fpdb.fp.cty.s_year%TYPE,
-	OUT s_year fpdb.fp.cty.e_year%TYPE
+	OUT e_year fpdb.fp.cty.e_year%TYPE
 )
-RETURNS void
+RETURNS record
 AS
 $$
 DECLARE
@@ -114,8 +115,10 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
+
 
 
 ------------------------------------------------------------------------------------------
@@ -130,11 +133,11 @@ CREATE OR REPLACE FUNCTION fpdb.fp.get_country_name
 (
 	IN  c_code fpdb.fp.cty.code%TYPE
 )
-RETURNS void
+RETURNS fpdb.fp.cty.name%TYPE
 AS
 $$
 DECLARE
-	c_name fpdb.fp.cty.name%TYPE;
+	c_name fp.cty.name%TYPE;
 BEGIN
 
 	SELECT c.name
@@ -146,6 +149,7 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
@@ -173,18 +177,20 @@ BEGIN
 
 	IF (in_ct = 'NATION' AND su_ct = 'CONTINENT') THEN
 		RETURN TRUE;
-	END IF
+	END IF;
 	
 	IF (in_ct = 'CONTINENT' AND su_ct = 'WORLD') THEN
 		RETURN TRUE;
-	END IF
+	END IF;
 	
 	RETURN FALSE;
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 -- FUNCTION: is_nation
@@ -215,6 +221,7 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
@@ -266,7 +273,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION fpdb.fp.is_range1_in_range2
 (
 	IN start_range1 integer,
-	IN end_range1 integer
+	IN end_range1 integer,
 	IN start_range2 integer,
 	IN end_range2 integer
 )
@@ -302,21 +309,22 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION fpdb.fp.is_born
 (
 	IN b_date fpdb.fp.fply.b_date%TYPE,
-	IN c_code fpdb.fp.fply.cty%TYPE
+	IN c_code fp.dm_code
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	s_year fpdb.fp.cty.s_year%TYPE := NULL;
-	e_year fpdb.fp.cty.e_year%TYPE := NULL;
+	s_year fp.dm_year := NULL;
+	e_year fp.dm_year := NULL;
+	p_year INTEGER :=  extract( year from(b_date) );
 
 BEGIN
 
-	fpdb.fp.get_country_range(c_code, s_year, e_year);
+	SELECT * INTO s_year, e_year FROM fpdb.fp.get_country_range(c_code);
 	
-	IF (fpdb.fp.is_element_in_range(extract(year from b_date), s_year, e_year)) THEN
+	IF ( fpdb.fp.is_element_in_range( p_year, s_year , e_year ) )THEN
 		RETURN TRUE;
 	END IF;
 	
@@ -324,7 +332,9 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+
 ------------------------------------------------------------------------------------------
 
 
@@ -347,12 +357,12 @@ AS
 $$
 DECLARE
 
-	s_year fpdb.fp.cty.s_year%TYPE := NULL;
-	e_year fpdb.fp.cty.e_year%TYPE := NULL;
+	s_year fp.cty.s_year%TYPE := NULL;
+	e_year fp.cty.e_year%TYPE := NULL;
 
 BEGIN
 
-	fpdb.fp.get_country_range(c_code, s_year, e_year);
+	SELECT * INTO s_year, e_year FROM fpdb.fp.get_country_range(c_code);
 	
 	IF ( fpdb.fp.is_range1_in_range2( in_s_year, in_e_year, s_year, e_year ) ) THEN
 		RETURN TRUE;
@@ -384,12 +394,12 @@ AS
 $$
 DECLARE
 
-	s_year fpdb.fp.cty.s_year%TYPE := NULL;
-	e_year fpdb.fp.cty.e_year%TYPE := NULL;
+	s_year fp.cty.s_year%TYPE := NULL;
+	e_year fp.cty.e_year%TYPE := NULL;
 
 BEGIN
 
-	fpdb.fp.get_country_range(c_code, s_year, e_year);
+	SELECT * INTO s_year, e_year FROM fpdb.fp.get_country_range(c_code);
 	
 	IF ( fpdb.fp.is_element_in_range( in_s_year, s_year, e_year ) AND
 		 ( e_year IS NOT DISTINCT FROM in_e_year ) ) THEN
@@ -420,7 +430,7 @@ AS
 $$
 DECLARE
 
-	conf_type fpdb.fp.conf.type%TYPE;
+	conf_type fp.conf.type%TYPE;
 
 BEGIN
 
@@ -433,6 +443,7 @@ BEGIN
 	
 END;
 $$
+RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 

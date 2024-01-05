@@ -48,38 +48,12 @@ LANGUAGE plpgsql;
 -- trigger to check that when a world type country is inserted
 -- a world does not already exist
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER fpdb.fp.new_country
+CREATE OR REPLACE TRIGGER new_country
 BEFORE INSERT ON fpdb.fp.cty
 FOR EACH ROW
 EXECUTE FUNCTION fpdb.fp.tf_new_country();
 ------------------------------------------------------------------------------------------
 
-
-
-------------------------------------------------------------------------------------------
--- TRIGGER FUNCTION: tf_is_country_nation
-------------------------------------------------------------------------------------------
--- trigger function for trigger player_nation
--- trigger function for trigger team_nation
--- trigger function for trigger player_country_nation
---------------------------------------------------------------
-CREATE OR REPLACE FUNCTION fpdb.fp.tf_is_country_nation()
-RETURNS trigger
-AS
-$$
-DECLARE
-	
-BEGIN
-
-	IF (fpdb.fp.is_nation(NEW.cty)) THEN
-		RETURN NEW;
-	END IF;
-	
-	RETURN NULL;
-
-END;
-$$
-LANGUAGE plpgsql;
 
 ------------------------------------------------------------------------------------------
 -- TRIGGER FUNCTION: tf_new_player
@@ -104,19 +78,18 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
-
 ------------------------------------------------------------------------------------------
 -- TRIGGER: new_player
 ------------------------------------------------------------------------------------------
 -- trigger to check that a new country to be inserted that is not of type world
 -- is contained in the appropriate country type
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER fpdb.fp.new_player
-BEFOR INSERT ON fpdb.fp.fply
+CREATE OR REPLACE TRIGGER new_player
+BEFORE INSERT ON fpdb.fp.fply
 FOR EACH ROW
 EXECUTE FUNCTION fpdb.fp.tf_new_player();
 ------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 -- TRIGGER FUNCTION: tf_new_team
@@ -154,14 +127,13 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
 ------------------------------------------------------------------------------------------
--- TRIGGER: new_national_team
+-- TRIGGER: new_team
 ------------------------------------------------------------------------------------------
 -- TODO: comment trigger
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER fpdb.fp.new_team
-BEFOR INSERT ON fpdb.fp.team
+CREATE OR REPLACE TRIGGER new_team
+BEFORE INSERT ON fpdb.fp.team
 FOR EACH ROW
 EXECUTE FUNCTION fpdb.fp.tf_new_team();
 ------------------------------------------------------------------------------------------
@@ -193,31 +165,23 @@ END;
 $$
 LANGUAGE plpgsql;
 
-
 ------------------------------------------------------------------------------------------
 -- TRIGGER: new_conf
 ------------------------------------------------------------------------------------------
 -- TODO: comment trigger
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER fpdb.fp.new_conf
-BEFOR INSERT ON fpdb.fp.conf
+CREATE OR REPLACE TRIGGER new_conf
+BEFORE INSERT ON fpdb.fp.conf
 FOR EACH ROW
 EXECUTE FUNCTION fpdb.fp.tf_new_conf();
 ------------------------------------------------------------------------------------------
 
 
-------------------------------------------------------------------------------------------
--- TRIGGER: team_nation
-------------------------------------------------------------------------------------------
--- trigger to check that a new country to be inserted that is not of type world
--- is contained in the appropriate country type
-------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER fpdb.fp.team_nation
-BEFOR INSERT ON fpdb.fp.team
-FOR EACH ROW
-EXECUTE FUNCTION fpdb.fp.tf_is_country_nation();
-------------------------------------------------------------------------------------------
 
+
+
+-----------------------------------------TRASH--------------------------------------------
+/*
 ------------------------------------------------------------------------------------------
 -- TRIGGER: player_country_nation
 ------------------------------------------------------------------------------------------
@@ -257,16 +221,6 @@ $$
 LANGUAGE plpgsql;
 
 ------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
 
 
 CREATE OR REPLACE FUNCTION is_nation_function() RETURNS trigger AS
@@ -362,3 +316,4 @@ CREATE OR REPLACE TRIGGER team_country
 BEFORE INSERT ON team
 FOR EACH ROW
 EXECUTE FUNCTION team_country_function();
+											  */
