@@ -875,7 +875,7 @@ CREATE TABLE tag
 (
 	id		integer		NOT NULL,
 	type	ty_tag		NOT NULL,
-	name		dm_enstr	NOT NULL,
+	name	dm_enstr	NOT NULL,
 	dsc		dm_enstr
 );
 ------------------------------------------------------------------------------------------
@@ -894,9 +894,74 @@ ALTER TABLE	tag
 ADD CONSTRAINT uq_tag
 UNIQUE
 (
-	tag
+	name
 );
 ------------------------------------------------------------------------------------------
+
+
+
+------------------------------------------------------------------------------------------
+-- FORMULA COMPETITION TABLE: f_comp
+------------------------------------------------------------------------------------------
+-- TODO: insert table comment
+------------------------------------------------------------------------------------------
+CREATE TABLE f_comp
+(
+	id			serial	NOT NULL,
+	n_team		dm_uint	NOT NULL,
+	nt_group	dm_uint	NOT NULL,
+	nt_knock	dm_uint	NOT NULL,
+	mi_match	dm_uint	NOT NULL,
+	ma_match 	dm_uint	NOT NULL,
+	r_group		boolean	NOT NULL,
+	r_knock		boolean	NOT NULL
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT pk_f_comp
+PRIMARY KEY
+(
+	id
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT uq_f_comp
+UNIQUE
+(
+	n_team,
+	nt_group,
+	nt_knock,
+	mi_match,
+	ma_match,
+	r_group,
+	r_knock
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_n_team
+CHECK
+(
+	(nt_group <= n_team)
+	AND
+	(nt_knock <= n_team)
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_n_match
+CHECK
+(
+	mi_match <= ma_match
+);
+------------------------------------------------------------------------------------------
+
 
 
 
@@ -971,70 +1036,6 @@ CHECK
 /* TODO trigger to check competition type and calculate max matches */
 /* TODO trigger to check frequency */
 /* TODO trigger to check national competition */
-
-
-
-------------------------------------------------------------------------------------------
--- FORMULA COMPETITION TABLE: f_comp
-------------------------------------------------------------------------------------------
--- TODO: insert table comment
-------------------------------------------------------------------------------------------
-CREATE TABLE f_comp
-(
-	id	serial	NOT NULL,
-	n_team	dm_uint	NOT NULL,
-	nt_group	dm_uint	NOT NULL,
-	nt_knock	dm_uint	NOT NULL,
-	mi_match	dm_uint	NOT NULL,
-	ma_match dm_uint	NOT NULL,
-	r_group	boolean	NOT NULL,
-	r_knock	boolean	NOT NULL
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	f_comp
-ADD CONSTRAINT pk_f_comp
-PRIMARY KEY
-(
-	id
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	f_comp
-ADD CONSTRAINT uq_f_comp
-UNIQUE
-(
-	n_team,
-	nt_group,
-	nt_knock,
-	mi_match,
-	ma_match,
-	r_group,
-	r_knock
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	f_comp
-ADD CONSTRAINT ck_f_comp_n_team
-CHECK
-(
-	(nt_group <= n_team)
-	AND
-	(nt_knock <= n_team)
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	f_comp
-ADD CONSTRAINT ck_f_comp_n_match
-CHECK
-(
-	mi_match <= ma_match
-);
-------------------------------------------------------------------------------------------
 
 
 
