@@ -876,7 +876,7 @@ CREATE TABLE tag
 (
 	id		integer		NOT NULL,
 	type	ty_tag		NOT NULL,
-	tag		dm_enstr	NOT NULL,
+	name		dm_enstr	NOT NULL,
 	dsc		dm_enstr
 );
 ------------------------------------------------------------------------------------------
