@@ -1084,33 +1084,11 @@ CHECK
 	(
 		(nt_group BETWEEN 2 AND 100)
 		AND
-		(1 = n_group)
-		AND
-		(0 = pow2_k)
-		AND
-		(r_group IS NOT NULL AND r_knock IS NULL)
-	)
-	OR
-	(
-		(nt_group BETWEEN 2 AND 100)
-		AND
-		(1 = n_group)
-		AND
-		(pow2_k BETWEEN 1 AND 5)
-		AND
-		(r_group IS NOT NULL AND r_knock IS NOT NULL)
-	)
-	OR
-	(
-		(nt_group BETWEEN 2 AND 100)
-		AND
-		(n_group BETWEEN 2 AND 20)
+		((n_group BETWEEN 1 AND 20) AND (r_group IS NOT NULL))
 		AND
 		(nt_group * n_group <= 200)
 		AND
-		(pow2_k BETWEEN 1 AND 5)
-		AND
-		(r_group IS NOT NULL AND r_knock IS NOT NULL)
+		((pow2_k BETWEEN 1 AND 5 AND r_knock IS NOT NULL) OR (0 = pow2_kAND r_knock IS NULL))
 	)
 	OR
 	(
@@ -1119,6 +1097,8 @@ CHECK
 		(pow2_k BETWEEN 1 AND 5)
 		AND
 		(r_group IS NULL AND r_knock IS NOT NULL)
+		AND
+		(FALSE = op_cl)
 	)
 );
 ------------------------------------------------------------------------------------------
