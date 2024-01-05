@@ -192,9 +192,9 @@ CREATE TYPE ty_team AS ENUM
 CREATE TYPE ty_comp AS ENUM
 (
 	'INDIVIDUAL',
-	'LEAGUE',
-	'CUP',
-	'SUPER CUP'
+	'CHAMPIONSHIP',
+	'SUPER CUP',
+	'TOURNAMENT'
 );
 ------------------------------------------------------------------------------------------
 
@@ -705,7 +705,7 @@ ON UPDATE CASCADE;
 
 
 ------------------------------------------------------------------------------------------
--- PLAYER COUNTRY TABLE: player_country
+-- PLAYER COUNTRY TABLE: p_country
 ------------------------------------------------------------------------------------------
 -- TODO: insert table comment
 ------------------------------------------------------------------------------------------
@@ -846,7 +846,7 @@ CHECK
 (
 	(t_type <> 'NATIONAL')
 	OR
-	(t_type = 'NATIONAL' AND type <> 'LEAGUE')
+	(t_type = 'NATIONAL' AND type <> 'TOURNAMENT')
 );
 ------------------------------------------------------------------------------------------
 
@@ -861,7 +861,6 @@ CHECK
 );
 ------------------------------------------------------------------------------------------
 
-/* TODO trigger to check that a nation confederation cannot have national team competition */
 /* TODO trigger to CHECK end year is not null */
 
 
@@ -911,8 +910,7 @@ CREATE TABLE comp_ed
 	comp	integer	NOT NULL,
 	s_year	dm_year	NOT NULL,
 	e_year	dm_year	NOT NULL,
-	n_team	dm_uint	NOT NULL,
-	m_match	dm_uint			
+	formula	integer
 );
 ------------------------------------------------------------------------------------------
 
@@ -944,6 +942,21 @@ ON UPDATE CASCADE;
 
 ------------------------------------------------------------------------------------------
 ALTER TABLE	comp_ed
+ADD CONSTRAINT comp_ed_fk_f_comp
+FOREIGN KEY
+(
+	formula
+)
+REFERENCES f_comp
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	comp_ed
 ADD CONSTRAINT ck_comp_ed_year
 CHECK
 (
@@ -952,11 +965,77 @@ CHECK
 	(e_year - s_year = 1)
 );
 ------------------------------------------------------------------------------------------
-	
+
+/* TODO competizione individuale => formula null */
 /* TODO trigger to check competition team type */
 /* TODO trigger to check competition type and calculate max matches */
 /* TODO trigger to check frequency */
 /* TODO trigger to check national competition */
+
+
+
+------------------------------------------------------------------------------------------
+-- FORMULA COMPETITION TABLE: f_comp
+------------------------------------------------------------------------------------------
+-- TODO: insert table comment
+------------------------------------------------------------------------------------------
+CREATE TABLE f_comp
+(
+	id	serial	NOT NULL,
+	n_team	dm_uint	NOT NULL,
+	nt_group	dm_uint	NOT NULL,
+	nt_knock	dm_uint	NOT NULL,
+	mi_match	dm_uint	NOT NULL,
+	ma_match dm_uint	NOT NULL,
+	r_group	boolean	NOT NULL,
+	r_knock	boolean	NOT NULL
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT pk_f_comp
+PRIMARY KEY
+(
+	id
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT uq_f_comp
+UNIQUE
+(
+	n_team,
+	nt_group,
+	nt_knock,
+	mi_match,
+	ma_match,
+	r_group,
+	r_knock
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_n_team
+CHECK
+(
+	(nt_group <= n_team)
+	AND
+	(nt_knock <= n_team)
+);
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_n_match
+CHECK
+(
+	mi_match <= ma_match
+);
+------------------------------------------------------------------------------------------
+
 
 
 
@@ -1028,69 +1107,6 @@ ON UPDATE CASCADE;
 
 
 
-------------------------------------------------------------------------------------------
--- PLAYER COMPETITION EDITION TABLE: p_comp_ed
-------------------------------------------------------------------------------------------
--- TODO: insert table comment
-------------------------------------------------------------------------------------------
-CREATE TABLE p_comp_ed
-(
-	comp	integer	NOT NULL,
-	s_year	dm_year	NOT NULL,
-	e_year	dm_year	NOT NULL,
-	player	integer	NOT NULL
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	p_comp_ed
-ADD CONSTRAINT pk_p_comp_ed
-PRIMARY KEY
-(
-	comp,
-	s_year,
-	e_year,
-	player
-);
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	p_comp_ed
-ADD CONSTRAINT p_comp_ed_fk_comp_ed
-FOREIGN KEY
-(
-	comp,
-	s_year,
-	e_year
-)
-REFERENCES comp_ed
-(
-	comp,
-	s_year,
-	e_year
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
-------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------
-ALTER TABLE	p_comp_ed
-ADD CONSTRAINT p_comp_ed_fk_player
-FOREIGN KEY
-(
-	player
-)
-REFERENCES player
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
-------------------------------------------------------------------------------------------
-		
-/* TODO trigger to check that competition is for player */
-/* TODO trigger to check that competition is valid */
-/* TODO trigger to check that player is valid */
 
 
 
