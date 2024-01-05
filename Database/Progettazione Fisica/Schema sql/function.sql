@@ -742,33 +742,34 @@ LANGUAGE plpgsql;
 
 
 ------------------------------------------------------------------------------------------
--- FUNCTION: ctrl_comp
+-- FUNCTION: ctrl_formula
 ------------------------------------------------------------------------------------------
 -- TODO
 ------------------------------------------------------------------------------------------
 -- TODO
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION ctrl_comp
+CREATE OR REPLACE FUNCTION ctrl_formula
 (
 	IN comp_ty comp.type%TYPE,
-	IN n_team  comp.n_team%TYPE,
-	IN n_match comp.n_match%TYPE
+	IN formula comp_ed.formula%TYPE
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	type team.type%TYPE;
-
 BEGIN
 
 	IF ('INDIVIDUAL' = comp_ty) THEN
-		IF ((n_team IS NULL) AND (n_match IS NULL)) THEN
+		IF (formula IS NULL) THEN
+			RETURN TRUE;
+		END IF;
+	ELSIF ('CHAMPINSHIP' = comp_ty) THEN
+		IF (0 = formula_pow(formula)) THEN
 			RETURN TRUE;
 		END IF;
 	ELSE
-		IF (n_match = cal_nmatch(comp_ty, n_team)) THEN
+		IF (formula_k(formula) IS NOT NULL) THEN
 			RETURN TRUE;
 		END IF;
 	END IF;
@@ -780,32 +781,35 @@ $$
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
+
+
+
 ------------------------------------------------------------------------------------------
--- FUNCTION: cal_nmatch
+-- FUNCTION: formula_k
 ------------------------------------------------------------------------------------------
 -- TODO
 ------------------------------------------------------------------------------------------
 -- TODO
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION cal_nmatch
+CREATE OR REPLACE FUNCTION formula_k
 (
-	IN comp_ty comp.type%TYPE,
-	IN n_team  comp.n_team%TYPE,
+	IN formula integer%TYPE
 )
-RETURNS integer
+RETURNS formula.nt_knock%TYPE
 AS
 $$
 DECLARE
 
-	type team.type%TYPE;
+	nt_knock formula.nt_knock%TYPE;
 
 BEGIN
 
-	IF ('CHAMPIONSHIP') THEN
-		RETURN n_team * (n_team - 1);	
-	ELSE
-		RETURN 
-	END IF;
+	SELECT nt_knock
+	INTO nt_knock
+	FROM formula
+	WHERE id = formula;
+	
+	RETURN nt_knock;
 	
 END;
 $$

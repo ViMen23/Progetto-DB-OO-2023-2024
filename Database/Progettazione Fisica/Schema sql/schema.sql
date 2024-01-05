@@ -899,6 +899,140 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 
 
+------------------------------------------------------------------------------------------
+-- FUNCTION: cal_tot
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION cal_tot
+(
+	IN nt_group f_comp.nt_group%TYPE,
+	IN n_group  f_comp.n_group%TYPE,
+	IN pow2_k	  f_comp.pow2_k%TYPE
+)
+RETURNS f_comp.tot_team%TYPE
+AS
+$$
+DECLARE
+
+BEGIN
+
+	IF (0 = n_group) THEN
+		RETURN CAST(power(2, pow2_k) AS integer);	
+	ELSE
+		RETURN n_group * nt_group;
+	END IF;
+	
+END;
+$$
+IMMUTABLE
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: cal_min
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION cal_min
+(
+	IN nt_group f_comp.nt_group%TYPE,
+	IN n_group  f_comp.n_group%TYPE,
+	IN pow2_k	  f_comp.pow2_k%TYPE,
+	IN r_group  f_comp.r_group%TYPE,
+	IN r_knock  f_comp.k_group%TYPE,
+	IN op_cl  f_comp.op_cl%TYPE
+)
+RETURNS f_comp.min_match%TYPE
+AS
+$$
+DECLARE
+
+	min f_comp.min_match%TYPE := 0;
+
+BEGIN
+
+	IF (0 = n_group) THEN
+		IF (r_knock) THEN
+			min = min + 2;
+		ELSE
+			min = min + 1;
+		END IF;
+	ELSE
+		IF (r_group) THEN
+			min = min + (nt_group - 1) * 2;
+		ELSE
+			min = min + nt_group - 1;
+		END IF;
+	END IF;
+	
+	IF (op_cl) THEN
+		min = min * 2;
+	END IF;
+
+	RETURN min;
+
+END;
+$$
+IMMUTABLE
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: cal_max
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION cal_max
+(
+	IN nt_group f_comp.nt_group%TYPE,
+	IN n_group  f_comp.n_group%TYPE,
+	IN pow2_k	  f_comp.pow2_k%TYPE,
+	IN r_group  f_comp.r_group%TYPE,
+	IN r_knock  f_comp.k_group%TYPE,
+	IN op_cl  f_comp.op_cl%TYPE
+)
+RETURNS f_comp.max_match%TYPE
+AS
+$$
+DECLARE
+
+	max f_comp.min_match%TYPE := 0;
+
+BEGIN
+
+	IF (r_knock) THEN
+		max = max + CAST((power(2, pow2_k + 2) - 1) AS integer);
+	ELSE
+		max = max +  CAST((power(2, pow2_k + 1) - 1) AS integer);
+	END IF;
+	
+	IF (r_group) THEN
+		max = max + (nt_group - 1) * 2;
+	ELSE
+		max = max + nt_group - 1;
+	END IF;
+	
+	IF (op_cl) THEN
+		max = max * 2;
+	END IF;
+
+	RETURN max;	
+
+END;
+$$
+IMMUTABLE
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 -- FORMULA COMPETITION TABLE: f_comp
@@ -908,13 +1042,15 @@ UNIQUE
 CREATE TABLE f_comp
 (
 	id			serial	NOT NULL,
-	n_team		dm_uint	NOT NULL,
-	nt_group	dm_uint	NOT NULL,
-	nt_knock	dm_uint	NOT NULL,
-	mi_match	dm_uint	NOT NULL,
-	ma_match 	dm_uint	NOT NULL,
-	r_group		boolean	NOT NULL,
-	r_knock		boolean	NOT NULL
+	tot_team	dm_uint	NOT NULL	GENERATED ALWAYS AS (cal_tot(nt_group, n_group, pow2_k)) STORED,
+	nt_group		dm_uint	NOT NULL,
+	n_group	dm_uint	NOT NULL,
+	pow2_k	dm_uint	NOT NULL,
+	min_match	dm_uint NOT NULL	GENERATED ALWAYS AS (cal_min(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
+	max_match	dm_uint NOT NULL	GENERATED ALWAYS AS (cal_max(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
+	r_group		boolean			,
+	r_knock		boolean	,
+	op_cl		boolean NOT NULL
 );
 ------------------------------------------------------------------------------------------
 
@@ -932,15 +1068,61 @@ ALTER TABLE	f_comp
 ADD CONSTRAINT uq_f_comp
 UNIQUE
 (
-	n_team,
 	nt_group,
-	nt_knock,
-	mi_match,
-	ma_match,
+	n_group,
+	pow2_k,
 	r_group,
 	r_knock
 );
 ------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_num
+CHECK
+(
+	(
+		(nt_group BETWEEN 2 AND 100)
+		AND
+		(1 = n_group)
+		AND
+		(0 = pow2_k)
+		AND
+		(r_group IS NOT NULL AND r_knock IS NULL)
+	)
+	OR
+	(
+		(nt_group BETWEEN 2 AND 100)
+		AND
+		(1 = n_group)
+		AND
+		(pow2_k BETWEEN 1 AND 5)
+		AND
+		(r_group IS NOT NULL AND r_knock IS NOT NULL)
+	)
+	OR
+	(
+		(nt_group BETWEEN 2 AND 100)
+		AND
+		(n_group BETWEEN 2 AND 20)
+		AND
+		(nt_group * n_group <= 200)
+		AND
+		(pow2_k BETWEEN 1 AND 5)
+		AND
+		(r_group IS NOT NULL AND r_knock IS NOT NULL)
+	)
+	OR
+	(
+		(0 = nt_group AND 0 = n_group)
+		AND
+		(pow2_k BETWEEN 1 AND 5)
+		AND
+		(r_group IS NULL AND r_knock IS NOT NULL)
+	)
+);
+------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 ALTER TABLE	f_comp
@@ -962,6 +1144,32 @@ CHECK
 );
 ------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------
+ALTER TABLE	f_comp
+ADD CONSTRAINT ck_f_comp_type
+CHECK
+(
+	(
+		0 = nt_knock
+		AND
+		nt_group = n_team
+		AND
+		r_group IS NOT NULL
+		AND
+		r_knock IS NULL
+	)
+	OR
+	(
+		(nt_knock <> 0 AND r_knock IS NOT NULL)
+		AND
+		(
+			(nt_group <> 0 AND 0 = n_team % nt_group AND r_group IS NOT NULL)
+			OR
+			(0 = nt_group AND r_group IS NULL)
+		)
+	)
+);
+------------------------------------------------------------------------------------------
 
 
 

@@ -233,7 +233,11 @@ BEGIN
 
 	IF
 	(
-		('NATION' = conf_ty(NEW.conf) AND NEW.t_type <> 'NATIONAL')
+		(
+			('NATION' = conf_ty(NEW.conf) AND NEW.t_type <> 'NATIONAL')
+			OR
+			('NATION' <> conf_ty(NEW.conf) AND NEW.type <> 'CHAMPIONSHIP')
+		)
 		AND
 		(is_in_conf(NEW.s_year, NEW.e_year, NEW.conf))	
 	)
@@ -277,7 +281,7 @@ BEGIN
 		AND
 		(0 = (NEW.s_year - comp_sy(NEW.comp)) % comp_fq(comp))
 		AND
-		ctrl_comp(comp_ty(NEW.comp), NEW.n_team, NEW.n_match)
+		ctrl_formula(comp_ty(NEW.comp), NEW.formula)
 	)
 	THEN
 		RETURN NEW;
