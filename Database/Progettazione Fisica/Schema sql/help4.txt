@@ -1,1 +1,9 @@
-There was still nothing, but ...
+/* PROJECT NAME : FOOTBALL PLAYER DATABASE
+ *
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
+ * FIELD        : COMPUTER SCIENCE
+ * CLASS        : DATA BASES I
+ * TEACHER      : SILVIO BARRA
+ * YEAR         : 2023-2024
+ */
+
