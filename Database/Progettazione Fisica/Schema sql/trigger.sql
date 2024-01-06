@@ -281,7 +281,7 @@ BEGIN
 		AND
 		(0 = (NEW.s_year - comp_sy(NEW.comp)) % comp_fq(comp))
 		AND
-		ctrl_formula(comp_ty(NEW.comp), NEW.formula)
+		ctrl_formula( conf_ty( comp_conf(NEW.comp) ),comp_ty(NEW.comp), NEW.formula)
 	)
 	THEN
 		RETURN NEW;

@@ -72,7 +72,7 @@ DECLARE
 
 BEGIN
 
-	SELECT c.type
+	SELECT type
 	INTO c_type
 	FROM country
 	WHERE code = c_code;
@@ -180,10 +180,10 @@ DECLARE
 	c_name country.name%TYPE;
 BEGIN
 
-	SELECT c.name
+	SELECT name
 	INTO c_name
-	FROM country AS c
-	WHERE c.code = c_code;
+	FROM country
+	WHERE code = c_code;
 	
 	RETURN c_name;
 	
@@ -345,7 +345,7 @@ CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN s_year dm_year,
 	IN e_year dm_year,
-	IN c_code	country.code%TYPE;
+	IN c_code	country.code%TYPE
 )
 RETURNS boolean
 AS
@@ -377,7 +377,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN year   dm_year,
-	IN c_code	country.code%TYPE;
+	IN c_code	country.code%TYPE
 )
 RETURNS boolean
 AS
@@ -512,7 +512,7 @@ CREATE OR REPLACE FUNCTION is_in_conf
 (
 	IN s_year dm_year,
 	IN e_year dm_year,
-	IN conf 	conf.code%TYPE;
+	IN conf 	conf.code%TYPE
 )
 RETURNS boolean
 AS
@@ -707,6 +707,41 @@ LANGUAGE plpgsql;
 
 
 ------------------------------------------------------------------------------------------
+-- FUNCTION: comp_conf
+------------------------------------------------------------------------------------------
+-- input   : comp integer
+-- returns : conf dm_code
+------------------------------------------------------------------------------------------
+-- TODO: returns confederation of a specified competition
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION comp_conf
+(
+	IN comp comp.id%TYPE
+)
+RETURNS comp.conf%TYPE
+AS
+$$
+DECLARE
+
+	conf comp.conf%TYPE;
+
+BEGIN
+
+	SELECT conf
+	INTO conf
+	FROM comp
+	WHERE id = comp;
+	
+	RETURN conf;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
 -- FUNCTION: is_in_comp
 ------------------------------------------------------------------------------------------
 -- input   : s_year dm_year, e_year dm_year, comp_id integer  
@@ -740,6 +775,74 @@ LANGUAGE plpgsql;
 
 
 
+------------------------------------------------------------------------------------------
+-- FUNCTION: f_comp_ngroup
+------------------------------------------------------------------------------------------
+-- input   : f_comp integer
+-- returns : n_group dm_uint
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION f_comp_ngroup
+(
+	IN f_comp f_comp.id%TYPE
+)
+RETURNS f_comp.n_group%TYPE
+AS
+$$
+DECLARE
+
+	n_group f_comp.n_group%TYPE;
+
+BEGIN
+
+	SELECT n_group
+	INTO n_group
+	FROM f_comp
+	WHERE id = f_comp;
+	
+	RETURN n_group;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: f_comp_pow2k
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+-- TODO: returns pow2_k of a formula
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION f_comp_pow2k
+(
+	IN formula f_comp.id%TYPE
+)
+RETURNS f_comp.pow2_k%TYPE
+AS
+$$
+DECLARE
+
+	pow2_k f_comp.pow2_k%TYPE;
+
+BEGIN
+
+	SELECT pow2_k
+	INTO pow2_k
+	FROM f_comp
+	WHERE id = formula;
+	
+	RETURN pow2_k;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
 
 ------------------------------------------------------------------------------------------
 -- FUNCTION: ctrl_formula
@@ -750,6 +853,7 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION ctrl_formula
 (
+	IN conf_ty conf.type%TYPE,
 	IN comp_ty comp.type%TYPE,
 	IN formula comp_ed.formula%TYPE
 )
@@ -760,21 +864,30 @@ DECLARE
 
 BEGIN
 
-	IF ('INDIVIDUAL' = comp_ty) THEN
+	IF ('INDIVIDUAL' = comp_ty) THEN -- if competition is individual there isn't a formula
 		IF (formula IS NULL) THEN
 			RETURN TRUE;
 		END IF;
-	ELSIF ('CHAMPINSHIP' = comp_ty) THEN
-		IF (0 = formula_pow(formula)) THEN
-			RETURN TRUE;
-		END IF;
-	ELSE
-		IF (formula_k(formula) IS NOT NULL) THEN
-			RETURN TRUE;
-		END IF;
+	ELSIF ('CHAMPIONSHIP' = comp_ty) THEN 	-- if competition is champhionship the formula must have
+		IF (0 <> f_comp_ngroup(formula) ) THEN -- at least a group. There isn't a control on 
+			RETURN TRUE; 						-- comp_ty because champhionship must have comp_ty= 
+		END IF;									-- 'NATION' as the trigger on comp says.
+	ELSIF ('TOURNAMENT' = comp_ty) THEN -- if competition is tournament the formula is a knockout iff
+		IF ('NATION' = conf_ty ) THEN   -- conf_ty = 'NATION' as we have seen yesterday on internet,
+			IF (0 = f_comp_ngroup(formula)) THEN
+				RETURN TRUE;
+			END IF;
+		ELSE 										-- if conf_ty <> 'NATION' the formula must have at
+			IF ( 0 <> f_comp_pow2k(formula) ) THEN	-- least a knockout match
+				RETURN TRUE;
+			END IF;
+	ELSIF ('SUPER CUP' = comp_ty ) THEN -- if competition is super cup then the formula is knockout
+		IF (0 = f_comp_ngroup(formula)) THEN
+				RETURN TRUE;
+			END IF;
 	END IF;
 	
-	RETURN FALSE
+	RETURN FALSE;
 	
 END;
 $$
@@ -784,36 +897,4 @@ LANGUAGE plpgsql;
 
 
 
-------------------------------------------------------------------------------------------
--- FUNCTION: formula_k
-------------------------------------------------------------------------------------------
--- TODO
-------------------------------------------------------------------------------------------
--- TODO
-------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION formula_k
-(
-	IN formula integer%TYPE
-)
-RETURNS formula.nt_knock%TYPE
-AS
-$$
-DECLARE
-
-	nt_knock formula.nt_knock%TYPE;
-
-BEGIN
-
-	SELECT nt_knock
-	INTO nt_knock
-	FROM formula
-	WHERE id = formula;
-	
-	RETURN nt_knock;
-	
-END;
-$$
-RETURNS NULL ON NULL INPUT
-LANGUAGE plpgsql;
-------------------------------------------------------------------------------------------
 

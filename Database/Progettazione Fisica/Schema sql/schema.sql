@@ -455,9 +455,7 @@ ALTER TABLE	player
 ADD CONSTRAINT ck_player_s_age
 CHECK
 (
-	(extract(year from age(s_date, b_date)) >= 10)
-	AND
-	(extract(year from age(s_date, b_date)) <= 40)
+	( extract(year from age( s_date, b_date ) ) BETWEEN 10 AND 40 )
 );
 ------------------------------------------------------------------------------------------
 
@@ -468,7 +466,7 @@ CHECK
 (
 	((e_date IS NULL) OR (e_date - s_date >= 0))
 	AND
-	(extract(year from age(s_date, b_date)) <= 50)
+	(extract(year from age(e_date, b_date)) <= 50)
 );
 ------------------------------------------------------------------------------------------
 
@@ -840,6 +838,7 @@ CHECK
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
+-- TODO: controllare questo check
 ALTER TABLE	comp
 ADD CONSTRAINT ck_comp_nteam
 CHECK
@@ -908,11 +907,11 @@ UNIQUE
 ------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION cal_tot
 (
-	IN nt_group f_comp.nt_group%TYPE,
-	IN n_group  f_comp.n_group%TYPE,
-	IN pow2_k	  f_comp.pow2_k%TYPE
+	IN nt_group dm_uint,
+	IN n_group  dm_uint,
+	IN pow2_k	dm_uint
 )
-RETURNS f_comp.tot_team%TYPE
+RETURNS dm_uint
 AS
 $$
 DECLARE
@@ -941,19 +940,19 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION cal_min
 (
-	IN nt_group f_comp.nt_group%TYPE,
-	IN n_group  f_comp.n_group%TYPE,
-	IN pow2_k	  f_comp.pow2_k%TYPE,
-	IN r_group  f_comp.r_group%TYPE,
-	IN r_knock  f_comp.k_group%TYPE,
-	IN op_cl  f_comp.op_cl%TYPE
+	IN nt_group dm_uint,
+	IN n_group  dm_uint,
+	IN pow2_k	dm_uint,
+	IN r_group  boolean,
+	IN r_knock  boolean,
+	IN op_cl  	boolean
 )
-RETURNS f_comp.min_match%TYPE
+RETURNS dm_uint
 AS
 $$
 DECLARE
 
-	min f_comp.min_match%TYPE := 0;
+	min dm_uint := 0;
 
 BEGIN
 
@@ -993,31 +992,31 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 CREATE OR REPLACE FUNCTION cal_max
 (
-	IN nt_group f_comp.nt_group%TYPE,
-	IN n_group  f_comp.n_group%TYPE,
-	IN pow2_k	  f_comp.pow2_k%TYPE,
-	IN r_group  f_comp.r_group%TYPE,
-	IN r_knock  f_comp.k_group%TYPE,
-	IN op_cl  f_comp.op_cl%TYPE
+	IN nt_group dm_uint,
+	IN n_group  dm_uint,
+	IN pow2_k	dm_uint,
+	IN r_group  boolean,
+	IN r_knock  boolean,
+	IN op_cl	boolean
 )
-RETURNS f_comp.max_match%TYPE
+RETURNS dm_uint
 AS
 $$
 DECLARE
 
-	max f_comp.min_match%TYPE := 0;
+	max dm_uint := 0;
 
 BEGIN
 
 	IF (r_knock) THEN
 		max = max + CAST((power(2, pow2_k + 2) - 1) AS integer);
-	ELSE
+	ELSIF (r_knock IS NOT NULL) THEN
 		max = max +  CAST((power(2, pow2_k + 1) - 1) AS integer);
 	END IF;
 	
 	IF (r_group) THEN
 		max = max + (nt_group - 1) * 2;
-	ELSE
+	ELSIF (r_group IS NOT NULL) THEN
 		max = max + nt_group - 1;
 	END IF;
 	
@@ -1066,7 +1065,7 @@ PRIMARY KEY
 ------------------------------------------------------------------------------------------
 ALTER TABLE	f_comp
 ADD CONSTRAINT uq_f_comp
-UNIQUE
+UNIQUE NULLS NOT DISTINCT
 (
 	nt_group,
 	n_group,
@@ -1086,9 +1085,9 @@ CHECK
 		AND
 		((n_group BETWEEN 1 AND 20) AND (r_group IS NOT NULL))
 		AND
-		(nt_group * n_group <= 200)
+		(tot_team <= 200)
 		AND
-		((pow2_k BETWEEN 1 AND 5 AND r_knock IS NOT NULL) OR (0 = pow2_kAND r_knock IS NULL))
+		((pow2_k BETWEEN 1 AND 5 AND r_knock IS NOT NULL) OR (0 = pow2_k AND r_knock IS NULL))
 	)
 	OR
 	(
@@ -1105,26 +1104,31 @@ CHECK
 
 
 ------------------------------------------------------------------------------------------
+/* TODO: eliminare questo check perche' numero team viene generato
 ALTER TABLE	f_comp
-ADD CONSTRAINT ck_f_comp_n_team
+ADD CONSTRAINT ck_f_comp_tot_team
 CHECK
 (
-	(nt_group <= n_team)
+	(nt_group <= tot_team)
 	AND
-	(nt_knock <= n_team)
+	(nt_knock <= tot_team)
 );
+*/
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
+/* TODO: eliminare questo check perche' min e max viene generato
 ALTER TABLE	f_comp
 ADD CONSTRAINT ck_f_comp_n_match
 CHECK
 (
 	mi_match <= ma_match
 );
+*/
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
+/* TODO: controllo inutile gia' fatto con il check del f_comp_num
 ALTER TABLE	f_comp
 ADD CONSTRAINT ck_f_comp_type
 CHECK
@@ -1149,6 +1153,7 @@ CHECK
 		)
 	)
 );
+*/
 ------------------------------------------------------------------------------------------
 
 
@@ -1213,9 +1218,7 @@ ALTER TABLE	comp_ed
 ADD CONSTRAINT ck_comp_ed_year
 CHECK
 (
-	(e_year - s_year = 0)
-	OR
-	(e_year - s_year = 1)
+	( ( e_year - s_year ) BETWEEN 0 AND 1 )
 );
 ------------------------------------------------------------------------------------------
 
