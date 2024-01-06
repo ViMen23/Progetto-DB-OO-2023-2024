@@ -304,6 +304,69 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_new_comp_ed();
 ------------------------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------------------------
+-- TRIGGER FUNCTION: tf_new_t_comp_ed
+------------------------------------------------------------------------------------------
+-- trigger function for trigger new_t_comp_ed
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION tf_new_t_comp_ed()
+RETURNS trigger
+AS
+$$
+DECLARE
+	
+BEGIN
+
+	IF
+	(
+		( is_in_team(NEW.s_year, NEW.e_year, NEW.team) )
+		AND
+		( comp_tty(NEW.comp) IS NOT DISTINCT FROM team_ty(NEW.team) ) -- comp_tty can be NULL
+		AND
+		( comp_sex(NEW.comp) = team_sex(NEW.team) )
+		AND
+		( comp_max_age(NEW.comp) IS NOT DISTINCT FROM team_max_age ) -- max_age of both tables can be NULL
+		AND
+		
+		
+	) THEN
+	
+	END IF;
+
+	
+	-- check limit team for the competition
+	-- check n_match between min and max match
+	-- check match totali with tuples of that competition on this table if it is possible
+	-- check that team doesn't play in another competition champhionship in the same nation
+	-- example( team can't play serie A and serie B at the same time)
+	-- check that team is of the same country as the competition or at least the competition is
+	-- a super of team country
+
+END;
+$$
+LANGUAGE plpgsql;
+
+------------------------------------------------------------------------------------------
+-- TRIGGER: new_t_comp_ed
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE TRIGGER new_t_comp_ed
+BEFORE INSERT ON t_comp_ed
+FOR EACH ROW
+EXECUTE FUNCTION tf_new_t_comp_ed();
+------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
 -----------------------------------------TRASH--------------------------------------------
 /*
 ------------------------------------------------------------------------------------------

@@ -568,14 +568,14 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
--- FUNCTION: comp_sy
+-- FUNCTION: comp_ey
 ------------------------------------------------------------------------------------------
 -- input   : comp		 integer
--- returns : s_year  dm_year
+-- returns : e_year  dm_year
 ------------------------------------------------------------------------------------------
 -- TODO
 ------------------------------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION comp_sy
+CREATE OR REPLACE FUNCTION comp_ey
 (
 	IN comp conf.code%TYPE
 )
@@ -588,7 +588,7 @@ DECLARE
 
 BEGIN
 
-	SELECT s_year
+	SELECT e_year
 	INTO year
 	FROM comp
 	WHERE id = comp;
@@ -705,6 +705,74 @@ RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: comp_sex
+------------------------------------------------------------------------------------------
+-- input   : comp integer
+-- returns : sex ty_sex
+------------------------------------------------------------------------------------------
+-- TODO: returns sex of a specified competition
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION comp_sex
+(
+	IN comp comp.id%TYPE
+)
+RETURNS comp.sex%TYPE
+AS
+$$
+DECLARE
+
+	sex comp.sex%TYPE;
+
+BEGIN
+
+	SELECT sex
+	INTO sex
+	FROM comp
+	WHERE id = comp;
+	
+	RETURN sex;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: comp_max_age
+------------------------------------------------------------------------------------------
+-- input   : comp integer
+-- returns : max_age dm_uint
+------------------------------------------------------------------------------------------
+-- TODO: returns max_age of a specified competition
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION comp_max_age
+(
+	IN comp comp.id%TYPE
+)
+RETURNS comp.max_age%TYPE
+AS
+$$
+DECLARE
+
+	max_age comp.max_age%TYPE;
+
+BEGIN
+
+	SELECT max_age
+	INTO max_age
+	FROM comp
+	WHERE id = comp;
+	
+	RETURN max_age;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------
 -- FUNCTION: comp_conf
@@ -895,6 +963,211 @@ LANGUAGE plpgsql;
 ------------------------------------------------------------------------------------------
 
 
+------------------------------------------------------------------------------------------
+-- FUNCTION: team_sy
+------------------------------------------------------------------------------------------
+-- input   : team		 integer
+-- returns : s_year  dm_year
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION team_sy
+(
+	IN team team.id%TYPE
+)
+RETURNS team.s_year%TYPE
+AS
+$$
+DECLARE
 
+	year team.s_year%TYPE;
+
+BEGIN
+
+	SELECT s_year
+	INTO year
+	FROM team
+	WHERE id = team;
+	
+	RETURN year;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: team_ey
+------------------------------------------------------------------------------------------
+-- input   : team		 integer
+-- returns : e_year  dm_year
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION team_ey
+(
+	IN team team.id%TYPE
+)
+RETURNS team.e_year%TYPE
+AS
+$$
+DECLARE
+
+	year team.e_year%TYPE;
+
+BEGIN
+
+	SELECT e_year
+	INTO year
+	FROM team
+	WHERE id = team;
+	
+	RETURN year;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: team_ty
+------------------------------------------------------------------------------------------
+-- input   : team		 integer
+-- returns : type  ty_team
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION team_ty
+(
+	IN team team.id%TYPE
+)
+RETURNS team.type%TYPE
+AS
+$$
+DECLARE
+
+	type team.type%TYPE;
+
+BEGIN
+
+	SELECT type
+	INTO type
+	FROM team
+	WHERE id = team;
+	
+	RETURN type;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: team_sex
+------------------------------------------------------------------------------------------
+-- input   : team		 integer
+-- returns : sex ty_sex
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION team_sex
+(
+	IN team team.id%TYPE
+)
+RETURNS team.sex%TYPE
+AS
+$$
+DECLARE
+
+	sex team.sex%TYPE;
+
+BEGIN
+
+	SELECT sex
+	INTO sex
+	FROM team
+	WHERE id = team;
+	
+	RETURN sex;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: team_max_age
+------------------------------------------------------------------------------------------
+-- input   : team		 integer
+-- returns : max_age  dm_uint
+------------------------------------------------------------------------------------------
+-- TODO
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION team_max_age
+(
+	IN team team.id%TYPE
+)
+RETURNS team.max_age%TYPE
+AS
+$$
+DECLARE
+
+	max_age team.max_age%TYPE;
+
+BEGIN
+
+	SELECT max_age
+	INTO max_age
+	FROM team
+	WHERE id = team;
+	
+	RETURN max_age;
+	
+END;
+$$
+RETURNS NULL ON NULL INPUT
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------
+-- FUNCTION: is_in_team
+------------------------------------------------------------------------------------------
+-- input   : s_year dm_year, e_year dm_year, team integer  
+-- returns : boolean
+------------------------------------------------------------------------------------------
+-- TODO: comment function
+------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION is_in_team
+(
+	IN s_year dm_year,
+	IN e_year dm_year,
+	IN team		team.id%TYPE
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+BEGIN
+	
+	IF (r1_in_r2(s_year, e_year, team_sy(team), team_ey(team))) THEN
+		RETURN TRUE;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+------------------------------------------------------------------------------------------
 
 
