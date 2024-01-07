@@ -1,0 +1,18 @@
+motivazioni della ristrutturazione
+
+-- il tipo di confederazione non è usato perché sfruttiamo l'associazione 1 a 1 delle singole specializzazioni di confederazioni con le rispettive specializzazioni di country.
+
+-- l'associazione player trophy è soltanto con trophy individuali, ma
+visto che nel nostro applicativo vogliamo mostrare anche i trofei di squadra vinti
+dalle squadre in cui giocava il nostro giocatore.
+A seguito di ciò abbiamo deciso di aggiungere una tabella player_trophy che tenga anche
+conto dei trofei vinti dalle squadre in cui il giocatore militava.
+Quindi è stata aggiunta una ridondanza.
+
+
+-- associazione N a N tra player e country è stata divisa in due relazioni:
+1. una N a N che indica le nazionalità secondarie del player
+2. una 1 a N che indica il paese di origine del player
+
+
+
