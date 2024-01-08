@@ -152,13 +152,13 @@ CHECK
  * NAME : dm_usr
  * DESC : domain for all text string containing
  *        letters of the alphabet, digits, underscores [_] and periods [.]
- *        with a minimum length of 2 characters and
- *        with a maximum length of 100 characters
+ *        with a minimum length of 4 characters and
+ *        with a maximum length of 20 characters
  ******************************************************************************/
 CREATE DOMAIN dm_usr AS varchar(20)
 CHECK
 (
-	value ~ '(^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
+	value ~ '(^(?=[\w.]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
 );
 --------------------------------------------------------------------------------
 
@@ -171,12 +171,10 @@ CHECK
  *        with a minimum length of 8 characters and
  *        with a maximum length of 255 characters
  ******************************************************************************/
-CREATE DOMAIN dm_pwd AS varchar(20)
+CREATE DOMAIN dm_pwd AS varchar(255)
 CHECK
 (
-	value ~ '(^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)'
-			'(?=.*[~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:''\"/?.>,<])'
-			'[A-Za-z\\d~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:''\"/?.>,<]{8,255}$)'
+	value ~ '(?=[\w~!@#$%^&*()\-=+[{\]}\\|;:''"/?.>,<]{8,255}$)'
 );
 --------------------------------------------------------------------------------
 
@@ -535,7 +533,7 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE	player
 ADD CONSTRAINT uq_player
-UNIQUE NULLS NOT DISTINCT -- null values will be considered as distinct
+UNIQUE NULLS NOT DISTINCT -- null values will not be considered as distinct
 (
 	f_name,
 	m_name,
@@ -657,7 +655,7 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE	team
 ADD CONSTRAINT uq_team
-UNIQUE NULLS NOT DISTINCT -- null values will be considered as distinct
+UNIQUE NULLS NOT DISTINCT -- null values will not be considered as distinct
 (
 	name,
 	sex,
@@ -1188,73 +1186,71 @@ UNIQUE
 
 
 /*******************************************************************************
- * TYPE : IMMUTABLE FUNCTION
+ * TYPE : FUNCTION - IMMUTABLE
  * NAME : cal_tot
  * DESC : returns the number of teams that can take part in a competition
- *	  having as formula's attribute the ones given in input
+ *        having as formula's attribute the ones given in input
  *
- *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint
+ *        IN      : dm_uint, dm_uint, dm_uint
  *        INOUT   : void
  *        OUT     : void
  *
  *        RETURNS : dm_uint
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION cal_tot
+CREATE OR REPLACE FUNCTION formula_t_tot
 (
-	IN nt_group dm_uint,
-	IN n_group  dm_uint,
-	IN pow2_k	dm_uint
+	IN n_group dm_uint, -- number of groups of competition
+	IN t_group dm_uint, -- number of teams for each competition group
+	IN t_knock dm_uint  -- number of teams starting knock out phase
 )
 RETURNS dm_uint
+IMMUTABLE
 AS
 $$
-DECLARE
-
 BEGIN
-	-- if n_group equals 0 then the formula is a knockout
-	-- so the number of teams is two to the power of pow2_k
+
+	-- if there are not groups the competition is just knockout type
 	IF (0 = n_group) THEN
-		-- the return type of the function power is numeric
-		-- so it is necessary to cast its value before returning it
-		RETURN CAST(power(2, pow2_k) AS integer);	
+		-- so total team number it is just the team of knock out phase
+		RETURN t_knock;	
 	ELSE
-		-- else it means there is at least a group
-		-- so the return value is
-		-- number of group times number of teams for group.
+		-- if there are groups the competition
+		-- the total number of teams is given by
+		-- the number of groups times the number of teams per group
 		RETURN n_group * nt_group;
 	END IF;
 	
 END;
 $$
-IMMUTABLE
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
- * TYPE : IMMUTABLE FUNCTION
- * NAME : cal_min
+ * TYPE : FUNCTION - IMMUTABLE
+ * NAME : formula_min_match
  * DESC : returns the minimum number of match that a team has to play
- *		  if it takes part in a competition with formula's attribute
- *		  as the ones in input
+ *        if it takes part in a competition with formula's attribute
+ *        as the ones in input
  *
- *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint,
- *					r_group boolean, r_knock boolean, op_cl boolean
+ *        IN      : dm_uint, dm_uint, dm_uint,
+ *                  boolean, boolean, boolean
  *        INOUT   : void
  *        OUT     : void
  *
  *        RETURNS : dm_uint
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION cal_min
+CREATE OR REPLACE FUNCTION formula_min_match
 (
-	IN nt_group dm_uint,
-	IN n_group  dm_uint,
-	IN pow2_k	dm_uint,
-	IN r_group  boolean,
-	IN r_knock  boolean,
-	IN op_cl  	boolean
+	IN n_group  dm_uint, -- number of groups of competition
+	IN t_group  dm_uint, -- number of teams for each competition group
+	IN t_knock  dm_uint, -- number of teams starting knock out phase
+	IN ha_group boolean, -- home and away group phase
+	IN ha_knock boolean, -- home and away knockout phase
+	IN oc_group boolean  -- open and closure group phase
 )
 RETURNS dm_uint
+IMMUTABLE
 AS
 $$
 DECLARE
@@ -1263,65 +1259,69 @@ DECLARE
 
 BEGIN
 
-	-- if there isn't any group, then the min variable is equals to:
-	-- 2 if the match are home and away
-	-- 1 otherwise
+	-- if there are not groups the competition is just knockout type
 	IF (0 = n_group) THEN
-		IF (r_knock) THEN
-			min = 2;
-		ELSE
-			min = 1;
+		-- miminum number of matches for each team is 1
+		min = 1;
+		
+		-- if knock out phase is home and away type
+		IF (ha_knock) THEN
+			-- double the minimum
+			min = min * 2;
 		END IF;
+		
 	ELSE
-	-- else, the min variable equals to:
-	-- (number of teams minus 1) times 2 if the match are home and away
-	-- (number of teams  minus 1) otherwise
-		IF (r_group) THEN
-			min = (nt_group - 1) * 2;
-		ELSE
-			min = nt_group - 1;
+		-- if there are groups, a team will necessarily have to play
+		-- against all the teams in the same group
+		min = t_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the minimum
+			min = min * 2;
 		END IF;
-	END IF;
-	
-	-- if the formula is for an open and closure competition
-	-- then the min variable is equal to itself times two
-	IF (op_cl) THEN
-		min = min * 2;
+		
+		-- if group phase is open and closure type
+		IF (oc_group) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
 	END IF;
 
 	RETURN min;
 
 END;
 $$
-IMMUTABLE
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : IMMUTABLE FUNCTION
- * NAME : cal_max
+ * NAME : formula_max_match
  * DESC : returns the maximum number of match that a team has to play
- *		  if it takes part in a competition with formula's attribute
- *		  as the ones in input
+ *        if it takes part in a competition with formula's attribute
+ *        as the ones in input
  *
- *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint,
- *					r_group boolean, r_knock boolean, op_cl boolean
+ *        IN      : dm_uint, dm_uint, dm_uint,
+ *                  boolean, boolean, boolean
  *        INOUT   : void
  *        OUT     : void
  *
  *        RETURNS : dm_uint
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION cal_max
+CREATE OR REPLACE FUNCTION formula_max_match
 (
-	IN nt_group dm_uint,
-	IN n_group  dm_uint,
-	IN pow2_k	dm_uint,
-	IN r_group  boolean,
-	IN r_knock  boolean,
-	IN op_cl	boolean
+	IN n_group  dm_uint, -- number of groups of competition
+	IN t_group  dm_uint, -- number of teams for each competition group
+	IN t_knock  dm_uint, -- number of teams starting knock out phase
+	IN ha_group boolean, -- home and away group phase
+	IN ha_knock boolean, -- home and away knockout phase
+	IN oc_group boolean  -- open and closure group phase
 )
 RETURNS dm_uint
+IMMUTABLE
 AS
 $$
 DECLARE
@@ -1329,74 +1329,110 @@ DECLARE
 	max dm_uint := 0; -- variable to accumulate maximum number of match
 
 BEGIN
-
-	-- if r_knock is true, it means there is at least a knockout match
-	-- so the max variable equals 
-	-- TODO: controllare questo if, dovrebbe essere max = pow2_k
-	IF (r_knock) THEN
-		max = max + CAST((power(2, pow2_k + 2) - 1) AS integer);
-	ELSIF (r_knock IS NOT NULL) THEN
-		max = max +  CAST((power(2, pow2_k + 1) - 1) AS integer);
+	
+	-- if there is a group phase
+	IF (n_group <> 0) THEN
+		-- a team will necessarily have to play against
+		-- all the teams in its group
+		max = t_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+		-- if group phase is open and closure type
+		IF (op_cl) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+	END IF;
+	-- if there is a knock out phase
+	IF (t_knock <> 0) THEN
+		-- add all matches till final
+		max = max + CAST(log(2, t_knock) AS integer);
+		
+		-- if knock phase is home and away type
+		IF (ha_knock) THEN
+			-- add all matches except final
+			max = max + CAST(log(2, t_knock) AS integer) - 1;
+		END IF;
+		
 	END IF;
 	
-	IF (r_group) THEN
-		max = max + (nt_group - 1) * 2;
-	ELSIF (r_group IS NOT NULL) THEN
-		max = max + nt_group - 1;
-	END IF;
-	
-	IF (op_cl) THEN
-		max = max * 2;
-	END IF;
-
 	RETURN max;	
 
 END;
 $$
-IMMUTABLE
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : f_comp
+ * NAME : formula
  * DESC : table containing football competition formulas
  ******************************************************************************/
-CREATE TABLE f_comp
+CREATE TABLE formula
 (
 	id			serial	NOT NULL, -- id
-	tot_team	dm_uint	NOT NULL  -- total number of teams
-		
+	t_tot		dm_uint	NOT NULL  -- total number of football teams
 		GENERATED ALWAYS AS
-		(cal_tot(nt_group, n_group, pow2_k)) STORED,
-	
-	nt_group	dm_uint	NOT NULL, -- number of teams for each group
+		(
+			formula_t_tot
+			(
+				n_group,
+				t_group,
+				t_knock
+			)
+		)
+		STORED                  ,
 	n_group		dm_uint	NOT NULL, -- number of groups
-	pow2_k		dm_uint	NOT NULL, -- 
+	t_group		dm_uint	NOT NULL, -- number of teams for each group
+	t_knock		dm_uint	NOT NULL, -- number of teams for knock out phase
 	min_match	dm_uint NOT NULL  -- minimum number of matches for team
-	
 		GENERATED ALWAYS AS
-		(cal_min(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
-	
+		(
+			formula_min_match
+			(
+				n_group,
+				t_group,
+				t_knock,
+				ha_group,
+				ha_knock,
+				oc_group
+			)
+		)
+		STORED                  ,
 	max_match	dm_uint NOT NULL  -- maximum number of matches for team
-	
 		GENERATED ALWAYS AS
-		(cal_max(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
-	
-	r_group		boolean			, -- boolean to home and away group match
-	r_knock		boolean			, -- boolean to home and away knockout match
-	op_cl		boolean NOT NULL  -- boolean to open and closure competition
+		(
+			formula_max_match
+			(
+				n_group,
+				t_group,
+				t_knock,
+				ha_group,
+				ha_knock,
+				oc_group
+			)
+		)
+		STORED                  ,
+	ha_group	boolean			, -- home and away group phase
+	ha_knock	boolean			, -- home and away knockout phase
+	oc_group	boolean  		  -- open and closure group phase
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - f_comp TABLE
- * NAME : pk_f_comp
+ * TYPE : PRIMARY KEY CONSTRAINT - formula TABLE
+ * NAME : pk_formula
  * DESC : attribute id will be primary key for a football competition formula
  ******************************************************************************/
-ALTER TABLE	f_comp
-ADD CONSTRAINT pk_f_comp
+ALTER TABLE	formula
+ADD CONSTRAINT pk_formula
 PRIMARY KEY
 (
 	id
@@ -1404,68 +1440,121 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - f_comp TABLE
- * NAME : uq_f_comp
- * DESC :
+ * TYPE : UNIQUE CONSTRAINT - formula TABLE
+ * NAME : uq_formula
+ * DESC : combination of attribute n_group, t_group, t_knock,
+ *        ha_group, ha_knock and oc_group
+ *        will be unique for a football competition formula
  ******************************************************************************/
-ALTER TABLE	f_comp
-ADD CONSTRAINT uq_f_comp
-UNIQUE NULLS NOT DISTINCT  -- null values will be considered as distinct
+ALTER TABLE	formula
+ADD CONSTRAINT uq_formula
+UNIQUE NULLS NOT DISTINCT  -- null values will not be considered as distinct
 (
-	nt_group,
 	n_group,
-	pow2_k,
-	r_group,
-	r_knock
+	t_group,
+	t_knock,
+	ha_group,
+	ha_knock,
+	oc_group
 );
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
- * TYPE : CHECK CONSTRAINT - f_comp TABLE
- * NAME : ck_f_comp_num
- * DESC :
+ * TYPE : CHECK CONSTRAINT - formula TABLE
+ * NAME : ck_formula_group
+ * DESC : check that a competition is either not in groups,
+ *        or that it has at most twenty groups with at most 100 teams each
+ *
+ *        NOTE. Arbitrary but research-based threshold values
  ******************************************************************************/
-ALTER TABLE	f_comp
-ADD CONSTRAINT ck_f_comp_num
+ALTER TABLE	formula
+ADD CONSTRAINT ck_formula_group
 CHECK
 (
 	(
-		(nt_group BETWEEN 2 AND 100)
+		(0 = n_group)
 		AND
-		(
-			(n_group BETWEEN 1 AND 20)
-			AND 
-			(r_group IS NOT NULL)
-		)
+		(0 = t_group)
 		AND
-		(tot_team <= 200)
+		(ha_group IS NULL)
 		AND
-		(
-			((pow2_k BETWEEN 1 AND 5) AND (r_knock IS NOT NULL))
-			OR
-			((0 = pow2_k) AND (r_knock IS NULL))
-		)
+		(oc_group IS NULL)
 	)
 	OR
 	(
-		(
-			(0 = nt_group)
-			AND
-			(0 = n_group)
-		)
+		(n_group <= 20)
 		AND
-		(pow2_k BETWEEN 1 AND 5)
+		(t_group BETWEEN 2 AND 100)
 		AND
-		(
-			(r_group IS NULL)
-			AND
-			(r_knock IS NOT NULL)
-		)
+		(ha_group IS NOT NULL)
 		AND
-		(FALSE = op_cl)
+		(oc_group IS NOT NULL)
 	)
 );
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - formula TABLE
+ * NAME : ck_formula_knock
+ * DESC : checks that a competition is not a knock out competition,
+ *        or that a power of two teams less than or equal to 256
+ *        reaches the knock out phase
+ *
+ *        NOTE. Arbitrary but research-based threshold values
+ ******************************************************************************/
+ALTER TABLE	formula
+ADD CONSTRAINT ck_formula_knock
+CHECK
+(
+	(
+		(0 = t_knock)
+		AND
+		(ha_knock IS NULL)
+	)
+	OR
+	(
+		(t_knock <= 256)
+		AND
+		(floor(log(2, t_knock)) = ceil(log(2, t_knock)))
+		AND
+		(ha_knock IS NOT NULL)
+	)
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - formula TABLE
+ * NAME : ck_formula_exist
+ * DESC : check that a competition has a valid formula
+ ******************************************************************************/
+ALTER TABLE	formula
+ADD CONSTRAINT ck_formula_exist
+CHECK
+(
+	(t_knock <> 0) OR (n_group <> 0)
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - formula TABLE
+ * NAME : ck_formula_t_tot
+ * DESC : check that the total number of football teams
+ *        for a football competition is between 2 and 200
+ *
+ *        NOTE. Arbitrary but research-based threshold values
+ ******************************************************************************/
+ALTER TABLE	formula
+ADD CONSTRAINT ck_formula_t_tot
+CHECK
+(
+	t_tot BETWEEN 2 AND 200
+);
+--------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************
@@ -1523,18 +1612,18 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - comp_ed TABLE
- * NAME : comp_ed_fk_f_comp
+ * NAME : comp_ed_fk_formula
  * DESC : the attribute formula of a football competition edition is
  *        a foreign key to the attribute id of
  *        the football competition formula it refers to
  ******************************************************************************/
 ALTER TABLE	comp_ed
-ADD CONSTRAINT comp_ed_fk_f_comp
+ADD CONSTRAINT comp_ed_fk_formula
 FOREIGN KEY
 (
 	formula
 )
-REFERENCES f_comp
+REFERENCES formula
 (
 	id
 )
@@ -2048,12 +2137,12 @@ CREATE TABLE p_pos_t_comp_ed
 	team		integer		NOT NULL, -- referring football team
 	player		integer		NOT NULL, -- referring football player
 	pos			dm_scode	NOT NULL, -- referring football player position
-	match		dm_uint				, -- number of matches
-	goal		dm_uint				, -- goal scored
-	ass			dm_uint				, -- assist maded
-	p_scored	dm_uint				, -- penalities scored
-	y_card		dm_uint				, -- yellow cards
-	r_card		dm_uint				, -- red cards
+	match		dm_uint		NOT NULL, -- number of matches
+	goal		dm_uint		NOT NULL, -- goal scored
+	ass			dm_uint		NOT NULL, -- assist maded
+	p_scored	dm_uint		NOT NULL, -- penalities scored
+	y_card		dm_uint		NOT NULL, -- yellow cards
+	r_card		dm_uint		NOT NULL, -- red cards
 	g_conceded	dm_uint				, -- goal conceded [GK only]
 	c_sheet		dm_uint				, -- clean sheet [GK only]
 	p_saved		dm_uint	              -- penalities saved [GK only]
