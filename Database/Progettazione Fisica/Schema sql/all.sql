@@ -535,7 +535,7 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE	player
 ADD CONSTRAINT uq_player
-UNIQUE NULLS NOT DISTINCT -- null values will be considered ad distinct
+UNIQUE NULLS NOT DISTINCT -- null values will be considered as distinct
 (
 	f_name,
 	m_name,
@@ -657,7 +657,7 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE	team
 ADD CONSTRAINT uq_team
-UNIQUE NULLS NOT DISTINCT -- null values will be considered ad distinct
+UNIQUE NULLS NOT DISTINCT -- null values will be considered as distinct
 (
 	name,
 	sex,
@@ -671,7 +671,7 @@ UNIQUE NULLS NOT DISTINCT -- null values will be considered ad distinct
  * TYPE : FOREIGN KEY CONSTRAINT - team TABLE
  * NAME : team_fk_country
  * DESC : the attribute country of a football team is a foreign key
- *        to the attribute code of the country to witch it belongs
+ *        to the attribute code of the country to which it belongs
  ******************************************************************************/
 ALTER TABLE	team
 ADD CONSTRAINT team_fk_country
@@ -1189,14 +1189,15 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : IMMUTABLE FUNCTION
- * NAME : 
- * DESC :
+ * NAME : cal_tot
+ * DESC : returns the number of teams that can take part in a competition
+ *	  having as formula's attribute the ones given in input
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : dm_uint
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION cal_tot
 (
@@ -1210,10 +1211,16 @@ $$
 DECLARE
 
 BEGIN
-
+	-- if n_group equals 0 then the formula is a knockout
+	-- so the number of teams is two to the power of pow2_k
 	IF (0 = n_group) THEN
+		-- the return type of the function power is numeric
+		-- so it is necessary to cast its value before returning it
 		RETURN CAST(power(2, pow2_k) AS integer);	
 	ELSE
+		-- else it means there is at least a group
+		-- so the return value is
+		-- number of group times number of teams for group.
 		RETURN n_group * nt_group;
 	END IF;
 	
@@ -1226,14 +1233,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : IMMUTABLE FUNCTION
- * NAME : 
- * DESC :
+ * NAME : cal_min
+ * DESC : returns the minimum number of match that a team has to play
+ *		  if it takes part in a competition with formula's attribute
+ *		  as the ones in input
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint,
+ *					r_group boolean, r_knock boolean, op_cl boolean
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : dm_uint
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION cal_min
 (
@@ -1249,24 +1259,32 @@ AS
 $$
 DECLARE
 
-	min dm_uint := 0;
+	min dm_uint := 0; -- variable to accumulate minimum number of match
 
 BEGIN
 
+	-- if there isn't any group, then the min variable is equals to:
+	-- 2 if the match are home and away
+	-- 1 otherwise
 	IF (0 = n_group) THEN
 		IF (r_knock) THEN
-			min = min + 2;
+			min = 2;
 		ELSE
-			min = min + 1;
+			min = 1;
 		END IF;
 	ELSE
+	-- else, the min variable equals to:
+	-- (number of teams minus 1) times 2 if the match are home and away
+	-- (number of teams  minus 1) otherwise
 		IF (r_group) THEN
-			min = min + (nt_group - 1) * 2;
+			min = (nt_group - 1) * 2;
 		ELSE
-			min = min + nt_group - 1;
+			min = nt_group - 1;
 		END IF;
 	END IF;
 	
+	-- if the formula is for an open and closure competition
+	-- then the min variable is equal to itself times two
 	IF (op_cl) THEN
 		min = min * 2;
 	END IF;
@@ -1279,16 +1297,20 @@ IMMUTABLE
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : IMMUTABLE FUNCTION
- * NAME : 
- * DESC :
+ * NAME : cal_max
+ * DESC : returns the maximum number of match that a team has to play
+ *		  if it takes part in a competition with formula's attribute
+ *		  as the ones in input
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : nt_group dm_uint, n_group dm_uint, pow2_k dm_uint,
+ *					r_group boolean, r_knock boolean, op_cl boolean
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : dm_uint
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION cal_max
 (
@@ -1304,10 +1326,13 @@ AS
 $$
 DECLARE
 
-	max dm_uint := 0;
+	max dm_uint := 0; -- variable to accumulate maximum number of match
 
 BEGIN
 
+	-- if r_knock is true, it means there is at least a knockout match
+	-- so the max variable equals 
+	-- TODO: controllare questo if, dovrebbe essere max = pow2_k
 	IF (r_knock) THEN
 		max = max + CAST((power(2, pow2_k + 2) - 1) AS integer);
 	ELSIF (r_knock IS NOT NULL) THEN
@@ -1354,14 +1379,14 @@ CREATE TABLE f_comp
 		GENERATED ALWAYS AS
 		(cal_min(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
 	
-	max_match	dm_uint NOT NULL  -- maximun number of matches for team
+	max_match	dm_uint NOT NULL  -- maximum number of matches for team
 	
 		GENERATED ALWAYS AS
 		(cal_max(nt_group, n_group, pow2_k, r_group, r_knock, op_cl)) STORED,
 	
-	r_group		boolean			, -- 
-	r_knock		boolean			, --
-	op_cl		boolean NOT NULL  --
+	r_group		boolean			, -- boolean to home and away group match
+	r_knock		boolean			, -- boolean to home and away knockout match
+	op_cl		boolean NOT NULL  -- boolean to open and closure competition
 );
 --------------------------------------------------------------------------------
 
@@ -1385,7 +1410,7 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE	f_comp
 ADD CONSTRAINT uq_f_comp
-UNIQUE NULLS NOT DISTINCT  -- null values will be considered ad distinct
+UNIQUE NULLS NOT DISTINCT  -- null values will be considered as distinct
 (
 	nt_group,
 	n_group,
@@ -2011,7 +2036,7 @@ CHECK
  * DESC : table connecting the t_comp_ed table,
  *        the football player, the football player position
  *        and also containing the number of games played by the football player
- *        in the specific position, in the football team while playng
+ *        in the specific position, in the football team while playing
  *        in the football competition edition
  *        with various associated statistics
  ******************************************************************************/

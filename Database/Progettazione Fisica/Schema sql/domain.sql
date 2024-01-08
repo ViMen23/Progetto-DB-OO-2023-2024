@@ -135,13 +135,13 @@ CHECK
  * NAME : dm_usr
  * DESC : domain for all text string containing
  *        letters of the alphabet, digits, underscores [_] and periods [.]
- *        with a minimum length of 2 characters and
- *        with a maximum length of 100 characters
+ *        with a minimum length of 4 characters and
+ *        with a maximum length of 20 characters
  ******************************************************************************/
 CREATE DOMAIN dm_usr AS varchar(20)
 CHECK
 (
-	value ~ '(^(?=[a-zA-Z0-9._]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
+	value ~ '(^(?=[\w.]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
 );
 --------------------------------------------------------------------------------
 
@@ -154,12 +154,10 @@ CHECK
  *        with a minimum length of 8 characters and
  *        with a maximum length of 255 characters
  ******************************************************************************/
-CREATE DOMAIN dm_pwd AS varchar(20)
+CREATE DOMAIN dm_pwd AS varchar(255)
 CHECK
 (
-	value ~ '(^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)'
-			'(?=.*[~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:''\"/?.>,<])'
-			'[A-Za-z\\d~!@#$%^&*()\\-_=+\\[{\\]}\\\\|;:''\"/?.>,<]{8,255}$)'
+	value ~ '(?=[\w~!@#$%^&*()\-=+[{\]}\\|;:''"/?.>,<]{8,255}$)'
 );
 --------------------------------------------------------------------------------
 

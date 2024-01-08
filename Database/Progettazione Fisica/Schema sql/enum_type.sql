@@ -44,7 +44,7 @@ CREATE TYPE ty_team AS ENUM
 /*******************************************************************************
  * TYPE : ENUM TYPE
  * NAME : ty_comp
- * DESC :
+ * DESC : enum for the possible types of football competitions
  ******************************************************************************/
 CREATE TYPE ty_comp AS ENUM
 (
@@ -59,7 +59,7 @@ CREATE TYPE ty_comp AS ENUM
 /*******************************************************************************
  * TYPE : ENUM TYPE
  * NAME : ty_sex
- * DESC : enum for the possible types of football competitions
+ * DESC : enum for the possible types of sex
  ******************************************************************************/
 CREATE TYPE ty_sex AS ENUM
 (
