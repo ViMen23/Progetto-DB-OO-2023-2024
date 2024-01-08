@@ -1,55 +1,79 @@
-/* PROJECT NAME : FOOTBALL PLAYER DATABASE
+/*******************************************************************************
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
  * FIELD        : COMPUTER SCIENCE
  * CLASS        : DATA BASES I
  * TEACHER      : SILVIO BARRA
  * YEAR         : 2023-2024
- */
+ ******************************************************************************/
 
 
-/* TRIGGER AND TRIGGER FUNCTION */
+/*******************************************************************************
+ * TRIGGER AND TRIGGER FUNCTION
+ ******************************************************************************/
 
 
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_country
  * DESC :
- */
-CREATE OR REPLACE FUNCTION tf_new_country()
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_country
+(
+)
 RETURNS trigger
 AS
 $$
 BEGIN
 
+	-- if new country we want to insert is of world type
 	IF (NEW.type = 'WORLD') THEN
+		-- .. and if there are not active worlds
 		IF (no_world()) THEN
+			-- new country can be inserted
 			RETURN NEW;
 		END IF;
+	-- if new country we want to insert is not of world type
 	ELSE
-		IF (insu_country(NEW.type, country_ty(NEW.super))) THEN
+		-- ..and new country is contained
+		-- in the correct type of super country 
+		IF (insu_country(NEW.type, country_type(NEW.super))) THEN
+			-- new country can be inserted
 			RETURN NEW;
 		END IF;
 	END IF;
 	
+	-- in all other cases new country cannot be inserted
 	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE TRIGGER new_country
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_country
+ * DESC : trigger to activate
+ *        before the inserting a new country
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_country
 BEFORE INSERT ON country
 FOR EACH ROW
-EXECUTE FUNCTION tf_new_country();
+EXECUTE FUNCTION tf_bi_country();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bi_player
  * DESC :
- */
-CREATE OR REPLACE FUNCTION tf_new_player()
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player
+(
+)
 RETURNS trigger
 AS
 $$
@@ -61,7 +85,11 @@ BEGIN
 	(
 		is_nation(NEW.country)
 		AND
-		is_in_country(CAST(extract(year from NEW.b_date) AS integer), NEW.country)
+		is_in_country
+		(
+			CAST(extract(year from NEW.b_date) AS integer),
+			NEW.country
+		)
 	)
 	THEN
 		RETURN NEW;
@@ -72,20 +100,27 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE TRIGGER new_player
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player 
+ * DESC : trigger to activate
+ *        before the inserting a new football player
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player
 BEFORE INSERT ON player
 FOR EACH ROW
-EXECUTE FUNCTION tf_new_player();
+EXECUTE FUNCTION tf_bi_player();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_team()
 RETURNS trigger
 AS
@@ -115,20 +150,27 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
+
+/*******************************************************************************
+ * TYPE : TRIGGER 
+ * NAME : 
+ * DESC : trigger to activate
+ *        before the inserting a new football team
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER new_team
 BEFORE INSERT ON team
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_team();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_conf()
 RETURNS trigger
 AS
@@ -150,20 +192,27 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
+
+/*******************************************************************************
+ * TYPE : TRIGGER 
+ * NAME : 
+ * DESC : trigger to activate
+ *        before the inserting a new football confederation
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER new_conf
 BEFORE INSERT ON conf
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_conf();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_p_country()
 RETURNS trigger
 AS
@@ -181,20 +230,27 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : 
+ * DESC : trigger to activate
+ *        before the inserting a new p_country table record
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER new_p_country
 BEFORE INSERT ON p_country
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_p_country();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_comp()
 RETURNS trigger
 AS
@@ -222,20 +278,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER new_comp
 BEFORE INSERT ON comp
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_comp();
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_comp_ed()
 RETURNS trigger
 AS
@@ -250,7 +312,7 @@ BEGIN
 		AND
 		(0 = (NEW.s_year - comp_sy(NEW.comp)) % comp_fq(comp))
 		AND
-		ctrl_formula( conf_ty( comp_conf(NEW.comp) ),comp_ty(NEW.comp), NEW.formula)
+		ctrl_formula(conf_ty(comp_conf(NEW.comp)), comp_ty(NEW.comp), NEW.formula)
 	)
 	THEN
 		RETURN NEW;
@@ -261,22 +323,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER new_comp_ed
 BEFORE INSERT ON comp_ed
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_comp_ed();
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_new_t_comp_ed()
 RETURNS trigger
 AS
@@ -313,160 +379,15 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : 
+ * NAME : 
  * DESC :
- */
-CREATE OR REPLACE TRIGGER new_t_comp_ed
+ ******************************************************************************/
 BEFORE INSERT ON t_comp_ed
 FOR EACH ROW
 EXECUTE FUNCTION tf_new_t_comp_ed();
-
-
-
-
-
-
-
-
-
-
-
------------------------------------------TRASH--------------------------------------------
-/*
-------------------------------------------------------------------------------------------
--- TRIGGER: player_country_nation
-------------------------------------------------------------------------------------------
--- trigger to check that a new country to be inserted that is not of type world
--- is contained in the appropriate country type
-------------------------------------------------------------------------------------------
-CREATE OR REPLACE TRIGGER player_country_nation
-BEFOR INSERT ON player_country
-FOR EACH ROW
-EXECUTE FUNCTION tf_is_country_nation()
-------------------------------------------------------------------------------------------
-
-
-------------------------------------------------------------------------------------------
--- TRIGGER FUNCTION: tf_is_born_country_nation
-------------------------------------------------------------------------------------------
--- trigger function for trigger player_nation
--- trigger function for trigger team_nation
--- trigger function for trigger player_country_nation
---------------------------------------------------------------
-CREATE OR REPLACE FUNCTION tf_is_country_nation()
-RETURNS trigger
-AS
-$$
-DECLARE
-	
-BEGIN
-
-	IF (is_nation(NEW.country)) THEN
-		RETURN NEW;
-	END IF;
-	
-	RETURN NULL;
-
-END;
-$$
-LANGUAGE plpgsql;
-
-------------------------------------------------------------
-
-
-CREATE OR REPLACE FUNCTION is_nation_function() RETURNS trigger AS
-$$
-DECLARE
-	name_country  country.name%TYPE;
-BEGIN
-	SELECT name INTO name_country
-	FROM country
-	WHERE code = NEW.country;
-
-	IF (name_country = NEW.name) THEN
-		RETURN NEW;
-	END IF;
-	
-	RAISE EXCEPTION 'ERROR. The name of national team must be equal to nation name';
-	RETURN NULL;
-END;
-$$
-LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE TRIGGER national_team_name
-BEFORE INSERT ON team
-FOR EACH ROW
-WHEN (NEW.type = 'NATIONAL')
-EXECUTE FUNCTION national_team_name_function();
-
---------------------------------------------------------------------
-CREATE OR REPLACE FUNCTION player_born_country_function() RETURNS trigger AS
-$$
-DECLARE
-	pb_year	country.start_year%TYPE = extract(year from (NEW.birth_date);
-	cs_year	country.start_year%TYPE;
-	ce_year country.end_year%TYPE;
-BEGIN
-	SELECT start_year, end_year INTO cs_year, ce_year
-	FROM country
-	WHERE code = NEW.country; 
-
-	IF (cs_year <= pb_year) THEN
-		IF (ce_year IS NOT NULL) THEN
-			IF (pb_year <= ce_year) THEN
-				RETURN NEW;
-			END IF;
-		ELSE
-			RETURN NEW;	
-		END IF
-	END IF;
-	
-	RAISE EXCEPTION 'ERROR. The player was born in a country that not exists';
-	RETURN NULL;
-END;
-$$
-LANGUAGE plpgsql;
-
-
-CREATE OR REPLACE TRIGGER player_born_country
-BEFORE INSERT ON player
-FOR EACH ROW
-EXECUTE FUNCTION player_born_country_function();
-
--------------------------------------------------------
-CREATE OR REPLACE FUNCTION team_country_function() RETURNS trigger AS
-$$
-DECLARE
-	cs_year	country.start_year%TYPE;
-	ce_year country.end_year%TYPE;
-BEGIN
-	SELECT start_year, end_year INTO cs_year, ce_year
-	FROM country
-	WHERE code = NEW.country;
-	
-	IF (cs_year <= NEW.start_year) THEN
-		IF (ce_year IS NOT NULL) THEN
-			IF (NEW.start_year <= ce_year) THEN
-				RETURN NEW;
-			END IF;
-		ELSE
-			RETURN NEW;
-		END IF;
-	END IF;
-	
-	RAISE EXCEPTION 'ERROR. Team belongs to a country that not exists';
-	RETURN NULL;
-END;
-$$
-LANGUAGE plpgsql;
-
-
-
-CREATE OR REPLACE TRIGGER team_country
-BEFORE INSERT ON team
-FOR EACH ROW
-EXECUTE FUNCTION team_country_function();
-											  */
+--------------------------------------------------------------------------------

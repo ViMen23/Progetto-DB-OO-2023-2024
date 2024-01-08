@@ -1,218 +1,306 @@
-/* PROJECT NAME : FOOTBALL PLAYER DATABASE
+/*******************************************************************************
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
  * FIELD        : COMPUTER SCIENCE
  * CLASS        : DATA BASES I
  * TEACHER      : SILVIO BARRA
  * YEAR         : 2023-2024
- */
+ ******************************************************************************/
 
 
-/* FUNCTION */
+/*******************************************************************************
+ * FUNCTION
+ ******************************************************************************/
 
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE FUNCTION no_world()
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : no_world
+ * DESC : returns true if there are no active world type countries,
+ *        false otherwise
+ *
+ *        IN      : void
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : boolean
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION no_world
+(
+)
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	n_world integer;
+	num_world integer; -- number of active world type country
 
 BEGIN
 
+	-- count all active world type country
 	SELECT count(*)
-	INTO n_world
+	INTO num_world -- ..and put into num_world 
 	FROM country
 	WHERE (type = 'WORLD') AND (e_year IS NULL);
 
+	-- if there are not active world type country
 	IF (0 = n_world)THEN
 		RETURN TRUE;
 	END IF;
 	
+	-- ..otherwise
 	RETURN FALSE;
 	
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE FUNCTION country_ty
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : country_type
+ * DESC : returns the country type of the country
+ *        identified by the input code country
+ *
+ *        IN      : country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : country.type%TYPE
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION country_type
 (
-	IN c_code country.code%TYPE
+	IN country_code country.code%TYPE
 )
 RETURNS country.type%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
 
-	c_type country.type%TYPE;
+	country_type country.type%TYPE;
 
 BEGIN
 
+	-- select the type of the country
+	-- associated with the input code country
 	SELECT type
-	INTO c_type
+	INTO country_type          -- put into country_type variable
 	FROM country
-	WHERE code = c_code;
+	WHERE code = country_code;
 	
+	-- and return it
 	RETURN c_type;
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE FUNCTION country_sy
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : country_s_year
+ * DESC : returns the country foundation year of the country
+ *        identified by the input code country
+ *
+ *        IN      : country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : country.s_year%TYPE
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION country_s_year
 (
-	IN c_code country.code%TYPE
+	IN country_code country.code%TYPE
 )
 RETURNS country.s_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
 
-	s_year country.s_year%TYPE;
+	year country.s_year%TYPE;
 
 BEGIN
 
+	-- select the fouondation year of the country
+	-- associated with the input code country
 	SELECT s_year
-	INTO s_year
+	INTO year                  -- put into year variable
 	FROM country
-	WHERE code = c_code;
+	WHERE code = country_code;
 	
-	RETURN s_year;
+	-- and return it
+	RETURN year;
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE FUNCTION country_ey
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : country_e_year
+ * DESC : returns the country suppression year of the country
+ *        identified by the input code country
+ *
+ *        IN      : country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : country.e_year%TYPE
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION country_e_year
 (
-	IN c_code country.code%TYPE
+	IN country_code country.code%TYPE
 )
 RETURNS country.e_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
 
-	e_year country.s_year%TYPE;
+	year country.s_year%TYPE;
 
 BEGIN
 
+	-- select the suppression year of the country
+	-- associated with the input code country
 	SELECT e_year
-	INTO e_year
+	INTO year                  -- put into year variable
 	FROM country
-	WHERE code = c_code;
+	WHERE code = country_code;
 	
-	RETURN e_year;
+	-- and return it
+	RETURN year;
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-
-
-/* TYPE :
- * NAME :
- * DESC :
- */
-CREATE OR REPLACE FUNCTION country_nm
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : country_name
+ * DESC : returns the country name of the country
+ *        identified by the input code country
+ *
+ *        IN      : country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : country.name%TYPE 
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION country_name
 (
-	IN  c_code country.code%TYPE
+	IN  couontry_code country.code%TYPE
 )
 RETURNS country.name%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
-	c_name country.name%TYPE;
+	name country.name%TYPE;
 BEGIN
 
+	-- select the name of the country
+	-- associated with the input code country
 	SELECT name
-	INTO c_name
+	INTO name                   -- put into year variable
 	FROM country
-	WHERE code = c_code;
+	WHERE code = couontry_code;
 	
-	RETURN c_name;
+	-- and return it
+	RETURN name;
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : insu_country
  * DESC :
- */
+ *
+ *        IN      : country.type%TYPE, country.type%TYPE
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : boolean
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION insu_country
 (
-	IN in_country country.type%TYPE,
-	IN su_country country.type%TYPE
+	IN in_country country.type%TYPE, -- inside country
+	IN su_country country.type%TYPE  -- super country
 )
 RETURNS boolean
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
 
 BEGIN
 
-	IF (in_country = 'NATION' AND su_country = 'CONTINENT') THEN
+	IF
+	(
+		-- if a type nation country
+		-- is inside a type continent country
+		(in_country = 'NATION' AND su_country = 'CONTINENT')
+		OR
+		-- ..or if a type continent country
+		-- is inside a type world country
+		(in_country = 'CONTINENT' AND su_country = 'WORLD')
+	)
+	THEN
+		-- the containment relationship
+		-- between the two countries is correct
 		RETURN TRUE;
 	END IF;
 	
-	IF (in_country = 'CONTINENT' AND su_country = 'WORLD') THEN
-		RETURN TRUE;
-	END IF;
-	
+	-- otherwise
+	-- the containment relationship
+	-- between the two countries is not correct
 	RETURN FALSE;
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_nation
  * DESC :
- */
+ *
+ *        IN      : country.code%TYPE 
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : boolean
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
-	IN c_code country.code%TYPE
+	IN country_code country.code%TYPE
 )
 RETURNS boolean
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
 
 BEGIN
-
-	IF (country_ty(c_code) = 'NATION') THEN
+	
+	-- if the country identified by the input country code
+	-- is of type nation 
+	IF (country_type(country_code) = 'NATION') THEN
 		RETURN TRUE;
 	END IF;
 	
@@ -220,15 +308,21 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : e_in_r
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION e_in_r
 (
 	IN e  integer,
@@ -247,13 +341,20 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : r1_in_r2
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION r1_in_r2
 (
 	IN sr1 integer,
@@ -277,14 +378,20 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_in_country
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN s_year dm_year,
@@ -307,13 +414,20 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_in_country
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN year   dm_year,
@@ -331,18 +445,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
-
-/* TYPE :
- * NAME :
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : conf_ty
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_ty
 (
 	IN conf_code conf.code%TYPE
 )
 RETURNS conf.type%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -360,18 +482,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : conf_sy
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_sy
 (
 	IN conf conf.code%TYPE
 )
 RETURNS conf.s_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -389,18 +520,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : conf_ey
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_ey
 (
 	IN conf conf.code%TYPE
 )
 RETURNS conf.s_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -418,13 +558,21 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_in_conf
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_conf
 (
 	IN s_year dm_year,
@@ -447,16 +595,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_sy
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_sy
 (
 	IN comp conf.code%TYPE
 )
 RETURNS comp.s_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -474,18 +632,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_ey
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_ey
 (
 	IN comp conf.code%TYPE
 )
 RETURNS comp.e_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -503,18 +670,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_tty
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_tty
 (
 	IN comp conf.code%TYPE
 )
 RETURNS comp.t_type%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -532,18 +708,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_ty
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_ty
 (
 	IN comp conf.code%TYPE
 )
 RETURNS comp.type%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -561,18 +746,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_fq
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_fq
 (
 	IN comp comp.id%TYPE
 )
 RETURNS comp.freq%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -590,18 +784,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_sex
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_sex
 (
 	IN comp comp.id%TYPE
 )
 RETURNS comp.sex%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -619,18 +822,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_max_age
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_max_age
 (
 	IN comp comp.id%TYPE
 )
 RETURNS comp.max_age%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -648,18 +860,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : comp_conf
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_conf
 (
 	IN comp comp.id%TYPE
 )
 RETURNS comp.conf%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -677,13 +898,21 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_in_comp
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_comp
 (
 	IN s_year dm_year,
@@ -706,16 +935,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : f_comp_ngroup
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION f_comp_ngroup
 (
 	IN f_comp f_comp.id%TYPE
 )
 RETURNS f_comp.n_group%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -733,18 +972,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : f_comp_pow2k
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION f_comp_pow2k
 (
 	IN formula f_comp.id%TYPE
 )
 RETURNS f_comp.pow2_k%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -762,13 +1010,21 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : ctrl_formula
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION ctrl_formula
 (
 	IN conf_ty conf.type%TYPE,
@@ -782,24 +1038,33 @@ DECLARE
 
 BEGIN
 
-	IF ('INDIVIDUAL' = comp_ty) THEN -- if competition is individual there isn't a formula
+	-- if competition is individual there isn't a formula
+	IF ('INDIVIDUAL' = comp_ty) THEN
 		IF (formula IS NULL) THEN
 			RETURN TRUE;
 		END IF;
-	ELSIF ('CHAMPIONSHIP' = comp_ty) THEN 	-- if competition is champhionship the formula must have
-		IF (0 <> f_comp_ngroup(formula) ) THEN -- at least a group. There isn't a control on 
-			RETURN TRUE; 						-- comp_ty because champhionship must have comp_ty= 
-		END IF;									-- 'NATION' as the trigger on comp says.
-	ELSIF ('TOURNAMENT' = comp_ty) THEN -- if competition is tournament the formula is a knockout iff
-		IF ('NATION' = conf_ty ) THEN   -- conf_ty = 'NATION' as we have seen yesterday on internet,
+	-- if competition is champhionship the formula must have
+	ELSIF ('CHAMPIONSHIP' = comp_ty) THEN
+		-- at least a group. There isn't a control on
+		IF (0 <> f_comp_ngroup(formula)) THEN  
+			-- comp_ty because champhionship must have comp_ty='NATION' as the trigger on comp says.
+			RETURN TRUE;	 
+		END IF;
+	-- if competition is tournament the formula is a knockout iff
+	ELSIF ('TOURNAMENT' = comp_ty) THEN
+		-- conf_ty = 'NATION' as we have seen yesterday on internet,
+		IF ('NATION' = conf_ty) THEN
 			IF (0 = f_comp_ngroup(formula)) THEN
 				RETURN TRUE;
 			END IF;
-		ELSE 										-- if conf_ty <> 'NATION' the formula must have at
-			IF ( 0 <> f_comp_pow2k(formula) ) THEN	-- least a knockout match
+		-- if conf_ty <> 'NATION' the formula must have at
+		ELSE
+			-- least a knockout match
+			IF (0 <> f_comp_pow2k(formula)) THEN
 				RETURN TRUE;
 			END IF;
-	ELSIF ('SUPER CUP' = comp_ty ) THEN -- if competition is super cup then the formula is knockout
+	-- if competition is super cup then the formula is knockout
+	ELSIF ('SUPER CUP' = comp_ty ) THEN
 		IF (0 = f_comp_ngroup(formula)) THEN
 				RETURN TRUE;
 			END IF;
@@ -810,16 +1075,26 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_sy
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_sy
 (
 	IN team team.id%TYPE
 )
 RETURNS team.s_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -837,18 +1112,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_ey
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_ey
 (
 	IN team team.id%TYPE
 )
 RETURNS team.e_year%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -866,18 +1150,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_ty
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_ty
 (
 	IN team team.id%TYPE
 )
 RETURNS team.type%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -895,18 +1188,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_sex
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_sex
 (
 	IN team team.id%TYPE
 )
 RETURNS team.sex%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -924,18 +1226,27 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_max_age
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_max_age
 (
 	IN team team.id%TYPE
 )
 RETURNS team.max_age%TYPE
+RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
 DECLARE
@@ -953,13 +1264,21 @@ BEGIN
 	
 END;
 $$
-RETURNS NULL ON NULL INPUT
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-/* TYPE :
- * NAME :
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_in_team
  * DESC :
- */
+ *
+ *        IN      : 
+ *        INOUT   : 
+ *        OUT     : 
+ *
+ *        RETURNS : 
+ ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_team
 (
 	IN s_year dm_year,
@@ -982,3 +1301,4 @@ BEGIN
 END;
 $$
 LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
