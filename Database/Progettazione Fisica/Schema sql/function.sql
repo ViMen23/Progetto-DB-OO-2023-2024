@@ -211,7 +211,7 @@ BEGIN
 	-- select the name of the country
 	-- associated with the input code country
 	SELECT name
-	INTO name                   -- put into year variable
+	INTO name                   -- put into name variable
 	FROM country
 	WHERE code = couontry_code;
 	
@@ -227,7 +227,10 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : insu_country
- * DESC :
+ * DESC : returns true if the given country type and its super type
+ *		  follow the containment relationship
+ *		  (e.d country type is NATION and super type is CONTINENT, or
+ *		   country type is CONTINENT and super type is WORLD)
  *
  *        IN      : country.type%TYPE, country.type%TYPE
  *        INOUT   : void
@@ -278,7 +281,7 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_nation
- * DESC :
+ * DESC : returns true if the given country code is of type NATION.
  *
  *        IN      : country.code%TYPE 
  *        INOUT   : void
@@ -304,6 +307,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
+	-- .. otherwise
 	RETURN FALSE;
 	
 END;
@@ -315,19 +319,19 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : e_in_r
- * DESC :
+ * DESC : returns true if the given element is contained in the given range 
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : integer, integer, integer
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION e_in_r
 (
-	IN e  integer,
-	IN sr integer,
-	IN er integer
+	IN e  integer, -- element
+	IN sr integer, -- start range
+	IN er integer  -- end range
 )
 RETURNS boolean
 AS
@@ -336,7 +340,10 @@ DECLARE
 
 BEGIN
 
-	RETURN r1_in_r2(e, e, sr, er);
+	-- call the function r1_in_r2 giving in input as
+	-- start and end of first range the variable e and
+	-- start and end of second range the variable sr and er
+	RETURN r1_in_r2(e, e, sr, er); 
 	
 END;
 $$
@@ -347,20 +354,20 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : r1_in_r2
- * DESC :
+ * DESC : returns true if the first range is contained in the second range
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : integer, integer, integer, integer
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION r1_in_r2
 (
-	IN sr1 integer,
-	IN er1 integer,
-	IN sr2 integer,
-	IN er2 integer
+	IN sr1 integer, -- start of the first range
+	IN er1 integer, -- end of the first range
+	IN sr2 integer, -- start of the second range
+	IN er2 integer  -- end of the second range
 )
 RETURNS boolean
 AS
@@ -368,11 +375,15 @@ $$
 DECLARE
 
 BEGIN
-
+	
+	-- to create a range it was used the function int4range that takes
+	-- in input the start and the end of a range and return its range
+	-- if the first range is contained (<@) in the second range
 	IF (int4range(sr1, er1) <@ int4range(sr2, er2)) THEN
 		RETURN TRUE;
 	END IF;
 	
+	-- .. otherwise
 	RETURN FALSE;
 	
 END;
@@ -384,19 +395,20 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_in_country
- * DESC :
+ * DESC : returns true if the given range is contained into
+ *		  the year's range of the country identified by the given code
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : dm_year, dm_year, country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN s_year dm_year,
 	IN e_year dm_year,
-	IN c_code	country.code%TYPE
+	IN c_code	country.code%TYPE -- country code
 )
 RETURNS boolean
 AS
@@ -404,11 +416,13 @@ $$
 DECLARE
 
 BEGIN
-	
+
+	-- if the first range is contained in the second one
 	IF (r1_in_r2(s_year, e_year, country_sy(c_code), country_ey(c_code))) THEN
 		RETURN TRUE;
 	END IF;
 	
+	-- .. otherwise
 	RETURN FALSE;
 	
 END;
@@ -420,18 +434,19 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_in_country
- * DESC :
+ * DESC : returns true if the given year is contained
+ *		  into the year's range of the country identified by the given code
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : dm_year, country.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_country
 (
 	IN year   dm_year,
-	IN c_code	country.code%TYPE
+	IN c_code	country.code%TYPE -- country code
 )
 RETURNS boolean
 AS
@@ -439,7 +454,10 @@ $$
 DECLARE
 
 BEGIN
-	
+
+	-- call to function is_in_country giving as argument:
+	-- year for both start and end range
+	-- c_code for the country code
 	RETURN is_in_country(year, year, c_code);
 	
 END;
@@ -451,17 +469,18 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : conf_ty
- * DESC :
+ * DESC : returns the confederation type of the confederation
+ *        identified by the input code confederation
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : conf.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : conf.code%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_ty
 (
-	IN conf_code conf.code%TYPE
+	IN conf_code conf.code%TYPE -- code confederation
 )
 RETURNS conf.type%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
@@ -469,15 +488,18 @@ AS
 $$
 DECLARE
 
-	conf_type conf.type%TYPE;
+	conf_type conf.type%TYPE; -- confederation type
 
 BEGIN
 
+	-- select the type of the confederation
+	-- associated with the input code confederation
 	SELECT type
-	INTO conf_type
+	INTO conf_type			-- put into conf_type variable
 	FROM conf
 	WHERE code = conf_code;
 	
+	-- and return it
 	RETURN conf_type;
 	
 END;
@@ -489,13 +511,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : conf_sy
- * DESC :
+ * DESC : returns the confederation foundation year of the confederation
+ *        identified by the input code confederation
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : conf.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : conf.s_year%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_sy
 (
@@ -511,11 +534,14 @@ DECLARE
 
 BEGIN
 
+	-- select the foundation year of the confederation
+	-- associated with the input code confederation
 	SELECT s_year
-	INTO year
+	INTO year			-- put into year variable
 	FROM conf
 	WHERE code = conf;
 	
+	-- and return it
 	RETURN s_year;
 	
 END;
@@ -527,19 +553,20 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : conf_ey
- * DESC :
+ * DESC : returns the confederation suppression year of the confederation
+ *        identified by the input code confederation
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : conf.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : conf.e_year%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_ey
 (
 	IN conf conf.code%TYPE
 )
-RETURNS conf.s_year%TYPE
+RETURNS conf.e_year%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
 AS
 $$
@@ -549,11 +576,14 @@ DECLARE
 
 BEGIN
 
+	-- select the suppression year of the confederation
+	-- associated with the input code confederation
 	SELECT e_year
-	INTO year
+	INTO year			-- put into year variable
 	FROM conf
 	WHERE code = conf;
 	
+	-- and return it
 	RETURN year;
 	
 END;
@@ -565,13 +595,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_in_conf
- * DESC :
+ * DESC : returns true if the given range is contained into
+ *		  the year's range of the confederation identified by the given code
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : dm_year, dm_year, conf.code%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_conf
 (
@@ -586,10 +617,12 @@ DECLARE
 
 BEGIN
 	
+	-- if the first range is contained in the second one
 	IF (r1_in_r2(s_year, e_year, conf_sy(c_code), conf_ey(c_code))) THEN
 		RETURN TRUE;
 	END IF;
 	
+	-- .. otherwise
 	RETURN FALSE;
 	
 END;
@@ -601,17 +634,18 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_sy
- * DESC :
+ * DESC : returns the competition foundation year of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.s_year%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_sy
 (
-	IN comp conf.code%TYPE
+	IN comp comp.id%TYPE
 )
 RETURNS comp.s_year%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
@@ -623,11 +657,14 @@ DECLARE
 
 BEGIN
 
+	-- select the foundation year of the competition
+	-- associated with the input id competition
 	SELECT s_year
-	INTO year
+	INTO year		-- put into year variable
 	FROM comp
 	WHERE id = comp;
 	
+	-- and return it
 	RETURN year;
 	
 END;
@@ -639,17 +676,18 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_ey
- * DESC :
+ * DESC : returns the competition suppression year of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.e_year%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_ey
 (
-	IN comp conf.code%TYPE
+	IN comp comp.id%TYPE
 )
 RETURNS comp.e_year%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
@@ -661,11 +699,14 @@ DECLARE
 
 BEGIN
 
+	-- select the suppression year of the competition
+	-- associated with the input id competition
 	SELECT e_year
-	INTO year
+	INTO year		-- put into year variable
 	FROM comp
 	WHERE id = comp;
 	
+	-- and return it
 	RETURN year;
 	
 END;
@@ -677,17 +718,18 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_tty
- * DESC :
+ * DESC : returns the competition team type of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.t_type%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_tty
 (
-	IN comp conf.code%TYPE
+	IN comp comp.id%TYPE
 )
 RETURNS comp.t_type%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
@@ -699,11 +741,14 @@ DECLARE
 
 BEGIN
 
+	-- select the team type of the competition
+	-- associated with the input id competition
 	SELECT t_type
-	INTO team
+	INTO team		-- put into team variable
 	FROM comp
 	WHERE id = comp;
 	
+	-- and return it
 	RETURN team;
 	
 END;
@@ -715,17 +760,18 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_ty
- * DESC :
+ * DESC : returns the competition type of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.type%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_ty
 (
-	IN comp conf.code%TYPE
+	IN comp comp.id%TYPE
 )
 RETURNS comp.type%TYPE
 RETURNS NULL ON NULL INPUT -- if any null input directly returns null
@@ -737,11 +783,14 @@ DECLARE
 
 BEGIN
 
+	-- select the type of the competition
+	-- associated with the input id competition
 	SELECT type
-	INTO type
+	INTO type		-- put into type variable
 	FROM comp
 	WHERE id = comp;
 	
+	-- and return it
 	RETURN type;
 	
 END;
@@ -753,13 +802,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_fq
- * DESC :
+ * DESC : returns the competition frequency of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.freq%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_fq
 (
@@ -771,16 +821,19 @@ AS
 $$
 DECLARE
 
-	freq comp.freq%TYPE;
+	tmp_freq comp.freq%TYPE;
 
 BEGIN
 
+	-- select the frequency of the competition
+	-- associated with the input id competition
 	SELECT freq
-	INTO freq
+	INTO tmp_freq		-- put into tmp_freq variable
 	FROM comp
 	WHERE id = comp;
 	
-	RETURN freq;
+	-- and return it
+	RETURN tmp_freq;
 	
 END;
 $$
@@ -791,13 +844,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_sex
- * DESC :
+ * DESC : returns the competition sex of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.sex%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_sex
 (
@@ -809,16 +863,19 @@ AS
 $$
 DECLARE
 
-	sex comp.sex%TYPE;
+	tmp_sex comp.sex%TYPE;
 
 BEGIN
 
+	-- select the sex of the competition
+	-- associated with the input id competition
 	SELECT sex
-	INTO sex
+	INTO tmp_sex	-- put into tmp_sex variable
 	FROM comp
 	WHERE id = comp;
 	
-	RETURN sex;
+	-- and return it
+	RETURN tmp_sex;
 	
 END;
 $$
@@ -829,13 +886,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_max_age
- * DESC :
+ * DESC : returns the competition max_age of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.max_age%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_max_age
 (
@@ -847,16 +905,19 @@ AS
 $$
 DECLARE
 
-	max_age comp.max_age%TYPE;
+	tmp_max_age comp.max_age%TYPE;
 
 BEGIN
 
+	-- select the max_age of the competition
+	-- associated with the input id competition
 	SELECT max_age
-	INTO max_age
+	INTO tmp_max_age	-- put into tmp_max_age variable
 	FROM comp
 	WHERE id = comp;
 	
-	RETURN max_age;
+	-- and return it
+	RETURN tmp_max_age;
 	
 END;
 $$
@@ -867,13 +928,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : comp_conf
- * DESC :
+ * DESC : returns the referred confederation of the competition
+ *        identified by the input id competition
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : comp.conf%TYPE
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION comp_conf
 (
@@ -885,16 +947,19 @@ AS
 $$
 DECLARE
 
-	conf comp.conf%TYPE;
+	tmp_conf comp.conf%TYPE;
 
 BEGIN
 
+	-- select the referred confederation of the competition
+	-- associated with the input id competition
 	SELECT conf
-	INTO conf
+	INTO tmp_conf	-- put into tmp_conf variable
 	FROM comp
 	WHERE id = comp;
 	
-	RETURN conf;
+	-- and return it
+	RETURN tmp_conf;
 	
 END;
 $$
@@ -905,13 +970,14 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_in_comp
- * DESC :
+ * DESC : returns true if the given range is contained into
+ *		  the year's range of the competition identified by the given id
  *
- *        IN      : 
- *        INOUT   : 
- *        OUT     : 
+ *        IN      : dm_year, dm_year, comp.id%TYPE
+ *        INOUT   : void
+ *        OUT     : void
  *
- *        RETURNS : 
+ *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_in_comp
 (
@@ -925,11 +991,14 @@ $$
 DECLARE
 
 BEGIN
-	
+
+
+	-- if the first range is contained in the second one
 	IF (r1_in_r2(s_year, e_year, comp_sy(comp), comp_ey(comp))) THEN
 		RETURN TRUE;
 	END IF;
 	
+	-- .. otherwise
 	RETURN FALSE;
 	
 END;
