@@ -47,7 +47,7 @@ BEGIN
 	WHERE (type = 'WORLD') AND (e_year IS NULL);
 
 	-- if there are not active world type country
-	IF (0 = n_world)THEN
+	IF (0 = num_world)THEN
 		RETURN TRUE;
 	END IF;
 	
