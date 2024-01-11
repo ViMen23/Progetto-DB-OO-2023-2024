@@ -32,17 +32,14 @@ CREATE SCHEMA public;
 
 /******************************************************************************* 
  * TYPE : DOMAIN
- * NAME : dm_an_str
+ * NAME : dm_alnum
  * DESC : TODO
  ******************************************************************************/
-CREATE DOMAIN dm_an_str AS varchar(100)
+CREATE DOMAIN dm_alnum AS varchar(100)
 CHECK
 (
-	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF0-9]'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF0-9\.\-\s'']{0,98}'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF0-9\.]$)'
-			'(?!.*[\-''\s]{2})((?:(?!\.[^\s])'
-			'(?![^a-zA-Z\u00C0-\u00F6\u00F8-\u00FF0-9]\.).)+)'
+	value ~ '/(?=^([\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\.\-'' \/]{0,98}'
+			'[\p{L}\p{M}\p{N}\.])$)(?!.*([\-'' \/]{2}|[\-''\.\/]{2}| \.))/'
 );
 --------------------------------------------------------------------------------
 
@@ -75,17 +72,14 @@ CHECK
 
 /*******************************************************************************
  * TYPE : DOMAIN
- * NAME : dm_en_str
+ * NAME : dm_string
  * DESC : TODO
  ******************************************************************************/
-CREATE DOMAIN dm_en_str AS varchar(100)
+CREATE DOMAIN dm_string AS varchar(100)
 CHECK
 (
-	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF\.\-\s'']{0,98}'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF\.]$)'
-			'(?!.*[\-''\s]{2})((?:(?!\.[^\s])'
-			'(?![^a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]\.).)+)'
+	value ~ '/(?=^([\p{L}\p{M}][\p{L}\p{M}\.\-'' ]{0,98}[\p{L}\p{M}\.])$)'
+			'(?!.*([\-'' ]{2}|[\-''\.]{2}| \.))/'
 );
 --------------------------------------------------------------------------------
 
@@ -98,7 +92,7 @@ CHECK
 CREATE DOMAIN dm_pwd AS varchar(255)
 CHECK
 (
-	value ~ '(?=[\w~!@#$%^&*()\-=+[{\]}\\|;:''"/?.>,<]{8,255}$)'
+	value ~ '(?=^([\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}]{8,255})$)'
 );
 --------------------------------------------------------------------------------
 
@@ -112,22 +106,6 @@ CREATE DOMAIN dm_scode AS varchar(3)
 CHECK
 (
 	value ~ '(?=^[A-Z]{2,3}$)'
-);
---------------------------------------------------------------------------------
-
-
-/******************************************************************************* 
- * TYPE : DOMAIN
- * NAME : dm_sp_str
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_sp_str AS varchar(100)
-CHECK
-(
-	value ~ '(?=^[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF\-\s]{0,98}'
-			'[a-zA-Z\u00C0-\u00F6\u00F8-\u00FF]$)'
-			'(?!.*[\-\s]{2})'
 );
 --------------------------------------------------------------------------------
 
@@ -153,7 +131,8 @@ CHECK
 CREATE DOMAIN dm_usr AS varchar(20)
 CHECK
 (
-	value ~ '(^(?=[\w.]{4,20}$)(?!.*[_.]{2})[^_.].*[^_.]$)'
+	value ~ '/(?=^([\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\.\-_]{2,18}'
+			'[\p{L}\p{M}\p{N}])$)(?!.*[-\._]{2})/'
 );
 --------------------------------------------------------------------------------
 
@@ -394,7 +373,7 @@ CREATE TABLE country
 	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
 	code	dm_scode	NOT NULL, -- code
-	name	dm_en_str	NOT NULL, -- name
+	name	dm_string	NOT NULL, -- name
 	year	dm_year		NOT NULL  -- foundation year
 );
 --------------------------------------------------------------------------------
@@ -496,7 +475,7 @@ CREATE TABLE conf
 	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
 	code	dm_code 	NOT NULL, -- code
-	name	dm_en_str	NOT NULL, -- name
+	name	dm_string	NOT NULL, -- name
 	year	dm_year		NOT NULL  -- foundation year
 );
 --------------------------------------------------------------------------------
@@ -881,7 +860,7 @@ CREATE TABLE team
 (
 	id		serial		NOT NULL, -- id
 	type	ty_team 	NOT NULL, -- type
-	name	dm_an_str	NOT NULL, -- name
+	name	dm_alnum	NOT NULL, -- name
 	age_cap	ty_age_cap	NOT NULL, -- age cap
 	sex		ty_sex		NOT NULL, -- sex
 	year	dm_year		NOT NULL  -- foundation year
@@ -1272,7 +1251,7 @@ CREATE TABLE comp
 	id			serial		NOT NULL, -- id
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
-	name		dm_en_str	NOT NULL, -- name
+	name		dm_string	NOT NULL, -- name
 	tier		ty_tier		NOT NULL, -- tier
 	age_cap		ty_age_cap	NOT NULL, -- age cap
 	sex			ty_sex		NOT NULL, -- sex
@@ -1822,8 +1801,8 @@ ON UPDATE CASCADE;
 CREATE TABLE player
 (
 	id		serial		NOT NULL, -- id player
-	name	dm_en_str	NOT NULL, -- name
-	surname	dm_en_str	NOT NULL, -- surname
+	name	dm_string	NOT NULL, -- name
+	surname	dm_string	NOT NULL, -- surname
 	sex		ty_sex		NOT NULL, -- sex
 	dob		dm_date		NOT NULL, -- birth date
 	foot	ty_foot		NOT NULL, -- preferred foot
@@ -2085,8 +2064,8 @@ CREATE TABLE tag
 (
 	id		serial		NOT NULL, -- id
 	type	ty_attr		NOT NULL, -- type
-	name	dm_en_str	NOT NULL, -- name
-	descr	dm_en_str	NOT NULL  -- description
+	name	dm_string	NOT NULL, -- name
+	descr	dm_string	NOT NULL  -- description
 );
 --------------------------------------------------------------------------------
 
@@ -2194,7 +2173,7 @@ CREATE TABLE pos
 	id		serial		NOT NULL, -- id
 	role	ty_role		NOT NULL, -- role code
 	code	dm_scode	NOT NULL, -- position code
-	name	dm_sp_str	NOT NULL  -- position name
+	name	dm_string	NOT NULL  -- position name
 );
 --------------------------------------------------------------------------------
 
@@ -2315,8 +2294,8 @@ CREATE TABLE attr
 (
 	id		serial		NOT NULL, -- attribute id
 	type	ty_attr		NOT NULL, -- attribute type
-	name	dm_en_str	NOT NULL, -- name
-	descr	dm_en_str	NOT NULL  -- description
+	name	dm_string	NOT NULL, -- name
+	descr	dm_string	NOT NULL  -- description
 );
 --------------------------------------------------------------------------------
 
@@ -2424,8 +2403,8 @@ CREATE TABLE stat
 (
 	id		serial		NOT NULL, -- id
 	role	ty_stat		NOT NULL, -- associated role
-	name	dm_en_str	NOT NULL, -- name
-	descr	dm_en_str	NOT NULL  -- description
+	name	dm_string	NOT NULL, -- name
+	descr	dm_string	NOT NULL  -- description
 );
 --------------------------------------------------------------------------------
 
@@ -2466,8 +2445,8 @@ CREATE TABLE trophy
 (
 	id		serial		NOT NULL, -- id
 	type	ty_trophy	NOT NULL, -- type
-	name	dm_en_str	NOT NULL, -- name
-	descr	dm_en_str	NOT NULL  -- description
+	name	dm_string	NOT NULL, -- name
+	descr	dm_string	NOT NULL  -- description
 );
 --------------------------------------------------------------------------------
 
@@ -2742,9 +2721,9 @@ CREATE TABLE prize
 (
 	id		serial		NOT NULL, -- id
 	type	ty_trophy	NOT NULL, -- type
-	name	dm_en_str	NOT NULL, -- name
-	descr	dm_en_str	NOT NULL, -- description
-	given	dm_en_str	NOT NULL, -- give the prize
+	name	dm_string	NOT NULL, -- name
+	descr	dm_string	NOT NULL, -- description
+	given	dm_string	NOT NULL, -- give the prize
 	year	dm_year		NOT NULL  -- starting year
 );
 --------------------------------------------------------------------------------
