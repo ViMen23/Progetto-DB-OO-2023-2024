@@ -267,6 +267,21 @@ CREATE TYPE ty_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : ty_freq
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE ty_freq AS ENUM
+(
+	'1Y',
+	'2Y',
+	'3Y',
+	'4Y'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : ty_role
  * DESC : TODO
  ******************************************************************************/
@@ -295,6 +310,32 @@ CREATE TYPE ty_sex AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : ty_stat
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE ty_stat AS ENUM
+(
+	'GK',
+	'DF',
+	'MF',
+	'FW',
+	'GK-DF',
+	'GK-MF',
+	'GK-FW',
+	'DF-MF',
+	'DF-FW',
+	'MF-FW',
+	'GK-DF-MF',
+	'GK-DF-FW',
+	'GK-MF-FW',
+	'DF-MF-FW',
+	'GK-DF-MF-FW'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : ty_team
  * DESC : TODO
  ******************************************************************************/
@@ -302,6 +343,22 @@ CREATE TYPE ty_team AS ENUM
 (
 	'CLUB',
 	'NATIONAL'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : ty_tier
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE ty_tier AS ENUM
+(
+	'L1',
+	'L2',
+	'L3',
+	'L4',
+	'L5'
 );
 --------------------------------------------------------------------------------
 
@@ -334,6 +391,7 @@ CREATE TYPE ty_trophy AS ENUM
  ******************************************************************************/
 CREATE TABLE country
 (
+	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
 	code	dm_scode	NOT NULL, -- code
 	name	dm_en_str	NOT NULL, -- name
@@ -350,17 +408,30 @@ ALTER TABLE	country
 ADD CONSTRAINT pk_country
 PRIMARY KEY
 (
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - country TABLE
+ * NAME : uq_country_code
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	country
+ADD CONSTRAINT uq_country_code
+UNIQUE
+(
 	code
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - country TABLE
- * NAME : uq_country
+ * NAME : uq_country_name
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	country
-ADD CONSTRAINT uq_country
+ADD CONSTRAINT uq_country_name
 UNIQUE
 (
 	name
@@ -376,8 +447,8 @@ UNIQUE
  ******************************************************************************/
 CREATE TABLE country_s
 (
-	country	dm_scode	NOT NULL, -- country code
-	year	dm_year		NOT NULL  -- suppression year
+	country	integer	NOT NULL, -- country code
+	year	dm_year	NOT NULL  -- suppression year
 );
 --------------------------------------------------------------------------------
 
@@ -407,7 +478,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -422,6 +493,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE conf
 (
+	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
 	code	dm_code 	NOT NULL, -- code
 	name	dm_en_str	NOT NULL, -- name
@@ -438,7 +510,7 @@ ALTER TABLE	conf
 ADD CONSTRAINT pk_conf
 PRIMARY KEY
 (
-	code
+	id
 );
 --------------------------------------------------------------------------------
 
@@ -464,7 +536,7 @@ UNIQUE
  ******************************************************************************/
 CREATE TABLE conf_s
 (
-	conf	dm_code NOT NULL, -- confederation
+	conf	integer NOT NULL, -- confederation
 	year	dm_year	NOT NULL  -- suppression year
 );
 --------------------------------------------------------------------------------
@@ -495,7 +567,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -510,8 +582,8 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE conf_conf
 (
-	member	dm_code	NOT NULL, -- member confederation
-	super	dm_code	NOT NULL, -- having member confederation
+	member	integer	NOT NULL, -- member confederation
+	super	integer	NOT NULL, -- having member confederation
 	year	dm_year NOT NULL  -- start year
 );
 --------------------------------------------------------------------------------
@@ -543,7 +615,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -562,7 +634,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -577,8 +649,8 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE conf_conf_h
 (
-	member	dm_code	NOT NULL, -- member confederation
-	super	dm_code	NOT NULL, -- having member confederation
+	member	integer	NOT NULL, -- member confederation
+	super	integer	NOT NULL, -- having member confederation
 	s_year	dm_year NOT NULL, -- start year
 	e_year	dm_year	NOT NULL  -- end year
 );
@@ -625,7 +697,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -644,7 +716,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -659,9 +731,9 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE conf_country
 (
-	conf	dm_code		NOT NULL, -- confederation code
-	country	dm_scode	NOT NULL, -- country code
-	year	dm_year		NOT NULL  -- start year
+	conf	integer	NOT NULL, -- confederation code
+	country	integer	NOT NULL, -- country code
+	year	dm_year	NOT NULL  -- start year
 );
 --------------------------------------------------------------------------------
 
@@ -691,7 +763,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -710,7 +782,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -725,10 +797,10 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE conf_country_h
 (
-	conf	dm_code		NOT NULL, -- confederation code
-	country	dm_scode	NOT NULL, -- country code
-	s_year	dm_year		NOT NULL, -- start year
-	e_year	dm_year		NOT NULL  -- end year
+	conf	integer	NOT NULL, -- confederation code
+	country	integer	NOT NULL, -- country code
+	s_year	dm_year	NOT NULL, -- start year
+	e_year	dm_year	NOT NULL  -- end year
 );
 --------------------------------------------------------------------------------
 
@@ -760,7 +832,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -779,7 +851,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -900,9 +972,9 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE team_nation
 (
-	team	integer		NOT NULL, -- team id
-	nation	dm_scode	NOT NULL, -- country code
-	year	dm_year		NOT NULL  -- start year
+	team	integer	NOT NULL, -- team id
+	nation	integer	NOT NULL, -- country code
+	year	dm_year	NOT NULL  -- start year
 );
 --------------------------------------------------------------------------------
 
@@ -951,7 +1023,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -966,10 +1038,10 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE team_nation_h
 (
-	team	integer		NOT NULL, -- team id
-	nation	dm_scode	NOT NULL, -- country code
-	s_year	dm_year		NOT NULL, -- start year
-	e_year	dm_year		NOT NULL  -- end year
+	team	integer	NOT NULL, -- team id
+	nation	integer	NOT NULL, -- country code
+	s_year	dm_year	NOT NULL, -- start year
+	e_year	dm_year	NOT NULL  -- end year
 );
 --------------------------------------------------------------------------------
 
@@ -1020,7 +1092,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1049,7 +1121,7 @@ CHECK
 CREATE TABLE team_conf
 (
 	team	integer	NOT NULL, -- team
-	conf	dm_code	NOT NULL, -- confederation
+	conf	integer	NOT NULL, -- confederation
 	year	dm_year	NOT NULL  -- start year
 );
 --------------------------------------------------------------------------------
@@ -1100,7 +1172,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1116,7 +1188,7 @@ ON UPDATE CASCADE;
 CREATE TABLE team_conf_h
 (
 	team	integer	NOT NULL, -- team
-	conf	dm_code	NOT NULL, -- confederation
+	conf	integer	NOT NULL, -- confederation
 	s_year	dm_year	NOT NULL, -- start year
 	e_year	dm_year	NOT NULL  -- end year
 );
@@ -1182,7 +1254,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1201,10 +1273,10 @@ CREATE TABLE comp
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
 	name		dm_en_str	NOT NULL, -- name
-	tier		dm_uint		NOT NULL, -- tier
+	tier		ty_tier		NOT NULL, -- tier
 	age_cap		ty_age_cap	NOT NULL, -- age cap
 	sex			ty_sex		NOT NULL, -- sex
-	freq		dm_uint		NOT NULL, -- frequency
+	freq		ty_freq		NOT NULL, -- frequency
 	year		dm_year		NOT NULL  -- foundation year
 );
 --------------------------------------------------------------------------------
@@ -1291,7 +1363,7 @@ ON UPDATE CASCADE;
 CREATE TABLE comp_conf
 (
 	comp	integer	NOT NULL, -- competition
-	conf	dm_code	NOT NULL, -- confederation
+	conf	integer	NOT NULL, -- confederation
 	year	dm_year	NOT NULL  -- start year
 );
 --------------------------------------------------------------------------------
@@ -1342,7 +1414,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1358,7 +1430,7 @@ ON UPDATE CASCADE;
 CREATE TABLE comp_conf_h
 (
 	comp	integer	NOT NULL, -- competition
-	conf	dm_code	NOT NULL, -- confederation
+	conf	integer	NOT NULL, -- confederation
 	s_year	dm_year	NOT NULL, -- start year
 	e_year	dm_year	NOT NULL  -- end year
 );
@@ -1424,7 +1496,7 @@ FOREIGN KEY
 )
 REFERENCES conf
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1755,7 +1827,7 @@ CREATE TABLE player
 	sex		ty_sex		NOT NULL, -- sex
 	dob		dm_date		NOT NULL, -- birth date
 	foot	ty_foot		NOT NULL, -- preferred foot
-	nation	dm_scode	NOT NULL  -- birth nation
+	nation	integer		NOT NULL  -- birth nation
 );
 --------------------------------------------------------------------------------
 
@@ -1802,7 +1874,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -1863,8 +1935,8 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE player_nation
 (
-	player	integer		NOT NULL, -- player id
-	nation	dm_scode	NOT NULL  -- country code
+	player	integer	NOT NULL, -- player id
+	nation	integer	NOT NULL  -- country code
 );
 --------------------------------------------------------------------------------
 
@@ -1914,7 +1986,7 @@ FOREIGN KEY
 )
 REFERENCES country
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -2119,6 +2191,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE pos
 (
+	id		serial		NOT NULL, -- id
 	role	ty_role		NOT NULL, -- role code
 	code	dm_scode	NOT NULL, -- position code
 	name	dm_sp_str	NOT NULL  -- position name
@@ -2134,17 +2207,30 @@ ALTER TABLE	pos
 ADD CONSTRAINT pk_pos
 PRIMARY KEY
 (
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - pos TABLE
+ * NAME : uq_pos_code
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	pos
+ADD CONSTRAINT uq_pos_code
+UNIQUE
+(
 	code
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - pos TABLE
- * NAME : uq_pos
+ * NAME : uq_pos_name
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	pos
-ADD CONSTRAINT uq_pos
+ADD CONSTRAINT uq_pos_name
 UNIQUE
 (
 	name
@@ -2160,9 +2246,9 @@ UNIQUE
  ******************************************************************************/
 CREATE TABLE player_pos
 (
-	player	integer		NOT NULL, -- player id
-	pos		dm_scode	NOT NULL, -- position code
-	match	dm_uint		NOT NULL  -- number of match TODO: funzione
+	player	integer	NOT NULL, -- player id
+	pos		integer	NOT NULL, -- position code
+	match	dm_uint	NOT NULL  -- number of match TODO: funzione
 );
 --------------------------------------------------------------------------------
 
@@ -2212,7 +2298,7 @@ FOREIGN KEY
 )
 REFERENCES pos
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -2337,6 +2423,7 @@ ON UPDATE CASCADE;
 CREATE TABLE stat
 (
 	id		serial		NOT NULL, -- id
+	role	ty_stat		NOT NULL, -- associated role
 	name	dm_en_str	NOT NULL, -- name
 	descr	dm_en_str	NOT NULL  -- description
 );
@@ -2366,53 +2453,6 @@ UNIQUE
 (
 	name
 );
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : stat_role
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE stat_role
-(
-	stat	integer	NOT NULL, -- statistic id
-	role	ty_role	NOT NULL  -- role
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - stat_role TABLE  
- * NAME : pk_stat_role
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE stat_role
-ADD CONSTRAINT pk_stat_role
-PRIMARY KEY
-(
-	stat,
-	role
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - stat_role TABLE
- * NAME : stat_role_fk_stat
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE stat_role
-ADD CONSTRAINT stat_role_fk_stat
-FOREIGN KEY
-(
-	stat
-)
-REFERENCES stat
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
@@ -2982,10 +3022,10 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE team_comp_ed_player_pos
 (
-	id				serial		NOT NULL, -- id
-	team_comp_ed	integer		NOT NULL, -- team competition edition
-	player			integer		NOT NULL, -- player
-	pos				dm_scode	NOT NULL  -- position
+	id				serial	NOT NULL, -- id
+	team_comp_ed	integer	NOT NULL, -- team competition edition
+	player			integer	NOT NULL, -- player
+	pos				integer	NOT NULL  -- position
 );
 --------------------------------------------------------------------------------
 
@@ -3068,7 +3108,7 @@ FOREIGN KEY
 )
 REFERENCES pos
 (
-	code
+	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
