@@ -96,6 +96,7 @@ VALUES
 ('NATION', 'DZA', 'Algeria', 1962),
 ('NATION', 'ECU', 'Ecuador', 1809),
 ('NATION', 'EGY', 'Egypt', 1952),
+('NATION', 'ENG', 'England', 1707),
 ('NATION', 'ERI', 'Eritrea', 1991),
 ('NATION', 'ESP', 'Spain', 1492),
 ('NATION', 'EST', 'Estonia', 1918),
@@ -172,7 +173,8 @@ VALUES
 ('NATION', 'NER', 'Niger', 1960),
 ('NATION', 'NGA', 'Nigeria', 1960),
 ('NATION', 'NIC', 'Nicaragua', 1821),
-('NATION', 'NIU', 'Niue',	1994),	
+('NATION', 'NIR', 'Northern Ireland', 1921),
+('NATION', 'NIU', 'Niue', 1994),	
 ('NATION', 'NLD', 'Netherlands', 1581),
 ('NATION', 'NOR', 'Norway', 1905),
 ('NATION', 'NPL', 'Nepal', 1768),
@@ -196,6 +198,7 @@ VALUES
 ('NATION', 'RUS', 'Russian Federation', 1991),
 ('NATION', 'RWA', 'Rwanda', 1962),
 ('NATION', 'SAU', 'Saudi Arabia', 1932),
+('NATION', 'SCT', 'Scotland', 1707),
 ('NATION', 'SDN', 'Sudan', 1956),
 ('NATION', 'SEN', 'Senegal', 1960),
 ('NATION', 'SGP', 'Singapore', 1965),
@@ -235,6 +238,7 @@ VALUES
 ('NATION', 'VEN', 'Venezuela', 1830),
 ('NATION', 'VNM', 'Vietnam', 1945),
 ('NATION', 'VUT', 'Vanuatu', 1980),
+('NATION', 'WLS', 'Wales', 1967),
 ('NATION', 'WSM', 'Samoa', 1962),
 ('NATION', 'XKX', 'Kosovo', 2008),
 ('NATION', 'YEM', 'Yemen', 1918),
@@ -242,3 +246,5 @@ VALUES
 ('NATION', 'ZMB', 'Zambia', 1964),
 ('NATION', 'ZWE', 'Zimbabwe', 1980);
 --------------------------------------------------------------------------------
+
+
