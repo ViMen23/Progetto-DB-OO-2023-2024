@@ -1198,7 +1198,6 @@ ON UPDATE CASCADE;
 CREATE TABLE comp
 (
 	id			serial		NOT NULL, -- id
-	conf		dm_code		NOT NULL, -- referring confederation
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
 	name		dm_en_str	NOT NULL, -- name
@@ -1234,43 +1233,6 @@ UNIQUE
 (
 	name
 );
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - comp TABLE
- * NAME : uq_comp
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp 
-ADD CONSTRAINT uq_comp
-UNIQUE
-(
-	conf,
-	type,
-	team_type,
-	tier,
-	age_cap,
-	sex
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp TABLE
- * NAME : comp_fk_conf
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp
-ADD CONSTRAINT comp_fk_conf
-FOREIGN KEY
-(
-	conf
-)
-REFERENCES conf
-(
-	code
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
@@ -1314,6 +1276,155 @@ FOREIGN KEY
 REFERENCES comp
 (
 	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : comp_conf
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE comp_conf
+(
+	comp	integer	NOT NULL, -- competition
+	conf	dm_code	NOT NULL, -- confederation
+	year	dm_year	NOT NULL  -- start year
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - comp_conf TABLE
+ * NAME : pk_comp_conf
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf
+ADD CONSTRAINT pk_comp_conf
+PRIMARY KEY
+(
+	comp,
+	conf
+); 
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - comp_conf TABLE
+ * NAME : comp_conf_fk_comp
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf
+ADD CONSTRAINT comp_conf_fk_comp
+FOREIGN KEY
+(
+	comp
+)
+REFERENCES comp
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - comp_conf TABLE
+ * NAME : comp_conf_fk_conf
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf
+ADD CONSTRAINT comp_conf_fk_conf
+FOREIGN KEY
+(
+	conf
+)
+REFERENCES conf
+(
+	code
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : comp_conf_h
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE comp_conf_h
+(
+	comp	integer	NOT NULL, -- competition
+	conf	dm_code	NOT NULL, -- confederation
+	s_year	dm_year	NOT NULL, -- start year
+	e_year	dm_year	NOT NULL  -- end year
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - team_conf_h TABLE
+ * NAME : pk_team_conf_h
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf_h
+ADD CONSTRAINT pk_comp_conf_h
+PRIMARY KEY
+(
+	comp,
+	conf,
+	s_year
+); 
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - comp_conf_h TABLE
+ * NAME : ck_comp_conf_h_year
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf_h
+ADD CONSTRAINT ck_comp_conf_h_year
+CHECK
+(
+	e_year - s_year >= 0
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - comp_conf_h TABLE
+ * NAME : comp_conf_h_fk_comp
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf_h
+ADD CONSTRAINT comp_conf_h_fk_comp
+FOREIGN KEY
+(
+	comp
+)
+REFERENCES comp
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - comp_conf_h TABLE
+ * NAME : comp_conf_h_fk_conf
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	comp_conf_h
+ADD CONSTRAINT comp_conf_h_fk_conf
+FOREIGN KEY
+(
+	conf
+)
+REFERENCES conf
+(
+	code
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
