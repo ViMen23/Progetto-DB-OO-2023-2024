@@ -38,21 +38,51 @@ CREATE SCHEMA public;
 CREATE DOMAIN dm_alnum AS varchar(100)
 CHECK
 (
-	value ~ '(?=^([\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\.\-'' \/]{0,98}'
-			'[\p{L}\p{M}\p{N}\.])$)(?!.*([\-'' \/]{2}|[\-''\.\/]{2}| \.))'
-);
---------------------------------------------------------------------------------
-
-
-/******************************************************************************* 
- * TYPE : DOMAIN
- * NAME : dm_code
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_code AS varchar(20)
-CHECK
-(
-	value ~ '(?=^[A-Z]{1,20}$)'
+	value ~ '(?=^'
+				'['
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']'
+				'['
+					'\u0020'
+					'\u0027'
+					'\u002D'
+					'\u002E'
+					'\u002F'
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']{0,98}'
+				'['
+					'\u002E'
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']'
+			'$)'
+			'(?!.*('
+				'[\u0020\u0027\u002D\u002F]{2}'
+				'|'
+				'[\u0027\u002D\u002E\u002F]{2}'
+				'|'
+				'\u0020\u002E'
+			'))'
 );
 --------------------------------------------------------------------------------
 
@@ -78,8 +108,47 @@ CHECK
 CREATE DOMAIN dm_string AS varchar(100)
 CHECK
 (
-	value ~ '(?=^([\p{L}\p{M}][\p{L}\p{M}\.\-'' ]{0,98}[\p{L}\p{M}\.])$)'
-			'(?!.*([\-'' ]{2}|[\-''\.]{2}| \.))'
+	value ~ '(?=^'
+				'['
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']'
+				'['
+					'\u0020'
+					'\u0027'
+					'\u002D'
+					'\u002E'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']{0,98}'
+				'['
+					'\u002E'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+				']'
+			'$)'
+			'(?!.*('
+				'[\u0020\u0027\u002D]{2}'
+				'|'
+				'[\u0027\u002D\u002E]{2}'
+				'|'
+				'\u0020\u002E'
+			'))'
 );
 --------------------------------------------------------------------------------
 
@@ -92,20 +161,20 @@ CHECK
 CREATE DOMAIN dm_pwd AS varchar(255)
 CHECK
 (
-	value ~ '(?=^([\p{L}\p{M}\p{Z}\p{S}\p{N}\p{P}]{8,255})$)'
+	value ~ '(?=^[\u0020-\u007E]{8,255}$)'
 );
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : DOMAIN
- * NAME : dm_scode
+ * NAME : dm_code
  * DESC : TODO
  ******************************************************************************/
-CREATE DOMAIN dm_scode AS varchar(3)
+CREATE DOMAIN dm_code AS varchar(3)
 CHECK
 (
-	value ~ '(?=^[A-Z]{2,3}$)'
+	value ~ '(?=^[\u0041-\u005A]{2,3}$)'
 );
 --------------------------------------------------------------------------------
 
@@ -131,8 +200,27 @@ CHECK
 CREATE DOMAIN dm_usr AS varchar(20)
 CHECK
 (
-	value ~ '(?=^([\p{L}\p{M}\p{N}][\p{L}\p{M}\p{N}\.\-_]{2,18}'
-			'[\p{L}\p{M}\p{N}])$)(?!.*[\-\._]{2})'
+	value ~ '(?=^'
+				'['
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+				']'
+				'['
+					'\u002D'
+					'\u002E'
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u005F'
+					'\u0061-\u007A'
+				']{2,18}'
+				'['
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+				']'
+			'$)'
+			'(?!.*[\u002D\u002E\u005F]{2})'
 );
 --------------------------------------------------------------------------------
 
@@ -338,7 +426,11 @@ CREATE TYPE ty_tier AS ENUM
 	'2ND-TIER',
 	'3RD-TIER',
 	'4TH-TIER',
-	'5TH-TIER'
+	'5TH-TIER',
+	'6TH-TIER',
+	'7TH-TIER',
+	'8TH-TIER',
+	'9TH-TIER'
 );
 --------------------------------------------------------------------------------
 
@@ -373,7 +465,7 @@ CREATE TABLE country
 (
 	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
-	code	dm_scode	NOT NULL, -- code
+	code	dm_code		NOT NULL, -- code
 	name	dm_string	NOT NULL, -- name
 	year	dm_year		NOT NULL  -- foundation year
 );
@@ -475,7 +567,7 @@ CREATE TABLE conf
 (
 	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
-	code	dm_code 	NOT NULL, -- code
+	code	dm_alnum 	NOT NULL, -- code
 	name	dm_string	NOT NULL, -- name
 	year	dm_year		NOT NULL  -- foundation year
 );
@@ -1629,7 +1721,7 @@ CREATE TABLE comp_ed
 	comp	integer	NOT NULL, -- referring competition
 	s_year	dm_year	NOT NULL, -- start year
 	e_year	dm_year	NOT NULL, -- end year
-	tier		ty_tier		NOT NULL, -- tier
+	tier	ty_tier	NOT NULL, -- tier
 	formula	integer NOT NULL  -- formula
 );
 --------------------------------------------------------------------------------
@@ -2173,7 +2265,7 @@ CREATE TABLE pos
 (
 	id		serial		NOT NULL, -- id
 	role	ty_role		NOT NULL, -- role code
-	code	dm_scode	NOT NULL, -- position code
+	code	dm_code		NOT NULL, -- position code
 	name	dm_string	NOT NULL  -- position name
 );
 --------------------------------------------------------------------------------
