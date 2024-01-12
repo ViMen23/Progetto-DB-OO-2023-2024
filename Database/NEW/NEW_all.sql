@@ -1253,7 +1253,6 @@ CREATE TABLE comp
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
 	name		dm_string	NOT NULL, -- name
-	tier		ty_tier		NOT NULL, -- tier
 	age_cap		ty_age_cap	NOT NULL, -- age cap
 	sex			ty_sex		NOT NULL, -- sex
 	freq		ty_freq		NOT NULL, -- frequency
@@ -1630,7 +1629,8 @@ CREATE TABLE comp_ed
 	comp	integer	NOT NULL, -- referring competition
 	s_year	dm_year	NOT NULL, -- start year
 	e_year	dm_year	NOT NULL, -- end year
-	formula	integer NOT NULL  -- formula TODO: discutere
+	tier		ty_tier		NOT NULL, -- tier
+	formula	integer NOT NULL  -- formula
 );
 --------------------------------------------------------------------------------
 
