@@ -568,7 +568,7 @@ CREATE TABLE conf
 	id		serial		NOT NULL, -- id
 	type	ty_country	NOT NULL, -- type
 	code	dm_alnum 	NOT NULL, -- code
-	name	dm_string	NOT NULL, -- name
+	name	dm_alnum	NOT NULL, -- name
 	year	dm_year		NOT NULL  -- foundation year
 );
 --------------------------------------------------------------------------------
