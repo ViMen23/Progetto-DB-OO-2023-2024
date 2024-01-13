@@ -246,26 +246,6 @@ CHECK
  ******************************************************************************/
 
 
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_age_cap
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_age_cap AS ENUM
-(
-	'U-15',
-	'U-16',
-	'U-17',
-	'U-18',
-	'U-19',
-	'U-20',
-	'U-21',
-	'U-22',
-	'U-23',
-	'MAJOR'
-);
---------------------------------------------------------------------------------
-
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
@@ -332,21 +312,6 @@ CREATE TYPE ty_foot AS ENUM
 );
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_freq
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_freq AS ENUM
-(
-	'EACH YEAR',
-	'EACH 2 YEAR',
-	'EACH 3 YEAR',
-	'EACH 4 YEAR',
-	'IRREGULAR'
-);
---------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -415,25 +380,6 @@ CREATE TYPE ty_team AS ENUM
 );
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_tier
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_tier AS ENUM
-(
-	'1ST-TIER',
-	'2ND-TIER',
-	'3RD-TIER',
-	'4TH-TIER',
-	'5TH-TIER',
-	'6TH-TIER',
-	'7TH-TIER',
-	'8TH-TIER',
-	'9TH-TIER'
-);
---------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -955,7 +901,7 @@ CREATE TABLE team
 	id		serial		NOT NULL, -- id
 	type	ty_team 	NOT NULL, -- type
 	name	dm_alnum	NOT NULL, -- name
-	age_cap	ty_age_cap	NOT NULL, -- age cap
+	age_cap	dm_uint	NOT NULL, -- age cap
 	sex		ty_sex		NOT NULL, -- sex
 	year	dm_year		NOT NULL  -- foundation year
 );
@@ -1346,9 +1292,8 @@ CREATE TABLE comp
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
 	name		dm_string	NOT NULL, -- name
-	age_cap		ty_age_cap	NOT NULL, -- age cap
 	sex			ty_sex		NOT NULL, -- sex
-	freq		ty_freq		NOT NULL, -- frequency
+	freq		dm_uint		NOT NULL, -- frequency
 	year		dm_year		NOT NULL  -- foundation year
 );
 --------------------------------------------------------------------------------
@@ -1722,7 +1667,8 @@ CREATE TABLE comp_ed
 	comp	integer	NOT NULL, -- referring competition
 	s_year	dm_year	NOT NULL, -- start year
 	e_year	dm_year	NOT NULL, -- end year
-	tier	ty_tier	NOT NULL, -- tier
+	tier	dm_uint	NOT NULL, -- tier
+	age_cap		dm_uint	NOT NULL, -- age cap
 	formula	integer NOT NULL  -- formula
 );
 --------------------------------------------------------------------------------
