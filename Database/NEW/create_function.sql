@@ -246,3 +246,87 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_from_id
+ * DESC : TODO
+ *
+ *        IN      : text, text, integer
+ *        INOUT   : void
+ *        OUT     : void
+ *
+ *        RETURNS : text
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_from_id
+(
+	IN	name_table		text,
+	IN	name_attribute	text,
+	IN	value_id		integer
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	to_execute	text	:= ''; 
+	
+	type_attribute	text;
+	
+	output_cursor	refcursor;
+	integer_output	integer;
+	
+	value_attribute	text;
+	
+BEGIN
+	
+	IF (NOT table_exists(name_table)) THEN
+		RETURN NULL;
+	END IF;
+	
+	IF (NOT attribute_exists(name_table, name_attribute)) THEN
+		RETURN NULL;
+	END IF;
+	
+	to_execute = to_execute || 'SELECT ' || name_attribute;
+	to_execute = to_execute || ' FROM ' || name_table;
+	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
+	
+	
+	
+	OPEN output_cursor FOR EXECUTE to_execute;
+	
+	
+	
+	type_attribute = get_attribute_type(name_table, name_attribute);
+	
+	
+	
+	IF (type_attribute LIKE '%int%') THEN
+		
+		FETCH output_cursor INTO integer_output;
+		
+		SELECT CAST(integer_output AS text)
+		INTO value_attribute; 
+		
+	ELSE
+	
+		FETCH output_cursor INTO value_attribute;
+	
+	END IF;
+	
+	CLOSE output_cursor;
+
+	
+	SELECT quote_literal(value_attribute)
+	INTO value_attribute;
+		
+	RETURN value_attribute;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
