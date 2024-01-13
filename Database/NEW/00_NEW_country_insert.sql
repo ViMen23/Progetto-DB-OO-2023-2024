@@ -227,7 +227,7 @@ VALUES
 ('NATION', 'TTO', 'Trinidad and Tobago', 1962),
 ('NATION', 'TUN', 'Tunisia', 1956),
 ('NATION', 'TUR', 'Türkiye', 1923),
-('NATION', 'TWN', 'Taiwan China', 1911),
+('NATION', 'TWN', 'Taiwan', 1911),
 ('NATION', 'TZA', 'Tanzania', 1964),
 ('NATION', 'UGA', 'Uganda', 1962),
 ('NATION', 'UKR', 'Ukraine', 1991),
