@@ -57,7 +57,7 @@ LANGUAGE plpgsql;
  * NAME : attribute_exists
  * DESC : TODO
  *
- *        IN      : text
+ *        IN      : text, text
  *        INOUT   : void
  *        OUT     : void
  *
@@ -103,11 +103,11 @@ LANGUAGE plpgsql;
  * NAME : get_attribute_type
  * DESC : TODO
  *
- *        IN      : text
+ *        IN      : text, text
  *        INOUT   : void
  *        OUT     : void
  *
- *        RETURNS : boolean
+ *        RETURNS : text
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_type
 (
@@ -155,11 +155,11 @@ LANGUAGE plpgsql;
  * NAME : get_id
  * DESC : TODO
  *
- *        IN      : text
+ *        IN      : text, text
  *        INOUT   : void
  *        OUT     : void
  *
- *        RETURNS : boolean
+ *        RETURNS : integer
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
