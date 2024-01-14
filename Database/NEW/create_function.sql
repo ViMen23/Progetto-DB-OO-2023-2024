@@ -211,13 +211,20 @@ BEGIN
 			
 			type_attribute = get_attribute_type(name_table, name_attribute);
 			
-			to_execute = to_execute || name_attribute || ' = ';
+			to_execute = to_execute || name_attribute;
 			
 		ELSIF (0 = (count % 2)) THEN
 		
 			value_attribute = input.string_to_table;
 			
-			IF (NOT type_attribute LIKE '%int%') THEN
+			IF ( value_attribute = 'NULL') THEN
+			
+				to_execute = to_execute || ' IS ';
+			ELSE
+				to_execute = to_execute || ' = ';
+			END IF;
+			
+			IF (NOT type_attribute LIKE '%int%' AND value_attribute <> 'NULL') THEN
 				
 				SELECT quote_literal(value_attribute)
 				INTO value_attribute;
