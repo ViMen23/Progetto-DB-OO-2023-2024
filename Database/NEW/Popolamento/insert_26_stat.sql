@@ -1,4 +1,3 @@
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -11,19 +10,20 @@
 
 
 /*******************************************************************************
- * INSERT formula
+ * INSERT stat
  ******************************************************************************/
-INSERT INTO formula (total_team, num_group, team_group, team_knock, min_match, max_match, ha_group, ha_knock, oc_group)
+INSERT INTO stat (role, name, descr)
 VALUES
-(
-	20,
-	1,
-	20,
-	0,
-	2,
-	38,
-	'TRUE',
-	NULL,
-	'FALSE'
-);
+('GK-DF-MF-FW', 'match', 'TODO'),
+('GK-DF-MF-FW', 'goal', 'TODO'),
+('GK-DF-MF-FW', 'assist', 'TODO'),
+('GK-DF-MF-FW', 'penalty scored', 'TODO'),
+('GK-DF-MF-FW', 'yellow card', 'TODO'),
+('GK-DF-MF-FW', 'red card', 'TODO'),
+('GK', 'goal conceded', 'TODO'),
+('GK', 'clean sheet', 'TODO'),
+('GK', 'penalty saved', 'TODO');
+
+
 --------------------------------------------------------------------------------
+
