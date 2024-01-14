@@ -57,6 +57,31 @@ VALUES
 	'06-12-1996',
 	'RIGHT',
 	get_id('@', 'country@code@ITA')
+),
+(
+	'Diego Armando',
+	'Maradona',
+	'MALE',
+	'1960-10-30',
+	'LEFT',
+	get_id('@', 'country@code@ARG')
+	
+),
+(
+	'Zlatan',
+	'Ibrahimović',
+	'MALE',
+	'1981-10-03',
+	'RIGHT',
+	get_id('@', 'country@code@SWE')
+),
+(
+	'Aitana Bonmatí',
+	'Conca',
+	'FEMALE',
+	'1998-01-18',
+	'RIGHT',
+	get_id('@', 'country@code@ESP')
 );
 
 --------------------------------------------------------------------------------

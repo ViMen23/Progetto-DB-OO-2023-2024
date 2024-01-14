@@ -1,3 +1,4 @@
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -10,15 +11,25 @@
 
 
 /*******************************************************************************
- * INSERT TEAM
+ * INSERT pos
  ******************************************************************************/
-INSERT INTO team (type, name, age_cap, sex,	year)
+INSERT INTO pos (role, code, name)
 VALUES
-('CLUB', 'SSC Napoli', 0, 'MALE', 1926),
-('CLUB', 'AC Milan', 0, 'MALE', 1899),
-('CLUB', 'Barcelona', 0, 'FEMALE', 1988),
-('NATIONAL', 'Italia', 0, 'MALE', 1910);
-
+('GK', 'GK', 'Goalkeeper'),
+('DF', 'CB', 'Centre-Back'),
+('DF', 'RB', 'Right-Back'),
+('DF', 'LB', 'Left-Back'),
+('DF', 'LWB', 'Left-Wing-Back'),
+('DF', 'RWB', 'Right-Wing-Back'),
+('MF', 'RM', 'Right Midfielder'),
+('MF', 'CM', 'Centre Midfielder'),
+('MF', 'CDM', 'Defensive Midfielder'),
+('MF', 'CAM', 'Attacking Midfielder'),
+('MF', 'LM', 'Left Midfielder'),
+('FW', 'RW', 'Right Winger'),
+('FW', 'RF', 'Right Forward'),
+('FW', 'ST', 'Striker'),
+('FW', 'CF', 'Centre Forward'),
+('FW', 'LF', 'Left Forward'),
+('FW', 'LW', 'Left Winger');
 --------------------------------------------------------------------------------
-
-

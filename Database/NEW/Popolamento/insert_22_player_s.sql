@@ -10,15 +10,32 @@
 
 
 /*******************************************************************************
- * INSERT TEAM
+ * INSERT player_s
  ******************************************************************************/
-INSERT INTO team (type, name, age_cap, sex,	year)
+INSERT INTO player_s (player, r_date)
 VALUES
-('CLUB', 'SSC Napoli', 0, 'MALE', 1926),
-('CLUB', 'AC Milan', 0, 'MALE', 1899),
-('CLUB', 'Barcelona', 0, 'FEMALE', 1988),
-('NATIONAL', 'Italia', 0, 'MALE', 1910);
-
+(
+	get_id
+	(
+		'@',
+		'player@name@Diego Armando@surname@Maradona'
+		'@sex@MALE@dob@1960-10-30@nation@' ||
+		get_id('@', 'country@code@ARG') 
+	),
+	'1997-10-25'
+),
+(
+	
+	get_id
+	(
+		'@',
+		'player@name@Zlatan@surname@Ibrahimović'
+		'@sex@MALE@dob@1981-10-03@nation@' ||
+		get_id('@', 'country@code@SWE') 
+	),
+	'2023-07-01'
+);
+	
 --------------------------------------------------------------------------------
 
 
