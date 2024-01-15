@@ -259,6 +259,28 @@ CHECK
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : ty_age_cap
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE ty_age_cap AS ENUM
+(
+	'MAJOR',
+	'U-15',
+	'U-16',
+	'U-17',
+	'U-18',
+	'U-19',
+	'U-20',
+	'U-21',
+	'U-22',
+	'U-23'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : ty_attr
  *
  * DESC : TODO
@@ -320,7 +342,7 @@ CREATE TYPE ty_country AS ENUM
  ******************************************************************************/
 CREATE TYPE ty_foot AS ENUM
 (
-	'AMBIDEXTROUS',
+	'EITHER',
 	'LEFT',
 	'RIGHT'
 );
@@ -411,6 +433,513 @@ CREATE TYPE ty_trophy AS ENUM
 	'PLAYER',
 	'TEAM'
 );
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * FUNCTION
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : table_exists
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION table_exists
+(
+	IN	name_table	text
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			information_schema.tables 
+		WHERE
+			table_catalog = 'fpdb'
+			AND
+			table_schema = 'public'
+			AND
+			table_name = name_table
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : attribute_exists
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION attribute_exists
+(
+	IN	name_table		text,
+	IN	name_attribute	text
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			information_schema.columns 
+		WHERE
+			table_catalog = 'fpdb'
+			AND
+			table_schema = 'public'
+			AND
+			table_name = name_table
+			AND
+			column_name = name_attribute
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_type
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_type
+(
+	IN	name_table		text,
+	IN	name_attribute	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	attribute_type text; 
+
+BEGIN
+	
+	
+	SELECT
+		data_type
+	INTO
+		attribute_type
+	FROM
+		information_schema.columns 
+	WHERE
+		table_catalog = 'fpdb'
+		AND
+		table_schema = 'public'
+		AND
+		table_name = name_table
+		AND
+		column_name = name_attribute;
+		
+	RETURN attribute_type;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_id
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_id
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	id_to_find	integer := NULL;
+	to_execute	text := '';
+	
+	count	integer := 0;
+	
+	name_table		text;
+	name_attribute	text;
+	value_attribute	text;
+	type_attribute	text;
+
+	input RECORD;
+	
+BEGIN
+	
+	FOR input IN
+		SELECT string_to_table(input_string, separator)
+	LOOP
+		
+		IF (0 = count) THEN
+
+			name_table = input.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+			
+			to_execute = to_execute || 'SELECT id ';
+			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
+			
+		ELSIF (1 = (count % 2)) THEN
+		
+			name_attribute = input.string_to_table;
+			
+			IF (NOT attribute_exists(name_table, name_attribute)) THEN
+				RETURN NULL;
+			END IF;
+			
+			type_attribute = get_attribute_type(name_table, name_attribute);
+			
+			to_execute = to_execute || name_attribute || ' = ';
+			
+		ELSIF (0 = (count % 2)) THEN
+		
+			value_attribute = input.string_to_table;
+			
+			IF (NOT type_attribute LIKE '%int%') THEN
+				
+				SELECT quote_literal(value_attribute)
+				INTO value_attribute;
+				
+			END IF;
+				
+			to_execute = to_execute || value_attribute || ' AND ';
+			
+		END IF;
+		
+		count = count + 1;
+		
+	END LOOP;
+	
+	
+	SELECT trim(to_execute, ' AND ')
+	INTO to_execute;
+	
+	to_execute = to_execute || ';';
+	
+	EXECUTE to_execute INTO id_to_find;
+	
+	RETURN id_to_find;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_from_id
+ *
+ * IN      : text, text, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_from_id
+(
+	IN	name_table		text,
+	IN	name_attribute	text,
+	IN	value_id		integer
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	to_execute	text	:= ''; 
+	
+	type_attribute	text;
+	
+	output_cursor	refcursor;
+	integer_output	integer;
+	
+	value_attribute	text;
+	
+BEGIN
+	
+	IF (NOT table_exists(name_table)) THEN
+		RETURN NULL;
+	END IF;
+	
+	IF (NOT attribute_exists(name_table, name_attribute)) THEN
+		RETURN NULL;
+	END IF;
+	
+	to_execute = to_execute || 'SELECT ' || name_attribute;
+	to_execute = to_execute || ' FROM ' || name_table;
+	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
+	
+	
+	
+	OPEN output_cursor FOR EXECUTE to_execute;
+	
+	
+	
+	type_attribute = get_attribute_type(name_table, name_attribute);
+	
+	
+	
+	IF (type_attribute LIKE '%int%') THEN
+		
+		FETCH output_cursor INTO integer_output;
+		
+		SELECT CAST(integer_output AS text)
+		INTO value_attribute; 
+		
+	ELSE
+	
+		FETCH output_cursor INTO value_attribute;
+	
+	END IF;
+	
+	CLOSE output_cursor;
+
+	
+	SELECT quote_literal(value_attribute)
+	INTO value_attribute;
+		
+	RETURN value_attribute;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_total_team
+ *
+ * IN      : integer, integer, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_total_team
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	team_knock	integer
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+BEGIN
+
+	IF (0 = num_group) THEN
+		RETURN team_knock;
+	ELSE
+		RETURN num_group * team_group;
+	END IF;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_min_match
+ *
+ * IN      : integer, integer, boolean, boolean, integer, boolean
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_min_match
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	ha_group		boolean,
+	IN	oc_group		boolean,
+	IN	team_knock	integer,
+	IN	ha_knock		boolean
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+DECLARE
+
+	min integer := 0; -- variable to accumulate minimum number of match
+
+BEGIN
+
+	-- if there are not groups the competition is just knockout type
+	IF (0 = num_group) THEN
+		-- miminum number of matches for each team is 1
+		min = 1;
+		
+		-- if knock out phase is home and away type
+		IF (ha_knock) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+	ELSE
+		-- if there are groups, a team will necessarily have to play
+		-- against all the teams in the same group
+		min = team_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+		-- if group phase is open and closure type
+		IF (oc_group) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+	END IF;
+
+	RETURN min;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_max_match
+ *
+ * IN      : integer, integer, boolean, boolean, integer, boolean
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_max_match
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	ha_group		boolean,
+	IN	oc_group		boolean,
+	IN	team_knock	integer,
+	IN	ha_knock		boolean
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+DECLARE
+
+	max integer := 0; -- variable to accumulate maximum number of match
+
+BEGIN
+	
+	-- if there is a group phase
+	IF (num_group <> 0) THEN
+		-- a team will necessarily have to play against
+		-- all the teams in its group
+		max = team_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+		-- if group phase is open and closure type
+		IF (oc_group) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+	END IF;
+	-- if there is a knock out phase
+	IF (team_knock <> 0) THEN
+		-- add all matches till final
+		max = max + CAST(log(2, team_knock) AS integer);
+		
+		-- if knock phase is home and away type
+		IF (ha_knock) THEN
+			-- add all matches except final
+			max = max + CAST(log(2, team_knock) AS integer) - 1;
+		END IF;
+		
+	END IF;
+	
+	RETURN max;	
+
+END;
+$$
+LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
@@ -866,7 +1395,7 @@ CREATE TABLE country_conf_h
 	s_year		dm_pyear	NOT NULL, -- start year
 	e_year		dm_pyear	NOT NULL, -- end year
 	country_id	integer		NOT NULL, -- country id
-	conf_id		integer		NOT NULL, -- confederation id
+	conf_id		integer		NOT NULL  -- confederation id
 );
 --------------------------------------------------------------------------------
 
@@ -954,7 +1483,7 @@ CREATE TABLE team
 	s_year	dm_pyear	NOT NULL, -- foundation year
 	type	ty_team 	NOT NULL, -- type
 	name	dm_alnum	NOT NULL, -- name
-	age_cap	dm_usint	NOT NULL, -- age cap
+	age_cap	ty_age_cap	NOT NULL, -- age cap
 	sex		ty_sex		NOT NULL  -- sex
 );
 --------------------------------------------------------------------------------
@@ -1136,7 +1665,7 @@ ALTER TABLE	country_team_h
 ADD CONSTRAINT pk_country_team_h
 PRIMARY KEY
 (
-	s_year
+	s_year,
 	country_id,
 	team_id
 );
@@ -1620,15 +2149,51 @@ ON UPDATE CASCADE;
 CREATE TABLE formula
 (
 	id			serial		NOT NULL, -- id
-	total_team	dm_usint	NOT NULL, -- total number of football teams
+	total_team	dm_usint	NOT NULL  -- total number of football teams
+		GENERATED ALWAYS AS
+		(
+			set_formula_total_team
+			(
+				num_group,
+				team_group,
+				team_knock
+			)
+		)
+		STORED						,
 	num_group	dm_usint	NOT NULL, -- number of groups
 	team_group	dm_usint	NOT NULL, -- number of teams for each group
 	ha_group	boolean		NOT NULL, -- home and away group phase
 	oc_group	boolean  	NOT NULL, -- open and closure group phase
 	team_knock	dm_usint	NOT NULL, -- number of teams for knock out phase
 	ha_knock	boolean		NOT NULL, -- home and away knockout phase
-	min_match	dm_usint 	NOT NULL, -- minimum number of matches for team
+	min_match	dm_usint 	NOT NULL  -- minimum number of matches for team
+		GENERATED ALWAYS AS
+		(
+			set_formula_min_match
+			(
+				num_group,
+				team_group,
+				ha_group,
+				oc_group,
+				team_knock,
+				ha_knock
+			)
+		)
+		STORED						,
 	max_match	dm_usint 	NOT NULL  -- maximum number of matches for team
+		GENERATED ALWAYS AS
+		(
+			set_formula_max_match
+			(
+				num_group,
+				team_group,
+				ha_group,
+				oc_group,
+				team_knock,
+				ha_knock
+			)
+		)
+		STORED	
 );
 --------------------------------------------------------------------------------
 
@@ -1676,23 +2241,19 @@ ADD CONSTRAINT ck_formula_group
 CHECK
 (
 	(
-		(0 = num_group)
+		0 = num_group
 		AND
-		(0 = team_group)
+		0 = team_group
 		AND
-		(ha_group IS NULL)
+		ha_group = FALSE
 		AND
-		(oc_group IS NULL)
+		oc_group = FALSE
 	)
 	OR
 	(
-		(num_group <= 20)
+		num_group <= 20
 		AND
-		(team_group BETWEEN 2 AND 100)
-		AND
-		(ha_group IS NOT NULL)
-		AND
-		(oc_group IS NOT NULL)
+		team_group BETWEEN 2 AND 100
 	)
 );
 --------------------------------------------------------------------------------
@@ -1708,17 +2269,15 @@ ADD CONSTRAINT ck_formula_knock
 CHECK
 (
 	(
-		(0 = team_knock)
+		0 = team_knock
 		AND
-		(ha_knock IS NULL)
+		ha_knock = FALSE
 	)
 	OR
 	(
-		(team_knock <= 256)
+		team_knock <= 256
 		AND
-		(floor(log(2, team_knock)) = ceil(log(2, team_knock)))
-		AND
-		(ha_knock IS NOT NULL)
+		floor(log(2, team_knock)) = ceil(log(2, team_knock))
 	)
 );
 --------------------------------------------------------------------------------
@@ -1733,7 +2292,7 @@ ALTER TABLE	formula
 ADD CONSTRAINT ck_formula_exist
 CHECK
 (
-	(team_knock <> 0) OR (num_group <> 0)
+	team_knock <> 0 OR num_group <> 0
 );
 --------------------------------------------------------------------------------
 
@@ -1766,7 +2325,7 @@ CREATE TABLE comp_ed
 	e_year		dm_pyear	NOT NULL, -- end year
 	comp_id		integer		NOT NULL, -- referring competition
 	tier		dm_usint	NOT NULL, -- tier
-	age_cap		dm_usint	NOT NULL, -- age cap
+	age_cap		ty_age_cap	NOT NULL, -- age cap
 	formula_id	integer 	NOT NULL  -- formula
 );
 --------------------------------------------------------------------------------
@@ -2519,7 +3078,7 @@ CREATE TABLE player_attr
 (
 	player_id	integer		NOT NULL, -- player id
 	attr_id		integer		NOT NULL, -- attribute id
-	value		dm_usint	NOT NULL  -- value of attribute for player
+	score		dm_usint	NOT NULL  -- score of attribute for player
 );
 --------------------------------------------------------------------------------
 
@@ -2928,6 +3487,8 @@ CREATE TABLE prize
 	id		serial		NOT NULL, -- id
 	s_year	dm_pyear	NOT NULL, -- starting year
 	type	ty_trophy	NOT NULL, -- type
+	sex		ty_sex		NOT NULL, -- sex
+	age_cap	ty_age_cap	NOT NULL, -- age cap
 	name	dm_string	NOT NULL, -- name
 	descr	dm_string	NOT NULL, -- description
 	given	dm_string	NOT NULL  -- give the prize
@@ -3335,7 +3896,7 @@ CREATE TABLE comp_ed_team_player_pos_stat
 (
 	comp_ed_team_player_pos_id	integer		NOT NULL, -- p_season id
 	stat_id						integer		NOT NULL, -- statistic id
-	value						dm_usint	NOT NULL  -- value
+	score						dm_usint	NOT NULL  -- score
 );
 --------------------------------------------------------------------------------
 

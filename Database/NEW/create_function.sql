@@ -13,13 +13,13 @@
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : table_exists
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
  * DESC : TODO
- *
- *        IN      : text
- *        INOUT   : void
- *        OUT     : void
- *
- *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION table_exists
 (
@@ -55,13 +55,13 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : attribute_exists
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
  * DESC : TODO
- *
- *        IN      : text, text
- *        INOUT   : void
- *        OUT     : void
- *
- *        RETURNS : boolean
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION attribute_exists
 (
@@ -101,13 +101,13 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : get_attribute_type
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
  * DESC : TODO
- *
- *        IN      : text, text
- *        INOUT   : void
- *        OUT     : void
- *
- *        RETURNS : text
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_type
 (
@@ -153,13 +153,13 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : get_id
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
  * DESC : TODO
- *
- *        IN      : text, text
- *        INOUT   : void
- *        OUT     : void
- *
- *        RETURNS : integer
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
@@ -211,20 +211,13 @@ BEGIN
 			
 			type_attribute = get_attribute_type(name_table, name_attribute);
 			
-			to_execute = to_execute || name_attribute;
+			to_execute = to_execute || name_attribute || ' = ';
 			
 		ELSIF (0 = (count % 2)) THEN
 		
 			value_attribute = input.string_to_table;
 			
-			IF ( value_attribute = 'NULL') THEN
-			
-				to_execute = to_execute || ' IS ';
-			ELSE
-				to_execute = to_execute || ' = ';
-			END IF;
-			
-			IF (NOT type_attribute LIKE '%int%' AND value_attribute <> 'NULL') THEN
+			IF (NOT type_attribute LIKE '%int%') THEN
 				
 				SELECT quote_literal(value_attribute)
 				INTO value_attribute;
@@ -259,13 +252,13 @@ LANGUAGE plpgsql;
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : get_attribute_from_id
+ *
+ * IN      : text, text, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
  * DESC : TODO
- *
- *        IN      : text, text, integer
- *        INOUT   : void
- *        OUT     : void
- *
- *        RETURNS : text
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_from_id
 (
@@ -333,6 +326,185 @@ BEGIN
 		
 	RETURN value_attribute;
 	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_total_team
+ *
+ * IN      : integer, integer, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_total_team
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	team_knock	integer
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+BEGIN
+
+	IF (0 = num_group) THEN
+		RETURN team_knock;
+	ELSE
+		RETURN num_group * team_group;
+	END IF;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_min_match
+ *
+ * IN      : integer, integer, boolean, boolean, integer, boolean
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_min_match
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	ha_group		boolean,
+	IN	oc_group		boolean,
+	IN	team_knock	integer,
+	IN	ha_knock		boolean
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+DECLARE
+
+	min integer := 0; -- variable to accumulate minimum number of match
+
+BEGIN
+
+	-- if there are not groups the competition is just knockout type
+	IF (0 = num_group) THEN
+		-- miminum number of matches for each team is 1
+		min = 1;
+		
+		-- if knock out phase is home and away type
+		IF (ha_knock) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+	ELSE
+		-- if there are groups, a team will necessarily have to play
+		-- against all the teams in the same group
+		min = team_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+		-- if group phase is open and closure type
+		IF (oc_group) THEN
+			-- double the minimum
+			min = min * 2;
+		END IF;
+		
+	END IF;
+
+	RETURN min;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_formula_max_match
+ *
+ * IN      : integer, integer, boolean, boolean, integer, boolean
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_formula_max_match
+(
+	IN	num_group		integer,
+	IN	team_group	integer,
+	IN	ha_group		boolean,
+	IN	oc_group		boolean,
+	IN	team_knock	integer,
+	IN	ha_knock		boolean
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+IMMUTABLE
+AS
+$$
+DECLARE
+
+	max integer := 0; -- variable to accumulate maximum number of match
+
+BEGIN
+	
+	-- if there is a group phase
+	IF (num_group <> 0) THEN
+		-- a team will necessarily have to play against
+		-- all the teams in its group
+		max = team_group - 1;
+		
+		-- if group phase is home and away type
+		IF (ha_group) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+		-- if group phase is open and closure type
+		IF (oc_group) THEN
+			-- double the maximum
+			max = max * 2;
+		END IF;
+		
+	END IF;
+	-- if there is a knock out phase
+	IF (team_knock <> 0) THEN
+		-- add all matches till final
+		max = max + CAST(log(2, team_knock) AS integer);
+		
+		-- if knock phase is home and away type
+		IF (ha_knock) THEN
+			-- add all matches except final
+			max = max + CAST(log(2, team_knock) AS integer) - 1;
+		END IF;
+		
+	END IF;
+	
+	RETURN max;	
+
 END;
 $$
 LANGUAGE plpgsql;
