@@ -237,14 +237,14 @@ CHECK
 
 /*******************************************************************************
  * TYPE : DOMAIN
- * NAME : dm_pyear
+ * NAME : dm_year
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE DOMAIN dm_pyear AS smallint
+CREATE DOMAIN dm_year AS smallint
 CHECK
 (
-	value BETWEEN 0 AND extract(year from current_date)
+	value BETWEEN 0 AND (extract(year from current_date) + 1)
 );
 --------------------------------------------------------------------------------
 
@@ -348,6 +348,36 @@ CREATE TYPE ty_foot AS ENUM
 );
 --------------------------------------------------------------------------------
 
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : ty_formula
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE ty_formula AS ENUM
+(
+	'GROUP',
+	'GROUP HOME/AWAY',
+	'GROUP OPEN/CLOSURE',
+	'GROUP HOME/AWAY OPEN/CLOSURE',
+	'KNOCKOUT',
+	'KNOCKOUT HOME/AWAY',
+	'KNOCKOUT HOME/AWAY + FINAL',
+	'GROUP + KNOCKOUT',
+	'GROUP + KNOCKOUT HOME/AWAY',
+	'GROUP + KNOCKOUT HOME/AWAY + FINAL',
+	'GROUP HOME/AWAY + KNOCKOUT',
+	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY',
+	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL',
+	'GROUP OPEN/CLOSURE + KNOCKOUT',
+	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
+	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL',
+	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT',
+	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
+	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL'
+);
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -806,7 +836,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : set_formula_min_match
  *
- * IN      : integer, integer, boolean, boolean, integer, boolean
+ * IN      : ty_formula, integer, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
@@ -815,56 +845,77 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_formula_min_match
 (
-	IN	num_group		integer,
-	IN	team_group	integer,
-	IN	ha_group		boolean,
-	IN	oc_group		boolean,
-	IN	team_knock	integer,
-	IN	ha_knock		boolean
+	IN	type		ty_formula,
+	IN	num_group	integer,
+	IN	team_group	integer
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
 IMMUTABLE
 AS
 $$
-DECLARE
-
-	min integer := 0; -- variable to accumulate minimum number of match
-
 BEGIN
 
-	-- if there are not groups the competition is just knockout type
-	IF (0 = num_group) THEN
-		-- miminum number of matches for each team is 1
-		min = 1;
-		
-		-- if knock out phase is home and away type
-		IF (ha_knock) THEN
-			-- double the minimum
-			min = min * 2;
-		END IF;
-		
-	ELSE
-		-- if there are groups, a team will necessarily have to play
-		-- against all the teams in the same group
-		min = team_group - 1;
-		
-		-- if group phase is home and away type
-		IF (ha_group) THEN
-			-- double the minimum
-			min = min * 2;
-		END IF;
-		
-		-- if group phase is open and closure type
-		IF (oc_group) THEN
-			-- double the minimum
-			min = min * 2;
-		END IF;
-		
-	END IF;
-
-	RETURN min;
-
+	CASE type
+	
+		WHEN 'GROUP' THEN
+			RETURN team_group - 1;
+			
+		WHEN 'GROUP HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP OPEN/CLOSURE' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
+			RETURN (team_group - 1) * 2 * 2;
+			
+		WHEN 'KNOCKOUT' THEN
+			RETURN 1;
+			
+		WHEN 'KNOCKOUT HOME/AWAY' THEN
+			RETURN 1 * 2;
+			
+		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN 1;
+			
+		WHEN 'GROUP + KNOCKOUT' THEN
+			RETURN team_group - 1;
+			
+		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
+			RETURN team_group - 1;
+			
+		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN team_group - 1;
+			
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2 * 2;
+			
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2 * 2;
+			
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2 * 2;
+			
+	END CASE;
 END;
 $$
 LANGUAGE plpgsql;
@@ -874,9 +925,9 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : set_formula_max_match
+ * NAME : set_formula_min_match
  *
- * IN      : integer, integer, boolean, boolean, integer, boolean
+ * IN      : ty_formula, integer, integer, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
@@ -885,58 +936,78 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_formula_max_match
 (
-	IN	num_group		integer,
+	IN	type		ty_formula,
+	IN	num_group	integer,
 	IN	team_group	integer,
-	IN	ha_group		boolean,
-	IN	oc_group		boolean,
-	IN	team_knock	integer,
-	IN	ha_knock		boolean
+	IN	team_knock	integer
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
 IMMUTABLE
 AS
 $$
-DECLARE
-
-	max integer := 0; -- variable to accumulate maximum number of match
-
 BEGIN
-	
-	-- if there is a group phase
-	IF (num_group <> 0) THEN
-		-- a team will necessarily have to play against
-		-- all the teams in its group
-		max = team_group - 1;
-		
-		-- if group phase is home and away type
-		IF (ha_group) THEN
-			-- double the maximum
-			max = max * 2;
-		END IF;
-		
-		-- if group phase is open and closure type
-		IF (oc_group) THEN
-			-- double the maximum
-			max = max * 2;
-		END IF;
-		
-	END IF;
-	-- if there is a knock out phase
-	IF (team_knock <> 0) THEN
-		-- add all matches till final
-		max = max + CAST(log(2, team_knock) AS integer);
-		
-		-- if knock phase is home and away type
-		IF (ha_knock) THEN
-			-- add all matches except final
-			max = max + CAST(log(2, team_knock) AS integer) - 1;
-		END IF;
-		
-	END IF;
-	
-	RETURN max;	
 
+	CASE type
+	
+		WHEN 'GROUP' THEN
+			RETURN team_group - 1;
+			
+		WHEN 'GROUP HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP OPEN/CLOSURE' THEN
+			RETURN (team_group - 1) * 2;
+			
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
+			RETURN (team_group - 1) * 2 * 2;
+			
+		WHEN 'KNOCKOUT' THEN
+			RETURN CAST(ceil(log(2, team_knock)) AS integer);
+						
+		WHEN 'KNOCKOUT HOME/AWAY' THEN
+			RETURN CAST(ceil(log(2, team_knock)) AS integer) * 2;
+						
+		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
+					
+		WHEN 'GROUP + KNOCKOUT' THEN
+			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer);
+										 
+		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
+			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
+										 
+		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN team_group - 1 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
+									 
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
+											   
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
+											   
+		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
+										   
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
+											   
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
+											   
+		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
+										   
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
+			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer);
+												   
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
+			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
+												   
+		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
+			RETURN (team_group - 1) * 2 * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
+											   
+	END CASE;
 END;
 $$
 LANGUAGE plpgsql;
@@ -1141,9 +1212,7 @@ ALTER TABLE	team
 ADD CONSTRAINT uq_team
 UNIQUE
 (
-	name,
-	age_cap,
-	sex
+	name
 );
 --------------------------------------------------------------------------------
 
@@ -1167,7 +1236,25 @@ ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
-
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - team TABLE
+ * NAME : team_fk_conf
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	team
+ADD CONSTRAINT team_fk_conf
+FOREIGN KEY
+(
+	conf_id
+)
+REFERENCES conf
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
 
 
 
@@ -1184,12 +1271,12 @@ ON UPDATE CASCADE;
 CREATE TABLE comp
 (
 	id			serial		NOT NULL, -- id
-	s_year		dm_pyear	NOT NULL, -- foundation year
 	type		ty_comp		NOT NULL, -- type
 	team_type	ty_team		NOT NULL, -- team type
 	name		dm_string	NOT NULL, -- name
 	sex			ty_sex		NOT NULL, -- sex
-	freq		dm_usint	NOT NULL  -- frequency
+	freq		dm_usint	NOT NULL, -- frequency
+	conf_id		integer		NOT NULL  -- confederation id
 );
 --------------------------------------------------------------------------------
 
@@ -1221,55 +1308,25 @@ UNIQUE
 );
 --------------------------------------------------------------------------------
 
-
-
 /*******************************************************************************
- * TYPE : TABLE
- * NAME : comp_s
+ * TYPE : FOREIGN KEY CONSTRAINT - comp TABLE
+ * NAME : comp_fk_conf
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE comp_s
-(
-	e_year	dm_pyear	NOT NULL, -- suppression year
-	comp_id	integer		NOT NULL  -- competition id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - comp_s TABLE
- * NAME : pk_comp_s
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_s
-ADD CONSTRAINT pk_comp_s
-PRIMARY KEY
-(
-	comp_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_s TABLE
- * NAME : comp_s_fk_comp
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_s
-ADD CONSTRAINT comp_s_fk_comp
+ALTER TABLE	comp
+ADD CONSTRAINT comp_fk_conf
 FOREIGN KEY
 (
-	comp_id
+	conf_id
 )
-REFERENCES comp
+REFERENCES conf
 (
 	id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
-
 
 
 
@@ -1282,6 +1339,7 @@ ON UPDATE CASCADE;
 CREATE TABLE formula
 (
 	id			serial		NOT NULL, -- id
+	type		ty_formula	NOT NULL, -- type
 	total_team	dm_usint	NOT NULL  -- total number of football teams
 		GENERATED ALWAYS AS
 		(
@@ -1295,21 +1353,15 @@ CREATE TABLE formula
 		STORED						,
 	num_group	dm_usint	NOT NULL, -- number of groups
 	team_group	dm_usint	NOT NULL, -- number of teams for each group
-	ha_group	boolean		NOT NULL, -- home and away group phase
-	oc_group	boolean  	NOT NULL, -- open and closure group phase
 	team_knock	dm_usint	NOT NULL, -- number of teams for knock out phase
-	ha_knock	boolean		NOT NULL, -- home and away knockout phase
 	min_match	dm_usint 	NOT NULL  -- minimum number of matches for team
 		GENERATED ALWAYS AS
 		(
 			set_formula_min_match
 			(
+				type,
 				num_group,
-				team_group,
-				ha_group,
-				oc_group,
-				team_knock,
-				ha_knock
+				team_group
 			)
 		)
 		STORED						,
@@ -1318,12 +1370,10 @@ CREATE TABLE formula
 		(
 			set_formula_max_match
 			(
+				type,
 				num_group,
 				team_group,
-				ha_group,
-				oc_group,
-				team_knock,
-				ha_knock
+				team_knock
 			)
 		)
 		STORED	
@@ -1354,11 +1404,9 @@ ALTER TABLE	formula
 ADD CONSTRAINT uq_formula
 UNIQUE
 (
+	type,
 	num_group,
 	team_group,
-	ha_group,
-	ha_knock,
-	oc_group,
 	team_knock
 );
 --------------------------------------------------------------------------------
@@ -1374,16 +1422,16 @@ ADD CONSTRAINT ck_formula_group
 CHECK
 (
 	(
+		NOT (CAST(type AS text) LIKE '%GROUP%')
+		AND
 		0 = num_group
 		AND
 		0 = team_group
-		AND
-		ha_group = FALSE
-		AND
-		oc_group = FALSE
 	)
 	OR
 	(
+		CAST(type AS text) LIKE '%GROUP%'
+		AND
 		num_group <= 20
 		AND
 		team_group BETWEEN 2 AND 100
@@ -1402,12 +1450,14 @@ ADD CONSTRAINT ck_formula_knock
 CHECK
 (
 	(
-		0 = team_knock
+		NOT (CAST(type AS text) LIKE '%KNOCKOUT%')
 		AND
-		ha_knock = FALSE
+		0 = team_knock
 	)
 	OR
 	(
+		CAST(type AS text) LIKE '%KNOCKOUT%'
+		AND
 		team_knock <= 256
 		AND
 		floor(log(2, team_knock)) = ceil(log(2, team_knock))
@@ -1454,8 +1504,8 @@ CHECK
 CREATE TABLE comp_ed
 (
 	id			serial		NOT NULL, -- id
-	s_year		dm_pyear	NOT NULL, -- start year
-	e_year		dm_pyear	NOT NULL, -- end year
+	s_year		dm_year		NOT NULL, -- start year
+	e_year		dm_year		NOT NULL, -- end year
 	comp_id		integer		NOT NULL, -- referring competition
 	tier		dm_usint	NOT NULL, -- tier
 	age_cap		ty_age_cap	NOT NULL, -- age cap
@@ -1503,7 +1553,7 @@ ALTER TABLE	comp_ed
 ADD CONSTRAINT ck_comp_ed_year
 CHECK
 (
-	e_year - s_year >= 0
+	(e_year - s_year) BETWEEN 0 AND 1
 );
 
 /*******************************************************************************
@@ -1550,11 +1600,11 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : comp_ed_team
+ * NAME : part
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE comp_ed_team
+CREATE TABLE part
 (
 	id			serial	NOT NULL, -- id
 	comp_ed_id	integer	NOT NULL, -- competition edition id
@@ -1563,13 +1613,13 @@ CREATE TABLE comp_ed_team
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - comp_ed_team TABLE
- * NAME : pk_comp_ed_team
+ * TYPE : PRIMARY KEY CONSTRAINT - part TABLE
+ * NAME : pk_part
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	comp_ed_team
-ADD CONSTRAINT pk_comp_ed_team
+ALTER TABLE	part
+ADD CONSTRAINT pk_part
 PRIMARY KEY
 (
 	id
@@ -1577,13 +1627,13 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - comp_ed_team TABLE
- * NAME : uq_comp_ed_team
+ * TYPE : UNIQUE CONSTRAINT - part TABLE
+ * NAME : uq_part
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	comp_ed_team
-ADD CONSTRAINT uq_comp_ed_team
+ALTER TABLE	part
+ADD CONSTRAINT uq_part
 UNIQUE
 (
 	comp_ed_id,
@@ -1592,13 +1642,13 @@ UNIQUE
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team TABLE
- * NAME : comp_ed_team_fk_comp_ed
+ * TYPE : FOREIGN KEY CONSTRAINT - part TABLE
+ * NAME : part_fk_comp_ed
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	comp_ed_team
-ADD CONSTRAINT comp_ed_team_fk_comp_ed
+ALTER TABLE	part
+ADD CONSTRAINT part_fk_comp_ed
 FOREIGN KEY
 (
 	comp_ed_id
@@ -1612,13 +1662,13 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team TABLE
- * NAME : comp_ed_team_fk_team
+ * TYPE : FOREIGN KEY CONSTRAINT - part TABLE
+ * NAME : part_fk_team
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	comp_ed_team
-ADD CONSTRAINT comp_ed_team_fk_team
+ALTER TABLE	part
+ADD CONSTRAINT part_fk_team
 FOREIGN KEY
 (
 	team_id
@@ -1756,11 +1806,11 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : country_player
+ * NAME : nationality
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE country_player
+CREATE TABLE nationality
 (
 	team_nation	boolean	NOT NULL, -- country of player national team
 	country_id	integer	NOT NULL, -- country id
@@ -1769,13 +1819,13 @@ CREATE TABLE country_player
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - country_player TABLE
- * NAME : pk_country_player
+ * TYPE : PRIMARY KEY CONSTRAINT - nationality TABLE
+ * NAME : pk_nationality
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE country_player
-ADD CONSTRAINT pk_country_player
+ALTER TABLE nationality
+ADD CONSTRAINT pk_nationality
 PRIMARY KEY
 (
 	country_id,
@@ -1784,13 +1834,13 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - country_player TABLE
- * NAME : country_player_fk_country
+ * TYPE : FOREIGN KEY CONSTRAINT - nationality TABLE
+ * NAME : nationality_fk_country
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	country_player
-ADD CONSTRAINT country_player_fk_country
+ALTER TABLE	nationality
+ADD CONSTRAINT nationality_fk_country
 FOREIGN KEY
 (
 	country_id
@@ -1804,13 +1854,13 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - country_player TABLE
- * NAME : country_player_fk_player
+ * TYPE : FOREIGN KEY CONSTRAINT - nationality TABLE
+ * NAME : nationality_fk_player
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	country_player
-ADD CONSTRAINT country_player_fk_player
+ALTER TABLE	nationality
+ADD CONSTRAINT nationality_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -1827,11 +1877,11 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : play
+ * NAME : militancy
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE play
+CREATE TABLE militancy
 (
 	s_date		dm_pdate	NOT NULL, -- start date
 	e_date		date		NOT NULL, -- end date
@@ -1841,13 +1891,13 @@ CREATE TABLE play
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - play TABLE
- * NAME : pk_play
+ * TYPE : PRIMARY KEY CONSTRAINT - militancy TABLE
+ * NAME : pk_militancy
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE play
-ADD CONSTRAINT pk_play
+ALTER TABLE militancy
+ADD CONSTRAINT pk_militancy
 PRIMARY KEY
 (
 	s_date,
@@ -1857,13 +1907,13 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : CHECK CONTRAINT - play TABLE
- * NAME : ck_play_date
+ * TYPE : CHECK CONTRAINT - militancy TABLE
+ * NAME : ck_militancy_date
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	play
-ADD CONSTRAINT ck_play_date
+ALTER TABLE	militancy
+ADD CONSTRAINT ck_militancy_date
 CHECK
 (
 	e_date - s_date >= 0
@@ -1871,13 +1921,13 @@ CHECK
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - play TABLE
- * NAME : play_fk_team
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy TABLE
+ * NAME : militancy_fk_team
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	play
-ADD CONSTRAINT play_fk_team
+ALTER TABLE	militancy
+ADD CONSTRAINT militancy_fk_team
 FOREIGN KEY
 (
 	team_id
@@ -1891,13 +1941,13 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - play TABLE
- * NAME : play_fk_player
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy TABLE
+ * NAME : militancy_fk_player
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	play
-ADD CONSTRAINT play_fk_player
+ALTER TABLE	militancy
+ADD CONSTRAINT militancy_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -2668,9 +2718,9 @@ UNIQUE
  ******************************************************************************/
 CREATE TABLE prize_ed
 (
-	id			serial		NOT NULL, -- id
-	a_year		dm_pyear	NOT NULL, -- assigning year
-	prize_id	integer		NOT NULL  -- prize id
+	id			serial	NOT NULL, -- id
+	a_year		dm_year	NOT NULL, -- assigning year
+	prize_id	integer	NOT NULL  -- prize id
 );
 --------------------------------------------------------------------------------
 
@@ -2867,27 +2917,27 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : comp_ed_team_player_pos
+ * NAME : play
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE comp_ed_team_player_pos
+CREATE TABLE play
 (
-	id				serial	NOT NULL, -- id
-	comp_ed_team_id	integer	NOT NULL, -- team competition edition id
-	player_id		integer	NOT NULL, -- player id
-	pos_id			integer	NOT NULL  -- position id
+	id			serial	NOT NULL, -- id
+	part_id		integer	NOT NULL, -- team competition edition id
+	player_id	integer	NOT NULL, -- player id
+	pos_id		integer	NOT NULL  -- position id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - comp_ed_team_player_pos TABLE  
- * NAME : pk_comp_ed_team_player_pos
+ * TYPE : PRIMARY KEY CONSTRAINT - play TABLE  
+ * NAME : pk_play
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos
-ADD CONSTRAINT pk_comp_ed_team_player_pos
+ALTER TABLE play
+ADD CONSTRAINT pk_play
 PRIMARY KEY
 (
 	id
@@ -2895,34 +2945,34 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - comp_ed_team_player_pos TABLE  
- * NAME : uq_comp_ed_team_player_pos
+ * TYPE : UNIQUE CONSTRAINT - play TABLE  
+ * NAME : uq_play
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos
-ADD CONSTRAINT uq_comp_ed_team_player_pos
+ALTER TABLE play
+ADD CONSTRAINT uq_play
 UNIQUE
 (
-	comp_ed_team_id,
+	part_id,
 	player_id,
 	pos_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team_player_pos TABLE  
- * NAME : comp_ed_team_player_pos_fk_comp_ed_team
+ * TYPE : FOREIGN KEY CONSTRAINT - play TABLE  
+ * NAME : play_fk_part
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos
-ADD CONSTRAINT comp_ed_team_player_pos_fk_comp_ed_team
+ALTER TABLE play
+ADD CONSTRAINT play_fk_part
 FOREIGN KEY
 (
-	comp_ed_team_id
+	part_id
 )
-REFERENCES comp_ed_team
+REFERENCES part
 (
 	id
 )
@@ -2931,13 +2981,13 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team_player_pos TABLE  
- * NAME : comp_ed_team_player_pos_fk_player
+ * TYPE : FOREIGN KEY CONSTRAINT - play TABLE  
+ * NAME : play_fk_player
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos
-ADD CONSTRAINT comp_ed_team_player_pos_fk_player
+ALTER TABLE play
+ADD CONSTRAINT play_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -2951,13 +3001,13 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team_player_pos TABLE  
- * NAME : comp_ed_team_player_pos_fk_pos
+ * TYPE : FOREIGN KEY CONSTRAINT - play TABLE  
+ * NAME : play_fk_pos
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos
-ADD CONSTRAINT comp_ed_team_player_pos_fk_pos
+ALTER TABLE play
+ADD CONSTRAINT play_fk_pos
 FOREIGN KEY
 (
 	pos_id
@@ -2974,41 +3024,41 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : comp_ed_team_player_pos_stat
+ * NAME : play_stat
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE TABLE comp_ed_team_player_pos_stat
+CREATE TABLE play_stat
 (
-	comp_ed_team_player_pos_id	integer		NOT NULL, -- p_season id
-	stat_id						integer		NOT NULL, -- statistic id
-	score						dm_usint	NOT NULL  -- score
+	play_id	integer		NOT NULL, -- play id
+	stat_id	integer		NOT NULL, -- statistic id
+	score	dm_usint	NOT NULL  -- score
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - comp_ed_team_player_pos_stat TABLE  
- * NAME : pk_comp_ed_team_player_pos_stat
+ * TYPE : PRIMARY KEY CONSTRAINT - play_stat TABLE  
+ * NAME : pk_play_stat
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos_stat
-ADD CONSTRAINT pk_comp_ed_team_player_pos_stat
+ALTER TABLE play_stat
+ADD CONSTRAINT pk_play_stat
 PRIMARY KEY
 (
-	comp_ed_team_player_pos_id,
+	play_id,
 	stat_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team_player_pos_stat TABLE
- * NAME : comp_ed_team_player_pos_stat_fk_stat
+ * TYPE : FOREIGN KEY CONSTRAINT - play_stat TABLE
+ * NAME : play_stat_fk_stat
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos_stat
-ADD CONSTRAINT comp_ed_team_player_pos_stat_fk_stat
+ALTER TABLE play_stat
+ADD CONSTRAINT play_stat_fk_stat
 FOREIGN KEY
 (
 	stat_id
@@ -3022,18 +3072,18 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_team_player_pos_stat TABLE
- * NAME : comp_ed_team_player_pos_stat_fk_comp_ed_team_player_pos
+ * TYPE : FOREIGN KEY CONSTRAINT - play_stat TABLE
+ * NAME : play_stat_fk_play
  *
  * DESC : TODO
  ******************************************************************************/
-ALTER TABLE comp_ed_team_player_pos_stat
-ADD CONSTRAINT comp_ed_team_player_pos_stat_fk_comp_ed_team_player_pos
+ALTER TABLE play_stat
+ADD CONSTRAINT play_stat_fk_play
 FOREIGN KEY
 (
-	comp_ed_team_player_pos_id
+	play_id
 )
-REFERENCES comp_ed_team_player_pos
+REFERENCES play
 (
 	id
 )
