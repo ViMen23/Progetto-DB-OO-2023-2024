@@ -1254,10 +1254,6 @@ ON UPDATE CASCADE;
 
 
 
-
-
-
-
 /*******************************************************************************
  * TYPE : TABLE
  * NAME : comp
@@ -1502,7 +1498,7 @@ CREATE TABLE comp_ed
 	id			serial		NOT NULL, -- id
 	s_year		dm_year		NOT NULL, -- start year
 	e_year		dm_year		NOT NULL, -- end year
-	comp_id		integer		NOT NULL, -- referring competition
+	comp_id		integer		NOT NULL, -- referring competition id
 	tier		dm_usint	NOT NULL, -- tier
 	age_cap		ty_age_cap	NOT NULL, -- age cap
 	formula_id	integer 	NOT NULL  -- formula
@@ -1602,8 +1598,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE part
 (
-	id			serial	NOT NULL, -- id
-	comp_ed_id	integer	NOT NULL, -- competition edition id
+	comp_ed_id	integer	NOT NULL, -- referring competition edition id
 	team_id		integer	NOT NULL  -- team id
 );
 --------------------------------------------------------------------------------
@@ -1617,20 +1612,6 @@ CREATE TABLE part
 ALTER TABLE	part
 ADD CONSTRAINT pk_part
 PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - part TABLE
- * NAME : uq_part
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	part
-ADD CONSTRAINT uq_part
-UNIQUE
 (
 	comp_ed_id,
 	team_id
@@ -1879,10 +1860,9 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE militancy
 (
-	s_date		dm_pdate	NOT NULL, -- start date
-	e_date		date		NOT NULL, -- end date
-	team_id		integer		NOT NULL, -- team id
-	player_id	integer		NOT NULL  -- player id
+	team_id		integer			NOT NULL, -- team id
+	player_id	integer			NOT NULL, -- player id
+	list_date	datemultirange	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1896,23 +1876,8 @@ ALTER TABLE militancy
 ADD CONSTRAINT pk_militancy
 PRIMARY KEY
 (
-	s_date,
 	team_id,
 	player_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONTRAINT - militancy TABLE
- * NAME : ck_militancy_date
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	militancy
-ADD CONSTRAINT ck_militancy_date
-CHECK
-(
-	e_date - s_date >= 0
 );
 --------------------------------------------------------------------------------
 
@@ -2140,7 +2105,6 @@ UNIQUE
  ******************************************************************************/
 CREATE TABLE player_pos
 (
-	id				serial		NOT NULL, -- id
 	player_id	integer		NOT NULL, -- player id
 	pos_id		integer		NOT NULL, -- position id
 	match		dm_usint	NOT NULL  -- number of match TODO: funzione
@@ -2156,20 +2120,6 @@ CREATE TABLE player_pos
 ALTER TABLE player_pos
 ADD CONSTRAINT pk_player_pos
 PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - player_pos TABLE  
- * NAME : uq_player_pos
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE player_pos
-ADD CONSTRAINT uq_player_pos
-UNIQUE
 (
 	player_id,
 	pos_id
@@ -2426,99 +2376,16 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : comp_ed_trophy
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE comp_ed_trophy
-(
-	id			serial	NOT NULL, -- id
-	comp_ed_id	integer	NOT NULL, -- competition edition
-	trophy_id	integer	NOT NULL  -- trophy id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - comp_ed_trophy TABLE
- * NAME : pk_comp_ed_trophy
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_ed_trophy
-ADD CONSTRAINT pk_comp_ed_trophy
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - comp_ed_trophy TABLE
- * NAME : uq_comp_ed_trophy
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_ed_trophy
-ADD CONSTRAINT uq_comp_ed_trophy
-UNIQUE
-(
-	comp_ed_id,
-	trophy_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_trophy TABLE
- * NAME : comp_ed_trophy_fk_comp_ed
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_ed_trophy
-ADD CONSTRAINT comp_ed_trophy_fk_comp_ed
-FOREIGN KEY
-(
-	comp_ed_id
-)
-REFERENCES comp_ed
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - comp_ed_trophy TABLE
- * NAME : comp_ed_trophy_fk_trophy
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	comp_ed_trophy
-ADD CONSTRAINT comp_ed_trophy_fk_trophy
-FOREIGN KEY
-(
-	trophy_id
-)
-REFERENCES trophy
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
  * NAME : trophy_team_case
  *
  * DESC : TODO
  ******************************************************************************/
 CREATE TABLE trophy_team_case
 (
-	comp_ed_trophy_id	integer	NOT NULL, -- trophy competition edition id
-	team_id				integer	NOT NULL  -- team id
+	comp_ed_id	integer	NOT NULL, -- referring competition edition id
+	team_id		integer	NOT NULL, -- team id
+	trophy_id	integer	NOT NULL  -- trophy id
+	
 );
 --------------------------------------------------------------------------------
 
@@ -2532,26 +2399,30 @@ ALTER TABLE	trophy_team_case
 ADD CONSTRAINT pk_trophy_team_case
 PRIMARY KEY
 (
-	comp_ed_trophy_id,
-	team_id
+	comp_ed_id,
+	team_id,
+	trophy_id
+	
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - trophy_team_case TABLE
- * NAME : trophy_team_case_fk_comp_ed_trophy
+ * NAME : trophy_team_case_fk_part
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	trophy_team_case
-ADD CONSTRAINT trophy_team_case_fk_comp_ed_trophy
+ADD CONSTRAINT trophy_team_case_fk_part
 FOREIGN KEY
 (
-	comp_ed_trophy_id
+	comp_ed_id,
+	team_id
 )
-REFERENCES comp_ed_trophy
+REFERENCES part
 (
-	id
+	comp_ed_id,
+	team_id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -2559,17 +2430,17 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - trophy_team_case TABLE
- * NAME : trophy_team_case_fk_team
+ * NAME : trophy_team_case_fk_trophy
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	trophy_team_case
-ADD CONSTRAINT trophy_team_case_fk_team
+ADD CONSTRAINT trophy_team_case_fk_trophy
 FOREIGN KEY
 (
-	team_id
+	trophy_id
 )
-REFERENCES team
+REFERENCES trophy
 (
 	id
 )
@@ -2587,9 +2458,10 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE trophy_player_case
 (
-	comp_ed_trophy_id	integer	NOT NULL, -- trophy competition edition id
-	team_id				integer	NOT NULL, -- team id
-	player_id			integer NOT NULL  -- player id
+	comp_ed_id	integer	NOT NULL, -- referring competition edition id
+	team_id		integer	NOT NULL, -- team id
+	player_id	integer NOT NULL, -- player id
+	trophy_id	integer	NOT NULL  -- trophy id
 );
 --------------------------------------------------------------------------------
 
@@ -2603,47 +2475,30 @@ ALTER TABLE	trophy_player_case
 ADD CONSTRAINT pk_trophy_player_case
 PRIMARY KEY
 (
-	comp_ed_trophy_id,
+	comp_ed_id,
 	team_id,
-	player_id
+	player_id,
+	trophy_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - trophy_player_case TABLE
- * NAME : trophy_player_case_fk_comp_ed_trophy
+ * NAME : trophy_player_case_fk_part
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_comp_ed_trophy
+ADD CONSTRAINT trophy_player_case_fk_part
 FOREIGN KEY
 (
-	comp_ed_trophy_id
-)
-REFERENCES comp_ed_trophy
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - trophy_player_case TABLE
- * NAME : trophy_player_case_fk_team
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_team
-FOREIGN KEY
-(
+	comp_ed_id,
 	team_id
 )
-REFERENCES team
+REFERENCES part
 (
-	id
+	comp_ed_id,
+	team_id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -2651,17 +2506,39 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - trophy_player_case TABLE
- * NAME : trophy_player_case_fk_player
+ * NAME : trophy_player_case_fk_militancy
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_player
+ADD CONSTRAINT trophy_player_case_fk_militancy
 FOREIGN KEY
 (
+	team_id,
 	player_id
 )
-REFERENCES player
+REFERENCES militancy
+(
+	team_id,
+	player_id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - trophy_player_case TABLE
+ * NAME : trophy_player_case_fk_trophy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	trophy_player_case
+ADD CONSTRAINT trophy_player_case_fk_trophy
+FOREIGN KEY
+(
+	trophy_id
+)
+REFERENCES trophy
 (
 	id
 )
@@ -2719,73 +2596,6 @@ UNIQUE
 
 
 
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : prize_ed
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE prize_ed
-(
-	id			serial	NOT NULL, -- id
-	a_year		dm_year	NOT NULL, -- assigning year
-	prize_id	integer	NOT NULL  -- prize id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - prize_ed TABLE
- * NAME : pk_prize_ed
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE prize_ed
-ADD CONSTRAINT pk_prize_ed
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - prize_ed TABLE
- * NAME : pk_prize_ed
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE prize_ed
-ADD CONSTRAINT uq_prize_ed
-UNIQUE
-(
-	prize_id,
-	a_year
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - prize_ed TABLE
- * NAME : prize_ed_fk_prize
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE prize_ed
-ADD CONSTRAINT prize_ed_fk_prize
-FOREIGN KEY
-(
-	prize_id
-)
-REFERENCES prize
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
 /*******************************************************************************
  * TYPE : TABLE
  * NAME : prize_team_case
@@ -2794,7 +2604,8 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE prize_team_case
 (
-	prize_ed_id	integer	NOT NULL, -- prize edition id
+	a_year		dm_year	NOT NULL, -- assigning year
+	prize_id	integer	NOT NULL, -- prize id
 	team_id		integer	NOT NULL  -- team id
 );
 --------------------------------------------------------------------------------
@@ -2809,24 +2620,25 @@ ALTER TABLE prize_team_case
 ADD CONSTRAINT pk_prize_team_case
 PRIMARY KEY
 (
-	prize_ed_id,
+	a_year,
+	prize_id,
 	team_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - prize_team_case TABLE
- * NAME : prize_team_case_fk_prize_ed
+ * NAME : prize_team_case_fk_prize
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE prize_team_case
-ADD CONSTRAINT prize_team_case_fk_prize_ed
+ADD CONSTRAINT prize_team_case_fk_prize
 FOREIGN KEY
 (
-	prize_ed_id
+	prize_id
 )
-REFERENCES prize_ed
+REFERENCES prize
 (
 	id
 )
@@ -2864,7 +2676,8 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE prize_player_case
 (
-	prize_ed_id	integer	NOT NULL, -- prize
+	a_year		dm_year	NOT NULL, -- assigning year
+	prize_id	integer	NOT NULL, -- prize id
 	player_id	integer	NOT NULL  -- player
 );
 --------------------------------------------------------------------------------
@@ -2879,24 +2692,25 @@ ALTER TABLE prize_player_case
 ADD CONSTRAINT pk_prize_player_case
 PRIMARY KEY
 (
-	prize_ed_id,
+	a_year,
+	prize_id,
 	player_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - prize_player_case TABLE
- * NAME : prize_player_case_fk_prize_ed
+ * NAME : prize_player_case_fk_prize
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE prize_player_case
-ADD CONSTRAINT prize_player_case_fk_prize_ed
+ADD CONSTRAINT prize_player_case_fk_prize
 FOREIGN KEY
 (
-	prize_ed_id
+	prize_id
 )
-REFERENCES prize_ed
+REFERENCES prize
 (
 	id
 )
@@ -2936,8 +2750,10 @@ ON UPDATE CASCADE;
 CREATE TABLE play
 (
 	id			serial	NOT NULL, -- id
-	part_id		integer	NOT NULL, -- team competition edition id
-	player_pos_id	integer	NOT NULL  -- player position id
+	comp_ed_id	integer	NOT NULL, -- referring competition edition id
+	team_id		integer	NOT NULL, -- team id
+	player_id	integer	NOT NULL, -- player id
+	pos_id		integer	NOT NULL  -- position id
 );
 --------------------------------------------------------------------------------
 
@@ -2965,8 +2781,10 @@ ALTER TABLE play
 ADD CONSTRAINT uq_play
 UNIQUE
 (
-	part_id,
-	player_pos_id
+	comp_ed_id,
+	team_id,
+	player_id,
+	pos_id
 );
 --------------------------------------------------------------------------------
 
@@ -2980,11 +2798,35 @@ ALTER TABLE play
 ADD CONSTRAINT play_fk_part
 FOREIGN KEY
 (
-	part_id
+	comp_ed_id,
+	team_id
 )
 REFERENCES part
 (
-	id
+	comp_ed_id,
+	team_id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - play TABLE  
+ * NAME : play_fk_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE play
+ADD CONSTRAINT play_fk_militancy
+FOREIGN KEY
+(
+	team_id,
+	player_id
+)
+REFERENCES militancy
+(
+	team_id,
+	player_id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -3000,11 +2842,13 @@ ALTER TABLE play
 ADD CONSTRAINT play_fk_player_pos
 FOREIGN KEY
 (
-	player_pos_id
+	player_id,
+	pos_id
 )
 REFERENCES player_pos
 (
-	id
+	player_id,
+	pos_id
 )
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
@@ -3043,26 +2887,6 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - play_stat TABLE
- * NAME : play_stat_fk_stat
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE play_stat
-ADD CONSTRAINT play_stat_fk_stat
-FOREIGN KEY
-(
-	stat_id
-)
-REFERENCES stat
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - play_stat TABLE
  * NAME : play_stat_fk_play
  *
  * DESC : TODO
@@ -3081,6 +2905,26 @@ ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - play_stat TABLE
+ * NAME : play_stat_fk_stat
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE play_stat
+ADD CONSTRAINT play_stat_fk_stat
+FOREIGN KEY
+(
+	stat_id
+)
+REFERENCES stat
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************
@@ -3091,7 +2935,6 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE user_account
 (
-	id			serial		NOT NULL, -- id
 	username	dm_usrnm	NOT NULL, -- username
 	password	dm_psswd	NOT NULL, -- password
 	priviledge	dm_usint	NOT NULL  -- level of priviledge					
@@ -3107,20 +2950,6 @@ CREATE TABLE user_account
 ALTER TABLE	user_account
 ADD CONSTRAINT pk_user_account
 PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - user_account TABLE
- * NAME : uq_user_account
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	user_account
-ADD CONSTRAINT uq_user_account
-UNIQUE
 (
 	username
 );

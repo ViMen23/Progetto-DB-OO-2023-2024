@@ -1,0 +1,181 @@
+1. dominio per la descrizione
+
+--------------------------------------------------------------------------------
+
+TABLE conf
+
+	BEFORE INSERT
+	1. controllare che super_id rispetti la relazione di contenimento
+
+	UPDATE country_id
+	1. controllare che super rispetti la relazione di contenimento
+
+	UPDATE super_id
+	1. controllare che super rispetti la relazione di contenimento
+	
+--------------------------------------------------------------------------------
+
+TABLE team
+
+	BEFORE INSERT
+	1. controllare che country_id sia nazione
+	2. controllare che conf_id sia nazione
+	3. conf_id e country_id siano della stessa nazione
+	4. se si tratta di una nazionale il nome viene gestito da noi
+
+	UPDATE
+	1. controllare che country_id sia nazione
+	2. controllare che conf_id sia nazione
+	3. conf_id e country_id siano della stessa nazione
+	
+--------------------------------------------------------------------------------
+
+TABLE comp
+
+	BEFORE INSERT
+	1. controllo che una competizione associata ad una nazione non sia di squadre nazionali
+	
+	UPDATE
+	1. controllo che una competizione associata ad una nazione non sia di squadre nazionali
+
+--------------------------------------------------------------------------------
+
+TABLE comp_ed
+
+	BEFORE INSERT
+	1. controllo frequenza
+
+--------------------------------------------------------------------------------
+
+TABLE part
+
+	BEFORE INSERT
+	1. controllo che il team possa partecipare alla competizione
+	2. controllo sul numero massimo di team
+	
+--------------------------------------------------------------------------------
+	
+TABLE player
+
+	BEFORE INSERT
+	1. controllo che il country_id sia una nazione
+	
+	UPDATE
+	1. controllo che il country_id sia una nazione
+	
+	AFTER INSERT
+	1. inserire nella tabella nationality il country_id e marcarlo come nazionalita scelta
+	
+--------------------------------------------------------------------------------
+
+TABLE player_s
+
+	BEFORE INSERT
+	1. controllo che la data sia maggiore dell'ultima data fine della militanza
+	2. controllo che la data sia maggiore della data di nascita
+	3. controllo che l eta non sia superiore ad un limite arbitrario scelto
+	
+--------------------------------------------------------------------------------
+
+TABLE nationality
+	
+	BEFORE INSERT
+	1. controllo che country sia nazione
+	2. controllo che per un giocatore esista solo una tupla marcata
+	3. se il booleano e' true controllo che il giocatore non abbia presenze in altre nazionali major
+	
+	DELETE
+	1. non e' possibile cancellare tupla marcata
+	
+	UPDATE
+	1. controllo che country sia nazione
+	2. controllo che per un giocatore esista solo una tupla marcata
+	3. se il booleano e' true controllo che il giocatore non abbia presenze in altre nazionali major
+
+	
+--------------------------------------------------------------------------------
+	
+TABLE militancy
+
+	BEFORE INSERT
+	1. controllo data inizio maggiore di una certa eta arbitraria
+	2. controllo data fine minore di una certa eta arbitraria
+	3. per tipologia di team non possono esserci sovrapposizioni temporali
+	4. al massimo una nazionale maggiore per calciatore
+	5. controllo che il giocatore e team siano compatibili
+	6. controllo rosa massima e partizione ruoli
+	
+--------------------------------------------------------------------------------
+
+TABLE player_tag
+
+	BEFORE
+	1. tipo tag compatibile con giocatore
+	
+--------------------------------------------------------------------------------
+
+TABLE player_pos
+
+	1. match automatico
+	
+--------------------------------------------------------------------------------
+
+TABLE player_attr
+	
+	BEFORE
+	1. tipo attributo compatibile con giocatore
+	
+--------------------------------------------------------------------------------
+	
+	
+TABLE trophy_team_case
+
+	BEFORE
+	1. controllo che il trofeo sia di tipo team
+	2. controllo che il team abbia partecipato all'edizione della competizione
+	
+	AFTER
+	1. assegna il trofeo a tutti i giocatori che giocano nella squadra nell'anno
+	
+--------------------------------------------------------------------------------
+
+TABLE trophy_player_case
+
+	BEFORE
+	1. se e' di tipo team controlla che esista la tupla in trophy_team_case
+	2. controllo che il giocatore giochi nella squadra che ha partecipato all'edizione
+	
+--------------------------------------------------------------------------------
+
+TABLE prize_team_case
+
+	BEFORE
+	1. controlla che prize sia di tipo team
+	2. controlla che team e prize siano compatibili
+	
+--------------------------------------------------------------------------------
+
+TABLE prize_player_case
+
+	BEFORE
+	1. controlla che prize sia di tipo player
+	2. controlla che player e prize siano compatibili
+	
+--------------------------------------------------------------------------------
+	
+TABLE play
+
+	BEFORE
+	1. controlla che giocatore gioca nella squadra al tempo
+	
+	AFTER
+	1. update num match per posizione
+
+--------------------------------------------------------------------------------
+
+TABLE play_stat
+	
+	BEFORE
+	1. ruolo statistica compatibile con giocatore
+	
+--------------------------------------------------------------------------------
