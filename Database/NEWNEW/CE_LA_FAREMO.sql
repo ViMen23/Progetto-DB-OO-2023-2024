@@ -782,10 +782,6 @@ BEGIN
 	
 	CLOSE output_cursor;
 
-	
-	SELECT quote_literal(value_attribute)
-	INTO value_attribute;
-		
 	RETURN value_attribute;
 	
 END;
