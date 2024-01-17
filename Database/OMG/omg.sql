@@ -1657,9 +1657,10 @@ CREATE TABLE player
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
 	sex			ty_sex		NOT NULL,
-	dob			dm_pdate	NOT NULL, -- birth date
 	foot		ty_foot		NOT NULL, -- preferred foot
-	country_id	integer		NOT NULL  -- birth country id
+	country_id	integer		NOT NULL, -- birth country id
+	dob			dm_pdate	NOT NULL, -- birth date
+	career_time	daterange			  -- date range of player career
 );
 --------------------------------------------------------------------------------
 
@@ -1708,55 +1709,6 @@ FOREIGN KEY
 	country_id
 )
 REFERENCES country
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : player_retired
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE player_retired
-(
-	retired_date	dm_pdate	NOT NULL,
-	player_id		integer		NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - player_retired TABLE
- * NAME : pk_player_retired
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE player_retired
-ADD CONSTRAINT pk_player_retired
-PRIMARY KEY
-(
-	player_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - player_retired TABLE
- * NAME : player_retired_fk_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	player_retired
-ADD CONSTRAINT player_retired_fk_player
-FOREIGN KEY
-(
-	player_id
-)
-REFERENCES player
 (
 	id
 )
