@@ -793,34 +793,49 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : set_formula_total_team
+ * NAME : get_record_attribute_from_id
  *
- * IN      : integer, integer, integer
+ * IN      : text, text, integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : integer
+ * RETURNS : record
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_formula_total_team
+CREATE OR REPLACE FUNCTION get_record_attribute_from_id
 (
-	IN	num_group	integer,
-	IN	team_group	integer,
-	IN	team_knock	integer
+	IN	name_table		text,
+	IN	name_attribute	text,
+	IN	value_id		integer
 )
-RETURNS integer
+RETURNS record
 RETURNS NULL ON NULL INPUT
-IMMUTABLE
 AS
 $$
+DECLARE
+
+	to_execute text = ''; 
+	
+	attribute_record record;
+	
 BEGIN
-
-	IF (0 = num_group) THEN
-		RETURN team_knock;
-	ELSE
-		RETURN num_group * team_group;
+	
+	IF (NOT table_exists(name_table)) THEN
+		RETURN NULL;
 	END IF;
+	
+	IF (NOT attribute_exists(name_table, name_attribute)) THEN
+		RETURN NULL;
+	END IF;
+	
+	to_execute = to_execute || 'SELECT ' || name_attribute;
+	to_execute = to_execute || ' FROM ' || name_table;
+	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
+	
+	EXECUTE to_execute INTO attribute_record;
 
+	RETURN attribute_record;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -1164,8 +1179,6 @@ ON UPDATE CASCADE;
 
 
 
-
-
 /*******************************************************************************
  * TYPE : TABLE
  * NAME : team
@@ -1266,8 +1279,10 @@ CREATE TABLE competition
 	type				ty_competition	NOT NULL,
 	team_type			ty_team			NOT NULL,
 	name				dm_string		NOT NULL,
-	sex					ty_sex			NOT NULL,
+	tier				dm_usint		NOT NULL,
 	frequency			dm_usint		NOT NULL,
+	age_cap				ty_age_cap		NOT NULL,
+	sex					ty_sex			NOT NULL,
 	confederation_id	integer			NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1324,171 +1339,6 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : formula
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE formula
-(
-	id			serial		NOT NULL,
-	type		ty_formula	NOT NULL,
-	total_team	dm_usint	NOT NULL  -- total number of football teams
-		GENERATED ALWAYS AS
-		(
-			set_formula_total_team
-			(
-				num_group,
-				team_group,
-				team_knock
-			)
-		)
-		STORED						,
-	num_group	dm_usint	NOT NULL, -- number of groups
-	team_group	dm_usint	NOT NULL, -- number of teams for each group
-	team_knock	dm_usint	NOT NULL, -- number of teams for knock out phase
-	min_match	dm_usint 	NOT NULL  -- minimum number of matches for team
-		GENERATED ALWAYS AS
-		(
-			set_formula_min_match
-			(
-				type,
-				num_group,
-				team_group
-			)
-		)
-		STORED						,
-	max_match	dm_usint 	NOT NULL  -- maximum number of matches for team
-		GENERATED ALWAYS AS
-		(
-			set_formula_max_match
-			(
-				type,
-				num_group,
-				team_group,
-				team_knock
-			)
-		)
-		STORED	
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - formula TABLE
- * NAME : pk_formula
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT pk_formula
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - formula TABLE
- * NAME : uq_formula
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT uq_formula
-UNIQUE
-(
-	type,
-	num_group,
-	team_group,
-	team_knock
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - formula TABLE
- * NAME : ck_formula_group
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT ck_formula_group
-CHECK
-(
-	(
-		NOT (CAST(type AS text) LIKE '%GROUP%')
-		AND
-		0 = num_group
-		AND
-		0 = team_group
-	)
-	OR
-	(
-		CAST(type AS text) LIKE '%GROUP%'
-		AND
-		num_group <= 20
-		AND
-		team_group BETWEEN 2 AND 100
-	)
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - formula TABLE
- * NAME : ck_formula_knock
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT ck_formula_knock
-CHECK
-(
-	(
-		NOT (CAST(type AS text) LIKE '%KNOCKOUT%')
-		AND
-		0 = team_knock
-	)
-	OR
-	(
-		CAST(type AS text) LIKE '%KNOCKOUT%'
-		AND
-		team_knock <= 256
-		AND
-		floor(log(2, team_knock)) = ceil(log(2, team_knock))
-	)
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - formula TABLE
- * NAME : ck_formula_exist
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT ck_formula_exist
-CHECK
-(
-	team_knock <> 0 OR num_group <> 0
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - formula TABLE
- * NAME : ck_formula_total_team
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	formula
-ADD CONSTRAINT ck_formula_total_team
-CHECK
-(
-	total_team BETWEEN 2 AND 200
-);
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
  * NAME : competition_edition
  *
  * DESC : TODO
@@ -1496,11 +1346,13 @@ CHECK
 CREATE TABLE competition_edition
 (
 	id				serial		NOT NULL,
-	edition			daterange	NOT NULL, -- data range of edition
+	start_year		dm_year		NOT NULL,
+	end_year		dm_year		NOT NULL,
 	competition_id	integer		NOT NULL,
-	tier			dm_usint	NOT NULL,
-	age_cap			ty_age_cap	NOT NULL,
-	formula_id		integer 	NOT NULL
+	type			ty_formula	NOT NULL,
+	total_team		dm_usint	NOT NULL,
+	min_match		dm_usint 	NOT NULL, -- minimum number of matches for team
+	max_match		dm_usint 	NOT NULL  -- maximum number of matches for team
 );
 --------------------------------------------------------------------------------
 
@@ -1528,10 +1380,25 @@ ALTER TABLE	competition_edition
 ADD CONSTRAINT uq_competition_edition
 UNIQUE
 (
-	edition,
+	start_year,
 	competition_id
 );
 --------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - competition_edition TABLE
+ * NAME : ck_competition_edition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	competition_edition
+ADD CONSTRAINT ck_competition_edition
+CHECK
+(
+	(end_year - start_year) BETWEEN 0 AND 1
+);
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - competition_edition TABLE
@@ -1546,26 +1413,6 @@ FOREIGN KEY
 	competition_id
 )
 REFERENCES competition
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - competition_edition TABLE
- * NAME : competition_edition_fk_formula
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	competition_edition
-ADD CONSTRAINT competition_edition_fk_formula
-FOREIGN KEY
-(
-	formula_id
-)
-REFERENCES formula
 (
 	id
 )
