@@ -882,12 +882,6 @@ VALUES
 	get_id('@', 'confederation@long_name@Asian Football Confederation')	
 ),
 (
-	'NFA',
-	'Nauru Football Association',
-	get_id('@', 'country@name@Nauru'),
-	get_id('@', 'confederation@long_name@Oceania Football Confederation')
-),
-(
 	'NZF',
 	'New Zealand Football',
 	get_id('@', 'country@name@New Zealand'),

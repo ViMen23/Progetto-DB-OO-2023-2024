@@ -43,6 +43,7 @@ CHECK
 (
 	value ~ '(?=^'
 				'['
+					'\u0259'
 					'\u0030-\u0039'
 					'\u0041-\u005A'
 					'\u0061-\u007A'
@@ -58,6 +59,7 @@ CHECK
 					'\u002D'
 					'\u002E'
 					'\u002F'
+					'\u0259'
 					'\u0030-\u0039'
 					'\u0041-\u005A'
 					'\u0060'
@@ -69,6 +71,7 @@ CHECK
 					'\u0180-\u024F'
 				']{0,98}'
 				'['
+					'\u0259'
 					'\u002E'
 					'\u0030-\u0039'
 					'\u0041-\u005A'
@@ -313,6 +316,7 @@ CREATE TYPE ty_attribute AS ENUM
 CREATE TYPE ty_competition AS ENUM
 (
 	'CHAMPIONSHIP',
+	'CUP',
 	'SUPER CUP',
 	'TOURNAMENT'
 );
@@ -1288,7 +1292,7 @@ CREATE TABLE competition
 	id					serial			NOT NULL,
 	type				ty_competition	NOT NULL,
 	team_type			ty_team			NOT NULL,
-	name				dm_string		NOT NULL,
+	name				dm_alnum		NOT NULL,
 	tier				dm_usint		NOT NULL,
 	frequency			dm_usint		NOT NULL,
 	age_cap				ty_age_cap		NOT NULL,
