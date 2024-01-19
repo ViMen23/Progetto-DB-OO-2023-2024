@@ -1076,7 +1076,7 @@ VALUES
 (
 	'SFZ',
 	'Slovenský futbalový zväz',
-	get_id('@', 'country@name@Slovak Republic'),
+	get_id('@', 'country@name@Slovakia'),
 	get_id('@', 'confederation@long_name@Union of European Football Associations')
 ),
 (

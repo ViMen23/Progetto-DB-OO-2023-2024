@@ -211,7 +211,7 @@ VALUES
 ('NATION', 'SSD', 'South Sudan'),
 ('NATION', 'STP', 'São Tomé and Príncipe'),
 ('NATION', 'SUR', 'Suriname'),
-('NATION', 'SVK', 'Slovak Republic'),
+('NATION', 'SVK', 'Slovakia'),
 ('NATION', 'SVN', 'Slovenia'),
 ('NATION', 'SWE', 'Sweden'),
 ('NATION', 'SWZ', 'Eswatini'),
@@ -242,6 +242,7 @@ VALUES
 ('NATION', 'WSM', 'Samoa'),
 ('NATION', 'XKX', 'Kosovo'),
 ('NATION', 'YEM', 'Yemen'),
+('NATION', 'YUG', 'Jugoslavia'),
 ('NATION', 'ZAF', 'South Africa'),
 ('NATION', 'ZMB', 'Zambia'),
 ('NATION', 'ZWE', 'Zimbabwe');

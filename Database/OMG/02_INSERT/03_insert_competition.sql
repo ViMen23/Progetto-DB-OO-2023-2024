@@ -1,10 +1,9 @@
-INSERT INTO competition (type, team_type, name, frequency, tier, confederation_id)
+INSERT INTO competition (type, team_type, name, frequency, confederation_id)
 VALUES
 (
 	'LEAGUE',
 	'CLUB',
 	'Afghan Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -17,7 +16,6 @@ VALUES
 	'CLUB',
 	'Kategoria Superiore',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -29,7 +27,6 @@ VALUES
 	'CLUB',
 	'Kategoria e Parë',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -41,7 +38,6 @@ VALUES
 	'CLUB',
 	'Kategoria e Dytë',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -52,7 +48,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Superkupa e Shqipërisë',
-	1,
 	1,
 	get_id
 	(
@@ -65,7 +60,6 @@ VALUES
 	'CLUB',
 	'Kupa e Shqipërisë',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -76,7 +70,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Girabola',
-	1,
 	1,
 	get_id
 	(
@@ -89,7 +82,6 @@ VALUES
 	'CLUB',
 	'Segundona',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -100,7 +92,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Angolan SuperCup',
-	1,
 	1,
 	get_id
 	(
@@ -113,7 +104,6 @@ VALUES
 	'CLUB',
 	'Angolan Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -124,7 +114,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Primera Divisió',
-	1,
 	1,
 	get_id
 	(
@@ -137,7 +126,6 @@ VALUES
 	'CLUB',
 	'Segona Divisió',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -148,7 +136,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Andorran Supercup',
-	1,
 	1,
 	get_id
 	(
@@ -161,7 +148,6 @@ VALUES
 	'CLUB',
 	'Copa Constitució',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -172,7 +158,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'UAE Pro League',
-	1,
 	1,
 	get_id
 	(
@@ -185,7 +170,6 @@ VALUES
 	'CLUB',
 	'UAE First Division League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -197,7 +181,6 @@ VALUES
 	'CLUB',
 	'UAE Second Division League',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -208,7 +191,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'UAE President''s Cup',
-	1,
 	1,
 	get_id
 	(
@@ -221,7 +203,6 @@ VALUES
 	'CLUB',
 	'UAE Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -232,7 +213,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liga Profesional de Fútbol',
-	1,
 	1,
 	get_id
 	(
@@ -245,7 +225,6 @@ VALUES
 	'CLUB',
 	'Primera Nacional',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -256,7 +235,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Argentina',
-	1,
 	1,
 	get_id
 	(
@@ -269,7 +247,6 @@ VALUES
 	'CLUB',
 	'Supercopa Argentina',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -281,7 +258,6 @@ VALUES
 	'CLUB',
 	'Copa Centenario de la AFA',
 	100,
-	0,
 	get_id
 	(
 		'@',
@@ -292,7 +268,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Armenian Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -305,7 +280,6 @@ VALUES
 	'CLUB',
 	'Armenian First League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -316,7 +290,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Armenian Supercup',
-	1,
 	1,
 	get_id
 	(
@@ -329,7 +302,6 @@ VALUES
 	'CLUB',
 	'Armenian Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -340,7 +312,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Antigua and Barbuda Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -353,7 +324,6 @@ VALUES
 	'CLUB',
 	'Antigua and Barbuda FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -364,7 +334,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'A-League Men',
-	1,
 	1,
 	get_id
 	(
@@ -377,7 +346,6 @@ VALUES
 	'CLUB',
 	'Australia Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -388,7 +356,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Österreichische Fußball-Bundesliga',
-	1,
 	1,
 	get_id
 	(
@@ -401,7 +368,6 @@ VALUES
 	'CLUB',
 	'Admiral 2. Liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -413,7 +379,6 @@ VALUES
 	'CLUB',
 	'Austrian Regionalliga',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -424,7 +389,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'ÖFB-Cup',
-	1,
 	1,
 	get_id
 	(
@@ -437,7 +401,6 @@ VALUES
 	'CLUB',
 	'ÖFB-Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -448,7 +411,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Azərbaycan Premyer Liqası',
-	1,
 	1,
 	get_id
 	(
@@ -461,7 +423,6 @@ VALUES
 	'CLUB',
 	'Azərbaycan Birinci Divizionu',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -472,7 +433,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Azərbaycan Kuboku',
-	1,
 	1,
 	get_id
 	(
@@ -485,7 +445,6 @@ VALUES
 	'CLUB',
 	'Azərbaycan Superkuboku',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -496,7 +455,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Burundi Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -509,7 +467,6 @@ VALUES
 	'CLUB',
 	'Coupe du Burundi',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -520,7 +477,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Jupiler Pro League',
-	1,
 	1,
 	get_id
 	(
@@ -533,7 +489,6 @@ VALUES
 	'CLUB',
 	'Challenger Pro League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -545,7 +500,6 @@ VALUES
 	'CLUB',
 	'Belgian National Division 1',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -556,7 +510,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Beker van België',
-	1,
 	1,
 	get_id
 	(
@@ -569,7 +522,6 @@ VALUES
 	'CLUB',
 	'Belgische Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -580,7 +532,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Championnat National du Bénin',
-	1,
 	1,
 	get_id
 	(
@@ -593,7 +544,6 @@ VALUES
 	'CLUB',
 	'Coupe du Bénin',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -604,7 +554,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Championnat National du Faso',
-	1,
 	1,
 	get_id
 	(
@@ -617,7 +566,6 @@ VALUES
 	'CLUB',
 	'Coupe du Burkina Faso',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -628,7 +576,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Bangladesh Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -641,7 +588,6 @@ VALUES
 	'CLUB',
 	'Bulgarian First League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -653,7 +599,6 @@ VALUES
 	'CLUB',
 	'Bulgarian Second League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -665,7 +610,6 @@ VALUES
 	'CLUB',
 	'Third Amateur Football League',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -676,7 +620,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Bulgarian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -689,7 +632,6 @@ VALUES
 	'CLUB',
 	'Bulgarian Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -700,7 +642,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Bahraini Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -713,7 +654,6 @@ VALUES
 	'CLUB',
 	'Bahraini King''s Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -724,7 +664,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Bahraini Super Cup',
-	1,
 	1,
 	get_id
 	(
@@ -737,7 +676,6 @@ VALUES
 	'CLUB',
 	'BFA Senior League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -748,7 +686,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Premijer Liga Bosne i Hercegovine',
-	1,
 	1,
 	get_id
 	(
@@ -761,7 +698,6 @@ VALUES
 	'CLUB',
 	'Prva Liga FBiH',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -773,7 +709,6 @@ VALUES
 	'CLUB',
 	'Prva Liga Republike Srpske',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -784,7 +719,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Kup Bosne i Hercegovine',
-	1,
 	1,
 	get_id
 	(
@@ -797,7 +731,6 @@ VALUES
 	'CLUB',
 	'Belarusian Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -809,7 +742,6 @@ VALUES
 	'CLUB',
 	'Belarusian First League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -821,7 +753,6 @@ VALUES
 	'CLUB',
 	'Belarusian Second League',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -832,7 +763,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Belarusian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -845,7 +775,6 @@ VALUES
 	'CLUB',
 	'Belarusian Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -856,7 +785,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Premier League of Belize',
-	1,
 	1,
 	get_id
 	(
@@ -869,7 +797,6 @@ VALUES
 	'CLUB',
 	'División de Fútbol Profesional',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -880,7 +807,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Campeonato Brasileiro Série A',
-	1,
 	1,
 	get_id
 	(
@@ -893,7 +819,6 @@ VALUES
 	'CLUB',
 	'Campeonato Brasileiro Série B',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -905,7 +830,6 @@ VALUES
 	'CLUB',
 	'Campeonato Brasileiro Série C',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -917,7 +841,6 @@ VALUES
 	'CLUB',
 	'Campeonato Brasileiro Série D',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -928,7 +851,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa do Brasil',
-	1,
 	1,
 	get_id
 	(
@@ -941,7 +863,6 @@ VALUES
 	'CLUB',
 	'Supercopa do Brasil',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -952,7 +873,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Barbados Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -965,7 +885,6 @@ VALUES
 	'CLUB',
 	'Barbados FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -976,7 +895,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Brunei Super League',
-	1,
 	1,
 	get_id
 	(
@@ -989,7 +907,6 @@ VALUES
 	'CLUB',
 	'Brunei FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1001,7 +918,6 @@ VALUES
 	'CLUB',
 	'Brunei Super Cup',
 	0,
-	1,
 	get_id
 	(
 		'@',
@@ -1012,7 +928,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Bhutan Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1025,7 +940,6 @@ VALUES
 	'CLUB',
 	'Botswana Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1036,7 +950,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'FA Challenge Cup Botswana',
-	1,
 	1,
 	get_id
 	(
@@ -1049,7 +962,6 @@ VALUES
 	'CLUB',
 	'Central African Republic League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1060,7 +972,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Canadian Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1073,7 +984,6 @@ VALUES
 	'CLUB',
 	'Canadian Championship',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1084,7 +994,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Swiss Super League',
-	1,
 	1,
 	get_id
 	(
@@ -1097,7 +1006,6 @@ VALUES
 	'CLUB',
 	'Swiss Challenge League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1109,7 +1017,6 @@ VALUES
 	'CLUB',
 	'Swiss Promotion League',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1120,7 +1027,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Schweizer Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1133,7 +1039,6 @@ VALUES
 	'CLUB',
 	'Campeonato Nacional Scotiabank',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1145,7 +1050,6 @@ VALUES
 	'CLUB',
 	'Primera B',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1156,7 +1060,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Chile',
-	1,
 	1,
 	get_id
 	(
@@ -1169,7 +1072,6 @@ VALUES
 	'CLUB',
 	'Supercopa de Chile',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1180,7 +1082,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Chinese Super League',
-	1,
 	1,
 	get_id
 	(
@@ -1193,7 +1094,6 @@ VALUES
 	'CLUB',
 	'China League One',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1205,7 +1105,6 @@ VALUES
 	'CLUB',
 	'China League Two',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1216,7 +1115,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Chinese FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1229,7 +1127,6 @@ VALUES
 	 'CLUB',
 	'Chinese FA Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1240,7 +1137,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'MTN Ligue 1',
-	1,
 	1,
 	get_id
 	(
@@ -1253,7 +1149,6 @@ VALUES
 	'CLUB',
 	'Coupe de Côte d''Ivoire',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1264,7 +1159,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'MTN Elite One',
-	1,
 	1,
 	get_id
 	(
@@ -1277,7 +1171,6 @@ VALUES
 	'CLUB',
 	'Cameroon Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1288,7 +1181,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Linafoot',
-	1,
 	1,
 	get_id
 	(
@@ -1301,7 +1193,6 @@ VALUES
 	'CLUB',
 	'Coupe du DR Congo',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1312,7 +1203,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Championnat National MTN',
-	1,
 	1,
 	get_id
 	(
@@ -1325,7 +1215,6 @@ VALUES
 	'CLUB',
 	'Coupe du Congo',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1336,7 +1225,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liga BetPlay Dimayor',
-	1,
 	1,
 	get_id
 	(
@@ -1349,7 +1237,6 @@ VALUES
 	'CLUB',
 	'Torneo BetPlay Dimayor',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1360,7 +1247,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa BetPlay Dimayor',
-	1,
 	1,
 	get_id
 	(
@@ -1373,7 +1259,6 @@ VALUES
 	'CLUB',
 	'Superliga BetPlay DIMAYOR',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1384,7 +1269,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Comoros Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1397,7 +1281,6 @@ VALUES
 	'CLUB',
 	'Cape Verdean Football Championship',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1408,7 +1291,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Taça Nacional de Cabo Verde',
-	1,
 	1,
 	get_id
 	(
@@ -1421,7 +1303,6 @@ VALUES
 	'CLUB',
 	'Liga Promerica',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1433,7 +1314,6 @@ VALUES
 	'CLUB',
 	'Segunda División de Costa Rica',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1444,7 +1324,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Costa Rican Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1457,7 +1336,6 @@ VALUES
 	'CLUB',
 	'Campeonato Nacional de Fútbol de Cuba',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1468,7 +1346,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Curaçao Promé Divishon',
-	1,
 	1,
 	get_id
 	(
@@ -1481,7 +1358,6 @@ VALUES
 	'CLUB',
 	'Cypriot First Division',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1493,7 +1369,6 @@ VALUES
 	'CLUB',
 	'Cypriot Second Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1505,7 +1380,6 @@ VALUES
 	'CLUB',
 	'Cypriot Third Division',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1516,7 +1390,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Cypriot Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1529,7 +1402,6 @@ VALUES
 	'CLUB',
 	'1. česká fotbalová liga',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1541,7 +1413,6 @@ VALUES
 	'CLUB',
 	'Fotbalová národní liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1552,7 +1423,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Czech Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1565,7 +1435,6 @@ VALUES
 	'CLUB',
 	'Czech Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1576,7 +1445,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Bundesliga',
-	1,
 	1,
 	get_id
 	(
@@ -1589,7 +1457,6 @@ VALUES
 	'CLUB',
 	'2. Bundesliga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1601,7 +1468,6 @@ VALUES
 	'CLUB',
 	'3. Liga',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1613,7 +1479,6 @@ VALUES
 	'CLUB',
 	'Regionalliga',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -1624,7 +1489,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'DFB-Pokal',
-	1,
 	1,
 	get_id
 	(
@@ -1637,7 +1501,6 @@ VALUES
 	'CLUB',
 	'DFL-Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1648,7 +1511,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Djibouti Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1661,7 +1523,6 @@ VALUES
 	'CLUB',
 	'Djibouti FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1672,7 +1533,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Dominica Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1685,7 +1545,6 @@ VALUES
 	'CLUB',
 	'3F Superliga',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1697,7 +1556,6 @@ VALUES
 	'CLUB',
 	'NordicBet Liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1708,7 +1566,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Danish Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1721,7 +1578,6 @@ VALUES
 	'CLUB',
 	'Danish SuperCup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1732,7 +1588,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liga Dominicana de Fútbol',
-	1,
 	1,
 	get_id
 	(
@@ -1745,7 +1600,6 @@ VALUES
 	'CLUB',
 	'Tunisian Professional League 1',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1757,7 +1611,6 @@ VALUES
 	'CLUB',
 	'Tunisian Ligue Professionnelle 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1768,7 +1621,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Coupe d''Algérie de football',
-	1,
 	1,
 	get_id
 	(
@@ -1781,7 +1633,6 @@ VALUES
 	'CLUB',
 	'Super Coupe d''Algérie de football',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1792,7 +1643,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liga Pro Ecuador Serie A',
-	1,
 	1,
 	get_id
 	(
@@ -1805,7 +1655,6 @@ VALUES
 	'CLUB',
 	'Primera Categoría Serie B',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1816,7 +1665,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Ecuador',
-	1,
 	1,
 	get_id
 	(
@@ -1829,7 +1677,6 @@ VALUES
 	'CLUB',
 	'Egyptian Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1840,7 +1687,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Egypt Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1853,7 +1699,6 @@ VALUES
 	'CLUB',
 	'Egyptian Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1864,7 +1709,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1877,7 +1721,6 @@ VALUES
 	'CLUB',
 	'EFL Championship',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1889,7 +1732,6 @@ VALUES
 	'CLUB',
 	'EFL League One',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1901,7 +1743,6 @@ VALUES
 	'CLUB',
 	'EFL League Two',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -1912,7 +1753,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -1925,7 +1765,6 @@ VALUES
 	'CLUB',
 	'FA Community Shield',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1936,7 +1775,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Eritrean Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -1949,7 +1787,6 @@ VALUES
 	'CLUB',
 	'LaLiga EA Sports',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -1961,7 +1798,6 @@ VALUES
 	'CLUB',
 	'LALIGA HYPERMOTION',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -1973,7 +1809,6 @@ VALUES
 	'CLUB',
 	'Primera Federación',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -1985,7 +1820,6 @@ VALUES
 	'CLUB',
 	'Segunda Federación',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -1996,7 +1830,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa del Rey',
-	1,
 	1,
 	get_id
 	(
@@ -2009,7 +1842,6 @@ VALUES
 	'CLUB',
 	'Supercopa de España',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2021,7 +1853,6 @@ VALUES
 	'CLUB',
 	'Copa Federación',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2032,7 +1863,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Meistriliiga',
-	1,
 	1,
 	get_id
 	(
@@ -2045,7 +1875,6 @@ VALUES
 	'CLUB',
 	'Esiliiga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2056,7 +1885,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Estonian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2069,7 +1897,6 @@ VALUES
 	'CLUB',
 	'Estonian Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2080,7 +1907,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Ethiopian Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -2093,7 +1919,6 @@ VALUES
 	'CLUB',
 	'Ethiopian Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2104,7 +1929,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Veikkausliiga',
-	1,
 	1,
 	get_id
 	(
@@ -2117,7 +1941,6 @@ VALUES
 	'CLUB',
 	'Ykkönen',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2129,7 +1952,6 @@ VALUES
 	'CLUB',
 	'Kakkonen',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2140,7 +1962,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Finnish Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2153,7 +1974,6 @@ VALUES
 	'CLUB',
 	'Fiji Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2164,7 +1984,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Fiji Football Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2177,7 +1996,6 @@ VALUES
 	'CLUB',
 	'Ligue 1',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2189,7 +2007,6 @@ VALUES
 	'CLUB',
 	'Ligue 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2201,7 +2018,6 @@ VALUES
 	'CLUB',
 	'Championnat National',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2213,7 +2029,6 @@ VALUES
 	'CLUB',
 	'Championnat National 2',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -2224,7 +2039,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Coupe de France',
-	1,
 	1,
 	get_id
 	(
@@ -2237,7 +2051,6 @@ VALUES
 	'CLUB',
 	'Trophée des Champions',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2248,7 +2061,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Pohnpei Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -2261,7 +2073,6 @@ VALUES
 	'CLUB',
 	'Gabon Championnat National D1',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2272,7 +2083,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Coupe du Gabon Interclubs',
-	1,
 	1,
 	get_id
 	(
@@ -2285,7 +2095,6 @@ VALUES
 	'CLUB',
 	'Erovnuli Liga',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2297,7 +2106,6 @@ VALUES
 	'CLUB',
 	'Erovnuli Liga 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2308,7 +2116,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Georgian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2321,7 +2128,6 @@ VALUES
 	'CLUB',
 	'Georgian Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2332,7 +2138,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Ghana Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -2345,7 +2150,6 @@ VALUES
 	'CLUB',
 	'Ghana FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2356,7 +2160,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'GFA League First Division',
-	1,
 	1,
 	get_id
 	(
@@ -2369,7 +2172,6 @@ VALUES
 	'CLUB',
 	'Gambian Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2380,7 +2182,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Campeonato Nacional da Guiné-Bissau',
-	1,
 	1,
 	get_id
 	(
@@ -2393,7 +2194,6 @@ VALUES
 	'CLUB',
 	'Taça Nacional da Guiné Bissau',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2404,7 +2204,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Equatoguinean Primera División',
-	1,
 	1,
 	get_id
 	(
@@ -2417,7 +2216,6 @@ VALUES
 	'CLUB',
 	'Equatoguinean Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2428,7 +2226,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Super League Greece 1',
-	1,
 	1,
 	get_id
 	(
@@ -2441,7 +2238,6 @@ VALUES
 	'CLUB',
 	'Super League Greece 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2453,7 +2249,6 @@ VALUES
 	'CLUB',
 	'Gamma Ethniki',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2464,7 +2259,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Greek Football Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2477,7 +2271,6 @@ VALUES
 	'CLUB',
 	'Cup of Friendship and Solidarity',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2488,7 +2281,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'GFA Premier Division',
-	1,
 	1,
 	get_id
 	(
@@ -2501,7 +2293,6 @@ VALUES
 	'CLUB',
 	'Liga Nacional de Fútbol de Guatemala',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2513,7 +2304,6 @@ VALUES
 	'CLUB',
 	'Primera División de Ascenso',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2524,7 +2314,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa de Guatemala',
-	1,
 	1,
 	get_id
 	(
@@ -2537,7 +2326,6 @@ VALUES
 	'CLUB',
 	'GFF National Super League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2548,7 +2336,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Guyana Mayors Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2561,7 +2348,6 @@ VALUES
 	'CLUB',
 	'Liga Nacional de Fútbol Profesional de Honduras',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2573,7 +2359,6 @@ VALUES
 	'CLUB',
 	'Honduran Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2581,10 +2366,20 @@ VALUES
 	)
 ),
 (
-	'LEAGUE', 
-	'CLUB', 
+	'LEAGUE',
+	'CLUB',
 	'SuperSport Hrvatska nogometna liga',
 	1,
+	get_id
+	(
+		'@',
+		'confederation@long_name@Hrvatski nogometni savez'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Prva nogometna liga',
 	1,
 	get_id
 	(
@@ -2593,23 +2388,10 @@ VALUES
 	)
 ),
 (
-	'LEAGUE', 
-	'CLUB', 
-	'Prva nogometna liga', 
-	1, 
-	2, 
-	get_id
-	(
-		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
-	)
-),
-(
-	'LEAGUE', 
-	'CLUB', 
-	'Druga nogometna liga', 
-	1, 
-	3, 
+	'LEAGUE',
+	'CLUB',
+	'Druga nogometna liga',
+	1,
 	get_id
 	(
 		'@',
@@ -2618,10 +2400,9 @@ VALUES
 ),
 (
 	'CUP',
-	'CLUB', 
-	'Hrvatski nogometni kup', 
-	1, 
-	1, 
+	'CLUB',
+	'Hrvatski nogometni kup',
+	1,
 	get_id
 	(
 		'@',
@@ -2629,11 +2410,10 @@ VALUES
 	)
 ),
 (
-	'SUPER CUP', 
-	'CLUB', 
+	'SUPER CUP',
+	'CLUB',
 	'Hrvatski nogometni superkup',
-	1, 
-	1, 
+	1,
 	get_id
 	(
 		'@',
@@ -2644,7 +2424,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Ligue Haïtienne',
-	1,
 	1,
 	get_id
 	(
@@ -2657,7 +2436,6 @@ VALUES
 	'CLUB',
 	'Coupe d''Haïti',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2668,7 +2446,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Nemzeti Bajnokság I',
-	1,
 	1,
 	get_id
 	(
@@ -2681,7 +2458,6 @@ VALUES
 	'CLUB',
 	'Nemzeti Bajnokság II',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2693,7 +2469,6 @@ VALUES
 	'CLUB',
 	'Nemzeti Bajnokság III',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2704,7 +2479,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Magyar Kupa',
-	1,
 	1,
 	get_id
 	(
@@ -2717,7 +2491,6 @@ VALUES
 	'CLUB',
 	'BRI Liga 1',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2728,7 +2501,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Piala Indonesia',
-	1,
 	1,
 	get_id
 	(
@@ -2741,7 +2513,6 @@ VALUES
 	'CLUB',
 	'Indian Super League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2753,7 +2524,6 @@ VALUES
 	'CLUB',
 	'I-League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2765,7 +2535,6 @@ VALUES
 	'CLUB',
 	'I-League 2',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2776,7 +2545,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'AIFF Super Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2789,7 +2557,6 @@ VALUES
 	'CLUB',
 	'League of Ireland Premier Division',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2801,7 +2568,6 @@ VALUES
 	'CLUB',
 	'League of Ireland First Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2812,7 +2578,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Sports Direct FAI Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2825,7 +2590,6 @@ VALUES
 	'CLUB',
 	'Persian Gulf Pro League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2837,7 +2601,6 @@ VALUES
 	'CLUB',
 	'Azadegan League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2848,7 +2611,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Hazfi Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2861,7 +2623,6 @@ VALUES
 	'CLUB',
 	'Iran Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2872,7 +2633,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Iraq Stars League',
-	1,
 	1,
 	get_id
 	(
@@ -2885,7 +2645,6 @@ VALUES
 	'CLUB',
 	'Iraqi Premier Division League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2896,7 +2655,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Iraq FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2909,7 +2667,6 @@ VALUES
 	'CLUB',
 	'Iraqi Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2920,7 +2677,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Besta deild karla',
-	1,
 	1,
 	get_id
 	(
@@ -2933,7 +2689,6 @@ VALUES
 	'CLUB',
 	'1. deild karla',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -2945,7 +2700,6 @@ VALUES
 	'CLUB',
 	'2. deild karla',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -2956,7 +2710,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Icelandic Men''s Football Cup',
-	1,
 	1,
 	get_id
 	(
@@ -2969,7 +2722,6 @@ VALUES
 	'CLUB',
 	'Icelandic Men''s Football Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -2980,7 +2732,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Ligat Ha`Al',
-	1,
 	1,
 	get_id
 	(
@@ -2993,7 +2744,6 @@ VALUES
 	'CLUB',
 	'Liga Leumit',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3005,7 +2755,6 @@ VALUES
 	'CLUB',
 	'Liga Alef',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -3016,7 +2765,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Israel State Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3029,7 +2777,6 @@ VALUES
 	'CLUB',
 	'Israel Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3040,7 +2787,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Serie A',
-	1,
 	1,
 	get_id
 	(
@@ -3053,7 +2799,6 @@ VALUES
 	'CLUB',
 	'Serie B',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3065,7 +2810,6 @@ VALUES
 	'CLUB',
 	'Serie C',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -3077,7 +2821,6 @@ VALUES
 	'CLUB',
 	'Serie D',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -3088,7 +2831,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Coppa Italia',
-	1,
 	1,
 	get_id
 	(
@@ -3101,7 +2843,6 @@ VALUES
 	'CLUB',
 	'Supercoppa Italiana',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3113,7 +2854,6 @@ VALUES
 	'CLUB',
 	'Coppa Italia Serie C',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -3125,7 +2865,6 @@ VALUES
 	'CLUB',
 	'Supercoppa di Serie C',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -3136,7 +2875,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Jamaica Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3149,7 +2887,6 @@ VALUES
 	'CLUB',
 	'JFF Champions Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3160,7 +2897,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Jordanian Pro League',
-	1,
 	1,
 	get_id
 	(
@@ -3173,7 +2909,6 @@ VALUES
 	'CLUB',
 	'Jordan FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3184,7 +2919,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Jordan Super Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3197,7 +2931,6 @@ VALUES
 	'CLUB',
 	'J1 League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3209,7 +2942,6 @@ VALUES
 	'CLUB',
 	'J2 League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3221,7 +2953,6 @@ VALUES
 	'CLUB',
 	'J3 League',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -3233,7 +2964,6 @@ VALUES
 	'CLUB',
 	'Japan Football League',
 	1,
-	4,
 	get_id
 	(
 		'@',
@@ -3244,7 +2974,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Emperor''s Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3257,7 +2986,6 @@ VALUES
 	'CLUB',
 	'Japanese Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3268,7 +2996,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Kazakhstan Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3281,7 +3008,6 @@ VALUES
 	'CLUB',
 	'Kazakhstan First Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3292,7 +3018,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Kazakhstan Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3305,7 +3030,6 @@ VALUES
 	'CLUB',
 	'Kazakhstan Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3316,7 +3040,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Kenyan Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3329,7 +3052,6 @@ VALUES
 	'CLUB',
 	'FKF President''s Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3340,7 +3062,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Kenyan Super Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3353,7 +3074,6 @@ VALUES
 	'CLUB',
 	'Kyrgyz Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3365,7 +3085,6 @@ VALUES
 	'CLUB',
 	'Kyrgyz Pervaja Liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3376,7 +3095,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Kyrgyzstan Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3389,7 +3107,6 @@ VALUES
 	'CLUB',
 	'Kyrgyzstan Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3400,7 +3117,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Cambodian Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3413,7 +3129,6 @@ VALUES
 	'CLUB',
 	'Kiribati National Championship',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3424,7 +3139,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'SKNFA Super League',
-	1,
 	1,
 	get_id
 	(
@@ -3437,7 +3151,6 @@ VALUES
 	'CLUB',
 	'Saint Kitts and Nevis National Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3448,7 +3161,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'K League 1',
-	1,
 	1,
 	get_id
 	(
@@ -3461,7 +3173,6 @@ VALUES
 	'CLUB',
 	'K League 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3472,7 +3183,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Korean FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3485,7 +3195,6 @@ VALUES
 	'CLUB',
 	'Kuwait Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3496,7 +3205,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Kuwait Emir Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3509,7 +3217,6 @@ VALUES
 	'CLUB',
 	'Kuwait Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3520,7 +3227,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Lao League 1',
-	1,
 	1,
 	get_id
 	(
@@ -3533,7 +3239,6 @@ VALUES
 	'CLUB',
 	'Lebanese Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3545,7 +3250,6 @@ VALUES
 	'CLUB',
 	'Lebanese Second Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3556,7 +3260,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Lebanese FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3569,7 +3272,6 @@ VALUES
 	'CLUB',
 	'Lebanese Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3580,7 +3282,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liberian First Division',
-	1,
 	1,
 	get_id
 	(
@@ -3593,7 +3294,6 @@ VALUES
 	'CLUB',
 	'Liberian Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3604,7 +3304,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Libyan Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3617,7 +3316,6 @@ VALUES
 	'CLUB',
 	'Libyan Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3628,7 +3326,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Libyan Super Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3641,7 +3338,6 @@ VALUES
 	'CLUB',
 	'SLFA First Division',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3652,7 +3348,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Saint Lucia FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3665,7 +3360,6 @@ VALUES
 	'CLUB',
 	'Liechtenstein Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3676,7 +3370,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Sri Lanka Super League',
-	1,
 	1,
 	get_id
 	(
@@ -3689,7 +3382,6 @@ VALUES
 	'CLUB',
 	'Sri Lanka FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3700,7 +3392,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Lesotho Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -3713,7 +3404,6 @@ VALUES
 	'CLUB',
 	'Lesotho Independence Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3724,7 +3414,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'A Lyga',
-	1,
 	1,
 	get_id
 	(
@@ -3737,7 +3426,6 @@ VALUES
 	'CLUB',
 	'Pirma lyga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3748,7 +3436,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Lithuanian Football Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3761,7 +3448,6 @@ VALUES
 	'CLUB',
 	'Lithuanian Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3772,7 +3458,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Luxembourg National Division',
-	1,
 	1,
 	get_id
 	(
@@ -3785,7 +3470,6 @@ VALUES
 	'CLUB',
 	'Luxembourg Division of Honour',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3796,7 +3480,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Luxembourg Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3809,7 +3492,6 @@ VALUES
 	'CLUB',
 	'Virsliga',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3821,7 +3503,6 @@ VALUES
 	'CLUB',
 	'Latvijas Pirmā līga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3832,7 +3513,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Latvijas kauss',
-	1,
 	1,
 	get_id
 	(
@@ -3845,7 +3525,6 @@ VALUES
 	'CLUB',
 	'Latvian Supercup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3856,7 +3535,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Botola Pro 1',
-	1,
 	1,
 	get_id
 	(
@@ -3869,7 +3547,6 @@ VALUES
 	'CLUB',
 	'Botola Pro 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3880,7 +3557,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Moroccan Throne Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3893,7 +3569,6 @@ VALUES
 	'CLUB',
 	'Challenge Prince Rainier III',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3904,7 +3579,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Divizia Națională',
-	1,
 	1,
 	get_id
 	(
@@ -3917,7 +3591,6 @@ VALUES
 	'CLUB',
 	'Divizia A',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -3928,7 +3601,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Moldovan Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3941,7 +3613,6 @@ VALUES
 	'CLUB',
 	'Moldovan Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3952,7 +3623,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Malagasy Pro League',
-	1,
 	1,
 	get_id
 	(
@@ -3965,7 +3635,6 @@ VALUES
 	'CLUB',
 	'Dhivehi Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -3976,7 +3645,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Maldives FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -3989,7 +3657,6 @@ VALUES
 	'CLUB',
 	'Liga MX',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4001,7 +3668,6 @@ VALUES
 	'CLUB',
 	'Liga de Expansión MX',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4013,7 +3679,6 @@ VALUES
 	'CLUB',
 	'Liga Premier de México',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -4024,7 +3689,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa MX',
-	1,
 	1,
 	get_id
 	(
@@ -4037,7 +3701,6 @@ VALUES
 	'CLUB',
 	'Campeón de Campeones MX',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4048,7 +3711,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Prva makedonska fudbalska liga',
-	1,
 	1,
 	get_id
 	(
@@ -4061,7 +3723,6 @@ VALUES
 	'CLUB',
 	'Vtora makedonska fudbalska liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4072,7 +3733,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Kup na Makedonija',
-	1,
 	1,
 	get_id
 	(
@@ -4085,7 +3745,6 @@ VALUES
 	'CLUB',
 	'Macedonian Supercup',
 	0,
-	1,
 	get_id
 	(
 		'@',
@@ -4096,7 +3755,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Malian Première Division',
-	1,
 	1,
 	get_id
 	(
@@ -4109,7 +3767,6 @@ VALUES
 	'CLUB',
 	'Malian Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4120,7 +3777,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Maltese Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -4133,7 +3789,6 @@ VALUES
 	'CLUB',
 	'Maltese Challenge League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4144,7 +3799,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Myanmar National League',
-	1,
 	1,
 	get_id
 	(
@@ -4157,7 +3811,6 @@ VALUES
 	'CLUB',
 	'General Aung San Shield',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4168,7 +3821,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Prva crnogorska fudbalska liga',
-	1,
 	1,
 	get_id
 	(
@@ -4181,7 +3833,6 @@ VALUES
 	'CLUB',
 	'Druga crnogorska fudbalska liga',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4192,7 +3843,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Crnogorski fudbalski kup',
-	1,
 	1,
 	get_id
 	(
@@ -4205,7 +3855,6 @@ VALUES
 	'CLUB',
 	'Mongolian National Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4216,7 +3865,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'MFF Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4229,7 +3877,6 @@ VALUES
 	'CLUB',
 	'Moçambola',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4240,7 +3887,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Taça de Moçambique',
-	1,
 	1,
 	get_id
 	(
@@ -4253,7 +3899,6 @@ VALUES
 	'CLUB',
 	'Ligue 1 Mauritania',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4264,7 +3909,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Mauritanian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4277,7 +3921,6 @@ VALUES
 	'CLUB',
 	'Mauritian League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4288,7 +3931,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Mauritian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4301,7 +3943,6 @@ VALUES
 	'CLUB',
 	'Malawi Super League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4312,7 +3953,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Malaysia Super League',
-	1,
 	1,
 	get_id
 	(
@@ -4325,7 +3965,6 @@ VALUES
 	'CLUB',
 	'Malaysia FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4336,7 +3975,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Namibia Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -4349,7 +3987,6 @@ VALUES
 	'CLUB',
 	'Namibia FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4360,7 +3997,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Niger Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -4373,7 +4009,6 @@ VALUES
 	'CLUB',
 	'Niger Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4384,7 +4019,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Nigerian Premier Football League',
-	1,
 	1,
 	get_id
 	(
@@ -4397,7 +4031,6 @@ VALUES
 	'CLUB',
 	'Nigerian FA Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4408,7 +4041,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Nicaraguan Primera División',
-	1,
 	1,
 	get_id
 	(
@@ -4422,7 +4054,6 @@ VALUES
 	'CLUB',
 	'Copa de Nicaragua',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4433,7 +4064,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Irish Premiership',
-	1,
 	1,
 	get_id
 	(
@@ -4446,7 +4076,6 @@ VALUES
 	'CLUB',
 	'NIFL Championship',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4457,7 +4086,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Irish Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4470,7 +4098,6 @@ VALUES
 	'CLUB',
 	'NIFL Charity Shield',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4481,7 +4108,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Niue Soccer Tournament',
-	1,
 	1,
 	get_id
 	(
@@ -4494,7 +4120,6 @@ VALUES
 	'CLUB',
 	'Eredivisie',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4506,7 +4131,6 @@ VALUES
 	'CLUB',
 	'Eerste Divisie',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4518,7 +4142,6 @@ VALUES
 	'CLUB',
 	'Tweede Divisie',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -4529,7 +4152,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'KNVB Beker',
-	1,
 	1,
 	get_id
 	(
@@ -4542,7 +4164,6 @@ VALUES
 	'CLUB',
 	'Johan Cruijff Schaal',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4553,7 +4174,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Eliteserien',
-	1,
 	1,
 	get_id
 	(
@@ -4566,7 +4186,6 @@ VALUES
 	'CLUB',
 	'Norwegian First Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4577,7 +4196,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Norwegian Football Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4590,7 +4208,6 @@ VALUES
 	'CLUB',
 	'Mesterfinalen',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4601,7 +4218,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Martyr''s Memorial A-Division League',
-	1,
 	1,
 	get_id
 	(
@@ -4614,7 +4230,6 @@ VALUES
 	'CLUB',
 	'Martyr''s Memorial B-Division League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4625,7 +4240,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Ncell Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4638,7 +4252,6 @@ VALUES
 	'CLUB',
 	'New Zealand National League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4649,7 +4262,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Chatham Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4662,7 +4274,6 @@ VALUES
 	'CLUB',
 	'Oman Professional League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4673,7 +4284,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Sultan Qaboos Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4686,7 +4296,6 @@ VALUES
 	'CLUB',
 	'Pakistan Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4697,7 +4306,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Pakistan National Football Challenge Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4710,7 +4318,6 @@ VALUES
 	'CLUB',
 	'Asociación Nacional Pro Fútbol',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4721,7 +4328,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Panamá',
-	1,
 	1,
 	get_id
 	(
@@ -4734,7 +4340,6 @@ VALUES
 	'CLUB',
 	'Liga Betsson',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4746,7 +4351,6 @@ VALUES
 	'CLUB',
 	'Peruvian Segunda División',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4757,7 +4361,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Bicentenario',
-	1,
 	1,
 	get_id
 	(
@@ -4770,7 +4373,6 @@ VALUES
 	'CLUB',
 	'Supercopa Peruana',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4781,7 +4383,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Philippines Football League',
-	1,
 	1,
 	get_id
 	(
@@ -4794,7 +4395,6 @@ VALUES
 	'CLUB',
 	'Copa Paulino Alcantara',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4805,7 +4405,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Palau Soccer League',
-	1,
 	1,
 	get_id
 	(
@@ -4818,7 +4417,6 @@ VALUES
 	'CLUB',
 	'Papua New Guinea National Soccer League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4829,7 +4427,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Papua New Guinea FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4842,7 +4439,6 @@ VALUES
 	'CLUB',
 	'Ekstraklasa',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4854,7 +4450,6 @@ VALUES
 	'CLUB',
 	'I liga polska',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4866,7 +4461,6 @@ VALUES
 	'CLUB',
 	'II liga polska',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -4877,7 +4471,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Polish Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4890,7 +4483,6 @@ VALUES
 	'CLUB',
 	'Polish Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4901,7 +4493,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Liga Puerto Rico',
-	1,
 	1,
 	get_id
 	(
@@ -4914,7 +4505,6 @@ VALUES
 	'CLUB',
 	'DPR Korea Premier Football League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4925,7 +4515,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Hwaebul Cup',
-	1,
 	1,
 	get_id
 	(
@@ -4938,7 +4527,6 @@ VALUES
 	'CLUB',
 	'Liga Portugal Betclic',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4950,7 +4538,6 @@ VALUES
 	'CLUB',
 	'Liga Portugal 2',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -4962,7 +4549,6 @@ VALUES
 	'CLUB',
 	'Terceira Liga',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -4973,7 +4559,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Taça de Portugal',
-	1,
 	1,
 	get_id
 	(
@@ -4986,7 +4571,6 @@ VALUES
 	'CLUB',
 	'Supertaça Cândido de Oliveira',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -4997,7 +4581,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Primera División Paraguaya',
-	1,
 	1,
 	get_id
 	(
@@ -5010,7 +4593,6 @@ VALUES
 	'CLUB',
 	'División Intermedia',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -5021,7 +4603,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Copa Paraguay',
-	1,
 	1,
 	get_id
 	(
@@ -5034,7 +4615,6 @@ VALUES
 	'CLUB',
 	'Supercopa Paraguaya',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5045,7 +4625,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Gaza Strip Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -5058,7 +4637,6 @@ VALUES
 	'CLUB',
 	'Palestine Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5069,7 +4647,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Qatar Stars League',
-	1,
 	1,
 	get_id
 	(
@@ -5082,7 +4659,6 @@ VALUES
 	'CLUB',
 	'Qatari Stars Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5093,7 +4669,6 @@ VALUES
 	'SUPER CUP',
 	'CLUB',
 	'Sheikh Jassim Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5106,7 +4681,6 @@ VALUES
 	'CLUB',
 	'SuperLiga României',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5118,7 +4692,6 @@ VALUES
 	'CLUB',
 	'Liga II',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -5130,7 +4703,6 @@ VALUES
 	'CLUB',
 	'Liga III',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -5141,7 +4713,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Cupa României',
-	1,
 	1,
 	get_id
 	(
@@ -5154,7 +4725,6 @@ VALUES
 	'CLUB',
 	'Supercupa României',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5165,7 +4735,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Russian Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -5178,7 +4747,6 @@ VALUES
 	'CLUB',
 	'Russian Football National League',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -5190,7 +4758,6 @@ VALUES
 	'CLUB',
 	'Russian Football National League 2',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -5201,7 +4768,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Russian Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5214,7 +4780,6 @@ VALUES
 	'CLUB',
 	'Russian Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5225,7 +4790,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Rwanda Premier League',
-	1,
 	1,
 	get_id
 	(
@@ -5238,7 +4802,6 @@ VALUES
 	'CLUB',
 	'Rwandan Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5249,7 +4812,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Saudi Pro League',
-	1,
 	1,
 	get_id
 	(
@@ -5262,7 +4824,6 @@ VALUES
 	'CLUB',
 	'Saudi League First Division',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -5273,7 +4834,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'The Custodian of The Two Holy Mosques Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5286,7 +4846,6 @@ VALUES
 	'CLUB',
 	'Saudi Super Cup',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5297,7 +4856,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Scottish Premiership',
-	1,
 	1,
 	get_id
 	(
@@ -5310,7 +4868,6 @@ VALUES
 	'CLUB',
 	'Scottish Championship',
 	1,
-	2,
 	get_id
 	(
 		'@',
@@ -5322,7 +4879,6 @@ VALUES
 	'CLUB',
 	'Scottish League One',
 	1,
-	3,
 	get_id
 	(
 		'@',
@@ -5333,7 +4889,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Scottish Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5346,7 +4901,6 @@ VALUES
 	'CLUB',
 	'Sudan Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5357,7 +4911,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Sudan Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5370,7 +4923,6 @@ VALUES
 	'CLUB',
 	'Senegal Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5381,7 +4933,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Senegal FA Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5394,7 +4945,6 @@ VALUES
 	'CLUB',
 	'Singapore Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5405,7 +4955,6 @@ VALUES
 	'CUP',
 	'CLUB',
 	'Singapore Cup',
-	1,
 	1,
 	get_id
 	(
@@ -5418,7 +4967,6 @@ VALUES
 	'CLUB',
 	'Singapore Community Shield',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5429,7 +4977,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Solomon Islands S-League',
-	1,
 	1,
 	get_id
 	(
@@ -5442,7 +4989,6 @@ VALUES
 	'CLUB',
 	'Sierra Leone National Premier League',
 	1,
-	1,
 	get_id
 	(
 		'@',
@@ -5453,7 +4999,6 @@ VALUES
 	'LEAGUE',
 	'CLUB',
 	'Salvadoran Primera División',
-	1,
 	1,
 	get_id
 	(

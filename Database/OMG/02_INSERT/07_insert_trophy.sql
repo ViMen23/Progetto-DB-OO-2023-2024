@@ -13,16 +13,15 @@
 /*******************************************************************************
  * INSERT trophy
  ******************************************************************************/
-INSERT INTO trophy (type, name, descr)
+INSERT INTO trophy (type, name, description)
 VALUES
-('TEAM', 'First place', 'TODO'),
-( 'PLAYER', 'Most Valuable Player', 'TODO'),
-( 'PLAYER', 'Best Young Player', 'TODO'),
-( 'PLAYER', 'Best Striker', 'TODO'),
-( 'PLAYER', 'Best Midfielder', 'TODO'),
-( 'PLAYER', 'Best Defender', 'TODO'),
-( 'PLAYER', 'Best Goalkeeper', 'TODO'),
-( 'PLAYER', 'Goal of the Season', 'TODO');
+( 'TEAM'	, 'First place'			, 'TODO' ),
+( 'PLAYER'	, 'Most Valuable Player', 'TODO' ),
+( 'PLAYER'	, 'Best Young Player'	, 'TODO' ),
+( 'PLAYER'	, 'Best Striker'		, 'TODO' ),
+( 'PLAYER'	, 'Best Midfielder'		, 'TODO' ),
+( 'PLAYER'	, 'Best Defender'		, 'TODO' ),
+( 'PLAYER'	, 'Best Goalkeeper'		, 'TODO' ),
+( 'PLAYER'	, 'Goal of the Season'	, 'TODO' );
 --------------------------------------------------------------------------------
-
 
