@@ -33,12 +33,11 @@ CREATE OR REPLACE FUNCTION corr_containment
 	IN	id_su_country	country.id%TYPE
 )
 RETURNS boolean
-RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
 
-	type_in_country	text;					
+	type_in_country	text;			
 	type_su_country	text;
 	
 BEGIN
@@ -48,11 +47,11 @@ BEGIN
 
 	IF
 	(
-		(type_in_country = 'NATION' AND type_su_country = 'CONTINENT')
+		('NATION' = type_in_country AND 'CONTINENT' = type_su_country)
 		OR
-		(type_in_country = 'CONTINENT' AND type_su_country = 'WORLD')
+		('CONTINENT' = type_in_country AND 'WORLD' = type_su_country)
 		OR
-		(type_in_country = 'WORLD' AND type_su_country IS NULL)
+		('WORLD' = type_in_country AND type_su_country IS NULL)
 	)
 	THEN
 		RETURN TRUE;
@@ -190,47 +189,6 @@ LANGUAGE plpgsql;
 
 
 
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : a_start_year
- *
- * IN      : competition.id%TYPE
- * INOUT   : void
- * OUT     : void
- * RETURNS : dm_year
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION a_start_year
-(
-	IN	id_comp	competition.id%TYPE
-)
-RETURNS dm_year
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			start_year
-		FROM
-			competition_ed
-		WHERE
-			competition_id = id_comp
-		LIMIT
-			1
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : corr_freq
@@ -255,6 +213,7 @@ DECLARE
 
 	tmp		text;
 	freq	integer;
+	a_year	integer
 	
 BEGIN
 	
@@ -264,7 +223,19 @@ BEGIN
 	IF (freq <= 1) THEN
 		RETURN TRUE;
 	ELSE
-		IF (0 = (s_year - a_start_year(id_comp)) % freq) THEN
+
+		SELECT
+			start_year
+		INTO
+			a_year
+		FROM
+			competition_ed
+		WHERE
+			competition_id = id_comp
+		LIMIT
+			1
+
+		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
 		END IF;
 	END IF;
@@ -300,8 +271,10 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-	id_conf_team	integer;
+	tmp							text;
+	id_conf_team				integer;
+	id_super_conf_team			integer;
+	id_super_super_conf_team	integer;
 
 BEGIN
 
@@ -313,16 +286,16 @@ BEGIN
 	END IF;
 	
 	tmp = get_attr('confederation', 'super_id', id_conf_team);
-	id_conf_team = CAST(tmp AS integer);
+	id_super_conf_team = CAST(tmp AS integer);
 	
-	IF (id_conf_team = id_conf) THEN
+	IF (id_super_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
-	tmp = get_attr('confederation', 'super_id', id_conf_team);
-	id_conf_team = CAST(tmp AS integer);
+	tmp = get_attr('confederation', 'super_id', id_super_conf_team);
+	id_super_super_conf_team = CAST(tmp AS integer);
 	
-	IF (id_conf_team = id_conf) THEN
+	IF (id_super_super_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
@@ -661,6 +634,8 @@ BEGIN
 	e_valid = make_date(dob_year + max_age, dob_month, dob_day);
 
 	valid_range = daterange(s_valid, e_valid, '[]');
+
+	RETURN valid_range;
 
 END;
 $$

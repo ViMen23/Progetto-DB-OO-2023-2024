@@ -124,7 +124,7 @@ BEGIN
 	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
-	type_country_conf = get_attr('country', 'type', id_country);
+	type_country_conf = get_attr('country', 'type', id_country_conf);
 
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
 
@@ -319,7 +319,7 @@ BEGIN
 			free_club_militancy(NEW.player_id, NEW.date_range)
 		)
 		THEN
-			RETURN TRUE;
+			RETURN NEW;
 		END IF;
 
 	ELSIF ('NATIONAL' = type_team) THEN
@@ -335,7 +335,7 @@ BEGIN
 			free_national_militancy(NEW.player_id, rec_team.country_id)
 		)
 		THEN
-			RETURN TRUE;
+			RETURN NEW;
 		END IF;
 
 	END IF;
