@@ -174,18 +174,13 @@ AS
 $$
 DECLARE
 
-	count		integer;
-	
+	count		integer;	
 	name_table	text;
-
 	name_attr	text;
 	value_attr	text;
 	type_attr	text;
-
 	row_table	record;
-
 	to_execute	text;
-
 	id_to_find	integer;
 	
 BEGIN
@@ -278,10 +273,8 @@ $$
 DECLARE
 
 	tmp				integer;
-	
 	type_attr		text;
 	value_attr		text;
-
 	to_execute		text;
 	cur_to_execute	refcursor;
 	
@@ -472,46 +465,6 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : type_country_from_conf
- *
- * IN      : confederation.id%TYPE
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION type_country_from_conf
-(
-	IN	id_conf	confederation.id%TYPE
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE 
-
-	tmp				text;
-	id_country		integer;
-	type_country	text;
-
-BEGIN
-	
-	tmp = get_attr('confederation', 'country_id', id_conf);
-	id_country = CAST(tmp AS integer);
-
-	type_country = get_attr('country', 'type', id_country);
-
-	RETURN type_country;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
  * NAME : conf_from_comp_ed
  *
  * IN      : competition_edition.id%TYPE
@@ -683,98 +636,6 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : similar_competitions
- *
- * IN      : competition.id%TYPE
- * INOUT   : void
- * OUT     : void
- * RETURNS : SETOF competition.id%TYPE
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION similar_competitions
-(
-	IN	id_comp	competition.id%TYPE
-)
-RETURNS SETOF competition.id%TYPE
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	rec_comp	record;
-
-BEGIN
-	
-	rec_comp = get_rec('competition', id_comp);
-
-	RETURN
-	(
-		SELECT
-			id
-		FROM
-			competition
-		WHERE
-			type = rec_comp.type
-			AND
-			team_type = rec_comp.team_type
-			AND
-			tier = rec_comp.tier
-			AND
-			confederation_id = rec_comp.confederation_id
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : one_tier_edition
- *
- * IN      : competition.id%TYPE, dm_year
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION one_tier_edition
-(
-	IN	id_comp	competition.id%TYPE,
-	IN	s_year	dm_year
-)
-RETURNS boolean
-RETURNS FALSE ON NULL INPUT
-AS
-$$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) < 1
-		FROM
-			competition_edition
-		WHERE
-			start_year = s_year
-			AND
-			competition_id IN SELECT similar_competitions(id_comp) 
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
  * NAME : belong_to
  *
  * IN      : team.id%TYPE, confederation.id%TYPE
@@ -796,31 +657,28 @@ $$
 DECLARE
 
 	tmp				text;
-	type_conf		text;
 	id_conf_team	integer;
 
 BEGIN
-	
-	type_conf = type_country_from_conf(id_conf);
 
 	tmp = get_attr('team', 'confederation_id', id_team);
 	id_conf_team = CAST(tmp AS integer);
 
-	IF ('NATION' = type_conf AND id_conf_team = id_conf) THEN
+	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
 	tmp = get_attr('confederation', 'super_id', id_conf_team);
 	id_conf_team = CAST(tmp AS integer);
 	
-	IF ('CONTINENT' = type_conf AND id_conf_team = id_conf) THEN
+	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
 	tmp = get_attr('confederation', 'super_id', id_conf_team);
 	id_conf_team = CAST(tmp AS integer);
 	
-	IF ('WORLD' = type_conf AND id_conf_team = id_conf) THEN
+	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
@@ -856,18 +714,18 @@ AS
 $$
 DECLARE
 
-	tmp	text;
-	max	integer;
+	tmp			text;
+	tot_team	integer;
 
 BEGIN
 	
 	tmp = get_attr('competition_edition', 'total_team', id_comp_ed);
-	max = CAST(tmp AS integer);
+	tot_team = CAST(tmp AS integer);
 
 	RETURN
 	(
 		SELECT
-			count(*) < max
+			count(*) < tot_team
 		FROM
 			partecipation
 		WHERE
@@ -957,10 +815,8 @@ $$
 DECLARE
 
 	time_range	daterange;
-
 	s_year		integer;
 	e_year		integer;
-
 	s_date		date;
 	e_date		date;
 
@@ -1136,11 +992,9 @@ DECLARE
 
 	min_age		integer;
 	max_age		integer;
-
 	dob_year	integer;
 	dob_month	integer;
 	dob_day		integer;
-
 	valid_range	daterange;
 	s_valid		date;
 	e_valid		date;
@@ -1234,36 +1088,265 @@ RETURNS boolean
 RETURNS FALSE ON NULL INPUT
 AS
 $$
-DECLARE
-
-	id_team		integer;
-	rec_team	record;
-	
 BEGIN
-	
-	FOR id_team
-	IN
 
+	RETURN
+	(
 		SELECT
-			team_id
+			count(*) < 1
 		FROM
 			militancy
 		WHERE
 			player_id = id_player
 			AND
 			upper(date_range) IS NULL
+	);	
 	
-	LOOP
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-		rec_team = get_rec('team', id_team);
 
-		IF (id_country <> rec_team.country_id) THEN
-			RETURN FALSE;
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : corr_tot_team
+ *
+ * IN      : competition.id%TYPE, dm_usint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION corr_tot_team
+(
+	IN	id_comp		competition.id%TYPE,
+	IN	tot_team	dm_usint,
+)
+RETURNS boolean
+RETURNS FALSE ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_conf			integer
+	id_country		integer;
+
+	type_country	text;
+	type_comp		text;
+	
+BEGIN
+	
+	type_comp = get_attr('competition', 'type', id_comp);
+
+	IF ('SUPER CUP' = type_comp) THEN
+		IF (tot_team <= 6) THEN
+			RETURN TRUE;
+		END IF;
+	ELSIF ('LEAGUE' = type_comp) THEN
+		IF (tot_team <= 50) THEN
+			RETURN TRUE;
+		END IF;
+	ELSIF ('CUP' = type_comp) THEN
+
+		tmp = get_attr('competition', 'confederation_id', id_comp);
+		id_conf = CAST(tmp_text AS integer);
+
+		tmp = get_attr('confederation', 'country_id', id_conf);
+		id_country = CAST(tmp_text AS integer);
+
+		type_country = get_attr('country', 'type', id_country);
+
+		IF ('NATION' = type_country) THEN
+			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
+				RETURN TRUE;
+			END IF;
+		ELSE
+			IF (tot_team <= 50) THEN
+				RETURN TRUE;
+			END IF;
 		END IF;
 
-	END LOOP;
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
-	RETURN TRUE;
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : similar_comp
+ *
+ * IN      : competition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF competition.id%TYPE
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION similar_comp
+(
+	IN	id_comp	competition.id%TYPE
+)
+RETURNS SETOF competition.id%TYPE
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	rec_comp	record;
+
+BEGIN
+	
+	rec_comp = get_rec('competition', id_comp);
+
+	RETURN
+	(
+		SELECT
+			id
+		FROM
+			competition
+		WHERE
+			type = rec_comp.type
+			AND
+			team_type = rec_comp.team_type
+			AND
+			confederation_id = rec_comp.confederation_id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : similar_comp_ed
+ *
+ * IN      : competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF competition_edition.id%TYPE
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION similar_comp_ed
+(
+	IN	id_comp_ed	competition_edition.id%TYPE
+)
+RETURNS SETOF competition.id%TYPE
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	rec_comp_ed	record;
+
+BEGIN
+	
+	rec_comp_ed = get_rec('competition_edition', id_comp_ed);
+
+	RETURN
+	(
+		SELECT
+			id
+		FROM
+			competition_edition
+		WHERE
+			start_year = rec_comp_ed.start_year
+			AND
+			end_year = rec_comp_ed.end_year
+			AND
+			competition_id IN similar_comp(rec_comp_ed.competition_id)
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : can_take_part
+ *
+ * IN      : team.id%TYPE, competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION can_take_part
+(
+	IN	id_team		team.id%TYPE
+	IN	id_comp_ed	competition_edition.id%TYPE,
+)
+RETURNS boolean
+RETURNS FALSE ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) < 1
+		FROM
+			partecipation
+		WHERE
+			team_id = id_team
+			AND
+			competition_edition_id IN similar_comp_ed(id_comp_ed)
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_nationality
+ *
+ * IN      : player.id%TYPE, team.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_nationality
+(
+	IN	id_player	player.id%TYPE,
+	IN	id_team		team.id%TYPE
+)
+RETURNS boolean
+RETURNS FALSE ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			nationality
+		WHERE
+			player_id = id_player
+			AND
+			team_id = id_team
+	);
 	
 END;
 $$

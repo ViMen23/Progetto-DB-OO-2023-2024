@@ -274,7 +274,6 @@ CREATE TABLE competition
 	type				ty_competition	NOT NULL,
 	team_type			ty_team			NOT NULL,
 	name				dm_alnum		NOT NULL,
-	tier				dm_usint		NOT NULL,
 	frequency			dm_usint		NOT NULL,
 	confederation_id	integer			NOT NULL
 );
@@ -377,18 +376,31 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : CHECK CONSTRAINT - competition_edition TABLE
- * NAME : ck_competition_edition
+ * NAME : ck_competition_edition_range
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	competition_edition
-ADD CONSTRAINT ck_competition_edition
+ADD CONSTRAINT ck_competition_edition_range
 CHECK
 (
 	(end_year - start_year) BETWEEN 0 AND 1
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - competition_edition TABLE
+ * NAME : ck_competition_edition_total_team
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	competition_edition
+ADD CONSTRAINT ck_competition_edition_total_team
+CHECK
+(
+	total_team BETWEEN 2 AND 128
+);
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - competition_edition TABLE

@@ -50,10 +50,8 @@ CREATE TYPE ty_attribute AS ENUM
  ******************************************************************************/
 CREATE TYPE ty_competition AS ENUM
 (
-	'INTERNATIONAL CHAMPIONSHIP',
-	'INTERNATIONAL CUP',
-	'NATIONAL CHAMPIONSHIP',
-	'NATIONAL CUP',
+	'CUP',
+	'LEAGUE',
 	'SUPER CUP'
 );
 --------------------------------------------------------------------------------

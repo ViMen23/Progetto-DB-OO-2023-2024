@@ -64,9 +64,7 @@ $$
 DECLARE
 
 	tmp				text;
-
 	id_country_conf	integer;
-
 	name_country 	text;
 
 BEGIN
@@ -117,14 +115,21 @@ AS
 $$
 DECLARE
 
-	type_country text;
+	tmp					text;
+	id_country_conf		integer;
+	type_country_conf	text;
 
 BEGIN
 
-	type_country = type_country_from_conf(NEW.confederation_id);
+	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	id_country_conf = CAST(tmp AS integer);
 
-	IF (type_country <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
+	type_country_conf = get_attr('country', 'type', id_country);
+
+	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
+
 		RETURN NEW;
+	
 	END IF
 	
 	RETURN NULL;
@@ -151,17 +156,23 @@ $$
 BEGIN
 
 	IF (NOT has_edition(NEW.competition_id)) THEN
+
 		RETURN NEW
+	
 	ELSE
+	
 		IF
 		(
 			corr_freq(NEW.competition_id, NEW.start_year)
 			AND
-			one_tier_edition(NEW.competition_id, NEW.start_year)
-		)
+			corr_tot_team(NEW.competition_id, NEW.total_team)
+		) 
 		THEN
+	
 			RETURN NEW;
+	
 		END IF;
+	
 	END IF;
 	
 	RETURN NULL;
@@ -198,8 +209,6 @@ BEGIN
 	tmp = get_attr('competition_edition', 'competition_id', NEW.competition_edition_id);
 	id_comp = CAST(tmp AS integer);
 
-
-
 	IF
 	(
 		available(NEW.competition_edition_id)
@@ -207,9 +216,8 @@ BEGIN
 		belong_to(NEW.team_id, id_conf)
 		AND
 		team_fit_comp(NEW.team_id, id_comp)
-		-- TODO:
-		-- dopo nuova definizione tipologia competizioni
-		-- controllo per livello e tipo competizione nella confederazione
+		AND
+		can_take_part(NEW.team_id, NEW.competition_edition_id)
 	)
 	THEN
 		RETURN NEW;
@@ -289,11 +297,8 @@ $$
 DECLARE
 
 	tmp			text;
-
 	dob_player	date;
-
 	type_team	text;
-
 	valid_range	daterange;
 
 BEGIN
@@ -321,6 +326,8 @@ BEGIN
 
 		IF
 		(
+			has_nationality(NEW.player_id, rec_team.country_id)
+			AND
 			upper(NEW.date_range) IS NULL
 			AND
 			lower(NEW.date_range) <@ valid_range
@@ -592,7 +599,6 @@ DECLARE
 
 	tmp				text;
 	id_player_pos	integer	
-
 	id_pos			integer;
 
 BEGIN
