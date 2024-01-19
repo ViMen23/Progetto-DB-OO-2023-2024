@@ -47,7 +47,7 @@
 		<node id="n0">
 			<data key="d0">1</data>
 			<data key="d5">
-				<y:RectD X="1645" Y="462" Width="250" Height="156"/>
+				<y:RectD X="1645" Y="417" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -97,7 +97,7 @@
 		<node id="n1">
 			<data key="d0">2</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="470" Width="250" Height="140"/>
+				<y:RectD X="1210" Y="425" Width="250" Height="140"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -146,7 +146,7 @@
 		<node id="n2">
 			<data key="d0">3</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="655" Width="250" Height="220"/>
+				<y:RectD X="1210" Y="611" Width="250" Height="188"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -158,10 +158,8 @@
 									<sys:String><![CDATA[type : ty_comp]]></sys:String>
 									<sys:String><![CDATA[team_type : ty_team]]></sys:String>
 									<sys:String><![CDATA[name : String]]></sys:String>
-									<sys:String><![CDATA[sex : ty_sex]]></sys:String>
 									<sys:String><![CDATA[freq : integer]]></sys:String>
 									<sys:String><![CDATA[tier : integer]]></sys:String>
-									<sys:String><![CDATA[age_cap : ty_age_cap]]></sys:String>
 								</x:Array>
 							</uml:UMLClassModel.attributes>
 							<uml:UMLClassModel.operations>
@@ -185,7 +183,7 @@
 		<node id="n3">
 			<data key="d0">4</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="259" Width="250" Height="172"/>
+				<y:RectD X="1210" Y="245" Width="250" Height="140"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -196,8 +194,6 @@
 									<sys:String><![CDATA[id : integer]]></sys:String>
 									<sys:String><![CDATA[type : ty_team]]></sys:String>
 									<sys:String><![CDATA[name : String]]></sys:String>
-									<sys:String><![CDATA[age_cap : ty_age_cap]]></sys:String>
-									<sys:String><![CDATA[sex : ty_sex]]></sys:String>
 								</x:Array>
 							</uml:UMLClassModel.attributes>
 							<uml:UMLClassModel.operations>
@@ -219,7 +215,7 @@
 			</port>
 			<port name="p2">
 				<data key="d16">
-					<y:FreeNodePortLocationModelParameter Ratio="0,0.5872093023255814"/>
+					<y:FreeNodePortLocationModelParameter Ratio="0,0.6071428571428571"/>
 				</data>
 			</port>
 			<port name="p3"/>
@@ -242,7 +238,7 @@
 		<node id="n4">
 			<data key="d0">5</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="904" Width="250" Height="172"/>
+				<y:RectD X="1210" Y="830" Width="250" Height="140"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -252,9 +248,7 @@
 								<x:Array Type="sys:Object">
 									<sys:String><![CDATA[id : integer]]></sys:String>
 									<sys:String><![CDATA[edition : anyrange]]></sys:String>
-									<sys:String><![CDATA[type : ty_formula]]></sys:String>
 									<sys:String><![CDATA[total_team : integer]]></sys:String>
-									<sys:String><![CDATA[max_match : integer]]></sys:String>
 								</x:Array>
 							</uml:UMLClassModel.attributes>
 							<uml:UMLClassModel.operations>
@@ -300,7 +294,7 @@
 		<node id="n5">
 			<data key="d0">6</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="1109" Width="250" Height="92"/>
+				<y:RectD X="1210" Y="1004" Width="250" Height="92"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -345,7 +339,7 @@
 		<node id="n6">
 			<data key="d0">7</data>
 			<data key="d5">
-				<y:RectD X="565" Y="1473" Width="250" Height="204"/>
+				<y:RectD X="565" Y="1376" Width="250" Height="188"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -356,7 +350,6 @@
 									<sys:String><![CDATA[id : integer]]></sys:String>
 									<sys:String><![CDATA[name : String]]></sys:String>
 									<sys:String><![CDATA[surname : String]]></sys:String>
-									<sys:String><![CDATA[sex : ty_sex]]></sys:String>
 									<sys:String><![CDATA[foot : ty_foot]]></sys:String>
 									<sys:String><![CDATA[dob : Date]]></sys:String>
 									<sys:String><![CDATA[career_time : daterange]]></sys:String>
@@ -412,7 +405,7 @@
 			</port>
 			<port name="p9">
 				<data key="d16">
-					<y:FreeNodePortLocationModelParameter Ratio="1,0.4264705882352941"/>
+					<y:FreeNodePortLocationModelParameter Ratio="1,0.42021276595744683"/>
 				</data>
 			</port>
 			<port name="p10">
@@ -424,7 +417,7 @@
 		<node id="n7">
 			<data key="d0">8</data>
 			<data key="d5">
-				<y:RectD X="880" Y="283" Width="250" Height="124"/>
+				<y:RectD X="880" Y="253" Width="250" Height="124"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -482,7 +475,7 @@
 		<node id="n8">
 			<data key="d0">10</data>
 			<data key="d5">
-				<y:RectD X="565" Y="-12" Width="250" Height="204"/>
+				<y:RectD X="565" Y="-11" Width="250" Height="172"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -492,8 +485,6 @@
 								<x:Array Type="sys:Object">
 									<sys:String><![CDATA[id : integer]]></sys:String>
 									<sys:String><![CDATA[type : ty_trophy]]></sys:String>
-									<sys:String><![CDATA[sex : ty_sex]]></sys:String>
-									<sys:String><![CDATA[age_cap : ty_age_cap]]></sys:String>
 									<sys:String><![CDATA[name : String]]></sys:String>
 									<sys:String><![CDATA[descr : String]]></sys:String>
 									<sys:String><![CDATA[given : String]]></sys:String>
@@ -520,7 +511,7 @@
 		<node id="n9">
 			<data key="d0">11</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="36" Width="250" Height="108"/>
+				<y:RectD X="1210" Y="21" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -552,7 +543,7 @@
 		<node id="n10">
 			<data key="d0">12</data>
 			<data key="d5">
-				<y:RectD X="565" Y="216" Width="250" Height="108"/>
+				<y:RectD X="565" Y="186" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -584,7 +575,7 @@
 		<node id="n11">
 			<data key="d0">13</data>
 			<data key="d5">
-				<y:RectD X="880" Y="1377" Width="250" Height="156"/>
+				<y:RectD X="880" Y="1272" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -619,7 +610,7 @@
 		<node id="n12">
 			<data key="d0">14</data>
 			<data key="d5">
-				<y:RectD X="880" Y="1236" Width="250" Height="108"/>
+				<y:RectD X="880" Y="1131" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -656,7 +647,7 @@
 		<node id="n13">
 			<data key="d0">15</data>
 			<data key="d5">
-				<y:RectD X="1645" Y="1529" Width="250" Height="92"/>
+				<y:RectD X="1645" Y="1424" Width="250" Height="92"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -686,7 +677,7 @@
 		<node id="n14">
 			<data key="d0">16</data>
 			<data key="d5">
-				<y:RectD X="880" Y="1101" Width="250" Height="108"/>
+				<y:RectD X="880" Y="996" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -738,7 +729,7 @@
 		<node id="n15">
 			<data key="d0">17</data>
 			<data key="d5">
-				<y:RectD X="1495" Y="1242" Width="250" Height="156"/>
+				<y:RectD X="1495" Y="1137" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -773,7 +764,7 @@
 		<node id="n16">
 			<data key="d0">18</data>
 			<data key="d5">
-				<y:RectD X="1210" Y="1274" Width="250" Height="92"/>
+				<y:RectD X="1210" Y="1169" Width="250" Height="92"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -818,7 +809,7 @@
 		<node id="n17">
 			<data key="d0">19</data>
 			<data key="d5">
-				<y:RectD X="1495" Y="1109" Width="250" Height="92"/>
+				<y:RectD X="1495" Y="1004" Width="250" Height="92"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -858,7 +849,7 @@
 		<node id="n18">
 			<data key="d0">20</data>
 			<data key="d5">
-				<y:RectD X="565" Y="1857" Width="250" Height="156"/>
+				<y:RectD X="565" Y="1752" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -888,7 +879,7 @@
 		<node id="n19">
 			<data key="d0">21</data>
 			<data key="d5">
-				<y:RectD X="565" Y="1716" Width="250" Height="108"/>
+				<y:RectD X="565" Y="1611" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -920,7 +911,7 @@
 		<node id="n20">
 			<data key="d0">23</data>
 			<data key="d5">
-				<y:RectD X="-5" Y="1497" Width="250" Height="156"/>
+				<y:RectD X="-5" Y="1392" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -950,7 +941,7 @@
 		<node id="n21">
 			<data key="d0">24</data>
 			<data key="d5">
-				<y:RectD X="280" Y="1529" Width="250" Height="92"/>
+				<y:RectD X="280" Y="1424" Width="250" Height="92"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -980,7 +971,7 @@
 		<node id="n22">
 			<data key="d0">26</data>
 			<data key="d5">
-				<y:RectD X="880" Y="777" Width="250" Height="156"/>
+				<y:RectD X="880" Y="672" Width="250" Height="156"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -1015,7 +1006,7 @@
 		<node id="n23">
 			<data key="d0">27</data>
 			<data key="d5">
-				<y:RectD X="880" Y="966" Width="250" Height="108"/>
+				<y:RectD X="880" Y="861" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -1047,7 +1038,7 @@
 		<node id="n24">
 			<data key="d0">28</data>
 			<data key="d5">
-				<y:RectD X="1945" Y="-10" Width="250" Height="140"/>
+				<y:RectD X="-5" Y="1925" Width="250" Height="140"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="{y:GraphMLReference 1}" highlightFill="{y:GraphMLReference 2}">
@@ -1071,7 +1062,7 @@
 		<node id="n25">
 			<data key="d0">29</data>
 			<data key="d5">
-				<y:RectD X="880" Y="636" Width="250" Height="108"/>
+				<y:RectD X="880" Y="531" Width="250" Height="108"/>
 			</data>
 			<data key="d7">
 				<uml:UMLNodeStyle fill="#FF607D8B" highlightFill="#FFA3F1BB">
@@ -1108,9 +1099,9 @@
 		<edge id="e1" source="n1" target="n1" sourceport="p1" targetport="p2">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="1320,630"/>
-					<y:Bend Location="1170,630"/>
-					<y:Bend Location="1170,540"/>
+					<y:Bend Location="1320,585"/>
+					<y:Bend Location="1170,585"/>
+					<y:Bend Location="1170,495"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1130,7 +1121,7 @@
 		<edge id="e4" source="n3" target="n0" sourceport="p1" targetport="p1">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="1770,345"/>
+					<y:Bend Location="1770,315"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1145,8 +1136,8 @@
 		<edge id="e6" source="n3" target="n5" sourceport="p2" targetport="p0">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="1155,360"/>
-					<y:Bend Location="1155,1140"/>
+					<y:Bend Location="1155,330"/>
+					<y:Bend Location="1155,1035"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1166,7 +1157,7 @@
 		<edge id="e9" source="n6" target="n7" sourceport="p1" targetport="p1">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="705,345"/>
+					<y:Bend Location="705,315"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1196,7 +1187,7 @@
 		<edge id="e14" source="n6" target="n12" sourceport="p3" targetport="p0">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="720,1290"/>
+					<y:Bend Location="720,1185"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1276,7 +1267,7 @@
 		<edge id="e29" source="n6" target="n16" sourceport="p9" targetport="p4">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="1335,1560"/>
+					<y:Bend Location="1335,1455"/>
 				</x:List>
 			</data>
 			<data key="d13">
@@ -1301,9 +1292,9 @@
 		<edge id="e33" source="n0" target="n6" sourceport="p4" targetport="p10">
 			<data key="d12">
 				<x:List>
-					<y:Bend Location="1920,540"/>
-					<y:Bend Location="1920,1695"/>
-					<y:Bend Location="705,1695"/>
+					<y:Bend Location="1920,495"/>
+					<y:Bend Location="1920,1590"/>
+					<y:Bend Location="705,1590"/>
 				</x:List>
 			</data>
 			<data key="d13">

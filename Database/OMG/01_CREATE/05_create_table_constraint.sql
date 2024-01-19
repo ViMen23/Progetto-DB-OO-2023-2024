@@ -7,1030 +7,9 @@
  * TEACHER      : SILVIO BARRA                                                
  * YEAR         : 2023-2024                                                   
  ******************************************************************************/
-
-
-
-/*******************************************************************************
- * SCHEMA                                                                     
- ******************************************************************************/
-
-
-/******************************************************************************* 
- * TYPE : SCHEMA
- * NAME : public
- *
- * DESC : TODO                                 
- ******************************************************************************/
-DROP SCHEMA IF EXISTS public CASCADE;
-CREATE SCHEMA public;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * DOMAIN 
- ******************************************************************************/
-
-
-/******************************************************************************* 
- * TYPE : DOMAIN
- * NAME : dm_alnum
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_alnum AS varchar(100)
-CHECK
-(
-	value ~ '(?=^'
-				'['
-					
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']'
-				'['
-					'\u0020'
-					'\u0027'
-					'\u002D'
-					'\u002E'
-					'\u002F'
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u0060'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']{0,98}'
-				'['
-					'\u002E'
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']'
-			'$)'
-			'(?!.*('
-				'[\u0020\u0027\u002D\u002F\u0060]{2}'
-				'|'
-				'[\u0027\u002D\u002E\u002F\u0060]{2}'
-				'|'
-				'\u0020\u002E'
-			'))'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_pdate
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_pdate AS date
-CHECK
-(
-	value <= current_date
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_string
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_string AS varchar(100)
-CHECK
-(
-	value ~ '(?=^'
-				'['
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']'
-				'['
-					'\u0020'
-					'\u0027'
-					'\u002D'
-					'\u002E'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']{0,98}'
-				'['
-					'\u002E'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-					'\u00C0-\u00D6'
-					'\u00D8-\u00F6'
-					'\u00F8-\u00FF'
-					'\u0100-\u017F'
-					'\u0180-\u024F'
-					'\u0259'
-				']'
-			'$)'
-			'(?!.*('
-				'[\u0020\u0027\u002D]{2}'
-				'|'
-				'[\u0027\u002D\u002E]{2}'
-				'|'
-				'\u0020\u002E'
-			'))'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_password
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_password AS varchar(255)
-CHECK
-(
-	value ~ '(?=^[\u0020-\u007E]{8,255}$)'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_code
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_code AS varchar(3)
-CHECK
-(
-	value ~ '(?=^[\u0041-\u005A]{2,3}$)'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_usint
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_usint AS smallint
-CHECK
-(
-	value >= 0
-);
---------------------------------------------------------------------------------
-
-
-/******************************************************************************* 
- * TYPE : DOMAIN
- * NAME : dm_username
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_username AS varchar(20)
-CHECK
-(
-	value ~ '(?=^'
-				'['
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-				']'
-				'['
-					'\u002D'
-					'\u002E'
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u005F'
-					'\u0061-\u007A'
-				']{2,18}'
-				'['
-					'\u0030-\u0039'
-					'\u0041-\u005A'
-					'\u0061-\u007A'
-				']'
-			'$)'
-			'(?!.*[\u002D\u002E\u005F]{2})'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_year
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_year AS smallint
-CHECK
-(
-	value BETWEEN 0 AND (extract(year from current_date) + 1)
-);
---------------------------------------------------------------------------------
-
-
-
-
-/*******************************************************************************
- * ENUM TYPE
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_age_cap
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_age_cap AS ENUM
-(
-	'MAJOR',
-	'U-15',
-	'U-16',
-	'U-17',
-	'U-18',
-	'U-19',
-	'U-20',
-	'U-21',
-	'U-22',
-	'U-23'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_attribute
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_attribute AS ENUM
-(
-	'GOALKEEPER',
-	'KEY ATTRIBUTE',
-	'MEDICAL',
-	'MENTAL',
-	'PHYSICAL',
-	'SET PIECE',
-	'TACTICAL - ATTACKING',
-	'TACTICAL - DEFENDING',
-	'TEAM WORK',
-	'TECHNICAL - ATTACKING',
-	'TECHNICAL - DEFENDING',
-	'TECHNICAL - IN POSSESSION',
-	'TECHNICAL - OUT POSSESSION'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_competition
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_competition AS ENUM
-(
-	'CHAMPIONSHIP',
-	'CUP',
-	'SUPER CUP',
-	'TOURNAMENT'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_country
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_country AS ENUM
-(
-	'NATION',
-	'CONTINENT',
-	'WORLD'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_foot
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_foot AS ENUM
-(
-	'EITHER',
-	'LEFT',
-	'RIGHT'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_formula
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_formula AS ENUM
-(
-	'GROUP',
-	'GROUP HOME/AWAY',
-	'GROUP OPEN/CLOSURE',
-	'GROUP HOME/AWAY OPEN/CLOSURE',
-	'KNOCKOUT',
-	'KNOCKOUT HOME/AWAY',
-	'KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP + KNOCKOUT',
-	'GROUP + KNOCKOUT HOME/AWAY',
-	'GROUP + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP HOME/AWAY + KNOCKOUT',
-	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY',
-	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP OPEN/CLOSURE + KNOCKOUT',
-	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
-	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_role
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_role AS ENUM
-(
-	'GK', -- goalkeeper
-	'DF', -- defender
-	'MF', -- midfield
-	'FW'  -- forward
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_sex
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_sex AS ENUM
-(
-	'FEMALE',
-	'MALE'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_statistic
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_statistic AS ENUM
-(
-	'GK',
-	'DF',
-	'MF',
-	'FW',
-	'GK-DF',
-	'GK-MF',
-	'GK-FW',
-	'DF-MF',
-	'DF-FW',
-	'MF-FW',
-	'GK-DF-MF',
-	'GK-DF-FW',
-	'GK-MF-FW',
-	'DF-MF-FW',
-	'GK-DF-MF-FW'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_team
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_team AS ENUM
-(
-	'CLUB',
-	'NATIONAL'
-);
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_trophy
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_trophy AS ENUM
-(
-	'PLAYER',
-	'TEAM'
-);
---------------------------------------------------------------------------------
-
-
-
-
-/*******************************************************************************
- * FUNCTION
- ******************************************************************************/
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : table_exists
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION table_exists
-(
-	IN	name_table	text
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.tables 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : attr_exists
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION attr_exists
-(
-	IN	name_table		text,
-	IN	name_attribute	text
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.columns 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-			AND
-			column_name = name_attribute
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_attr_type
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attr_type
-(
-	IN	name_table		text,
-	IN	name_attribute	text
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	attribute_type text; 
-
-BEGIN
-	
-	
-	SELECT
-		data_type
-	INTO
-		attribute_type
-	FROM
-		information_schema.columns 
-	WHERE
-		table_catalog = 'fpdb'
-		AND
-		table_schema = 'public'
-		AND
-		table_name = name_table
-		AND
-		column_name = name_attribute;
-		
-	RETURN attribute_type;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_id
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_id
-(
-	IN	separator		text,
-	IN	input_string	text
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	id_to_find	integer := NULL;
-	to_execute	text := '';
-	
-	count	integer := 0;
-	
-	name_table		text;
-	name_attribute	text;
-	value_attribute	text;
-	type_attribute	text;
-
-	input RECORD;
-	
-BEGIN
-	
-	FOR input IN
-		SELECT string_to_table(input_string, separator)
-	LOOP
-		
-		IF (0 = count) THEN
-
-			name_table = input.string_to_table;
-			
-			IF (NOT table_exists(name_table)) THEN
-				RETURN NULL;
-			END IF;
-			
-			to_execute = to_execute || 'SELECT id ';
-			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
-			
-		ELSIF (1 = (count % 2)) THEN
-		
-			name_attribute = input.string_to_table;
-			
-			IF (NOT attr_exists(name_table, name_attribute)) THEN
-				RETURN NULL;
-			END IF;
-			
-			type_attribute = get_attr_type(name_table, name_attribute);
-			
-			to_execute = to_execute || name_attribute || ' = ';
-			
-		ELSIF (0 = (count % 2)) THEN
-		
-			value_attribute = input.string_to_table;
-			
-			IF (NOT type_attribute LIKE '%int%') THEN
-				
-				SELECT quote_literal(value_attribute)
-				INTO value_attribute;
-				
-			END IF;
-				
-			to_execute = to_execute || value_attribute || ' AND ';
-			
-		END IF;
-		
-		count = count + 1;
-		
-	END LOOP;
-	
-	
-	SELECT trim(to_execute, ' AND ')
-	INTO to_execute;
-	
-	to_execute = to_execute || ';';
-	
-	EXECUTE to_execute INTO id_to_find;
-	
-	RETURN id_to_find;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_attr
- *
- * IN      : text, text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attr
-(
-	IN	name_table		text,
-	IN	name_attribute	text,
-	IN	value_id		integer
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	to_execute	text	:= ''; 
-	
-	type_attribute	text;
-	
-	output_cursor	refcursor;
-	integer_output	integer;
-	
-	value_attribute	text;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-	
-	IF (NOT attr_exists(name_table, name_attribute)) THEN
-		RETURN NULL;
-	END IF;
-	
-	to_execute = to_execute || 'SELECT ' || name_attribute;
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-	
-	
-	
-	OPEN output_cursor FOR EXECUTE to_execute;
-	
-	
-	
-	type_attribute = get_attr_type(name_table, name_attribute);
-	
-	
-	
-	IF (type_attribute LIKE '%int%') THEN
-		
-		FETCH output_cursor INTO integer_output;
-		
-		SELECT CAST(integer_output AS text)
-		INTO value_attribute; 
-		
-	ELSE
-	
-		FETCH output_cursor INTO value_attribute;
-	
-	END IF;
-	
-	CLOSE output_cursor;
-
-	RETURN value_attribute;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_rec
- *
- * IN      : text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : record
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_rec
-(
-	IN	name_table		text,
-	IN	name_attribute	text,
-	IN	value_id		integer
-)
-RETURNS record
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	to_execute text = ''; 
-	
-	table_record record;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-	
-	to_execute = to_execute || 'SELECT *';
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-	
-	EXECUTE to_execute INTO table_record;
-
-	RETURN table_record;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : set_formula_min_match
- *
- * IN      : ty_formula, integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_formula_min_match
-(
-	IN	type		ty_formula,
-	IN	num_group	integer,
-	IN	team_group	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-IMMUTABLE
-AS
-$$
-BEGIN
-
-	CASE type
-	
-		WHEN 'GROUP' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'KNOCKOUT' THEN
-			RETURN 1;
-			
-		WHEN 'KNOCKOUT HOME/AWAY' THEN
-			RETURN 1 * 2;
-			
-		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN 1;
-			
-		WHEN 'GROUP + KNOCKOUT' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-	END CASE;
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : set_formula_min_match
- *
- * IN      : ty_formula, integer, integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_formula_max_match
-(
-	IN	type		ty_formula,
-	IN	num_group	integer,
-	IN	team_group	integer,
-	IN	team_knock	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-IMMUTABLE
-AS
-$$
-BEGIN
-
-	CASE type
-	
-		WHEN 'GROUP' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'KNOCKOUT' THEN
-			RETURN CAST(ceil(log(2, team_knock)) AS integer);
-						
-		WHEN 'KNOCKOUT HOME/AWAY' THEN
-			RETURN CAST(ceil(log(2, team_knock)) AS integer) * 2;
-						
-		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-					
-		WHEN 'GROUP + KNOCKOUT' THEN
-			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer);
-										 
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
-			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-										 
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN team_group - 1 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-									 
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-											   
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-											   
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-										   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-											   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-											   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-										   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-												   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-												   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-											   
-	END CASE;
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-
+ 
+ 
+ 
 /*******************************************************************************
  * TABLES AND CONSTRAINTS
  ******************************************************************************/
@@ -1209,8 +188,6 @@ CREATE TABLE team
 	type				ty_team 	NOT NULL,
 	country_id			integer		NOT NULL,
 	name				dm_alnum	NOT NULL,
-	age_cap				ty_age_cap	NOT NULL,
-	sex					ty_sex		NOT NULL,
 	confederation_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1299,8 +276,6 @@ CREATE TABLE competition
 	name				dm_alnum		NOT NULL,
 	tier				dm_usint		NOT NULL,
 	frequency			dm_usint		NOT NULL,
-	age_cap				ty_age_cap		NOT NULL,
-	sex					ty_sex			NOT NULL,
 	confederation_id	integer			NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1367,10 +342,7 @@ CREATE TABLE competition_edition
 	start_year		dm_year		NOT NULL,
 	end_year		dm_year		NOT NULL,
 	competition_id	integer		NOT NULL,
-	type			ty_formula	NOT NULL,
-	total_team		dm_usint	NOT NULL,
-	min_match		dm_usint 	NOT NULL, -- minimum number of matches for team
-	max_match		dm_usint 	NOT NULL  -- maximum number of matches for team
+	total_team		dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1521,7 +493,6 @@ CREATE TABLE player
 	id			serial		NOT NULL,
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
-	sex			ty_sex		NOT NULL,
 	foot		ty_foot		NOT NULL, -- preferred foot
 	country_id	integer		NOT NULL, -- birth country id
 	dob			dm_pdate	NOT NULL, -- birth date
@@ -1555,7 +526,6 @@ UNIQUE
 (
 	name,
 	surname,
-	sex,
 	dob,
 	country_id
 );
@@ -1591,7 +561,6 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE nationality
 (
-	team_nation	boolean	NOT NULL, -- country of player national team
 	country_id	integer	NOT NULL,
 	player_id	integer	NOT NULL
 );
@@ -1662,6 +631,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE militancy
 (
+	id			serial		NOT NULL,
 	team_id		integer		NOT NULL,
 	player_id	integer		NOT NULL,
 	date_range	daterange	NOT NULL
@@ -1677,6 +647,20 @@ CREATE TABLE militancy
 ALTER TABLE militancy
 ADD CONSTRAINT pk_militancy
 PRIMARY KEY
+(
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - militancy TABLE
+ * NAME : uq_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy
+ADD CONSTRAINT uq_militancy
+UNIQUE
 (
 	team_id,
 	player_id,
@@ -2359,8 +1343,6 @@ CREATE TABLE prize
 (
 	id			serial		NOT NULL,
 	type		ty_trophy	NOT NULL,
-	sex			ty_sex		NOT NULL,
-	age_cap		ty_age_cap	NOT NULL,
 	name		dm_string	NOT NULL,
 	description	dm_string	NOT NULL,
 	given		dm_string	NOT NULL  -- give the prize
@@ -2703,6 +1685,78 @@ REFERENCES statistic
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : militancy_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE militancy_statistic
+(
+	militancy_id	integer		NOT NULL,
+	statistic_id	integer		NOT NULL,
+	score			dm_usint	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - militancy_statistic TABLE  
+ * NAME : pk_militancy_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT pk_militancy_statistic
+PRIMARY KEY
+(
+	militancy_id,
+	statistic_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy_statistic TABLE
+ * NAME : militancy_statistic_fk_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT militancy_statistic_fk_militancy
+FOREIGN KEY
+(
+	militancy_id
+)
+REFERENCES militancy
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy_statistic TABLE
+ * NAME : militancy_statistic_fk_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT militancy_statistic_fk_statistic
+FOREIGN KEY
+(
+	statistic_id
+)
+REFERENCES statistic
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
 
 
 

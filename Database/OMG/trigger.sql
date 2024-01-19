@@ -63,25 +63,35 @@ AS
 $$
 DECLARE
 
-	name_team text;
+	tmp				text;
+
+	id_country_conf	integer;
+
+	name_country 	text;
 
 BEGIN
 
-	IF
-	(
-		is_nation(NEW.country_id)
-		AND
-		same_country_conf(NEW.country_id, NEW.confederation_id)
-	)
-	THEN
+	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	id_country_conf = CAST(tmp AS integer);
+
+	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
+
 		IF ('CLUB' = NEW.type) THEN
+		
 			RETURN NEW;
-		ELSE
-			name_team = national_team_name(NEW.country_id, NEW.age_cap, NEW.sex)
-			IF (NEW.name = name_team) THEN
+		
+		ELSIF ('NATIONAL' = NEW.type)
+
+			name_country = get_attr('country', 'name', NEW.country_id);
+
+			IF (NEW.name = name_country) THEN
+		
 				RETURN NEW;
+		
 			END IF;
+
 		END IF;
+
 	END IF;
 	
 	RETURN NULL;
@@ -113,11 +123,11 @@ BEGIN
 
 	type_country = type_country_from_conf(NEW.confederation_id);
 
-	IF ('NATION' = type_country AND 'NATIONAL' = NEW.team_type) THEN
-		RETURN NULL;
+	IF (type_country <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
+		RETURN NEW;
 	END IF
 	
-	RETURN NEW;
+	RETURN NULL;
 	
 END;
 $$
@@ -188,6 +198,8 @@ BEGIN
 	tmp = get_attr('competition_edition', 'competition_id', NEW.competition_edition_id);
 	id_comp = CAST(tmp AS integer);
 
+
+
 	IF
 	(
 		available(NEW.competition_edition_id)
@@ -255,12 +267,6 @@ BEGIN
 
 	RETURN NULL;
 
-	-- TODO
-	-- cambiamento tabella
-	-- avere una tupla marcata non ha senso
-	-- in ogni caso la nazionale scelta sara' l unica in cui potra giocare
-	-- da discutere
-	
 END;
 $$
 LANGUAGE plpgsql;
@@ -282,44 +288,47 @@ AS
 $$
 DECLARE
 
-	rec_team	record;
-	rec_player	record;
+	tmp			text;
+
+	dob_player	date;
+
+	type_team	text;
 
 	valid_range	daterange;
 
 BEGIN
 
-	rec_team = get_rec('team', NEW.team_id);
-	rec_player = get_rec('player', NEW.player_id);
+	tmp = get_attr('player', 'dob', NEW.player_id);
+	dob_player = CAST(tmp AS date);
+	
+	valid_range = valid_daterange(dob_player);
 
-	IF (rec_team.sex = rec_player.sex) THEN
+	type_team = get_attr('team', 'type', NEW.team_id);
 
-		valid_range = valid_daterange(rec_player.dob, rec_team.age_cap);
+	IF ('CLUB' = type_team) THEN
 
-		IF ('CLUB' = rec_team.type) THEN
+		IF
+		(
+			NEW.date_range <@ valid_range
+			AND
+			free_club_militancy(NEW.player_id, NEW.date_range)
+		)
+		THEN
+			RETURN TRUE;
+		END IF;
 
-			IF
-			(
-				NEW.date_range <@ valid_range
-				AND
-				free_club_militancy(NEW.player_id, NEW.date_range)
-			)
-			THEN
-				RETURN TRUE;
-			END IF;
+	ELSIF ('NATIONAL' = type_team) THEN
 
-		ELSIF ('NATIONAL' = rec_team.type) THEN
-
-			IF
-			(
-				lower(NEW.date_range) <@ valid_range
-				AND
-				free_national_militancy(NEW.player_id, rec_team.country_id, rec_team.age_cap)
-			)
-			THEN
-				RETURN TRUE;
-			END IF;
-
+		IF
+		(
+			upper(NEW.date_range) IS NULL
+			AND
+			lower(NEW.date_range) <@ valid_range
+			AND
+			free_national_militancy(NEW.player_id, rec_team.country_id)
+		)
+		THEN
+			RETURN TRUE;
 		END IF;
 
 	END IF;
@@ -484,7 +493,7 @@ BEGIN
 				AND
 				team_id = NEW.team_id
 				AND
-				player_id = NEW.player_id;
+				trophy_id = NEW.trophy_id;
 			
 			IF (existence IS NOT NULL) THEN
 				RETURN NEW;
@@ -521,9 +530,9 @@ DECLARE
 
 BEGIN
 
-	type_prize = get_attr('prize', 'type', NEW.trophy_id);
+	type_prize = get_attr('prize', 'type', NEW.prize_id);
 
-	IF ('TEAM' = type_trohy AND team_fit_prize(NEW.team_id, NEW.prize_id)) THEN
+	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
 	END IF;
 	
