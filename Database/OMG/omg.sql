@@ -2,7 +2,7 @@
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : competitionUTER SCIENCE                                            
+ * FIELD        : COMPUTER SCIENCE                                            
  * CLASS        : DATA BASES I                                                
  * TEACHER      : SILVIO BARRA                                                
  * YEAR         : 2023-2024                                                   
@@ -288,7 +288,7 @@ CREATE TYPE ty_age_cap AS ENUM
 CREATE TYPE ty_attribute AS ENUM
 (
 	'GOALKEEPER',
-	'KEY attribute',
+	'KEY ATTRIBUTE',
 	'MEDICAL',
 	'MENTAL',
 	'PHYSICAL',
@@ -298,8 +298,8 @@ CREATE TYPE ty_attribute AS ENUM
 	'TEAM WORK',
 	'TECHNICAL - ATTACKING',
 	'TECHNICAL - DEFENDING',
-	'TECHNICAL - IN positionSESSION',
-	'TECHNICAL - OUT positionSESSION'
+	'TECHNICAL - IN POSSESSION',
+	'TECHNICAL - OUT POSSESSION'
 );
 --------------------------------------------------------------------------------
 
@@ -518,7 +518,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : attribute_exists
+ * NAME : attr_exists
  *
  * IN      : text, text
  * INOUT   : void
@@ -527,7 +527,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION attribute_exists
+CREATE OR REPLACE FUNCTION attr_exists
 (
 	IN	name_table		text,
 	IN	name_attribute	text
@@ -563,7 +563,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_attribute_type
+ * NAME : get_attr_type
  *
  * IN      : text, text
  * INOUT   : void
@@ -572,7 +572,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attribute_type
+CREATE OR REPLACE FUNCTION get_attr_type
 (
 	IN	name_table		text,
 	IN	name_attribute	text
@@ -667,11 +667,11 @@ BEGIN
 		
 			name_attribute = input.string_to_table;
 			
-			IF (NOT attribute_exists(name_table, name_attribute)) THEN
+			IF (NOT attr_exists(name_table, name_attribute)) THEN
 				RETURN NULL;
 			END IF;
 			
-			type_attribute = get_attribute_type(name_table, name_attribute);
+			type_attribute = get_attr_type(name_table, name_attribute);
 			
 			to_execute = to_execute || name_attribute || ' = ';
 			
@@ -713,7 +713,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_attribute_from_id
+ * NAME : get_attr
  *
  * IN      : text, text, integer
  * INOUT   : void
@@ -722,7 +722,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attribute_from_id
+CREATE OR REPLACE FUNCTION get_attr
 (
 	IN	name_table		text,
 	IN	name_attribute	text,
@@ -749,7 +749,7 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
-	IF (NOT attribute_exists(name_table, name_attribute)) THEN
+	IF (NOT attr_exists(name_table, name_attribute)) THEN
 		RETURN NULL;
 	END IF;
 	
@@ -763,7 +763,7 @@ BEGIN
 	
 	
 	
-	type_attribute = get_attribute_type(name_table, name_attribute);
+	type_attribute = get_attr_type(name_table, name_attribute);
 	
 	
 	
@@ -793,16 +793,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_record_attribute_from_id
+ * NAME : get_rec
  *
- * IN      : text, text, integer
+ * IN      : text, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : record
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_record_attribute_from_id
+CREATE OR REPLACE FUNCTION get_rec
 (
 	IN	name_table		text,
 	IN	name_attribute	text,
@@ -816,7 +816,7 @@ DECLARE
 
 	to_execute text = ''; 
 	
-	attribute_record record;
+	table_record record;
 	
 BEGIN
 	
@@ -824,17 +824,13 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
-	IF (NOT attribute_exists(name_table, name_attribute)) THEN
-		RETURN NULL;
-	END IF;
-	
-	to_execute = to_execute || 'SELECT ' || name_attribute;
+	to_execute = to_execute || 'SELECT *';
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
 	
-	EXECUTE to_execute INTO attribute_record;
+	EXECUTE to_execute INTO table_record;
 
-	RETURN attribute_record;
+	RETURN table_record;
 	
 END;
 $$
@@ -1125,15 +1121,29 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - confederation TABLE
- * NAME : uq_confederation
+ * NAME : uq_confederation_long_name
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	confederation
-ADD CONSTRAINT uq_confederation
+ADD CONSTRAINT uq_confederation_long_name
 UNIQUE
 (
 	long_name
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - confederation TABLE
+ * NAME : uq_confederation_country_id
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	confederation
+ADD CONSTRAINT uq_confederation_country_id
+UNIQUE
+(
+	country_id
 );
 --------------------------------------------------------------------------------
 
@@ -1646,7 +1656,7 @@ CREATE TABLE militancy
 (
 	team_id		integer		NOT NULL,
 	player_id	integer		NOT NULL,
-	time_lap	daterange	NOT NULL  -- date range of militancy
+	date_range	daterange	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1662,7 +1672,7 @@ PRIMARY KEY
 (
 	team_id,
 	player_id,
-	time_lap
+	date_range
 );
 --------------------------------------------------------------------------------
 
