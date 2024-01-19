@@ -2,7 +2,7 @@
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
+ * FIELD        : competitionUTER SCIENCE                                            
  * CLASS        : DATA BASES I                                                
  * TEACHER      : SILVIO BARRA                                                
  * YEAR         : 2023-2024                                                   
@@ -10,8 +10,9 @@
 
 
 
+
 /*******************************************************************************
- * FUNCTION PRE SCHEMA                                             
+ * FUNCTION PRE SCHEMA                                              
  ******************************************************************************/
 
 
@@ -174,18 +175,13 @@ AS
 $$
 DECLARE
 
-	count		integer;
-	
+	count		integer;	
 	name_table	text;
-
 	name_attr	text;
 	value_attr	text;
 	type_attr	text;
-
 	row_table	record;
-
 	to_execute	text;
-
 	id_to_find	integer;
 	
 BEGIN
@@ -278,10 +274,8 @@ $$
 DECLARE
 
 	tmp				integer;
-	
 	type_attr		text;
 	value_attr		text;
-
 	to_execute		text;
 	cur_to_execute	refcursor;
 	

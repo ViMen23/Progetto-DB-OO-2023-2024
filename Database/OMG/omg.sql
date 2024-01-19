@@ -26,6 +26,17 @@ CREATE SCHEMA public;
 --------------------------------------------------------------------------------
 
 
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
 
 /*******************************************************************************
  * DOMAIN 
@@ -257,33 +268,23 @@ CHECK
 
 
 
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
 
 /*******************************************************************************
  * ENUM TYPE
  ******************************************************************************/
 
 
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_age_cap
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_age_cap AS ENUM
-(
-	'MAJOR',
-	'U-15',
-	'U-16',
-	'U-17',
-	'U-18',
-	'U-19',
-	'U-20',
-	'U-21',
-	'U-22',
-	'U-23'
-);
---------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -319,10 +320,9 @@ CREATE TYPE ty_attribute AS ENUM
  ******************************************************************************/
 CREATE TYPE ty_competition AS ENUM
 (
-	'CHAMPIONSHIP',
 	'CUP',
-	'SUPER CUP',
-	'TOURNAMENT'
+	'LEAGUE',
+	'SUPER CUP'
 );
 --------------------------------------------------------------------------------
 
@@ -359,37 +359,6 @@ CREATE TYPE ty_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_formula
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_formula AS ENUM
-(
-	'GROUP',
-	'GROUP HOME/AWAY',
-	'GROUP OPEN/CLOSURE',
-	'GROUP HOME/AWAY OPEN/CLOSURE',
-	'KNOCKOUT',
-	'KNOCKOUT HOME/AWAY',
-	'KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP + KNOCKOUT',
-	'GROUP + KNOCKOUT HOME/AWAY',
-	'GROUP + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP HOME/AWAY + KNOCKOUT',
-	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY',
-	'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP OPEN/CLOSURE + KNOCKOUT',
-	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
-	'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY',
-	'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
  * NAME : ty_role
  *
  * DESC : TODO
@@ -403,19 +372,6 @@ CREATE TYPE ty_role AS ENUM
 );
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : ty_sex
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TYPE ty_sex AS ENUM
-(
-	'FEMALE',
-	'MALE'
-);
---------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -475,11 +431,22 @@ CREATE TYPE ty_trophy AS ENUM
 
 
 
-
-/*******************************************************************************
- * FUNCTION
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : competitionUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
  ******************************************************************************/
 
+
+
+
+/*******************************************************************************
+ * FUNCTION PRE SCHEMA                                              
+ ******************************************************************************/
 
 
 /*******************************************************************************
@@ -537,8 +504,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION attr_exists
 (
-	IN	name_table		text,
-	IN	name_attribute	text
+	IN	name_table	text,
+	IN	name_attr	text
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -559,7 +526,7 @@ BEGIN
 			AND
 			table_name = name_table
 			AND
-			column_name = name_attribute
+			column_name = name_attr
 	);
 	
 END;
@@ -571,7 +538,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_attr_type
+ * NAME : get_type_attr
  *
  * IN      : text, text
  * INOUT   : void
@@ -580,10 +547,10 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attr_type
+CREATE OR REPLACE FUNCTION get_type_attr
 (
-	IN	name_table		text,
-	IN	name_attribute	text
+	IN	name_table	text,
+	IN	name_attr	text
 )
 RETURNS text
 RETURNS NULL ON NULL INPUT
@@ -591,15 +558,14 @@ AS
 $$
 DECLARE
 
-	attribute_type text; 
+	type_attr text;
 
 BEGIN
-	
 	
 	SELECT
 		data_type
 	INTO
-		attribute_type
+		type_attr
 	FROM
 		information_schema.columns 
 	WHERE
@@ -609,9 +575,9 @@ BEGIN
 		AND
 		table_name = name_table
 		AND
-		column_name = name_attribute;
+		column_name = name_attr;
 		
-	RETURN attribute_type;
+	RETURN type_attr;
 	
 END;
 $$
@@ -633,8 +599,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
-	IN	separator		text,
-	IN	input_string	text
+	IN	separator	text,
+	IN	in_string	text
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
@@ -642,27 +608,28 @@ AS
 $$
 DECLARE
 
-	id_to_find	integer := NULL;
-	to_execute	text := '';
-	
-	count	integer := 0;
-	
-	name_table		text;
-	name_attribute	text;
-	value_attribute	text;
-	type_attribute	text;
-
-	input RECORD;
+	count		integer;	
+	name_table	text;
+	name_attr	text;
+	value_attr	text;
+	type_attr	text;
+	row_table	record;
+	to_execute	text;
+	id_to_find	integer;
 	
 BEGIN
 	
-	FOR input IN
-		SELECT string_to_table(input_string, separator)
+	to_execute = '';
+
+	id_to_find = NULL;
+	count = 0;
+
+	FOR row_table IN SELECT string_to_table(in_string, separator)
 	LOOP
 		
 		IF (0 = count) THEN
 
-			name_table = input.string_to_table;
+			name_table = row_table.string_to_table;
 			
 			IF (NOT table_exists(name_table)) THEN
 				RETURN NULL;
@@ -673,28 +640,27 @@ BEGIN
 			
 		ELSIF (1 = (count % 2)) THEN
 		
-			name_attribute = input.string_to_table;
+			name_attr = row_table.string_to_table;
 			
-			IF (NOT attr_exists(name_table, name_attribute)) THEN
+			IF (NOT attr_exists(name_table, name_attr)) THEN
 				RETURN NULL;
 			END IF;
 			
-			type_attribute = get_attr_type(name_table, name_attribute);
+			type_attr = get_type_attr(name_table, name_attr);
 			
-			to_execute = to_execute || name_attribute || ' = ';
+			to_execute = to_execute || name_attr || ' = ';
 			
 		ELSIF (0 = (count % 2)) THEN
 		
-			value_attribute = input.string_to_table;
+			value_attr = row_table.string_to_table;
 			
-			IF (NOT type_attribute LIKE '%int%') THEN
-				
-				SELECT quote_literal(value_attribute)
-				INTO value_attribute;
+			IF (NOT type_attr LIKE '%int%') THEN
+				 
+				value_attr = quote_literal(value_attr);
 				
 			END IF;
 				
-			to_execute = to_execute || value_attribute || ' AND ';
+			to_execute = to_execute || value_attr || ' AND ';
 			
 		END IF;
 		
@@ -702,9 +668,7 @@ BEGIN
 		
 	END LOOP;
 	
-	
-	SELECT trim(to_execute, ' AND ')
-	INTO to_execute;
+	to_execute = trim(to_execute, ' AND ');
 	
 	to_execute = to_execute || ';';
 	
@@ -732,9 +696,9 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attr
 (
-	IN	name_table		text,
-	IN	name_attribute	text,
-	IN	value_id		integer
+	IN	name_table	text,
+	IN	name_attr	text,
+	IN	value_id	integer
 )
 RETURNS text
 RETURNS NULL ON NULL INPUT
@@ -742,14 +706,11 @@ AS
 $$
 DECLARE
 
-	to_execute	text	:= ''; 
-	
-	type_attribute	text;
-	
-	output_cursor	refcursor;
-	integer_output	integer;
-	
-	value_attribute	text;
+	tmp				integer;
+	type_attr		text;
+	value_attr		text;
+	to_execute		text;
+	cur_to_execute	refcursor;
 	
 BEGIN
 	
@@ -757,40 +718,34 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
-	IF (NOT attr_exists(name_table, name_attribute)) THEN
+	IF (NOT attr_exists(name_table, name_attr)) THEN
 		RETURN NULL;
 	END IF;
 	
-	to_execute = to_execute || 'SELECT ' || name_attribute;
+	to_execute = '';
+	to_execute = to_execute || 'SELECT ' || name_attr;
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
 	
+	OPEN cur_to_execute FOR EXECUTE to_execute;
 	
+	type_attr = get_type_attr(name_table, name_attr);
 	
-	OPEN output_cursor FOR EXECUTE to_execute;
-	
-	
-	
-	type_attribute = get_attr_type(name_table, name_attribute);
-	
-	
-	
-	IF (type_attribute LIKE '%int%') THEN
+	IF (type_attr LIKE '%int%') THEN
 		
-		FETCH output_cursor INTO integer_output;
-		
-		SELECT CAST(integer_output AS text)
-		INTO value_attribute; 
+		FETCH cur_to_execute INTO tmp;
+		 
+		value_attr = CAST(tmp AS text); 
 		
 	ELSE
 	
-		FETCH output_cursor INTO value_attribute;
+		FETCH cur_to_execute INTO value_attr;
 	
 	END IF;
 	
-	CLOSE output_cursor;
+	CLOSE cur_to_execute;
 
-	RETURN value_attribute;
+	RETURN value_attr;
 	
 END;
 $$
@@ -812,9 +767,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_rec
 (
-	IN	name_table		text,
-	IN	name_attribute	text,
-	IN	value_id		integer
+	IN	name_table	text,
+	IN	value_id	integer
 )
 RETURNS record
 RETURNS NULL ON NULL INPUT
@@ -822,9 +776,8 @@ AS
 $$
 DECLARE
 
-	to_execute text = ''; 
-	
-	table_record record;
+	to_execute	text;
+	rec_table	record;
 	
 BEGIN
 	
@@ -832,13 +785,14 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
+	to_execute = '';
 	to_execute = to_execute || 'SELECT *';
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
 	
-	EXECUTE to_execute INTO table_record;
+	EXECUTE to_execute INTO rec_table;
 
-	RETURN table_record;
+	RETURN rec_table;
 	
 END;
 $$
@@ -847,190 +801,18 @@ LANGUAGE plpgsql;
 
 
 
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : set_formula_min_match
- *
- * IN      : ty_formula, integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : TODO
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_formula_min_match
-(
-	IN	type		ty_formula,
-	IN	num_group	integer,
-	IN	team_group	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-IMMUTABLE
-AS
-$$
-BEGIN
-
-	CASE type
-	
-		WHEN 'GROUP' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'KNOCKOUT' THEN
-			RETURN 1;
-			
-		WHEN 'KNOCKOUT HOME/AWAY' THEN
-			RETURN 1 * 2;
-			
-		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN 1;
-			
-		WHEN 'GROUP + KNOCKOUT' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-	END CASE;
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : set_formula_min_match
- *
- * IN      : ty_formula, integer, integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_formula_max_match
-(
-	IN	type		ty_formula,
-	IN	num_group	integer,
-	IN	team_group	integer,
-	IN	team_knock	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-IMMUTABLE
-AS
-$$
-BEGIN
-
-	CASE type
-	
-		WHEN 'GROUP' THEN
-			RETURN team_group - 1;
-			
-		WHEN 'GROUP HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2;
-			
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE' THEN
-			RETURN (team_group - 1) * 2 * 2;
-			
-		WHEN 'KNOCKOUT' THEN
-			RETURN CAST(ceil(log(2, team_knock)) AS integer);
-						
-		WHEN 'KNOCKOUT HOME/AWAY' THEN
-			RETURN CAST(ceil(log(2, team_knock)) AS integer) * 2;
-						
-		WHEN 'KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-					
-		WHEN 'GROUP + KNOCKOUT' THEN
-			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer);
-										 
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY' THEN
-			RETURN team_group - 1 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-										 
-		WHEN 'GROUP + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN team_group - 1 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-									 
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-											   
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-											   
-		WHEN 'GROUP HOME/AWAY + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-										   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-											   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-											   
-		WHEN 'GROUP OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-										   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT' THEN
-			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer);
-												   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY' THEN
-			RETURN (team_group - 1) * 2 * 2 + CAST(ceil(log(2, team_knock)) AS integer) * 2;
-												   
-		WHEN 'GROUP HOME/AWAY OPEN/CLOSURE + KNOCKOUT HOME/AWAY + FINAL' THEN
-			RETURN (team_group - 1) * 2 * 2 + (CAST(ceil(log(2, team_knock)) AS integer) * 2) - 1;
-											   
-	END CASE;
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-
+ 
+ 
+ 
 /*******************************************************************************
  * TABLES AND CONSTRAINTS
  ******************************************************************************/
@@ -1209,8 +991,6 @@ CREATE TABLE team
 	type				ty_team 	NOT NULL,
 	country_id			integer		NOT NULL,
 	name				dm_alnum	NOT NULL,
-	age_cap				ty_age_cap	NOT NULL,
-	sex					ty_sex		NOT NULL,
 	confederation_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1297,10 +1077,7 @@ CREATE TABLE competition
 	type				ty_competition	NOT NULL,
 	team_type			ty_team			NOT NULL,
 	name				dm_alnum		NOT NULL,
-	tier				dm_usint		NOT NULL,
 	frequency			dm_usint		NOT NULL,
-	age_cap				ty_age_cap		NOT NULL,
-	sex					ty_sex			NOT NULL,
 	confederation_id	integer			NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1367,10 +1144,7 @@ CREATE TABLE competition_edition
 	start_year		dm_year		NOT NULL,
 	end_year		dm_year		NOT NULL,
 	competition_id	integer		NOT NULL,
-	type			ty_formula	NOT NULL,
-	total_team		dm_usint	NOT NULL,
-	min_match		dm_usint 	NOT NULL, -- minimum number of matches for team
-	max_match		dm_usint 	NOT NULL  -- maximum number of matches for team
+	total_team		dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1405,18 +1179,31 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : CHECK CONSTRAINT - competition_edition TABLE
- * NAME : ck_competition_edition
+ * NAME : ck_competition_edition_range
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	competition_edition
-ADD CONSTRAINT ck_competition_edition
+ADD CONSTRAINT ck_competition_edition_range
 CHECK
 (
 	(end_year - start_year) BETWEEN 0 AND 1
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - competition_edition TABLE
+ * NAME : ck_competition_edition_total_team
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	competition_edition
+ADD CONSTRAINT ck_competition_edition_total_team
+CHECK
+(
+	total_team BETWEEN 2 AND 128
+);
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - competition_edition TABLE
@@ -1521,7 +1308,6 @@ CREATE TABLE player
 	id			serial		NOT NULL,
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
-	sex			ty_sex		NOT NULL,
 	foot		ty_foot		NOT NULL, -- preferred foot
 	country_id	integer		NOT NULL, -- birth country id
 	dob			dm_pdate	NOT NULL, -- birth date
@@ -1555,7 +1341,6 @@ UNIQUE
 (
 	name,
 	surname,
-	sex,
 	dob,
 	country_id
 );
@@ -1591,7 +1376,6 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE nationality
 (
-	team_nation	boolean	NOT NULL, -- country of player national team
 	country_id	integer	NOT NULL,
 	player_id	integer	NOT NULL
 );
@@ -1662,6 +1446,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE militancy
 (
+	id			serial		NOT NULL,
 	team_id		integer		NOT NULL,
 	player_id	integer		NOT NULL,
 	date_range	daterange	NOT NULL
@@ -1677,6 +1462,20 @@ CREATE TABLE militancy
 ALTER TABLE militancy
 ADD CONSTRAINT pk_militancy
 PRIMARY KEY
+(
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - militancy TABLE
+ * NAME : uq_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy
+ADD CONSTRAINT uq_militancy
+UNIQUE
 (
 	team_id,
 	player_id,
@@ -2359,8 +2158,6 @@ CREATE TABLE prize
 (
 	id			serial		NOT NULL,
 	type		ty_trophy	NOT NULL,
-	sex			ty_sex		NOT NULL,
-	age_cap		ty_age_cap	NOT NULL,
 	name		dm_string	NOT NULL,
 	description	dm_string	NOT NULL,
 	given		dm_string	NOT NULL  -- give the prize
@@ -2708,6 +2505,78 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
+ * NAME : militancy_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE militancy_statistic
+(
+	militancy_id	integer		NOT NULL,
+	statistic_id	integer		NOT NULL,
+	score			dm_usint	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - militancy_statistic TABLE  
+ * NAME : pk_militancy_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT pk_militancy_statistic
+PRIMARY KEY
+(
+	militancy_id,
+	statistic_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy_statistic TABLE
+ * NAME : militancy_statistic_fk_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT militancy_statistic_fk_militancy
+FOREIGN KEY
+(
+	militancy_id
+)
+REFERENCES militancy
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - militancy_statistic TABLE
+ * NAME : militancy_statistic_fk_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE militancy_statistic
+ADD CONSTRAINT militancy_statistic_fk_statistic
+FOREIGN KEY
+(
+	statistic_id
+)
+REFERENCES statistic
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
  * NAME : user_account
  *
  * DESC : TODO
@@ -2732,4 +2601,1833 @@ PRIMARY KEY
 (
 	username
 );
+--------------------------------------------------------------------------------
+
+
+
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * FUNCTION POST SCHEMA                                              
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : corr_containment
+ *
+ * IN      : country.id%TYPE, country.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION corr_containment
+(
+	IN	id_in_country	country.id%TYPE,
+	IN	id_su_country	country.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	type_in_country	text;					
+	type_su_country	text;
+	
+BEGIN
+	
+	type_in_country	= get_attr('country', 'type', id_in_country);						
+	type_su_country = get_attr('country', 'type', id_su_country);
+
+	IF
+	(
+		(type_in_country = 'NATION' AND type_su_country = 'CONTINENT')
+		OR
+		(type_in_country = 'CONTINENT' AND type_su_country = 'WORLD')
+		OR
+		(type_in_country = 'WORLD' AND type_su_country IS NULL)
+	)
+	THEN
+		RETURN TRUE;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_nation
+ *
+ * IN      : country.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_nation
+(
+	IN	id_country	country.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	type_country	text;
+
+BEGIN
+	
+	type_country = get_attr('country', 'type', id_country);
+
+	IF ('NATION' = type_country) THEN
+		RETURN TRUE;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : conf_from_comp_ed
+ *
+ * IN      : competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : confederation.id%TYPE
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION conf_from_comp_ed
+(
+	IN	id_comp_ed	competition_edition.id%TYPE
+)
+RETURNS confederation.id%TYPE
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp		text;
+	id_comp	integer;
+	id_conf	integer;
+
+BEGIN
+	
+	tmp = get_attr('competition_edition', 'competition_id', id_comp_ed);
+	id_comp = CAST(tmp AS integer);
+
+	tmp = get_attr('competition', 'confederation_id', id_comp);
+	id_conf = CAST(tmp AS integer);
+
+	RETURN id_conf;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_edition
+ *
+ * IN      : competition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_edition
+(
+	IN	id_comp	competition.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) > 0
+		FROM
+			competition_edition
+		WHERE
+			competition_id = id_comp
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : a_start_year
+ *
+ * IN      : competition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : dm_year
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION a_start_year
+(
+	IN	id_comp	competition.id%TYPE
+)
+RETURNS dm_year
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			start_year
+		FROM
+			competition_ed
+		WHERE
+			competition_id = id_comp
+		LIMIT
+			1
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : corr_freq
+ *
+ * IN      : competition.id%TYPE, dm_year
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION corr_freq
+(
+	IN	id_comp	competition.id%TYPE,
+	IN	s_year	dm_year
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp		text;
+	freq	integer;
+	
+BEGIN
+	
+	tmp = get_attr('competition', 'frequency', id_comp);
+	freq = CAST(tmp AS integer);
+
+	IF (freq <= 1) THEN
+		RETURN TRUE;
+	ELSE
+		IF (0 = (s_year - a_start_year(id_comp)) % freq) THEN
+			RETURN TRUE;
+		END IF;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : belong_to
+ *
+ * IN      : team.id%TYPE, confederation.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION belong_to
+(
+	IN	id_team	team.id%TYPE,
+	IN	id_conf	confederation.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_conf_team	integer;
+
+BEGIN
+
+	tmp = get_attr('team', 'confederation_id', id_team);
+	id_conf_team = CAST(tmp AS integer);
+
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
+	END IF;
+	
+	tmp = get_attr('confederation', 'super_id', id_conf_team);
+	id_conf_team = CAST(tmp AS integer);
+	
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
+	END IF;
+	
+	tmp = get_attr('confederation', 'super_id', id_conf_team);
+	id_conf_team = CAST(tmp AS integer);
+	
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
+	END IF;
+	
+	RETURN FALSE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : available
+ *
+ * IN      : competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION available
+(
+	IN	id_comp_ed	competition_edition.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp			text;
+	tot_team	integer;
+
+BEGIN
+	
+	tmp = get_attr('competition_edition', 'total_team', id_comp_ed);
+	tot_team = CAST(tmp AS integer);
+
+	RETURN
+	(
+		SELECT
+			count(*) < tot_team
+		FROM
+			partecipation
+		WHERE
+			competition_edition_id = id_comp_ed
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_role
+ *
+ * IN      : player.id%TYPE, ty_role
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_role
+(
+	IN	id_player		player.id%TYPE,
+	IN	role_to_check	ty_role
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	pos_player	integer;
+	role_pos	text;
+
+BEGIN
+	
+	FOR pos_player
+	IN
+		SELECT
+			position_id
+		FROM
+			player_position
+		WHERE
+			player_id = id_player
+	LOOP
+
+		role_pos = get_attr('position', 'role', pos_player);
+
+		IF (role_pos = role_to_check) THEN
+			RETURN TRUE;
+		END IF;
+
+	END LOOP;
+
+	RETURN FALSE;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_time_range
+ *
+ * IN      : competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : daterange
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_time_range
+(
+	IN	id_comp_ed	competition_edition.id%TYPE
+)
+RETURNS daterange
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	time_range	daterange;
+	s_year		integer;
+	e_year		integer;
+	s_date		date;
+	e_date		date;
+
+BEGIN
+	
+	s_year = get_attr('competition_edition', 'start_year', id_comp_ed);
+	e_year = get_attr('competition_edition', 'end_year', id_comp_ed);
+
+	IF (s_year = e_year) THEN
+		s_date = make_date(s_year, 01, 01);
+		e_date = make_date(s_year, 12, 31);
+	ELSE
+		s_date = make_date(s_year, 08, 01);
+		e_date = make_date(e_year, 07, 31);
+	END IF;
+
+	time_range = daterange(s_date, e_date, '[]');
+
+	RETURN time_range;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : play_in_during
+ *
+ * IN      : player.id%TYPE, team.id%TYPE, daterange 
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION play_in_during
+(
+	IN	id_player	player.id%TYPE,
+	IN	id_team		team.id%TYPE,
+	IN	time_range	daterange
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) > 0
+		FROM
+			militancy
+		WHERE
+			team_id = id_team
+			AND
+			player_id = id_player
+			AND
+			date_range && time_range
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : pos_fit_stat
+ *
+ * IN      : position.id%TYPE, statistic.id%TYPE 
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION pos_fit_stat
+(
+	IN	id_pos		position.id%TYPE,
+	IN	id_stat		statistic.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+$$
+DECLARE
+
+	role_pos	text;
+	type_stat	text;
+
+BEGIN
+	
+	role_pos = get_attr('position', 'role', id_pos);
+	type_stat = get_attr('statistic', 'type', id_stat);
+
+	IF (position(role_pos in type_stat) > 0) THEN
+		RETURN TRUE;
+	END IF;
+
+	RETURN FALSE
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_fit_comp
+ *
+ * IN      : team.id%TYPE, competition.id%TYPE 
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION team_fit_comp
+(
+	IN	id_team		team.id%TYPE,
+	IN	id_comp		competition.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	type_team		text;
+	type_team_comp	text;
+
+BEGIN
+	
+	type_team = get_attr('team', 'type', id_team);
+	type_team_comp = get_attr('competition', 'team_type', id_comp);
+
+	RETURN type_team = type_team_comp;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : valid_daterange
+ *
+ * IN      : date
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : daterange
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION valid_daterange
+(
+	IN	dob		date
+)
+RETURNS daterange
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	min_age		integer;
+	max_age		integer;
+	dob_year	integer;
+	dob_month	integer;
+	dob_day		integer;
+	valid_range	daterange;
+	s_valid		date;
+	e_valid		date;
+
+BEGIN
+	
+	min_age = 14;
+	max_age = 50;
+	
+	dob_year = extract(year from dob);
+	dob_month = extract(month from dob);
+	dob_day = extract(day from dob);
+
+	IF (2 = dob_month AND 29 = dob_day) THEN
+		dob_month = 3;
+		dob_day = 1;
+	END IF;
+
+	s_valid = make_date(dob_year + min_age, dob_month, dob_day);
+	e_valid = make_date(dob_year + max_age, dob_month, dob_day);
+
+	valid_range = daterange(s_valid, e_valid, '[]');
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : free_club_militancy
+ *
+ * IN      : player.id%TYPE, daterange
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION free_club_militancy
+(
+	IN	id_player	player.id%TYPE,
+	IN	range_date	daterange
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) < 1
+		FROM
+			militancy
+		WHERE
+			player_id = id_player
+			AND
+			upper(date_range) IS NOT NULL
+			AND
+			date_range && range_date
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : free_national_militancy
+ *
+ * IN      : player.id%TYPE, country.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION free_national_militancy
+(
+	IN	id_player	player.id%TYPE,
+	IN	id_country	country.id%TYPE,
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+
+	RETURN
+	(
+		SELECT
+			count(*) < 1
+		FROM
+			militancy
+		WHERE
+			player_id = id_player
+			AND
+			upper(date_range) IS NULL
+	);	
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : corr_tot_team
+ *
+ * IN      : competition.id%TYPE, dm_usint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION corr_tot_team
+(
+	IN	id_comp		competition.id%TYPE,
+	IN	tot_team	dm_usint,
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_conf			integer
+	id_country		integer;
+
+	type_country	text;
+	type_comp		text;
+	
+BEGIN
+	
+	type_comp = get_attr('competition', 'type', id_comp);
+
+	IF ('SUPER CUP' = type_comp) THEN
+		IF (tot_team <= 6) THEN
+			RETURN TRUE;
+		END IF;
+	ELSIF ('LEAGUE' = type_comp) THEN
+		IF (tot_team <= 50) THEN
+			RETURN TRUE;
+		END IF;
+	ELSIF ('CUP' = type_comp) THEN
+
+		tmp = get_attr('competition', 'confederation_id', id_comp);
+		id_conf = CAST(tmp_text AS integer);
+
+		tmp = get_attr('confederation', 'country_id', id_conf);
+		id_country = CAST(tmp_text AS integer);
+
+		type_country = get_attr('country', 'type', id_country);
+
+		IF ('NATION' = type_country) THEN
+			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
+				RETURN TRUE;
+			END IF;
+		ELSE
+			IF (tot_team <= 50) THEN
+				RETURN TRUE;
+			END IF;
+		END IF;
+
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : similar_comp
+ *
+ * IN      : competition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF competition.id%TYPE
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION similar_comp
+(
+	IN	id_comp	competition.id%TYPE
+)
+RETURNS SETOF competition.id%TYPE
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	rec_comp	record;
+
+BEGIN
+	
+	rec_comp = get_rec('competition', id_comp);
+
+	RETURN
+	(
+		SELECT
+			id
+		FROM
+			competition
+		WHERE
+			type = rec_comp.type
+			AND
+			team_type = rec_comp.team_type
+			AND
+			confederation_id = rec_comp.confederation_id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : similar_comp_ed
+ *
+ * IN      : competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF competition_edition.id%TYPE
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION similar_comp_ed
+(
+	IN	id_comp_ed	competition_edition.id%TYPE
+)
+RETURNS SETOF competition.id%TYPE
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	rec_comp_ed	record;
+
+BEGIN
+	
+	rec_comp_ed = get_rec('competition_edition', id_comp_ed);
+
+	RETURN
+	(
+		SELECT
+			id
+		FROM
+			competition_edition
+		WHERE
+			start_year = rec_comp_ed.start_year
+			AND
+			end_year = rec_comp_ed.end_year
+			AND
+			competition_id IN similar_comp(rec_comp_ed.competition_id)
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : can_take_part
+ *
+ * IN      : team.id%TYPE, competition_edition.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION can_take_part
+(
+	IN	id_team		team.id%TYPE
+	IN	id_comp_ed	competition_edition.id%TYPE,
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) < 1
+		FROM
+			partecipation
+		WHERE
+			team_id = id_team
+			AND
+			competition_edition_id IN similar_comp_ed(id_comp_ed)
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_nationality
+ *
+ * IN      : player.id%TYPE, team.id%TYPE
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_nationality
+(
+	IN	id_player	player.id%TYPE,
+	IN	id_team		team.id%TYPE
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+	
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			nationality
+		WHERE
+			player_id = id_player
+			AND
+			team_id = id_team
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
+
+/*******************************************************************************
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE
+ *
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
+ * FIELD        : COMPUTER SCIENCE
+ * CLASS        : DATA BASES I
+ * TEACHER      : SILVIO BARRA
+ * YEAR         : 2023-2024
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * TRIGGER FUNCTION
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_confederation TRIGGER 
+ * NAME : tf_bi_confederation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_confederation
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_country_conf	integer;
+
+BEGIN
+
+	tmp = get_attr('confederation', 'country_id', NEW.super_id);
+	id_country_conf = CAST(tmp AS integer);
+
+	IF (corr_containment(NEW.country_id, id_country_conf)) THEN
+		RETURN NEW
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_team TRIGGER 
+ * NAME : tf_bi_team
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_team
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_country_conf	integer;
+	name_country 	text;
+
+BEGIN
+
+	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	id_country_conf = CAST(tmp AS integer);
+
+	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
+
+		IF ('CLUB' = NEW.type) THEN
+		
+			RETURN NEW;
+		
+		ELSIF ('NATIONAL' = NEW.type)
+
+			name_country = get_attr('country', 'name', NEW.country_id);
+
+			IF (NEW.name = name_country) THEN
+		
+				RETURN NEW;
+		
+			END IF;
+
+		END IF;
+
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_competition TRIGGER 
+ * NAME : tf_bi_competition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_competition
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp					text;
+	id_country_conf		integer;
+	type_country_conf	text;
+
+BEGIN
+
+	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	id_country_conf = CAST(tmp AS integer);
+
+	type_country_conf = get_attr('country', 'type', id_country);
+
+	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
+
+		RETURN NEW;
+	
+	END IF
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_competition_edition TRIGGER 
+ * NAME : tf_bi_competition_edition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_competition_edition
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (NOT has_edition(NEW.competition_id)) THEN
+
+		RETURN NEW
+	
+	ELSE
+	
+		IF
+		(
+			corr_freq(NEW.competition_id, NEW.start_year)
+			AND
+			corr_tot_team(NEW.competition_id, NEW.total_team)
+		) 
+		THEN
+	
+			RETURN NEW;
+	
+		END IF;
+	
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_partecipation TRIGGER 
+ * NAME : tf_bi_partecipation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_partecipation
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp		text
+	id_conf	integer;
+	id_comp	integer;
+
+BEGIN
+
+	id_conf = conf_from_comp_ed(NEW.competition_edition_id);
+
+	tmp = get_attr('competition_edition', 'competition_id', NEW.competition_edition_id);
+	id_comp = CAST(tmp AS integer);
+
+	IF
+	(
+		available(NEW.competition_edition_id)
+		AND
+		belong_to(NEW.team_id, id_conf)
+		AND
+		team_fit_comp(NEW.team_id, id_comp)
+		AND
+		can_take_part(NEW.team_id, NEW.competition_edition_id)
+	)
+	THEN
+		RETURN NEW;
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_player TRIGGER 
+ * NAME : tf_bi_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (is_nation(NEW.country_id)) THEN
+		RETURN NEW;
+	END IF;
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_nationality TRIGGER 
+ * NAME : tf_bi_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_nationality
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (is_nation(NEW.country_id)) THEN
+		RETURN NEW;
+	END IF;
+
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_militancy TRIGGER 
+ * NAME : tf_bi_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_militancy
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+	dob_player	date;
+	type_team	text;
+	valid_range	daterange;
+
+BEGIN
+
+	tmp = get_attr('player', 'dob', NEW.player_id);
+	dob_player = CAST(tmp AS date);
+	
+	valid_range = valid_daterange(dob_player);
+
+	type_team = get_attr('team', 'type', NEW.team_id);
+
+	IF ('CLUB' = type_team) THEN
+
+		IF
+		(
+			NEW.date_range <@ valid_range
+			AND
+			free_club_militancy(NEW.player_id, NEW.date_range)
+		)
+		THEN
+			RETURN TRUE;
+		END IF;
+
+	ELSIF ('NATIONAL' = type_team) THEN
+
+		IF
+		(
+			has_nationality(NEW.player_id, rec_team.country_id)
+			AND
+			upper(NEW.date_range) IS NULL
+			AND
+			lower(NEW.date_range) <@ valid_range
+			AND
+			free_national_militancy(NEW.player_id, rec_team.country_id)
+		)
+		THEN
+			RETURN TRUE;
+		END IF;
+
+	END IF;
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_player_tag TRIGGER 
+ * NAME : tf_bi_player_tag
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_tag
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_tag	text;
+
+BEGIN
+
+	type_tag = get_attr('tag', 'type', NEW.tag_id);
+
+	IF
+	(
+		type_tag <> 'GOALKEEPER'
+		OR
+		('GOALKEEPER' = type_tag AND has_role(NEW.player_id, 'GK'))
+	)
+	THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_player_attribute TRIGGER 
+ * NAME : tf_bi_player_attribute
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_attribute
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_attr	text;
+
+BEGIN
+
+	type_attr = get_attr('attribute', 'type', NEW.attribute_id);
+
+	IF
+	(
+		type_attr <> 'GOALKEEPER'
+		OR
+		('GOALKEEPER' = type_attr AND has_role(NEW.player_id, 'GK'))
+	)
+	THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_trophy_team_case TRIGGER 
+ * NAME : tf_bi_trophy_team_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_trophy_team_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_trohy	text;
+
+BEGIN
+
+	type_trohy = get_attr('trophy', 'type', NEW.trophy_id);
+
+	IF ('TEAM' = type_trohy) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_trophy_player_case TRIGGER 
+ * NAME : tf_bi_trophy_player_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_trophy_player_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_trohy	text;
+	time_range	daterange;
+	existence	integer;
+
+BEGIN
+
+	time_range = get_time_range(NEW.competition_edition_id);
+
+	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
+
+		type_trohy = get_attr('trophy', 'type', NEW.trophy_id);
+
+		IF ('TEAM' = type_trohy) THEN
+
+			existence = NULL;
+
+			SELECT
+				id
+			INTO
+				existence
+			FROM
+				trophy_team_case
+			WHERE
+				competition_edition_id = NEW.competition_edition_id
+				AND
+				team_id = NEW.team_id
+				AND
+				trophy_id = NEW.trophy_id;
+			
+			IF (existence IS NOT NULL) THEN
+				RETURN NEW;
+			END IF;
+		ELSE
+			RETURN NEW;
+		END IF;
+
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_prize_team_case TRIGGER 
+ * NAME : tf_bi_prize_team_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_prize_team_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_prize	text;
+
+BEGIN
+
+	type_prize = get_attr('prize', 'type', NEW.prize_id);
+
+	IF ('TEAM' = type_prize) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_play TRIGGER 
+ * NAME : tf_bi_play
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_play
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	time_range	daterange;
+
+BEGIN
+
+	time_range = get_time_range(NEW.competition_edition_id);
+
+	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION - tg_bi_play_statistic TRIGGER 
+ * NAME : tf_bi_play_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_play_statistic
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+	id_player_pos	integer	
+	id_pos			integer;
+
+BEGIN
+
+	tmp = get_attr('play', 'player_position_id', NEW.play_id);
+	id_player_pos = CAST(tmp AS integer);
+
+	tmp = get_attr('player_position', 'position_id', id_player_pos);
+	id_pos = CAST(tmp AS integer);
+
+
+	IF (pos_fit_stat(id_pos, statistic_id)) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TRIGGER
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_confederation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_confederation
+BEFORE INSERT IN confederation
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_confederation();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_team
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_team
+BEFORE INSERT IN team
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_team();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_competition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_competition
+BEFORE INSERT IN competition
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_competition();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_competition_edition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_competition_edition
+BEFORE INSERT IN competition_edition
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_competition_edition();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_partecipation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_partecipation
+BEFORE INSERT IN partecipation
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_partecipation();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player
+BEFORE INSERT IN player
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_player();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_nationality
+BEFORE INSERT IN nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_nationality();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_militancy
+BEFORE INSERT IN militancy
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_militancy();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player_tag
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player_tag
+BEFORE INSERT IN player_tag
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_player_tag();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player_attribute
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player_attribute
+BEFORE INSERT IN player_attribute
+FOR EACH ROW
+EXECUTE FUNCTION tg_bi_player_attribute();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_trophy_team_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_trophy_team_case
+BEFORE INSERT IN trophy_team_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_trophy_team_case();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_trophy_player_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_trophy_player_case
+BEFORE INSERT IN trophy_player_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_trophy_player_case();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_prize_team_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_prize_team_case
+BEFORE INSERT IN prize_team_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_prize_team_case();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_play
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_play
+BEFORE INSERT IN play
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_play();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_play_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_play_statistic
+BEFORE INSERT IN play_statistic
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_play_statistic();
 --------------------------------------------------------------------------------
