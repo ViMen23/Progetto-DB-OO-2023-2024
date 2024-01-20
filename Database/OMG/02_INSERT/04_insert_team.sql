@@ -8,25 +8,25 @@ VALUES
 ),
 (
 	'CLUB',
-	'Bologna',
+	'Bologna FC',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Cremonese',
+	'US Cremonese',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Empoli',
+	'Empoli FC',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Fiorentina',
+	'ACF Fiorentina',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
@@ -38,85 +38,127 @@ VALUES
 ),
 (
 	'CLUB',
-	'Juventus',
+	'Juventus FC',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Lazio',
+	'SS Lazio',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Lecce',
+	'US Lecce',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Milan',
+	'AC Milan',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Monza',
+	'AC Monza',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Napoli',
+	'SSC Napoli',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Roma',
+	'AS Roma',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Salernitana',
+	'US Salernitana',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Sampdoria',
+	'UC Sampdoria',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Sassuolo',
+	'US Sassuolo',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Spezia',
+	'Spezia Calcio',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Torino',
+	'Torino FC',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Udinese',
+	'Udinese Calcio',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 ),
 (
 	'CLUB',
-	'Verona',
+	'Hellas Verona',
+	get_id('@', 'country@name@Italy'),
+	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'CLUB',
+	'Frosinone Calcio',
+	get_id('@', 'country@name@Italy'),
+	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'CLUB',
+	'Genoa CFC',
+	get_id('@', 'country@name@Italy'),
+	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'CLUB',
+	'Cagliari Calcio',
+	get_id('@', 'country@name@Italy'),
+	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'CLUB',
+	'VfL Wolfsburg',
+	get_id('@', 'country@name@Germany'),
+	get_id('@', 'confederation@long_name@Deutscher Fußball-Bund')
+),
+(
+	'CLUB',
+	'RSC Charleroi',
+	get_id('@', 'country@name@Belgium'),
+	get_id('@', 'confederation@long_name@Royal Belgian Football Association')
+),
+(
+	'CLUB',
+	'LOSC Lille',
+	get_id('@', 'country@name@France'),
+	get_id('@', 'confederation@long_name@Fédération Française de Football')
+),
+(
+	'CLUB',
+	'SPAL',
 	get_id('@', 'country@name@Italy'),
 	get_id('@', 'confederation@long_name@Federazione Italiana Giuoco Calcio')
 );

@@ -223,6 +223,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
+	raise notice 'SOMETHING HAS GONE WRONG';
+	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;

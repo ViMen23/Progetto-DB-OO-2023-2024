@@ -213,7 +213,7 @@ DECLARE
 
 	tmp		text;
 	freq	integer;
-	a_year	integer
+	a_year	integer;
 	
 BEGIN
 	
@@ -229,11 +229,11 @@ BEGIN
 		INTO
 			a_year
 		FROM
-			competition_ed
+			competition_edition
 		WHERE
 			competition_id = id_comp
 		LIMIT
-			1
+			1;
 
 		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
@@ -518,7 +518,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION pos_fit_stat
 (
-	IN	id_pos		position.id%TYPE,
+	IN	id_pos		"position".id%TYPE,
 	IN	id_stat		statistic.id%TYPE
 )
 RETURNS boolean
@@ -545,6 +545,7 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************
@@ -880,7 +881,7 @@ BEGIN
 			AND
 			end_year = rec_comp_ed.end_year
 			AND
-			competition_id IN (similar_comp(rec_comp_ed.competition_id));
+			competition_id IN (SELECT * FROM similar_comp(rec_comp_ed.competition_id));
 	
 END;
 $$
@@ -920,7 +921,7 @@ BEGIN
 		WHERE
 			team_id = id_team
 			AND
-			competition_edition_id IN (similar_comp_ed(id_comp_ed))
+			competition_edition_id IN (SELECT * FROM similar_comp_ed(id_comp_ed))
 	);
 	
 END;
