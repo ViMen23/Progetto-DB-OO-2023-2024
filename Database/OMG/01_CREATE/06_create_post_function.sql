@@ -881,7 +881,7 @@ BEGIN
 			AND
 			end_year = rec_comp_ed.end_year
 			AND
-			competition_id IN (SELECT * FROM similar_comp(rec_comp_ed.competition_id));
+			competition_id IN (SELECT similar_comp(rec_comp_ed.competition_id));
 	
 END;
 $$
@@ -921,7 +921,7 @@ BEGIN
 		WHERE
 			team_id = id_team
 			AND
-			competition_edition_id IN (SELECT * FROM similar_comp_ed(id_comp_ed))
+			competition_edition_id IN (SELECT similar_comp_ed(id_comp_ed))
 	);
 	
 END;
