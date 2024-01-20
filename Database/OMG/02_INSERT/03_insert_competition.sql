@@ -1,4 +1,19 @@
-INSERT INTO competition (type, team_type, name, frequency, confederation_id)
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * INSERT FP_COMPETITION
+ ******************************************************************************/
+
+INSERT INTO fp_competition (type, team_type, name, frequency, confederation_id)
 VALUES
 (
 	'LEAGUE',
@@ -8,7 +23,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Afghanistan Football Federation'
+		'fp_confederation@long_name@Afghanistan Football Federation'
 	)
 ),
 (
@@ -19,7 +34,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federata Shqiptare e Futbollit'
+		'fp_confederation@long_name@Federata Shqiptare e Futbollit'
 	)
 ),
 (
@@ -30,7 +45,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federata Shqiptare e Futbollit'
+		'fp_confederation@long_name@Federata Shqiptare e Futbollit'
 	)
 ),
 (
@@ -41,7 +56,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federata Shqiptare e Futbollit'
+		'fp_confederation@long_name@Federata Shqiptare e Futbollit'
 	)
 ),
 (
@@ -52,7 +67,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federata Shqiptare e Futbollit'
+		'fp_confederation@long_name@Federata Shqiptare e Futbollit'
 	)
 ),
 (
@@ -63,7 +78,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federata Shqiptare e Futbollit'
+		'fp_confederation@long_name@Federata Shqiptare e Futbollit'
 	)
 ),
 (
@@ -74,7 +89,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Angolan Football Federation'
+		'fp_confederation@long_name@Angolan Football Federation'
 	)
 ),
 (
@@ -85,7 +100,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Angolan Football Federation'
+		'fp_confederation@long_name@Angolan Football Federation'
 	)
 ),
 (
@@ -96,7 +111,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Angolan Football Federation'
+		'fp_confederation@long_name@Angolan Football Federation'
 	)
 ),
 (
@@ -107,7 +122,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Angolan Football Federation'
+		'fp_confederation@long_name@Angolan Football Federation'
 	)
 ),
 (
@@ -118,7 +133,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federació Andorrana de Futbol'
+		'fp_confederation@long_name@Federació Andorrana de Futbol'
 	)
 ),
 (
@@ -129,7 +144,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federació Andorrana de Futbol'
+		'fp_confederation@long_name@Federació Andorrana de Futbol'
 	)
 ),
 (
@@ -140,7 +155,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federació Andorrana de Futbol'
+		'fp_confederation@long_name@Federació Andorrana de Futbol'
 	)
 ),
 (
@@ -151,7 +166,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federació Andorrana de Futbol'
+		'fp_confederation@long_name@Federació Andorrana de Futbol'
 	)
 ),
 (
@@ -162,7 +177,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@UAE Football Association'
+		'fp_confederation@long_name@UAE Football Association'
 	)
 ),
 (
@@ -173,7 +188,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@UAE Football Association'
+		'fp_confederation@long_name@UAE Football Association'
 	)
 ),
 (
@@ -184,7 +199,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@UAE Football Association'
+		'fp_confederation@long_name@UAE Football Association'
 	)
 ),
 (
@@ -195,7 +210,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@UAE Football Association'
+		'fp_confederation@long_name@UAE Football Association'
 	)
 ),
 (
@@ -206,7 +221,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@UAE Football Association'
+		'fp_confederation@long_name@UAE Football Association'
 	)
 ),
 (
@@ -217,7 +232,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación del Fútbol Argentino'
+		'fp_confederation@long_name@Asociación del Fútbol Argentino'
 	)
 ),
 (
@@ -228,7 +243,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación del Fútbol Argentino'
+		'fp_confederation@long_name@Asociación del Fútbol Argentino'
 	)
 ),
 (
@@ -239,7 +254,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación del Fútbol Argentino'
+		'fp_confederation@long_name@Asociación del Fútbol Argentino'
 	)
 ),
 (
@@ -250,7 +265,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación del Fútbol Argentino'
+		'fp_confederation@long_name@Asociación del Fútbol Argentino'
 	)
 ),
 (
@@ -261,7 +276,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación del Fútbol Argentino'
+		'fp_confederation@long_name@Asociación del Fútbol Argentino'
 	)
 ),
 (
@@ -272,7 +287,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Armenia'
+		'fp_confederation@long_name@Football Federation of Armenia'
 	)
 ),
 (
@@ -283,7 +298,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Armenia'
+		'fp_confederation@long_name@Football Federation of Armenia'
 	)
 ),
 (
@@ -294,7 +309,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Armenia'
+		'fp_confederation@long_name@Football Federation of Armenia'
 	)
 ),
 (
@@ -305,7 +320,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Armenia'
+		'fp_confederation@long_name@Football Federation of Armenia'
 	)
 ),
 (
@@ -316,7 +331,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Antigua and Barbuda Football Association'
+		'fp_confederation@long_name@Antigua and Barbuda Football Association'
 	)
 ),
 (
@@ -327,7 +342,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Antigua and Barbuda Football Association'
+		'fp_confederation@long_name@Antigua and Barbuda Football Association'
 	)
 ),
 (
@@ -338,7 +353,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Australia'
+		'fp_confederation@long_name@Football Federation Australia'
 	)
 ),
 (
@@ -349,7 +364,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Australia'
+		'fp_confederation@long_name@Football Federation Australia'
 	)
 ),
 (
@@ -360,7 +375,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Österreichischer Fußball-Bund'
+		'fp_confederation@long_name@Österreichischer Fußball-Bund'
 	)
 ),
 (
@@ -371,7 +386,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Österreichischer Fußball-Bund'
+		'fp_confederation@long_name@Österreichischer Fußball-Bund'
 	)
 ),
 (
@@ -382,7 +397,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Österreichischer Fußball-Bund'
+		'fp_confederation@long_name@Österreichischer Fußball-Bund'
 	)
 ),
 (
@@ -393,7 +408,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Österreichischer Fußball-Bund'
+		'fp_confederation@long_name@Österreichischer Fußball-Bund'
 	)
 ),
 (
@@ -404,7 +419,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Österreichischer Fußball-Bund'
+		'fp_confederation@long_name@Österreichischer Fußball-Bund'
 	)
 ),
 (
@@ -415,7 +430,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Association of Football Federations of Azerbaijan'
+		'fp_confederation@long_name@Association of Football Federations of Azerbaijan'
 	)
 ),
 (
@@ -426,7 +441,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Association of Football Federations of Azerbaijan'
+		'fp_confederation@long_name@Association of Football Federations of Azerbaijan'
 	)
 ),
 (
@@ -437,7 +452,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Association of Football Federations of Azerbaijan'
+		'fp_confederation@long_name@Association of Football Federations of Azerbaijan'
 	)
 ),
 (
@@ -448,7 +463,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Association of Football Federations of Azerbaijan'
+		'fp_confederation@long_name@Association of Football Federations of Azerbaijan'
 	)
 ),
 (
@@ -459,7 +474,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération de Football du Burundi'
+		'fp_confederation@long_name@Fédération de Football du Burundi'
 	)
 ),
 (
@@ -470,7 +485,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération de Football du Burundi'
+		'fp_confederation@long_name@Fédération de Football du Burundi'
 	)
 ),
 (
@@ -481,7 +496,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Belgian Football Association'
+		'fp_confederation@long_name@Royal Belgian Football Association'
 	)
 ),
 (
@@ -492,7 +507,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Belgian Football Association'
+		'fp_confederation@long_name@Royal Belgian Football Association'
 	)
 ),
 (
@@ -503,7 +518,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Belgian Football Association'
+		'fp_confederation@long_name@Royal Belgian Football Association'
 	)
 ),
 (
@@ -514,7 +529,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Belgian Football Association'
+		'fp_confederation@long_name@Royal Belgian Football Association'
 	)
 ),
 (
@@ -525,7 +540,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Belgian Football Association'
+		'fp_confederation@long_name@Royal Belgian Football Association'
 	)
 ),
 (
@@ -536,7 +551,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Béninoise de Football'
+		'fp_confederation@long_name@Fédération Béninoise de Football'
 	)
 ),
 (
@@ -547,7 +562,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Béninoise de Football'
+		'fp_confederation@long_name@Fédération Béninoise de Football'
 	)
 ),
 (
@@ -558,7 +573,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Burkinabé de Football'
+		'fp_confederation@long_name@Fédération Burkinabé de Football'
 	)
 ),
 (
@@ -569,7 +584,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Burkinabé de Football'
+		'fp_confederation@long_name@Fédération Burkinabé de Football'
 	)
 ),
 (
@@ -580,7 +595,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bangladesh Football Federation'
+		'fp_confederation@long_name@Bangladesh Football Federation'
 	)
 ),
 (
@@ -591,7 +606,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bulgarian Football Union'
+		'fp_confederation@long_name@Bulgarian Football Union'
 	)
 ),
 (
@@ -602,7 +617,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bulgarian Football Union'
+		'fp_confederation@long_name@Bulgarian Football Union'
 	)
 ),
 (
@@ -613,7 +628,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bulgarian Football Union'
+		'fp_confederation@long_name@Bulgarian Football Union'
 	)
 ),
 (
@@ -624,7 +639,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bulgarian Football Union'
+		'fp_confederation@long_name@Bulgarian Football Union'
 	)
 ),
 (
@@ -635,7 +650,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bulgarian Football Union'
+		'fp_confederation@long_name@Bulgarian Football Union'
 	)
 ),
 (
@@ -646,7 +661,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bahrain Football Association'
+		'fp_confederation@long_name@Bahrain Football Association'
 	)
 ),
 (
@@ -657,7 +672,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bahrain Football Association'
+		'fp_confederation@long_name@Bahrain Football Association'
 	)
 ),
 (
@@ -668,7 +683,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bahrain Football Association'
+		'fp_confederation@long_name@Bahrain Football Association'
 	)
 ),
 (
@@ -679,7 +694,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bahamas Football Association'
+		'fp_confederation@long_name@Bahamas Football Association'
 	)
 ),
 (
@@ -690,7 +705,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
+		'fp_confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
 	)
 ),
 (
@@ -701,7 +716,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
+		'fp_confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
 	)
 ),
 (
@@ -712,7 +727,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
+		'fp_confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
 	)
 ),
 (
@@ -723,7 +738,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
+		'fp_confederation@long_name@Nogometni/Fudbalski Savez Bosne i Hercegovine'
 	)
 ),
 (
@@ -734,7 +749,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belarus'
+		'fp_confederation@long_name@Football Federation of Belarus'
 	)
 ),
 (
@@ -745,7 +760,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belarus'
+		'fp_confederation@long_name@Football Federation of Belarus'
 	)
 ),
 (
@@ -756,7 +771,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belarus'
+		'fp_confederation@long_name@Football Federation of Belarus'
 	)
 ),
 (
@@ -767,7 +782,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belarus'
+		'fp_confederation@long_name@Football Federation of Belarus'
 	)
 ),
 (
@@ -778,7 +793,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belarus'
+		'fp_confederation@long_name@Football Federation of Belarus'
 	)
 ),
 (
@@ -789,7 +804,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Belize'
+		'fp_confederation@long_name@Football Federation of Belize'
 	)
 ),
 (
@@ -800,7 +815,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Boliviana de Fútbol'
+		'fp_confederation@long_name@Federación Boliviana de Fútbol'
 	)
 ),
 (
@@ -811,7 +826,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -822,7 +837,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -833,7 +848,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -844,7 +859,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -855,7 +870,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -866,7 +881,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Confederação Brasileira de Futebol'
+		'fp_confederation@long_name@Confederação Brasileira de Futebol'
 	)
 ),
 (
@@ -877,7 +892,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Barbados Football Association'
+		'fp_confederation@long_name@Barbados Football Association'
 	)
 ),
 (
@@ -888,7 +903,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Barbados Football Association'
+		'fp_confederation@long_name@Barbados Football Association'
 	)
 ),
 (
@@ -899,7 +914,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@National Football Association of Brunei Darussalam'
+		'fp_confederation@long_name@National Football Association of Brunei Darussalam'
 	)
 ),
 (
@@ -910,7 +925,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@National Football Association of Brunei Darussalam'
+		'fp_confederation@long_name@National Football Association of Brunei Darussalam'
 	)
 ),
 (
@@ -921,7 +936,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@National Football Association of Brunei Darussalam'
+		'fp_confederation@long_name@National Football Association of Brunei Darussalam'
 	)
 ),
 (
@@ -932,7 +947,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Bhutan Football Federation'
+		'fp_confederation@long_name@Bhutan Football Federation'
 	)
 ),
 (
@@ -943,7 +958,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Botswana Football Association'
+		'fp_confederation@long_name@Botswana Football Association'
 	)
 ),
 (
@@ -954,7 +969,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Botswana Football Association'
+		'fp_confederation@long_name@Botswana Football Association'
 	)
 ),
 (
@@ -965,7 +980,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Centrafricaine de Football'
+		'fp_confederation@long_name@Fédération Centrafricaine de Football'
 	)
 ),
 (
@@ -976,7 +991,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Canada Soccer'
+		'fp_confederation@long_name@Canada Soccer'
 	)
 ),
 (
@@ -987,7 +1002,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Canada Soccer'
+		'fp_confederation@long_name@Canada Soccer'
 	)
 ),
 (
@@ -998,7 +1013,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Swiss Football Association'
+		'fp_confederation@long_name@Swiss Football Association'
 	)
 ),
 (
@@ -1009,7 +1024,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Swiss Football Association'
+		'fp_confederation@long_name@Swiss Football Association'
 	)
 ),
 (
@@ -1020,7 +1035,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Swiss Football Association'
+		'fp_confederation@long_name@Swiss Football Association'
 	)
 ),
 (
@@ -1031,7 +1046,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Swiss Football Association'
+		'fp_confederation@long_name@Swiss Football Association'
 	)
 ),
 (
@@ -1042,7 +1057,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación de Fútbol de Chile'
+		'fp_confederation@long_name@Federación de Fútbol de Chile'
 	)
 ),
 (
@@ -1053,7 +1068,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación de Fútbol de Chile'
+		'fp_confederation@long_name@Federación de Fútbol de Chile'
 	)
 ),
 (
@@ -1064,7 +1079,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación de Fútbol de Chile'
+		'fp_confederation@long_name@Federación de Fútbol de Chile'
 	)
 ),
 (
@@ -1075,7 +1090,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación de Fútbol de Chile'
+		'fp_confederation@long_name@Federación de Fútbol de Chile'
 	)
 ),
 (
@@ -1086,7 +1101,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Chinese Football Association'
+		'fp_confederation@long_name@Chinese Football Association'
 	)
 ),
 (
@@ -1097,7 +1112,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Chinese Football Association'
+		'fp_confederation@long_name@Chinese Football Association'
 	)
 ),
 (
@@ -1108,7 +1123,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Chinese Football Association'
+		'fp_confederation@long_name@Chinese Football Association'
 	)
 ),
 (
@@ -1119,7 +1134,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Chinese Football Association'
+		'fp_confederation@long_name@Chinese Football Association'
 	)
 ),
 (
@@ -1130,7 +1145,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Chinese Football Association'
+		'fp_confederation@long_name@Chinese Football Association'
 	)
 ),
 (
@@ -1141,7 +1156,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Ivoirienne de Football'
+		'fp_confederation@long_name@Fédération Ivoirienne de Football'
 	)
 ),
 (
@@ -1152,7 +1167,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Ivoirienne de Football'
+		'fp_confederation@long_name@Fédération Ivoirienne de Football'
 	)
 ),
 (
@@ -1163,7 +1178,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Camerounaise de Football'
+		'fp_confederation@long_name@Fédération Camerounaise de Football'
 	)
 ),
 (
@@ -1174,7 +1189,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Camerounaise de Football'
+		'fp_confederation@long_name@Fédération Camerounaise de Football'
 	)
 ),
 (
@@ -1185,7 +1200,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Congolaise de Football-Association'
+		'fp_confederation@long_name@Fédération Congolaise de Football-Association'
 	)
 ),
 (
@@ -1196,7 +1211,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Congolaise de Football-Association'
+		'fp_confederation@long_name@Fédération Congolaise de Football-Association'
 	)
 ),
 (
@@ -1207,7 +1222,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Congolaise de Football'
+		'fp_confederation@long_name@Fédération Congolaise de Football'
 	)
 ),
 (
@@ -1218,7 +1233,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Congolaise de Football'
+		'fp_confederation@long_name@Fédération Congolaise de Football'
 	)
 ),
 (
@@ -1229,7 +1244,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Colombiana de Fútbol'
+		'fp_confederation@long_name@Federación Colombiana de Fútbol'
 	)
 ),
 (
@@ -1240,7 +1255,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Colombiana de Fútbol'
+		'fp_confederation@long_name@Federación Colombiana de Fútbol'
 	)
 ),
 (
@@ -1251,7 +1266,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Colombiana de Fútbol'
+		'fp_confederation@long_name@Federación Colombiana de Fútbol'
 	)
 ),
 (
@@ -1262,7 +1277,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Colombiana de Fútbol'
+		'fp_confederation@long_name@Federación Colombiana de Fútbol'
 	)
 ),
 (
@@ -1273,7 +1288,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Comorienne de Football'
+		'fp_confederation@long_name@Fédération Comorienne de Football'
 	)
 ),
 (
@@ -1284,7 +1299,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Caboverdiana de Futebol'
+		'fp_confederation@long_name@Federação Caboverdiana de Futebol'
 	)
 ),
 (
@@ -1295,7 +1310,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Caboverdiana de Futebol'
+		'fp_confederation@long_name@Federação Caboverdiana de Futebol'
 	)
 ),
 (
@@ -1306,7 +1321,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Costarricense de Fútbol'
+		'fp_confederation@long_name@Federación Costarricense de Fútbol'
 	)
 ),
 (
@@ -1317,7 +1332,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Costarricense de Fútbol'
+		'fp_confederation@long_name@Federación Costarricense de Fútbol'
 	)
 ),
 (
@@ -1328,7 +1343,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Costarricense de Fútbol'
+		'fp_confederation@long_name@Federación Costarricense de Fútbol'
 	)
 ),
 (
@@ -1339,7 +1354,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación de Fútbol de Cuba'
+		'fp_confederation@long_name@Asociación de Fútbol de Cuba'
 	)
 ),
 (
@@ -1350,7 +1365,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federashon Futbòl Kòrsou'
+		'fp_confederation@long_name@Federashon Futbòl Kòrsou'
 	)
 ),
 (
@@ -1361,7 +1376,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Cyprus Football Association'
+		'fp_confederation@long_name@Cyprus Football Association'
 	)
 ),
 (
@@ -1372,7 +1387,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Cyprus Football Association'
+		'fp_confederation@long_name@Cyprus Football Association'
 	)
 ),
 (
@@ -1383,7 +1398,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Cyprus Football Association'
+		'fp_confederation@long_name@Cyprus Football Association'
 	)
 ),
 (
@@ -1394,7 +1409,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Cyprus Football Association'
+		'fp_confederation@long_name@Cyprus Football Association'
 	)
 ),
 (
@@ -1405,7 +1420,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fotbalová asociace České republiky'
+		'fp_confederation@long_name@Fotbalová asociace České republiky'
 	)
 ),
 (
@@ -1416,7 +1431,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fotbalová asociace České republiky'
+		'fp_confederation@long_name@Fotbalová asociace České republiky'
 	)
 ),
 (
@@ -1427,7 +1442,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fotbalová asociace České republiky'
+		'fp_confederation@long_name@Fotbalová asociace České republiky'
 	)
 ),
 (
@@ -1438,7 +1453,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fotbalová asociace České republiky'
+		'fp_confederation@long_name@Fotbalová asociace České republiky'
 	)
 ),
 (
@@ -1449,7 +1464,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1460,7 +1475,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1471,7 +1486,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1482,7 +1497,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1493,7 +1508,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1504,7 +1519,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Deutscher Fußball-Bund'
+		'fp_confederation@long_name@Deutscher Fußball-Bund'
 	)
 ),
 (
@@ -1515,7 +1530,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Djiboutienne de Football'
+		'fp_confederation@long_name@Fédération Djiboutienne de Football'
 	)
 ),
 (
@@ -1526,7 +1541,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Djiboutienne de Football'
+		'fp_confederation@long_name@Fédération Djiboutienne de Football'
 	)
 ),
 (
@@ -1537,7 +1552,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Dominica Football Association'
+		'fp_confederation@long_name@Dominica Football Association'
 	)
 ),
 (
@@ -1548,7 +1563,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Dansk Boldspil-Union'
+		'fp_confederation@long_name@Dansk Boldspil-Union'
 	)
 ),
 (
@@ -1559,7 +1574,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Dansk Boldspil-Union'
+		'fp_confederation@long_name@Dansk Boldspil-Union'
 	)
 ),
 (
@@ -1570,7 +1585,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Dansk Boldspil-Union'
+		'fp_confederation@long_name@Dansk Boldspil-Union'
 	)
 ),
 (
@@ -1581,7 +1596,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Dansk Boldspil-Union'
+		'fp_confederation@long_name@Dansk Boldspil-Union'
 	)
 ),
 (
@@ -1592,7 +1607,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Dominicana de Fútbol'
+		'fp_confederation@long_name@Federación Dominicana de Fútbol'
 	)
 ),
 (
@@ -1603,7 +1618,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Algérienne de Football'
+		'fp_confederation@long_name@Fédération Algérienne de Football'
 	)
 ),
 (
@@ -1614,7 +1629,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Algérienne de Football'
+		'fp_confederation@long_name@Fédération Algérienne de Football'
 	)
 ),
 (
@@ -1625,7 +1640,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Algérienne de Football'
+		'fp_confederation@long_name@Fédération Algérienne de Football'
 	)
 ),
 (
@@ -1636,7 +1651,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Algérienne de Football'
+		'fp_confederation@long_name@Fédération Algérienne de Football'
 	)
 ),
 (
@@ -1647,7 +1662,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Ecuatoriana de Fútbol'
+		'fp_confederation@long_name@Federación Ecuatoriana de Fútbol'
 	)
 ),
 (
@@ -1658,7 +1673,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Ecuatoriana de Fútbol'
+		'fp_confederation@long_name@Federación Ecuatoriana de Fútbol'
 	)
 ),
 (
@@ -1669,7 +1684,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Ecuatoriana de Fútbol'
+		'fp_confederation@long_name@Federación Ecuatoriana de Fútbol'
 	)
 ),
 (
@@ -1680,7 +1695,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Egyptian Football Association'
+		'fp_confederation@long_name@Egyptian Football Association'
 	)
 ),
 (
@@ -1691,7 +1706,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Egyptian Football Association'
+		'fp_confederation@long_name@Egyptian Football Association'
 	)
 ),
 (
@@ -1702,7 +1717,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Egyptian Football Association'
+		'fp_confederation@long_name@Egyptian Football Association'
 	)
 ),
 (
@@ -1713,7 +1728,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1724,7 +1739,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1735,7 +1750,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1746,7 +1761,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1757,7 +1772,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1768,7 +1783,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@The Football Association'
+		'fp_confederation@long_name@The Football Association'
 	)
 ),
 (
@@ -1779,7 +1794,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Eritrean National Football Federation'
+		'fp_confederation@long_name@Eritrean National Football Federation'
 	)
 ),
 (
@@ -1790,7 +1805,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1801,7 +1816,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1812,7 +1827,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1823,7 +1838,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1834,7 +1849,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1845,7 +1860,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1856,7 +1871,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Real Federación Española de Fútbol'
+		'fp_confederation@long_name@Real Federación Española de Fútbol'
 	)
 ),
 (
@@ -1867,7 +1882,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Eesti Jalgpalli Liit'
+		'fp_confederation@long_name@Eesti Jalgpalli Liit'
 	)
 ),
 (
@@ -1878,7 +1893,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Eesti Jalgpalli Liit'
+		'fp_confederation@long_name@Eesti Jalgpalli Liit'
 	)
 ),
 (
@@ -1889,7 +1904,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Eesti Jalgpalli Liit'
+		'fp_confederation@long_name@Eesti Jalgpalli Liit'
 	)
 ),
 (
@@ -1900,7 +1915,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Eesti Jalgpalli Liit'
+		'fp_confederation@long_name@Eesti Jalgpalli Liit'
 	)
 ),
 (
@@ -1911,7 +1926,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Ethiopian Football Federation'
+		'fp_confederation@long_name@Ethiopian Football Federation'
 	)
 ),
 (
@@ -1922,7 +1937,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Ethiopian Football Federation'
+		'fp_confederation@long_name@Ethiopian Football Federation'
 	)
 ),
 (
@@ -1933,7 +1948,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Suomen Palloliitto'
+		'fp_confederation@long_name@Suomen Palloliitto'
 	)
 ),
 (
@@ -1944,7 +1959,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Suomen Palloliitto'
+		'fp_confederation@long_name@Suomen Palloliitto'
 	)
 ),
 (
@@ -1955,7 +1970,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Suomen Palloliitto'
+		'fp_confederation@long_name@Suomen Palloliitto'
 	)
 ),
 (
@@ -1966,7 +1981,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Suomen Palloliitto'
+		'fp_confederation@long_name@Suomen Palloliitto'
 	)
 ),
 (
@@ -1977,7 +1992,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fiji Football Association'
+		'fp_confederation@long_name@Fiji Football Association'
 	)
 ),
 (
@@ -1988,7 +2003,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fiji Football Association'
+		'fp_confederation@long_name@Fiji Football Association'
 	)
 ),
 (
@@ -1999,7 +2014,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2010,7 +2025,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2021,7 +2036,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2032,7 +2047,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2043,7 +2058,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2054,7 +2069,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Française de Football'
+		'fp_confederation@long_name@Fédération Française de Football'
 	)
 ),
 (
@@ -2065,7 +2080,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federated States of Micronesia Football Association'
+		'fp_confederation@long_name@Federated States of Micronesia Football Association'
 	)
 ),
 (
@@ -2076,7 +2091,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Gabonaise de Football'
+		'fp_confederation@long_name@Fédération Gabonaise de Football'
 	)
 ),
 (
@@ -2087,7 +2102,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Gabonaise de Football'
+		'fp_confederation@long_name@Fédération Gabonaise de Football'
 	)
 ),
 (
@@ -2098,7 +2113,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Georgian Football Federation'
+		'fp_confederation@long_name@Georgian Football Federation'
 	)
 ),
 (
@@ -2109,7 +2124,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Georgian Football Federation'
+		'fp_confederation@long_name@Georgian Football Federation'
 	)
 ),
 (
@@ -2120,7 +2135,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Georgian Football Federation'
+		'fp_confederation@long_name@Georgian Football Federation'
 	)
 ),
 (
@@ -2131,7 +2146,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Georgian Football Federation'
+		'fp_confederation@long_name@Georgian Football Federation'
 	)
 ),
 (
@@ -2142,7 +2157,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Ghana Football Association'
+		'fp_confederation@long_name@Ghana Football Association'
 	)
 ),
 (
@@ -2153,7 +2168,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Ghana Football Association'
+		'fp_confederation@long_name@Ghana Football Association'
 	)
 ),
 (
@@ -2164,7 +2179,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Gambia Football Federation'
+		'fp_confederation@long_name@Gambia Football Federation'
 	)
 ),
 (
@@ -2175,7 +2190,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Gambia Football Federation'
+		'fp_confederation@long_name@Gambia Football Federation'
 	)
 ),
 (
@@ -2186,7 +2201,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação de Futebol da Guiné-Bissau'
+		'fp_confederation@long_name@Federação de Futebol da Guiné-Bissau'
 	)
 ),
 (
@@ -2197,7 +2212,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação de Futebol da Guiné-Bissau'
+		'fp_confederation@long_name@Federação de Futebol da Guiné-Bissau'
 	)
 ),
 (
@@ -2208,7 +2223,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Ecuatoguineana de Fútbol'
+		'fp_confederation@long_name@Federación Ecuatoguineana de Fútbol'
 	)
 ),
 (
@@ -2219,7 +2234,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Ecuatoguineana de Fútbol'
+		'fp_confederation@long_name@Federación Ecuatoguineana de Fútbol'
 	)
 ),
 (
@@ -2230,7 +2245,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hellenic Football Federation'
+		'fp_confederation@long_name@Hellenic Football Federation'
 	)
 ),
 (
@@ -2241,7 +2256,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hellenic Football Federation'
+		'fp_confederation@long_name@Hellenic Football Federation'
 	)
 ),
 (
@@ -2252,7 +2267,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hellenic Football Federation'
+		'fp_confederation@long_name@Hellenic Football Federation'
 	)
 ),
 (
@@ -2263,7 +2278,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hellenic Football Federation'
+		'fp_confederation@long_name@Hellenic Football Federation'
 	)
 ),
 (
@@ -2274,7 +2289,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hellenic Football Federation'
+		'fp_confederation@long_name@Hellenic Football Federation'
 	)
 ),
 (
@@ -2285,7 +2300,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Grenada Football Association'
+		'fp_confederation@long_name@Grenada Football Association'
 	)
 ),
 (
@@ -2296,7 +2311,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nacional de Fútbol de Guatemala'
+		'fp_confederation@long_name@Federación Nacional de Fútbol de Guatemala'
 	)
 ),
 (
@@ -2307,7 +2322,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nacional de Fútbol de Guatemala'
+		'fp_confederation@long_name@Federación Nacional de Fútbol de Guatemala'
 	)
 ),
 (
@@ -2318,7 +2333,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nacional de Fútbol de Guatemala'
+		'fp_confederation@long_name@Federación Nacional de Fútbol de Guatemala'
 	)
 ),
 (
@@ -2329,7 +2344,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Guyana Football Federation'
+		'fp_confederation@long_name@Guyana Football Federation'
 	)
 ),
 (
@@ -2340,7 +2355,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Guyana Football Federation'
+		'fp_confederation@long_name@Guyana Football Federation'
 	)
 ),
 (
@@ -2351,7 +2366,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nacional Autónoma de Fútbol de Honduras'
+		'fp_confederation@long_name@Federación Nacional Autónoma de Fútbol de Honduras'
 	)
 ),
 (
@@ -2362,7 +2377,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nacional Autónoma de Fútbol de Honduras'
+		'fp_confederation@long_name@Federación Nacional Autónoma de Fútbol de Honduras'
 	)
 ),
 (
@@ -2373,7 +2388,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
+		'fp_confederation@long_name@Hrvatski nogometni savez'
 	)
 ),
 (
@@ -2384,7 +2399,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
+		'fp_confederation@long_name@Hrvatski nogometni savez'
 	)
 ),
 (
@@ -2395,7 +2410,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
+		'fp_confederation@long_name@Hrvatski nogometni savez'
 	)
 ),
 (
@@ -2406,7 +2421,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
+		'fp_confederation@long_name@Hrvatski nogometni savez'
 	)
 ),
 (
@@ -2417,7 +2432,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Hrvatski nogometni savez'
+		'fp_confederation@long_name@Hrvatski nogometni savez'
 	)
 ),
 (
@@ -2428,7 +2443,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Haïtienne de Football'
+		'fp_confederation@long_name@Fédération Haïtienne de Football'
 	)
 ),
 (
@@ -2439,7 +2454,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Haïtienne de Football'
+		'fp_confederation@long_name@Fédération Haïtienne de Football'
 	)
 ),
 (
@@ -2450,7 +2465,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Magyar Labdarúgó Szövetség'
+		'fp_confederation@long_name@Magyar Labdarúgó Szövetség'
 	)
 ),
 (
@@ -2461,7 +2476,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Magyar Labdarúgó Szövetség'
+		'fp_confederation@long_name@Magyar Labdarúgó Szövetség'
 	)
 ),
 (
@@ -2472,7 +2487,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Magyar Labdarúgó Szövetség'
+		'fp_confederation@long_name@Magyar Labdarúgó Szövetség'
 	)
 ),
 (
@@ -2483,7 +2498,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Magyar Labdarúgó Szövetség'
+		'fp_confederation@long_name@Magyar Labdarúgó Szövetség'
 	)
 ),
 (
@@ -2494,7 +2509,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Indonesian Football Association'
+		'fp_confederation@long_name@Indonesian Football Association'
 	)
 ),
 (
@@ -2505,7 +2520,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Indonesian Football Association'
+		'fp_confederation@long_name@Indonesian Football Association'
 	)
 ),
 (
@@ -2516,7 +2531,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All India Football Federation'
+		'fp_confederation@long_name@All India Football Federation'
 	)
 ),
 (
@@ -2527,7 +2542,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All India Football Federation'
+		'fp_confederation@long_name@All India Football Federation'
 	)
 ),
 (
@@ -2538,7 +2553,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All India Football Federation'
+		'fp_confederation@long_name@All India Football Federation'
 	)
 ),
 (
@@ -2549,7 +2564,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All India Football Federation'
+		'fp_confederation@long_name@All India Football Federation'
 	)
 ),
 (
@@ -2560,7 +2575,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Ireland'
+		'fp_confederation@long_name@Football Association of Ireland'
 	)
 ),
 (
@@ -2571,7 +2586,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Ireland'
+		'fp_confederation@long_name@Football Association of Ireland'
 	)
 ),
 (
@@ -2582,7 +2597,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Ireland'
+		'fp_confederation@long_name@Football Association of Ireland'
 	)
 ),
 (
@@ -2593,7 +2608,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Islamic Republic of Iran'
+		'fp_confederation@long_name@Football Federation Islamic Republic of Iran'
 	)
 ),
 (
@@ -2604,7 +2619,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Islamic Republic of Iran'
+		'fp_confederation@long_name@Football Federation Islamic Republic of Iran'
 	)
 ),
 (
@@ -2615,7 +2630,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Islamic Republic of Iran'
+		'fp_confederation@long_name@Football Federation Islamic Republic of Iran'
 	)
 ),
 (
@@ -2626,7 +2641,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation Islamic Republic of Iran'
+		'fp_confederation@long_name@Football Federation Islamic Republic of Iran'
 	)
 ),
 (
@@ -2637,7 +2652,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Iraq Football Association'
+		'fp_confederation@long_name@Iraq Football Association'
 	)
 ),
 (
@@ -2648,7 +2663,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Iraq Football Association'
+		'fp_confederation@long_name@Iraq Football Association'
 	)
 ),
 (
@@ -2659,7 +2674,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Iraq Football Association'
+		'fp_confederation@long_name@Iraq Football Association'
 	)
 ),
 (
@@ -2670,7 +2685,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Iraq Football Association'
+		'fp_confederation@long_name@Iraq Football Association'
 	)
 ),
 (
@@ -2681,7 +2696,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Knattspyrnusamband Íslands'
+		'fp_confederation@long_name@Knattspyrnusamband Íslands'
 	)
 ),
 (
@@ -2692,7 +2707,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Knattspyrnusamband Íslands'
+		'fp_confederation@long_name@Knattspyrnusamband Íslands'
 	)
 ),
 (
@@ -2703,7 +2718,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Knattspyrnusamband Íslands'
+		'fp_confederation@long_name@Knattspyrnusamband Íslands'
 	)
 ),
 (
@@ -2714,7 +2729,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Knattspyrnusamband Íslands'
+		'fp_confederation@long_name@Knattspyrnusamband Íslands'
 	)
 ),
 (
@@ -2725,7 +2740,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Knattspyrnusamband Íslands'
+		'fp_confederation@long_name@Knattspyrnusamband Íslands'
 	)
 ),
 (
@@ -2736,7 +2751,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Israel Football Association'
+		'fp_confederation@long_name@Israel Football Association'
 	)
 ),
 (
@@ -2747,7 +2762,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Israel Football Association'
+		'fp_confederation@long_name@Israel Football Association'
 	)
 ),
 (
@@ -2758,7 +2773,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Israel Football Association'
+		'fp_confederation@long_name@Israel Football Association'
 	)
 ),
 (
@@ -2769,7 +2784,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Israel Football Association'
+		'fp_confederation@long_name@Israel Football Association'
 	)
 ),
 (
@@ -2780,7 +2795,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Israel Football Association'
+		'fp_confederation@long_name@Israel Football Association'
 	)
 ),
 (
@@ -2791,7 +2806,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2802,7 +2817,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2813,7 +2828,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2824,7 +2839,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2835,7 +2850,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2846,7 +2861,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2857,7 +2872,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2868,7 +2883,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federazione Italiana Giuoco Calcio'
+		'fp_confederation@long_name@Federazione Italiana Giuoco Calcio'
 	)
 ),
 (
@@ -2879,7 +2894,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Jamaica Football Federation'
+		'fp_confederation@long_name@Jamaica Football Federation'
 	)
 ),
 (
@@ -2890,7 +2905,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Jamaica Football Federation'
+		'fp_confederation@long_name@Jamaica Football Federation'
 	)
 ),
 (
@@ -2901,7 +2916,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Jordan Football Association'
+		'fp_confederation@long_name@Jordan Football Association'
 	)
 ),
 (
@@ -2912,7 +2927,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Jordan Football Association'
+		'fp_confederation@long_name@Jordan Football Association'
 	)
 ),
 (
@@ -2923,7 +2938,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Jordan Football Association'
+		'fp_confederation@long_name@Jordan Football Association'
 	)
 ),
 (
@@ -2934,7 +2949,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -2945,7 +2960,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -2956,7 +2971,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -2967,7 +2982,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -2978,7 +2993,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -2989,7 +3004,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Japan Football Association'
+		'fp_confederation@long_name@Japan Football Association'
 	)
 ),
 (
@@ -3000,7 +3015,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Kazakhstan'
+		'fp_confederation@long_name@Football Federation of Kazakhstan'
 	)
 ),
 (
@@ -3011,7 +3026,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Kazakhstan'
+		'fp_confederation@long_name@Football Federation of Kazakhstan'
 	)
 ),
 (
@@ -3022,7 +3037,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Kazakhstan'
+		'fp_confederation@long_name@Football Federation of Kazakhstan'
 	)
 ),
 (
@@ -3033,7 +3048,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Kazakhstan'
+		'fp_confederation@long_name@Football Federation of Kazakhstan'
 	)
 ),
 (
@@ -3044,7 +3059,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Kenya Federation'
+		'fp_confederation@long_name@Football Kenya Federation'
 	)
 ),
 (
@@ -3055,7 +3070,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Kenya Federation'
+		'fp_confederation@long_name@Football Kenya Federation'
 	)
 ),
 (
@@ -3066,7 +3081,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Kenya Federation'
+		'fp_confederation@long_name@Football Kenya Federation'
 	)
 ),
 (
@@ -3077,7 +3092,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of the Kyrgyz Republic'
+		'fp_confederation@long_name@Football Federation of the Kyrgyz Republic'
 	)
 ),
 (
@@ -3088,7 +3103,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of the Kyrgyz Republic'
+		'fp_confederation@long_name@Football Federation of the Kyrgyz Republic'
 	)
 ),
 (
@@ -3099,7 +3114,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of the Kyrgyz Republic'
+		'fp_confederation@long_name@Football Federation of the Kyrgyz Republic'
 	)
 ),
 (
@@ -3110,7 +3125,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of the Kyrgyz Republic'
+		'fp_confederation@long_name@Football Federation of the Kyrgyz Republic'
 	)
 ),
 (
@@ -3121,7 +3136,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Cambodia'
+		'fp_confederation@long_name@Football Federation of Cambodia'
 	)
 ),
 (
@@ -3132,7 +3147,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Kiribati Islands Football Association'
+		'fp_confederation@long_name@Kiribati Islands Football Association'
 	)
 ),
 (
@@ -3143,7 +3158,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saint Kitts and Nevis Football Association'
+		'fp_confederation@long_name@Saint Kitts and Nevis Football Association'
 	)
 ),
 (
@@ -3154,7 +3169,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saint Kitts and Nevis Football Association'
+		'fp_confederation@long_name@Saint Kitts and Nevis Football Association'
 	)
 ),
 (
@@ -3165,7 +3180,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Korea Football Association'
+		'fp_confederation@long_name@Korea Football Association'
 	)
 ),
 (
@@ -3176,7 +3191,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Korea Football Association'
+		'fp_confederation@long_name@Korea Football Association'
 	)
 ),
 (
@@ -3187,7 +3202,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Korea Football Association'
+		'fp_confederation@long_name@Korea Football Association'
 	)
 ),
 (
@@ -3198,7 +3213,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Kuwait Football Association'
+		'fp_confederation@long_name@Kuwait Football Association'
 	)
 ),
 (
@@ -3209,7 +3224,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Kuwait Football Association'
+		'fp_confederation@long_name@Kuwait Football Association'
 	)
 ),
 (
@@ -3220,7 +3235,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Kuwait Football Association'
+		'fp_confederation@long_name@Kuwait Football Association'
 	)
 ),
 (
@@ -3231,7 +3246,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lao Football Federation'
+		'fp_confederation@long_name@Lao Football Federation'
 	)
 ),
 (
@@ -3242,7 +3257,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lebanese Football Association'
+		'fp_confederation@long_name@Lebanese Football Association'
 	)
 ),
 (
@@ -3253,7 +3268,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lebanese Football Association'
+		'fp_confederation@long_name@Lebanese Football Association'
 	)
 ),
 (
@@ -3264,7 +3279,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lebanese Football Association'
+		'fp_confederation@long_name@Lebanese Football Association'
 	)
 ),
 (
@@ -3275,7 +3290,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lebanese Football Association'
+		'fp_confederation@long_name@Lebanese Football Association'
 	)
 ),
 (
@@ -3286,7 +3301,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Liberia Football Association'
+		'fp_confederation@long_name@Liberia Football Association'
 	)
 ),
 (
@@ -3297,7 +3312,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Liberia Football Association'
+		'fp_confederation@long_name@Liberia Football Association'
 	)
 ),
 (
@@ -3308,7 +3323,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Libyan Football Federation'
+		'fp_confederation@long_name@Libyan Football Federation'
 	)
 ),
 (
@@ -3319,7 +3334,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Libyan Football Federation'
+		'fp_confederation@long_name@Libyan Football Federation'
 	)
 ),
 (
@@ -3330,7 +3345,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Libyan Football Federation'
+		'fp_confederation@long_name@Libyan Football Federation'
 	)
 ),
 (
@@ -3341,7 +3356,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saint Lucia Football Association'
+		'fp_confederation@long_name@Saint Lucia Football Association'
 	)
 ),
 (
@@ -3352,7 +3367,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saint Lucia Football Association'
+		'fp_confederation@long_name@Saint Lucia Football Association'
 	)
 ),
 (
@@ -3363,7 +3378,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Liechtensteiner Fussballverband'
+		'fp_confederation@long_name@Liechtensteiner Fussballverband'
 	)
 ),
 (
@@ -3374,7 +3389,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Sri Lanka'
+		'fp_confederation@long_name@Football Federation of Sri Lanka'
 	)
 ),
 (
@@ -3385,7 +3400,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of Sri Lanka'
+		'fp_confederation@long_name@Football Federation of Sri Lanka'
 	)
 ),
 (
@@ -3396,7 +3411,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lesotho Football Association'
+		'fp_confederation@long_name@Lesotho Football Association'
 	)
 ),
 (
@@ -3407,7 +3422,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lesotho Football Association'
+		'fp_confederation@long_name@Lesotho Football Association'
 	)
 ),
 (
@@ -3418,7 +3433,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lithuanian Football Federation'
+		'fp_confederation@long_name@Lithuanian Football Federation'
 	)
 ),
 (
@@ -3429,7 +3444,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lithuanian Football Federation'
+		'fp_confederation@long_name@Lithuanian Football Federation'
 	)
 ),
 (
@@ -3440,7 +3455,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lithuanian Football Federation'
+		'fp_confederation@long_name@Lithuanian Football Federation'
 	)
 ),
 (
@@ -3451,7 +3466,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Lithuanian Football Federation'
+		'fp_confederation@long_name@Lithuanian Football Federation'
 	)
 ),
 (
@@ -3462,7 +3477,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Luxembourg Football Federation'
+		'fp_confederation@long_name@Luxembourg Football Federation'
 	)
 ),
 (
@@ -3473,7 +3488,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Luxembourg Football Federation'
+		'fp_confederation@long_name@Luxembourg Football Federation'
 	)
 ),
 (
@@ -3484,7 +3499,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Luxembourg Football Federation'
+		'fp_confederation@long_name@Luxembourg Football Federation'
 	)
 ),
 (
@@ -3495,7 +3510,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Latvijas Futbola federācija'
+		'fp_confederation@long_name@Latvijas Futbola federācija'
 	)
 ),
 (
@@ -3506,7 +3521,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Latvijas Futbola federācija'
+		'fp_confederation@long_name@Latvijas Futbola federācija'
 	)
 ),
 (
@@ -3517,7 +3532,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Latvijas Futbola federācija'
+		'fp_confederation@long_name@Latvijas Futbola federācija'
 	)
 ),
 (
@@ -3528,7 +3543,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Latvijas Futbola federācija'
+		'fp_confederation@long_name@Latvijas Futbola federācija'
 	)
 ),
 (
@@ -3539,7 +3554,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Moroccan Football Federation'
+		'fp_confederation@long_name@Royal Moroccan Football Federation'
 	)
 ),
 (
@@ -3550,7 +3565,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Moroccan Football Federation'
+		'fp_confederation@long_name@Royal Moroccan Football Federation'
 	)
 ),
 (
@@ -3561,7 +3576,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Royal Moroccan Football Federation'
+		'fp_confederation@long_name@Royal Moroccan Football Federation'
 	)
 ),
 (
@@ -3572,7 +3587,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Monegasque de Football'
+		'fp_confederation@long_name@Fédération Monegasque de Football'
 	)
 ),
 (
@@ -3583,7 +3598,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Moldovenească de Fotbal'
+		'fp_confederation@long_name@Federația Moldovenească de Fotbal'
 	)
 ),
 (
@@ -3594,7 +3609,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Moldovenească de Fotbal'
+		'fp_confederation@long_name@Federația Moldovenească de Fotbal'
 	)
 ),
 (
@@ -3605,7 +3620,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Moldovenească de Fotbal'
+		'fp_confederation@long_name@Federația Moldovenească de Fotbal'
 	)
 ),
 (
@@ -3616,7 +3631,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Moldovenească de Fotbal'
+		'fp_confederation@long_name@Federația Moldovenească de Fotbal'
 	)
 ),
 (
@@ -3627,7 +3642,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Malagasy de Football'
+		'fp_confederation@long_name@Fédération Malagasy de Football'
 	)
 ),
 (
@@ -3638,7 +3653,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Maldives'
+		'fp_confederation@long_name@Football Association of Maldives'
 	)
 ),
 (
@@ -3649,7 +3664,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Maldives'
+		'fp_confederation@long_name@Football Association of Maldives'
 	)
 ),
 (
@@ -3660,7 +3675,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Mexicana de Fútbol Asociación'
+		'fp_confederation@long_name@Federación Mexicana de Fútbol Asociación'
 	)
 ),
 (
@@ -3671,7 +3686,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Mexicana de Fútbol Asociación'
+		'fp_confederation@long_name@Federación Mexicana de Fútbol Asociación'
 	)
 ),
 (
@@ -3682,7 +3697,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Mexicana de Fútbol Asociación'
+		'fp_confederation@long_name@Federación Mexicana de Fútbol Asociación'
 	)
 ),
 (
@@ -3693,7 +3708,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Mexicana de Fútbol Asociación'
+		'fp_confederation@long_name@Federación Mexicana de Fútbol Asociación'
 	)
 ),
 (
@@ -3704,7 +3719,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Mexicana de Fútbol Asociación'
+		'fp_confederation@long_name@Federación Mexicana de Fútbol Asociación'
 	)
 ),
 (
@@ -3715,7 +3730,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of North Macedonia'
+		'fp_confederation@long_name@Football Federation of North Macedonia'
 	)
 ),
 (
@@ -3726,7 +3741,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of North Macedonia'
+		'fp_confederation@long_name@Football Federation of North Macedonia'
 	)
 ),
 (
@@ -3737,7 +3752,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of North Macedonia'
+		'fp_confederation@long_name@Football Federation of North Macedonia'
 	)
 ),
 (
@@ -3748,7 +3763,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Federation of North Macedonia'
+		'fp_confederation@long_name@Football Federation of North Macedonia'
 	)
 ),
 (
@@ -3759,7 +3774,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Malienne de Football'
+		'fp_confederation@long_name@Fédération Malienne de Football'
 	)
 ),
 (
@@ -3770,7 +3785,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Malienne de Football'
+		'fp_confederation@long_name@Fédération Malienne de Football'
 	)
 ),
 (
@@ -3781,7 +3796,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Malta Football Association'
+		'fp_confederation@long_name@Malta Football Association'
 	)
 ),
 (
@@ -3792,7 +3807,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Malta Football Association'
+		'fp_confederation@long_name@Malta Football Association'
 	)
 ),
 (
@@ -3803,7 +3818,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Myanmar Football Federation'
+		'fp_confederation@long_name@Myanmar Football Federation'
 	)
 ),
 (
@@ -3814,7 +3829,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Myanmar Football Federation'
+		'fp_confederation@long_name@Myanmar Football Federation'
 	)
 ),
 (
@@ -3825,7 +3840,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fudbalski Savez Crne Gore'
+		'fp_confederation@long_name@Fudbalski Savez Crne Gore'
 	)
 ),
 (
@@ -3836,7 +3851,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fudbalski Savez Crne Gore'
+		'fp_confederation@long_name@Fudbalski Savez Crne Gore'
 	)
 ),
 (
@@ -3847,7 +3862,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fudbalski Savez Crne Gore'
+		'fp_confederation@long_name@Fudbalski Savez Crne Gore'
 	)
 ),
 (
@@ -3858,7 +3873,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Mongolian Football Federation'
+		'fp_confederation@long_name@Mongolian Football Federation'
 	)
 ),
 (
@@ -3869,7 +3884,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Mongolian Football Federation'
+		'fp_confederation@long_name@Mongolian Football Federation'
 	)
 ),
 (
@@ -3880,7 +3895,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Moçambicana de Futebol'
+		'fp_confederation@long_name@Federação Moçambicana de Futebol'
 	)
 ),
 (
@@ -3891,7 +3906,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Moçambicana de Futebol'
+		'fp_confederation@long_name@Federação Moçambicana de Futebol'
 	)
 ),
 (
@@ -3902,7 +3917,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération de Football de la République Islamique de Mauritanie'
+		'fp_confederation@long_name@Fédération de Football de la République Islamique de Mauritanie'
 	)
 ),
 (
@@ -3913,7 +3928,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération de Football de la République Islamique de Mauritanie'
+		'fp_confederation@long_name@Fédération de Football de la République Islamique de Mauritanie'
 	)
 ),
 (
@@ -3924,7 +3939,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Mauritius Football Association'
+		'fp_confederation@long_name@Mauritius Football Association'
 	)
 ),
 (
@@ -3935,7 +3950,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Mauritius Football Association'
+		'fp_confederation@long_name@Mauritius Football Association'
 	)
 ),
 (
@@ -3946,7 +3961,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Malawi'
+		'fp_confederation@long_name@Football Association of Malawi'
 	)
 ),
 (
@@ -3957,7 +3972,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Malaysia'
+		'fp_confederation@long_name@Football Association of Malaysia'
 	)
 ),
 (
@@ -3968,7 +3983,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Malaysia'
+		'fp_confederation@long_name@Football Association of Malaysia'
 	)
 ),
 (
@@ -3979,7 +3994,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Namibia Football Association'
+		'fp_confederation@long_name@Namibia Football Association'
 	)
 ),
 (
@@ -3990,7 +4005,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Namibia Football Association'
+		'fp_confederation@long_name@Namibia Football Association'
 	)
 ),
 (
@@ -4001,7 +4016,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Nigerienne de Football'
+		'fp_confederation@long_name@Fédération Nigerienne de Football'
 	)
 ),
 (
@@ -4012,7 +4027,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Nigerienne de Football'
+		'fp_confederation@long_name@Fédération Nigerienne de Football'
 	)
 ),
 (
@@ -4023,7 +4038,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nigeria Football Federation'
+		'fp_confederation@long_name@Nigeria Football Federation'
 	)
 ),
 (
@@ -4034,7 +4049,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Nigeria Football Federation'
+		'fp_confederation@long_name@Nigeria Football Federation'
 	)
 ),
 (
@@ -4045,7 +4060,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nicaragüense de Fútbol'
+		'fp_confederation@long_name@Federación Nicaragüense de Fútbol'
 	)
 ),
 
@@ -4057,7 +4072,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Nicaragüense de Fútbol'
+		'fp_confederation@long_name@Federación Nicaragüense de Fútbol'
 	)
 ),
 (
@@ -4068,7 +4083,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Irish Football Association'
+		'fp_confederation@long_name@Irish Football Association'
 	)
 ),
 (
@@ -4079,7 +4094,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Irish Football Association'
+		'fp_confederation@long_name@Irish Football Association'
 	)
 ),
 (
@@ -4090,7 +4105,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Irish Football Association'
+		'fp_confederation@long_name@Irish Football Association'
 	)
 ),
 (
@@ -4101,7 +4116,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Irish Football Association'
+		'fp_confederation@long_name@Irish Football Association'
 	)
 ),
 (
@@ -4112,7 +4127,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Niue Island Soccer Association'
+		'fp_confederation@long_name@Niue Island Soccer Association'
 	)
 ),
 (
@@ -4123,7 +4138,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Koninklijke Nederlandse Voetbalbond'
+		'fp_confederation@long_name@Koninklijke Nederlandse Voetbalbond'
 	)
 ),
 (
@@ -4134,7 +4149,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Koninklijke Nederlandse Voetbalbond'
+		'fp_confederation@long_name@Koninklijke Nederlandse Voetbalbond'
 	)
 ),
 (
@@ -4145,7 +4160,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Koninklijke Nederlandse Voetbalbond'
+		'fp_confederation@long_name@Koninklijke Nederlandse Voetbalbond'
 	)
 ),
 (
@@ -4156,7 +4171,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Koninklijke Nederlandse Voetbalbond'
+		'fp_confederation@long_name@Koninklijke Nederlandse Voetbalbond'
 	)
 ),
 (
@@ -4167,7 +4182,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Koninklijke Nederlandse Voetbalbond'
+		'fp_confederation@long_name@Koninklijke Nederlandse Voetbalbond'
 	)
 ),
 (
@@ -4178,7 +4193,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Norges Fotballforbund'
+		'fp_confederation@long_name@Norges Fotballforbund'
 	)
 ),
 (
@@ -4189,7 +4204,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Norges Fotballforbund'
+		'fp_confederation@long_name@Norges Fotballforbund'
 	)
 ),
 (
@@ -4200,7 +4215,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Norges Fotballforbund'
+		'fp_confederation@long_name@Norges Fotballforbund'
 	)
 ),
 (
@@ -4211,7 +4226,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Norges Fotballforbund'
+		'fp_confederation@long_name@Norges Fotballforbund'
 	)
 ),
 (
@@ -4222,7 +4237,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All Nepal Football Association'
+		'fp_confederation@long_name@All Nepal Football Association'
 	)
 ),
 (
@@ -4233,7 +4248,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All Nepal Football Association'
+		'fp_confederation@long_name@All Nepal Football Association'
 	)
 ),
 (
@@ -4244,7 +4259,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@All Nepal Football Association'
+		'fp_confederation@long_name@All Nepal Football Association'
 	)
 ),
 (
@@ -4255,7 +4270,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@New Zealand Football'
+		'fp_confederation@long_name@New Zealand Football'
 	)
 ),
 (
@@ -4266,7 +4281,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@New Zealand Football'
+		'fp_confederation@long_name@New Zealand Football'
 	)
 ),
 (
@@ -4277,7 +4292,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Oman Football Association'
+		'fp_confederation@long_name@Oman Football Association'
 	)
 ),
 (
@@ -4288,7 +4303,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Oman Football Association'
+		'fp_confederation@long_name@Oman Football Association'
 	)
 ),
 (
@@ -4299,7 +4314,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Pakistan Football Federation'
+		'fp_confederation@long_name@Pakistan Football Federation'
 	)
 ),
 (
@@ -4310,7 +4325,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Pakistan Football Federation'
+		'fp_confederation@long_name@Pakistan Football Federation'
 	)
 ),
 (
@@ -4321,7 +4336,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Panameña de Fútbol'
+		'fp_confederation@long_name@Federación Panameña de Fútbol'
 	)
 ),
 (
@@ -4332,7 +4347,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Panameña de Fútbol'
+		'fp_confederation@long_name@Federación Panameña de Fútbol'
 	)
 ),
 (
@@ -4343,7 +4358,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Peruana de Futbol'
+		'fp_confederation@long_name@Federación Peruana de Futbol'
 	)
 ),
 (
@@ -4354,7 +4369,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Peruana de Futbol'
+		'fp_confederation@long_name@Federación Peruana de Futbol'
 	)
 ),
 (
@@ -4365,7 +4380,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Peruana de Futbol'
+		'fp_confederation@long_name@Federación Peruana de Futbol'
 	)
 ),
 (
@@ -4376,7 +4391,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Peruana de Futbol'
+		'fp_confederation@long_name@Federación Peruana de Futbol'
 	)
 ),
 (
@@ -4387,7 +4402,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Philippine Football Federation'
+		'fp_confederation@long_name@Philippine Football Federation'
 	)
 ),
 (
@@ -4398,7 +4413,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Philippine Football Federation'
+		'fp_confederation@long_name@Philippine Football Federation'
 	)
 ),
 (
@@ -4409,7 +4424,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Palau Football Association'
+		'fp_confederation@long_name@Palau Football Association'
 	)
 ),
 (
@@ -4420,7 +4435,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Papua New Guinea Football Association'
+		'fp_confederation@long_name@Papua New Guinea Football Association'
 	)
 ),
 (
@@ -4431,7 +4446,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Papua New Guinea Football Association'
+		'fp_confederation@long_name@Papua New Guinea Football Association'
 	)
 ),
 (
@@ -4442,7 +4457,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Polski Związek Piłki Nożnej'
+		'fp_confederation@long_name@Polski Związek Piłki Nożnej'
 	)
 ),
 (
@@ -4453,7 +4468,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Polski Związek Piłki Nożnej'
+		'fp_confederation@long_name@Polski Związek Piłki Nożnej'
 	)
 ),
 (
@@ -4464,7 +4479,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Polski Związek Piłki Nożnej'
+		'fp_confederation@long_name@Polski Związek Piłki Nożnej'
 	)
 ),
 (
@@ -4475,7 +4490,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Polski Związek Piłki Nożnej'
+		'fp_confederation@long_name@Polski Związek Piłki Nożnej'
 	)
 ),
 (
@@ -4486,7 +4501,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Polski Związek Piłki Nożnej'
+		'fp_confederation@long_name@Polski Związek Piłki Nożnej'
 	)
 ),
 (
@@ -4497,7 +4512,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Puertorriqueña de Fútbol'
+		'fp_confederation@long_name@Federación Puertorriqueña de Fútbol'
 	)
 ),
 (
@@ -4508,7 +4523,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@DPR Korea Football Association'
+		'fp_confederation@long_name@DPR Korea Football Association'
 	)
 ),
 (
@@ -4519,7 +4534,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@DPR Korea Football Association'
+		'fp_confederation@long_name@DPR Korea Football Association'
 	)
 ),
 (
@@ -4530,7 +4545,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Portuguesa de Futebol'
+		'fp_confederation@long_name@Federação Portuguesa de Futebol'
 	)
 ),
 (
@@ -4541,7 +4556,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Portuguesa de Futebol'
+		'fp_confederation@long_name@Federação Portuguesa de Futebol'
 	)
 ),
 (
@@ -4552,7 +4567,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Portuguesa de Futebol'
+		'fp_confederation@long_name@Federação Portuguesa de Futebol'
 	)
 ),
 (
@@ -4563,7 +4578,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Portuguesa de Futebol'
+		'fp_confederation@long_name@Federação Portuguesa de Futebol'
 	)
 ),
 (
@@ -4574,7 +4589,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federação Portuguesa de Futebol'
+		'fp_confederation@long_name@Federação Portuguesa de Futebol'
 	)
 ),
 (
@@ -4585,7 +4600,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación Paraguaya de Fútbol'
+		'fp_confederation@long_name@Asociación Paraguaya de Fútbol'
 	)
 ),
 (
@@ -4596,7 +4611,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación Paraguaya de Fútbol'
+		'fp_confederation@long_name@Asociación Paraguaya de Fútbol'
 	)
 ),
 (
@@ -4607,7 +4622,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación Paraguaya de Fútbol'
+		'fp_confederation@long_name@Asociación Paraguaya de Fútbol'
 	)
 ),
 (
@@ -4618,7 +4633,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Asociación Paraguaya de Fútbol'
+		'fp_confederation@long_name@Asociación Paraguaya de Fútbol'
 	)
 ),
 (
@@ -4629,7 +4644,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Palestine Football Association'
+		'fp_confederation@long_name@Palestine Football Association'
 	)
 ),
 (
@@ -4640,7 +4655,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Palestine Football Association'
+		'fp_confederation@long_name@Palestine Football Association'
 	)
 ),
 (
@@ -4651,7 +4666,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Qatar Football Association'
+		'fp_confederation@long_name@Qatar Football Association'
 	)
 ),
 (
@@ -4662,7 +4677,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Qatar Football Association'
+		'fp_confederation@long_name@Qatar Football Association'
 	)
 ),
 (
@@ -4673,7 +4688,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Qatar Football Association'
+		'fp_confederation@long_name@Qatar Football Association'
 	)
 ),
 (
@@ -4684,7 +4699,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Română de Fotbal'
+		'fp_confederation@long_name@Federația Română de Fotbal'
 	)
 ),
 (
@@ -4695,7 +4710,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Română de Fotbal'
+		'fp_confederation@long_name@Federația Română de Fotbal'
 	)
 ),
 (
@@ -4706,7 +4721,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Română de Fotbal'
+		'fp_confederation@long_name@Federația Română de Fotbal'
 	)
 ),
 (
@@ -4717,7 +4732,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Română de Fotbal'
+		'fp_confederation@long_name@Federația Română de Fotbal'
 	)
 ),
 (
@@ -4728,7 +4743,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federația Română de Fotbal'
+		'fp_confederation@long_name@Federația Română de Fotbal'
 	)
 ),
 (
@@ -4739,7 +4754,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Russian Football Union'
+		'fp_confederation@long_name@Russian Football Union'
 	)
 ),
 (
@@ -4750,7 +4765,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Russian Football Union'
+		'fp_confederation@long_name@Russian Football Union'
 	)
 ),
 (
@@ -4761,7 +4776,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Russian Football Union'
+		'fp_confederation@long_name@Russian Football Union'
 	)
 ),
 (
@@ -4772,7 +4787,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Russian Football Union'
+		'fp_confederation@long_name@Russian Football Union'
 	)
 ),
 (
@@ -4783,7 +4798,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Russian Football Union'
+		'fp_confederation@long_name@Russian Football Union'
 	)
 ),
 (
@@ -4794,7 +4809,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Rwandaise de Football Association'
+		'fp_confederation@long_name@Fédération Rwandaise de Football Association'
 	)
 ),
 (
@@ -4805,7 +4820,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Rwandaise de Football Association'
+		'fp_confederation@long_name@Fédération Rwandaise de Football Association'
 	)
 ),
 (
@@ -4816,7 +4831,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saudi Arabian Football Federation'
+		'fp_confederation@long_name@Saudi Arabian Football Federation'
 	)
 ),
 (
@@ -4827,7 +4842,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saudi Arabian Football Federation'
+		'fp_confederation@long_name@Saudi Arabian Football Federation'
 	)
 ),
 (
@@ -4838,7 +4853,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saudi Arabian Football Federation'
+		'fp_confederation@long_name@Saudi Arabian Football Federation'
 	)
 ),
 (
@@ -4849,7 +4864,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Saudi Arabian Football Federation'
+		'fp_confederation@long_name@Saudi Arabian Football Federation'
 	)
 ),
 (
@@ -4860,7 +4875,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Scottish Football Association'
+		'fp_confederation@long_name@Scottish Football Association'
 	)
 ),
 (
@@ -4871,7 +4886,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Scottish Football Association'
+		'fp_confederation@long_name@Scottish Football Association'
 	)
 ),
 (
@@ -4882,7 +4897,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Scottish Football Association'
+		'fp_confederation@long_name@Scottish Football Association'
 	)
 ),
 (
@@ -4893,7 +4908,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Scottish Football Association'
+		'fp_confederation@long_name@Scottish Football Association'
 	)
 ),
 (
@@ -4904,7 +4919,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Sudan Football Association'
+		'fp_confederation@long_name@Sudan Football Association'
 	)
 ),
 (
@@ -4915,7 +4930,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Sudan Football Association'
+		'fp_confederation@long_name@Sudan Football Association'
 	)
 ),
 (
@@ -4926,7 +4941,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Sénégalaise de Football'
+		'fp_confederation@long_name@Fédération Sénégalaise de Football'
 	)
 ),
 (
@@ -4937,7 +4952,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Fédération Sénégalaise de Football'
+		'fp_confederation@long_name@Fédération Sénégalaise de Football'
 	)
 ),
 (
@@ -4948,7 +4963,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Singapore'
+		'fp_confederation@long_name@Football Association of Singapore'
 	)
 ),
 (
@@ -4959,7 +4974,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Singapore'
+		'fp_confederation@long_name@Football Association of Singapore'
 	)
 ),
 (
@@ -4970,7 +4985,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Football Association of Singapore'
+		'fp_confederation@long_name@Football Association of Singapore'
 	)
 ),
 (
@@ -4981,7 +4996,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Solomon Islands Football Federation'
+		'fp_confederation@long_name@Solomon Islands Football Federation'
 	)
 ),
 (
@@ -4992,7 +5007,7 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Sierra Leone Football Association'
+		'fp_confederation@long_name@Sierra Leone Football Association'
 	)
 ),
 (
@@ -5003,6 +5018,9 @@ VALUES
 	get_id
 	(
 		'@',
-		'confederation@long_name@Federación Salvadoreña de Fútbol'
+		'fp_confederation@long_name@Federación Salvadoreña de Fútbol'
 	)
 );
+
+--------------------------------------------------------------------------------
+

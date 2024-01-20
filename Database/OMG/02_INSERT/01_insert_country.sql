@@ -10,23 +10,23 @@
 
 
 /*******************************************************************************
- * INSERT COUNTRY
+ * INSERT FP_COUNTRY
  ******************************************************************************/
 
 
 /*******************************************************************************
- * INSERT WORLD TYPE COUNTRY
+ * INSERT WORLD TYPE FP_COUNTRY
  ******************************************************************************/
-INSERT INTO country (type, code, name)
+INSERT INTO fp_country (type, code, name)
 VALUES
 ('WORLD', 'WLD', 'World');
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
- * INSERT CONTINENT TYPE COUNTRY
+ * INSERT CONTINENT TYPE FP_COUNTRY
  ******************************************************************************/
-INSERT INTO country (type, code, name)
+INSERT INTO fp_country (type, code, name)
 VALUES
 ('CONTINENT', 'AFR', 'Africa'),
 ('CONTINENT', 'ASI', 'Asia'),
@@ -39,9 +39,9 @@ VALUES
 
 
 /*******************************************************************************
- * INSERT NATION TYPE COUNTRY
+ * INSERT NATION TYPE FP_COUNTRY
  ******************************************************************************/
-INSERT INTO country (type, code, name)
+INSERT INTO fp_country (type, code, name)
 VALUES
 ('NATION', 'AFG', 'Afghanistan'),
 ('NATION', 'AGO', 'Angola'),
@@ -247,5 +247,4 @@ VALUES
 ('NATION', 'ZMB', 'Zambia'),
 ('NATION', 'ZWE', 'Zimbabwe');
 --------------------------------------------------------------------------------
-
 

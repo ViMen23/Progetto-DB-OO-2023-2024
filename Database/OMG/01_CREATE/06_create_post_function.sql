@@ -20,7 +20,7 @@
  * TYPE : FUNCTION
  * NAME : corr_containment
  *
- * IN      : country.id%TYPE, country.id%TYPE
+ * IN      : fp_country.id%TYPE, fp_country.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -29,8 +29,8 @@
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_containment
 (
-	IN	id_in_country	country.id%TYPE,
-	IN	id_su_country	country.id%TYPE
+	IN	id_in_country	fp_country.id%TYPE,
+	IN	id_su_country	fp_country.id%TYPE
 )
 RETURNS boolean
 AS
@@ -42,8 +42,8 @@ DECLARE
 	
 BEGIN
 	
-	type_in_country	= get_attr('country', 'type', id_in_country);						
-	type_su_country = get_attr('country', 'type', id_su_country);
+	type_in_country	= get_attr('fp_country', 'type', id_in_country);						
+	type_su_country = get_attr('fp_country', 'type', id_su_country);
 
 	IF
 	(
@@ -70,7 +70,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : is_nation
  *
- * IN      : country.id%TYPE
+ * IN      : fp_country.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -79,7 +79,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
-	IN	id_country	country.id%TYPE
+	IN	id_country	fp_country.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -91,7 +91,7 @@ DECLARE
 
 BEGIN
 	
-	type_country = get_attr('country', 'type', id_country);
+	type_country = get_attr('fp_country', 'type', id_country);
 
 	IF ('NATION' = type_country) THEN
 		RETURN TRUE;
@@ -110,18 +110,18 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : conf_from_comp_ed
  *
- * IN      : competition_edition.id%TYPE
+ * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
- * RETURNS : confederation.id%TYPE
+ * RETURNS : fp_confederation.id%TYPE
  *
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_from_comp_ed
 (
-	IN	id_comp_ed	competition_edition.id%TYPE
+	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
-RETURNS confederation.id%TYPE
+RETURNS fp_confederation.id%TYPE
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -133,10 +133,10 @@ DECLARE
 
 BEGIN
 	
-	tmp = get_attr('competition_edition', 'competition_id', id_comp_ed);
+	tmp = get_attr('fp_competition_edition', 'competition_id', id_comp_ed);
 	id_comp = CAST(tmp AS integer);
 
-	tmp = get_attr('competition', 'confederation_id', id_comp);
+	tmp = get_attr('fp_competition', 'confederation_id', id_comp);
 	id_conf = CAST(tmp AS integer);
 
 	RETURN id_conf;
@@ -153,7 +153,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_edition
  *
- * IN      : competition.id%TYPE
+ * IN      : fp_competition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -162,7 +162,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_edition
 (
-	IN	id_comp	competition.id%TYPE
+	IN	id_comp	fp_competition.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -175,7 +175,7 @@ BEGIN
 		SELECT
 			count(*) > 0
 		FROM
-			competition_edition
+			fp_competition_edition
 		WHERE
 			competition_id = id_comp
 	);
@@ -193,7 +193,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : corr_freq
  *
- * IN      : competition.id%TYPE, dm_year
+ * IN      : fp_competition.id%TYPE, dm_year
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -202,7 +202,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_freq
 (
-	IN	id_comp	competition.id%TYPE,
+	IN	id_comp	fp_competition.id%TYPE,
 	IN	s_year	dm_year
 )
 RETURNS boolean
@@ -217,7 +217,7 @@ DECLARE
 	
 BEGIN
 	
-	tmp = get_attr('competition', 'frequency', id_comp);
+	tmp = get_attr('fp_competition', 'frequency', id_comp);
 	freq = CAST(tmp AS integer);
 
 	IF (freq <= 1) THEN
@@ -229,7 +229,7 @@ BEGIN
 		INTO
 			a_year
 		FROM
-			competition_edition
+			fp_competition_edition
 		WHERE
 			competition_id = id_comp
 		LIMIT
@@ -253,7 +253,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : belong_to
  *
- * IN      : team.id%TYPE, confederation.id%TYPE
+ * IN      : fp_team.id%TYPE, fp_confederation.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -262,8 +262,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION belong_to
 (
-	IN	id_team	team.id%TYPE,
-	IN	id_conf	confederation.id%TYPE
+	IN	id_team	fp_team.id%TYPE,
+	IN	id_conf	fp_confederation.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -278,21 +278,21 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('team', 'confederation_id', id_team);
+	tmp = get_attr('fp_team', 'confederation_id', id_team);
 	id_conf_team = CAST(tmp AS integer);
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
-	tmp = get_attr('confederation', 'super_id', id_conf_team);
+	tmp = get_attr('fp_confederation', 'super_id', id_conf_team);
 	id_super_conf_team = CAST(tmp AS integer);
 	
 	IF (id_super_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
-	tmp = get_attr('confederation', 'super_id', id_super_conf_team);
+	tmp = get_attr('fp_confederation', 'super_id', id_super_conf_team);
 	id_super_super_conf_team = CAST(tmp AS integer);
 	
 	IF (id_super_super_conf_team = id_conf) THEN
@@ -314,7 +314,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : available
  *
- * IN      : competition_edition.id%TYPE
+ * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -323,7 +323,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION available
 (
-	IN	id_comp_ed	competition_edition.id%TYPE
+	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -336,7 +336,7 @@ DECLARE
 
 BEGIN
 	
-	tmp = get_attr('competition_edition', 'total_team', id_comp_ed);
+	tmp = get_attr('fp_competition_edition', 'total_team', id_comp_ed);
 	tot_team = CAST(tmp AS integer);
 
 	RETURN
@@ -344,7 +344,7 @@ BEGIN
 		SELECT
 			count(*) < tot_team
 		FROM
-			partecipation
+			fp_partecipation
 		WHERE
 			competition_edition_id = id_comp_ed
 	);
@@ -360,7 +360,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_role
  *
- * IN      : player.id%TYPE, ty_role
+ * IN      : fp_player.id%TYPE, ty_role
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -369,7 +369,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_role
 (
-	IN	id_player		player.id%TYPE,
+	IN	id_player		fp_player.id%TYPE,
 	IN	role_to_check	ty_role
 )
 RETURNS boolean
@@ -388,12 +388,12 @@ BEGIN
 		SELECT
 			position_id
 		FROM
-			player_position
+			fp_player_position
 		WHERE
 			player_id = id_player
 	LOOP
 
-		role_pos = get_attr('position', 'role', pos_player);
+		role_pos = get_attr('fp_position', 'role', pos_player);
 
 		IF (role_pos = role_to_check) THEN
 			RETURN TRUE;
@@ -414,7 +414,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : get_time_range
  *
- * IN      : competition_edition.id%TYPE
+ * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : daterange
@@ -423,7 +423,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_time_range
 (
-	IN	id_comp_ed	competition_edition.id%TYPE
+	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
 RETURNS daterange
 RETURNS NULL ON NULL INPUT
@@ -439,8 +439,8 @@ DECLARE
 
 BEGIN
 	
-	s_year = get_attr('competition_edition', 'start_year', id_comp_ed);
-	e_year = get_attr('competition_edition', 'end_year', id_comp_ed);
+	s_year = get_attr('fp_competition_edition', 'start_year', id_comp_ed);
+	e_year = get_attr('fp_competition_edition', 'end_year', id_comp_ed);
 
 	IF (s_year = e_year) THEN
 		s_date = make_date(s_year, 01, 01);
@@ -465,7 +465,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : play_in_during
  *
- * IN      : player.id%TYPE, team.id%TYPE, daterange 
+ * IN      : fp_player.id%TYPE, fp_team.id%TYPE, daterange 
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -474,8 +474,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION play_in_during
 (
-	IN	id_player	player.id%TYPE,
-	IN	id_team		team.id%TYPE,
+	IN	id_player	fp_player.id%TYPE,
+	IN	id_team		fp_team.id%TYPE,
 	IN	time_range	daterange
 )
 RETURNS boolean
@@ -489,7 +489,7 @@ BEGIN
 		SELECT
 			count(*) > 0
 		FROM
-			militancy
+			fp_militancy
 		WHERE
 			team_id = id_team
 			AND
@@ -509,7 +509,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : pos_fit_stat
  *
- * IN      : position.id%TYPE, statistic.id%TYPE 
+ * IN      : fp_position.id%TYPE, fp_statistic.id%TYPE 
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -518,8 +518,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION pos_fit_stat
 (
-	IN	id_pos		"position".id%TYPE,
-	IN	id_stat		statistic.id%TYPE
+	IN	id_pos		fp_position.id%TYPE,
+	IN	id_stat		fp_statistic.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -532,8 +532,8 @@ DECLARE
 
 BEGIN
 	
-	role_pos = get_attr('position', 'role', id_pos);
-	type_stat = get_attr('statistic', 'type', id_stat);
+	role_pos = get_attr('fp_position', 'role', id_pos);
+	type_stat = get_attr('fp_statistic', 'type', id_stat);
 
 	IF (position(role_pos in type_stat) > 0) THEN
 		RETURN TRUE;
@@ -552,7 +552,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : team_fit_comp
  *
- * IN      : team.id%TYPE, competition.id%TYPE 
+ * IN      : fp_team.id%TYPE, fp_competition.id%TYPE 
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -561,8 +561,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
 (
-	IN	id_team		team.id%TYPE,
-	IN	id_comp		competition.id%TYPE
+	IN	id_team		fp_team.id%TYPE,
+	IN	id_comp		fp_competition.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -575,9 +575,9 @@ DECLARE
 
 BEGIN
 	
-	type_team = get_attr('team', 'type', id_team);
-	type_team_comp = get_attr('competition', 'team_type', id_comp);
-
+	type_team = get_attr('fp_team', 'type', id_team);
+	type_team_comp = get_attr('fp_competition', 'team_type', id_comp);
+	
 	RETURN type_team = type_team_comp;
 
 END;
@@ -649,7 +649,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : free_club_militancy
  *
- * IN      : player.id%TYPE, daterange
+ * IN      : fp_player.id%TYPE, daterange
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -658,7 +658,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION free_club_militancy
 (
-	IN	id_player	player.id%TYPE,
+	IN	id_player	fp_player.id%TYPE,
 	IN	range_date	daterange
 )
 RETURNS boolean
@@ -672,7 +672,7 @@ BEGIN
 		SELECT
 			count(*) < 1
 		FROM
-			militancy
+			fp_militancy
 		WHERE
 			player_id = id_player
 			AND
@@ -692,7 +692,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : free_national_militancy
  *
- * IN      : player.id%TYPE, country.id%TYPE
+ * IN      : fp_player.id%TYPE, fp_country.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -701,8 +701,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION free_national_militancy
 (
-	IN	id_player	player.id%TYPE,
-	IN	id_country	country.id%TYPE
+	IN	id_player	fp_player.id%TYPE,
+	IN	id_country	fp_country.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -715,7 +715,7 @@ BEGIN
 		SELECT
 			count(*) < 1
 		FROM
-			militancy
+			fp_militancy
 		WHERE
 			player_id = id_player
 			AND
@@ -733,7 +733,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : corr_tot_team
  *
- * IN      : competition.id%TYPE, dm_usint
+ * IN      : fp_competition.id%TYPE, dm_usint
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -742,7 +742,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_tot_team
 (
-	IN	id_comp		competition.id%TYPE,
+	IN	id_comp		fp_competition.id%TYPE,
 	IN	tot_team	dm_usint
 )
 RETURNS boolean
@@ -760,7 +760,7 @@ DECLARE
 	
 BEGIN
 	
-	type_comp = get_attr('competition', 'type', id_comp);
+	type_comp = get_attr('fp_competition', 'type', id_comp);
 
 	IF ('SUPER CUP' = type_comp) THEN
 		IF (tot_team <= 6) THEN
@@ -772,13 +772,13 @@ BEGIN
 		END IF;
 	ELSIF ('CUP' = type_comp) THEN
 
-		tmp = get_attr('competition', 'confederation_id', id_comp);
+		tmp = get_attr('fp_competition', 'confederation_id', id_comp);
 		id_conf = CAST(tmp_text AS integer);
 
-		tmp = get_attr('confederation', 'country_id', id_conf);
+		tmp = get_attr('fp_confederation', 'country_id', id_conf);
 		id_country = CAST(tmp_text AS integer);
 
-		type_country = get_attr('country', 'type', id_country);
+		type_country = get_attr('fp_country', 'type', id_country);
 
 		IF ('NATION' = type_country) THEN
 			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
@@ -803,18 +803,18 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : similar_comp
  *
- * IN      : competition.id%TYPE
+ * IN      : fp_competition.id%TYPE
  * INOUT   : void
  * OUT     : void
- * RETURNS : SETOF competition.id%TYPE
+ * RETURNS : SETOF fp_competition.id%TYPE
  *
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp
 (
-	IN	id_comp	competition.id%TYPE
+	IN	id_comp	fp_competition.id%TYPE
 )
-RETURNS SETOF competition.id%TYPE
+RETURNS SETOF fp_competition.id%TYPE
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -824,13 +824,13 @@ DECLARE
 
 BEGIN
 	
-	rec_comp = get_rec('competition', id_comp);
+	rec_comp = get_rec('fp_competition', id_comp);
 
 	RETURN QUERY
 		SELECT
 			id
 		FROM
-			competition
+			fp_competition
 		WHERE
 			type = rec_comp.type
 			AND
@@ -848,18 +848,18 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : similar_comp_ed
  *
- * IN      : competition_edition.id%TYPE
+ * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
- * RETURNS : SETOF competition_edition.id%TYPE
+ * RETURNS : SETOF fp_competition_edition.id%TYPE
  *
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp_ed
 (
-	IN	id_comp_ed	competition_edition.id%TYPE
+	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
-RETURNS SETOF competition.id%TYPE
+RETURNS SETOF fp_competition.id%TYPE
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -869,13 +869,13 @@ DECLARE
 
 BEGIN
 	
-	rec_comp_ed = get_rec('competition_edition', id_comp_ed);
+	rec_comp_ed = get_rec('fp_competition_edition', id_comp_ed);
 
 	RETURN QUERY
 		SELECT
 			id
 		FROM
-			competition_edition
+			fp_competition_edition
 		WHERE
 			start_year = rec_comp_ed.start_year
 			AND
@@ -894,7 +894,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : can_take_part
  *
- * IN      : team.id%TYPE, competition_edition.id%TYPE
+ * IN      : fp_team.id%TYPE, fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -903,8 +903,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_take_part
 (
-	IN	id_team		team.id%TYPE,
-	IN	id_comp_ed	competition_edition.id%TYPE
+	IN	id_team		fp_team.id%TYPE,
+	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -917,7 +917,7 @@ BEGIN
 		SELECT
 			count(*) < 1
 		FROM
-			partecipation
+			fp_partecipation
 		WHERE
 			team_id = id_team
 			AND
@@ -934,7 +934,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_nationality
  *
- * IN      : player.id%TYPE, team.id%TYPE
+ * IN      : fp_player.id%TYPE, fp_team.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -943,8 +943,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_nationality
 (
-	IN	id_player	player.id%TYPE,
-	IN	id_team		team.id%TYPE
+	IN	id_player	fp_player.id%TYPE,
+	IN	id_team		fp_team.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -957,7 +957,7 @@ BEGIN
 		SELECT
 			count(*) >= 1
 		FROM
-			nationality
+			fp_nationality
 		WHERE
 			player_id = id_player
 			AND
