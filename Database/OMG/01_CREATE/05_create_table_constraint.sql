@@ -36,7 +36,7 @@ CREATE TABLE fp_country
  * TYPE : PRIMARY KEY CONSTRAINT - fp_country TABLE
  * NAME : pk_country
  *
- * DESC : Country id must be primary key
+ * DESC : There cannot be different countries with the same id
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT pk_country
@@ -50,7 +50,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_country TABLE
  * NAME : uq_country_code
  *
- * DESC : There cannot be two countries with the same code
+ * DESC : There cannot be different countries with the same code
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT uq_country_code
@@ -64,7 +64,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_country TABLE
  * NAME : uq_country_name
  *
- * DESC : There cannot be two countries with the same name
+ * DESC : There cannot be different countries with the same name
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT uq_country_name
@@ -96,7 +96,7 @@ CREATE TABLE fp_confederation
  * TYPE : PRIMARY KEY CONSTRAINT - fp_confederation TABLE
  * NAME : pk_confederation
  *
- * DESC : Football confederation id must be primary key
+ * DESC : There cannot be different football confederations with the same id
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT pk_confederation
@@ -110,7 +110,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_long_name
  *
- * DESC : There cannot be two football confederations with the same long name
+ * DESC : There cannot be different football confederations
+ *        with the same long name
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_long_name
@@ -124,7 +125,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_country_id
  *
- * DESC : A football confederation must belong exclusively to a country
+ * DESC : Each country has at most one football confederation
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_country_id
@@ -138,7 +139,8 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_confederation TABLE
  * NAME : confederation_fk_confederation
  *
- * DESC : TODO
+ * DESC : A football confederation refers to
+ *        the football confederation that contains it
  ******************************************************************************/
 ALTER TABLE fp_confederation
 ADD CONSTRAINT confederation_fk_confederation
@@ -158,7 +160,7 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_confederation TABLE
  * NAME : confederation_fk_country
  *
- * DESC : TODO
+ * DESC : A football confederation refers to the country to which it belongs
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT confederation_fk_country
@@ -196,7 +198,7 @@ CREATE TABLE fp_team
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team TABLE
  * NAME : pk_team
  *
- * DESC : Football team id must be primary key
+ * DESC : There cannot be different football teams with the same id
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT pk_team
@@ -210,7 +212,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
  * NAME : uq_team
  *
- * DESC : There cannot be two football teams with the same name
+ * DESC : There cannot be different football teams with the same name
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT uq_team
@@ -224,7 +226,7 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
  * NAME : team_fk_country
  *
- * DESC : TODO
+ * DESC : A football team refers to the country to which it belongs
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_country
@@ -244,7 +246,8 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
  * NAME : team_fk_confederation
  *
- * DESC : TODO
+ * DESC : A football team refers to
+ *        the football confederation to which it belongs
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_confederation
@@ -283,7 +286,7 @@ CREATE TABLE fp_competition
  * TYPE : PRIMARY KEY CONSTRAINT - fp_competition TABLE
  * NAME : pk_competition
  *
- * DESC : Football competition id must be primary key
+ * DESC : There cannot be different football competitions with the same id
  ******************************************************************************/
 ALTER TABLE	fp_competition 
 ADD CONSTRAINT pk_competition
@@ -297,7 +300,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_competition TABLE
  * NAME : uq_competition_name
  *
- * DESC : There cannot be two football competitions with the same name
+ * DESC : There cannot be different football competitions with the same name
  ******************************************************************************/
 ALTER TABLE	fp_competition 
 ADD CONSTRAINT uq_competition_name
@@ -311,7 +314,8 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_competition TABLE
  * NAME : competition_fk_confederation
  *
- * DESC : TODO
+ * DESC : A football competition refers to the football confederation
+ *        to which it belongs
  ******************************************************************************/
 ALTER TABLE	fp_competition
 ADD CONSTRAINT competition_fk_confederation
@@ -349,7 +353,8 @@ CREATE TABLE fp_competition_edition
  * TYPE : PRIMARY KEY CONSTRAINT - fp_competition_edition TABLE
  * NAME : pk_competition_edition
  *
- * DESC : Football competition edition id must be primary key
+ * DESC : There cannot be different football competition editions
+ *        with the same id
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT pk_competition_edition
@@ -363,7 +368,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_competition_edition TABLE
  * NAME : uq_competition_edition
  *
- * DESC : Each competition can have at most one edition per year
+ * DESC : Each football competition can have at most one edition per year
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT uq_competition_edition
@@ -378,7 +383,9 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
  * NAME : ck_competition_edition_range
  *
- * DESC : TODO
+ * DESC : Each football competition edition must
+ *        start and finish in the same year,
+ *        or finish the year after the beginning year
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT ck_competition_edition_range
@@ -392,7 +399,9 @@ CHECK
  * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
  * NAME : ck_competition_edition_total_team
  *
- * DESC : TODO
+ * DESC : The number of football teams participating
+ *        in a football competition edition must be between
+ *        a minimum of 2 and a maximum of 33
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT ck_competition_edition_total_team
@@ -406,7 +415,8 @@ CHECK
  * TYPE : FOREIGN KEY CONSTRAINT - fp_competition_edition TABLE
  * NAME : competition_edition_fk_competition
  *
- * DESC : TODO
+ * DESC : A football competition edition refers to
+ *        the football competition to which it belongs
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT competition_edition_fk_competition
@@ -428,7 +438,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_partecipation
  *
- * DESC : TODO
+ * DESC : Table containing information about the partecipations
+ *        of any football team in any football competition edition
  ******************************************************************************/
 CREATE TABLE fp_partecipation
 (
@@ -516,7 +527,7 @@ CREATE TABLE fp_player
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player TABLE
  * NAME : pk_player
  *
- * DESC : Football player id must be primary key
+ * DESC : There cannot be dofferent football players with the same id
  ******************************************************************************/
 ALTER TABLE fp_player
 ADD CONSTRAINT pk_player
@@ -741,7 +752,7 @@ CREATE TABLE fp_tag
  * TYPE : PRIMARY KEY CONSTRAINT - fp_tag TABLE 
  * NAME : pk_tag
  *
- * DESC : Football tag id must be primary key
+ * DESC : There cannot be different football tags with the same id
  ******************************************************************************/
 ALTER TABLE	fp_tag
 ADD CONSTRAINT pk_tag
@@ -755,7 +766,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_tag TABLE
  * NAME : uq_tag
  *
- * DESC : There cannot be two football tags with the same name
+ * DESC : There cannot be different football tags with the same name
  ******************************************************************************/
 ALTER TABLE	fp_tag
 ADD CONSTRAINT uq_tag
@@ -856,7 +867,7 @@ CREATE TABLE fp_position
  * TYPE : PRIMARY KEY CONSTRAINT - fp_position TABLE
  * NAME : pk_position
  *
- * DESC : Football position id must be primary key
+ * DESC : There cannot be different football positions with the same id
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT pk_position
@@ -870,7 +881,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
  * NAME : uq_position_code
  *
- * DESC : There cannot be two football positions with the same code
+ * DESC : There cannot be different football positions with the same code
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT uq_position_code
@@ -884,7 +895,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
  * NAME : uq_position_name
  *
- * DESC : There cannot be two football positions with the same name
+ * DESC : There cannot be different football positions with the same name
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT uq_position_name
@@ -986,7 +997,7 @@ CREATE TABLE fp_attribute
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute TABLE   
  * NAME : pk_attribute
  *
- * DESC : Football attribute id must be primary key
+ * DESC : There cannot be different football attributes with the same id
  ******************************************************************************/
 ALTER TABLE fp_attribute
 ADD CONSTRAINT pk_attribute
@@ -1000,7 +1011,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_attribute TABLE
  * NAME : uq_attribute
  *
- * DESC : There cannot be two football attributes with the same code
+ * DESC : There cannot be different football attributes with the same code
  ******************************************************************************/
 ALTER TABLE	fp_attribute
 ADD CONSTRAINT uq_attribute
@@ -1102,7 +1113,7 @@ CREATE TABLE fp_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic TABLE  
  * NAME : pk_statistic
  *
- * DESC : Football statistic id must be primary key
+ * DESC : There cannot be different football statistics with the same id
  ******************************************************************************/
 ALTER TABLE fp_statistic
 ADD CONSTRAINT pk_statistic
@@ -1116,7 +1127,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_statistic TABLE
  * NAME : uq_statistic
  *
- * DESC : There cannot be two football statistics with the same name
+ * DESC : There cannot be different football statistics with the same name
  ******************************************************************************/
 ALTER TABLE	fp_statistic
 ADD CONSTRAINT uq_statistic
@@ -1147,7 +1158,7 @@ CREATE TABLE fp_trophy
  * TYPE : PRIMARY KEY CONSTRAINT - fp_trophy TABLE  
  * NAME : pk_trophy
  *
- * DESC : Football trophy id must be primary key
+ * DESC : There cannot be different football trophies with the same id
  ******************************************************************************/
 ALTER TABLE fp_trophy
 ADD CONSTRAINT pk_trophy
@@ -1161,7 +1172,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
  * NAME : uq_trophy
  *
- * DESC : There cannot be two football trophies with the same name
+ * DESC : There cannot be different football trophies with the same name
  ******************************************************************************/
 ALTER TABLE fp_trophy
 ADD CONSTRAINT uq_trophy
@@ -1365,7 +1376,7 @@ CREATE TABLE fp_prize
  * TYPE : PRIMARY KEY CONSTRAINT - fp_prize TABLE
  * NAME : pk_prize
  *
- * DESC : Football prize id must be primary key
+ * DESC : There cannot be different football prizes with the same id
  ******************************************************************************/
 ALTER TABLE fp_prize
 ADD CONSTRAINT pk_prize
@@ -1379,7 +1390,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
  * NAME : uq_prize
  *
- * DESC : There cannot be two football prizes with the same name
+ * DESC : There cannot be different football prizes with the same name
  ******************************************************************************/
 ALTER TABLE fp_prize
 ADD CONSTRAINT uq_prize
@@ -1776,7 +1787,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_user_account
  *
- * DESC : Table containing information about  user accounts
+ * DESC : Table containing information about user accounts
  ******************************************************************************/
 CREATE TABLE fp_user_account
 (
@@ -1790,7 +1801,7 @@ CREATE TABLE fp_user_account
  * TYPE : PRIMARY KEY CONSTRAINT - fp_user_account TABLE
  * NAME : pk_user_account
  *
- * DESC : User account username must be primary key
+ * DESC : There cannot be different user accounts with the same username
  ******************************************************************************/
 ALTER TABLE	fp_user_account
 ADD CONSTRAINT pk_user_account
