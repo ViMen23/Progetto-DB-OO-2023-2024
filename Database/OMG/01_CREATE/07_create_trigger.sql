@@ -34,7 +34,7 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('confederation', 'country_id', NEW.super_id);
+	tmp = get_attr('fp_confederation', 'country_id', NEW.super_id);
 	id_country_conf = CAST(tmp AS integer);
 
 	IF (corr_containment(NEW.country_id, id_country_conf)) THEN
@@ -69,7 +69,7 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	tmp = get_attr('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
 	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
@@ -80,7 +80,7 @@ BEGIN
 		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
-			name_country = get_attr('country', 'name', NEW.country_id);
+			name_country = get_attr('fp_country', 'name', NEW.country_id);
 
 			IF (NEW.name = name_country) THEN
 		
@@ -121,10 +121,10 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('confederation', 'country_id', NEW.confederation_id);
+	tmp = get_attr('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
-	type_country_conf = get_attr('country', 'type', id_country_conf);
+	type_country_conf = get_attr('fp_country', 'type', id_country_conf);
 
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
 
@@ -206,7 +206,7 @@ BEGIN
 
 	id_conf = conf_from_comp_ed(NEW.competition_edition_id);
 
-	tmp = get_attr('competition_edition', 'competition_id', NEW.competition_edition_id);
+	tmp = get_attr('fp_competition_edition', 'competition_id', NEW.competition_edition_id);
 	id_comp = CAST(tmp AS integer);
 
 	IF
@@ -306,12 +306,12 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('player', 'dob', NEW.player_id);
+	tmp = get_attr('fp_player', 'dob', NEW.player_id);
 	dob_player = CAST(tmp AS date);
 	
 	valid_range = valid_daterange(dob_player);
 
-	type_team = get_attr('team', 'type', NEW.team_id);
+	type_team = get_attr('fp_team', 'type', NEW.team_id);
 
 	IF ('CLUB' = type_team) THEN
 
@@ -370,7 +370,7 @@ DECLARE
 
 BEGIN
 
-	type_tag = get_attr('tag', 'type', NEW.tag_id);
+	type_tag = get_attr('fp_tag', 'type', NEW.tag_id);
 
 	IF
 	(
@@ -409,7 +409,7 @@ DECLARE
 
 BEGIN
 
-	type_attr = get_attr('attribute', 'type', NEW.attribute_id);
+	type_attr = get_attr('fp_attribute', 'type', NEW.attribute_id);
 
 	IF
 	(
@@ -448,7 +448,7 @@ DECLARE
 
 BEGIN
 
-	type_trohy = get_attr('trophy', 'type', NEW.trophy_id);
+	type_trohy = get_attr('fp_trophy', 'type', NEW.trophy_id);
 
 	IF ('TEAM' = type_trohy) THEN
 		RETURN NEW;
@@ -486,7 +486,7 @@ BEGIN
 
 	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 
-		type_trohy = get_attr('trophy', 'type', NEW.trophy_id);
+		type_trohy = get_attr('fp_trophy', 'type', NEW.trophy_id);
 
 		IF ('TEAM' = type_trohy) THEN
 
@@ -497,7 +497,7 @@ BEGIN
 			INTO
 				existence
 			FROM
-				trophy_team_case
+				fp_trophy_team_case
 			WHERE
 				competition_edition_id = NEW.competition_edition_id
 				AND
@@ -540,7 +540,7 @@ DECLARE
 
 BEGIN
 
-	type_prize = get_attr('prize', 'type', NEW.prize_id);
+	type_prize = get_attr('fp_prize', 'type', NEW.prize_id);
 
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
@@ -606,10 +606,10 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('play', 'player_position_id', NEW.play_id);
+	tmp = get_attr('fp_play', 'player_position_id', NEW.play_id);
 	id_player_pos = CAST(tmp AS integer);
 
-	tmp = get_attr('player_position', 'position_id', id_player_pos);
+	tmp = get_attr('fp_player_position', 'position_id', id_player_pos);
 	id_pos = CAST(tmp AS integer);
 
 
@@ -638,7 +638,7 @@ LANGUAGE plpgsql;
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
-BEFORE INSERT ON confederation
+BEFORE INSERT ON fp_confederation
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_confederation();
 --------------------------------------------------------------------------------
@@ -651,7 +651,7 @@ EXECUTE FUNCTION tf_bi_confederation();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
-BEFORE INSERT ON team
+BEFORE INSERT ON fp_team
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team();
 --------------------------------------------------------------------------------
@@ -664,7 +664,7 @@ EXECUTE FUNCTION tf_bi_team();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
-BEFORE INSERT ON competition
+BEFORE INSERT ON fp_competition
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition();
 --------------------------------------------------------------------------------
@@ -677,7 +677,7 @@ EXECUTE FUNCTION tf_bi_competition();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition_edition
-BEFORE INSERT ON competition_edition
+BEFORE INSERT ON fp_competition_edition
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition_edition();
 --------------------------------------------------------------------------------
@@ -690,7 +690,7 @@ EXECUTE FUNCTION tf_bi_competition_edition();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_partecipation
-BEFORE INSERT ON partecipation
+BEFORE INSERT ON fp_partecipation
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_partecipation();
 --------------------------------------------------------------------------------
@@ -703,7 +703,7 @@ EXECUTE FUNCTION tf_bi_partecipation();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player
-BEFORE INSERT ON player
+BEFORE INSERT ON fp_player
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player();
 --------------------------------------------------------------------------------
@@ -716,7 +716,7 @@ EXECUTE FUNCTION tf_bi_player();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_nationality
-BEFORE INSERT ON nationality
+BEFORE INSERT ON fp_nationality
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_nationality();
 --------------------------------------------------------------------------------
@@ -729,7 +729,7 @@ EXECUTE FUNCTION tf_bi_nationality();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_militancy
-BEFORE INSERT ON militancy
+BEFORE INSERT ON fp_militancy
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_militancy();
 --------------------------------------------------------------------------------
@@ -742,7 +742,7 @@ EXECUTE FUNCTION tf_bi_militancy();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
-BEFORE INSERT ON player_tag
+BEFORE INSERT ON fp_player_tag
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_tag();
 --------------------------------------------------------------------------------
@@ -755,7 +755,7 @@ EXECUTE FUNCTION tf_bi_player_tag();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_attribute
-BEFORE INSERT ON player_attribute
+BEFORE INSERT ON fp_player_attribute
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_attribute();
 --------------------------------------------------------------------------------
@@ -768,7 +768,7 @@ EXECUTE FUNCTION tf_bi_player_attribute();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_trophy_team_case
-BEFORE INSERT ON trophy_team_case
+BEFORE INSERT ON fp_trophy_team_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_trophy_team_case();
 --------------------------------------------------------------------------------
@@ -781,7 +781,7 @@ EXECUTE FUNCTION tf_bi_trophy_team_case();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_trophy_player_case
-BEFORE INSERT ON trophy_player_case
+BEFORE INSERT ON fp_trophy_player_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_trophy_player_case();
 --------------------------------------------------------------------------------
@@ -794,7 +794,7 @@ EXECUTE FUNCTION tf_bi_trophy_player_case();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_prize_team_case
-BEFORE INSERT ON prize_team_case
+BEFORE INSERT ON fp_prize_team_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_prize_team_case();
 --------------------------------------------------------------------------------
@@ -807,7 +807,7 @@ EXECUTE FUNCTION tf_bi_prize_team_case();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_play
-BEFORE INSERT ON play
+BEFORE INSERT ON fp_play
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play();
 --------------------------------------------------------------------------------
@@ -820,7 +820,7 @@ EXECUTE FUNCTION tf_bi_play();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_play_statistic
-BEFORE INSERT ON play_statistic
+BEFORE INSERT ON fp_play_statistic
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play_statistic();
 --------------------------------------------------------------------------------
