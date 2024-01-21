@@ -11,9 +11,9 @@
 
 
 /*******************************************************************************
- * INSERT trophy
+ * INSERT fp_trophy
  ******************************************************************************/
-INSERT INTO trophy (type, name, description)
+INSERT INTO fp_trophy (type, name, description)
 VALUES
 ( 'TEAM'	, 'First place'			, 'TODO' ),
 ( 'PLAYER'	, 'Most Valuable Player', 'TODO' ),

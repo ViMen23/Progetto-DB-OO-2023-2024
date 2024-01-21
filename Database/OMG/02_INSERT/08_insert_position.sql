@@ -11,9 +11,9 @@
 
 
 /*******************************************************************************
- * INSERT position
+ * INSERT fp_position
  ******************************************************************************/
-INSERT INTO position (role, code, name)
+INSERT INTO fp_position (role, code, name)
 VALUES
 ('GK', 'GK', 'Goalkeeper'),
 ('DF', 'CB', 'Centre-Back'),
