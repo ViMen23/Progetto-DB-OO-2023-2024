@@ -21,7 +21,7 @@
  * TYPE : ENUM TYPE
  * NAME : ty_attribute
  *
- * DESC : TODO
+ * DESC : Enum of the football player attribute type
  ******************************************************************************/
 CREATE TYPE ty_attribute AS ENUM
 (
@@ -46,7 +46,7 @@ CREATE TYPE ty_attribute AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_competition
  *
- * DESC : TODO
+ * DESC : Enum of the football competition type
  ******************************************************************************/
 CREATE TYPE ty_competition AS ENUM
 (
@@ -61,7 +61,7 @@ CREATE TYPE ty_competition AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_country
  *
- * DESC : TODO
+ * DESC : Enum of the country type
  ******************************************************************************/
 CREATE TYPE ty_country AS ENUM
 (
@@ -76,7 +76,7 @@ CREATE TYPE ty_country AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_foot
  *
- * DESC : TODO
+ * DESC : Enum of the football player preferred foot
  ******************************************************************************/
 CREATE TYPE ty_foot AS ENUM
 (
@@ -91,7 +91,7 @@ CREATE TYPE ty_foot AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_role
  *
- * DESC : TODO
+ * DESC : Enum of the football player role type
  ******************************************************************************/
 CREATE TYPE ty_role AS ENUM
 (
@@ -108,7 +108,9 @@ CREATE TYPE ty_role AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_statistic
  *
- * DESC : TODO
+ * DESC : Enum of all possible combinations of football player role.
+ *        It is useful for directly subjecting a particular statistic
+ *        to one or more roles without having to define different associations
  ******************************************************************************/
 CREATE TYPE ty_statistic AS ENUM
 (
@@ -135,7 +137,7 @@ CREATE TYPE ty_statistic AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_team
  *
- * DESC : TODO
+ * DESC : Enum of the football team type
  ******************************************************************************/
 CREATE TYPE ty_team AS ENUM
 (
@@ -150,7 +152,7 @@ CREATE TYPE ty_team AS ENUM
  * TYPE : ENUM TYPE
  * NAME : ty_trophy
  *
- * DESC : TODO
+ * DESC : Enum of the football prize and football trophy type
  ******************************************************************************/
 CREATE TYPE ty_trophy AS ENUM
 (

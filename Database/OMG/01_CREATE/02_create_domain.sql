@@ -82,7 +82,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_pdate
  *
- * DESC : TODO
+ * DESC : Domain consisting of all dates equal to or prior to the current date
  ******************************************************************************/
 CREATE DOMAIN dm_pdate AS date
 CHECK
@@ -181,7 +181,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_usint
  *
- * DESC : TODO
+ * DESC : Domain consisting of all non-negative smallint
  ******************************************************************************/
 CREATE DOMAIN dm_usint AS smallint
 CHECK
@@ -229,7 +229,8 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_year
  *
- * DESC : TODO
+ * DESC : Domain consisting of all years equal to or prior to
+ *        the current date year
  ******************************************************************************/
 CREATE DOMAIN dm_year AS smallint
 CHECK

@@ -416,6 +416,7 @@ BEGIN
 			(ccu.column_name = 'id' OR (ccu.column_name = kcu.column_name))
 		ORDER BY
 			ccu.constraint_name, kcu.ordinal_position DESC;
+			
 END;
 $$
 LANGUAGE plpgsql;

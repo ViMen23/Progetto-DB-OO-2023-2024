@@ -17,7 +17,8 @@
  * TYPE : DATABASE
  * NAME : fpdb
  *
- * DESC : 
+ * DESC : Project database.
+ *        fpdb stands for football player database
  ******************************************************************************/
 CREATE DATABASE fpdb;
 --------------------------------------------------------------------------------

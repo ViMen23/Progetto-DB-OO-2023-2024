@@ -19,7 +19,9 @@
  * TYPE : SCHEMA
  * NAME : public
  *
- * DESC : TODO                                 
+ * DESC : Database schema.
+ *        It is preferred to use the public schema to not burden the notation
+ *        since it is the default search path for each database in Postgresql                              
  ******************************************************************************/
 DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
