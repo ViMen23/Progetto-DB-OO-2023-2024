@@ -25,7 +25,12 @@
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se esiste una tabella con un nome uguale alla
+ *        stringa in input.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *        NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION table_exists
 (
@@ -35,21 +40,32 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	existence	boolean;
+
 BEGIN
+
+	existence = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		existence
+	FROM
+		information_schema.tables 
+	WHERE
+		table_catalog = 'fpdb'
+		AND
+		table_schema = 'public'
+		AND
+		table_name = name_table;
 	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.tables 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-	);
+	IF (NOT existence) THEN
+		RAISE NOTICE 'Table % not exists', name_table;
+	END IF;
+
+	RETURN existence;
 	
 END;
 $$
@@ -60,79 +76,41 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : attr_exists
+ * NAME : column_exists
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se esiste una colonna all'interno di una tabella,
+ *        prendendo in input il nome di una tabella e di una colonna.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *        NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION attr_exists
+CREATE OR REPLACE FUNCTION column_exists
 (
 	IN	name_table	text,
-	IN	name_attr	text
+	IN	name_column	text
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.columns 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-			AND
-			column_name = name_attr
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_type_attr
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_type_attr
-(
-	IN	name_table	text,
-	IN	name_attr	text
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
 DECLARE
 
-	type_attr text;
+	existence	boolean;
 
 BEGIN
-	
+
+	existence = FALSE;
+
 	SELECT
-		data_type
+		count(*) >= 1
 	INTO
-		type_attr
+		existence
 	FROM
 		information_schema.columns 
 	WHERE
@@ -142,9 +120,70 @@ BEGIN
 		AND
 		table_name = name_table
 		AND
-		column_name = name_attr;
-		
-	RETURN type_attr;
+		column_name = name_column;
+
+	IF (NOT existence) THEN
+		RAISE NOTICE 'Column % not exists in table %', name_column, name_table;
+	END IF;
+
+	RETURN existence;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_type_column
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che, preso in input il nome di una tabella e di una colonna,
+ *        restituisce il tipo della colonna sotto forma di testo.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *		  NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_type_column
+(
+	IN	name_table	text,
+	IN	name_column	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	type_column	text;
+
+BEGIN
+
+	type_column = NULL;
+	
+	SELECT
+		data_type
+	INTO
+		type_column
+	FROM
+		information_schema.columns 
+	WHERE
+		table_catalog = 'fpdb'
+		AND
+		table_schema = 'public'
+		AND
+		table_name = name_table
+		AND
+		column_name = name_column;
+
+	RETURN type_column;
 	
 END;
 $$
@@ -166,8 +205,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
-	IN	separator	text,
-	IN	in_string	text
+	IN	separator		text,
+	IN	input_string	text
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
@@ -175,63 +214,74 @@ AS
 $$
 DECLARE
 
-	count		integer;	
-	name_table	text;
-	name_attr	text;
-	value_attr	text;
-	type_attr	text;
-	row_table	record;
-	to_execute	text;
-	id_to_find	integer;
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	
+	to_execute		text;
+
+	id_to_find		integer;
 	
 BEGIN
 	
 	to_execute = '';
 
 	id_to_find = NULL;
-	count = 0;
+	
+	counter = 0;
 
-	FOR row_table IN SELECT string_to_table(in_string, separator)
+	FOR row_table
+	IN
+		SELECT string_to_table(input_string, separator)
 	LOOP
 		
-		IF (0 = count) THEN
+		IF (0 = counter) THEN
 
 			name_table = row_table.string_to_table;
 			
 			IF (NOT table_exists(name_table)) THEN
 				RETURN NULL;
 			END IF;
+
+			IF (NOT column_exists(name_table, 'id')) THEN
+				RETURN NULL;
+			END IF;
 			
 			to_execute = to_execute || 'SELECT id ';
 			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
 			
-		ELSIF (1 = (count % 2)) THEN
+		ELSIF (1 = (counter % 2)) THEN
 		
-			name_attr = row_table.string_to_table;
+			name_column = row_table.string_to_table;
 			
-			IF (NOT attr_exists(name_table, name_attr)) THEN
+			IF (NOT column_exists(name_table, name_column)) THEN
 				RETURN NULL;
 			END IF;
 			
-			type_attr = get_type_attr(name_table, name_attr);
+			type_column = get_type_column(name_table, name_column);
 			
-			to_execute = to_execute || name_attr || ' = ';
+			to_execute = to_execute || name_column || ' = ';
 			
-		ELSIF (0 = (count % 2)) THEN
+		ELSIF (0 = (counter % 2)) THEN
 		
-			value_attr = row_table.string_to_table;
+			value_column = row_table.string_to_table;
 			
-			IF (NOT type_attr LIKE '%int%') THEN
+			IF (NOT type_column LIKE '%int%') THEN
 				 
-				value_attr = quote_literal(value_attr);
+				value_column = quote_literal(value_column);
 				
 			END IF;
 				
-			to_execute = to_execute || value_attr || ' AND ';
+			to_execute = to_execute || value_column || ' AND ';
 			
 		END IF;
 		
-		count = count + 1;
+		counter = counter + 1;
 		
 	END LOOP;
 	
@@ -252,7 +302,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_attr
+ * NAME : get_column
  *
  * IN      : text, text, integer
  * INOUT   : void
@@ -261,10 +311,10 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attr
+CREATE OR REPLACE FUNCTION get_column
 (
 	IN	name_table	text,
-	IN	name_attr	text,
+	IN	name_column	text,
 	IN	value_id	integer
 )
 RETURNS text
@@ -274,9 +324,12 @@ $$
 DECLARE
 
 	tmp				integer;
-	type_attr		text;
-	value_attr		text;
+
+	type_column		text;
+	value_column	text;
+
 	to_execute		text;
+
 	cur_to_execute	refcursor;
 	
 BEGIN
@@ -285,34 +338,34 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
-	IF (NOT attr_exists(name_table, name_attr)) THEN
+	IF (NOT column_exists(name_table, name_column)) THEN
 		RETURN NULL;
 	END IF;
 	
 	to_execute = '';
-	to_execute = to_execute || 'SELECT ' || name_attr;
+	to_execute = to_execute || 'SELECT ' || name_column;
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
 	
 	OPEN cur_to_execute FOR EXECUTE to_execute;
 	
-	type_attr = get_type_attr(name_table, name_attr);
+	type_column = get_type_column(name_table, name_column);
 	
-	IF (type_attr LIKE '%int%') THEN
+	IF (type_column LIKE '%int%') THEN
 		
 		FETCH cur_to_execute INTO tmp;
 		 
-		value_attr = CAST(tmp AS text); 
+		value_column = CAST(tmp AS text); 
 		
 	ELSE
 	
-		FETCH cur_to_execute INTO value_attr;
+		FETCH cur_to_execute INTO value_column;
 	
 	END IF;
 	
 	CLOSE cur_to_execute;
 
-	RETURN value_attr;
+	RETURN value_column;
 	
 END;
 $$
@@ -448,15 +501,15 @@ AS
 $$
 DECLARE
 
-	name_table	text;
-	name_attr	text;
-	value_attr	text;
-	type_attr	text;
-	row_table	record;
-	name_constr	text;
-	to_execute	text;
-	where_cond	text;
-	counter		integer;
+	name_table		text;
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	row_table		record;
+	name_constr		text;
+	to_execute		text;
+	where_cond		text;
+	counter			integer;
 	
 BEGIN
 
@@ -479,27 +532,27 @@ BEGIN
 			
 		ELSIF (1 = (counter % 2)) THEN
 		
-			name_attr = row_table.string_to_table;
+			name_column = row_table.string_to_table;
 			
-			IF (NOT attr_exists(name_table, name_attr)) THEN
+			IF (NOT column_exists(name_table, name_column)) THEN
 				RETURN NULL;
 			END IF;
 			
-			type_attr = get_type_attr(name_table, name_attr);
+			type_column = get_type_column(name_table, name_column);
 			
-			where_cond = where_cond || name_table || '.' || name_attr || ' = ';
+			where_cond = where_cond || name_table || '.' || name_column || ' = ';
 			
 		ELSIF (0 = (counter % 2)) THEN
 		
-			value_attr = row_table.string_to_table;
+			value_column = row_table.string_to_table;
 			
-			IF (NOT type_attr LIKE '%int%') THEN
+			IF (NOT type_column LIKE '%int%') THEN
 				 
-				value_attr = quote_literal(value_attr);
+				value_column = quote_literal(value_column);
 				
 			END IF;
 				
-			where_cond = where_cond || value_attr || ' AND ';
+			where_cond = where_cond || value_column || ' AND ';
 			
 		END IF;
 		

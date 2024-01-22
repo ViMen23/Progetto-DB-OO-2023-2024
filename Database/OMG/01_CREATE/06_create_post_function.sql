@@ -20,7 +20,7 @@
  * TYPE : FUNCTION
  * NAME : corr_containment
  *
- * IN      : fp_country.id%TYPE, fp_country.id%TYPE
+ * IN      : fp_confederation.id%TYPE, fp_confederation.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -29,34 +29,45 @@
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_containment
 (
-	IN	id_in_country	fp_country.id%TYPE,
-	IN	id_su_country	fp_country.id%TYPE
+	IN	id_conf			fp_confederation.id%TYPE,
+	IN	id_super_conf	fp_confederation.id%TYPE
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	type_in_country	text;			
-	type_su_country	text;
+	tmp						text;
+	id_country				integer;
+
+	type_country_conf		text;
+	type_country_super_conf	text;
 	
 BEGIN
 	
-	type_in_country	= get_attr('fp_country', 'type', id_in_country);						
-	type_su_country = get_attr('fp_country', 'type', id_su_country);
+	-- prendo il tipo del paese associato alla confederazione memebro
+	tmp = get_column('fp_confederation', 'id_country', id_conf);
+	id_country = CAST(tmp AS integer);					
+	type_country_conf = get_column('fp_country', 'type', id_country);
+
+	-- prendo il tipo del paese associato alla confederazione avente membro
+	tmp = get_column('fp_confederation', 'id_country', id_super_conf);
+	id_country = CAST(tmp AS integer);					
+	type_country_super_conf = get_column('fp_country', 'type', id_country);
 
 	IF
 	(
-		('NATION' = type_in_country AND 'CONTINENT' = type_su_country)
+		('NATION' = type_country_conf AND 'CONTINENT' = type_country_super_conf)
 		OR
-		('CONTINENT' = type_in_country AND 'WORLD' = type_su_country)
+		('CONTINENT' = type_country_conf AND 'WORLD' = type_country_super_conf)
 		OR
-		('WORLD' = type_in_country AND type_su_country IS NULL)
+		('WORLD' = type_country_conf AND type_country_super_conf IS NULL)
 	)
 	THEN
 		RETURN TRUE;
 	END IF;
 	
+	RAISE NOTICE 'Wrong competition containment';
 	RETURN FALSE;
 	
 END;
@@ -75,7 +86,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se l'id di un paese in input e' di una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
@@ -91,7 +102,7 @@ DECLARE
 
 BEGIN
 	
-	type_country = get_attr('fp_country', 'type', id_country);
+	type_country = get_column('fp_country', 'type', id_country);
 
 	IF ('NATION' = type_country) THEN
 		RETURN TRUE;
@@ -129,14 +140,17 @@ DECLARE
 
 	tmp		text;
 	id_comp	integer;
+
 	id_conf	integer;
 
 BEGIN
 	
-	tmp = get_attr('fp_competition_edition', 'competition_id', id_comp_ed);
+	-- prendo la competizione associata all'edizione
+	tmp = get_column('fp_competition_edition', 'competition_id', id_comp_ed);
 	id_comp = CAST(tmp AS integer);
 
-	tmp = get_attr('fp_competition', 'confederation_id', id_comp);
+	-- prendo la confederazione associata alla competizione
+	tmp = get_column('fp_competition', 'confederation_id', id_comp);
 	id_conf = CAST(tmp AS integer);
 
 	RETURN id_conf;
@@ -168,17 +182,28 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	have	boolean;
+
 BEGIN
 	
-	RETURN
-	(
-		SELECT
-			count(*) > 0
-		FROM
-			fp_competition_edition
-		WHERE
-			competition_id = id_comp
-	);
+	have = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		have
+	FROM
+		fp_competition_edition
+	WHERE
+		competition_id = id_comp;
+
+	IF (NOT have) THEN
+		RAISE NOTICE 'Competition (id =  %) does not have editions', id_comp;
+	END IF;
+
+	RETURN have;
 	
 END;
 $$
@@ -217,7 +242,7 @@ DECLARE
 	
 BEGIN
 	
-	tmp = get_attr('fp_competition', 'frequency', id_comp);
+	tmp = get_column('fp_competition', 'frequency', id_comp);
 	freq = CAST(tmp AS integer);
 
 	IF (freq <= 1) THEN
@@ -278,21 +303,21 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('fp_team', 'confederation_id', id_team);
+	tmp = get_column('fp_team', 'confederation_id', id_team);
 	id_conf_team = CAST(tmp AS integer);
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
-	tmp = get_attr('fp_confederation', 'super_id', id_conf_team);
+	tmp = get_column('fp_confederation', 'super_id', id_conf_team);
 	id_super_conf_team = CAST(tmp AS integer);
 	
 	IF (id_super_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 	
-	tmp = get_attr('fp_confederation', 'super_id', id_super_conf_team);
+	tmp = get_column('fp_confederation', 'super_id', id_super_conf_team);
 	id_super_super_conf_team = CAST(tmp AS integer);
 	
 	IF (id_super_super_conf_team = id_conf) THEN
@@ -336,7 +361,7 @@ DECLARE
 
 BEGIN
 	
-	tmp = get_attr('fp_competition_edition', 'total_team', id_comp_ed);
+	tmp = get_column('fp_competition_edition', 'total_team', id_comp_ed);
 	tot_team = CAST(tmp AS integer);
 
 	RETURN
@@ -393,7 +418,7 @@ BEGIN
 			player_id = id_player
 	LOOP
 
-		role_pos = get_attr('fp_position', 'role', pos_player);
+		role_pos = get_column('fp_position', 'role', pos_player);
 
 		IF (role_pos = role_to_check) THEN
 			RETURN TRUE;
@@ -439,8 +464,8 @@ DECLARE
 
 BEGIN
 	
-	s_year = get_attr('fp_competition_edition', 'start_year', id_comp_ed);
-	e_year = get_attr('fp_competition_edition', 'end_year', id_comp_ed);
+	s_year = get_column('fp_competition_edition', 'start_year', id_comp_ed);
+	e_year = get_column('fp_competition_edition', 'end_year', id_comp_ed);
 
 	IF (s_year = e_year) THEN
 		s_date = make_date(s_year, 01, 01);
@@ -532,8 +557,8 @@ DECLARE
 
 BEGIN
 	
-	role_pos = get_attr('fp_position', 'role', id_pos);
-	type_stat = get_attr('fp_statistic', 'type', id_stat);
+	role_pos = get_column('fp_position', 'role', id_pos);
+	type_stat = get_column('fp_statistic', 'type', id_stat);
 
 	IF (position(role_pos in type_stat) > 0) THEN
 		RETURN TRUE;
@@ -575,8 +600,8 @@ DECLARE
 
 BEGIN
 	
-	type_team = get_attr('fp_team', 'type', id_team);
-	type_team_comp = get_attr('fp_competition', 'team_type', id_comp);
+	type_team = get_column('fp_team', 'type', id_team);
+	type_team_comp = get_column('fp_competition', 'team_type', id_comp);
 	
 	RETURN type_team = type_team_comp;
 
@@ -760,7 +785,7 @@ DECLARE
 	
 BEGIN
 	
-	type_comp = get_attr('fp_competition', 'type', id_comp);
+	type_comp = get_column('fp_competition', 'type', id_comp);
 
 	IF ('SUPER CUP' = type_comp) THEN
 		IF (tot_team <= 6) THEN
@@ -772,13 +797,13 @@ BEGIN
 		END IF;
 	ELSIF ('CUP' = type_comp) THEN
 
-		tmp = get_attr('fp_competition', 'confederation_id', id_comp);
+		tmp = get_column('fp_competition', 'confederation_id', id_comp);
 		id_conf = CAST(tmp_text AS integer);
 
-		tmp = get_attr('fp_confederation', 'country_id', id_conf);
+		tmp = get_column('fp_confederation', 'country_id', id_conf);
 		id_country = CAST(tmp_text AS integer);
 
-		type_country = get_attr('fp_country', 'type', id_country);
+		type_country = get_column('fp_country', 'type', id_country);
 
 		IF ('NATION' = type_country) THEN
 			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN

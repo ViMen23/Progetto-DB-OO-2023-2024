@@ -19,11 +19,11 @@
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_attribute
+ * NAME : en_feature
  *
- * DESC : Enum of the football player attribute type
+ * DESC : Enum delle possibili tipologie di attributi per un calciatore
  ******************************************************************************/
-CREATE TYPE ty_attribute AS ENUM
+CREATE TYPE en_feature AS ENUM
 (
 	'GOALKEEPER',
 	'KEY ATTRIBUTE',
@@ -44,11 +44,11 @@ CREATE TYPE ty_attribute AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_competition
+ * NAME : en_competition
  *
- * DESC : Enum of the football competition type
+ * DESC : Enum delle possibili tipologie di competizioni calcistiche
  ******************************************************************************/
-CREATE TYPE ty_competition AS ENUM
+CREATE TYPE en_competition AS ENUM
 (
 	'CUP',
 	'LEAGUE',
@@ -59,11 +59,11 @@ CREATE TYPE ty_competition AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_country
+ * NAME : en_country
  *
- * DESC : Enum of the country type
+ * DESC : Enum delle possibili tipologie di paesi
  ******************************************************************************/
-CREATE TYPE ty_country AS ENUM
+CREATE TYPE en_country AS ENUM
 (
 	'NATION',
 	'CONTINENT',
@@ -74,11 +74,11 @@ CREATE TYPE ty_country AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_foot
+ * NAME : en_foot
  *
- * DESC : Enum of the football player preferred foot
+ * DESC : Enum delle possibili tipologie di piede preferito di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_foot AS ENUM
+CREATE TYPE en_foot AS ENUM
 (
 	'EITHER',
 	'LEFT',
@@ -89,16 +89,16 @@ CREATE TYPE ty_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_role
+ * NAME : en_role
  *
- * DESC : Enum of the football player role type
+ * DESC : Enum delle possibili tipologie di ruoli di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_role AS ENUM
+CREATE TYPE en_role AS ENUM
 (
-	'GK', -- goalkeeper
-	'DF', -- defender
-	'MF', -- midfield
-	'FW'  -- forward
+	'GK', -- portiere
+	'DF', -- difensore
+	'MF', -- centrocampista
+	'FW'  -- attaccante
 );
 --------------------------------------------------------------------------------
 
@@ -106,13 +106,12 @@ CREATE TYPE ty_role AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_statistic
+ * NAME : en_role_mix
  *
- * DESC : Enum of all possible combinations of football player role.
- *        It is useful for directly subjecting a particular statistic
- *        to one or more roles without having to define different associations
+ * DESC : Enum formato da tutte le possibili combinazioni di ruoli
+ *        di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_statistic AS ENUM
+CREATE TYPE en_role_mix AS ENUM
 (
 	'GK',
 	'DF',
@@ -135,11 +134,11 @@ CREATE TYPE ty_statistic AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_team
+ * NAME : en_team
  *
- * DESC : Enum of the football team type
+ * DESC : Enum delle possibili tipologie di squadre di calcio
  ******************************************************************************/
-CREATE TYPE ty_team AS ENUM
+CREATE TYPE en_team AS ENUM
 (
 	'CLUB',
 	'NATIONAL'
@@ -150,11 +149,11 @@ CREATE TYPE ty_team AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_trophy
+ * NAME : en_award
  *
- * DESC : Enum of the football prize and football trophy type
+ * DESC : Enum delle possibili tipologie di trofei e premi calcistici
  ******************************************************************************/
-CREATE TYPE ty_trophy AS ENUM
+CREATE TYPE en_award AS ENUM
 (
 	'PLAYER',
 	'TEAM'
