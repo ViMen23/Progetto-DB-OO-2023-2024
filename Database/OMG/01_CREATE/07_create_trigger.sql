@@ -27,17 +27,9 @@ CREATE OR REPLACE FUNCTION tf_bi_confederation
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tmp				text;
-	id_country_conf	integer;
-
 BEGIN
 
-	tmp = get_column('fp_confederation', 'country_id', NEW.super_id);
-	id_country_conf = CAST(tmp AS integer);
-
-	IF (corr_containment(NEW.country_id, id_country_conf)) THEN
+	IF (can_be_member(NEW.id, NEW.super_id)) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -211,7 +203,7 @@ BEGIN
 
 	IF
 	(
-		available(NEW.competition_edition_id)
+		has_place(NEW.competition_edition_id)
 		AND
 		belong_to(NEW.team_id, id_conf)
 		AND
@@ -392,12 +384,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player_columnibute TRIGGER 
- * NAME : tf_bi_player_columnibute
+ * TYPE : TRIGGER FUNCTION - tg_bi_player_attribute TRIGGER 
+ * NAME : tf_bi_player_attribute
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_player_columnibute
+CREATE OR REPLACE FUNCTION tf_bi_player_attribute
 (
 )
 RETURNS trigger
@@ -409,7 +401,7 @@ DECLARE
 
 BEGIN
 
-	type_column = get_column('fp_columnibute', 'type', NEW.columnibute_id);
+	type_column = get_column('fp_attribute', 'type', NEW.attribute_id);
 
 	IF
 	(
@@ -431,12 +423,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_trophy_team_case TRIGGER 
- * NAME : tf_bi_trophy_team_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_team_trophy_case TRIGGER 
+ * NAME : tf_bi_team_trophy_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_trophy_team_case
+CREATE OR REPLACE FUNCTION tf_bi_team_trophy_case
 (
 )
 RETURNS trigger
@@ -463,12 +455,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_trophy_player_case TRIGGER 
- * NAME : tf_bi_trophy_player_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_player_trophy_case TRIGGER 
+ * NAME : tf_bi_player_trophy_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_trophy_player_case
+CREATE OR REPLACE FUNCTION tf_bi_player_trophy_case
 (
 )
 RETURNS trigger
@@ -482,7 +474,7 @@ DECLARE
 
 BEGIN
 
-	time_range = get_time_range(NEW.competition_edition_id);
+	time_range = range_edition(NEW.competition_edition_id);
 
 	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 
@@ -497,7 +489,7 @@ BEGIN
 			INTO
 				existence
 			FROM
-				fp_trophy_team_case
+				fp_team_trophy_case
 			WHERE
 				competition_edition_id = NEW.competition_edition_id
 				AND
@@ -523,12 +515,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_prize_team_case TRIGGER 
- * NAME : tf_bi_prize_team_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_team_prize_case TRIGGER 
+ * NAME : tf_bi_team_prize_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_prize_team_case
+CREATE OR REPLACE FUNCTION tf_bi_team_prize_case
 (
 )
 RETURNS trigger
@@ -572,7 +564,7 @@ DECLARE
 
 BEGIN
 
-	time_range = get_time_range(NEW.competition_edition_id);
+	time_range = range_edition(NEW.competition_edition_id);
 
 	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 		RETURN NEW;
@@ -635,7 +627,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER
  * NAME : tg_bi_confederation
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
 BEFORE INSERT ON fp_confederation
@@ -648,7 +640,7 @@ EXECUTE FUNCTION tf_bi_confederation();
  * TYPE : TRIGGER
  * NAME : tg_bi_team
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
 BEFORE INSERT ON fp_team
@@ -661,7 +653,7 @@ EXECUTE FUNCTION tf_bi_team();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
@@ -674,7 +666,8 @@ EXECUTE FUNCTION tf_bi_competition();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition_edition
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova edizione di una competizione
+ *        calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition_edition
 BEFORE INSERT ON fp_competition_edition
@@ -687,7 +680,8 @@ EXECUTE FUNCTION tf_bi_competition_edition();
  * TYPE : TRIGGER
  * NAME : tg_bi_partecipation
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova partecipazione di una
+ *        squadra di calcio ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_partecipation
 BEFORE INSERT ON fp_partecipation
@@ -700,7 +694,7 @@ EXECUTE FUNCTION tf_bi_partecipation();
  * TYPE : TRIGGER
  * NAME : tg_bi_player
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuovo calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player
 BEFORE INSERT ON fp_player
@@ -713,7 +707,7 @@ EXECUTE FUNCTION tf_bi_player();
  * TYPE : TRIGGER
  * NAME : tg_bi_nationality
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova nazionalita' di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_nationality
 BEFORE INSERT ON fp_nationality
@@ -726,7 +720,8 @@ EXECUTE FUNCTION tf_bi_nationality();
  * TYPE : TRIGGER
  * NAME : tg_bi_militancy
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova militanza di un calciatore
+ *        in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_militancy
 BEFORE INSERT ON fp_militancy
@@ -739,7 +734,8 @@ EXECUTE FUNCTION tf_bi_militancy();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_tag
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova associazione tra un
+ *        calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
@@ -750,53 +746,57 @@ EXECUTE FUNCTION tf_bi_player_tag();
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_player_columnibute
+ * NAME : tg_bi_player_attribute
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova associazione tra un
+ *        calciatore ed un attributo
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_player_columnibute
-BEFORE INSERT ON fp_player_columnibute
+CREATE OR REPLACE TRIGGER tg_bi_player_attribute
+BEFORE INSERT ON fp_player_attribute
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_player_columnibute();
+EXECUTE FUNCTION tf_bi_player_attribute();
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_trophy_team_case
+ * NAME : tg_bi_team_trophy_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
+ *        ad una squadra di calcio
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_trophy_team_case
-BEFORE INSERT ON fp_trophy_team_case
+CREATE OR REPLACE TRIGGER tg_bi_team_trophy_case
+BEFORE INSERT ON fp_team_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_trophy_team_case();
+EXECUTE FUNCTION tf_bi_team_trophy_case();
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_trophy_player_case
+ * NAME : tg_bi_player_trophy_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
+ *        ad un calciatore
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_trophy_player_case
-BEFORE INSERT ON fp_trophy_player_case
+CREATE OR REPLACE TRIGGER tg_bi_player_trophy_case
+BEFORE INSERT ON fp_player_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_trophy_player_case();
+EXECUTE FUNCTION tf_bi_player_trophy_case();
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_prize_team_case
+ * NAME : tg_bi_team_prize_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo premio calcistico assegnato
+ *        ad una squadra di calcio
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_prize_team_case
-BEFORE INSERT ON fp_prize_team_case
+CREATE OR REPLACE TRIGGER tg_bi_team_prize_case
+BEFORE INSERT ON fp_team_prize_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_prize_team_case();
+EXECUTE FUNCTION tf_bi_team_prize_case();
 --------------------------------------------------------------------------------
 
 
