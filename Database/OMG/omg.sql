@@ -19,11 +19,15 @@
  * TYPE : SCHEMA
  * NAME : public
  *
- * DESC : TODO                                 
+ * DESC : Lo schema per il database.
+ *        E' stato scelto di utilizzare lo schema public in quanto e'
+ *        il percorso di ricerca predefinito per ogni database in Postgresql,
+ *        in questo modo si rendera' il codice piu' leggibile                            
  ******************************************************************************/
 DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 --------------------------------------------------------------------------------
+
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -109,7 +113,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_pdate
  *
- * DESC : TODO
+ * DESC : Dominio contenente le date precedenti o uguali a quella corrente
  ******************************************************************************/
 CREATE DOMAIN dm_pdate AS date
 CHECK
@@ -208,7 +212,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_usint
  *
- * DESC : TODO
+ * DESC : Dominio contenente smallint non negativi
  ******************************************************************************/
 CREATE DOMAIN dm_usint AS smallint
 CHECK
@@ -256,7 +260,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_year
  *
- * DESC : TODO
+ * DESC : Dominio contenente gli anni precedenti o uguali a quello corrente
  ******************************************************************************/
 CREATE DOMAIN dm_year AS smallint
 CHECK
@@ -264,6 +268,7 @@ CHECK
 	value BETWEEN 0 AND (extract(year from current_date) + 1)
 );
 --------------------------------------------------------------------------------
+
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -286,11 +291,11 @@ CHECK
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_attribute
+ * NAME : en_feature
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di attributi per un calciatore
  ******************************************************************************/
-CREATE TYPE ty_attribute AS ENUM
+CREATE TYPE en_feature AS ENUM
 (
 	'GOALKEEPER',
 	'KEY ATTRIBUTE',
@@ -311,11 +316,11 @@ CREATE TYPE ty_attribute AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_competition
+ * NAME : en_competition
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di competizioni calcistiche
  ******************************************************************************/
-CREATE TYPE ty_competition AS ENUM
+CREATE TYPE en_competition AS ENUM
 (
 	'CUP',
 	'LEAGUE',
@@ -326,11 +331,11 @@ CREATE TYPE ty_competition AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_country
+ * NAME : en_country
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di paesi
  ******************************************************************************/
-CREATE TYPE ty_country AS ENUM
+CREATE TYPE en_country AS ENUM
 (
 	'NATION',
 	'CONTINENT',
@@ -341,11 +346,11 @@ CREATE TYPE ty_country AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_foot
+ * NAME : en_foot
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di piede preferito di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_foot AS ENUM
+CREATE TYPE en_foot AS ENUM
 (
 	'EITHER',
 	'LEFT',
@@ -356,16 +361,16 @@ CREATE TYPE ty_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_role
+ * NAME : en_role
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di ruoli di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_role AS ENUM
+CREATE TYPE en_role AS ENUM
 (
-	'GK', -- goalkeeper
-	'DF', -- defender
-	'MF', -- midfield
-	'FW'  -- forward
+	'GK', -- portiere
+	'DF', -- difensore
+	'MF', -- centrocampista
+	'FW'  -- attaccante
 );
 --------------------------------------------------------------------------------
 
@@ -373,11 +378,12 @@ CREATE TYPE ty_role AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_statistic
+ * NAME : en_role_mix
  *
- * DESC : TODO
+ * DESC : Enum formato da tutte le possibili combinazioni di ruoli
+ *        di un calciatore
  ******************************************************************************/
-CREATE TYPE ty_statistic AS ENUM
+CREATE TYPE en_role_mix AS ENUM
 (
 	'GK',
 	'DF',
@@ -400,11 +406,11 @@ CREATE TYPE ty_statistic AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_team
+ * NAME : en_team
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di squadre di calcio
  ******************************************************************************/
-CREATE TYPE ty_team AS ENUM
+CREATE TYPE en_team AS ENUM
 (
 	'CLUB',
 	'NATIONAL'
@@ -415,11 +421,11 @@ CREATE TYPE ty_team AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : ty_trophy
+ * NAME : en_award
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di trofei e premi calcistici
  ******************************************************************************/
-CREATE TYPE ty_trophy AS ENUM
+CREATE TYPE en_award AS ENUM
 (
 	'PLAYER',
 	'TEAM'
@@ -454,7 +460,12 @@ CREATE TYPE ty_trophy AS ENUM
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se esiste una tabella con un nome uguale alla
+ *        stringa in input.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *        NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION table_exists
 (
@@ -464,21 +475,32 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	existence	boolean;
+
 BEGIN
+
+	existence = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		existence
+	FROM
+		information_schema.tables 
+	WHERE
+		table_catalog = 'fpdb'
+		AND
+		table_schema = 'public'
+		AND
+		table_name = name_table;
 	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.tables 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-	);
+	IF (NOT existence) THEN
+		RAISE NOTICE 'Table % not exists', name_table;
+	END IF;
+
+	RETURN existence;
 	
 END;
 $$
@@ -489,79 +511,41 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : attr_exists
+ * NAME : column_exists
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se esiste una colonna all'interno di una tabella,
+ *        prendendo in input il nome di una tabella e di una colonna.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *        NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION attr_exists
+CREATE OR REPLACE FUNCTION column_exists
 (
 	IN	name_table	text,
-	IN	name_attr	text
+	IN	name_column	text
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			information_schema.columns 
-		WHERE
-			table_catalog = 'fpdb'
-			AND
-			table_schema = 'public'
-			AND
-			table_name = name_table
-			AND
-			column_name = name_attr
-	);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_type_attr
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_type_attr
-(
-	IN	name_table	text,
-	IN	name_attr	text
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
 DECLARE
 
-	type_attr text;
+	existence	boolean;
 
 BEGIN
-	
+
+	existence = FALSE;
+
 	SELECT
-		data_type
+		count(*) >= 1
 	INTO
-		type_attr
+		existence
 	FROM
 		information_schema.columns 
 	WHERE
@@ -571,9 +555,70 @@ BEGIN
 		AND
 		table_name = name_table
 		AND
-		column_name = name_attr;
-		
-	RETURN type_attr;
+		column_name = name_column;
+
+	IF (NOT existence) THEN
+		RAISE NOTICE 'Column % not exists in table %', name_column, name_table;
+	END IF;
+
+	RETURN existence;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_type_column
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che, preso in input il nome di una tabella e di una colonna,
+ *        restituisce il tipo della colonna sotto forma di testo.
+ *        Fa uso del catalogo di sistema di Postgresql
+ *
+ *		  NOTA: la funzione considera come database prefedinito "fpdb" e
+ *              come schema predefinito "public"
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_type_column
+(
+	IN	name_table	text,
+	IN	name_column	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	type_column	text;
+
+BEGIN
+
+	type_column = NULL;
+	
+	SELECT
+		data_type
+	INTO
+		type_column
+	FROM
+		information_schema.columns 
+	WHERE
+		table_catalog = 'fpdb'
+		AND
+		table_schema = 'public'
+		AND
+		table_name = name_table
+		AND
+		column_name = name_column;
+
+	RETURN type_column;
 	
 END;
 $$
@@ -591,12 +636,52 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'id di una riga di una tabella, se presente.
+ *        Prende in input un separatore ed una stringa formattata in modo
+ *        appropiato.
+ *
+ *        ES. separatore = '@'
+ *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
+ *
+ *        L'idea di fondo e' quella di sfruttare la formattazione della
+ *        stringa in input per estrarre tutte le informazioni necessarie
+ *        utilizzando un contatore.
+ *        Si immagini di costruire un array di stringhe contenente in ciascuna
+ *        posizione la parte di stringa corrispondente.
+ *        Continuando a seguire l'esempio proposto:
+ *
+ *        POSITION | VALUE
+ *           0     | nome_tabella
+ *           1     | nome_colonna1
+ *           2     | valore_colonna1
+ *           3     | nome_colonna2
+ *           4     | valore_colonna2
+ *          ...    | ...
+ *         2N - 1  | nome_colonnaN
+ *           2N    | valore_colonnaN
+ *
+ *        Eccezion fatta per la posizione 0 che si riferisce al nome della
+ *        tabella, tutte le altre posizioni dispari faranno riferimento a
+ *        nomi di colonne, mentre le posizioni pari immediatamente successive
+ *        ai rispettivi valori.
+ *        Sfruttando tali osservazioni mediante SQL dinamico sara' possibile
+ *        costruire la query desiderata.
+ *        
+ *        NOTA: importante osservare che tale funzione sfrutta la buona prassi,
+ *              che abbiamo osservato quando possibile e necessario,
+ *              di assegnare una chiave surrogata di tipo integer alle tabelle
+ *              e di denominarla id  
+ *
+ *        NOTA: assicurarsi che i valori in input permettano di definire
+ *              in modo univoco una riga di una tabella.
+ *              Non sono stati effettuati eccessivi, e dovuti, controlli
+ *              sull'input in quanto si tratta di una funzione nata con lo
+ *              scopo di semplificarci l'inserimento dei dati nel database
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
-	IN	separator	text,
-	IN	in_string	text
+	IN	separator		text,
+	IN	input_string	text
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
@@ -604,69 +689,124 @@ AS
 $$
 DECLARE
 
-	count		integer;	
-	name_table	text;
-	name_attr	text;
-	value_attr	text;
-	type_attr	text;
-	row_table	record;
-	to_execute	text;
-	id_to_find	integer;
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	
+	to_execute		text;
+
+	id_to_find		integer;
 	
 BEGIN
 	
 	to_execute = '';
 
 	id_to_find = NULL;
-	count = 0;
+	
+	counter = 0;
 
-	FOR row_table IN SELECT string_to_table(in_string, separator)
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT string_to_table(input_string, separator)
 	LOOP
-		
-		IF (0 = count) THEN
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
 
 			name_table = row_table.string_to_table;
 			
 			IF (NOT table_exists(name_table)) THEN
 				RETURN NULL;
 			END IF;
-			
-			to_execute = to_execute || 'SELECT id ';
-			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
-			
-		ELSIF (1 = (count % 2)) THEN
-		
-			name_attr = row_table.string_to_table;
-			
-			IF (NOT attr_exists(name_table, name_attr)) THEN
+
+			-- mi assicuro che la tabella in questione abbia una colonna id
+			IF (NOT column_exists(name_table, 'id')) THEN
 				RETURN NULL;
 			END IF;
 			
-			type_attr = get_type_attr(name_table, name_attr);
-			
-			to_execute = to_execute || name_attr || ' = ';
-			
-		ELSIF (0 = (count % 2)) THEN
+			-- ...e comincio col preparare la query da eseguire
+			to_execute = to_execute || 'SELECT id ';
+			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
 		
-			value_attr = row_table.string_to_table;
+		-- se si tratta del nome di una colonna
+		ELSIF (1 = (counter % 2)) THEN
+		
+			name_column = row_table.string_to_table;
 			
-			IF (NOT type_attr LIKE '%int%') THEN
-				 
-				value_attr = quote_literal(value_attr);
-				
+			IF (NOT column_exists(name_table, name_column)) THEN
+				RETURN NULL;
 			END IF;
-				
-			to_execute = to_execute || value_attr || ' AND ';
+			
+			type_column = get_type_column(name_table, name_column);
+			
+			-- continuo a costruire la query da eseguire
+			to_execute = to_execute || name_column || ' = ';
+		
+		-- se si tratta del valore di una colonna
+		ELSIF (0 = (counter % 2)) THEN
+		
+			value_column = row_table.string_to_table;
+			
+			-- OSSERVAZIONE
+			-- in questo punto abbiamo sfruttato un'ulteriore peculiarita'
+			-- del nostro database
+			-- essenzialmente i tipi di dati che gestiamo si possono
+			-- dividere in due grandi categorie
+			-- categoria "testo", che contiene chiaramente i varchar,
+			-- text, ma anche date e altro
+			-- e categoria integer, di cui fanno parte i valori numerici
+			-- abbiamo pertanto sfruttato il fatto che indipendentemente
+			-- dai tipi e domini creati Postgresql salvi nel catalogo
+			-- anche l'informazione sui tipi primitivi
+			-- pertanto se nel tipo della colonna non e' presente la
+			-- sottostringa 'int' si trattera' di un valore testuale
+			-- che necessita di essere messo tra singoli apici
+			-- per essere correttamente concatenato per formare
+			-- la query da eseguire con SQL dinamico
+			IF (NOT type_column LIKE '%int%') THEN 
+				value_column = quote_literal(value_column);
+			END IF;
+			
+			-- aggiungo per permettere la creazione di una query
+			-- che filtra su piu' colonne
+			to_execute = to_execute || value_column || ' AND ';
 			
 		END IF;
 		
-		count = count + 1;
+		counter = counter + 1;
 		
 	END LOOP;
 	
 	to_execute = trim(to_execute, ' AND ');
 	
 	to_execute = to_execute || ';';
+
+	-- a questo punto, continuando l'esempio proposto nella descrizione
+	-- avremo ottenuto la query:
+	-- 
+	-- SELECT
+	-- 		id
+	-- FROM
+	-- 		nome_tabella
+	-- WHERE
+	--      nome_colonna1 = valore_colonna1
+	--      AND
+	--      nome_colonna2 = valore_colonna2
+	--      AND
+    --      ...
+	--      AND
+	--      nome_colonnaN = valore_colonnaN;
+	--
+	-- Per semplificare la visualizzazione e' stato scelto di formattare
+	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
 	
 	EXECUTE to_execute INTO id_to_find;
 	
@@ -681,19 +821,23 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_attr
+ * NAME : get_column
  *
  * IN      : text, text, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il valore della colonna di una riga
+ *        di una tabella sotto forma di testo, prendendo in input il nome
+ *        della tabella, il nome della colonna in questione e l'id che
+ *        identifica la riga.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_attr
+CREATE OR REPLACE FUNCTION get_column
 (
 	IN	name_table	text,
-	IN	name_attr	text,
+	IN	name_column	text,
 	IN	value_id	integer
 )
 RETURNS text
@@ -703,9 +847,12 @@ $$
 DECLARE
 
 	tmp				integer;
-	type_attr		text;
-	value_attr		text;
+
+	type_column		text;
+	value_column	text;
+
 	to_execute		text;
+
 	cur_to_execute	refcursor;
 	
 BEGIN
@@ -714,34 +861,50 @@ BEGIN
 		RETURN NULL;
 	END IF;
 	
-	IF (NOT attr_exists(name_table, name_attr)) THEN
+	IF (NOT column_exists(name_table, 'id')) THEN
+		RETURN NULL;
+	END IF;
+
+	IF (NOT column_exists(name_table, name_column)) THEN
 		RETURN NULL;
 	END IF;
 	
+	-- se i controlli hanno dato esito positivo
+	-- costruisco la query da eseguire
 	to_execute = '';
-	to_execute = to_execute || 'SELECT ' || name_attr;
+	to_execute = to_execute || 'SELECT ' || name_column;
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
+
+	-- a questo punto avremo ottenuto la query:
+	-- 
+	-- SELECT
+	-- 		name_column
+	-- FROM
+	-- 		name_table
+	-- WHERE
+	--      id = value_id;
+	--
+	-- Per semplificare la visualizzazione e' stato scelto di formattare
+	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
 	
 	OPEN cur_to_execute FOR EXECUTE to_execute;
 	
-	type_attr = get_type_attr(name_table, name_attr);
+	type_column = get_type_column(name_table, name_column);
 	
-	IF (type_attr LIKE '%int%') THEN
-		
+	-- se la colonna e' di tipo numerico
+	IF (type_column LIKE '%int%') THEN
 		FETCH cur_to_execute INTO tmp;
-		 
-		value_attr = CAST(tmp AS text); 
-		
+		-- e' necessario castarla come text 
+		value_column = CAST(tmp AS text); 
 	ELSE
-	
-		FETCH cur_to_execute INTO value_attr;
-	
+		FETCH cur_to_execute INTO value_column;
 	END IF;
 	
 	CLOSE cur_to_execute;
 
-	RETURN value_attr;
+	RETURN value_column;
 	
 END;
 $$
@@ -752,16 +915,18 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_rec
+ * NAME : get_record
  *
  * IN      : text, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : record
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
+ *        input il nome della tabella, e l'id che identifica la riga.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_rec
+CREATE OR REPLACE FUNCTION get_record
 (
 	IN	name_table	text,
 	IN	value_id	integer
@@ -780,15 +945,250 @@ BEGIN
 	IF (NOT table_exists(name_table)) THEN
 		RETURN NULL;
 	END IF;
+
+	IF (NOT column_exists(name_table, 'id')) THEN
+		RETURN NULL;
+	END IF;
 	
+	-- se i controlli hanno dato esito positivo
+	-- costruisco la query da eseguire
 	to_execute = '';
 	to_execute = to_execute || 'SELECT *';
 	to_execute = to_execute || ' FROM ' || name_table;
 	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
 	
+	-- a questo punto avremo ottenuto la query:
+	-- 
+	-- SELECT
+	-- 		*
+	-- FROM
+	-- 		name_table
+	-- WHERE
+	--      id = value_id;
+	--
+	-- Per semplificare la visualizzazione e' stato scelto di formattare
+	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
+
 	EXECUTE to_execute INTO rec_table;
 
 	RETURN rec_table;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : all_references
+ *
+ * IN      : text, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, integer)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION all_references
+(
+	IN	name_table	text
+)
+RETURNS TABLE
+(
+	constr			text,
+	table_to_ref	text,
+	col_to_ref		text,
+	table_ref		text,
+	col_ref			text,
+	col_ord			integer
+)
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+
+	RETURN QUERY
+		SELECT
+			CAST(ccu.constraint_name AS text) AS constr,
+			CAST(ccu.table_name AS text) AS table_to_ref,
+			CAST(ccu.column_name AS text) AS col_to_ref,
+			CAST(kcu.table_name AS text) AS table_ref,
+			CAST(kcu.column_name AS text) AS col_ref,
+			CAST(kcu.ordinal_position AS integer) AS col_ord
+		FROM
+			information_schema.constraint_column_usage AS ccu
+			JOIN
+			information_schema.key_column_usage AS kcu
+			ON
+				ccu.constraint_name = kcu.constraint_name
+		WHERE
+			ccu.constraint_name LIKE '%_fk_%'
+			AND
+			ccu.table_catalog = 'fpdb'
+			AND
+			ccu.table_schema = 'public'
+			AND
+			ccu.table_name = name_table
+			AND
+			(
+				ccu.column_name = 'id'
+				OR
+				ccu.column_name = kcu.column_name
+			)
+		ORDER BY
+			ccu.constraint_name,
+			kcu.ordinal_position DESC;
+			
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_referenced
+ *
+ * IN      : text, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_referenced
+(
+	IN	separator	text,
+	IN	in_string	text
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	name_table		text;
+	row_table		record;
+
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	
+	name_constr		text;
+	
+	to_execute		text;
+	where_cond		text;
+	
+	counter			integer;
+	
+BEGIN
+
+	where_cond = '';
+	name_constr = '';
+	
+	counter = 0;
+	
+	FOR row_table
+	IN
+		SELECT string_to_table(in_string, separator)
+	LOOP
+		
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+			
+			where_cond = where_cond || 'WHERE ';
+			
+		ELSIF (1 = (counter % 2)) THEN
+		
+			name_column = row_table.string_to_table;
+			
+			IF (NOT column_exists(name_table, name_column)) THEN
+				RETURN NULL;
+			END IF;
+			
+			type_column = get_type_column(name_table, name_column);
+			
+			where_cond = where_cond || name_table || '.' || name_column || ' = ';
+			
+		ELSIF (0 = (counter % 2)) THEN
+		
+			value_column = row_table.string_to_table;
+			
+			IF (NOT type_column LIKE '%int%') THEN
+				 
+				value_column = quote_literal(value_column);
+				
+			END IF;
+				
+			where_cond = where_cond || value_column || ' AND ';
+			
+		END IF;
+		
+		counter = counter + 1;
+		
+	END LOOP;
+
+	where_cond = trim(where_cond, ' AND ');
+	
+	where_cond = where_cond || ';';
+
+
+	counter = 0;
+
+	FOR row_table
+	IN
+		SELECT * FROM all_references(name_table)
+	LOOP
+		
+		IF (row_table.constr <> name_constr) THEN
+		
+			to_execute = '';
+			to_execute = to_execute || 'SELECT count(*)';
+			to_execute = to_execute || ' FROM ' || name_table;
+			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
+			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
+			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
+		
+		ELSE
+			
+			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
+			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
+			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
+			
+		END IF;
+		
+		
+		IF (1 = row_table.col_ord) THEN
+			
+			to_execute = to_execute || ' ' || where_cond;
+			
+			RAISE NOTICE '%', to_execute;
+
+			EXECUTE to_execute INTO counter;
+			
+			IF (counter > 0) THEN
+				
+				RETURN TRUE;
+				
+			END IF;
+				
+		END IF;
+		
+	END LOOP;
+
+	RETURN FALSE;
 	
 END;
 $$
@@ -819,12 +1219,12 @@ LANGUAGE plpgsql;
  * TYPE : TABLE
  * NAME : fp_country
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i paesi
  ******************************************************************************/
 CREATE TABLE fp_country
 (
 	id		serial		NOT NULL,
-	type	ty_country	NOT NULL,
+	type	en_country	NOT NULL,
 	code	dm_code		NOT NULL,
 	name	dm_string	NOT NULL
 );
@@ -834,7 +1234,7 @@ CREATE TABLE fp_country
  * TYPE : PRIMARY KEY CONSTRAINT - fp_country TABLE
  * NAME : pk_country
  *
- * DESC : TODO
+ * DESC : Non possono esistere paesi diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT pk_country
@@ -848,7 +1248,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_country TABLE
  * NAME : uq_country_code
  *
- * DESC : TODO
+ * DESC : Non possono esistere paesi diversi con lo stesso codice
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT uq_country_code
@@ -862,7 +1262,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_country TABLE
  * NAME : uq_country_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere paesi diversi con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT uq_country_name
@@ -878,7 +1278,8 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_confederation
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti
+ *        le confederazioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_confederation
 (
@@ -886,7 +1287,8 @@ CREATE TABLE fp_confederation
 	country_id	integer		NOT NULL,
 	short_name	dm_alnum 	NOT NULL,
 	long_name	dm_alnum	NOT NULL,
-	super_id	integer				  -- super confederation
+	super_id	integer				  -- confederazione di grado immediatamente
+	                                  -- superiore della quale e' membro
 );
 --------------------------------------------------------------------------------
 
@@ -894,7 +1296,8 @@ CREATE TABLE fp_confederation
  * TYPE : PRIMARY KEY CONSTRAINT - fp_confederation TABLE
  * NAME : pk_confederation
  *
- * DESC : TODO
+ * DESC : Non possono esistere confederazioni calcistiche diverse
+ *        con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT pk_confederation
@@ -908,7 +1311,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_long_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere confederazioni calcistiche diverse
+ *        con lo stesso nome esteso
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_long_name
@@ -922,7 +1326,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_country_id
  *
- * DESC : TODO
+ * DESC : Un paese deve appartenere al piu' ad una confederazione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_country_id
@@ -936,7 +1340,10 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_confederation TABLE
  * NAME : confederation_fk_confederation
  *
- * DESC : TODO
+ * DESC : Una confederazione calcistica fa riferimento alla confederazione
+ *        calcistica di grado immediatamente superiore della quale e' membro.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        confederazione calcistica membro 
  ******************************************************************************/
 ALTER TABLE fp_confederation
 ADD CONSTRAINT confederation_fk_confederation
@@ -956,7 +1363,9 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_confederation TABLE
  * NAME : confederation_fk_country
  *
- * DESC : TODO
+ * DESC : Una confederazione calcistica fa riferimento al paese di appartenenza.
+ *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
+ *        sulla confederazione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT confederation_fk_country
@@ -978,12 +1387,12 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_team
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le squadre di calcio
  ******************************************************************************/
 CREATE TABLE fp_team
 (
 	id					serial		NOT NULL,
-	type				ty_team 	NOT NULL,
+	type				en_team 	NOT NULL,
 	country_id			integer		NOT NULL,
 	name				dm_alnum	NOT NULL,
 	confederation_id	integer		NOT NULL
@@ -994,7 +1403,7 @@ CREATE TABLE fp_team
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team TABLE
  * NAME : pk_team
  *
- * DESC : TODO
+ * DESC : Non possono esistere squadre di calcio diverse con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT pk_team
@@ -1008,7 +1417,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
  * NAME : uq_team
  *
- * DESC : TODO
+ * DESC : Non possono esistere squadre di calcio diverse con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT uq_team
@@ -1022,7 +1431,9 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
  * NAME : team_fk_country
  *
- * DESC : TODO
+ * DESC : Una squadra di calcio fa riferimento al paese di appartenenza.
+ *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
+ *        sulla squadra di calcio
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_country
@@ -1042,7 +1453,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
  * NAME : team_fk_confederation
  *
- * DESC : TODO
+ * DESC : Una squadra di calcio fa riferimento alla confederazione calcistica
+ *        di appartenenza.
+ *        Un cambiamento della confederazione calcistica di appartenenza
+ *        si ripercuotera' a cascata sulla squadra di calcio
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_confederation
@@ -1064,13 +1478,14 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti
+ *        le competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition
 (
 	id					serial			NOT NULL,
-	type				ty_competition	NOT NULL,
-	team_type			ty_team			NOT NULL,
+	type				en_competition	NOT NULL,
+	team_type			en_team			NOT NULL,
 	name				dm_alnum		NOT NULL,
 	frequency			dm_usint		NOT NULL,
 	confederation_id	integer			NOT NULL
@@ -1081,7 +1496,7 @@ CREATE TABLE fp_competition
  * TYPE : PRIMARY KEY CONSTRAINT - fp_competition TABLE
  * NAME : pk_competition
  *
- * DESC : TODO
+ * DESC : Non possono esistere competizioni calcistiche diverse con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_competition 
 ADD CONSTRAINT pk_competition
@@ -1095,7 +1510,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_competition TABLE
  * NAME : uq_competition_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere competizioni calcistiche diverse
+ *        con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_competition 
 ADD CONSTRAINT uq_competition_name
@@ -1109,7 +1525,10 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_competition TABLE
  * NAME : competition_fk_confederation
  *
- * DESC : TODO
+ * DESC : Una competizione calcistica fa riferimento alla confederazione
+ *        calcistica di appartenenza.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        competizione calcistica 
  ******************************************************************************/
 ALTER TABLE	fp_competition
 ADD CONSTRAINT competition_fk_confederation
@@ -1131,7 +1550,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition_edition
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le edizioni
+ *        delle competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition_edition
 (
@@ -1147,7 +1567,8 @@ CREATE TABLE fp_competition_edition
  * TYPE : PRIMARY KEY CONSTRAINT - fp_competition_edition TABLE
  * NAME : pk_competition_edition
  *
- * DESC : TODO
+ * DESC : Non possono esistere edizioni di competizioni calcistiche diverse
+ *        con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT pk_competition_edition
@@ -1161,7 +1582,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_competition_edition TABLE
  * NAME : uq_competition_edition
  *
- * DESC : TODO
+ * DESC : Ogni edizione di una competizione calcistica deve iniziare
+ *        in un anno diverso
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT uq_competition_edition
@@ -1176,7 +1598,9 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
  * NAME : ck_competition_edition_range
  *
- * DESC : TODO
+ * DESC : Ogni edizione di una competizione calcistica deve iniziare e finire
+ *        nello stesso anno o al massimo terminare l'anno successivo a quello
+ *        di inizio
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT ck_competition_edition_range
@@ -1190,7 +1614,15 @@ CHECK
  * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
  * NAME : ck_competition_edition_total_team
  *
- * DESC : TODO
+ * DESC : Il numero di squadre di calcio che possono partecipare ad una
+ *        edizione di una competizione calcistica deve essere compreso tra
+ *        un minimo di 2 ed un massimo di 128.
+ *
+ *        NOTA: il valore massimo, sebbene arbitrario, e' stato ottenuto
+ *              mediante una ricerca dettagliata effettuata analizzando
+ *              gli storici delle varie edizioni di competizioni calcistiche
+ *              su Wikipidia, Transfermarkt e altri siti.
+ *              Abbiamo considerato sempre la fase finale di una competizione
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT ck_competition_edition_total_team
@@ -1204,7 +1636,10 @@ CHECK
  * TYPE : FOREIGN KEY CONSTRAINT - fp_competition_edition TABLE
  * NAME : competition_edition_fk_competition
  *
- * DESC : TODO
+ * DESC : Un'edizione di una competizione calcistica fa riferimento alla 
+ *        competizione calcistica cui appartiene.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata
+ *        sull'edizione della competizione calcistica 
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT competition_edition_fk_competition
@@ -1216,7 +1651,7 @@ REFERENCES fp_competition
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1226,7 +1661,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_partecipation
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti la partecipazione
+ *        di una squadra di calcio ad un'edizione di una competizioni calcistica
  ******************************************************************************/
 CREATE TABLE fp_partecipation
 (
@@ -1239,7 +1675,8 @@ CREATE TABLE fp_partecipation
  * TYPE : PRIMARY KEY CONSTRAINT - fp_partecipation TABLE
  * NAME : pk_partecipation
  *
- * DESC : TODO
+ * DESC : Ogni squadra di calcio puo' partecipare al piu' una volta ad
+ *        un'edizione di una competizione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT pk_partecipation
@@ -1254,7 +1691,11 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
  * NAME : partecipation_fk_competition_edition
  *
- * DESC : TODO
+ * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
+ *        competizione calcistica fa riferimento all'edizione della competizione
+ *        calcistica in questione.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT partecipation_fk_competition_edition
@@ -1266,7 +1707,7 @@ REFERENCES fp_competition_edition
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1274,7 +1715,11 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
  * NAME : partecipation_fk_team
  *
- * DESC : TODO
+ * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
+ *        competizione calcistica fa riferimento alla squadra di calcio
+ *        in questione.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT partecipation_fk_team
@@ -1286,7 +1731,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1296,17 +1741,18 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i calciatori
  ******************************************************************************/
 CREATE TABLE fp_player
 (
 	id			serial		NOT NULL,
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
-	foot		ty_foot		NOT NULL, -- preferred foot
-	country_id	integer		NOT NULL, -- birth country id
-	dob			dm_pdate	NOT NULL, -- birth date
-	career_time	daterange			  -- date range of player career
+	foot		en_foot		NOT NULL, -- piede preferito
+	country_id	integer		NOT NULL, -- id del paese di nascita
+	dob			dm_pdate	NOT NULL, -- data di nascita
+	career_time	daterange			  -- periodo di tempo nel quale il
+	                                  -- calciatore ha giocato
 );
 --------------------------------------------------------------------------------
 
@@ -1314,7 +1760,7 @@ CREATE TABLE fp_player
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player TABLE
  * NAME : pk_player
  *
- * DESC : TODO
+ * DESC : Non possono esistere calciatori diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_player
 ADD CONSTRAINT pk_player
@@ -1328,7 +1774,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_player TABLE
  * NAME : uq_player
  *
- * DESC : TODO
+ * DESC : Non possono esistere calciatori diversi con la stessa combinazione
+ *        di nome, cognome, data di nascita e paese di nascita
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT uq_player
@@ -1345,7 +1792,9 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
  * NAME : player_fk_country
  *
- * DESC : TODO
+ * DESC : Un calciatore fa riferimento al paese di nascita.
+ *        Un cambiamento del paese di nascita si ripercuotera' a cascata
+ *        sull calciatore
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT player_fk_country
@@ -1367,7 +1816,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_nationality
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le nazionalita'
+ *        di un calciatore
  ******************************************************************************/
 CREATE TABLE fp_nationality
 (
@@ -1380,7 +1830,8 @@ CREATE TABLE fp_nationality
  * TYPE : PRIMARY KEY CONSTRAINT - fp_nationality TABLE
  * NAME : pk_nationality
  *
- * DESC : TODO
+ * DESC : Ogni calciatore non puo' essere associato piu' di una volta allo
+ *        stesso paese
  ******************************************************************************/
 ALTER TABLE fp_nationality
 ADD CONSTRAINT pk_nationality
@@ -1395,7 +1846,9 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
  * NAME : nationality_fk_country
  *
- * DESC : TODO
+ * DESC : La nazionalita' di un calciatore fa riferimento al paese in questione.
+ *        Un cambiamento del paese si ripercuotera' a cascata sulla
+ *        nazionalita'
  ******************************************************************************/
 ALTER TABLE	fp_nationality
 ADD CONSTRAINT nationality_fk_country
@@ -1415,7 +1868,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
  * NAME : nationality_fk_player
  *
- * DESC : TODO
+ * DESC : La nazionalita' di un calciatore fa riferimento al calciatore
+ *        in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
+ *        nazionalita'
  ******************************************************************************/
 ALTER TABLE	fp_nationality
 ADD CONSTRAINT nationality_fk_player
@@ -1427,7 +1883,7 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1437,14 +1893,16 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti la militanza
+ *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_militancy
 (
 	id			serial		NOT NULL,
 	team_id		integer		NOT NULL,
 	player_id	integer		NOT NULL,
-	date_range	daterange	NOT NULL
+	date_range	daterange	NOT NULL,
+	match		dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1452,7 +1910,7 @@ CREATE TABLE fp_militancy
  * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy TABLE
  * NAME : pk_militancy
  *
- * DESC : TODO
+ * DESC : Non possono esistere militanze diverse con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_militancy
 ADD CONSTRAINT pk_militancy
@@ -1466,7 +1924,8 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
  * NAME : uq_militancy
  *
- * DESC : TODO
+ * DESC : Un calciatore non puo' militare nella stessa squadra di calcio
+ *        nello stesso intervallo di tempo
  ******************************************************************************/
 ALTER TABLE fp_militancy
 ADD CONSTRAINT uq_militancy
@@ -1482,7 +1941,10 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_team
  *
- * DESC : TODO
+ * DESC : La militanza di un calciatore in una squadra di calcio
+ *        fa riferimento alla squadra di calcio in questione.
+ *        Un cambiamento della squadra di calcio si ripercuotera' a cascata
+ *        sulla militanza
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_team
@@ -1502,7 +1964,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_player
  *
- * DESC : TODO
+ * DESC : La militanza di un calciatore in una squadra di calcio
+ *        fa riferimento al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
+ *        militanza
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_player
@@ -1514,7 +1979,7 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1524,14 +1989,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_tag
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i tag che e' possibile
+ *        associare ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_tag
 (
 	id			serial			NOT NULL,
-	type		ty_attribute	NOT NULL,
+	type		en_feature	NOT NULL,
 	name		dm_string		NOT NULL,
-	description	dm_string		NOT NULL
+	description	dm_string
 );
 --------------------------------------------------------------------------------
 
@@ -1539,7 +2005,7 @@ CREATE TABLE fp_tag
  * TYPE : PRIMARY KEY CONSTRAINT - fp_tag TABLE 
  * NAME : pk_tag
  *
- * DESC : TODO
+ * DESC : Non possono esistere tag diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_tag
 ADD CONSTRAINT pk_tag
@@ -1551,15 +2017,29 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_tag TABLE
- * NAME : uq_tag
+ * NAME : uq_tag_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere tag diversi con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_tag
-ADD CONSTRAINT uq_tag
+ADD CONSTRAINT uq_tag_name
 UNIQUE
 (
 	name
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_tag TABLE
+ * NAME : uq_tag_description
+ *
+ * DESC : Non possono esistere tag diversi con la stessa descrizione
+ ******************************************************************************/
+ALTER TABLE	fp_tag
+ADD CONSTRAINT uq_tag_description
+UNIQUE
+(
+	description
 );
 --------------------------------------------------------------------------------
 
@@ -1569,7 +2049,8 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_tag
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i tag associati
+ *        ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_tag
 (
@@ -1582,7 +2063,7 @@ CREATE TABLE fp_player_tag
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_tag TABLE 
  * NAME : pk_player_tag
  *
- * DESC : TODO
+ * DESC : Un calciatore puo' essere associato ad un tag al piu' una volta
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT pk_player_tag
@@ -1597,7 +2078,10 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_tag TABLE
  * NAME : player_tag_fk_player
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad un tag fa riferimento
+ *        al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT player_tag_fk_player
@@ -1609,7 +2093,7 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1617,7 +2101,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_tag TABLE
  * NAME : player_tag_fk_tag
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad un tag fa riferimento
+ *        al tag in questione.
+ *        Un cambiamento del tag si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT player_tag_fk_tag
@@ -1639,12 +2126,13 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_position
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
+ *        che un calciatore puo' assumere nel campo di gioco
  ******************************************************************************/
 CREATE TABLE fp_position
 (
 	id		serial		NOT NULL,
-	role	ty_role		NOT NULL,
+	role	en_role		NOT NULL,
 	code	dm_code		NOT NULL,
 	name	dm_string	NOT NULL
 );
@@ -1654,7 +2142,7 @@ CREATE TABLE fp_position
  * TYPE : PRIMARY KEY CONSTRAINT - fp_position TABLE
  * NAME : pk_position
  *
- * DESC : TODO
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT pk_position
@@ -1668,7 +2156,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
  * NAME : uq_position_code
  *
- * DESC : TODO
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso codice
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT uq_position_code
@@ -1682,7 +2170,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
  * NAME : uq_position_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_position
 ADD CONSTRAINT uq_position_name
@@ -1698,13 +2186,15 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_position
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
+ *        associate ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_position
 (
 	player_id	integer		NOT NULL,
 	position_id	integer		NOT NULL,
-	match		dm_usint	NOT NULL  -- number of match
+	match		dm_usint	NOT NULL  -- numero di partite giocate dal
+	                                  -- calciatore nella posizione
 );
 --------------------------------------------------------------------------------
 
@@ -1712,7 +2202,8 @@ CREATE TABLE fp_player_position
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_position TABLE  
  * NAME : pk_player_position
  *
- * DESC : TODO
+ * DESC : Un calciatore puo' essere associato ad una posizione di gioco
+ *        al piu' una volta
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT pk_player_position
@@ -1727,7 +2218,10 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_position TABLE 
  * NAME : player_position_fk_player
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad una posizione di gioco
+ *        fa riferimento al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT player_position_fk_player
@@ -1739,7 +2233,7 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1747,7 +2241,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_position TABLE
  * NAME : player_position_fk_position
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad una posizione di gioco
+ *        fa riferimento al calciatore in questione.
+ *        Un cambiamento della posizione di gioco si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT player_position_fk_position
@@ -1769,14 +2266,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti gli attributi che
+ *        e' possibile associare ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute
 (
-	id			serial			NOT NULL,
-	type		ty_attribute	NOT NULL,
-	name		dm_string		NOT NULL,
-	description	dm_string		NOT NULL
+	id			serial		NOT NULL,
+	type		en_feature	NOT NULL,
+	name		dm_string	NOT NULL,
+	description	dm_string
 );
 --------------------------------------------------------------------------------
 
@@ -1784,7 +2282,7 @@ CREATE TABLE fp_attribute
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute TABLE   
  * NAME : pk_attribute
  *
- * DESC : TODO
+ * DESC : Non possono esistere attributi diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_attribute
 ADD CONSTRAINT pk_attribute
@@ -1796,15 +2294,29 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_attribute TABLE
- * NAME : uq_attribute
+ * NAME : uq_attribute_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere attributi diversi con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_attribute
-ADD CONSTRAINT uq_attribute
+ADD CONSTRAINT uq_attribute_name
 UNIQUE
 (
 	name
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_attribute TABLE
+ * NAME : uq_attribute_description
+ *
+ * DESC : Non possono esistere attributi diversi con la stessa descrizione
+ ******************************************************************************/
+ALTER TABLE	fp_attribute
+ADD CONSTRAINT uq_attribute_description
+UNIQUE
+(
+	description
 );
 --------------------------------------------------------------------------------
 
@@ -1814,7 +2326,8 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_attribute
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti gli attributi
+ *        associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_attribute
 (
@@ -1828,7 +2341,7 @@ CREATE TABLE fp_player_attribute
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_attribute TABLE  
  * NAME : pk_player_attribute
  *
- * DESC : TODO
+ * DESC : Un calciatore puo' essere associato ad un attributo al piu' una volta
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT pk_player_attribute
@@ -1843,7 +2356,10 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_attribute TABLE
  * NAME : player_attribute_fk_player
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad un attributo
+ *        fa riferimento al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT player_attribute_fk_player
@@ -1855,7 +2371,7 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1863,7 +2379,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_attribute TABLE
  * NAME : player_attribute_fk_attribute
  *
- * DESC : TODO
+ * DESC : L'associazione di un calciatore ad un attributo
+ *        fa riferimento all'attributo in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT player_attribute_fk_attribute
@@ -1885,14 +2404,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le statistiche che
+ *        e' possibile associare ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_statistic
 (
-	id			serial			NOT NULL,
-	role		ty_statistic	NOT NULL,
-	name		dm_string		NOT NULL,
-	description	dm_string		NOT NULL
+	id			serial		NOT NULL,
+	role		en_role_mix	NOT NULL,
+	name		dm_string	NOT NULL,
+	description	dm_string
 );
 --------------------------------------------------------------------------------
 
@@ -1900,7 +2420,7 @@ CREATE TABLE fp_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic TABLE  
  * NAME : pk_statistic
  *
- * DESC : TODO
+ * DESC : Non possono esistere statistiche diverse con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_statistic
 ADD CONSTRAINT pk_statistic
@@ -1912,15 +2432,29 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_statistic TABLE
- * NAME : uq_statistic
+ * NAME : uq_statistic_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere statistiche diverse con lo stesso nome
  ******************************************************************************/
 ALTER TABLE	fp_statistic
-ADD CONSTRAINT uq_statistic
+ADD CONSTRAINT uq_statistic_name
 UNIQUE
 (
 	name
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_statistic TABLE
+ * NAME : uq_statistic_description
+ *
+ * DESC : Non possono esistere statistiche diverse con la stessa descrizone
+ ******************************************************************************/
+ALTER TABLE	fp_statistic
+ADD CONSTRAINT uq_statistic_description
+UNIQUE
+(
+	description
 );
 --------------------------------------------------------------------------------
 
@@ -1930,14 +2464,15 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_trophy
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
  ******************************************************************************/
 CREATE TABLE fp_trophy
 (
 	id			serial		NOT NULL,
-	type		ty_trophy	NOT NULL,
+	type		en_award	NOT NULL,
+	role		en_role_mix	NOT NULL,
 	name		dm_string	NOT NULL,
-	description	dm_string	NOT NULL
+	description	dm_string
 );
 --------------------------------------------------------------------------------
 
@@ -1945,7 +2480,7 @@ CREATE TABLE fp_trophy
  * TYPE : PRIMARY KEY CONSTRAINT - fp_trophy TABLE  
  * NAME : pk_trophy
  *
- * DESC : TODO
+ * DESC : Non possono esistere trofei calcistici diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_trophy
 ADD CONSTRAINT pk_trophy
@@ -1957,60 +2492,81 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
- * NAME : uq_trophy
+ * NAME : uq_trophy_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere trofei calcistici diversi con lo stesso nome
  ******************************************************************************/
 ALTER TABLE fp_trophy
-ADD CONSTRAINT uq_trophy
+ADD CONSTRAINT uq_trophy_name
 UNIQUE
 (
 	name
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
+ * NAME : uq_trophy_description
+ *
+ * DESC : Non possono esistere trofei calcistici diversi
+ *        con la stessa descrizione
+ ******************************************************************************/
+ALTER TABLE fp_trophy
+ADD CONSTRAINT uq_trophy_description
+UNIQUE
+(
+	description
+);
+--------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_trophy_team_case
+ * NAME : fp_team_trophy_case
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ *        vinti da una squadra di calcio
  ******************************************************************************/
-CREATE TABLE fp_trophy_team_case
+CREATE TABLE fp_team_trophy_case
 (
-	competition_edition_id	integer	NOT NULL,
 	team_id					integer	NOT NULL,
-	trophy_id				integer	NOT NULL
-	
+	trophy_id				integer	NOT NULL,
+	competition_edition_id	integer	NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_trophy_team_case TABLE
- * NAME : pk_trophy_team_case
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_team_trophy_case TABLE
+ * NAME : pk_team_trophy_case
  *
- * DESC : TODO
+ * DESC : Una squadra di calcio puo' vincere il trofeo associato
+ *        ad un'edizione di una competizione calcistica al piu' una volta
  ******************************************************************************/
-ALTER TABLE	fp_trophy_team_case
-ADD CONSTRAINT pk_trophy_team_case
+ALTER TABLE	fp_team_trophy_case
+ADD CONSTRAINT pk_team_trophy_case
 PRIMARY KEY
 (
-	competition_edition_id,
 	team_id,
-	trophy_id
-	
+	trophy_id,
+	competition_edition_id	
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_trophy_team_case TABLE
- * NAME : trophy_team_case_fk_partecipation
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_team_trophy_case TABLE
+ * NAME : team_trophy_case_fk_partecipation
  *
- * DESC : TODO
+ * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
+ *        riferimento alla partecipazione della suddetta squadra
+ *        all'edizione della competizione calcistica cui e' associato
+ *        il trofeo vinto.
+ *        Un cambiamento della partecipazione si ripercuotera' a cascata
+ *        sull trofeo vinto
  ******************************************************************************/
-ALTER TABLE	fp_trophy_team_case
-ADD CONSTRAINT trophy_team_case_fk_partecipation
+ALTER TABLE	fp_team_trophy_case
+ADD CONSTRAINT team_trophy_case_fk_partecipation
 FOREIGN KEY
 (
 	competition_edition_id,
@@ -2021,18 +2577,21 @@ REFERENCES fp_partecipation
 	competition_edition_id,
 	team_id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_trophy_team_case TABLE
- * NAME : trophy_team_case_fk_trophy
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_team_trophy_case TABLE
+ * NAME : team_trophy_case_fk_trophy
  *
- * DESC : TODO
+ * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
+ *        riferimento al trofeo in questione.
+ *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
+ *        sull trofeo vinto
  ******************************************************************************/
-ALTER TABLE	fp_trophy_team_case
-ADD CONSTRAINT trophy_team_case_fk_trophy
+ALTER TABLE	fp_team_trophy_case
+ADD CONSTRAINT team_trophy_case_fk_trophy
 FOREIGN KEY
 (
 	trophy_id
@@ -2041,7 +2600,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2049,66 +2608,50 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_trophy_player_case
+ * NAME : fp_player_trophy_case
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ *        vinti da un calciatore
  ******************************************************************************/
-CREATE TABLE fp_trophy_player_case
+CREATE TABLE fp_player_trophy_case
 (
-	competition_edition_id	integer	NOT NULL,
-	team_id					integer	NOT NULL,
 	player_id				integer NOT NULL,
-	trophy_id				integer	NOT NULL
+	team_id					integer	NOT NULL,
+	trophy_id				integer	NOT NULL,
+	competition_edition_id	integer	NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_trophy_player_case TABLE
- * NAME : pk_trophy_player_case
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_player_trophy_case TABLE
+ * NAME : pk_player_trophy_case
  *
- * DESC : TODO
+ * DESC : Un calciatore che milita in una squadra di calcio puo' vincere
+ *        il trofeo associato ad un'edizione di una competizione calcistica
+ *        al piu' una volta
  ******************************************************************************/
-ALTER TABLE	fp_trophy_player_case
-ADD CONSTRAINT pk_trophy_player_case
+ALTER TABLE	fp_player_trophy_case
+ADD CONSTRAINT pk_player_trophy_case
 PRIMARY KEY
 (
-	competition_edition_id,
-	team_id,
 	player_id,
-	trophy_id
+	team_id,
+	trophy_id,
+	competition_edition_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_trophy_player_case TABLE
- * NAME : trophy_player_case_fk_partecipation
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_trophy_case TABLE
+ * NAME : player_trophy_case_fk_player
  *
- * DESC : TODO
+ * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
+ *        al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sull trofeo vinto
  ******************************************************************************/
-ALTER TABLE	fp_trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_partecipation
-FOREIGN KEY
-(
-	competition_edition_id,
-	team_id
-)
-REFERENCES fp_partecipation
-(
-	competition_edition_id,
-	team_id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_trophy_player_case TABLE
- * NAME : trophy_player_case_fk_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_player
+ALTER TABLE	fp_player_trophy_case
+ADD CONSTRAINT player_trophy_case_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -2117,18 +2660,47 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_trophy_player_case TABLE
- * NAME : trophy_player_case_fk_trophy
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_trophy_case TABLE
+ * NAME : player_trophy_case_fk_partecipation
  *
- * DESC : TODO
+ * DESC : Un trofeo calcistico vinto da un calciatore fa riferimento
+ *        alla partecipazione della squadra di calcio all'edizione
+ *        della competizione calcistica cui e' associato il trofeo vinto.
+ *        Un cambiamento della partecipazione si ripercuotera' a cascata
+ *        sull trofeo vinto
  ******************************************************************************/
-ALTER TABLE	fp_trophy_player_case
-ADD CONSTRAINT trophy_player_case_fk_trophy
+ALTER TABLE	fp_player_trophy_case
+ADD CONSTRAINT player_trophy_case_fk_partecipation
+FOREIGN KEY
+(
+	competition_edition_id,
+	team_id
+)
+REFERENCES fp_partecipation
+(
+	competition_edition_id,
+	team_id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_trophy_case TABLE
+ * NAME : player_trophy_case_fk_trophy
+ *
+ * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
+ *        al trofeo calcistico in questione.
+ *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
+ *        sull trofeo vinto
+ ******************************************************************************/
+ALTER TABLE	fp_player_trophy_case
+ADD CONSTRAINT player_trophy_case_fk_trophy
 FOREIGN KEY
 (
 	trophy_id
@@ -2137,7 +2709,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2147,15 +2719,16 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_prize
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i premi calcistici
  ******************************************************************************/
 CREATE TABLE fp_prize
 (
 	id			serial		NOT NULL,
-	type		ty_trophy	NOT NULL,
+	type		en_award	NOT NULL,
+	role		en_role_mix	NOT NULL,
 	name		dm_string	NOT NULL,
-	description	dm_string	NOT NULL,
-	given		dm_string	NOT NULL  -- give the prize
+	description	dm_string			,
+	given		dm_string	NOT NULL  -- ente che assegna il premio calcistico
 );
 --------------------------------------------------------------------------------
 
@@ -2163,7 +2736,7 @@ CREATE TABLE fp_prize
  * TYPE : PRIMARY KEY CONSTRAINT - fp_prize TABLE
  * NAME : pk_prize
  *
- * DESC : TODO
+ * DESC : Non possono esistere premi calcistici diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_prize
 ADD CONSTRAINT pk_prize
@@ -2175,15 +2748,30 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
- * NAME : uq_prize
+ * NAME : uq_prize_name
  *
- * DESC : TODO
+ * DESC : Non possono esistere premi calcistici diversi con lo stesso nome
  ******************************************************************************/
 ALTER TABLE fp_prize
-ADD CONSTRAINT uq_prize
+ADD CONSTRAINT uq_prize_name
 UNIQUE
 (
 	name
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
+ * NAME : uq_prize_description
+ *
+ * DESC : Non possono esistere premi calcistici diversi
+ *        con la stessa descrizione
+ ******************************************************************************/
+ALTER TABLE fp_prize
+ADD CONSTRAINT uq_prize_description
+UNIQUE
+(
+	description
 );
 --------------------------------------------------------------------------------
 
@@ -2191,42 +2779,47 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_prize_team_case
+ * NAME : fp_team_prize_case
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ *        vinti da una squadra di calcio
  ******************************************************************************/
-CREATE TABLE fp_prize_team_case
+CREATE TABLE fp_team_prize_case
 (
-	assign_year	dm_year	NOT NULL,
+	team_id		integer	NOT NULL,
 	prize_id	integer	NOT NULL,
-	team_id		integer	NOT NULL
+	assign_year	dm_year	NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_prize_team_case TABLE
- * NAME : pk_prize_team_case
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_team_prize_case TABLE
+ * NAME : pk_team_prize_case
  *
- * DESC : TODO
+ * DESC : Una squadra di calcio puo' vincere un premio calcistico in un anno
+ *        al piu' una volta
  ******************************************************************************/
-ALTER TABLE fp_prize_team_case
-ADD CONSTRAINT pk_prize_team_case
+ALTER TABLE fp_team_prize_case
+ADD CONSTRAINT pk_team_prize_case
 PRIMARY KEY
 (
-	assign_year,
+	team_id,
 	prize_id,
-	team_id
+	assign_year
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_prize_team_case TABLE
- * NAME : prize_team_case_fk_prize
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_team_prize_case TABLE
+ * NAME : team_prize_case_fk_prize
  *
- * DESC : TODO
+ * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
+ *        al premio in questione.
+ *        Un cambiamento del premio si ripercuotera' a cascata
+ *        sul premio vinto
  ******************************************************************************/
-ALTER TABLE fp_prize_team_case
-ADD CONSTRAINT prize_team_case_fk_prize
+ALTER TABLE fp_team_prize_case
+ADD CONSTRAINT team_prize_case_fk_prize
 FOREIGN KEY
 (
 	prize_id
@@ -2235,18 +2828,21 @@ REFERENCES fp_prize
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_prize_team_case TABLE
- * NAME : prize_team_case_fk_team
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_team_prize_case TABLE
+ * NAME : team_prize_case_fk_team
  *
- * DESC : TODO
+ * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
+ *        alla squadra in questione.
+ *        Un cambiamento della squadra si ripercuotera' a cascata
+ *        sul premio vinto
  ******************************************************************************/
-ALTER TABLE fp_prize_team_case
-ADD CONSTRAINT prize_team_case_fk_team
+ALTER TABLE fp_team_prize_case
+ADD CONSTRAINT team_prize_case_fk_team
 FOREIGN KEY
 (
 	team_id
@@ -2255,7 +2851,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2263,62 +2859,47 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_prize_player_case
+ * NAME : fp_player_prize_case
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ *        vinti da un calciatore
  ******************************************************************************/
-CREATE TABLE fp_prize_player_case
+CREATE TABLE fp_player_prize_case
 (
-	assign_year	dm_year	NOT NULL,
+	player_id	integer	NOT NULL,
 	prize_id	integer	NOT NULL,
-	player_id	integer	NOT NULL
+	assign_year	dm_year	NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_prize_player_case TABLE
- * NAME : pk_prize_player_case
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_player_prize_case TABLE
+ * NAME : pk_player_prize_case
  *
- * DESC : TODO
+ * DESC : Una calciatore puo' vincere un premio calcistico in un anno
+ *        al piu' una volta
  ******************************************************************************/
-ALTER TABLE fp_prize_player_case
-ADD CONSTRAINT pk_prize_player_case
+ALTER TABLE fp_player_prize_case
+ADD CONSTRAINT pk_player_prize_case
 PRIMARY KEY
 (
-	assign_year,
+	player_id,
 	prize_id,
-	player_id
+	assign_year
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_prize_player_case TABLE
- * NAME : prize_player_case_fk_prize
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_prize_case TABLE
+ * NAME : player_prize_case_fk_player
  *
- * DESC : TODO
+ * DESC : Un premio calcistico vinto da un calciatore fa riferimento
+ *        al calciatore in questione.
+ *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        sul premio vinto
  ******************************************************************************/
-ALTER TABLE fp_prize_player_case
-ADD CONSTRAINT prize_player_case_fk_prize
-FOREIGN KEY
-(
-	prize_id
-)
-REFERENCES fp_prize
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_prize_player_case TABLE
- * NAME : prize_player_case_fk_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_prize_player_case
-ADD CONSTRAINT prize_player_case_fk_player
+ALTER TABLE fp_player_prize_case
+ADD CONSTRAINT player_prize_case_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -2327,10 +2908,32 @@ REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_prize_case TABLE
+ * NAME : player_prize_case_fk_prize
+ *
+ * DESC : Un premio calcistico vinto da un calciatore fa riferimento
+ *        al premio in questione.
+ *        Un cambiamento del premio si ripercuotera' a cascata
+ *        sul premio vinto
+ ******************************************************************************/
+ALTER TABLE fp_player_prize_case
+ADD CONSTRAINT player_prize_case_fk_prize
+FOREIGN KEY
+(
+	prize_id
+)
+REFERENCES fp_prize
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
 
 
 
@@ -2338,15 +2941,22 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti il numero di partite
+ *        giocate in una posizione del campo da gioco da un calciatore
+ *        in una squadra di calcio partecipante ad un'edizione
+ *        di una competizione calcistica
+ *
+ *        NOTA: per semplificare la notazione ci riferiremo a tale concetto
+ *              come "gioco"
  ******************************************************************************/
 CREATE TABLE fp_play
 (
-	id						serial	NOT NULL,
-	competition_edition_id	integer	NOT NULL,
-	team_id					integer	NOT NULL,
-	player_id				integer	NOT NULL,
-	position_id				integer	NOT NULL
+	id						serial		NOT NULL,
+	competition_edition_id	integer		NOT NULL,
+	team_id					integer		NOT NULL,
+	player_id				integer		NOT NULL,
+	position_id				integer		NOT NULL,
+	match					dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -2354,7 +2964,7 @@ CREATE TABLE fp_play
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play TABLE  
  * NAME : pk_play
  *
- * DESC : TODO
+ * DESC : Non possono esistere giochi diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT pk_play
@@ -2368,7 +2978,9 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
  * NAME : uq_play
  *
- * DESC : TODO
+ * DESC : Una calciatore puo' essere associato ad una posizione
+ *        in una squadra di calcio partecipante ad un'edizione
+ *        di una competizione calcistica al piu' una volta
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT uq_play
@@ -2382,10 +2994,29 @@ UNIQUE
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - ck_play TABLE  
+ * NAME : ck_play
+ *
+ * DESC : Una calciatore deve giocare almeno una partita in una posizione
+ *        in una squadra di calcio partecipante ad un'edizione
+ *        di una competizione calcistica
+ ******************************************************************************/
+ALTER TABLE fp_play
+ADD CONSTRAINT ck_play
+CHECK
+(
+	match > 0
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
  * NAME : play_fk_partecipation
  *
- * DESC : TODO
+ * DESC : Un gioco fa riferimento alla partecipazione di una squadra di calcio
+ *        ad un'edizione di una competizione calcistica.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_partecipation
@@ -2399,7 +3030,7 @@ REFERENCES fp_partecipation
 	competition_edition_id,
 	team_id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2407,7 +3038,9 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
  * NAME : play_fk_player_position
  *
- * DESC : TODO
+ * DESC : Un gioco fa riferimento all'associazione tra un calciatore ed
+ *        una posizione del campo da gioco.
+ *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_player_position
@@ -2421,7 +3054,7 @@ REFERENCES fp_player_position
 	player_id,
 	position_id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2431,7 +3064,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play_statistic
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le statistiche
+ *        associate ad un gioco
  ******************************************************************************/
 CREATE TABLE fp_play_statistic
 (
@@ -2445,7 +3079,7 @@ CREATE TABLE fp_play_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
  * NAME : pk_play_statistic
  *
- * DESC : TODO
+ * DESC : Ad un gioco puo' essere associata al piu' una statistica
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT pk_play_statistic
@@ -2460,7 +3094,10 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
  * NAME : play_statistic_fk_play
  *
- * DESC : TODO
+ * DESC : L'associazione di un gioco ad una statistica
+ *        fa riferimento al gioco in questione.
+ *        Un cambiamento del gioco si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_play
@@ -2472,7 +3109,7 @@ REFERENCES fp_play
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2480,7 +3117,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
  * NAME : play_statistic_fk_statistic
  *
- * DESC : TODO
+ * DESC : L'associazione di un gioco ad una statistica
+ *        fa riferimento alla statistica in questione.
+ *        Un cambiamento della statistica si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_statistic
@@ -2492,7 +3132,7 @@ REFERENCES fp_statistic
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2502,7 +3142,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy_statistic
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti le statistiche
+ *        associate ad una militanza
  ******************************************************************************/
 CREATE TABLE fp_militancy_statistic
 (
@@ -2516,7 +3157,7 @@ CREATE TABLE fp_militancy_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy_statistic TABLE  
  * NAME : pk_militancy_statistic
  *
- * DESC : TODO
+ * DESC : Ad una militanza puo' essere associata al piu' una statistica
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
 ADD CONSTRAINT pk_militancy_statistic
@@ -2531,7 +3172,10 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy_statistic TABLE
  * NAME : militancy_statistic_fk_militancy
  *
- * DESC : TODO
+ * DESC : L'associazione di una militanza ad una statistica
+ *        fa riferimento alla militanza in questione.
+ *        Un cambiamento della militanza si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
 ADD CONSTRAINT militancy_statistic_fk_militancy
@@ -2543,7 +3187,7 @@ REFERENCES fp_militancy
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2551,7 +3195,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy_statistic TABLE
  * NAME : militancy_statistic_fk_statistic
  *
- * DESC : TODO
+ * DESC : L'associazione di una militanza ad una statistica
+ *        fa riferimento alla statistica in questione.
+ *        Un cambiamento della statistica si ripercuotera' a cascata
+ *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
 ADD CONSTRAINT militancy_statistic_fk_statistic
@@ -2563,7 +3210,7 @@ REFERENCES fp_statistic
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2574,13 +3221,14 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_user_account
  *
- * DESC : TODO
+ * DESC : Tabella contentente informazioni riguardanti gli account utente
+ *        che possono utilizzare l'applicativo connesso al database
  ******************************************************************************/
 CREATE TABLE fp_user_account
 (
 	username	dm_username	NOT NULL,
 	password	dm_password	NOT NULL,
-	priviledge	dm_usint	NOT NULL  -- level of priviledge					
+	priviledge	dm_usint	NOT NULL  -- livello di privilegio dell'utente				
 );
 --------------------------------------------------------------------------------
 
@@ -2588,7 +3236,7 @@ CREATE TABLE fp_user_account
  * TYPE : PRIMARY KEY CONSTRAINT - fp_user_account TABLE
  * NAME : pk_user_account
  *
- * DESC : TODO
+ * DESC : Non possono esistere account utente diversi con lo stesso username
  ******************************************************************************/
 ALTER TABLE	fp_user_account
 ADD CONSTRAINT pk_user_account
@@ -2619,45 +3267,62 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : corr_containment
+ * NAME : can_be_member
  *
- * IN      : fp_country.id%TYPE, fp_country.id%TYPE
+ * IN      : fp_confederation.id%TYPE, fp_confederation.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se la prima confederazione calcistica in input
+ *        puo' essere membro della seconda confederazione calcistica in input
+ *        in base al tipo di paese ad esse associato.
+ *        
+ *        NOTA: per non appesantire eccessivamente la notazione in questa
+ *              funzione useremo impropriamente il nome di variabile "type_conf"
+ *              per denotare il tipo del paese associato alla confederazione 
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION corr_containment
+CREATE OR REPLACE FUNCTION can_be_member
 (
-	IN	id_in_country	fp_country.id%TYPE,
-	IN	id_su_country	fp_country.id%TYPE
+	IN	id_conf			fp_confederation.id%TYPE,
+	IN	id_super_conf	fp_confederation.id%TYPE
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	type_in_country	text;			
-	type_su_country	text;
+	tmp				text;
+	id_country		integer;
+
+	type_conf		text;
+	type_super_conf	text;
 	
 BEGIN
 	
-	type_in_country	= get_attr('fp_country', 'type', id_in_country);						
-	type_su_country = get_attr('fp_country', 'type', id_su_country);
+	-- prendo il tipo del paese associato alla confederazione memebro
+	tmp = get_column('fp_confederation', 'id_country', id_conf);
+	id_country = CAST(tmp AS integer);					
+	type_conf = get_column('fp_country', 'type', id_country);
+
+	-- prendo il tipo del paese associato alla confederazione avente membro
+	tmp = get_column('fp_confederation', 'id_country', id_super_conf);
+	id_country = CAST(tmp AS integer);					
+	type_super_conf = get_column('fp_country', 'type', id_country);
 
 	IF
 	(
-		('NATION' = type_in_country AND 'CONTINENT' = type_su_country)
+		('NATION' = type_conf AND 'CONTINENT' = type_super_conf)
 		OR
-		('CONTINENT' = type_in_country AND 'WORLD' = type_su_country)
+		('CONTINENT' = type_conf AND 'WORLD' = type_super_conf)
 		OR
-		('WORLD' = type_in_country AND type_su_country IS NULL)
+		('WORLD' = type_conf AND type_super_conf IS NULL)
 	)
 	THEN
 		RETURN TRUE;
 	END IF;
 	
+	RAISE NOTICE 'Confederation (id = %) cannot be member of confederation (id = %)', id_conf, id_super_conf;
 	RETURN FALSE;
 	
 END;
@@ -2676,7 +3341,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se l'id di un paese in input e' di una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
@@ -2692,12 +3357,13 @@ DECLARE
 
 BEGIN
 	
-	type_country = get_attr('fp_country', 'type', id_country);
+	type_country = get_column('fp_country', 'type', id_country);
 
 	IF ('NATION' = type_country) THEN
 		RETURN TRUE;
 	END IF;
 	
+	RAISE NOTICE 'Country (id =  %) is not a nation', id_country;
 	RETURN FALSE;
 	
 END;
@@ -2716,7 +3382,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : fp_confederation.id%TYPE
  *
- * DESC : TODO
+ * DESC : Funzione che dato in input l'id di un'edizione di una competizione
+ *        calcistica restituisce l'id della confederazione calcistica associata
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_from_comp_ed
 (
@@ -2730,14 +3397,17 @@ DECLARE
 
 	tmp		text;
 	id_comp	integer;
+
 	id_conf	integer;
 
 BEGIN
 	
-	tmp = get_attr('fp_competition_edition', 'competition_id', id_comp_ed);
+	-- prendo la competizione associata all'edizione
+	tmp = get_column('fp_competition_edition', 'competition_id', id_comp_ed);
 	id_comp = CAST(tmp AS integer);
 
-	tmp = get_attr('fp_competition', 'confederation_id', id_comp);
+	-- prendo la confederazione associata alla competizione
+	tmp = get_column('fp_competition', 'confederation_id', id_comp);
 	id_conf = CAST(tmp AS integer);
 
 	RETURN id_conf;
@@ -2759,7 +3429,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che dato in input l'id di una competizione calcistica valuta
+ *        se essa ha edizioni nel database
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_edition
 (
@@ -2769,17 +3440,28 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	have	boolean;
+
 BEGIN
 	
-	RETURN
-	(
-		SELECT
-			count(*) > 0
-		FROM
-			fp_competition_edition
-		WHERE
-			competition_id = id_comp
-	);
+	have = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		have
+	FROM
+		fp_competition_edition
+	WHERE
+		competition_id = id_comp;
+
+	IF (NOT have) THEN
+		RAISE NOTICE 'Competition (id =  %) does not have editions', id_comp;
+	END IF;
+
+	RETURN have;
 	
 END;
 $$
@@ -2799,12 +3481,14 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una competizione calcistica puo' avere
+ *        un'edizione che inizia in un determinato anno, rispetto alla
+ *        sua frequenza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_freq
 (
 	IN	id_comp	fp_competition.id%TYPE,
-	IN	s_year	dm_year
+	IN	s_year	dm_year                 -- anno di inizio
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -2814,17 +3498,21 @@ DECLARE
 
 	tmp		text;
 	freq	integer;
-	a_year	integer;
+	a_year	integer; -- un anno di inizio di un'edizione
 	
 BEGIN
 	
-	tmp = get_attr('fp_competition', 'frequency', id_comp);
+	tmp = get_column('fp_competition', 'frequency', id_comp);
 	freq = CAST(tmp AS integer);
 
+	-- se la frequenza della competizione calcistica e' annnuale o irregolare
 	IF (freq <= 1) THEN
 		RETURN TRUE;
+	-- altrimenti
 	ELSE
 
+		-- seleziono un anno di inizio di una qualsiasi edizione
+		-- della competizione calcistica
 		SELECT
 			start_year
 		INTO
@@ -2836,11 +3524,14 @@ BEGIN
 		LIMIT
 			1;
 
+		-- ...e valuto se l'anno di inizio in input e' accettabile
+		-- rispetto alla frequenza della competizione calcistica
 		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
 		END IF;
 	END IF;
 	
+	RAISE NOTICE 'Competition (id =  %) cannot start in year %, bad frequency', id_comp, s_year;
 	RETURN FALSE;
 	
 END;
@@ -2859,7 +3550,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una squadra di calcio appartiene ad una
+ *        confederazione calcistica membro di un'altra confederazione
+ *        
+ *        NOTA: per non appesantire eccessivamente la notazione in questa
+ *              funzione useremo impropriamente il nome di variabile "type_conf"
+ *              per denotare il tipo del paese associato alla confederazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION belong_to
 (
@@ -2872,34 +3568,57 @@ AS
 $$
 DECLARE
 
-	tmp							text;
-	id_conf_team				integer;
-	id_super_conf_team			integer;
-	id_super_super_conf_team	integer;
+	tmp					text;
 
+	type_conf			text;
+
+	id_country			integer;
+
+	id_conf_to_check	integer;
+	
 BEGIN
 
-	tmp = get_attr('fp_team', 'confederation_id', id_team);
-	id_conf_team = CAST(tmp AS integer);
+	-- prendo il tipo del paese associato alla confederazione memebro
+	tmp = get_column('fp_confederation', 'id_country', id_conf);
+	id_country = CAST(tmp AS integer);					
+	type_conf = get_column('fp_country', 'type', id_country);
 
-	IF (id_conf_team = id_conf) THEN
-		RETURN TRUE;
+	-- prendo la confederazione calcistica associata alla squadra di calcio
+	tmp = get_column('fp_team', 'confederation_id', id_team);
+	id_conf_to_check = CAST(tmp AS integer);
+
+	-- se la confederazione in input e' nazionale
+	IF ('NATION' = type_conf) THEN
+		IF (id_conf_to_check = id_conf) THEN
+			RETURN TRUE;
+		END IF;
+	END IF;
+
+	-- prendo la confederazione calcistica contenente quella
+	-- associata alla squadra di calcio
+	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
+	id_conf_to_check = CAST(tmp AS integer);
+	
+	-- se la confederazione in input e' continentale
+	IF ('CONTINENT' = type_conf) THEN
+		IF (id_conf_to_check = id_conf) THEN
+			RETURN TRUE;
+		END IF;
 	END IF;
 	
-	tmp = get_attr('fp_confederation', 'super_id', id_conf_team);
-	id_super_conf_team = CAST(tmp AS integer);
+	-- prendo la confederazione calcistica che contiene quella contenente quella
+	-- associata alla squadra di calcio
+	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
+	id_conf_to_check = CAST(tmp AS integer);
 	
-	IF (id_super_conf_team = id_conf) THEN
-		RETURN TRUE;
+	-- se la confederazione in input e' mondiale
+	IF ('WORLD' = type_conf) THEN
+		IF (id_conf_to_check = id_conf) THEN
+			RETURN TRUE;
+		END IF;
 	END IF;
 	
-	tmp = get_attr('fp_confederation', 'super_id', id_super_conf_team);
-	id_super_super_conf_team = CAST(tmp AS integer);
-	
-	IF (id_super_super_conf_team = id_conf) THEN
-		RETURN TRUE;
-	END IF;
-	
+	RAISE NOTICE 'Team (id =  %) does not belong to confederation (id = %)', id_team, id_conf;
 	RETURN FALSE;
 	
 END;
@@ -2913,16 +3632,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : available
+ * NAME : has_place
  *
  * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un'edizione di una competizione calcistica
+ *        ha ancora posti a disposizione per squadre di calcio
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION available
+CREATE OR REPLACE FUNCTION has_place
 (
 	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
@@ -2933,22 +3653,32 @@ $$
 DECLARE
 
 	tmp			text;
+
 	tot_team	integer;
+
+	have		boolean;
 
 BEGIN
 	
-	tmp = get_attr('fp_competition_edition', 'total_team', id_comp_ed);
+	tmp = get_column('fp_competition_edition', 'total_team', id_comp_ed);
 	tot_team = CAST(tmp AS integer);
 
-	RETURN
-	(
-		SELECT
-			count(*) < tot_team
-		FROM
-			fp_partecipation
-		WHERE
-			competition_edition_id = id_comp_ed
-	);
+	have = FALSE;
+
+	SELECT
+		count(*) < tot_team
+	INTO
+		have
+	FROM
+		fp_partecipation
+	WHERE
+		competition_edition_id = id_comp_ed;
+
+	IF (NOT have) THEN
+		RAISE NOTICE 'Competition edition (id = %) does not have place', id_comp_ed;
+	END IF;
+
+	RETURN have;
 
 END;
 $$
@@ -2961,17 +3691,17 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_role
  *
- * IN      : fp_player.id%TYPE, ty_role
+ * IN      : fp_player.id%TYPE, en_role
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un giocatore e' associato ad un ruolo di gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_role
 (
 	IN	id_player		fp_player.id%TYPE,
-	IN	role_to_check	ty_role
+	IN	role_to_check	en_role
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -2984,6 +3714,7 @@ DECLARE
 
 BEGIN
 	
+	-- per ogni posizione associata al giocatore
 	FOR pos_player
 	IN
 		SELECT
@@ -2994,7 +3725,7 @@ BEGIN
 			player_id = id_player
 	LOOP
 
-		role_pos = get_attr('fp_position', 'role', pos_player);
+		role_pos = get_column('fp_position', 'role', pos_player);
 
 		IF (role_pos = role_to_check) THEN
 			RETURN TRUE;
@@ -3002,6 +3733,7 @@ BEGIN
 
 	END LOOP;
 
+	RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_to_check;
 	RETURN FALSE;
 
 END;
@@ -3013,16 +3745,21 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_time_range
+ * NAME : range_edition
  *
  * IN      : fp_competition_edition.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : daterange
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'intervallo di tempo, in termini di
+ *        data inizio e data fine di un'edizione di una competizione calcistica
+ *
+ *        NOTA: si tratta di date arbitrarie ottenute chiaramente per eccesso
+ *              ma che sono state ottenute facendo numerossisime indagini
+ *              avvalendosi di varie fonti (Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_time_range
+CREATE OR REPLACE FUNCTION range_edition
 (
 	IN	id_comp_ed	fp_competition_edition.id%TYPE
 )
@@ -3033,20 +3770,26 @@ $$
 DECLARE
 
 	time_range	daterange;
-	s_year		integer;
-	e_year		integer;
-	s_date		date;
-	e_date		date;
+	
+	s_year		integer; -- anno di inizio
+	e_year		integer; -- anno di fine
+
+	s_date		date; -- data di inizio
+	e_date		date; -- data di fine
 
 BEGIN
 	
-	s_year = get_attr('fp_competition_edition', 'start_year', id_comp_ed);
-	e_year = get_attr('fp_competition_edition', 'end_year', id_comp_ed);
+	s_year = get_column('fp_competition_edition', 'start_year', id_comp_ed);
+	e_year = get_column('fp_competition_edition', 'end_year', id_comp_ed);
 
+	-- se l'edizione termina nello stesso anno di inizio
 	IF (s_year = e_year) THEN
+		-- ..supponiamo che l'edizione duri tutto l'anno
 		s_date = make_date(s_year, 01, 01);
 		e_date = make_date(s_year, 12, 31);
+	-- altrimenti
 	ELSE
+		-- ..supponiamo che la competizione duri un anno a partire dal primo agosto
 		s_date = make_date(s_year, 08, 01);
 		e_date = make_date(e_year, 07, 31);
 	END IF;
@@ -3071,7 +3814,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore gioca in una squadra di calcio
+ *        durante un intervallo di tempo, espresso come range di date
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION play_in_during
 (
@@ -3083,21 +3827,32 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	play	boolean;
+
 BEGIN
 	
-	RETURN
-	(
-		SELECT
-			count(*) > 0
-		FROM
-			fp_militancy
-		WHERE
-			team_id = id_team
-			AND
-			player_id = id_player
-			AND
-			date_range && time_range
-	);
+	play = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		play
+	FROM
+		fp_militancy
+	WHERE
+		team_id = id_team
+		AND
+		player_id = id_player
+		AND
+		date_range && time_range;
+
+	IF (NOT play) THEN
+		RAISE NOTICE 'Player (id = %) does not play in team (id = %) during date range %', id_player, id_team, time_range;
+	END IF;
+
+	RETURN play;
 
 END;
 $$
@@ -3115,7 +3870,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una posizione del campo di gioco e'
+ *        associabile ad una statistica
+ *
+ *        NOTA: considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione e' associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION pos_fit_stat
 (
@@ -3133,13 +3894,14 @@ DECLARE
 
 BEGIN
 	
-	role_pos = get_attr('fp_position', 'role', id_pos);
-	type_stat = get_attr('fp_statistic', 'type', id_stat);
+	role_pos = get_column('fp_position', 'role', id_pos);
+	type_stat = get_column('fp_statistic', 'type', id_stat);
 
 	IF (position(role_pos in type_stat) > 0) THEN
 		RETURN TRUE;
 	END IF;
 
+	RAISE NOTICE 'Position (id = %) cannot be associated wiht statistic (id = %)', id_pos, id_stat;
 	RETURN FALSE;
 
 END;
@@ -3158,7 +3920,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una squadra di calcio e' compatibile con
+ *        una competizione calcistica.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
 (
@@ -3174,12 +3937,22 @@ DECLARE
 	type_team		text;
 	type_team_comp	text;
 
+	compatibile		boolean;
+
 BEGIN
 	
-	type_team = get_attr('fp_team', 'type', id_team);
-	type_team_comp = get_attr('fp_competition', 'team_type', id_comp);
+	compatibile = FALSE;
+
+	type_team = get_column('fp_team', 'type', id_team);
+	type_team_comp = get_column('fp_competition', 'team_type', id_comp);
 	
-	RETURN type_team = type_team_comp;
+	IF (type_team = type_team_comp) THEN
+		compatibile = TRUE;
+	ELSE
+		RAISE NOTICE 'Team (id = %) is not compatible to competition (id = %)', id_team, id_comp;
+	END IF;
+
+	RETURN compatibile;
 
 END;
 $$
@@ -3190,18 +3963,22 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : valid_daterange
+ * NAME : fp_player.id%TYPE
  *
  * IN      : date
  * INOUT   : void
  * OUT     : void
  * RETURNS : daterange
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'intervallo valido di tempo di possibile
+ *        attivita' per un calciatore
+ *
+ *        NOTE: le eta' minime e massime sono arbitrarie ma ottenute mediante
+ *              numerose ricerche (su Wikipidia, Transfermarkt,..)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION valid_daterange
 (
-	IN	dob		date
+	IN	id_player	fp_player.id%TYPE
 )
 RETURNS daterange
 RETURNS NULL ON NULL INPUT
@@ -3209,11 +3986,16 @@ AS
 $$
 DECLARE
 
+	tmp			text;
+
 	min_age		integer;
 	max_age		integer;
-	dob_year	integer;
-	dob_month	integer;
-	dob_day		integer;
+
+	dob_player	date;	
+	year_dob	integer;
+	month_dob	integer;
+	day_dob		integer;
+
 	valid_range	daterange;
 	s_valid		date;
 	e_valid		date;
@@ -3222,18 +4004,23 @@ BEGIN
 	
 	min_age = 14;
 	max_age = 50;
-	
-	dob_year = extract(year from dob);
-	dob_month = extract(month from dob);
-	dob_day = extract(day from dob);
 
-	IF (2 = dob_month AND 29 = dob_day) THEN
-		dob_month = 3;
-		dob_day = 1;
+	tmp = get_column('fp_player', 'dob', id_player);
+	dob_player = CAST(tmp AS date);
+
+	year_dob = extract(year from dob);
+	month_dob = extract(month from dob);
+	day_dob = extract(day from dob);
+
+	-- gestione del caso particolare nel quale il calciatore
+	-- sia nato il 29 febbraio
+	IF (2 = month_dob AND 29 = day_dob) THEN
+		month_dob = 3;
+		day_dob = 1;
 	END IF;
 
-	s_valid = make_date(dob_year + min_age, dob_month, dob_day);
-	e_valid = make_date(dob_year + max_age, dob_month, dob_day);
+	s_valid = make_date(year_dob + min_age, month_dob, day_dob);
+	e_valid = make_date(year_dob + max_age, month_dob, day_dob);
 
 	valid_range = daterange(s_valid, e_valid, '[]');
 
@@ -3339,7 +4126,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se il numero massimo di squadre di calcio che
+ *        possono partecipare ad una competizione calcistica sia coerente
+ *        con il tipo di competizione
+ *
+ *        NOTE: i valori limite sono arbitrari ma ottenuti grazie a numerose
+ *              ricerche (su Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_tot_team
 (
@@ -3353,7 +4145,9 @@ $$
 DECLARE
 
 	tmp				text;
+
 	id_conf			integer;
+
 	id_country		integer;
 
 	type_country	text;
@@ -3361,37 +4155,50 @@ DECLARE
 	
 BEGIN
 	
-	type_comp = get_attr('fp_competition', 'type', id_comp);
+	type_comp = get_column('fp_competition', 'type', id_comp);
 
+	-- se la competizione calcistica e' una supercoppa
 	IF ('SUPER CUP' = type_comp) THEN
+		-- al massimo sono possibili 6 squadre partecipanti
 		IF (tot_team <= 6) THEN
 			RETURN TRUE;
 		END IF;
+	-- se la competizione calcistica e' un campionato
 	ELSIF ('LEAGUE' = type_comp) THEN
+		-- al massimo sono possibili 50 squadre partecipanti
 		IF (tot_team <= 50) THEN
 			RETURN TRUE;
 		END IF;
+	-- se la competizione calcistica e' un torneo
 	ELSIF ('CUP' = type_comp) THEN
 
-		tmp = get_attr('fp_competition', 'confederation_id', id_comp);
+		tmp = get_column('fp_competition', 'confederation_id', id_comp);
 		id_conf = CAST(tmp_text AS integer);
 
-		tmp = get_attr('fp_confederation', 'country_id', id_conf);
+		tmp = get_column('fp_confederation', 'country_id', id_conf);
 		id_country = CAST(tmp_text AS integer);
 
-		type_country = get_attr('fp_country', 'type', id_country);
+		type_country = get_column('fp_country', 'type', id_country);
 
+		-- se si tratta di una coppa nazionale
 		IF ('NATION' = type_country) THEN
+			-- e' una competizione ad eliminazione diretta
+			-- e il numero di partecipanti deve essere una potenza di 2
 			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
 				RETURN TRUE;
 			END IF;
+		-- se si tratta di una coppa internazionale
 		ELSE
+			-- al massimo sono possibili 50 squadre partecipanti
 			IF (tot_team <= 50) THEN
 				RETURN TRUE;
 			END IF;
 		END IF;
 
 	END IF;
+
+	RAISE NOTICE 'Competition (id = %) has no correct total team number (%)', id_comp, tot_team;
+	RETURN FALSE;
 	
 END;
 $$
@@ -3409,7 +4216,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF fp_competition.id%TYPE
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'id di tutte le competizioni calcistiche
+ *        simili a quella in input.
+ *
+ *        NOTA: per simile si intende una competizione calcistica
+ *              dello stesso tipo e alla quale possono partecipare
+ *              lo stesso tipo di squadre di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp
 (
@@ -3425,7 +4237,7 @@ DECLARE
 
 BEGIN
 	
-	rec_comp = get_rec('fp_competition', id_comp);
+	rec_comp = get_record('fp_competition', id_comp);
 
 	RETURN QUERY
 		SELECT
@@ -3454,7 +4266,11 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF fp_competition_edition.id%TYPE
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'id di tutte le edizioni di competizioni
+ *        calcistiche simili a quella in input.
+ *
+ *        NOTA: per simile si intende un'edizione di una competizione
+ *              calcistica simile con lo stesso anno di inizio e fine
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp_ed
 (
@@ -3470,7 +4286,7 @@ DECLARE
 
 BEGIN
 	
-	rec_comp_ed = get_rec('fp_competition_edition', id_comp_ed);
+	rec_comp_ed = get_record('fp_competition_edition', id_comp_ed);
 
 	RETURN QUERY
 		SELECT
@@ -3511,20 +4327,31 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	can	boolean;
+
 BEGIN
 	
-	RETURN
-	(
-		SELECT
-			count(*) < 1
-		FROM
-			fp_partecipation
-		WHERE
-			team_id = id_team
-			AND
-			competition_edition_id IN (SELECT similar_comp_ed(id_comp_ed))
-	);
-	
+	can = FALSE;
+
+	SELECT
+		count(*) < 1
+	INTO
+		can
+	FROM
+		fp_partecipation
+	WHERE
+		team_id = id_team
+		AND
+		competition_edition_id IN (SELECT similar_comp_ed(id_comp_ed));
+
+	IF (NOT can) THEN
+		RAISE NOTICE 'Team (id = %) cannot partecipate to competition edition (id = %)', id_team, id_comp_ed;
+	END IF;
+
+	RETURN can;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -3535,40 +4362,52 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_nationality
  *
- * IN      : fp_player.id%TYPE, fp_team.id%TYPE
+ * IN      : fp_player.id%TYPE, fp_country.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore ha una certa nazionalita'
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_nationality
 (
 	IN	id_player	fp_player.id%TYPE,
-	IN	id_team		fp_team.id%TYPE
+	IN	id_country	fp_country.id%TYPE
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
+DECLARE
+
+	have	boolean;
+
 BEGIN
 	
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_nationality
-		WHERE
-			player_id = id_player
-			AND
-			team_id = id_team
-	);
+	have = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		have
+	FROM
+		fp_nationality
+	WHERE
+		player_id = id_player
+		AND
+		country_id = id_country;
 	
+	IF (NOT have) THEN
+		RAISE NOTICE 'Player (id = %) has not nationatity country (id = %)', id_player, id_country;
+	END IF;
+
+	RETURN have;
+
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************
@@ -3600,17 +4439,9 @@ CREATE OR REPLACE FUNCTION tf_bi_confederation
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tmp				text;
-	id_country_conf	integer;
-
 BEGIN
 
-	tmp = get_attr('fp_confederation', 'country_id', NEW.super_id);
-	id_country_conf = CAST(tmp AS integer);
-
-	IF (corr_containment(NEW.country_id, id_country_conf)) THEN
+	IF (can_be_member(NEW.id, NEW.super_id)) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -3642,7 +4473,7 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('fp_confederation', 'country_id', NEW.confederation_id);
+	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
 	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
@@ -3653,7 +4484,7 @@ BEGIN
 		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
-			name_country = get_attr('fp_country', 'name', NEW.country_id);
+			name_country = get_column('fp_country', 'name', NEW.country_id);
 
 			IF (NEW.name = name_country) THEN
 		
@@ -3694,10 +4525,10 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('fp_confederation', 'country_id', NEW.confederation_id);
+	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
-	type_country_conf = get_attr('fp_country', 'type', id_country_conf);
+	type_country_conf = get_column('fp_country', 'type', id_country_conf);
 
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
 
@@ -3779,12 +4610,12 @@ BEGIN
 
 	id_conf = conf_from_comp_ed(NEW.competition_edition_id);
 
-	tmp = get_attr('fp_competition_edition', 'competition_id', NEW.competition_edition_id);
+	tmp = get_column('fp_competition_edition', 'competition_id', NEW.competition_edition_id);
 	id_comp = CAST(tmp AS integer);
 
 	IF
 	(
-		available(NEW.competition_edition_id)
+		has_place(NEW.competition_edition_id)
 		AND
 		belong_to(NEW.team_id, id_conf)
 		AND
@@ -3879,12 +4710,12 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('fp_player', 'dob', NEW.player_id);
+	tmp = get_column('fp_player', 'dob', NEW.player_id);
 	dob_player = CAST(tmp AS date);
 	
 	valid_range = valid_daterange(dob_player);
 
-	type_team = get_attr('fp_team', 'type', NEW.team_id);
+	type_team = get_column('fp_team', 'type', NEW.team_id);
 
 	IF ('CLUB' = type_team) THEN
 
@@ -3943,7 +4774,7 @@ DECLARE
 
 BEGIN
 
-	type_tag = get_attr('fp_tag', 'type', NEW.tag_id);
+	type_tag = get_column('fp_tag', 'type', NEW.tag_id);
 
 	IF
 	(
@@ -3978,17 +4809,17 @@ AS
 $$
 DECLARE
 
-	type_attr	text;
+	type_column	text;
 
 BEGIN
 
-	type_attr = get_attr('fp_attribute', 'type', NEW.attribute_id);
+	type_column = get_column('fp_attribute', 'type', NEW.attribute_id);
 
 	IF
 	(
-		type_attr <> 'GOALKEEPER'
+		type_column <> 'GOALKEEPER'
 		OR
-		('GOALKEEPER' = type_attr AND has_role(NEW.player_id, 'GK'))
+		('GOALKEEPER' = type_column AND has_role(NEW.player_id, 'GK'))
 	)
 	THEN
 		RETURN NEW;
@@ -4004,12 +4835,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_trophy_team_case TRIGGER 
- * NAME : tf_bi_trophy_team_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_team_trophy_case TRIGGER 
+ * NAME : tf_bi_team_trophy_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_trophy_team_case
+CREATE OR REPLACE FUNCTION tf_bi_team_trophy_case
 (
 )
 RETURNS trigger
@@ -4021,7 +4852,7 @@ DECLARE
 
 BEGIN
 
-	type_trohy = get_attr('fp_trophy', 'type', NEW.trophy_id);
+	type_trohy = get_column('fp_trophy', 'type', NEW.trophy_id);
 
 	IF ('TEAM' = type_trohy) THEN
 		RETURN NEW;
@@ -4036,12 +4867,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_trophy_player_case TRIGGER 
- * NAME : tf_bi_trophy_player_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_player_trophy_case TRIGGER 
+ * NAME : tf_bi_player_trophy_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_trophy_player_case
+CREATE OR REPLACE FUNCTION tf_bi_player_trophy_case
 (
 )
 RETURNS trigger
@@ -4055,11 +4886,11 @@ DECLARE
 
 BEGIN
 
-	time_range = get_time_range(NEW.competition_edition_id);
+	time_range = range_edition(NEW.competition_edition_id);
 
 	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 
-		type_trohy = get_attr('fp_trophy', 'type', NEW.trophy_id);
+		type_trohy = get_column('fp_trophy', 'type', NEW.trophy_id);
 
 		IF ('TEAM' = type_trohy) THEN
 
@@ -4070,7 +4901,7 @@ BEGIN
 			INTO
 				existence
 			FROM
-				fp_trophy_team_case
+				fp_team_trophy_case
 			WHERE
 				competition_edition_id = NEW.competition_edition_id
 				AND
@@ -4096,12 +4927,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_prize_team_case TRIGGER 
- * NAME : tf_bi_prize_team_case
+ * TYPE : TRIGGER FUNCTION - tg_bi_team_prize_case TRIGGER 
+ * NAME : tf_bi_team_prize_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_prize_team_case
+CREATE OR REPLACE FUNCTION tf_bi_team_prize_case
 (
 )
 RETURNS trigger
@@ -4113,7 +4944,7 @@ DECLARE
 
 BEGIN
 
-	type_prize = get_attr('fp_prize', 'type', NEW.prize_id);
+	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
 
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
@@ -4145,7 +4976,7 @@ DECLARE
 
 BEGIN
 
-	time_range = get_time_range(NEW.competition_edition_id);
+	time_range = range_edition(NEW.competition_edition_id);
 
 	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 		RETURN NEW;
@@ -4179,10 +5010,10 @@ DECLARE
 
 BEGIN
 
-	tmp = get_attr('fp_play', 'player_position_id', NEW.play_id);
+	tmp = get_column('fp_play', 'player_position_id', NEW.play_id);
 	id_player_pos = CAST(tmp AS integer);
 
-	tmp = get_attr('fp_player_position', 'position_id', id_player_pos);
+	tmp = get_column('fp_player_position', 'position_id', id_player_pos);
 	id_pos = CAST(tmp AS integer);
 
 
@@ -4208,7 +5039,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER
  * NAME : tg_bi_confederation
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
 BEFORE INSERT ON fp_confederation
@@ -4221,7 +5052,7 @@ EXECUTE FUNCTION tf_bi_confederation();
  * TYPE : TRIGGER
  * NAME : tg_bi_team
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
 BEFORE INSERT ON fp_team
@@ -4234,7 +5065,7 @@ EXECUTE FUNCTION tf_bi_team();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
@@ -4247,7 +5078,8 @@ EXECUTE FUNCTION tf_bi_competition();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition_edition
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova edizione di una competizione
+ *        calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition_edition
 BEFORE INSERT ON fp_competition_edition
@@ -4260,7 +5092,8 @@ EXECUTE FUNCTION tf_bi_competition_edition();
  * TYPE : TRIGGER
  * NAME : tg_bi_partecipation
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova partecipazione di una
+ *        squadra di calcio ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_partecipation
 BEFORE INSERT ON fp_partecipation
@@ -4273,7 +5106,7 @@ EXECUTE FUNCTION tf_bi_partecipation();
  * TYPE : TRIGGER
  * NAME : tg_bi_player
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuovo calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player
 BEFORE INSERT ON fp_player
@@ -4286,7 +5119,7 @@ EXECUTE FUNCTION tf_bi_player();
  * TYPE : TRIGGER
  * NAME : tg_bi_nationality
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova nazionalita' di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_nationality
 BEFORE INSERT ON fp_nationality
@@ -4299,7 +5132,8 @@ EXECUTE FUNCTION tf_bi_nationality();
  * TYPE : TRIGGER
  * NAME : tg_bi_militancy
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova militanza di un calciatore
+ *        in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_militancy
 BEFORE INSERT ON fp_militancy
@@ -4312,7 +5146,8 @@ EXECUTE FUNCTION tf_bi_militancy();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_tag
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova associazione tra un
+ *        calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
@@ -4325,7 +5160,8 @@ EXECUTE FUNCTION tf_bi_player_tag();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_attribute
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di una nuova associazione tra un
+ *        calciatore ed un attributo
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_attribute
 BEFORE INSERT ON fp_player_attribute
@@ -4336,40 +5172,43 @@ EXECUTE FUNCTION tf_bi_player_attribute();
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_trophy_team_case
+ * NAME : tg_bi_team_trophy_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
+ *        ad una squadra di calcio
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_trophy_team_case
-BEFORE INSERT ON fp_trophy_team_case
+CREATE OR REPLACE TRIGGER tg_bi_team_trophy_case
+BEFORE INSERT ON fp_team_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_trophy_team_case();
+EXECUTE FUNCTION tf_bi_team_trophy_case();
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_trophy_player_case
+ * NAME : tg_bi_player_trophy_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
+ *        ad un calciatore
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_trophy_player_case
-BEFORE INSERT ON fp_trophy_player_case
+CREATE OR REPLACE TRIGGER tg_bi_player_trophy_case
+BEFORE INSERT ON fp_player_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_trophy_player_case();
+EXECUTE FUNCTION tf_bi_player_trophy_case();
 --------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_prize_team_case
+ * NAME : tg_bi_team_prize_case
  *
- * DESC : TODO
+ * DESC : Trigger per l'inserimento di un nuovo premio calcistico assegnato
+ *        ad una squadra di calcio
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bi_prize_team_case
-BEFORE INSERT ON fp_prize_team_case
+CREATE OR REPLACE TRIGGER tg_bi_team_prize_case
+BEFORE INSERT ON fp_team_prize_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bi_prize_team_case();
+EXECUTE FUNCTION tf_bi_team_prize_case();
 --------------------------------------------------------------------------------
 
 
@@ -4397,3 +5236,4 @@ BEFORE INSERT ON fp_play_statistic
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play_statistic();
 --------------------------------------------------------------------------------
+

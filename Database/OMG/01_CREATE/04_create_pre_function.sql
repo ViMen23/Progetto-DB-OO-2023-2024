@@ -712,7 +712,9 @@ BEGIN
 
 	counter = 0;
 
-	FOR row_table IN SELECT * FROM all_references(name_table)
+	FOR row_table
+	IN
+		SELECT * FROM all_references(name_table)
 	LOOP
 		
 		IF (row_table.constr <> name_constr) THEN
@@ -737,6 +739,8 @@ BEGIN
 			
 			to_execute = to_execute || ' ' || where_cond;
 			
+			RAISE NOTICE '%', to_execute;
+
 			EXECUTE to_execute INTO counter;
 			
 			IF (counter > 0) THEN

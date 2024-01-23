@@ -600,7 +600,7 @@ BEGIN
 		date_range && time_range;
 
 	IF (NOT play) THEN
-		RAISE NOTICE 'Player (id = %) does not play in team (id = %) during date range %', id_player, id_team, time_range
+		RAISE NOTICE 'Player (id = %) does not play in team (id = %) during date range %', id_player, id_team, time_range;
 	END IF;
 
 	RETURN play;
@@ -652,7 +652,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	RAISE NOTICE 'Position (id = %) cannot be associated wiht statistic (id = %)', id_pos, id_stat
+	RAISE NOTICE 'Position (id = %) cannot be associated wiht statistic (id = %)', id_pos, id_stat;
 	RETURN FALSE;
 
 END;
@@ -761,7 +761,7 @@ BEGIN
 
 	year_dob = extract(year from dob);
 	month_dob = extract(month from dob);
-	dob_day = extract(day from dob);
+	day_dob = extract(day from dob);
 
 	-- gestione del caso particolare nel quale il calciatore
 	-- sia nato il 29 febbraio
