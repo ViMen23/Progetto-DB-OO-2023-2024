@@ -1,15 +1,15 @@
-\subsection{Conceptual Design}
+\subsection{Progettazione Concettuale}
 
 \newpage
 
-\subsubsection{Class Diagram not restructured}
+\subsubsection{Class Diagram non ristrutturato}
 
 \includegraphics[width=\textwidth]{res/class_diagram_not_restr}
 \newpage
 
 \subsubsection{Analysis of the Class Diagram's restructuring}
 \newpage
-\subsubsection{Restructured Class Diagram}
+\subsubsection{Class Diagram ristrutturato}
 \includegraphics[scale= 0.242]{res/class_diagram_ristr}
 \newpage
 
@@ -115,6 +115,8 @@
 	\\
 \end{tblr}
 
+\newpage
+
 \begin{tblr}{
     hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
     width = \textwidth
@@ -154,7 +156,9 @@
 			l'identificativo di una Militanza.\\
 		\medskip\textbf{dateRange}(daterange):\\Rappresenta
 			il periodo di tempo in cui
-			un calciatore era nella squadra.
+			un calciatore era nella squadra.\\
+		\medskip\textbf{match}:\\Rappresenta il numero
+			di presenze di un Calciatore.
 	}
 	\\
 	{
@@ -198,7 +202,11 @@
 	&
 	{
 		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di un Play.
+			l'identificativo di un Gioco.\\
+		\medskip\textbf{match}(Integer):\\Rappresenta
+			il numero di presenze del Calciatore
+			in quella Posizione,in una Squadra, per quella
+			Edizione della competizione.
 	}
 	\\
 	{
@@ -239,6 +247,15 @@
 			e la data di ritiro di un Calciatore.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+
 	{
 		PlayerAttribute
 	}
@@ -253,12 +270,6 @@
 			il valore di un Attributo associato al Calciatore.
 	}
 	\\
-\end{tblr}
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
 	{
 		PlayerPosition
 	}
@@ -331,6 +342,8 @@
 			l'identificativo del Premio.\\
 		\medskip\textbf{type}(enAward):\\Rappresenta
 			il tipo del Premio.\\
+		\medskip\textbf{role}(enRoleMix):\\Rappresenta
+			i possibili ruoli che sono associati ad un Premio.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Premio.\\
 		\medskip\textbf{description}(String)[parziale]:
@@ -361,6 +374,7 @@
 	\\
 \end{tblr}
 
+\newpage
 
 \begin{tblr}{
     hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
@@ -428,6 +442,8 @@
 			l'identificativo del Trofeo.\\
 		\medskip\textbf{type}(enAward):\\Rappresenta
 			il tipo del Trofeo.\\
+		\medskip\textbf{role}(enRoleMix):\\Rappresenta
+			i possibili ruoli a cui è associato un Trofeo.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Trofeo.\\
 		\medskip\textbf{description}(String)[parziale]:
@@ -458,7 +474,6 @@
 \begin{center}
 	\textbf{Dizionario delle Associazioni}
 \end{center}
-
 
 
 \begin{tblr}{
@@ -595,6 +610,15 @@
 			un Trofeo può avere più bacheche associate.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+
 	{
 		PlayerTrophyCase - Partecipation
 	}
@@ -731,6 +755,15 @@
 			può avere più Squadre associate.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+
 	{
 		Team-Confederation
 	}
@@ -868,6 +901,155 @@
 		\medskip\textbf{Competition [1]}:\\Indica che una
 			Competizione si riferisce ad una e una sola
 			Confederazione.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+	{
+		Competition-CompetitionEdition
+	}
+	&
+	{
+		Esprime la capacità di una Competizione di avere
+		Edizioni.\\È una relazione 1 a N.
+		
+	}
+	&
+	{
+		\textbf{Competition [0 ... *]}:\\Indica che una
+			Competizione può avere più Edizioni associate.\\
+		\medskip\textbf{CompetitionEdition [1]}:\\Indica che
+			una Edizione si riferisce ad una e una sola
+			Competizione
+	}
+	\\
+	{
+		Trophy-Partecipation
+	}
+	&
+	{
+		Esprime la bacheca dei trofei di una Squadra.\\
+		È una relazione N a N.
+	}
+	&
+	{
+		\textbf{Trophy [0 ... *]}:\\Indica che un Trofeo
+			può avere più Partecipazioni di una Squadra ad
+			una Edizione associati.\\
+		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che
+			una Partecipazione può avere più trofei associati.
+	}
+	\\
+	{
+		Play-PlayerPosition
+	}
+	&
+	{
+		Esprime un calciatore in che posizione ha giocato.	\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
+			a una e una sola Posizione di gioco del Calciatore.
+		\medskip\textbf{PlayerPosition [0 ... *]}:\\Indica che
+			uno stesso Calciatore con la stessa
+			Posizione di gioco può giocare più volte.
+	}
+	\\
+	{
+		Play-Partecipation
+	}
+	&
+	{
+		Esprime una squadra in che competizione ha giocato.\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
+			a una e una sola Partecipazione.\\
+		\medskip{Partecipation [0 ... *]}:\\Indica che una
+			Partecipazione può avere più Giochi associati.
+	}
+	\\
+	{
+		Play-PlayStatistic
+	}
+	&
+	{
+		Esprime la capacità di un Gioco di poter avere
+		valori di Statistiche associati.\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{Play [0 ... *]}:\\Indica che un Gioco può
+			avere più valori di Statistiche associati.\\
+		\medskip\textbf{PlayStatistic [1]}:\\Indica che
+			il valore di una Statistica si riferisce ad
+			uno e un solo Gioco.
+	}
+	\\
+	{
+		PlayStatistic-Statistic
+	}
+	&
+	{
+		Esprime la capacità delle Statistiche di poter avere
+		più valori per il Gioco associati.\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{PlayStatistic [1]}:\\Indica che un valore
+			di una Statistica si riferisce ad una e una sola
+			Statistica.\\
+		\medskip\textbf{Statistic [0 ... *]}:\\Indica che
+			una Statistica può avere più valori associati.
+	}
+	\\
+	{
+		Statistic-MilitancyStatistic
+	}
+	&
+	{
+		Esprime la capacità delle Statistiche di poter avere
+		più valori per la Militanza associati.\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{Statistic [0 ... *]}:\\Indica che una Statistica
+			può avere più valori associati.\\
+		\medskip\textbf{MilitancyStatistic [1]}:\\Indica che
+			un valore di una Statistica si riferisce
+			ad una e una sola Statistica.
+			
+	}
+	\\
+	{
+		MilitancyStatistic-Militancy
+	}
+	&
+	{
+		Esprime la capacità di una Militanza di poter avere
+		più valori di Statistiche associati.\\
+		È una relazione 1 a N.
+	}
+	&
+	{
+		\textbf{MilitancyStatistic [1]}:\\Indica che
+			un valore di una Statistica si riferisce
+			ad una e una sola Militanza.\\
+		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
+			una Militanza può avere più valori associati.
 	}
 	\\
 \end{tblr}

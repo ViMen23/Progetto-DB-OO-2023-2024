@@ -1805,7 +1805,7 @@ UNIQUE
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT ck_play
-UNIQUE
+CHECK
 (
 	match > 0
 );
