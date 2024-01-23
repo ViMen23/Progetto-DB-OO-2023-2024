@@ -1,19 +1,353 @@
-\subsection{Progettazione Concettuale}
+\subsection{\Large Progettazione Concettuale}
 
 \newpage
 
-\subsubsection{Class Diagram non ristrutturato}
+\subsubsection{\Large Class Diagram non ristrutturato}
 
 \includegraphics[width=\textwidth]{res/class_diagram_not_restr}
 \newpage
 
-\subsubsection{Analysis of the Class Diagram's restructuring}
+\subsubsection{\Large Ristrutturazione del Class Diagram}
+
+\textbf{\large Analisi delle Ridondanze}
+
+Possiamo constatare che non ci sono attributi ridondanti.
+
+Notiamo però che vista l'alta frequenza di certe operazioni, 
+che dovranno essere compiute sul database, vi è
+un impellente necessità di introdurre delle ridondanze.
+
+
+Prima operazione su tutte, è la visualizzazione di un 
+resoconto delle statistiche di un calciatore rispetto alla 
+sua militanza
+(operazione richiesta anche dalla traccia).
+Quest'ultimo infatti si potrebbe ottenere facendo una somma 
+delle  statistiche riferite ai Play che sono associati allo 
+specifico calciatore, alla squadra della militanza che si sta 
+tenendo in considerazione e che siano avvenuti nell'arco di 
+tempo in cui il calciatore in questione militava per quella 
+certa squadra.
+
+
+Per evitare che ad ogni richiesta di questa operazione si 
+debba rifare il calcolo, soffermandoci nuovamente sul fatto 
+che si suppone che questa operazione venga effettuata un 
+numero molto elevato di volte, si vede la necessità di 
+aggiungere in \textbf{Militanza} un attributo \textbf{match} 
+che conservi il numero di presenze in campo di un calciatore 
+durante quella specifica militanza.
+
+Inoltre, vi è necessario aggiungere una classe 
+\textbf{MilitancyStatistic} che sarà associata a 
+\textbf{Statistic} e a \textbf{Militancy}, e che conterrà 
+come attributo, \textbf{score} che ha lo scopo di conservare 
+il valore di una certa statistica di un calciatore durante 
+una specifica militanza.
+
+
+Un'altra operazione che si suppone sia ricorrente, è il 
+resoconto
+del numero di presenze in campo di un calciatore in una 
+determinata posizione.
+Questo calcolo si potrebbe ottere dalla somma dell'attributo 
+\textbf{match} delle tuple in Play associate al calciatore in 
+quella determinata posizione.
+
+Per velocizzare l'operzione si vede necessario, dunque, 
+introdurre nella classe \textbf{PlayPosition} un attributo 
+\textbf{match} che conservi il numero di presenze in campo di 
+un calciatore in una specifica posizione.
+
+
+L'ultima operazione, ovvero la visualizzazione delle 
+nazionalità di un giocatore, si potrebbe ottenere navigando 
+entrambe le associazioni che \textbf{Player} ha con 
+\textbf{Country}: bornCountry e Nationality.
+
+Visto che il nostro database ha come scopo primario l'essere 
+un sistema informativo per i calciatori, si vede necessario 
+aggiungere alla relazione Nationality anche la nazione di 
+nascita del calciatore così da velocizzare l'operazione, in 
+quanto così facendo basta navigare soltanto l'associazione 
+Nationality.
+
 \newpage
-\subsubsection{Class Diagram ristrutturato}
+\textbf{\large Eliminazione delle Generalizzazioni}
+
+Nonostante le numerose generalizzazioni presenti nel Class 
+Diagram, tutte hanno un qualcosa in comune, ovvero sono 
+generalizzazioni disgiunte totali, e in particolare le classi 
+figlie non hanno attributi propri, ma al massimo associazioni 
+con altre classi.
+
+A seguito di ciò dunque, come metodo per eliminarle, si 
+deciso di adottare l'accorpamento delle figlie della 
+generalizzazione nel padre, aggiungendo dove necessario un 
+attributo \textbf{type} che distinguesse le varie istanze 
+della classe padre, e facendo le dovute correzioni ad 
+eventuali associazioni delle classi figlie con le altre 
+classi.
+
+Di seguito viene mostrato un elenco delle generalizzazioni e 
+di come sono state ristrutturate:
+
+\bigskip
+\textbf{Country}
+\bigskip
+
+Alla classe \textbf{Country} è stato aggiunto un attributo 
+\textbf{type} di tipo enum chiamato \textbf{enCountry}.
+Il tipo \textbf{enCountry} può assumere tre valori:
+\begin{itemize}
+	\item Nation;
+	\item Continental;
+	\item World.
+\end{itemize}
+
+Per quanto riguarda le associazioni:
+
+Le associazioni delle classi figlie di \textbf{Country} con 
+le classi figlie di \textbf{Confederation} sono state 
+accorpate, risultandone in un unica associazione tra 
+\textbf{Country} e \textbf{Confederation} con molteplicità 
+invariata.
+
+Per quanto riguarda le associazioni della classe figlia 
+\textbf{Nation} con \textbf{Player} e \textbf{Team}, esse 
+sono state ricollegate alla classe padre \textbf{Country} 
+mantenendo la molteplicità invariata.
+
+\bigskip
+\textbf{Confederation}
+\bigskip
+
+Alla classe \textbf{Confederation}  non è stato aggiunto un 
+attributo \textbf{type} poiché si è sfruttato l'associazione 
+1 a 1 che le classi figlie di \textbf{Confederation} avevano 
+con le classi figlie di \textbf{Country}.
+Dunque per comprendere a quale classe figlia una tupla di 
+\textbf{Confederation} corrisponde, bisogna basarsi 
+sull'attributo \textbf{type} della classe \textbf{Country}.
+
+Per quanto riguarda le associazioni:
+
+Le due associazioni che intercorrono tra le classi figlie di 
+\textbf{Confederation}, ovvero l'associazione tra 
+\textbf{NationalConfederation} e 
+\textbf{ContinentalConfederation}, e tra 
+\textbf{ContinentalConfederation} e 
+\textbf{WorldConfederation}, sono state accorpate, 
+risultandone in un'unica associazione tra la classe 
+\textbf{Confederation} e sé stessa.
+
+Le due associazioni delle classi figlie 
+\textbf{ContinentalConfederation} e 
+\textbf{WorldConfederation} con \textbf{NationalCompetition}, 
+sono state accorpate, risultandone in un'unica associazione 
+tra la classe \textbf{Confederation} e la classe 
+\textbf{Competition}, classe padre di 
+\textbf{NationalCompetition}.
+
+\newpage
+\textbf{Competition}
+\bigskip
+
+Alla classe \textbf{Competition} sono stati aggiunti due 
+attributi: \textbf{type} di tipo enum chiamato 
+\textbf{enCompetition} e \textbf{teamType} di tipo enum 
+chiamato \textbf{enTeam}. Questo perché anche le classi 
+figlie di \textbf{Competition} erano una generalizzazione a 
+loro volta.
+
+Nota che ci si è ridotti a solo due tipi aggiunti, perché le 
+classi \textbf{NationalCompetition} e {ClubCompetition} hanno 
+le stesse classi figlie.
+
+Il tipo enum \textbf{enTeam} può assumere i seguenti valori:
+\begin{itemize}
+	\item National;
+	\item Club.
+\end{itemize}
+
+Il tipo enum \textbf{enCompetition} può assumere i seguenti 
+valori:
+\begin{itemize}
+	\item Cup;
+	\item League;
+	\item Super Cup.
+\end{itemize}
+
+Per quanto riguarda le associazioni:
+
+L'associazione tra \textbf{ClubCompetition} e 
+\textbf{Confederation}, è stata ricollegata alla classe padre 
+\textbf{Competition} mantenendone però la molteplicità 
+invariata.
+
+
+Le associazioni tra \textbf{NationalCompetition} e  
+\textbf{NationalCompetitionEdition} e tra 
+\textbf{ClubCompetition} e \textbf{ClubCompetitionEdition} 
+sono state accorpate, risultandone in un'unica associazione 
+(con molteplicità invariata) tra \textbf{Competition} e 
+\textbf{CompetitionEdition}, la classe padre di 
+\textbf{NationalCompetitionEdition} e 
+\textbf{ClubCompetitionEdition}.
+
+\bigskip
+\textbf{CompetitionEdition}
+\bigskip
+
+Alla classe \textbf{CompetitionEdition} non è stato aggiunto 
+un attributo \textbf{type} poiché si è sfruttata 
+l'associazione che vi era tra le sue classi figlie e le 
+classi figlie di \textbf{Competition}. Dunque per comprendere 
+a quale classe figlia una tupla di 
+\textbf{CompetitionEdition} corrisponde, bisogna basarsi 
+sull'attributo \textbf{teamType} della classe 
+\textbf{Competition}.
+
+Per quando riguarda le associazioni:
+
+Le associazioni tra \textbf{NationalCompetitionEdition} e 
+\textbf{NationalPartecipation} e tra 
+\textbf{ClubCompetitionEditon} e \textbf{ClubPartecipation}, 
+sono state accorpate, risultandone in un'unica associazione 
+(con molteplicità invariata) tra la classe 
+\textbf{CompetitionEdition} e \textbf{Partecipation}, la 
+classe padre di \textbf{NationalPartecipation} e 
+\textbf{ClubPartecipation}.
+
+
+\bigskip
+\textbf{Team}
+\bigskip
+
+Alla classe \textbf{Team} è stato aggiunto un attributo 
+\textbf{type} di tipo enum chiamato \textbf{enTeam} (lo 
+stesso di Competition).
+
+Per quanto riguarda le associazioni:
+
+Le associazioni tra \textbf{National} e 
+\textbf{NationalPartecipation} e tra \textbf{Club} e 
+\textbf{ClubPartecipation}, sono state accorpate, 
+risultandone in un'unica associazione tra la classe 
+\textbf{Team} e \textbf{Partecipation} la classe padre di
+\textbf{NationalPartecipation} e \textbf{ClubPartecipation}
+
+
+\newpage
+
+\textbf{Partecipation}
+\bigskip
+
+Alla classe \textbf{Partecipation} non è stato aggiunto un 
+attributo \textbf{type} poiché si è sfruttata l'associazione 
+che vi era tra le sue classi figlie e le classi figlie di 
+\textbf{Team}. Dunque per comprendere a quale classe figlia 
+una tupla di \textbf{Partecipation} corrisponde, bisogna 
+basarsi sull'attributo \textbf{type} della classe 
+\textbf{Team}.
+
+Per quanto riguarda le associazioni:
+Sono già state gestite precedentemente.
+
+\bigskip
+\textbf{Trophy}
+\bigskip
+
+Alla classe \textbf{Trophy} è stato aggiunto un attributo 
+\textbf{type} di tipo enum chiamato \textbf{enAward}.
+
+Il tipo \textbf{enAward} assume i seguenti valori:
+\begin{itemize}
+	\item Player
+	\item Team
+\end{itemize}
+
+
+Per quanto riguarda le associazioni:
+
+L'associazione tra \textbf{TeamTrophy} e 
+\textbf{Partecipation} è stata ricollegata alla classe padre 
+\textbf{Trophy} mantenendo la molteplicità invariata.
+
+
+\bigskip
+\textbf{Prize}
+\bigskip
+
+Alla classe \textbf{Prize} è stato aggiunto un attributo 
+\textbf{type} di tipo enum chiamato \textbf{enAward} (lo 
+stesso tipo di Trophy).
+
+Per quanto riguarda le associazioni:
+
+L'associazione tra \textbf{TeamPrize} e 
+\textbf{TeamPrizeCase} è stata ricollegata alla classe padre 
+\textbf{Prize} mantenendo la molteplicità invariata.
+
+
+L'associazione tra \textbf{PlayerPrize} e 
+\textbf{PlayerPrizeCase} è stata ricollegata alla classe 
+padre \textbf{Prize} mantenendo la molteplicità invariata.
+
+\bigskip
+\textbf{\large Eliminazioni Attributi Multivalore}
+\bigskip
+
+Vi sono tre attributi multivalore presenti nel Class Diagram:
+\begin{itemize}
+	\item L'attributo \textbf{role}
+		della classe \textbf{Prize};
+	\item L'attributo \textbf{role}
+		della classe \textbf{Trophy};
+	\item L'attributo \textbf{role}
+		della classe \textbf{Statistic}.
+\end{itemize}
+
+Questo attributo assume la stessa funzione in tutte e tre le 
+Classi, ovvero quello di descrivere quella determinata classe 
+a quali ruoli può essere associata.
+
+
+Data l'importanza assunta da quest'attributo, si è deciso di 
+creare un tipo enum che contiene tutte le combinazioni di 
+ruoli possibili (ci possono essere massimo 4 ruoli).
+
+\newpage
+\textbf{\large Eliminazione Attributi Strutturati}
+\bigskip
+
+Nel Class Diagram non sono presenti Attributi Strutturati.
+
+\bigskip
+\textbf{\large Partizionamento/Accorpamento di Entità
+		e Associazioni}
+\bigskip
+
+L'unica accorpamento che potrebbe essere effettuato nel Class 
+Diagram è quello tra \textbf{Country} e 
+\textbf{Confederation}, poiché tra esse vi è un'associazione 
+1 a 1.
+
+Si è arrivati però alla conclusione che c'è bisogno che le 
+due classi siano separate, perché nelle altre associazioni 
+che esse hanno con le altre classi, svolgono un ruolo 
+centrale.
+
+\bigskip
+\textbf{\large Scelta degli Identificatori Primari}
+\bigskip
+
+\newpage
+\subsubsection{\Large Class Diagram ristrutturato}
 \includegraphics[scale= 0.242]{res/class_diagram_ristr}
 \newpage
 
-\subsubsection{Dizionario}
+\subsubsection{\Large Dizionario}
 
 \begin{center}
 	\textbf{Dizionario delle Classi}
@@ -133,7 +467,7 @@
 	{
 		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
 			l'identificativo di un Paese.\\
-		\textbf{type}(enCountry):\\Rappresenta
+		\medskip\textbf{type}(enCountry):\\Rappresenta
 			il tipo di un Paese.\\
 		\medskip\textbf{code}(String)[chiave naturale]:
 			\\Rappresenta il codice ISO 3166-1 alpha-3
@@ -157,8 +491,8 @@
 		\medskip\textbf{dateRange}(daterange):\\Rappresenta
 			il periodo di tempo in cui
 			un calciatore era nella squadra.\\
-		\medskip\textbf{match}:\\Rappresenta il numero
-			di presenze di un Calciatore.
+		\medskip\textbf{match}(Integer)[derivato]:\\Rappresenta
+			il numero di presenze di un Calciatore.
 	}
 	\\
 	{
@@ -205,7 +539,7 @@
 			l'identificativo di un Gioco.\\
 		\medskip\textbf{match}(Integer):\\Rappresenta
 			il numero di presenze del Calciatore
-			in quella Posizione,in una Squadra, per quella
+			in quella Posizione, in una Squadra, per quella
 			Edizione della competizione.
 	}
 	\\
@@ -498,8 +832,7 @@
 	}
 	&
 	{
-		Esprime le nazionalità di un calciatore.\\
-		È una relazione N a N.
+		Esprime le nazionalità di un calciatore.
 	}
 	&
 	{
@@ -515,8 +848,7 @@
 	}
 	&
 	{
-		Esprime il paese di nascita di un calciatore.\\
-		È una relazione 1 a N.
+		Esprime il paese di nascita di un calciatore.
 	}
 	&
 	{
@@ -528,12 +860,11 @@
 	}
 	\\
 	{
-		Player-PlayerAttribute
+		\textbf{Player-PlayerAttribute}
 	}
 	&
 	{
-		Esprime il valore degli attributi di un calciatore.\\
-		È una relazione 1 a N.
+		Esprime il valore degli attributi di un calciatore.
 	}
 	&
 	{
@@ -545,12 +876,12 @@
 	}
 	\\
 	{
-		PlayerAttribute-Attribute
+		\textbf{PlayerAttribute-Attribute}
 	}
 	&
 	{
 		Esprime a quale attributo si riferisce
-		PlayerAttribute.\\È una relazione 1 a N.
+		PlayerAttribute.
 	}
 	&
 	{
@@ -562,29 +893,27 @@
 	}
 	\\
 	{
-		Player-Tag
+		\textbf{Player-Tag}
 	}
 	&
 	{
-		Esprime i Tag associati ad un Calciatore.\\
-		È una relazione N a N.
+		Esprime i Tag associati ad un Calciatore.
 	}
 	&
 	{
 		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
 			può avere più Tag associati.\\
-		\medskip\textbf{Tag [0 ... *]}\\Indica che
+		\medskip\textbf{Tag [0 ... *]}:\\Indica che
 			uno stesso Tag può essere associato a
 			più Calciatori.
 	}
 	\\
 	{
-		Player - PlayerTrophyCase
+		\textbf{Player-PlayerTrophyCase}
 	}
 	&
 	{
-		Esprime i trofei associati ad un calciatore.\\
-		È una relazione 1 a N.
+		Esprime i trofei associati ad un calciatore.
 	}	
 	&
 	{
@@ -595,12 +924,11 @@
 	}
 	\\
 	{
-		PlayerTrophyCase - Trophy
+		\textbf{PlayerTrophyCase-Trophy}
 	}
 	&
 	{
-		Esprime i trofei associati ad una bacheca.\\
-		È una relazione 1 a N.
+		Esprime i trofei associati ad una bacheca.
 	}
 	&
 	{
@@ -620,31 +948,29 @@
 }
 
 	{
-		PlayerTrophyCase - Partecipation
+		\textbf{PlayerTrophyCase-Partecipation}
 	}
 	&
 	{
 		Esprime le partecipazioni di una squadra
 		ad una competizione edizione associate
-		ad una bacheca.\\
-		È una relazione 1 a N.
+		ad una bacheca.
 	}
 	&
 	{
 		\textbf{PlayerTrophyCase [1]}:\\Indica che una bacheca
-			si può riferire ad uno e un sola Partecipazione.
+			si può riferire ad uno e un sola Partecipazione.\\
 		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che
 			una Partecipazione può avere più bacheche associate.
 	}
 	\\
 	{
-		Player-PlayerPosition
+		\textbf{Player-PlayerPosition}
 	}
 	&
 	{
 		Esprime il numero di partite che un Calciatore
-		ha fatto in una certa posizione.\\
-		È una relazione 1 a N.
+		ha fatto in una certa posizione.
 		
 	}
 	&
@@ -657,13 +983,12 @@
 	}
 	\\
 	{
-		PlayerPosition-Position
+		\textbf{PlayerPosition-Position}
 	}
 	&
 	{
 		Esprime a quale posizione è associato
-		il numero di partite di un Calciatore.\\
-		È una relazione 1 a N.
+		il numero di partite di un Calciatore.
 	}
 	&
 	{
@@ -675,12 +1000,11 @@
 	}
 	\\
 	{
-		Player-Militancy
+		\textbf{Player-Militancy}
 	}
 	&
 	{
-		Esprime le Militanze associate ad un Calciatore.\\
-		È una relazione 1 a N.
+		Esprime le Militanze associate ad un Calciatore.
 	}
 	&
 	{
@@ -692,44 +1016,42 @@
 	}
 	\\
 	{
-		Militancy-Team
+		\textbf{Militancy-Team}
 	}
 	&
 	{
-		Esprime a quale Squadra una Militanza è associata.\\
-		È una relazione 1 a N.
+		Esprime a quale Squadra una Militanza è associata.
 	}
 	&
 	{
 		\textbf{Militancy [1]}:\\Indica che una Militanza
 			si può riferire ad una e una sola Squadra.\\
-		\medskip\textbf{Team [0 ... *}:\\Indica che una Squadra
+		\medskip\textbf{Team [0 ... *]}:\\Indica che una Squadra
 			può avere più Militanze associate.
 	}
 	\\
 	{
-		Player-PlayerPrizeCase
+		\textbf{Player-PlayerPrizeCase}
 	}
 	&
 	{
 		Esprime i premi associati ad un Calciatore
-		nella Bacheca.\\È una relazione 1 a N.
+		nella Bacheca.
 	}
 	&
 	{
 		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può avere più premi associati in una Bacheca.
+			può avere più premi associati in una Bacheca.\\
 		\medskip\textbf{PlayerPrizeCase [1]}:\\Indica che una
 			Bacheca si può riferire ad un e un solo Calciatore.
 	}
 	\\
 	{
-		PlayerPrizeCase-Prize
+		\textbf{PlayerPrizeCase-Prize}
 	}
 	&
 	{
-		Esprime i Premi ai quali è associata una Bacheca.\\
-		È una relazione 1 a N.
+		Esprime i Premi ai quali è associata una Bacheca.
 	}
 	&
 	{
@@ -740,12 +1062,11 @@
 	}
 	\\
 	{
-		Team-Country
+		\textbf{Team-Country}
 	}
 	&
 	{
-		Esprime la nazionalità di una Squadra.\\
-		È una relazione 1 a N.
+		Esprime la nazionalità di una Squadra.
 	}
 	&
 	{
@@ -765,12 +1086,11 @@
 }
 
 	{
-		Team-Confederation
+		\textbf{Team-Confederation}
 	}
 	&
 	{
-		Esprime la Confederazione di cui una Squadra è membra.\\
-		È una relazione 1 a N.
+		Esprime la Confederazione di cui una Squadra è membra.
 	}
 	&
 	{
@@ -781,12 +1101,12 @@
 	}
 	\\
 	{
-		Team-Partecipation	
+		\textbf{Team-Partecipation}
 	}
 	&
 	{
 		Esprime le edizioni delle Competizioni a cui una Squadra
-		Partecipa.\\È una relazione 1 a N.
+		Partecipa.
 	}
 	&
 	{
@@ -798,13 +1118,12 @@
 	}
 	\\
 	{
-		Partecipation-CompetitionEdition
+		\textbf{Partecipation-CompetitionEdition}
 	}
 	&
 	{
 		Esprime a quali Edizioni di una Competizione una
-		Partecipazione di una Squadra si riferisce.\\
-		È una relazione 1 a N.
+		Partecipazione di una Squadra si riferisce.
 	}
 	&
 	{
@@ -817,12 +1136,12 @@
 	}
 	\\
 	{
-		Team-TeamPrizeCase
+		\textbf{Team-TeamPrizeCase}
 	}
 	&
 	{
 		Esprime i premi associati ad una Squadra
-		in una Bacheca.\\È una relazione 1 a N.
+		in una Bacheca.
 	}
 	&
 	{
@@ -833,12 +1152,11 @@
 	}
 	\\
 	{
-		TeamPrizeCase-Prize	
+		\textbf{TeamPrizeCase-Prize}
 	}
 	&
 	{
-		Esprime i Premi ai quali è associata una Bacheca.\\
-		È una relazione 1 a N.
+		Esprime i Premi ai quali è associata una Bacheca.
 	}
 	&
 	{
@@ -849,12 +1167,12 @@
 	}
 	\\
 	{
-		Confederation-Country
+		\textbf{Confederation-Country}
 	}
 	&
 	{
 		Esprime l'appartenza di una Confederazione
-		ad un unico Paese e viceversa.\\È una relazione 1 a 1.
+		ad un unico Paese e viceversa.
 	}
 	&
 	{
@@ -872,14 +1190,13 @@
 	{
 		Esprime la possibilità di una confederazione di
 		avere come membri altre confederazioni, o essere
-		membro a sua volta.\\
-		È una relazione 1 a N.
+		membro a sua volta.
 	}
 	&
 	{
 		\textbf{Confederation [0 ... 1]} ruolo (contenuto):\\
 			Indica che una Confederazione può o non può essere
-			membra di un'altra Confederazione.
+			membra di un'altra Confederazione.\\
 		\medskip\textbf{Confederation [0 ... *]}
 			ruolo (contiene):\\
 			Indica che una Confederazione può avere più
@@ -887,17 +1204,17 @@
 	}
 	\\
 	{
-		Confederation-Competition
+		\textbf{Confederation-Competition}
 	}
 	&
 	{
 		Esprime la capacità di una Confederazione di creare
-		Competizioni.\\È una relazione 1 a N.
+		Competizioni.
 	}
 	&
 	{
 		\textbf{Confederation [0 ... *]}:\\Indica che una
-			Confederazione può creare più Competizioni.
+			Confederazione può creare più Competizioni.\\
 		\medskip\textbf{Competition [1]}:\\Indica che una
 			Competizione si riferisce ad una e una sola
 			Confederazione.
@@ -912,12 +1229,12 @@
     width = \textwidth
 }
 	{
-		Competition-CompetitionEdition
+		\textbf{Competition-CompetitionEdition}
 	}
 	&
 	{
 		Esprime la capacità di una Competizione di avere
-		Edizioni.\\È una relazione 1 a N.
+		Edizioni.
 		
 	}
 	&
@@ -930,12 +1247,11 @@
 	}
 	\\
 	{
-		Trophy-Partecipation
+		\textbf{Trophy-Partecipation}
 	}
 	&
 	{
-		Esprime la bacheca dei trofei di una Squadra.\\
-		È una relazione N a N.
+		Esprime la bacheca dei trofei di una Squadra.
 	}
 	&
 	{
@@ -947,46 +1263,43 @@
 	}
 	\\
 	{
-		Play-PlayerPosition
+		\textbf{Play-PlayerPosition}
 	}
 	&
 	{
-		Esprime un calciatore in che posizione ha giocato.	\\
-		È una relazione 1 a N.
+		Esprime un calciatore in che posizione ha giocato.
 	}
 	&
 	{
 		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
-			a una e una sola Posizione di gioco del Calciatore.
+			a una e una sola Posizione di gioco del Calciatore.\\
 		\medskip\textbf{PlayerPosition [0 ... *]}:\\Indica che
 			uno stesso Calciatore con la stessa
 			Posizione di gioco può giocare più volte.
 	}
 	\\
 	{
-		Play-Partecipation
+		\textbf{Play-Partecipation}
 	}
 	&
 	{
-		Esprime una squadra in che competizione ha giocato.\\
-		È una relazione 1 a N.
+		Esprime una squadra in che competizione ha giocato.
 	}
 	&
 	{
 		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
 			a una e una sola Partecipazione.\\
-		\medskip{Partecipation [0 ... *]}:\\Indica che una
+		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che una
 			Partecipazione può avere più Giochi associati.
 	}
 	\\
 	{
-		Play-PlayStatistic
+		\textbf{Play-PlayStatistic}
 	}
 	&
 	{
 		Esprime la capacità di un Gioco di poter avere
-		valori di Statistiche associati.\\
-		È una relazione 1 a N.
+		valori di Statistiche associati.
 	}
 	&
 	{
@@ -998,13 +1311,12 @@
 	}
 	\\
 	{
-		PlayStatistic-Statistic
+		\textbf{PlayStatistic-Statistic}
 	}
 	&
 	{
 		Esprime la capacità delle Statistiche di poter avere
-		più valori per il Gioco associati.\\
-		È una relazione 1 a N.
+		più valori per il Gioco associati.
 	}
 	&
 	{
@@ -1016,13 +1328,12 @@
 	}
 	\\
 	{
-		Statistic-MilitancyStatistic
+		\textbf{Statistic-MilitancyStatistic}
 	}
 	&
 	{
 		Esprime la capacità delle Statistiche di poter avere
-		più valori per la Militanza associati.\\
-		È una relazione 1 a N.
+		più valori per la Militanza associati.
 	}
 	&
 	{
@@ -1035,13 +1346,12 @@
 	}
 	\\
 	{
-		MilitancyStatistic-Militancy
+		\textbf{MilitancyStatistic-Militancy}
 	}
 	&
 	{
 		Esprime la capacità di una Militanza di poter avere
-		più valori di Statistiche associati.\\
-		È una relazione 1 a N.
+		più valori di Statistiche associati.
 	}
 	&
 	{
