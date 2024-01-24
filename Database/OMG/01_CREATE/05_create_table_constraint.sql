@@ -21,7 +21,7 @@
  * TYPE : TABLE
  * NAME : fp_country
  *
- * DESC : Tabella contentente informazioni riguardanti i paesi
+ * DESC : Tabella contentente informazioni sui paesi
  ******************************************************************************/
 CREATE TABLE fp_country
 (
@@ -80,8 +80,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_confederation
  *
- * DESC : Tabella contentente informazioni riguardanti
- *        le confederazioni calcistiche
+ * DESC : Tabella contentente informazioni sulle confederazioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_confederation
 (
@@ -90,7 +89,7 @@ CREATE TABLE fp_confederation
 	short_name	dm_alnum 	NOT NULL,
 	long_name	dm_alnum	NOT NULL,
 	super_id	integer				  -- confederazione di grado immediatamente
-	                                  -- superiore della quale e' membro
+	                                  -- superiore della quale è membro
 );
 --------------------------------------------------------------------------------
 
@@ -128,7 +127,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_country_id
  *
- * DESC : Un paese deve appartenere al piu' ad una confederazione calcistica
+ * DESC : Un paese deve appartenere al più ad una confederazione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_country_id
@@ -143,8 +142,8 @@ UNIQUE
  * NAME : confederation_fk_confederation
  *
  * DESC : Una confederazione calcistica fa riferimento alla confederazione
- *        calcistica di grado immediatamente superiore della quale e' membro.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        calcistica di grado immediatamente superiore della quale è membro.
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sulla
  *        confederazione calcistica membro 
  ******************************************************************************/
 ALTER TABLE fp_confederation
@@ -157,7 +156,7 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -166,7 +165,7 @@ ON UPDATE CASCADE;
  * NAME : confederation_fk_country
  *
  * DESC : Una confederazione calcistica fa riferimento al paese di appartenenza.
- *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
+ *        Un cambiamento del paese di appartenenza si ripercuoterà a cascata
  *        sulla confederazione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_confederation
@@ -179,7 +178,7 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -189,7 +188,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_team
  *
- * DESC : Tabella contentente informazioni riguardanti le squadre di calcio
+ * DESC : Tabella contentente informazioni sulle squadre di calcio
  ******************************************************************************/
 CREATE TABLE fp_team
 (
@@ -234,7 +233,7 @@ UNIQUE
  * NAME : team_fk_country
  *
  * DESC : Una squadra di calcio fa riferimento al paese di appartenenza.
- *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
+ *        Un cambiamento del paese di appartenenza si ripercuoterà a cascata
  *        sulla squadra di calcio
  ******************************************************************************/
 ALTER TABLE	fp_team
@@ -247,7 +246,7 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -258,7 +257,7 @@ ON UPDATE CASCADE;
  * DESC : Una squadra di calcio fa riferimento alla confederazione calcistica
  *        di appartenenza.
  *        Un cambiamento della confederazione calcistica di appartenenza
- *        si ripercuotera' a cascata sulla squadra di calcio
+ *        si ripercuoterà a cascata sulla squadra di calcio
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_confederation
@@ -270,7 +269,7 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -280,8 +279,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition
  *
- * DESC : Tabella contentente informazioni riguardanti
- *        le competizioni calcistiche
+ * DESC : Tabella contentente informazioni sulle competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition
 (
@@ -329,8 +327,8 @@ UNIQUE
  *
  * DESC : Una competizione calcistica fa riferimento alla confederazione
  *        calcistica di appartenenza.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
- *        competizione calcistica 
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sulla
+ *        competizione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_competition
 ADD CONSTRAINT competition_fk_confederation
@@ -352,7 +350,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition_edition
  *
- * DESC : Tabella contentente informazioni riguardanti le edizioni
+ * DESC : Tabella contentente informazioni sulle edizioni
  *        delle competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition_edition
@@ -420,7 +418,7 @@ CHECK
  *        edizione di una competizione calcistica deve essere compreso tra
  *        un minimo di 2 ed un massimo di 128.
  *
- *        NOTA: il valore massimo, sebbene arbitrario, e' stato ottenuto
+ *        NOTA: Il valore massimo, sebbene arbitrario, è stato ottenuto
  *              mediante una ricerca dettagliata effettuata analizzando
  *              gli storici delle varie edizioni di competizioni calcistiche
  *              su Wikipidia, Transfermarkt e altri siti.
@@ -439,8 +437,8 @@ CHECK
  * NAME : competition_edition_fk_competition
  *
  * DESC : Un'edizione di una competizione calcistica fa riferimento alla 
- *        competizione calcistica cui appartiene.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata
+ *        competizione calcistica a cui appartiene.
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata
  *        sull'edizione della competizione calcistica 
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
@@ -463,7 +461,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_partecipation
  *
- * DESC : Tabella contentente informazioni riguardanti la partecipazione
+ * DESC : Tabella contentente informazioni sulla partecipazione
  *        di una squadra di calcio ad un'edizione di una competizioni calcistica
  ******************************************************************************/
 CREATE TABLE fp_partecipation
@@ -477,7 +475,7 @@ CREATE TABLE fp_partecipation
  * TYPE : PRIMARY KEY CONSTRAINT - fp_partecipation TABLE
  * NAME : pk_partecipation
  *
- * DESC : Ogni squadra di calcio puo' partecipare al piu' una volta ad
+ * DESC : Ogni squadra di calcio può partecipare al più una volta ad
  *        un'edizione di una competizione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
@@ -496,7 +494,7 @@ PRIMARY KEY
  * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
  *        competizione calcistica fa riferimento all'edizione della competizione
  *        calcistica in questione.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sulla
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
@@ -520,7 +518,7 @@ ON UPDATE CASCADE;
  * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
  *        competizione calcistica fa riferimento alla squadra di calcio
  *        in questione.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sulla
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
@@ -543,16 +541,16 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player
  *
- * DESC : Tabella contentente informazioni riguardanti i calciatori
+ * DESC : Tabella contentente informazioni sui calciatori
  ******************************************************************************/
 CREATE TABLE fp_player
 (
 	id			serial		NOT NULL,
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
-	foot		en_foot		NOT NULL, -- piede preferito
-	country_id	integer		NOT NULL, -- id del paese di nascita
 	dob			dm_pdate	NOT NULL, -- data di nascita
+	country_id	integer		NOT NULL, -- id del paese di nascita
+	foot		en_foot		NOT NULL, -- piede preferito
 	career_time	daterange			  -- periodo di tempo nel quale il
 	                                  -- calciatore ha giocato
 );
@@ -595,8 +593,8 @@ UNIQUE
  * NAME : player_fk_country
  *
  * DESC : Un calciatore fa riferimento al paese di nascita.
- *        Un cambiamento del paese di nascita si ripercuotera' a cascata
- *        sull calciatore
+ *        Un cambiamento del paese di nascita si ripercuoterà a cascata
+ *        sul calciatore
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT player_fk_country
@@ -618,7 +616,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_nationality
  *
- * DESC : Tabella contentente informazioni riguardanti le nazionalita'
+ * DESC : Tabella contentente informazioni sulle nazionalità
  *        di un calciatore
  ******************************************************************************/
 CREATE TABLE fp_nationality
@@ -632,7 +630,7 @@ CREATE TABLE fp_nationality
  * TYPE : PRIMARY KEY CONSTRAINT - fp_nationality TABLE
  * NAME : pk_nationality
  *
- * DESC : Ogni calciatore non puo' essere associato piu' di una volta allo
+ * DESC : Ogni calciatore non può essere associato più di una volta allo
  *        stesso paese
  ******************************************************************************/
 ALTER TABLE fp_nationality
@@ -646,14 +644,14 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
- * NAME : nationalien_fk_country
+ * NAME : nationality_fk_country
  *
- * DESC : La nazionalita' di un calciatore fa riferimento al paese in questione.
- *        Un cambiamento del paese si ripercuotera' a cascata sulla
- *        nazionalita'
+ * DESC : La nazionalità di un calciatore fa riferimento al paese in questione.
+ *        Un cambiamento del paese si ripercuoterà a cascata sulla
+ *        nazionalità
  ******************************************************************************/
 ALTER TABLE	fp_nationality
-ADD CONSTRAINT nationalien_fk_country
+ADD CONSTRAINT nationality_fk_country
 FOREIGN KEY
 (
 	country_id
@@ -662,21 +660,21 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
- * NAME : nationalien_fk_player
+ * NAME : nationality_fk_player
  *
- * DESC : La nazionalita' di un calciatore fa riferimento al calciatore
+ * DESC : La nazionalità di un calciatore fa riferimento al calciatore
  *        in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
- *        nazionalita'
+ *        Un cambiamento del calciatore si ripercuoterà a cascata sulla
+ *        nazionalità
  ******************************************************************************/
 ALTER TABLE	fp_nationality
-ADD CONSTRAINT nationalien_fk_player
+ADD CONSTRAINT nationality_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -695,7 +693,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy
  *
- * DESC : Tabella contentente informazioni riguardanti la militanza
+ * DESC : Tabella contentente informazioni sulla militanza
  *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_militancy
@@ -726,7 +724,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
  * NAME : uq_militancy
  *
- * DESC : Un calciatore non puo' militare nella stessa squadra di calcio
+ * DESC : Un calciatore non può militare nella stessa squadra di calcio
  *        nello stesso intervallo di tempo
  ******************************************************************************/
 ALTER TABLE fp_militancy
@@ -745,7 +743,7 @@ UNIQUE
  *
  * DESC : La militanza di un calciatore in una squadra di calcio
  *        fa riferimento alla squadra di calcio in questione.
- *        Un cambiamento della squadra di calcio si ripercuotera' a cascata
+ *        Un cambiamento della squadra di calcio si ripercuoterà a cascata
  *        sulla militanza
  ******************************************************************************/
 ALTER TABLE	fp_militancy
@@ -758,7 +756,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -768,7 +766,7 @@ ON UPDATE CASCADE;
  *
  * DESC : La militanza di un calciatore in una squadra di calcio
  *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
+ *        Un cambiamento del calciatore si ripercuoterà a cascata sulla
  *        militanza
  ******************************************************************************/
 ALTER TABLE	fp_militancy
@@ -791,8 +789,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_tag
  *
- * DESC : Tabella contentente informazioni riguardanti i tag che e' possibile
- *        associare ad un calciatore
+ * DESC : Tabella contentente informazioni sui tag che possono essere
+ *        associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_tag
 (
@@ -851,7 +849,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_tag
  *
- * DESC : Tabella contentente informazioni riguardanti i tag associati
+ * DESC : Tabella contentente informazioni sui tag associati
  *        ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_tag
@@ -865,7 +863,7 @@ CREATE TABLE fp_player_tag
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_tag TABLE 
  * NAME : pk_player_tag
  *
- * DESC : Un calciatore puo' essere associato ad un tag al piu' una volta
+ * DESC : Un calciatore può essere associato ad un tag al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT pk_player_tag
@@ -882,7 +880,7 @@ PRIMARY KEY
  *
  * DESC : L'associazione di un calciatore ad un tag fa riferimento
  *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
@@ -905,7 +903,7 @@ ON UPDATE CASCADE;
  *
  * DESC : L'associazione di un calciatore ad un tag fa riferimento
  *        al tag in questione.
- *        Un cambiamento del tag si ripercuotera' a cascata
+ *        Un cambiamento del tag si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
@@ -918,7 +916,7 @@ REFERENCES fp_tag
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -928,8 +926,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_position
  *
- * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
- *        che un calciatore puo' assumere nel campo di gioco
+ * DESC : Tabella contentente informazioni sulle posizioni di gioco
+ *        che un calciatore può assumere nel campo di gioco
  ******************************************************************************/
 CREATE TABLE fp_position
 (
@@ -988,7 +986,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_position
  *
- * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
+ * DESC : Tabella contentente informazioni sulle posizioni di gioco
  *        associate ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_position
@@ -1004,8 +1002,8 @@ CREATE TABLE fp_player_position
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_position TABLE  
  * NAME : pk_player_position
  *
- * DESC : Un calciatore puo' essere associato ad una posizione di gioco
- *        al piu' una volta
+ * DESC : Un calciatore può essere associato ad una posizione di gioco
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT pk_player_position
@@ -1022,7 +1020,7 @@ PRIMARY KEY
  *
  * DESC : L'associazione di un calciatore ad una posizione di gioco
  *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_position
@@ -1045,7 +1043,7 @@ ON UPDATE CASCADE;
  *
  * DESC : L'associazione di un calciatore ad una posizione di gioco
  *        fa riferimento al calciatore in questione.
- *        Un cambiamento della posizione di gioco si ripercuotera' a cascata
+ *        Un cambiamento della posizione di gioco si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_position
@@ -1058,7 +1056,7 @@ REFERENCES fp_position
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1068,8 +1066,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute
  *
- * DESC : Tabella contentente informazioni riguardanti gli attributi che
- *        e' possibile associare ad un calciatore
+ * DESC : Tabella contentente informazioni sugli attributi che
+ *        possono essere associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute
 (
@@ -1128,7 +1126,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_attribute
  *
- * DESC : Tabella contentente informazioni riguardanti gli attributi
+ * DESC : Tabella contentente informazioni sugli attributi
  *        associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_attribute
@@ -1143,7 +1141,7 @@ CREATE TABLE fp_player_attribute
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_attribute TABLE  
  * NAME : pk_player_attribute
  *
- * DESC : Un calciatore puo' essere associato ad un attributo al piu' una volta
+ * DESC : Un calciatore può essere associato ad un attributo al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT pk_player_attribute
@@ -1160,7 +1158,7 @@ PRIMARY KEY
  *
  * DESC : L'associazione di un calciatore ad un attributo
  *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
@@ -1183,7 +1181,7 @@ ON UPDATE CASCADE;
  *
  * DESC : L'associazione di un calciatore ad un attributo
  *        fa riferimento all'attributo in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
@@ -1196,7 +1194,7 @@ REFERENCES fp_attribute
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1206,8 +1204,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic
  *
- * DESC : Tabella contentente informazioni riguardanti le statistiche che
- *        e' possibile associare ad un calciatore
+ * DESC : Tabella contentente informazioni sulle statistiche che
+ *        possono essere associate ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_statistic
 (
@@ -1266,7 +1264,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_trophy
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  ******************************************************************************/
 CREATE TABLE fp_trophy
 (
@@ -1328,7 +1326,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_team_trophy_case
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  *        vinti da una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_team_trophy_case
@@ -1343,8 +1341,8 @@ CREATE TABLE fp_team_trophy_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team_trophy_case TABLE
  * NAME : pk_team_trophy_case
  *
- * DESC : Una squadra di calcio puo' vincere il trofeo associato
- *        ad un'edizione di una competizione calcistica al piu' una volta
+ * DESC : Una squadra di calcio può vincere il trofeo associato
+ *        ad un'edizione di una competizione calcistica al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT pk_team_trophy_case
@@ -1362,10 +1360,10 @@ PRIMARY KEY
  *
  * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
  *        riferimento alla partecipazione della suddetta squadra
- *        all'edizione della competizione calcistica cui e' associato
+ *        all'edizione della competizione calcistica cui è associato
  *        il trofeo vinto.
- *        Un cambiamento della partecipazione si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        Un cambiamento della partecipazione si ripercuoterà a cascata
+ *        sul trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT team_trophy_case_fk_partecipation
@@ -1389,8 +1387,8 @@ ON UPDATE CASCADE;
  *
  * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
  *        riferimento al trofeo in questione.
- *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        Un cambiamento del trofeo calcistico si ripercuoterà a cascata
+ *        sul trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT team_trophy_case_fk_trophy
@@ -1412,7 +1410,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player_trophy_case
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  *        vinti da un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_trophy_case
@@ -1428,9 +1426,9 @@ CREATE TABLE fp_player_trophy_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_trophy_case TABLE
  * NAME : pk_player_trophy_case
  *
- * DESC : Un calciatore che milita in una squadra di calcio puo' vincere
+ * DESC : Un calciatore che milita in una squadra di calcio può vincere
  *        il trofeo associato ad un'edizione di una competizione calcistica
- *        al piu' una volta
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
 ADD CONSTRAINT pk_player_trophy_case
@@ -1449,7 +1447,7 @@ PRIMARY KEY
  *
  * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
  *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sull trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
@@ -1472,8 +1470,8 @@ ON UPDATE CASCADE;
  *
  * DESC : Un trofeo calcistico vinto da un calciatore fa riferimento
  *        alla partecipazione della squadra di calcio all'edizione
- *        della competizione calcistica cui e' associato il trofeo vinto.
- *        Un cambiamento della partecipazione si ripercuotera' a cascata
+ *        della competizione calcistica cui è associato il trofeo vinto.
+ *        Un cambiamento della partecipazione si ripercuoterà a cascata
  *        sull trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
@@ -1498,7 +1496,7 @@ ON UPDATE CASCADE;
  *
  * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
  *        al trofeo calcistico in questione.
- *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
+ *        Un cambiamento del trofeo calcistico si ripercuoterà a cascata
  *        sull trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
@@ -1521,7 +1519,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_prize
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  ******************************************************************************/
 CREATE TABLE fp_prize
 (
@@ -1583,7 +1581,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_team_prize_case
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  *        vinti da una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_team_prize_case
@@ -1598,8 +1596,8 @@ CREATE TABLE fp_team_prize_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team_prize_case TABLE
  * NAME : pk_team_prize_case
  *
- * DESC : Una squadra di calcio puo' vincere un premio calcistico in un anno
- *        al piu' una volta
+ * DESC : Una squadra di calcio può vincere un premio calcistico in un anno
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT pk_team_prize_case
@@ -1617,7 +1615,7 @@ PRIMARY KEY
  *
  * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
  *        al premio in questione.
- *        Un cambiamento del premio si ripercuotera' a cascata
+ *        Un cambiamento del premio si ripercuoterà a cascata
  *        sul premio vinto
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
@@ -1640,7 +1638,7 @@ ON UPDATE CASCADE;
  *
  * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
  *        alla squadra in questione.
- *        Un cambiamento della squadra si ripercuotera' a cascata
+ *        Un cambiamento della squadra si ripercuoterà a cascata
  *        sul premio vinto
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
@@ -1663,7 +1661,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player_prize_case
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  *        vinti da un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_prize_case
@@ -1678,8 +1676,8 @@ CREATE TABLE fp_player_prize_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_prize_case TABLE
  * NAME : pk_player_prize_case
  *
- * DESC : Una calciatore puo' vincere un premio calcistico in un anno
- *        al piu' una volta
+ * DESC : Una calciatore può vincere un premio calcistico in un anno
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT pk_player_prize_case
@@ -1697,7 +1695,7 @@ PRIMARY KEY
  *
  * DESC : Un premio calcistico vinto da un calciatore fa riferimento
  *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
+ *        Un cambiamento del calciatore si ripercuoterà a cascata
  *        sul premio vinto
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
@@ -1720,7 +1718,7 @@ ON UPDATE CASCADE;
  *
  * DESC : Un premio calcistico vinto da un calciatore fa riferimento
  *        al premio in questione.
- *        Un cambiamento del premio si ripercuotera' a cascata
+ *        Un cambiamento del premio si ripercuoterà a cascata
  *        sul premio vinto
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
@@ -1743,7 +1741,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play
  *
- * DESC : Tabella contentente informazioni riguardanti il numero di partite
+ * DESC : Tabella contentente informazioni sul numero di partite
  *        giocate in una posizione del campo da gioco da un calciatore
  *        in una squadra di calcio partecipante ad un'edizione
  *        di una competizione calcistica
@@ -1780,9 +1778,9 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
  * NAME : uq_play
  *
- * DESC : Una calciatore puo' essere associato ad una posizione
+ * DESC : Una calciatore può essere associato ad una posizione
  *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica al piu' una volta
+ *        di una competizione calcistica al più una volta
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT uq_play
@@ -1818,7 +1816,7 @@ CHECK
  *
  * DESC : Un gioco fa riferimento alla partecipazione di una squadra di calcio
  *        ad un'edizione di una competizione calcistica.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sul gioco
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_partecipation
@@ -1842,7 +1840,7 @@ ON UPDATE CASCADE;
  *
  * DESC : Un gioco fa riferimento all'associazione tra un calciatore ed
  *        una posizione del campo da gioco.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
+ *        Un cambiamento di quest'ultima si ripercuoterà a cascata sul gioco
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_player_position
@@ -1866,7 +1864,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play_statistic
  *
- * DESC : Tabella contentente informazioni riguardanti le statistiche
+ * DESC : Tabella contentente informazioni sulle statistiche
  *        associate ad un gioco
  ******************************************************************************/
 CREATE TABLE fp_play_statistic
@@ -1881,7 +1879,7 @@ CREATE TABLE fp_play_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
  * NAME : pk_play_statistic
  *
- * DESC : Ad un gioco puo' essere associata al piu' una statistica
+ * DESC : Ad un gioco può essere associata al più una statistica
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT pk_play_statistic
@@ -1898,7 +1896,7 @@ PRIMARY KEY
  *
  * DESC : L'associazione di un gioco ad una statistica
  *        fa riferimento al gioco in questione.
- *        Un cambiamento del gioco si ripercuotera' a cascata
+ *        Un cambiamento del gioco si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
@@ -1921,7 +1919,7 @@ ON UPDATE CASCADE;
  *
  * DESC : L'associazione di un gioco ad una statistica
  *        fa riferimento alla statistica in questione.
- *        Un cambiamento della statistica si ripercuotera' a cascata
+ *        Un cambiamento della statistica si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
@@ -1944,7 +1942,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy_statistic
  *
- * DESC : Tabella contentente informazioni riguardanti le statistiche
+ * DESC : Tabella contentente informazioni sulle statistiche
  *        associate ad una militanza
  ******************************************************************************/
 CREATE TABLE fp_militancy_statistic
@@ -1959,7 +1957,7 @@ CREATE TABLE fp_militancy_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy_statistic TABLE  
  * NAME : pk_militancy_statistic
  *
- * DESC : Ad una militanza puo' essere associata al piu' una statistica
+ * DESC : Ad una militanza può essere associata al più una statistica
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
 ADD CONSTRAINT pk_militancy_statistic
@@ -1976,7 +1974,7 @@ PRIMARY KEY
  *
  * DESC : L'associazione di una militanza ad una statistica
  *        fa riferimento alla militanza in questione.
- *        Un cambiamento della militanza si ripercuotera' a cascata
+ *        Un cambiamento della militanza si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
@@ -1999,7 +1997,7 @@ ON UPDATE CASCADE;
  *
  * DESC : L'associazione di una militanza ad una statistica
  *        fa riferimento alla statistica in questione.
- *        Un cambiamento della statistica si ripercuotera' a cascata
+ *        Un cambiamento della statistica si ripercuoterà a cascata
  *        sull'associazione
  ******************************************************************************/
 ALTER TABLE fp_militancy_statistic
@@ -2023,7 +2021,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_user_account
  *
- * DESC : Tabella contentente informazioni riguardanti gli account utente
+ * DESC : Tabella contentente informazioni sugli account utente
  *        che possono utilizzare l'applicativo connesso al database
  ******************************************************************************/
 CREATE TABLE fp_user_account

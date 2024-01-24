@@ -26,10 +26,10 @@
  * RETURNS : boolean
  *
  * DESC : Funzione che valuta se la prima confederazione calcistica in input
- *        puo' essere membro della seconda confederazione calcistica in input
+ *        può essere membro della seconda confederazione calcistica in input
  *        in base al tipo di paese ad esse associato.
  *        
- *        NOTA: per non appesantire eccessivamente la notazione in questa
+ *        NOTA: Per non appesantire eccessivamente la notazione in questa
  *              funzione useremo impropriamente il nome di variabile "type_conf"
  *              per denotare il tipo del paese associato alla confederazione 
  ******************************************************************************/
@@ -92,7 +92,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se l'id di un paese in input e' di una nazione
+ * DESC : Funzione che valuta se l'id di un paese in input è di una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
@@ -232,7 +232,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una competizione calcistica puo' avere
+ * DESC : Funzione che valuta se una competizione calcistica può avere
  *        un'edizione che inizia in un determinato anno, rispetto alla
  *        sua frequenza
  ******************************************************************************/
@@ -256,7 +256,7 @@ BEGIN
 	tmp = get_column('fp_competition', 'frequency', id_comp);
 	freq = CAST(tmp AS integer);
 
-	-- se la frequenza della competizione calcistica e' annnuale o irregolare
+	-- se la frequenza della competizione calcistica è annnuale o irregolare
 	IF (freq <= 1) THEN
 		RETURN TRUE;
 	-- altrimenti
@@ -275,7 +275,7 @@ BEGIN
 		LIMIT
 			1;
 
-		-- ...e valuto se l'anno di inizio in input e' accettabile
+		-- ...e valuto se l'anno di inizio in input è accettabile
 		-- rispetto alla frequenza della competizione calcistica
 		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
@@ -302,9 +302,9 @@ LANGUAGE plpgsql;
  * RETURNS : boolean
  *
  * DESC : Funzione che valuta se una squadra di calcio appartiene ad una
- *        confederazione calcistica membro di un'altra confederazione
+ *        confederazione calcistica membro di un'altra confederazione.
  *        
- *        NOTA: per non appesantire eccessivamente la notazione in questa
+ *        NOTA: Per non appesantire eccessivamente la notazione in questa
  *              funzione useremo impropriamente il nome di variabile "type_conf"
  *              per denotare il tipo del paese associato alla confederazione
  ******************************************************************************/
@@ -338,7 +338,7 @@ BEGIN
 	tmp = get_column('fp_team', 'confederation_id', id_team);
 	id_conf_to_check = CAST(tmp AS integer);
 
-	-- se la confederazione in input e' nazionale
+	-- se la confederazione in input è nazionale
 	IF ('NATION' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -350,7 +350,7 @@ BEGIN
 	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
 	id_conf_to_check = CAST(tmp AS integer);
 	
-	-- se la confederazione in input e' continentale
+	-- se la confederazione in input è continentale
 	IF ('CONTINENT' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -362,7 +362,7 @@ BEGIN
 	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
 	id_conf_to_check = CAST(tmp AS integer);
 	
-	-- se la confederazione in input e' mondiale
+	-- se la confederazione in input è mondiale
 	IF ('WORLD' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -447,7 +447,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un giocatore e' associato ad un ruolo di gioco
+ * DESC : Funzione che valuta se un giocatore è associato ad un ruolo di gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_role
 (
@@ -504,9 +504,9 @@ LANGUAGE plpgsql;
  * RETURNS : daterange
  *
  * DESC : Funzione che restituisce l'intervallo di tempo, in termini di
- *        data inizio e data fine di un'edizione di una competizione calcistica
+ *        data inizio e data fine di un'edizione di una competizione calcistica.
  *
- *        NOTA: si tratta di date arbitrarie ottenute chiaramente per eccesso
+ *        NOTA: Si tratta di date arbitrarie ottenute chiaramente per eccesso
  *              ma che sono state ottenute facendo numerossisime indagini
  *              avvalendosi di varie fonti (Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
@@ -621,10 +621,10 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una posizione del campo di gioco e'
- *        associabile ad una statistica
+ * DESC : Funzione che valuta se una posizione del campo di gioco è
+ *        associabile ad una statistica.
  *
- *        NOTA: considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
  *              che una posizione e' associabile ad una statistica
  *              se e soltanto se il ruolo della posizione e' una sottostringa
  *              del tipo della statistica in questione
@@ -652,7 +652,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	RAISE NOTICE 'Position (id = %) cannot be associated wiht statistic (id = %)', id_pos, id_stat;
+	RAISE NOTICE 'Position (id = %) cannot be associated with statistic (id = %)', id_pos, id_stat;
 	RETURN FALSE;
 
 END;
@@ -671,8 +671,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una squadra di calcio e' compatibile con
- *        una competizione calcistica.
+ * DESC : Funzione che valuta se una squadra di calcio è compatibile con
+ *        una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
 (
@@ -722,9 +722,9 @@ LANGUAGE plpgsql;
  * RETURNS : daterange
  *
  * DESC : Funzione che restituisce l'intervallo valido di tempo di possibile
- *        attivita' per un calciatore
+ *        attività per un calciatore.
  *
- *        NOTE: le eta' minime e massime sono arbitrarie ma ottenute mediante
+ *        NOTE: Le età minime e massime sono arbitrarie ma ottenute mediante
  *              numerose ricerche (su Wikipidia, Transfermarkt,..)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION valid_daterange
@@ -879,9 +879,9 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che valuta se il numero massimo di squadre di calcio che
  *        possono partecipare ad una competizione calcistica sia coerente
- *        con il tipo di competizione
+ *        con il tipo di competizione.
  *
- *        NOTE: i valori limite sono arbitrari ma ottenuti grazie a numerose
+ *        NOTE: I valori limite sono arbitrari ma ottenuti grazie a numerose
  *              ricerche (su Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_tot_team
@@ -908,19 +908,19 @@ BEGIN
 	
 	type_comp = get_column('fp_competition', 'type', id_comp);
 
-	-- se la competizione calcistica e' una supercoppa
+	-- se la competizione calcistica è una supercoppa
 	IF ('SUPER CUP' = type_comp) THEN
 		-- al massimo sono possibili 6 squadre partecipanti
 		IF (tot_team <= 6) THEN
 			RETURN TRUE;
 		END IF;
-	-- se la competizione calcistica e' un campionato
+	-- se la competizione calcistica è un campionato
 	ELSIF ('LEAGUE' = type_comp) THEN
 		-- al massimo sono possibili 50 squadre partecipanti
 		IF (tot_team <= 50) THEN
 			RETURN TRUE;
 		END IF;
-	-- se la competizione calcistica e' un torneo
+	-- se la competizione calcistica è un torneo
 	ELSIF ('CUP' = type_comp) THEN
 
 		tmp = get_column('fp_competition', 'confederation_id', id_comp);
@@ -933,7 +933,7 @@ BEGIN
 
 		-- se si tratta di una coppa nazionale
 		IF ('NATION' = type_country) THEN
-			-- e' una competizione ad eliminazione diretta
+			-- è una competizione ad eliminazione diretta
 			-- e il numero di partecipanti deve essere una potenza di 2
 			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
 				RETURN TRUE;
@@ -970,7 +970,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'id di tutte le competizioni calcistiche
  *        simili a quella in input.
  *
- *        NOTA: per simile si intende una competizione calcistica
+ *        NOTA: Per simile si intende una competizione calcistica
  *              dello stesso tipo e alla quale possono partecipare
  *              lo stesso tipo di squadre di calcio
  ******************************************************************************/
@@ -1020,7 +1020,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'id di tutte le edizioni di competizioni
  *        calcistiche simili a quella in input.
  *
- *        NOTA: per simile si intende un'edizione di una competizione
+ *        NOTA: Per simile si intende un'edizione di una competizione
  *              calcistica simile con lo stesso anno di inizio e fine
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp_ed
@@ -1118,7 +1118,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un calciatore ha una certa nazionalita'
+ * DESC : Funzione che valuta se un calciatore ha una certa nazionalità
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_nationality
 (

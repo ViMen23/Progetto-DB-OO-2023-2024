@@ -21,7 +21,7 @@
  * TYPE : ENUM TYPE
  * NAME : en_feature
  *
- * DESC : Enum delle possibili tipologie di attributi per un calciatore
+ * DESC : Enum delle possibili tipologie di attributo per un calciatore
  ******************************************************************************/
 CREATE TYPE en_feature AS ENUM
 (
@@ -46,7 +46,7 @@ CREATE TYPE en_feature AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_competition
  *
- * DESC : Enum delle possibili tipologie di competizioni calcistiche
+ * DESC : Enum delle possibili tipologie di competizione calcistica
  ******************************************************************************/
 CREATE TYPE en_competition AS ENUM
 (
@@ -61,7 +61,7 @@ CREATE TYPE en_competition AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_country
  *
- * DESC : Enum delle possibili tipologie di paesi
+ * DESC : Enum delle possibili tipologie di paese
  ******************************************************************************/
 CREATE TYPE en_country AS ENUM
 (
@@ -91,7 +91,7 @@ CREATE TYPE en_foot AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_role
  *
- * DESC : Enum delle possibili tipologie di ruoli di un calciatore
+ * DESC : Enum delle possibili tipologie di ruolo di un calciatore
  ******************************************************************************/
 CREATE TYPE en_role AS ENUM
 (
@@ -136,7 +136,7 @@ CREATE TYPE en_role_mix AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_team
  *
- * DESC : Enum delle possibili tipologie di squadre di calcio
+ * DESC : Enum delle possibili tipologie di squadra di calcio
  ******************************************************************************/
 CREATE TYPE en_team AS ENUM
 (
@@ -151,7 +151,7 @@ CREATE TYPE en_team AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_award
  *
- * DESC : Enum delle possibili tipologie di trofei e premi calcistici
+ * DESC : Enum delle possibili tipologie di trofeo e premio calcistico
  ******************************************************************************/
 CREATE TYPE en_award AS ENUM
 (

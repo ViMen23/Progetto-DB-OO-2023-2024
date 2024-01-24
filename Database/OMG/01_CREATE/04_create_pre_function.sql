@@ -27,10 +27,10 @@
  *
  * DESC : Funzione che valuta se esiste una tabella con un nome uguale alla
  *        stringa in input.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *        NOTA: la funzione considera come database prefedinito "fpdb" e
- *              come schema predefinito "public"
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public".
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION table_exists
 (
@@ -85,10 +85,10 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che valuta se esiste una colonna all'interno di una tabella,
  *        prendendo in input il nome di una tabella e di una colonna.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *        NOTA: la funzione considera come database prefedinito "fpdb" e
- *              come schema predefinito "public"
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public".
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION column_exists
 (
@@ -146,9 +146,9 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che, preso in input il nome di una tabella e di una colonna,
  *        restituisce il tipo della colonna sotto forma di testo.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *		  NOTA: la funzione considera come database prefedinito "fpdb" e
+ *		  NOTA: La funzione considera come database predefinito "fpdb" e
  *              come schema predefinito "public"
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_type_column
@@ -208,7 +208,7 @@ LANGUAGE plpgsql;
  *        ES. separatore = '@'
  *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
  *
- *        L'idea di fondo e' quella di sfruttare la formattazione della
+ *        L'idea di fondo è quella di sfruttare la formattazione della
  *        stringa in input per estrarre tutte le informazioni necessarie
  *        utilizzando un contatore.
  *        Si immagini di costruire un array di stringhe contenente in ciascuna
@@ -229,19 +229,19 @@ LANGUAGE plpgsql;
  *        tabella, tutte le altre posizioni dispari faranno riferimento a
  *        nomi di colonne, mentre le posizioni pari immediatamente successive
  *        ai rispettivi valori.
- *        Sfruttando tali osservazioni mediante SQL dinamico sara' possibile
+ *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
  *        costruire la query desiderata.
  *        
- *        NOTA: importante osservare che tale funzione sfrutta la buona prassi,
+ *        NOTA: Importante osservare che tale funzione sfrutta la buona prassi,
  *              che abbiamo osservato quando possibile e necessario,
  *              di assegnare una chiave surrogata di tipo integer alle tabelle
- *              e di denominarla id  
+ *              e di denominarla id. 
  *
- *        NOTA: assicurarsi che i valori in input permettano di definire
+ *        NOTA: Assicurarsi che i valori in input permettano di definire
  *              in modo univoco una riga di una tabella.
  *              Non sono stati effettuati eccessivi, e dovuti, controlli
  *              sull'input in quanto si tratta di una funzione nata con lo
- *              scopo di semplificarci l'inserimento dei dati nel database
+ *              scopo di semplificare l'inserimento dei dati nel database.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
@@ -320,27 +320,27 @@ BEGIN
 			value_column = row_table.string_to_table;
 			
 			-- OSSERVAZIONE
-			-- in questo punto abbiamo sfruttato un'ulteriore peculiarita'
+			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
 			-- del nostro database
 			-- essenzialmente i tipi di dati che gestiamo si possono
 			-- dividere in due grandi categorie
 			-- categoria "testo", che contiene chiaramente i varchar,
 			-- text, ma anche date e altro
-			-- e categoria integer, di cui fanno parte i valori numerici
-			-- abbiamo pertanto sfruttato il fatto che indipendentemente
-			-- dai tipi e domini creati Postgresql salvi nel catalogo
+			-- e categoria integer, di cui fanno parte i valori numerici.
+			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
+			-- dai tipi e domini creati, Postgresql salvi nel catalogo
 			-- anche l'informazione sui tipi primitivi
-			-- pertanto se nel tipo della colonna non e' presente la
-			-- sottostringa 'int' si trattera' di un valore testuale
-			-- che necessita di essere messo tra singoli apici
-			-- per essere correttamente concatenato per formare
+			-- pertanto se nel tipo della colonna non è presente la
+			-- sottostringa 'int' si tratterà di un valore testuale
+			-- che necessita di essere posto tra singoli apici
+			-- per formare correttamente
 			-- la query da eseguire con SQL dinamico
 			IF (NOT type_column LIKE '%int%') THEN 
 				value_column = quote_literal(value_column);
 			END IF;
 			
 			-- aggiungo per permettere la creazione di una query
-			-- che filtra su piu' colonne
+			-- che filtra su più colonne
 			to_execute = to_execute || value_column || ' AND ';
 			
 		END IF;
@@ -369,8 +369,8 @@ BEGIN
 	--      AND
 	--      nome_colonnaN = valore_colonnaN;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 	
 	EXECUTE to_execute INTO id_to_find;
@@ -450,18 +450,18 @@ BEGIN
 	-- WHERE
 	--      id = value_id;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 	
 	OPEN cur_to_execute FOR EXECUTE to_execute;
 	
 	type_column = get_type_column(name_table, name_column);
 	
-	-- se la colonna e' di tipo numerico
+	-- se la colonna è di tipo numerico
 	IF (type_column LIKE '%int%') THEN
 		FETCH cur_to_execute INTO tmp;
-		-- e' necessario castarla come text 
+		-- è necessario castarla come text 
 		value_column = CAST(tmp AS text); 
 	ELSE
 		FETCH cur_to_execute INTO value_column;
@@ -531,8 +531,8 @@ BEGIN
 	-- WHERE
 	--      id = value_id;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 
 	EXECUTE to_execute INTO rec_table;

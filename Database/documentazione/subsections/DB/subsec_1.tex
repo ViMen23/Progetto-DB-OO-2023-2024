@@ -1172,15 +1172,16 @@ centrale.
 	&
 	{
 		Esprime l'appartenza di una Confederazione
-		ad un unico Paese e viceversa.
+		ad un unico Paese.
 	}
 	&
 	{
 		\textbf{Confederation [1]}:\\Indica che
 			una Confederazione si può riferire
 			ad un e un solo Paese.\\
-		\medskip\textbf{Country [1]}:\\Indica che un Paese
-			si può riferire ad una e una sola Confederazione.
+		\medskip\textbf{Country [0 ... 1]}:\\Indica che
+			un Paese si può riferire a nessuna o ad una
+			Confederazione.
 	}
 	\\
 	{
@@ -1363,3 +1364,30 @@ centrale.
 	}
 	\\
 \end{tblr}
+
+
+\newpage
+
+\begin{center}
+	\textbf{Dizionario dei Vincoli}
+\end{center}
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth, cell{1}{1-3} = {blue!10!white}
+}
+	{
+		Vincolo
+	}
+	&
+	{
+		Tipo
+	}
+	&
+	{
+		Descrizione
+	}
+	\\
+	{
+	
+	}
