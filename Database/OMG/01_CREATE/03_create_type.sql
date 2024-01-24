@@ -134,6 +134,21 @@ CREATE TYPE en_role_mix AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : en_season
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TYPE en_season AS ENUM
+(
+	'I PART',
+	'II PART',
+	'FULL'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : en_team
  *
  * DESC : Enum delle possibili tipologie di squadra di calcio
