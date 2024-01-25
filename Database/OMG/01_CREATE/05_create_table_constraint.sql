@@ -340,7 +340,7 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -555,8 +555,7 @@ CREATE TABLE fp_player
 	dob			dm_pdate	NOT NULL, -- data di nascita
 	country_id	integer		NOT NULL, -- id del paese di nascita
 	foot		en_foot		NOT NULL, -- piede preferito
-	career_time	daterange			  -- periodo di tempo nel quale il
-	                                  -- calciatore ha giocato
+	role		en_role_mix			
 );
 --------------------------------------------------------------------------------
 
@@ -607,6 +606,55 @@ FOREIGN KEY
 	country_id
 )
 REFERENCES fp_country
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_player_retired
+ *
+ * DESC : Tabella contentente informazioni sui calciatori
+ ******************************************************************************/
+CREATE TABLE fp_player_retired
+(
+	player_id		integer		NOT NULL,
+	retired_date	dm_pdate	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_player_retired TABLE
+ * NAME : pk_player_retired
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_player_retired
+ADD CONSTRAINT pk_player_retired
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_retired TABLE
+ * NAME : player_retired_fk_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	fp_player_retired
+ADD CONSTRAINT player_retired_fk_player
+FOREIGN KEY
+(
+	player_id
+)
+REFERENCES fp_player
 (
 	id
 )
@@ -847,7 +895,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1119,7 +1167,7 @@ REFERENCES fp_tag
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1195,9 +1243,7 @@ UNIQUE
 CREATE TABLE fp_player_position
 (
 	player_id	integer		NOT NULL,
-	position_id	integer		NOT NULL,
-	match		dm_usint	NOT NULL  -- numero di partite giocate dal
-	                                  -- calciatore nella posizione
+	position_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1509,6 +1555,22 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
+ * NAME : ck_trophy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_trophy
+ADD CONSTRAINT ck_trophy
+UNIQUE
+(
+	type <> 'TEAM'
+	OR
+	('TEAM' = type AND role = 'GK-DF-MF-FW')
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
  * NAME : uq_trophy_description
  *
  * DESC : Non possono esistere trofei calcistici diversi
@@ -1787,6 +1849,21 @@ UNIQUE
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
+ * NAME : ck_prize
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_prize
+ADD CONSTRAINT ck_prize
+UNIQUE
+(
+	type <> 'TEAM'
+	OR
+	('TEAM' = type AND role = 'GK-DF-MF-FW')
+);
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -1953,13 +2030,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play
  *
- * DESC : Tabella contentente informazioni sul numero di partite
- *        giocate in una posizione del campo da gioco da un calciatore
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica
- *
- *        NOTA: per semplificare la notazione ci riferiremo a tale concetto
- *              come "gioco"
+ * DESC : TODO
  ******************************************************************************/
 CREATE TABLE fp_play
 (
@@ -1968,7 +2039,6 @@ CREATE TABLE fp_play
 	competition_id	integer		NOT NULL,
 	team_id			integer		NOT NULL,
 	player_id		integer		NOT NULL,
-	position_id		integer		NOT NULL,
 	match			dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -1977,7 +2047,7 @@ CREATE TABLE fp_play
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play TABLE  
  * NAME : pk_play
  *
- * DESC : Non possono esistere giochi diversi con lo stesso id
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT pk_play
@@ -1991,9 +2061,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
  * NAME : uq_play
  *
- * DESC : Una calciatore può essere associato ad una posizione
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica al più una volta
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT uq_play
@@ -2002,8 +2070,7 @@ UNIQUE
 	start_year,
 	competition_id,
 	team_id,
-	player_id,
-	position_id
+	player_id
 );
 --------------------------------------------------------------------------------
 
@@ -2011,9 +2078,7 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - ck_play TABLE  
  * NAME : ck_play
  *
- * DESC : Una calciatore deve giocare almeno una partita in una posizione
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT ck_play
@@ -2028,9 +2093,7 @@ CHECK
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
  * NAME : play_fk_partecipation
  *
- * DESC : Un gioco fa riferimento alla partecipazione di una squadra di calcio
- *        ad un'edizione di una competizione calcistica.
- *        Un cambiamento di quest'ultima si ripercuoterà a cascata sul gioco
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_partecipation
@@ -2075,38 +2138,12 @@ ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
- * NAME : play_fk_player_position
- *
- * DESC : Un gioco fa riferimento all'associazione tra un calciatore ed
- *        una posizione del campo da gioco.
- *        Un cambiamento di quest'ultima si ripercuoterà a cascata sul gioco
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT play_fk_player_position
-FOREIGN KEY
-(
-	player_id,
-	position_id
-)
-REFERENCES fp_player_position
-(
-	player_id,
-	position_id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
 
 /*******************************************************************************
  * TYPE : TABLE
  * NAME : fp_play_statistic
  *
- * DESC : Tabella contentente informazioni sulle statistiche
- *        associate ad un gioco
+ * DESC : TODO
  ******************************************************************************/
 CREATE TABLE fp_play_statistic
 (
@@ -2120,7 +2157,7 @@ CREATE TABLE fp_play_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
  * NAME : pk_play_statistic
  *
- * DESC : Ad un gioco può essere associata al più una statistica
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT pk_play_statistic
@@ -2135,10 +2172,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
  * NAME : play_statistic_fk_play
  *
- * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento al gioco in questione.
- *        Un cambiamento del gioco si ripercuoterà a cascata
- *        sull'associazione
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_play
@@ -2158,10 +2192,7 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
  * NAME : play_statistic_fk_statistic
  *
- * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento alla statistica in questione.
- *        Un cambiamento della statistica si ripercuoterà a cascata
- *        sull'associazione
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_statistic
@@ -2173,11 +2204,9 @@ REFERENCES fp_statistic
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
-
-
 
 
 

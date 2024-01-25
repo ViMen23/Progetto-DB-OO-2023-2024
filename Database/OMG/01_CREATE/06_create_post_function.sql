@@ -18,62 +18,46 @@
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : can_be_member
+ * NAME : can_be_inside
  *
- * IN      : fp_confederation.id%TYPE, fp_confederation.id%TYPE
+ * IN      : fp_country.id%TYPE, fp_country.id%TYPE
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se la prima confederazione calcistica in input
- *        può essere membro della seconda confederazione calcistica in input
- *        in base al tipo di paese ad esse associato.
- *        
- *        NOTA: Per non appesantire eccessivamente la notazione in questa
- *              funzione useremo impropriamente il nome di variabile "type_conf"
- *              per denotare il tipo del paese associato alla confederazione 
+ * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION can_be_member
+CREATE OR REPLACE FUNCTION can_be_inside
 (
-	IN	id_conf			fp_confederation.id%TYPE,
-	IN	id_super_conf	fp_confederation.id%TYPE
+	IN	id_in_country		fp_country.id%TYPE,
+	IN	id_super_country	fp_country.id%TYPE
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	tmp				text;
-	id_country		integer;
-
-	type_conf		text;
-	type_super_conf	text;
+	type_in_country		text;
+	type_super_country	text;
 	
 BEGIN
-	
-	-- prendo il tipo del paese associato alla confederazione memebro
-	tmp = get_column('fp_confederation', 'id_country', id_conf);
-	id_country = CAST(tmp AS integer);					
-	type_conf = get_column('fp_country', 'type', id_country);
-
-	-- prendo il tipo del paese associato alla confederazione avente membro
-	tmp = get_column('fp_confederation', 'id_country', id_super_conf);
-	id_country = CAST(tmp AS integer);					
-	type_super_conf = get_column('fp_country', 'type', id_country);
+				
+	type_in_country = get_column('fp_country', 'type', id_in_country);
+	type_super_country = get_column('fp_country', 'type', id_super_country);
 
 	IF
 	(
-		('NATION' = type_conf AND 'CONTINENT' = type_super_conf)
+		('NATION' = type_in_country AND 'CONTINENT' = type_super_country)
 		OR
-		('CONTINENT' = type_conf AND 'WORLD' = type_super_conf)
+		('CONTINENT' = type_in_country AND 'WORLD' = type_super_country)
 		OR
-		('WORLD' = type_conf AND type_super_conf IS NULL)
+		('WORLD' = type_in_country AND type_super_country IS NULL)
 	)
 	THEN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE 'Confederation (id = %) cannot be member of confederation (id = %)', id_conf, id_super_conf;
+	RAISE NOTICE 'Country (id = %) cannot be inside of country (id = %)', id_in_country, id_super_country;
 	RETURN FALSE;
 	
 END;
