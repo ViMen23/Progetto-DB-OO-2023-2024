@@ -344,7 +344,7 @@ centrale.
 
 \newpage
 \subsubsection{\Large Class Diagram ristrutturato}
-\includegraphics[scale= 0.242]{res/class_diagram_ristr}
+\includegraphics[width=\textwidth]{res/class_diagram_ristr}
 \newpage
 
 \subsubsection{\Large Dizionario}
@@ -420,9 +420,7 @@ centrale.
 	}
 	&
 	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di un'Edizione.\\
-		\medskip\textbf{startYear}(Integer)[chiave parziale]:
+		\textbf{startYear}(Integer)[chiave parziale]:
 			\\Rappresenta l'anno di inizio di un'Edizione.\\
 		\medskip\textbf{endYear}(Integer)[chiave parziale]:
 			\\Rappresenta l'anno di fine di un'Edizione.\\
@@ -477,87 +475,6 @@ centrale.
 	}
 	\\
 	{
-		Militancy
-	}
-	&
-	{
-		Rappresenta le militanze di un
-		calciatore in una squadra.
-	}
-	&
-	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di una Militanza.\\
-		\medskip\textbf{dateRange}(daterange):\\Rappresenta
-			il periodo di tempo in cui
-			un calciatore era nella squadra.\\
-		\medskip\textbf{match}(Integer)[derivato]:\\Rappresenta
-			il numero di presenze di un Calciatore.
-	}
-	\\
-	{
-		MilitancyStatistic
-	}
-	&
-	{
-		Rappresenta l'associazione tra
-		Militancy e Statistic.\\È una classe associativa.
-	}
-	& 
-	{
-		\textbf{score}(Integer)[derivato]:\\Rappresenta
-			il valore di una Statistica per
-			la Militanza associata.
-	}
-	\\
-	{
-		Partecipation
-	}
-	&
-	{
-		Rappresenta la partecipazione
-		di un Team ad una CompetitionEdition.\\
-		È una classe associativa.
-	}
-	&
-	{
-	
-	}
-	\\
-	{
-		Play
-	}
-	&
-	{
-		Rappresenta l'associazione tra
-		Partecipation e PlayerPosition.\\
-		È una classe associativa.
-	}
-	&
-	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di un Gioco.\\
-		\medskip\textbf{match}(Integer):\\Rappresenta
-			il numero di presenze del Calciatore
-			in quella Posizione, in una Squadra, per quella
-			Edizione della competizione.
-	}
-	\\
-	{
-		PlayStatistic
-	}
-	&
-	{	
-		Rappresenta l'associazione tra Play e Statistic.\\
-		È una classe associativa.
-	}
-	&
-	{
-		\textbf{score}(Integer):\\Rappresenta
-			il valore di una Statistica per il Play associato.
-	}
-	\\
-	{
 		Player
 	}
 	&
@@ -576,72 +493,22 @@ centrale.
 			la data di nascita.\\
 		\medskip\textbf{foot}(enFoot):\\Rappresenta
 			il piede preferito di un Calciatore.\\
-		\medskip\textbf{careerTime}(daterange):\\Rappresenta
-			l'intervallo di tempo tra la data di debutto
-			e la data di ritiro di un Calciatore.
-	}
-	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
-
-	{
-		PlayerAttribute
-	}
-	&
-	{
-		Rappresenta l'associazione tra Player e Attribute.\\
-		È una classe associativa.
-	}
-	&
-	{
-		\textbf{score}(Integer):\\Rappresenta
-			il valore di un Attributo associato al Calciatore.
+		\medskip\textbf{role}(enRoleMix)[derivato, parziale]:
+			\\Rappresenta i possibili ruoli di gioco
+			di un Calciatore.
 	}
 	\\
 	{
-		PlayerPosition
+		PlayerRetired
 	}
 	&
 	{
-		Rappresenta l'associazione tra Player e Position.\\
-		È una classe associativa.
+		Rappresenta i calciatori che sono ritirati.
 	}
 	&
 	{
-		\textbf{match}(Integer)[derivato]:\\Rappresenta
-			il numero di partite che un Calciatore gioca
-			in una determinata Posizione.
-	}
-	\\
-	{
-		PlayerPrizeCase
-	}
-	&
-	{
-		Rappresenta la bacheca dei premi del calciatore.
-	}
-	&
-	{
-		\textbf{assignYear}(Integer):\\Rappresenta
-			l'anno di assegnazione di un Premio.
-	}
-	\\
-	{
-		PlayerTrophyCase
-	}
-	&
-	{
-		Rappresenta la bacheca dei trofei di un calciatore.
-	}
-	&
-	{
-	
+		\textbf{retiredDate}(Date):\\Rappresenta
+			la data di ritiro di un calciatore.
 	}
 	\\
 	{
@@ -663,6 +530,15 @@ centrale.
 			\\Rappresenta il nome di una Posizione.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+
 	{
 		Prize
 	}
@@ -706,14 +582,6 @@ centrale.
 			\\Rappresenta la descrizione della Statistica.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
 	{
 		Tag
 	}
@@ -750,19 +618,15 @@ centrale.
 			\\Rappresenta il nome della Squadra.
 	}
 	\\
-	{
-		TeamPrizeCase
-	}
-	&
-	{
-		Rappresenta la bacheca dei premi della squadra.
-	}
-	&
-	{
-		\textbf{assignYear}(Integer):\\Rappresenta
-			l'anno di assegnazione di un Premio.
-	}
-	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    width = \textwidth
+}
+
 	{
 		Trophy
 	}
@@ -811,8 +675,8 @@ centrale.
 
 
 \begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth, cell{1}{1-3} = {blue!10!white}
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth, cell{1}{1-4} = {blue!10!white}
 }
 
 	{
@@ -824,11 +688,65 @@ centrale.
 	}
 	&
 	{
-		Classi in Relazione
+		Classe in Relazione
+	}
+	&
+	{
+		Attributo
 	}
 	\\
 	{
-		Nationality
+		\textbf{Militancy}
+	}
+	&
+	{
+		Esprime le militanze di un calciatore in una squadra.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
+			può militare in più Squadre.\\
+		\medskip\textbf{Team [0 ... *]}:\\Indica che una Squadra
+			può essere associata a più Calciatori.
+	}
+	&
+	{
+		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
+			l'identificativo di una Militanza.\\
+		\medskip\textbf{startSeason}(Integer):\\Rappresenta
+			la stagione d'inizio di una Militanza.\\
+		\medskip\textbf{typeStartSeason}(enSeason):\\Rappresenta
+			in che parte della stagione è iniziata la Militanza.\\
+		\medskip\textbf{endSeason}(Integer):\\Rappresenta
+			la stagione in cui termina la Militanza.\\
+		\medskip\textbf{typeEndSeason}(enSeason):\\Rappresenta
+			in che parte della stagione è terminata la Militanza.
+	}
+	\\
+	{
+		\textbf{PlayerPrizeCase}
+	}
+	&
+	{
+		Esprime i premi di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Premi.\\
+		\medskip\textbf{Prize [0 ... *]}:\\Indica che
+			un Premio può essere associato, in anni diversi,
+			a più Premi.
+				
+	}
+	&
+	{
+		\textbf{assignYear}(Integer):\\Rappresenta
+			l'anno di assegnazione del Premio al Calciatore.
+	}
+	\\
+	{
+		\textbf{Nationality}
 	}
 	&
 	{
@@ -842,9 +760,13 @@ centrale.
 		\medskip\textbf{Player [0 ... *]}:\\Indica che
 			un calciatore può avere più nazionalità.
 	}
+	&
+	{
+	
+	}
 	\\
 	{
-		bornCountry	
+		\textbf{bornCountry}
 	}
 	&
 	{
@@ -858,84 +780,150 @@ centrale.
 		\medskip\textbf{Player [1]}:\\Indica che
 			un calciatore ha uno e un solo paese di nascita.
 	}
-	\\
-	{
-		\textbf{Player-PlayerAttribute}
-	}
 	&
 	{
-		Esprime il valore degli attributi di un calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può aver zero o più valori di Attributi associati.\\
-		\medskip\textbf{PlayerAttribute [1]}:\\Indica che 
-			un valore di un Attributo deve essere associato
-			ad uno e un solo Calciatore.
+	
 	}
 	\\
 	{
-		\textbf{PlayerAttribute-Attribute}
+		\textbf{Player-PlayerRetired}
 	}
 	&
 	{
-		Esprime a quale attributo si riferisce
-		PlayerAttribute.
+		Esprime i calciatori ritirati.
 	}
 	&
 	{
-		\textbf{PlayerAttribute [1]}:\\Indica che un valore
-			di PlayerAttribute è associato ad uno e un solo
-			Attributo.\\
-		\medskip\textbf{Attribute [0 ... *]}:\\Indica che un
-			Attributo può avere più valori associati.
+		\textbf{Player [0 ... 1]}:\\Indica che
+			un Calciatore può essere o non essere ritirato.\\
+		\medskip\textbf{PlayerRetired [1]}:\\Indica che
+			una data di ritiro si riferisce ad uno
+			e un solo Calciatore. 
+	}
+	&
+	{
+	
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth
+}
+
 	{
 		\textbf{Player-Tag}
 	}
 	&
 	{
-		Esprime i Tag associati ad un Calciatore.
+		Esprime i tag di un calciatore.
 	}
 	&
 	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può avere più Tag associati.\\
+		\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Tag.\\
 		\medskip\textbf{Tag [0 ... *]}:\\Indica che
-			uno stesso Tag può essere associato a
-			più Calciatori.
-	}
-	\\
-	{
-		\textbf{Player-PlayerTrophyCase}
+			uno Tag può essere associato a più Calciatori.
 	}
 	&
 	{
-		Esprime i trofei associati ad un calciatore.
-	}	
+		
+	}
+	\\
+	{
+		\textbf{Player-Position}
+	}
+	&
+	{
+		Esprime le posizioni di gioco di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Posizioni.\\
+		\medskip\textbf{Position [0 ... *]}:\\Indica che
+			una Posizione può essere associata a più Calciatori.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{PlayerAttribute}
+	}
+	&
+	{
+		Esprime gli attributi di un calciatore.
+	}
 	&
 	{
 		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può avere più Trofei associati.\\
-		\medskip\textbf{PlayerTrophyCase [1]}:\\Indica che una
-			bacheca si può riferire ad uno e un solo Calciatore.
+			può essere associato a più Attributi.\\
+		\medskip\textbf{Attribute [0 ... *]}:\\Indica che 
+			un Attributo può essere associato a più Calciatori.
+	}
+	&
+	{
+		\textbf{score}(Integer):\\Rappresenta il valore
+			di un Attributo associato al Calciatore.
 	}
 	\\
 	{
-		\textbf{PlayerTrophyCase-Trophy}
+		\textbf{Squad}
 	}
 	&
 	{
-		Esprime i trofei associati ad una bacheca.
+		Esprime la rosa in un determinato anno di una squadra.
 	}
 	&
 	{
-		\textbf{PlayerTrophyCase [1]}:\\Indica che una bacheca
-			si può riferire ad uno e un solo Trofeo.\\
-		\medskip\textbf{Trophy [0 ... *]}:\\Indica che
-			un Trofeo può avere più bacheche associate.
+		\textbf{Militancy [0 ... *]}:\\Indica che
+			una Militanza può essere associato a più Rose.\\
+		\medskip\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Rose.\\
+		\medskip\textbf{Team [0 ... *]}:\\Indica che
+			una Squadra può essere associata a più Rose.\\
+		\medskip\textbf{Squad -> Team [1]}:\\Indica che
+			una Rosa può essere associata ad una
+			e una sola Squadra.\\
+		\medskip\textbf{Squad -> Militancy [1]}:\\Indica che
+			una Rosa può essere associata ad una
+			e una sola Militanza.\\
+		\medskip\textbf{Squad -> Player [1]}:\\Indica che
+			una Rosa può essere associata ad un
+			e un solo Calciatore.
+	}
+	&
+	{
+		\textbf{startYear}(Integer):\\Rappresenta
+			la stagione di riferimento di una Rosa.\\
+		\medskip\textbf{type}(enSeason):\\Rappresenta
+			fino a che parte della stagione un Giocatore
+			era in Rosa.
+	}
+	\\
+	{
+		\textbf{TeamPrizeCase}
+	}
+	&
+	{
+		Esprime i premi di una squadra.
+	}
+	&
+	{
+		\textbf{Team [0 ... *]}:\\Indica che
+			una Squadra può essere associata a più Premi.\\
+		\medskip\textbf{Prize [0 ... *]}:\\Indica che
+			un Premio, in anni diversi, a più Squadre.
+	}
+	&
+	{
+		\textbf{assignYear}(Integer):\\Rappresenta
+			l'anno di assegnazione di un Premio ad una Squadra.\\
 	}
 	\\
 \end{tblr}
@@ -943,249 +931,117 @@ centrale.
 \newpage
 
 \begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt}, column{4}= {10pt},
     width = \textwidth
 }
 
-	{
-		\textbf{PlayerTrophyCase-Partecipation}
-	}
-	&
-	{
-		Esprime le partecipazioni di una squadra
-		ad una competizione edizione associate
-		ad una bacheca.
-	}
-	&
-	{
-		\textbf{PlayerTrophyCase [1]}:\\Indica che una bacheca
-			si può riferire ad uno e un sola Partecipazione.\\
-		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che
-			una Partecipazione può avere più bacheche associate.
-	}
-	\\
-	{
-		\textbf{Player-PlayerPosition}
-	}
-	&
-	{
-		Esprime il numero di partite che un Calciatore
-		ha fatto in una certa posizione.
-		
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può avere più posizioni di gioco associate.\\
-		\medskip\textbf{PlayerPosition [1]}:\\Indica che
-			il numero di partite di una posizione di gioco si
-			può riferire ad uno e un solo Calciatore.
-	}
-	\\
-	{
-		\textbf{PlayerPosition-Position}
-	}
-	&
-	{
-		Esprime a quale posizione è associato
-		il numero di partite di un Calciatore.
-	}
-	&
-	{
-		\textbf{PlayerPosition [1]}:\\Indica che il numero
-			di partite di una posizione di gioco si può riferire
-			ad una e una sola posizione.\\
-		\medskip\textbf{Position [0 ... *]}:\\Indica che
-			una Posizione può avere più calciatori associati.
-	}
-	\\
-	{
-		\textbf{Player-Militancy}
-	}
-	&
-	{
-		Esprime le Militanze associate ad un Calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che il Calciatore
-			può avere più Militanze associate.\\
-		\medskip\textbf{Militancy [1]}:\\Indica che
-			una Militanza si può riferire ad uno
-			e un solo Calciatore.
-	}
-	\\
-	{
-		\textbf{Militancy-Team}
-	}
-	&
-	{
-		Esprime a quale Squadra una Militanza è associata.
-	}
-	&
-	{
-		\textbf{Militancy [1]}:\\Indica che una Militanza
-			si può riferire ad una e una sola Squadra.\\
-		\medskip\textbf{Team [0 ... *]}:\\Indica che una Squadra
-			può avere più Militanze associate.
-	}
-	\\
-	{
-		\textbf{Player-PlayerPrizeCase}
-	}
-	&
-	{
-		Esprime i premi associati ad un Calciatore
-		nella Bacheca.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può avere più premi associati in una Bacheca.\\
-		\medskip\textbf{PlayerPrizeCase [1]}:\\Indica che una
-			Bacheca si può riferire ad un e un solo Calciatore.
-	}
-	\\
-	{
-		\textbf{PlayerPrizeCase-Prize}
-	}
-	&
-	{
-		Esprime i Premi ai quali è associata una Bacheca.
-	}
-	&
-	{
-		\textbf{PlayerPrizeCase [1]}:\\Indica che una Bacheca
-			si può riferire ad un e un solo Premio.\\
-		\medskip\textbf{Prize [0 ... *]}:\\Indica che un Premio
-			può avere più Bacheche associate.
-	}
-	\\
 	{
 		\textbf{Team-Country}
 	}
 	&
 	{
-		Esprime la nazionalità di una Squadra.
+		Esprime la nazionalità di una squadra.
 	}
 	&
 	{
-		\textbf{Team [1]}:\\Indica che una Squadra si riferisce
-			ad un e un solo paese.\\
-		\medskip\textbf{Country [0 ... *]}:\\Indica che un Paese
-			può avere più Squadre associate.
+		\textbf{Team [1]}:\\Indica che una Squadra
+			può essere associata ad un e un solo Paese.\\
+		\medskip\textbf{Country [0 ... *]}:\\Indica che
+			un Paese può essere associato a più Squadre.	
+	}
+	&
+	{
+		
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
-
 	{
 		\textbf{Team-Confederation}
 	}
 	&
 	{
-		Esprime la Confederazione di cui una Squadra è membra.
+		Esprime la confederazione di cui è membro una squadra.
 	}
 	&
 	{
-		\textbf{Team [1]}:\\Indica che una Squadra si riferisce
-			ad una e una sola Confederazione.\\
+		\textbf{Team [1]}:\\Indica che una Squadra
+			può essere associata ad un e un solo Paese.\\
 		\medskip\textbf{Confederation [0 ... *]}:\\Indica che
-			una Confederazione può avere più Squadre associate.
+			una Confederazione può essere associata
+			a più Squadre.
+	}
+	&
+	{
+		
 	}
 	\\
 	{
-		\textbf{Team-Partecipation}
+		\textbf{Partecipation}
 	}
 	&
 	{
-		Esprime le edizioni delle Competizioni a cui una Squadra
-		Partecipa.
-	}
-	&
-	{
-		\textbf{Team [0 ... *]}:\\Indica che una Squadra può
-			partecipare a più Competizioni Edizioni.\\
-		\medskip\textbf{Partecipation [1]}:\\Indica che una
-			Partecipazione può riferirsi ad una e una sola
-			Squadra.
-	}
-	\\
-	{
-		\textbf{Partecipation-CompetitionEdition}
-	}
-	&
-	{
-		Esprime a quali Edizioni di una Competizione una
-		Partecipazione di una Squadra si riferisce.
-	}
-	&
-	{
-		\textbf{Partecipation [1]}:\\Indica che
-			una Partecipazione può riferirsi ad una e una sola
-			Edizione di una Competizione.\\
-		\medskip\textbf{CompetitionEdition [0 ... *]}:\\Indica
-			che una Edizione di una Competizione può avere più
-			Partecipazioni associate.
-	}
-	\\
-	{
-		\textbf{Team-TeamPrizeCase}
-	}
-	&
-	{
-		Esprime i premi associati ad una Squadra
-		in una Bacheca.
+		Esprime  la partecipazione di una squadra
+		ad un'edizione di una competizione.
 	}
 	&
 	{
 		\textbf{Team [0 ... *]}:\\Indica che una Squadra
-			può avere più premi associati in una Bacheca.\\
-		\medskip\textbf{TeamPrizeCase [1]}:\\Indica che una
-			Bacheca si può riferire ad una e una sola Squadra.
+			può partecipare a più Edizioni.\\
+		\medskip\textbf{CompetitionEdition [0 ... *]}:
+			\\Indica che una Edizione può essere associata
+			a più squadre.
+
+	}
+	&
+	{
+		
 	}
 	\\
 	{
-		\textbf{TeamPrizeCase-Prize}
+		\textbf{Competition-CompetitionEdition}
 	}
 	&
 	{
-		Esprime i Premi ai quali è associata una Bacheca.
+		Esprime le edizioni di una competizione.\\
+		È una relazione identificante.
 	}
 	&
 	{
-		\textbf{TeamPrizeCase [1]}:\\Indica che una Bacheca
-			si può riferire ad un e un solo Premio.\\
-		\medskip\textbf{Prize [0 ... *]}:\\Indica che un Premio
-			può avere più Bacheche associate.
+		\textbf{Competition[0 ... *]}:\\Indica che
+			una Competizione può essere associata
+			a più Edizioni.\\
+		\medskip\textbf{CompetitionEdition[1]}:\\Indica che
+			un'Edizione può essere associata ad una
+			e una sola Competizione.
+	}
+	&
+	{
+		
 	}
 	\\
 	{
-		\textbf{Confederation-Country}
+		\textbf{Competition-Confederation}
 	}
 	&
 	{
-		Esprime l'appartenza di una Confederazione
-		ad un unico Paese.
+		Esprime la confederazione che organizza
+		la competizione.
 	}
 	&
 	{
-		\textbf{Confederation [1]}:\\Indica che
-			una Confederazione si può riferire
-			ad un e un solo Paese.\\
-		\medskip\textbf{Country [0 ... 1]}:\\Indica che
-			un Paese si può riferire a nessuna o ad una
-			Confederazione.
+		\textbf{Competition [1]}:\\Indica che
+			una Competizione può essere associata ad una
+			e una sola Confederazione.\\
+		\medskip\textbf{Confederation [0 ... *]}:\\Indica che
+			una Confederazione può essere associata
+			a più Competizioni.	
+	}
+	&
+	{
+		
 	}
 	\\
 	{
-		Membro
+		\textbf{Confederation-Confederation}
 	}
 	&
 	{
@@ -1195,30 +1051,60 @@ centrale.
 	}
 	&
 	{
-		\textbf{Confederation [0 ... 1]} ruolo (contenuto):\\
+		\textbf{Confederation [0 ... 1] ruolo (contenuto)}:\\
 			Indica che una Confederazione può o non può essere
 			membra di un'altra Confederazione.\\
-		\medskip\textbf{Confederation [0 ... *]}
-			ruolo (contiene):\\
-			Indica che una Confederazione può avere più
-			Confederazioni come membri.
+		\medskip\textbf{Confederation [0 ... *]
+			ruolo (contiene)}:\\
+			Indica che una Confederazione può essere associata
+			a più Confederazioni.
+	}
+	&
+	{
+		
 	}
 	\\
 	{
-		\textbf{Confederation-Competition}
+		\textbf{Confederation-Country}
 	}
 	&
 	{
-		Esprime la capacità di una Confederazione di creare
-		Competizioni.
+		Esprime l'appartenza di una confederazione
+		ad un unico paese.
 	}
 	&
 	{
-		\textbf{Confederation [0 ... *]}:\\Indica che una
-			Confederazione può creare più Competizioni.\\
-		\medskip\textbf{Competition [1]}:\\Indica che una
-			Competizione si riferisce ad una e una sola
+		\textbf{Confederation [1]}:\\Indica che
+			una Confederazione può essere associata
+			ad un e un solo Paese.\\
+		\medskip\textbf{Country [0 ... 1]}:\\Indica che
+			un Paese può essere associata a nessuna o ad una
 			Confederazione.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{Partecipation-Trophy}
+	}
+	&
+	{
+		Esprime la bacheca dei trofei di una squadra.
+	}
+	&
+	{
+		\textbf{Trophy [0 ... *]}:\\Indica che un Trofeo
+			può essere associata a più Partecipazioni
+			di una Squadra ad una Edizione.\\
+		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che
+			una Partecipazione può essere associata
+			a più Trofei.
+	}
+	&
+	{
+		
 	}
 	\\
 \end{tblr}
@@ -1226,141 +1112,89 @@ centrale.
 \newpage
 
 \begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
     width = \textwidth
 }
+
 	{
-		\textbf{Competition-CompetitionEdition}
+		\textbf{PlayTrophyCase}	
 	}
 	&
 	{
-		Esprime la capacità di una Competizione di avere
-		Edizioni.
+		Esprime la bacheca dei trofei di un calciatore.
+	}
+	&
+	{
+		\textbf{Partecipation [0 ... *]}:\\Indica che
+			una Partecipazione può essere associata
+			a più Bacheche.\\
+		\medskip\textbf{Trophy [0 ... *]}:\\Indica che
+			un Trofeo può essere associato
+			a più Bacheche.\\
+		\medskip\textbf{Squad [0 ... *]}:\\Indica che
+			una Rosa può essere associata
+			a più Bacheche.\\
+		\medskip\textbf{PlayTrophyCase -> Partecipation [1]}:
+			\\Indica che una Bacheca può essere associata
+			ad una e una sola Partecipazione.\\
+		\medskip\textbf{PlayTrophyCase -> Trophy [1]}:
+			\\Indica che una Bacheca può essere associata
+			ad un e un solo Trofeo.\\
+		\medskip\textbf{PlayTrophyCase -> Squad [1]}:
+			\\Indica che una Bacheca può essere associata
+			ad una e una sola Rosa.
+	}
+	&
+	{
 		
 	}
+	\\
+	{
+		\textbf{Play}
+	}
 	&
 	{
-		\textbf{Competition [0 ... *]}:\\Indica che una
-			Competizione può avere più Edizioni associate.\\
-		\medskip\textbf{CompetitionEdition [1]}:\\Indica che
-			una Edizione si riferisce ad una e una sola
-			Competizione
+		Esprime in quale edizione un calciatore, in una squadra
+		e in una certa stagione, ha giocato.
+	}
+	&
+	{
+		\textbf{Partecipation [0 ... *]}:\\Indica che
+			una Partecipazione può essere associata
+			a più Rose.\\
+		\medskip\textbf{Squad [0 ... *]}:\\Indica che
+			una Rosa può essere associata
+			a più Partecipazioni.
+	}
+	&
+	{
+		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
+			l'identificativo di un Gioco.\\
+		\medskip\textbf{match}(Integer):\\Rappresenta
+			il numero di presenze di un calciatore
+			in un Gioco.
 	}
 	\\
 	{
-		\textbf{Trophy-Partecipation}
+		\textbf{PlayStatistic}
 	}
 	&
 	{
-		Esprime la bacheca dei trofei di una Squadra.
+		Esprime le statistiche di un gioco.
 	}
 	&
 	{
-		\textbf{Trophy [0 ... *]}:\\Indica che un Trofeo
-			può avere più Partecipazioni di una Squadra ad
-			una Edizione associati.\\
-		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che
-			una Partecipazione può avere più trofei associati.
-	}
-	\\
-	{
-		\textbf{Play-PlayerPosition}
-	}
-	&
-	{
-		Esprime un calciatore in che posizione ha giocato.
-	}
-	&
-	{
-		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
-			a una e una sola Posizione di gioco del Calciatore.\\
-		\medskip\textbf{PlayerPosition [0 ... *]}:\\Indica che
-			uno stesso Calciatore con la stessa
-			Posizione di gioco può giocare più volte.
-	}
-	\\
-	{
-		\textbf{Play-Partecipation}
-	}
-	&
-	{
-		Esprime una squadra in che competizione ha giocato.
-	}
-	&
-	{
-		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
-			a una e una sola Partecipazione.\\
-		\medskip\textbf{Partecipation [0 ... *]}:\\Indica che una
-			Partecipazione può avere più Giochi associati.
-	}
-	\\
-	{
-		\textbf{Play-PlayStatistic}
-	}
-	&
-	{
-		Esprime la capacità di un Gioco di poter avere
-		valori di Statistiche associati.
-	}
-	&
-	{
-		\textbf{Play [0 ... *]}:\\Indica che un Gioco può
-			avere più valori di Statistiche associati.\\
-		\medskip\textbf{PlayStatistic [1]}:\\Indica che
-			il valore di una Statistica si riferisce ad
-			uno e un solo Gioco.
-	}
-	\\
-	{
-		\textbf{PlayStatistic-Statistic}
-	}
-	&
-	{
-		Esprime la capacità delle Statistiche di poter avere
-		più valori per il Gioco associati.
-	}
-	&
-	{
-		\textbf{PlayStatistic [1]}:\\Indica che un valore
-			di una Statistica si riferisce ad una e una sola
-			Statistica.\\
+		\textbf{Play [0 ... *]}:\\Indica che
+			un Gioco può essere associato
+			a più Statistiche.\\
 		\medskip\textbf{Statistic [0 ... *]}:\\Indica che
-			una Statistica può avere più valori associati.
-	}
-	\\
-	{
-		\textbf{Statistic-MilitancyStatistic}
+			una Statistica può essere associata
+			a più Giochi.\\
 	}
 	&
 	{
-		Esprime la capacità delle Statistiche di poter avere
-		più valori per la Militanza associati.
-	}
-	&
-	{
-		\textbf{Statistic [0 ... *]}:\\Indica che una Statistica
-			può avere più valori associati.\\
-		\medskip\textbf{MilitancyStatistic [1]}:\\Indica che
-			un valore di una Statistica si riferisce
-			ad una e una sola Statistica.
-			
-	}
-	\\
-	{
-		\textbf{MilitancyStatistic-Militancy}
-	}
-	&
-	{
-		Esprime la capacità di una Militanza di poter avere
-		più valori di Statistiche associati.
-	}
-	&
-	{
-		\textbf{MilitancyStatistic [1]}:\\Indica che
-			un valore di una Statistica si riferisce
-			ad una e una sola Militanza.\\
-		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
-			una Militanza può avere più valori associati.
+		\textbf{score}(Integer):\\Rappresenta
+			il valore di una Statistica per un Gioco.
 	}
 	\\
 \end{tblr}
@@ -1391,3 +1225,4 @@ centrale.
 	{
 	
 	}
+\end{tblr}
