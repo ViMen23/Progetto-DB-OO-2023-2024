@@ -933,13 +933,11 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_squad
 (
-	id				serial		NOT NULL,
 	militancy_id	integer		NOT NULL,
 	team_id			integer		NOT NULL,
 	player_id		integer		NOT NULL,
 	start_year		dm_year		NOT NULL,
-	type			en_season	NOT NULL,
-	match			integer		NOT NULL
+	type			en_season	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -952,20 +950,6 @@ CREATE TABLE fp_squad
 ALTER TABLE	fp_squad
 ADD CONSTRAINT pk_squad
 PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_squad TABLE
- * NAME : uq_squad
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_squad
-ADD CONSTRAINT uq_squad
-UNIQUE
 (
 	team_id,
 	player_id,
@@ -1561,7 +1545,7 @@ UNIQUE
  ******************************************************************************/
 ALTER TABLE fp_trophy
 ADD CONSTRAINT ck_trophy
-UNIQUE
+CHECK
 (
 	type <> 'TEAM'
 	OR
@@ -1857,7 +1841,7 @@ UNIQUE
  ******************************************************************************/
 ALTER TABLE fp_prize
 ADD CONSTRAINT ck_prize
-UNIQUE
+CHECK
 (
 	type <> 'TEAM'
 	OR

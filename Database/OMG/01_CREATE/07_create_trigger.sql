@@ -15,6 +15,11 @@
  ******************************************************************************/
 
 
+
+/*******************************************************************************
+ * COUNTRY
+ ******************************************************************************/
+
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bu_country
@@ -22,8 +27,12 @@
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_country
-BEFORE UPDATE OF type ON fp_country
+BEFORE UPDATE ON fp_country
 FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+)
 EXECUTE FUNCTION tf_bu_country();
 --------------------------------------------------------------------------------
 
@@ -34,12 +43,20 @@ EXECUTE FUNCTION tf_bu_country();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_au_country
-AFTER UPDATE OF name ON fp_country
+AFTER UPDATE ON fp_country
 FOR EACH ROW
+WHEN
+(
+	OLD.name IS DISTINCT FROM NEW.name
+)
 EXECUTE FUNCTION tf_au_country();
 --------------------------------------------------------------------------------
 
 
+
+/*******************************************************************************
+ * CONFEDERATION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -48,9 +65,12 @@ EXECUTE FUNCTION tf_au_country();
  * DESC : Trigger per l'inserimento di una nuova confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
-BEFORE INSERT
-ON fp_confederation
+BEFORE INSERT ON fp_confederation
 FOR EACH ROW
+WHEN
+(
+	NEW.super_id IS NOT NULL
+)
 EXECUTE FUNCTION tf_bi_confederation();
 --------------------------------------------------------------------------------
 
@@ -61,12 +81,22 @@ EXECUTE FUNCTION tf_bi_confederation();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_confederation
-BEFORE UPDATE OF country_id, super_id ON fp_confederation
+BEFORE UPDATE ON fp_confederation
 FOR EACH ROW
+WHEN
+(
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+	OR
+	OLD.super_id IS DISTINCT FROM NEW.super_id
+)
 EXECUTE FUNCTION tf_bu_confederation();
 --------------------------------------------------------------------------------
 
 
+
+/*******************************************************************************
+ * TEAM
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -87,8 +117,16 @@ EXECUTE FUNCTION tf_bi_team();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_team
-BEFORE UPDATE OF type, country_id, confederation_id ON fp_team
+BEFORE UPDATE ON fp_team
 FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	OR
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+	OR
+	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
+)
 EXECUTE FUNCTION tf_bi_team();
 --------------------------------------------------------------------------------
 
@@ -99,12 +137,25 @@ EXECUTE FUNCTION tf_bi_team();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_team_name
-BEFORE UPDATE OF name ON fp_team
+BEFORE UPDATE ON fp_team
 FOR EACH ROW
+WHEN
+(
+	OLD.name IS DISTINCT FROM NEW.name
+	AND
+	OLD.type IS NOT DISTINCT FROM NEW.type
+	AND
+	'NATIONAL' = OLD.type
+)
 EXECUTE FUNCTION tf_bi_team_name();
 --------------------------------------------------------------------------------
 
 
+
+
+/*******************************************************************************
+ * COMPETITION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -125,8 +176,16 @@ EXECUTE FUNCTION tf_bi_competition();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition
-BEFORE UPDATE OF type, type_team, confederation_id ON fp_competition
+BEFORE UPDATE ON fp_competition
 FOR EACH ROW
+WHEN
+(
+	(OLD.type IS DISTINCT FROM NEW.type)
+	OR
+	(OLD.type_team IS DISTINCT FROM NEW.type_team)
+	OR
+	(OLD.confederation_id IS DISTINCT FROM NEW.confederation_id)
+)
 EXECUTE FUNCTION tf_bu_competition();
 --------------------------------------------------------------------------------
 
@@ -137,12 +196,21 @@ EXECUTE FUNCTION tf_bu_competition();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition_freq
-BEFORE UPDATE OF frequency ON fp_competition
+BEFORE UPDATE ON fp_competition
 FOR EACH ROW
+WHEN
+(
+	OLD.frequency IS DISTINCT FROM NEW.frequency
+)
 EXECUTE FUNCTION tf_bu_competition_freq();
 --------------------------------------------------------------------------------
 
 
+
+
+/*******************************************************************************
+ * COMPETITION EDITION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -157,6 +225,24 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition_edition();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_competition_edition
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_competition_edition
+BEFORE UPDATE ON fp_competition_edition
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_competition_edition();
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * PARTECIPATION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -171,6 +257,24 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_partecipation();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_partecipation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_partecipation
+BEFORE UPDATE ON fp_partecipation
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_partecipation();
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * PLAYER
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -184,6 +288,54 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_player
+AFTER INSERT ON fp_player
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_player();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player
+BEFORE UPDATE OF country_id, dob ON fp_player
+FOR EACH ROW
+WHEN
+(
+	(OLD.country_id IS DISTINCT FROM NEW.country_id)
+	OR
+	(OLD.dob IS DISTINCT FROM NEW.dob)
+)
+EXECUTE FUNCTION tf_bi_player();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player
+AFTER UPDATE OF role ON fp_player
+FOR EACH ROW
+EXECUTE FUNCTION tf_au_player();
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * NATIONALITY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -197,6 +349,47 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_nationality();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_nationality
+BEFORE UPDATE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_nationality();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bf_nationality
+BEFORE DELETE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_nationality();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_nationality
+AFTER DELETE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_nationality();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * MILITANCY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -211,6 +404,130 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_militancy();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_militancy
+AFTER INSERT ON fp_militancy
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_militancy();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_militancy
+BEFORE UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	(OLD.team_id IS DISTINCT FROM NEW.team_id)
+	OR
+	(OLD.player_id IS DISTINCT FROM NEW.player_id)
+)
+EXECUTE FUNCTION tf_ai_militancy();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_militancy_season
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_militancy_season
+BEFORE UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	(OLD.start_season IS DISTINCT FROM NEW.start_season)
+	OR
+	(OLD.type_start_season IS DISTINCT FROM NEW.type_start_season)
+	OR
+	(OLD.end_season IS DISTINCT FROM NEW.end_season)
+	OR
+	(OLD.type_end_season IS DISTINCT FROM type_end_season.dob)
+)
+EXECUTE FUNCTION tf_ai_militancy_season();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_militancy
+AFTER UPDATE ON fp_militancy
+FOR EACH ROW
+EXECUTE FUNCTION tf_au_militancy();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER SQUAD
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_squad
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_squad
+AFTER INSERT ON fp_squad
+FOR EACH ROW
+EXECUTE FUNCTION tg_ai_squad();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_squad
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_squad
+AFTER UPDATE ON fp_squad
+FOR EACH ROW
+EXECUTE FUNCTION tg_au_squad();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TAG
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_tag
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_tag
+BEFORE UPDATE ON fp_tag
+FOR EACH ROW
+WHEN
+(
+	(OLD.type IS DISTINCT FROM NEW.type)
+	AND
+	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
+)
+EXECUTE FUNCTION tf_bu_tag();
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * PLAYER TAG
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -225,6 +542,123 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_tag();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_tag
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_tag
+BEFORE UPDATE ON fp_player_tag
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_player_tag();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * POSITION
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_position
+BEFORE INSERT ON fp_position
+FOR EACH ROW
+WHEN
+(
+	(OLD.role IS DISTINCT FROM NEW.role)
+)
+EXECUTE FUNCTION tf_bu_position();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER POSITION
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_player_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_player_position
+AFTER INSERT ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_player_position();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_position
+BEFORE INSERT ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_player_position();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_player_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bd_player_position
+BEFORE DELETE ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_player_position();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_player_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_player_position
+AFTER DELETE ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_player_position();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * ATTRIBUTE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_attribute
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_attribute
+BEFORE INSERT ON fp_attribute
+FOR EACH ROW
+WHEN
+(
+	(OLD.type IS DISTINCT FROM NEW.type)
+	AND
+	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
+)
+EXECUTE FUNCTION tf_bu_attribute();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER ATTRIBUTE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -239,6 +673,73 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_attribute();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_attribute
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_attribute
+BEFORE INSERT ON fp_player_attribute
+FOR EACH ROW
+WHEN
+(
+	(OLD.score IS DISTINCT FROM NEW.score)
+)
+EXECUTE FUNCTION tf_bu_player_attribute();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * STATISTIC
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_statistic
+BEFORE INSERT ON fp_statistic
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_bu_statistic();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TROPHY
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_trophy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_trophy
+BEFORE UPDATE ON fp_trophy
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+	OR
+	OLD.type IS DISTINCT FROM NEW.type
+)
+EXECUTE FUNCTION tf_bu_trophy();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TEAM TROPHY CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -253,6 +754,47 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team_trophy_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_team_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_team_trophy_case
+AFTER INSERT ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_team_trophy_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_trophy_case
+BEFORE UPDATE ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_team_trophy_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_team_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_team_trophy_case
+AFTER DELETE ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_team_trophy_case();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER TROPHY CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -264,9 +806,70 @@ EXECUTE FUNCTION tf_bi_team_trophy_case();
 CREATE OR REPLACE TRIGGER tg_bi_player_trophy_case
 BEFORE INSERT ON fp_player_trophy_case
 FOR EACH ROW
+WHEN
+(
+	'TEAM' = NEW.type
+)
 EXECUTE FUNCTION tf_bi_player_trophy_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_trophy_case
+BEFORE UPDATE ON fp_player_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_player_trophy_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_player_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bd_player_trophy_case
+BEFORE DELETE ON fp_player_trophy_case
+FOR EACH ROW
+WHEN
+(
+	'TEAM' = OLD.type
+)
+EXECUTE FUNCTION tf_bd_player_trophy_case();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PRIZE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_prize
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_prize
+BEFORE UPDATE ON fp_prize
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+	OR
+	OLD.type IS DISTINCT FROM NEW.type
+)
+EXECUTE FUNCTION tg_bu_prize();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TEAM PRIZE CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -281,6 +884,51 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team_prize_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_prize_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_prize_case
+BEFORE UPDATE ON fp_team_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_team_prize_case();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * PLAYER PRIZE CASE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player_prize_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player_prize_case
+BEFORE INSERT ON fp_player_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_player_prize_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_prize_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_prize_case
+BEFORE UPDATE ON fp_player_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_player_prize_case();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * PLAY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -294,6 +942,28 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play
+BEFORE UPDATE ON fp_play
+FOR EACH ROW
+WHEN
+(
+	OLD.match IS DISTINCT FROM NEW.match
+)
+EXECUTE FUNCTION tf_bu_play();
+--------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * PLAY STATISTIC
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -305,4 +975,37 @@ CREATE OR REPLACE TRIGGER tg_bi_play_statistic
 BEFORE INSERT ON fp_play_statistic
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play_statistic();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play_statistic
+BEFORE UPDATE ON fp_play_statistic
+FOR EACH ROW
+WHEN
+(
+	OLD.score IS DISTINCT FROM NEW.score
+)
+EXECUTE FUNCTION tf_bu_play_statistic();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * USER ACCOUNT
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_user_account
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bd_user_account
+BEFORE DELETE ON fp_user_account
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_user_account();
 --------------------------------------------------------------------------------

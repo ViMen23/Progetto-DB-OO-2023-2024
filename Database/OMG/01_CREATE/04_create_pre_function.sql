@@ -551,7 +551,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : all_references
  *
- * IN      : text, integer
+ * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, integer)
@@ -755,6 +755,106 @@ BEGIN
 
 	RETURN FALSE;
 	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : list_pk_columns
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION list_pk_columns
+(
+	IN	name_table	text
+)
+RETURNS TABLE
+(
+	name_column		text
+)
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+
+	RETURN QUERY
+		SELECT
+			CAST(column_name AS text) AS name_column  
+		FROM
+			information_schema.constraint_column_usage
+		WHERE
+			table_catalog = 'fpdb'
+			AND
+			table_schema = 'public'
+			AND
+			table_name = 'fp_squad'
+			AND
+			constraint_name LIKE 'pk_%';
+			
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_string_for_reference
+ *
+ * IN      : text, record, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_string_for_reference
+(
+	IN	name_table	text,
+	IN	rec_table	record,
+	IN	separator	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	output_string	text;
+	name_column		text;
+
+BEGIN
+
+	IF (NOT table_exists(name_table)) THEN
+		RETURN NULL;
+	END IF;
+
+	output_string = '';
+	output_string = output_string || name_table;
+
+	FOR name_column
+	IN
+		SELECT
+			*
+		FROM
+			list_pk_columns(name_table)
+	LOOP
+
+		output_string = output_string || separator || name_column;
+		output_string = output_string || separator || rec_table->name_column;
+
+	END LOOP;
+
+	RETURN output_string;
+			
 END;
 $$
 LANGUAGE plpgsql;
