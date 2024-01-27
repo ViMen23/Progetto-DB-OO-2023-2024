@@ -33,7 +33,7 @@ WHEN
 (
 	OLD.type IS DISTINCT FROM NEW.type
 )
-EXECUTE FUNCTION tf_bu_country();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -89,7 +89,7 @@ WHEN
 	OR
 	OLD.super_id IS DISTINCT FROM NEW.super_id
 )
-EXECUTE FUNCTION tf_bu_confederation();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
 
 
@@ -127,7 +127,7 @@ WHEN
 	OR
 	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
 )
-EXECUTE FUNCTION tf_bi_team();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -147,7 +147,7 @@ WHEN
 	AND
 	'NATIONAL' = OLD.type
 )
-EXECUTE FUNCTION tf_bi_team_name();
+EXECUTE FUNCTION tf_bu_team_name();
 --------------------------------------------------------------------------------
 
 
@@ -180,13 +180,13 @@ BEFORE UPDATE ON fp_competition
 FOR EACH ROW
 WHEN
 (
-	(OLD.type IS DISTINCT FROM NEW.type)
+	OLD.type IS DISTINCT FROM NEW.type
 	OR
-	(OLD.type_team IS DISTINCT FROM NEW.type_team)
+	OLD.type_team IS DISTINCT FROM NEW.type_team
 	OR
-	(OLD.confederation_id IS DISTINCT FROM NEW.confederation_id)
+	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
 )
-EXECUTE FUNCTION tf_bu_competition();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -201,8 +201,10 @@ FOR EACH ROW
 WHEN
 (
 	OLD.frequency IS DISTINCT FROM NEW.frequency
+	AND
+	NEW.frequency <> 0
 )
-EXECUTE FUNCTION tf_bu_competition_freq();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 
@@ -234,7 +236,7 @@ EXECUTE FUNCTION tf_bi_competition_edition();
 CREATE OR REPLACE TRIGGER tg_bu_competition_edition
 BEFORE UPDATE ON fp_competition_edition
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_competition_edition();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 
@@ -266,7 +268,7 @@ EXECUTE FUNCTION tf_bi_partecipation();
 CREATE OR REPLACE TRIGGER tg_bu_partecipation
 BEFORE UPDATE ON fp_partecipation
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_partecipation();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 
@@ -302,32 +304,67 @@ EXECUTE FUNCTION tf_ai_player();
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bu_player
+ * NAME : tg_bu_player_country
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bu_player
-BEFORE UPDATE OF country_id, dob ON fp_player
+CREATE OR REPLACE TRIGGER tg_bu_player_country
+BEFORE UPDATE ON fp_player
 FOR EACH ROW
 WHEN
 (
-	(OLD.country_id IS DISTINCT FROM NEW.country_id)
-	OR
-	(OLD.dob IS DISTINCT FROM NEW.dob)
+	OLD.country_id IS DISTINCT FROM NEW.country_id
 )
-EXECUTE FUNCTION tf_bi_player();
+EXECUTE FUNCTION tf_bu_player_country();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_au_player
+ * NAME : tg_bu_player_role
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_au_player
-AFTER UPDATE OF role ON fp_player
+CREATE OR REPLACE TRIGGER tg_au_player_role
+BEFORE UPDATE ON fp_player
 FOR EACH ROW
-EXECUTE FUNCTION tf_au_player();
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_bu_player_role();
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_player_country
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player_country
+AFTER UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+)
+EXECUTE FUNCTION tf_au_player_country();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_player_role
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player_role
+AFTER UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_au_player_role();
 --------------------------------------------------------------------------------
 
 
@@ -358,7 +395,7 @@ EXECUTE FUNCTION tf_bi_nationality();
 CREATE OR REPLACE TRIGGER tg_bu_nationality
 BEFORE UPDATE ON fp_nationality
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_nationality();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -384,6 +421,7 @@ AFTER DELETE ON fp_nationality
 FOR EACH ROW
 EXECUTE FUNCTION tf_ad_nationality();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -431,7 +469,7 @@ WHEN
 	OR
 	(OLD.player_id IS DISTINCT FROM NEW.player_id)
 )
-EXECUTE FUNCTION tf_ai_militancy();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -470,8 +508,9 @@ EXECUTE FUNCTION tf_au_militancy();
 
 
 
+
 /*******************************************************************************
- * PLAYER SQUAD
+ * SQUAD
  ******************************************************************************/
 
 /*******************************************************************************
@@ -500,6 +539,7 @@ EXECUTE FUNCTION tg_au_squad();
 
 
 
+
 /*******************************************************************************
  * TAG
  ******************************************************************************/
@@ -519,7 +559,7 @@ WHEN
 	AND
 	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
 )
-EXECUTE FUNCTION tf_bu_tag();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
 
 
@@ -551,8 +591,9 @@ EXECUTE FUNCTION tf_bi_player_tag();
 CREATE OR REPLACE TRIGGER tg_bu_player_tag
 BEFORE UPDATE ON fp_player_tag
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_player_tag();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -573,8 +614,9 @@ WHEN
 (
 	(OLD.role IS DISTINCT FROM NEW.role)
 )
-EXECUTE FUNCTION tf_bu_position();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -603,7 +645,7 @@ EXECUTE FUNCTION tf_ai_player_position();
 CREATE OR REPLACE TRIGGER tg_bu_player_position
 BEFORE INSERT ON fp_player_position
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_player_position();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -632,6 +674,7 @@ EXECUTE FUNCTION tf_ad_player_position();
 
 
 
+
 /*******************************************************************************
  * ATTRIBUTE
  ******************************************************************************/
@@ -651,8 +694,9 @@ WHEN
 	AND
 	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
 )
-EXECUTE FUNCTION tf_bu_attribute();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -684,10 +728,29 @@ BEFORE INSERT ON fp_player_attribute
 FOR EACH ROW
 WHEN
 (
-	(OLD.score IS DISTINCT FROM NEW.score)
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+	OR
+	OLD.attribute_id IS DISTINCT FROM NEW.attribute_id
 )
-EXECUTE FUNCTION tf_bu_player_attribute();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_attribute_score
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_attribute_score
+BEFORE INSERT ON fp_player_attribute
+FOR EACH ROW
+WHEN
+(
+	OLD.score IS DISTINCT FROM NEW.score
+)
+EXECUTE FUNCTION tf_bu_player_attribute_score();
+--------------------------------------------------------------------------------
+
 
 
 
@@ -708,8 +771,9 @@ WHEN
 (
 	OLD.role IS DISTINCT FROM NEW.role
 )
-EXECUTE FUNCTION tf_bu_statistic();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -732,8 +796,9 @@ WHEN
 	OR
 	OLD.type IS DISTINCT FROM NEW.type
 )
-EXECUTE FUNCTION tf_bu_trophy();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -775,7 +840,7 @@ EXECUTE FUNCTION tf_ai_team_trophy_case();
 CREATE OR REPLACE TRIGGER tg_bu_team_trophy_case
 BEFORE UPDATE ON fp_team_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_team_trophy_case();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -789,6 +854,7 @@ AFTER DELETE ON fp_team_trophy_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_ad_team_trophy_case();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -822,7 +888,7 @@ EXECUTE FUNCTION tf_bi_player_trophy_case();
 CREATE OR REPLACE TRIGGER tg_bu_player_trophy_case
 BEFORE UPDATE ON fp_player_trophy_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_player_trophy_case();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -840,6 +906,7 @@ WHEN
 )
 EXECUTE FUNCTION tf_bd_player_trophy_case();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -862,8 +929,9 @@ WHEN
 	OR
 	OLD.type IS DISTINCT FROM NEW.type
 )
-EXECUTE FUNCTION tg_bu_prize();
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------
+
 
 
 
@@ -893,8 +961,10 @@ EXECUTE FUNCTION tf_bi_team_prize_case();
 CREATE OR REPLACE TRIGGER tg_bu_team_prize_case
 BEFORE UPDATE ON fp_team_prize_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_team_prize_case();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************
@@ -922,8 +992,10 @@ EXECUTE FUNCTION tf_bi_player_prize_case();
 CREATE OR REPLACE TRIGGER tg_bu_player_prize_case
 BEFORE UPDATE ON fp_player_prize_case
 FOR EACH ROW
-EXECUTE FUNCTION tf_bu_player_prize_case();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************
@@ -953,9 +1025,31 @@ BEFORE UPDATE ON fp_play
 FOR EACH ROW
 WHEN
 (
+	OLD.start_year IS DISTINCT FROM NEW.start_year
+	OR
+	OLD.competition_id IS DISTINCT FROM NEW.competition_id
+	OR
+	OLD.team_id IS DISTINCT FROM NEW.team_id
+	OR
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play_match
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play_match
+BEFORE UPDATE ON fp_play
+FOR EACH ROW
+WHEN
+(
 	OLD.match IS DISTINCT FROM NEW.match
 )
-EXECUTE FUNCTION tf_bu_play();
+EXECUTE FUNCTION tf_bu_play_match();
 --------------------------------------------------------------------------------
 
 
@@ -992,6 +1086,8 @@ WHEN
 )
 EXECUTE FUNCTION tf_bu_play_statistic();
 --------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************

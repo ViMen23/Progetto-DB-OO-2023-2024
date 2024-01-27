@@ -796,7 +796,7 @@ BEGIN
 			AND
 			table_schema = 'public'
 			AND
-			table_name = 'fp_squad'
+			table_name = name_table
 			AND
 			constraint_name LIKE 'pk_%';
 			
@@ -805,22 +805,23 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_string_for_reference
+ * NAME : string_for_reference
  *
- * IN      : text, record, text
+ * IN      : text, text, record
  * INOUT   : void
  * OUT     : void
  * RETURNS : text
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_string_for_reference
+CREATE OR REPLACE FUNCTION string_for_reference
 (
+	IN	separator	text,
 	IN	name_table	text,
-	IN	rec_table	record,
-	IN	separator	text
+	IN	rec_table	record
 )
 RETURNS text
 RETURNS NULL ON NULL INPUT
@@ -830,12 +831,16 @@ DECLARE
 
 	output_string	text;
 	name_column		text;
+	h_rec_table		hstore;
 
 BEGIN
 
+	
 	IF (NOT table_exists(name_table)) THEN
 		RETURN NULL;
 	END IF;
+
+	h_rec_table = hstore(rec_table);
 
 	output_string = '';
 	output_string = output_string || name_table;
@@ -849,9 +854,11 @@ BEGIN
 	LOOP
 
 		output_string = output_string || separator || name_column;
-		output_string = output_string || separator || rec_table->name_column;
-
+		output_string = output_string || separator || (h_rec_table->name_column);
+		
 	END LOOP;
+
+	RAISE NOTICE '%', output_string;
 
 	RETURN output_string;
 			

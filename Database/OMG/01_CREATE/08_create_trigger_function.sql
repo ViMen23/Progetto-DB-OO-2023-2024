@@ -14,13 +14,14 @@
  * TRIGGER FUNCTION
  ******************************************************************************/
 
+
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_country TRIGGER 
- * NAME : tf_bu_country
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bu_if_referenced_refuse
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_country
+CREATE OR REPLACE FUNCTION tf_bu_if_referenced_refuse
 (
 )
 RETURNS trigger
@@ -28,19 +29,42 @@ AS
 $$
 BEGIN
 
-	IF (NOT is_referenced('@', 'fp_country@id@' || OLD->id)) THEN
+	IF (NOT is_referenced('@', string_for_reference('@', TG_TABLE_NAME, OLD))) THEN
 		RETURN NEW;
 	END IF;
 	
-	RETURN NULL;
+	RETURN OLD;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_au_country TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_refuse
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_refuse
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_au_country
  *
  * DESC : TODO
@@ -53,7 +77,7 @@ AS
 $$
 BEGIN
 
-	UPDATE TABLE
+	UPDATE
 		fp_team
 	SET
 		name = NEW.name
@@ -69,7 +93,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_confederation TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_confederation
  *
  * DESC : TODO
@@ -88,39 +112,10 @@ DECLARE
 
 BEGIN
 
-	IF (NULL = NEW.super_id) THEN
-		RETURN NEW;
-	END IF;
-
 	tmp = get_column('fp_confederation', 'country_id', NEW.super_id);
 	id_country_super_conf = CAST(tmp AS integer);
 
-	IF (can_be_inside(NEW.country_id, NEW.id_country_super_conf)) THEN
-		RETURN NEW;
-	END IF;
-	
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_confederation TRIGGER 
- * NAME : tf_bu_confederation
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_confederation
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	IF (NOT is_referenced('@', 'fp_confederation@id@' || OLD->id)) THEN
+	IF (can_be_inside(NEW.country_id, id_country_super_conf)) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -134,7 +129,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_team
  *
  * DESC : TODO
@@ -183,33 +178,10 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_team TRIGGER 
- * NAME : tf_bu_team
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_team
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
 
-	IF (NOT is_referenced('@', 'fp_team@id@' || OLD->id)) THEN
-		RETURN NEW;
-	END IF;
-	
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_team_name TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bu_team_name
  *
  * DESC : TODO
@@ -220,9 +192,15 @@ CREATE OR REPLACE FUNCTION tf_bu_team_name
 RETURNS trigger
 AS
 $$
+DECLARE
+
+	name_country	text;
+
 BEGIN
 
-	IF (OLD.type <> 'NATIONAL') THEN
+	name_country = get_column('fp_country', 'name', OLD.country_id);
+
+	IF (NEW.name = name_country) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -236,7 +214,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_competition TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_competition
  *
  * DESC : TODO
@@ -250,6 +228,7 @@ $$
 DECLARE
 
 	tmp					text;
+
 	id_country_conf		integer;
 	type_country_conf	text;
 
@@ -261,58 +240,6 @@ BEGIN
 	type_country_conf = get_column('fp_country', 'type', id_country_conf);
 
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
-
-		RETURN NEW;
-	
-	END IF;
-	
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_competition TRIGGER 
- * NAME : tf_bu_competition
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_competition
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	IF (NOT is_referenced('@', 'fp_competition@id@' || OLD->id)) THEN
-		RETURN NEW;
-	END IF;
-	
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bu_competition_freq TRIGGER 
- * NAME : tf_bu_competition_freq
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_competition_freq
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	IF (0 = NEW.frequency) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -326,7 +253,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_competition_edition TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_competition_edition
  *
  * DESC : TODO
@@ -339,26 +266,22 @@ AS
 $$
 BEGIN
 
-	IF (NOT has_edition(NEW.competition_id)) THEN
-
-		RETURN NEW;
-	
-	ELSE
-	
-		IF
-		(
-			corr_freq(NEW.competition_id, NEW.start_year)
-			AND
-			corr_tot_team(NEW.competition_id, NEW.total_team)
-		) 
-		THEN
-	
+	IF
+	(
+		corr_years_comp_ed(NEW.competition_id, NEW.start_year, NEW.end_year)
+		AND
+		corr_tot_team(NEW.competition_id, NEW.total_team)
+	)
+	THEN
+		IF (NOT has_edition(NEW.competition_id)) THEN
 			RETURN NEW;
-	
+		ELSE
+			IF (corr_freq(NEW.competition_id, NEW.start_year)) THEN
+				RETURN NEW;
+			END IF;
 		END IF;
-	
 	END IF;
-	
+
 	RETURN NULL;
 	
 END;
@@ -369,7 +292,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_partecipation TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_partecipation
  *
  * DESC : TODO
@@ -382,32 +305,29 @@ AS
 $$
 DECLARE
 
-	tmp		text;
-	id_conf	integer;
-	id_comp	integer;
+	tmp				text;
+
+	id_conf_comp	integer;
 
 BEGIN
 
-	id_conf = conf_from_comp_ed(NEW.competition_edition_id);
-
-	tmp = get_column('fp_competition_edition', 'competition_id', NEW.competition_edition_id);
-	id_comp = CAST(tmp AS integer);
+	tmp = get_column('fp_competition', 'confederation_id', NEW.competition_id);
+	id_conf_comp = CAST(tmp AS integer);
 
 	IF
 	(
-		has_place(NEW.competition_edition_id)
+		has_place(NEW.competition_id, NEW.start_year, NEW.end_year)
 		AND
-		belong_to(NEW.team_id, id_conf)
+		belong_to(NEW.team_id, id_conf_comp)
 		AND
 		team_fit_comp(NEW.team_id, id_comp)
 		AND
-		can_take_part(NEW.team_id, NEW.competition_edition_id)
+		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year, NEW.end_year)
 	)
 	THEN
 		RETURN NEW;
 	END IF;
 	
-	raise notice 'SOMETHING HAS GONE WRONG';
 	RETURN NULL;
 	
 END;
@@ -417,7 +337,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_player
  *
  * DESC : TODO
@@ -430,7 +350,7 @@ AS
 $$
 BEGIN
 
-	IF (is_nation(NEW.country_id)) THEN
+	IF (is_nation(NEW.country_id) AND NEW.role IS NULL) THEN
 		RETURN NEW;
 	END IF;
 
@@ -441,9 +361,247 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ai_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_player
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	INSERT INTO
+		fp_nationality (country_id, player_id)
+	VALUES
+	(
+		NEW.country_id,
+		NEW.id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_nationality TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_country
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_country
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (is_nation(NEW.country_id)) THEN
+		RETURN NEW;
+	END IF;
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_role
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_role
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (role_all_positions(NEW.id, NEW.role)) THEN
+		RETURN NEW;
+	END IF;
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_dob
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_dob
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	retired_date	date;
+
+	min_s_season	integer;
+	max_e_season	integer;
+
+BEGIN
+
+	retired_date = NULL;
+
+	tmp = get_column('fp_player_retired', 'retired_date', NEW.id);
+	retired_date = CAST(tmp AS date);
+
+	min_s_season = NULL;
+	max_e_season = NULL;
+
+	SELECT
+		min(start_season), max(end_season)
+	INTO
+		min_s_season, max_e_season 
+	FROM
+		fp_militancy
+	WHERE
+		player_id = NEW.id;
+
+	IF
+	(
+		corr_age_limit(NEW.dob, retired_date)
+		AND
+		corr_age_militancy(NEW.dob, retired_date, min_s_season, max_e_season)
+	)
+	THEN
+		RETURN NEW;
+	END IF;
+		
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_player_country
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_player_country
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	id_team	integer;
+
+BEGIN
+
+	id_team = national_team_from_country(OLD.country_id);
+
+	IF (NOT has_militancy(NEW.id, id_team)) THEN
+
+		DELETE FROM
+			fp_nationality
+		WHERE
+			country_id = OLD.country_id
+			AND
+			player_id = NEW.id;
+
+	END IF;
+
+	INSERT INTO
+		fp_nationality (country_id, player_id)
+	VALUES
+	(
+		NEW.country_id,
+		NEW.id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_player_role
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_player_role
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	
+
+BEGIN
+
+	IF (OLD.role LIKE '%GK%' AND NEW.role NOT LIKE '%GK%') THEN
+
+		DELETE FROM
+			fp_player_attribute
+		WHERE
+			player_id = NEW.id
+			AND
+			attribute_id IN (SELECT * FROM gk_attr());
+
+		DELETE FROM
+			fp_player_tag
+		WHERE
+			player_id = NEW.id
+			AND
+			tag_id IN (SELECT * FROM gk_tag());
+
+		DELETE FROM
+			fp_play_statistic
+		WHERE
+			play_id IN (SELECT * FROM player_play(NEW.id))
+			AND
+			statistic_id IN (SELECT * FROM gk_stat());
+
+	END IF;
+	
+
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+		player_id = NEW.id
+		AND
+		trophy_id IN (SELECT * FROM trophy_not_role(NEW.role));
+
+	DELETE FROM
+		fp_player_prize_case
+	WHERE
+		player_id = NEW.id
+		AND
+		trophy_id IN (SELECT * FROM prize_not_role(NEW.role));
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_nationality
  *
  * DESC : TODO
@@ -467,10 +625,75 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bd_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_nationality
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
 
+	tmp					text;
+
+	id_country_player	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'country_id', OLD.player_id);
+	id_country_player = CAST(tmp AS integer);
+
+	IF (OLD.country_id <> id_country_player) THEN
+		RETURN OLD;
+	END IF;
+
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_militancy TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ad_nationality
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ad_nationality
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+	
+	id_team	integer;
+
+BEGIN
+
+	id_team = national_team_from_country(OLD.country_id);
+
+	DELETE FROM
+		fp_militancy
+	WHERE
+		team_id = id_team
+		AND
+		player_id = OLD.player_id;
+
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_militancy
  *
  * DESC : TODO
@@ -483,48 +706,29 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-	dob_player	date;
-	type_team	text;
-	valid_range	daterange;
+	tmp				text;
+
+	birth_date		integer;
+	retired_date	integer;
 
 BEGIN
 
 	tmp = get_column('fp_player', 'dob', NEW.player_id);
-	dob_player = CAST(tmp AS date);
-	
-	valid_range = valid_daterange(dob_player);
+	birth_date = extract year from CAST(tmp AS date);
 
-	type_team = get_column('fp_team', 'type', NEW.team_id);
+	retired_date = NULL;
 
-	IF ('CLUB' = type_team) THEN
+	tmp = get_column('fp_player_retired', 'retired_date', NEW.player_id);
+	retired_date = CAST(tmp AS date);
 
-		IF
-		(
-			NEW.date_range <@ valid_range
-			AND
-			free_club_militancy(NEW.player_id, NEW.date_range)
-		)
-		THEN
-			RETURN NEW;
-		END IF;
-
-	ELSIF ('NATIONAL' = type_team) THEN
-
-		IF
-		(
-			has_nationality(NEW.player_id, rec_team.country_id)
-			AND
-			upper(NEW.date_range) IS NULL
-			AND
-			lower(NEW.date_range) <@ valid_range
-			AND
-			free_national_militancy(NEW.player_id, rec_team.country_id)
-		)
-		THEN
-			RETURN NEW;
-		END IF;
-
+	IF
+	(
+		corr_age_militancy(birth_date, retired_date, NEW.start_season, NEW.end_season)
+		AND
+		corr_militancy(NEW.player_id, NEW.team_id, NEW.start_season, NEW.end_season)
+	)
+	THEN
+		RETURN NEW;
 	END IF;
 
 	RETURN NULL;
@@ -666,37 +870,6 @@ DECLARE
 
 BEGIN
 
-	time_range = range_edition(NEW.competition_edition_id);
-
-	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
-
-		type_trohy = get_column('fp_trophy', 'type', NEW.trophy_id);
-
-		IF ('TEAM' = type_trohy) THEN
-
-			existence = NULL;
-
-			SELECT
-				id
-			INTO
-				existence
-			FROM
-				fp_team_trophy_case
-			WHERE
-				competition_edition_id = NEW.competition_edition_id
-				AND
-				team_id = NEW.team_id
-				AND
-				trophy_id = NEW.trophy_id;
-			
-			IF (existence IS NOT NULL) THEN
-				RETURN NEW;
-			END IF;
-		ELSE
-			RETURN NEW;
-		END IF;
-
-	END IF;
 	
 	RETURN NULL;
 	

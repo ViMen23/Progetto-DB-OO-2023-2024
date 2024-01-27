@@ -39,11 +39,11 @@ CREATE TABLE fp_country
  * DESC : Non possono esistere paesi diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_country
-ADD CONSTRAINT pk_country
-PRIMARY KEY
-(
-	id
-);
+	ADD CONSTRAINT pk_country
+	PRIMARY KEY
+	(
+		id
+	);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -53,11 +53,11 @@ PRIMARY KEY
  * DESC : Non possono esistere paesi diversi con lo stesso codice
  ******************************************************************************/
 ALTER TABLE	fp_country
-ADD CONSTRAINT uq_country_code
-UNIQUE
-(
-	code
-);
+	ADD CONSTRAINT uq_country_code
+	UNIQUE
+	(
+		code
+	);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -500,19 +500,19 @@ PRIMARY KEY
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
-ADD CONSTRAINT partecipation_fk_competition_edition
-FOREIGN KEY
-(
-	start_year,
-	competition_id
-)
-REFERENCES fp_competition_edition
-(
-	start_year,
-	competition_id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+	ADD CONSTRAINT partecipation_fk_competition_edition
+	FOREIGN KEY
+	(
+		start_year,
+		competition_id
+	)
+	REFERENCES fp_competition_edition
+	(
+		start_year,
+		competition_id
+	)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -526,17 +526,17 @@ ON UPDATE CASCADE;
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
-ADD CONSTRAINT partecipation_fk_team
-FOREIGN KEY
-(
-	team_id
-)
-REFERENCES fp_team
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+	ADD CONSTRAINT partecipation_fk_team
+	FOREIGN KEY
+	(
+		team_id
+	)
+	REFERENCES fp_team
+	(
+		id
+	)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
@@ -566,11 +566,11 @@ CREATE TABLE fp_player
  * DESC : Non possono esistere calciatori diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_player
-ADD CONSTRAINT pk_player
-PRIMARY KEY
-(
-	id
-);
+	ADD CONSTRAINT pk_player
+	PRIMARY KEY
+	(
+		id
+	);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -581,14 +581,14 @@ PRIMARY KEY
  *        di nome, cognome, data di nascita e paese di nascita
  ******************************************************************************/
 ALTER TABLE	fp_player
-ADD CONSTRAINT uq_player
-UNIQUE
-(
-	name,
-	surname,
-	dob,
-	country_id
-);
+	ADD CONSTRAINT uq_player
+	UNIQUE
+	(
+		name,
+		surname,
+		dob,
+		country_id
+	);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -1443,7 +1443,7 @@ ON UPDATE CASCADE;
 CREATE TABLE fp_statistic
 (
 	id			serial		NOT NULL,
-	role		en_role_mix	NOT NULL,
+	goalkeeper	boolean 	NOT NULL,
 	name		dm_string	NOT NULL,
 	description	dm_string
 );
@@ -1503,7 +1503,7 @@ CREATE TABLE fp_trophy
 (
 	id			serial		NOT NULL,
 	type		en_award	NOT NULL,
-	role		en_role_mix	NOT NULL,
+	role		en_role				,
 	name		dm_string	NOT NULL,
 	description	dm_string
 );
@@ -1549,7 +1549,7 @@ CHECK
 (
 	type <> 'TEAM'
 	OR
-	('TEAM' = type AND role = 'GK-DF-MF-FW')
+	('TEAM' = type AND role IS NULL)
 );
 --------------------------------------------------------------------------------
 
@@ -1783,7 +1783,7 @@ CREATE TABLE fp_prize
 (
 	id			serial		NOT NULL,
 	type		en_award	NOT NULL,
-	role		en_role_mix	NOT NULL,
+	role		en_role				,
 	name		dm_string	NOT NULL,
 	description	dm_string			,
 	given		dm_string	NOT NULL  -- ente che assegna il premio calcistico
@@ -1845,7 +1845,7 @@ CHECK
 (
 	type <> 'TEAM'
 	OR
-	('TEAM' = type AND role = 'GK-DF-MF-FW')
+	('TEAM' = type AND role IS NULL)
 );
 --------------------------------------------------------------------------------
 
