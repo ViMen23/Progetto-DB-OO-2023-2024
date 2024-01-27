@@ -4,7 +4,7 @@
 
 \subsubsection{\Large Class Diagram non ristrutturato}
 
-\includegraphics[width=\textwidth]{res/class_diagram_not_restr}
+\includegraphics[width=\textwidth]{res/class_diagram_not_ristr}
 \newpage
 
 \subsubsection{\Large Ristrutturazione del Class Diagram}
@@ -552,8 +552,8 @@ centrale.
 			l'identificativo del Premio.\\
 		\medskip\textbf{type}(enAward):\\Rappresenta
 			il tipo del Premio.\\
-		\medskip\textbf{role}(enRoleMix):\\Rappresenta
-			i possibili ruoli che sono associati ad un Premio.\\
+		\medskip\textbf{role}(enRole)[parziale]:\\Rappresenta
+			il ruolo a cui è associato un Premio.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Premio.\\
 		\medskip\textbf{description}(String)[parziale]:
@@ -574,8 +574,9 @@ centrale.
 	{
 		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
 			l'identificativo della Statistica.\\
-		\medskip\textbf{role}(enRoleMix):\\Rappresenta
-			i ruoli associati alla Statistica.\\
+		\medskip\textbf{goalkeeper}(Boolean):\\Rappresenta
+			se true che la Stastistica è associata
+			soltanto al portiere, altrimenti a tutti i ruoli.\\
 		\medskip\textbf{name}(String):\\Rappresenta
 			il nome della Statistica.\\
 		\medskip\textbf{description}(String)[parziale]:
@@ -640,8 +641,8 @@ centrale.
 			l'identificativo del Trofeo.\\
 		\medskip\textbf{type}(enAward):\\Rappresenta
 			il tipo del Trofeo.\\
-		\medskip\textbf{role}(enRoleMix):\\Rappresenta
-			i possibili ruoli a cui è associato un Trofeo.\\
+		\medskip\textbf{role}(enRole)[parziale]:\\Rappresenta
+			il ruolo a cui è associato un Trofeo.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Trofeo.\\
 		\medskip\textbf{description}(String)[parziale]:
@@ -1207,7 +1208,7 @@ centrale.
 \end{center}
 
 \begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
     width = \textwidth, cell{1}{1-3} = {blue!10!white}
 }
 	{
@@ -1223,6 +1224,377 @@ centrale.
 	}
 	\\
 	{
-	
+		ckCompetitionEditionRange
 	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		Ogni edizione di una competizione calcistica deve
+		iniziare e finire nello stesso anno o
+		al massimo terminare l'anno successivo
+		a quello di inizio.
+	}
+	\\
+	{
+		ckCompetitionEditionTotalTeam
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		Il numero di squadre di calcio che possono partecipare
+		ad una edizione di una competizione calcistica
+		deve essere compreso tra un minimo di 2 ed
+		un massimo di 128.
+	}
+	\\
+	{
+		ckMilitancyType
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		Tutti i tipi stagione (inizio o fine) in una Militanza
+		possono essere soltanto prima parte o seconda parte.
+	}
+	\\
+	{
+		ckMilitancySeason
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		In una Militanza, ogni stagione d'inizio deve
+		precedere o al massimo essere uguale
+		alla stagione di fine.
+	}
+	\\
+	{
+		ckMilitancyValidCombo
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		Ogni militanza di un calciatore che inizi e termini
+		nella stessa stagione, non può iniziare
+		nella seconda parte e terminare nella prima parte.
+	}
+	\\
+	{
+		ckTrophy
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		I trofei di squadra non devono essere associati
+		ad alcun ruolo.
+	}
+	\\
+	{
+		ckPrize
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		I premi di squadra non devono essere associati
+		ad alcun ruolo.
+	}
+	\\
+	{
+		ckPlay
+	}
+	&
+	{
+		N-PLA
+	}
+	&
+	{
+		Il numero di presenze di un calciatore in un gioco
+		deve essere maggiore di zero.
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		
+	}
+	&
+	{
+		
+	}
+	&
+	{
+		
+	}
+	\\
 \end{tblr}

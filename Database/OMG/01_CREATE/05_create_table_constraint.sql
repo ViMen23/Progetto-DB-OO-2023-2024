@@ -826,7 +826,8 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
  * NAME : ck_militancy_type
  *
- * DESC : TODO
+ * DESC : Tutti i tipi stagione (inizio o fine) in una Militanza
+ *        possono essere soltanto prima parte o seconda parte
  ******************************************************************************/
 ALTER TABLE fp_militancy
 ADD CONSTRAINT ck_militancy_type
@@ -842,7 +843,8 @@ CHECK
  * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
  * NAME : ck_militancy_season
  *
- * DESC : TODO
+ * DESC : In una Militanza, ogni stagione d'inizio deve precedere
+ *        la stagione di fine o al massimo esserne uguale.
  ******************************************************************************/
 ALTER TABLE fp_militancy
 ADD CONSTRAINT ck_militancy_season
@@ -856,7 +858,9 @@ CHECK
  * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
  * NAME : ck_militancy_valid_combo
  *
- * DESC : TODO
+ * DESC : Ogni militanza di un calciatore che inizi e termini
+ *        nella stessa stagione, non può iniziare
+ *        nella seconda parte e terminare nella prima parte
  ******************************************************************************/
 ALTER TABLE fp_militancy
 ADD CONSTRAINT ck_militancy_valid_combo
@@ -1541,7 +1545,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
  * NAME : ck_trophy
  *
- * DESC : TODO
+ * DESC : I trofei di squadra non devono essere associati ad alcun ruolo
  ******************************************************************************/
 ALTER TABLE fp_trophy
 ADD CONSTRAINT ck_trophy
@@ -1837,7 +1841,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
  * NAME : ck_prize
  *
- * DESC : TODO
+ * DESC : I premi di squadra non devono essere associati ad alcun ruolo
  ******************************************************************************/
 ALTER TABLE fp_prize
 ADD CONSTRAINT ck_prize
@@ -2062,7 +2066,8 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - ck_play TABLE  
  * NAME : ck_play
  *
- * DESC : TODO
+ * DESC : Il numero di presenze di un calciatore in un gioco
+ *        deve essere maggiore di zero.
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT ck_play
