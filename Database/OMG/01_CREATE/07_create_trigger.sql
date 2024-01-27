@@ -292,7 +292,7 @@ EXECUTE FUNCTION tf_bi_player();
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bi_player
+ * NAME : tg_ai_player
  *
  * DESC : TODO
  ******************************************************************************/
@@ -1082,9 +1082,11 @@ BEFORE UPDATE ON fp_play_statistic
 FOR EACH ROW
 WHEN
 (
-	OLD.score IS DISTINCT FROM NEW.score
+	OLD.play_id IS DISTINCT FROM NEW.play_id
+	OR
+	OLD.statistic_id IS DISTINCT FROM NEW.statistic_id
 )
-EXECUTE FUNCTION tf_bu_play_statistic();
+EXECUTE FUNCTION tf_bu_refuse();
 --------------------------------------------------------------------------------
 
 

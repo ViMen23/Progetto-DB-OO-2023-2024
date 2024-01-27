@@ -316,13 +316,13 @@ BEGIN
 
 	IF
 	(
-		has_place(NEW.competition_id, NEW.start_year, NEW.end_year)
+		has_place(NEW.competition_id, NEW.start_year)
 		AND
 		belong_to(NEW.team_id, id_conf_comp)
 		AND
 		team_fit_comp(NEW.team_id, id_comp)
 		AND
-		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year, NEW.end_year)
+		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year)
 	)
 	THEN
 		RETURN NEW;
@@ -452,41 +452,75 @@ AS
 $$
 DECLARE
 
-	retired_date	date;
+	tmp				text;
 
-	min_s_season	integer;
-	max_e_season	integer;
+	born_year		integer;
+	retired_year	integer;
+
+	min_militancy	integer;
+	max_militancy	integer;
 
 BEGIN
 
-	retired_date = NULL;
 
-	tmp = get_column('fp_player_retired', 'retired_date', NEW.id);
-	retired_date = CAST(tmp AS date);
+	born_year = extract year from NEW.dob;
 
-	min_s_season = NULL;
-	max_e_season = NULL;
+	IF (is_retired(NEW.id)) THEN
 
-	SELECT
-		min(start_season), max(end_season)
-	INTO
-		min_s_season, max_e_season 
-	FROM
-		fp_militancy
-	WHERE
-		player_id = NEW.id;
+		tmp = get_column('fp_player_retired', 'retired_date', NEW.id);
+		retired_year_year = extract year from CAST(tmp AS date);
 
-	IF
-	(
-		corr_age_limit(NEW.dob, retired_date)
-		AND
-		corr_age_militancy(NEW.dob, retired_date, min_s_season, max_e_season)
-	)
-	THEN
-		RETURN NEW;
-	END IF;
+		IF ((retired_year - born_year) NOT BETWEEN min_age() AND max_age()) THEN
 		
-	RETURN OLD;
+			RETURN OLD;
+		
+		END IF;
+	
+	END IF;
+
+
+	IF (has_militancy(NEW.id)) THEN
+	
+		SELECT
+			min(start_year)
+		INTO
+			min_militancy
+		FROM
+			fp_militancy
+		WHERE
+			player_id = NEW.id;
+		
+
+		IF (min_militancy - born_year < min_age()) THEN
+
+			RETURN OLD;
+
+		ELSE
+
+		IF (NOT is_retired(NEW.id)) THEN
+
+			SELECT
+				max(start_year)
+			INTO
+				max_militancy
+			FROM
+				fp_militancy
+			WHERE
+				player_id = NEW.id;
+
+
+			IF (max_militancy - born_year > max_age()) THEN
+
+				RETURN OLD;
+
+			END IF;
+
+		END IF;
+		
+	END IF;
+
+	RETURN NEW;
+	
 	
 END;
 $$
@@ -615,8 +649,11 @@ $$
 BEGIN
 
 	IF (is_nation(NEW.country_id)) THEN
+
 		RETURN NEW;
+
 	END IF;
+
 
 	RETURN NULL;
 
@@ -648,9 +685,13 @@ BEGIN
 	tmp = get_column('fp_player', 'country_id', OLD.player_id);
 	id_country_player = CAST(tmp AS integer);
 
+
 	IF (OLD.country_id <> id_country_player) THEN
+
 		RETURN OLD;
+	
 	END IF;
+
 
 	RETURN NULL;
 
@@ -672,20 +713,34 @@ RETURNS trigger
 AS
 $$
 DECLARE
-	
-	id_team	integer;
+
+	tmp			text;
+
+	id_country	integer;
+
+	id_team		integer;
 
 BEGIN
 
-	id_team = national_team_from_country(OLD.country_id);
+	IF (is_national(OLD.player_id)) THEN
 
-	DELETE FROM
-		fp_militancy
-	WHERE
-		team_id = id_team
-		AND
-		player_id = OLD.player_id;
+		id_team = national_team();
 
+		tmp = get_column('fp_team', 'country_id', id_team);
+		id_country = CAST(tmp AS integer);
+
+		IF (OLD.country_id = id_country) THEN
+			
+			DELETE FROM
+				fp_militancy
+			WHERE
+				player_id = OLD.player_id
+			AND
+				team_type = 'NATIONAL';
+		
+		END IF;
+
+	END IF; 
 	
 END;
 $$
@@ -725,7 +780,12 @@ BEGIN
 	(
 		corr_age_militancy(birth_date, retired_date, NEW.start_season, NEW.end_season)
 		AND
-		corr_militancy(NEW.player_id, NEW.team_id, NEW.start_season, NEW.end_season)
+		corr_militancy
+		(
+			NEW.player_id, NEW.team_id,
+			NEW.start_season, NEW.type_start_season
+			NEW.end_season, NEW.type_end_season
+		)
 	)
 	THEN
 		RETURN NEW;
@@ -819,7 +879,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team_trophy_case TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_team_trophy_case
  *
  * DESC : TODO
@@ -851,12 +911,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player_trophy_case TRIGGER 
- * NAME : tf_bi_player_trophy_case
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ai_team_trophy_case
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_player_trophy_case
+CREATE OR REPLACE FUNCTION tf_ai_team_trophy_case
 (
 )
 RETURNS trigger
@@ -864,12 +924,138 @@ AS
 $$
 DECLARE
 
-	type_trohy	text;
-	time_range	daterange;
-	existence	integer;
+	id_player	integer;
 
 BEGIN
 
+	FOR id_player
+	IN
+		SELECT
+			player_id
+		FROM
+			fp_squad
+		WHERE
+			team_id = NEW.team_id
+			AND
+			start_year = NEW.start_year
+			AND
+			type <> 'I PART'
+	
+	LOOP
+
+		INSERT INTO
+			fp_player_trophy_case
+			(
+				player_id,
+				team_id,
+				trophy_id,
+				start_year,
+				competition_id
+			)
+		VALUES
+		(
+			id_player,
+			NEW.team_id,
+			NEW.id,
+			NEW.start_year,
+			NEW.competition_id
+		);
+
+	END LOOP;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ad_team_trophy_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ad_team_trophy_case
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+		team_id = OLD.team_id
+		AND
+		trophy_id = OLD.id
+		AND
+		start_year = OLD.start_year
+		AND
+		competition_id = OLD.competition_id;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bi_player_prize_case
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_prize_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	type_prize		text;
+	role_prize		text;
+
+	year_dob_player	integer;
+
+	min_age			integer;
+
+BEGIN
+
+	min_age = 15;
+
+	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
+
+	IF ('PLAYER' = type_prize) THEN
+
+		tmp = get_column('fp_player', 'dob', NEW.player_id);
+		year_dob_player = extract year from CAST(tmp AS date);
+	
+		IF (NEW.assign_year - year_dob_player > min_age) THEN
+
+			role_prize = get_column('fp_prize', 'role', NEW.prize_id);
+
+			IF (role_prize IS NULL) THEN
+			
+				RETURN NEW;
+			
+			ELSE
+
+				role_player = get_column('fp_player', 'role', NEW.player_id);
+			
+				IF (position(role_prize in role_player) > 0) THEN
+
+					RETURN NEW;
+
+				END IF;
+
+			END IF;
+		
+		END IF;
+	
+	END IF;
 	
 	RETURN NULL;
 	
@@ -880,7 +1066,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team_prize_case TRIGGER 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_team_prize_case
  *
  * DESC : TODO
@@ -911,8 +1097,9 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_play TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_play
  *
  * DESC : TODO
@@ -925,13 +1112,13 @@ AS
 $$
 DECLARE
 
-	time_range	daterange;
+	tot_team	integer;
 
 BEGIN
 
-	time_range = range_edition(NEW.competition_edition_id);
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
 
-	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
+	IF (NEW.match <= tot_team * 4) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -944,7 +1131,39 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_play_statistic TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_play_match
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_play_match
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tot_team	integer;
+
+BEGIN
+
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
+
+	IF (NEW.match <= tot_team * 4) THEN
+		RETURN NEW;
+	END IF;
+	
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_play_statistic
  *
  * DESC : TODO
@@ -957,21 +1176,35 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-	id_player_pos	integer;
-	id_pos			integer;
+	tmp			text;
+
+	gk_stat		boolean;
+	
+	id_player	integer;
+	role_player	integer;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'player_position_id', NEW.play_id);
-	id_player_pos = CAST(tmp AS integer);
+	tmp = get_column('fp_statistic', 'goalkeeper', NEW.statistic_id);
+	gk_stat = CAST(tmp AS boolean);
 
-	tmp = get_column('fp_player_position', 'position_id', id_player_pos);
-	id_pos = CAST(tmp AS integer);
-
-
-	IF (pos_fit_stat(id_pos, statistic_id)) THEN
+	IF (NOT gk_stat) THEN
+		
 		RETURN NEW;
+
+	ELSE
+
+		tmp = get_column('fp_play', 'player_id', NEW.play_id);
+		id_player = CAST(tmp AS integer);
+
+		role_player = get_column('fp_player', 'role', id_player);
+
+		IF (role_player LIKE '%GK%') THEN
+			
+			RETURN NEW;
+		
+		END IF;
+
 	END IF;
 	
 	RETURN NULL;

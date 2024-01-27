@@ -39,11 +39,11 @@ CREATE TABLE fp_country
  * DESC : Non possono esistere paesi diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE	fp_country
-	ADD CONSTRAINT pk_country
-	PRIMARY KEY
-	(
-		id
-	);
+ADD CONSTRAINT pk_country
+PRIMARY KEY
+(
+	id
+);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -53,11 +53,11 @@ ALTER TABLE	fp_country
  * DESC : Non possono esistere paesi diversi con lo stesso codice
  ******************************************************************************/
 ALTER TABLE	fp_country
-	ADD CONSTRAINT uq_country_code
-	UNIQUE
-	(
-		code
-	);
+ADD CONSTRAINT uq_country_code
+UNIQUE
+(
+	code
+);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -500,19 +500,19 @@ PRIMARY KEY
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
-	ADD CONSTRAINT partecipation_fk_competition_edition
-	FOREIGN KEY
-	(
-		start_year,
-		competition_id
-	)
-	REFERENCES fp_competition_edition
-	(
-		start_year,
-		competition_id
-	)
-	ON DELETE CASCADE
-	ON UPDATE CASCADE;
+ADD CONSTRAINT partecipation_fk_competition_edition
+FOREIGN KEY
+(
+	start_year,
+	competition_id
+)
+REFERENCES fp_competition_edition
+(
+	start_year,
+	competition_id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -526,17 +526,17 @@ ALTER TABLE	fp_partecipation
  *        partecipazione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
-	ADD CONSTRAINT partecipation_fk_team
-	FOREIGN KEY
-	(
-		team_id
-	)
-	REFERENCES fp_team
-	(
-		id
-	)
-	ON DELETE CASCADE
-	ON UPDATE CASCADE;
+ADD CONSTRAINT partecipation_fk_team
+FOREIGN KEY
+(
+	team_id
+)
+REFERENCES fp_team
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
@@ -566,11 +566,11 @@ CREATE TABLE fp_player
  * DESC : Non possono esistere calciatori diversi con lo stesso id
  ******************************************************************************/
 ALTER TABLE fp_player
-	ADD CONSTRAINT pk_player
-	PRIMARY KEY
-	(
-		id
-	);
+ADD CONSTRAINT pk_player
+PRIMARY KEY
+(
+	id
+);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -581,14 +581,14 @@ ALTER TABLE fp_player
  *        di nome, cognome, data di nascita e paese di nascita
  ******************************************************************************/
 ALTER TABLE	fp_player
-	ADD CONSTRAINT uq_player
-	UNIQUE
-	(
-		name,
-		surname,
-		dob,
-		country_id
-	);
+ADD CONSTRAINT uq_player
+UNIQUE
+(
+	name,
+	surname,
+	dob,
+	country_id
+);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -745,18 +745,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy
  *
- * DESC : Tabella contentente informazioni sulla militanza
- *        di un calciatore in una squadra di calcio
+ * DESC : TODO
  ******************************************************************************/
 CREATE TABLE fp_militancy
 (
-	id					serial		NOT NULL,
-	team_id				integer		NOT NULL,
-	player_id			integer		NOT NULL,
-	start_season		dm_year		NOT NULL,
-	type_start_season	en_season	NOT NULL,
-	end_season			dm_year		NOT NULL,
-	type_end_season		en_season	NOT NULL		
+	team_type		en_team		NOT NULL,
+	team_id			integer		NOT NULL,
+	player_id		integer		NOT NULL,
+	start_year		dm_year		NOT NULL,
+	type			en_season	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -764,130 +761,24 @@ CREATE TABLE fp_militancy
  * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy TABLE
  * NAME : pk_militancy
  *
- * DESC : Non possono esistere militanze diverse con lo stesso id
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE fp_militancy
+ALTER TABLE	fp_militancy
 ADD CONSTRAINT pk_militancy
 PRIMARY KEY
 (
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
- * NAME : uq_militancy_start_season
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT uq_militancy_start_season
-UNIQUE
-(
 	team_id,
 	player_id,
-	start_season
+	start_year
 );
 --------------------------------------------------------------------------------
 
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
- * NAME : uq_militancy_start_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT uq_militancy_start_player
-UNIQUE
-(
-	player_id,
-	start_season,
-	type_start_season
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
- * NAME : uq_militancy_end_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT uq_militancy_end_player
-UNIQUE
-(
-	player_id,
-	end_season,
-	type_end_season
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
- * NAME : ck_militancy_type
- *
- * DESC : Tutti i tipi stagione (inizio o fine) in una Militanza
- *        possono essere soltanto prima parte o seconda parte
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT ck_militancy_type
-CHECK
-(
-	type_start_season <> 'FULL'
-	AND
-	type_end_season <> 'FULL'
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
- * NAME : ck_militancy_season
- *
- * DESC : In una Militanza, ogni stagione d'inizio deve precedere
- *        la stagione di fine o al massimo esserne uguale.
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT ck_militancy_season
-CHECK
-(
-	start_season <= end_season
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_militancy TABLE
- * NAME : ck_militancy_valid_combo
- *
- * DESC : Ogni militanza di un calciatore che inizi e termini
- *        nella stessa stagione, non può iniziare
- *        nella seconda parte e terminare nella prima parte
- ******************************************************************************/
-ALTER TABLE fp_militancy
-ADD CONSTRAINT ck_militancy_valid_combo
-CHECK
-(
-	(
-		start_season = end_season
-		AND
-		(
-			type_start_season <> 'II PART'
-			OR
-			type_end_season <> 'I PART'
-		)
-	)
-	OR
-	start_season <> end_season
-);
---------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_team
  *
- * DESC : La militanza di un calciatore in una squadra di calcio
- *        fa riferimento alla squadra di calcio in questione.
- *        Un cambiamento della squadra di calcio si ripercuoterà a cascata
- *        sulla militanza
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_team
@@ -907,109 +798,10 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_player
  *
- * DESC : La militanza di un calciatore in una squadra di calcio
- *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuoterà a cascata sulla
- *        militanza
+ * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_player
-FOREIGN KEY
-(
-	player_id
-)
-REFERENCES fp_player
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_squad
- *
- * DESC : Tabella contentente informazioni sulla rosa di una squadra di calcio 
- ******************************************************************************/
-CREATE TABLE fp_squad
-(
-	militancy_id	integer		NOT NULL,
-	team_id			integer		NOT NULL,
-	player_id		integer		NOT NULL,
-	start_year		dm_year		NOT NULL,
-	type			en_season	NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_squad TABLE
- * NAME : pk_squad
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_squad
-ADD CONSTRAINT pk_squad
-PRIMARY KEY
-(
-	team_id,
-	player_id,
-	start_year
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_squad TABLE
- * NAME : squad_fk_militancy
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_squad
-ADD CONSTRAINT squad_fk_militancy
-FOREIGN KEY
-(
-	militancy_id
-)
-REFERENCES fp_militancy
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_squad TABLE
- * NAME : squad_fk_team
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_squad
-ADD CONSTRAINT squad_fk_team
-FOREIGN KEY
-(
-	team_id
-)
-REFERENCES fp_team
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_squad TABLE
- * NAME : squad_fk_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE	fp_squad
-ADD CONSTRAINT squad_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -1702,19 +1494,19 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_trophy_case TABLE
- * NAME : player_trophy_case_fk_squad
+ * NAME : player_trophy_case_fk_militancy
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
-ADD CONSTRAINT player_trophy_case_fk_squad
+ADD CONSTRAINT player_trophy_case_fk_militancy
 FOREIGN KEY
 (
 	player_id,
 	team_id,
 	start_year
 )
-REFERENCES fp_squad
+REFERENCES fp_militancy
 (
 	player_id,
 	team_id,
@@ -2104,19 +1896,19 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
- * NAME : play_fk_squad
+ * NAME : play_fk_militancy
  *
  * DESC : TODO
  ******************************************************************************/
 ALTER TABLE fp_play
-ADD CONSTRAINT play_fk_squad
+ADD CONSTRAINT play_fk_militancy
 FOREIGN KEY
 (
 	start_year,
 	team_id,
 	player_id
 )
-REFERENCES fp_squad
+REFERENCES fp_militancy
 (
 	start_year,
 	team_id,
