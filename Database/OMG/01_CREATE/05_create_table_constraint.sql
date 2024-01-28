@@ -773,6 +773,21 @@ PRIMARY KEY
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - ck_militancy TABLE
+ * NAME : ck_militancy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	fp_militancy
+ADD CONSTRAINT ck_militancy
+CHECK
+(
+	('NATIONAL' = team_type AND 'FULL' = type)
+	OR
+	team_type <> 'NATIONAL'
+);
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
