@@ -20,7 +20,7 @@
  * NAME : tf_bu_if_referenced_refuse
  *
  * DESC : Funzione che controlla che accetta un aggiornamento solo se la
- *        riga della tabella che ha scatenato il trigger non e' referenziata
+ *        riga della tabella che ha scatenato il trigger non è referenziata
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bu_if_referenced_refuse
 (
@@ -158,16 +158,16 @@ BEGIN
 	id_country_conf = CAST(tmp AS integer);
 
 
-	-- se la squadra e' associata ad una nazione
-	-- e la confederazione associata alla squadra e' associata alla stessa
+	-- se la squadra è associata ad una nazione
+	-- e la confederazione associata alla squadra è associata alla stessa
 	-- nazione della squadra
 	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
 
 		IF ('CLUB' = NEW.type) THEN
 			RETURN NEW;
 
-		-- se la squadra e' di tipo nazionale deve avere lo stesso nome
-		-- della nazione cui e' associata		
+		-- se la squadra è di tipo nazionale deve avere lo stesso nome
+		-- della nazione cui è associata		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
 			name_country = get_column('fp_country', 'name', NEW.country_id);
@@ -295,7 +295,7 @@ BEGIN
 			RETURN NEW;
 
 		ELSE
-			-- se esiste gia' un'edizione della competizione
+			-- se esiste già un'edizione della competizione
 			-- quella che si vuole inserire deve rispettare la frequenza della competizione
 			IF (corr_freq(NEW.competition_id, NEW.start_year)) THEN
 				RETURN NEW;
@@ -348,7 +348,7 @@ BEGIN
 		-- ..e la squadra appartiene alla confederazione che organizza la competizione
 		belong_to(NEW.team_id, id_conf_comp)
 		AND
-		-- ..e la squadra e' compatibile con la competizione
+		-- ..e la squadra è compatibile con la competizione
 		team_fit_comp(NEW.team_id, id_comp)
 		AND
 		-- ..e la squadra non partecipa ad altre edizioni simili nella stessa confederazione
@@ -402,7 +402,7 @@ LANGUAGE plpgsql;
  * NAME : tf_ai_player
  *
  * DESC : Funzione che dopo l'inserimento di un calciatore ne aggiorna la
- *        nazionalita'
+ *        nazionalità
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_player
 (
@@ -473,7 +473,7 @@ AS
 $$
 BEGIN
 
-	-- se il nuovo ruolo e' compatibile con tutte le posizioni del calciatore
+	-- se il nuovo ruolo è compatibile con tutte le posizioni del calciatore
 	IF (role_fit_positions(NEW.id, NEW.role)) THEN
 		RETURN NEW;
 	END IF;
@@ -555,8 +555,8 @@ LANGUAGE plpgsql;
  * NAME : tf_au_player_country
  *
  * DESC : Funzione che dopo l'aggiornamento del paese di nascita di un
- *        calciatore, aggiorna la nazionalita' del calciatore ed elimina
- *        la vecchia nazionalita' se non sono presenti militanze nazionali
+ *        calciatore, aggiorna la nazionalità del calciatore ed elimina
+ *        la vecchia nazionalità se non sono presenti militanze nazionali
  *        associate al vecchio paese di nascita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_player_country
@@ -643,7 +643,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_nationality
  *
- * DESC : Funzione che controlla che la nuova nazionalita' da inserire sia
+ * DESC : Funzione che controlla che la nuova nazionalità da inserire sia
  *        riferita ad una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_nationality
@@ -671,7 +671,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bd_nationality
  *
- * DESC : Funzione che controlla che la nazionalita' che si vuole eliminare
+ * DESC : Funzione che controlla che la nazionalità che si vuole eliminare
  *        non sia quella riferita alla nazione di nascita di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_nationality
@@ -709,7 +709,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION 
  * NAME : tf_ad_nationality
  *
- * DESC : Funzione che dopo l'eliminazione di una nazionalita' elimina
+ * DESC : Funzione che dopo l'eliminazione di una nazionalità elimina
  *        la militanza nazionale associata alla nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ad_nationality
@@ -795,7 +795,7 @@ BEGIN
 
 				IF (is_national(NEW.player_id)) THEN
 
-					-- se e' una militanza nazionale e il calciatore ha gia
+					-- se è una militanza nazionale e il calciatore ha gia
 					-- militato in nazionale la squadra deve essere la stessa
 					IF (national_team(NEW.player_id) <> NEW.team_id) THEN
 						RETURN NULL;
@@ -826,7 +826,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_militancy
  *
- * DESC : Funzione che dopo l'inserimento di una militanza che e' riferita
+ * DESC : Funzione che dopo l'inserimento di una militanza che è riferita
  *        alla seconda parte di stagione assegna i trofei vinti dalla squadra
  *        in quella stagione al calciatore
  ******************************************************************************/
@@ -1281,8 +1281,8 @@ BEGIN
 
 		type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
 	
-		-- se il trofeo e' di squadra
-		-- tale trofeo sara' eliminabile solo se la squadra non ha il trofeo
+		-- se il trofeo è di squadra
+		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
 		-- o se il calciatore non milita nella parte finale di stagione
 		IF
 		(

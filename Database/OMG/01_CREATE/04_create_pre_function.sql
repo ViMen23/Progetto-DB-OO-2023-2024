@@ -404,7 +404,7 @@ LANGUAGE plpgsql;
  *        identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: e' possibile utilizzare tale funzione solo su tabelle che
+ *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
  *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_column
@@ -499,7 +499,7 @@ LANGUAGE plpgsql;
  *        input il nome della tabella, e l'id che identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: e' possibile utilizzare tale funzione solo su tabelle che
+ *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
  *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_record
@@ -576,16 +576,16 @@ LANGUAGE plpgsql;
  *        NOTA: La funzione considera come database predefinito "fpdb" e
  *              come schema predefinito "public"
  *
- *        NOTA: e' posssibile implementare tale funzione in modo piu' complesso
- *              in termini generali ma si e' scelto di sfruttare la "disciplina"
+ *        NOTA: È posssibile implementare tale funzione in modo più complesso
+ *              in termini generali ma si è scelto di sfruttare la "disciplina"
  *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
  *              (e non solo).
- *              Nello specifico ogni constraint di tipo foreign key e' stato
+ *              Nello specifico ogni constraint di tipo foreign key è stato
  *              formalizzato nel seguente modo:
  *
  *              nomeTabellaCheRiferisce_fk_nomeTabellaDaRiferire
  *
- *              E' pertanto stato possibile implementare tale funzione in modo
+ *              È pertanto stato possibile implementare tale funzione in modo
  *              rapido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION all_references
@@ -653,7 +653,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una riga di una tabella e' referenziata.
+ * DESC : Funzione che valuta se una riga di una tabella è referenziata.
  *        Prende in input un separatore ed una stringa formattata in modo
  *        appropiato.
  *
@@ -671,7 +671,7 @@ LANGUAGE plpgsql;
  *              Non sono stati effettuati eccessivi, e dovuti, controlli
  *              sull'input in quanto si tratta di una funzione nata con lo
  *              scopo di semplificare diversi trigger e pertanto l'input
- *              sara' generato automaticamente e sara' corretto.
+ *              sarà generato automaticamente e sarà corretto.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_referenced
 (
@@ -700,8 +700,8 @@ DECLARE
 	
 BEGIN
 
-	-- come prima cosa e' necessario costruire la condizione del where
-	-- che andra' a completare la query
+	-- come prima cosa è necessario costruire la condizione del where
+	-- che andrà a completare la query
 
 	where_cond = '';
 	name_constr = '';
@@ -814,7 +814,7 @@ BEGIN
 		
 		ELSE
 			
-			-- se e' un constraint che e' stato gia incontrato
+			-- se è un constraint che è stato gia incontrato
 			-- la query da eseguire va estesa con le nuove colonne
 			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
 			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
@@ -824,10 +824,10 @@ BEGIN
 		
 		
 		-- se si tratta dell'ultimo valore di una colonna della tabella che referenzia
-		-- e' il momento di collegare la query con la condizione del where 
+		-- è il momento di collegare la query con la condizione del where 
 		IF (1 = row_table.col_ord) THEN
 
-			-- prima di collegare la condizione del where la query sara':
+			-- prima di collegare la condizione del where la query sarà:
 			--
 			-- SELECT
 			-- 		count(*)
@@ -838,7 +838,7 @@ BEGIN
 			--		ON
 			--			nome_tabella.colonna_referenziata = nome_tabella_che_referenzia1.colonna_che_referenzia
 			-- ...
-			-- e cosi' via..
+			-- e così via..
 			--
 			-- Per semplificare la visualizzazione è stato scelto di formattare
 			-- la condizione del where in modo appropriato, sebbene quella ottenuta con la funzione
@@ -848,7 +848,7 @@ BEGIN
 
 			EXECUTE to_execute INTO counter;
 
-			-- se il contatore e' maggiore di 0 allora la riga in questione e' referenziata			
+			-- se il contatore è maggiore di 0 allora la riga in questione è referenziata			
 			IF (counter > 0) THEN
 				RETURN TRUE;		
 			END IF;
@@ -857,7 +857,7 @@ BEGIN
 		
 	END LOOP;
 
-	-- se si arriva a questo punto significa che la riga in questione non e' referenziata
+	-- se si arriva a questo punto significa che la riga in questione non è referenziata
 	RETURN FALSE;
 	
 END;
@@ -883,16 +883,16 @@ LANGUAGE plpgsql;
  *        NOTA: La funzione considera come database predefinito "fpdb" e
  *              come schema predefinito "public"
  *
- *        NOTA: e' possibile implementare tale funzione in modo piu' complesso
- *              in termini generali ma si e' scelto di sfruttare la "disciplina"
+ *        NOTA: È possibile implementare tale funzione in modo più complesso
+ *              in termini generali ma si è scelto di sfruttare la "disciplina"
  *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
  *              (e non solo).
- *              Nello specifico ogni constraint di tipo primary key e' stato
+ *              Nello specifico ogni constraint di tipo primary key è stato
  *              formalizzato nel seguente modo:
  *
  *              pk_nomeTabella
  *
- *              E' pertanto stato possibile implementare tale funzione in modo
+ *              È pertanto stato possibile implementare tale funzione in modo
  *              rapido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION list_pk_columns
@@ -939,15 +939,15 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che preso in input un separatore, il nome di una tabella e
  *        un record di una riga della tabella in input costruisce mediante
- *        SQL dinamico la stringa che poi potra' essere data in input alla
+ *        SQL dinamico la stringa che poi potrà essere data in input alla
  *        funzione "is_referenced".
  *
- *        NOTA: fa uso dell'estensione hstore
+ *        NOTA: Fa uso dell'estensione hstore
  *
- *        NOTA: non vengono effettuati eccessivi, e doverosi, controlli
- *              sull'input in quanto e' una funzione nata con lo scopo
+ *        NOTA: Non vengono effettuati eccessivi, e doverosi, controlli
+ *              sull'input in quanto è una funzione nata con lo scopo
  *              di semplificare la scrittura di diversi trigger e pertanto
- *              l'input sara' automatico e sempre corretto
+ *              l'input sarà automatico e sempre corretto
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION string_for_reference
 (

@@ -189,7 +189,7 @@ CHECK
  * DESC : Dominio per la password.
  *        Accetta una stringa alfanumerica di lunghezza compresa tra
  *        gli 8 e i 255 caratteri.
- *        E' necessaria la presenza di almeno una cifra, una lettera maiuscola,
+ *        È necessaria la presenza di almeno una cifra, una lettera maiuscola,
  *        una lettera minuscola ed un carattere speciale
  ******************************************************************************/
 CREATE DOMAIN dm_password AS varchar(255)
@@ -318,7 +318,7 @@ CHECK
  * NAME : dm_year
  *
  * DESC : Dominio contenente gli anni precedenti o uguali a quello corrente
- *        e superiore o uguale all'anno in cui e' ufficialmente nato il calcio  
+ *        e superiore o uguale all'anno in cui è ufficialmente nato il calcio  
  ******************************************************************************/
 CREATE DOMAIN dm_year AS smallint
 CHECK

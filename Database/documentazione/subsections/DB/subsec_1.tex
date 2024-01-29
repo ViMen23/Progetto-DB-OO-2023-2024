@@ -1755,6 +1755,19 @@ centrale.
 	}
 	\\
 	{
+		ckPlayerAttribute
+	}
+	&
+	{
+		N-UPLA
+	}
+	&
+	{
+		Il punteggio di un attributo deve essere
+		al massimo pari a cento.
+	}
+	\\
+	{
 		Controllo PlayerAttributeGK
 	}
 	&
@@ -2005,7 +2018,9 @@ centrale.
 	}
 	&
 	{
-		TODO
+		Un calciatore può giocare al più una volta
+		per ogni edizione di una competizione calcistica
+		in una squadra di calcio.
 	}
 	\\
 	{
@@ -2036,6 +2051,16 @@ centrale.
 		associata, moltiplicato per quattro.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{1-2}={100pt},
+    width = \textwidth
+}
+	
 	{
 		Controllo StatisticRole
 	}
@@ -2051,16 +2076,6 @@ centrale.
 		i suoi ruoli di gioco il portiere.
 	}
 	\\
-\end{tblr}
-
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{1-2}={100pt},
-    width = \textwidth
-}
-	
 	{
 		dmAlnum
 	}
@@ -2074,86 +2089,13 @@ centrale.
 		shortName e longName di Confederation;\\
 		name di Team;\\
 		name di Competition.\\
-		Questo dominio sfrutta le espressioni regolari
-		per accettare soltanto strighe alfanumeriche
-		(comprese lettere accentate) che abbiano
-		una lunghezza compresa tra due e cento caratteri,
-		ed evitare eventuali ripetizioni di caratteri
-		di punteggiatura e spazi non validi.
-	}
-	\\
-	{
-		dmDate
-	}
-	&
-	{
-		DOMINIO
-	}
-	&
-	{
-		Dominio per tutti gli attributi di tipo Date.
-		Questo dominio non permette l'inserimento di
-		date che siano successive alla data corrente.
-	}
-	\\
-	{
-		dmString
-	}
-	&
-	{
-		DOMINIO
-	}
-	&
-	{
-		Dominio per tutti i restanti attributi di tipo
-		String tranne l' attributo descrizione
-		eventualmente presente nella classe.
-		Questo dominio sfrutta le espressioni
-		regolari per accettare soltanto stringhe
-		(comprese lettere accentate) che abbiano
-		una lunghezza compresa tra due e cento caratteri.
-		Questo dominio inoltre blocca l'inserimento
-		di strighe con ripetizioni di segni
-		di punteggiatura e spazi che non siano validi.
-	}
-	\\
-	{
-		dmPassword
-	}
-	&
-	{
-		DOMINIO
-	}
-	&
-	{
-		Dominio per l'attributo password di UserAccount.
-		Questo dominio sfrutta le espressioni regolari
-		per controllare che siano stati inseriti
-		un numero, una lettera minuscola e maiuscola
-		e un carattere speciale e che la sua lunghezza
-		sia compresa tra otto e duecentocinquantacinque
-		caratteri.
-	}
-	\\
-	{
-		dmUsername
-	}
-	&
-	{
-		DOMINIO
-	}
-	&
-	{
-		Dominio per l'attributo username di UserAccount.
-		Questo dominio sfrutta le espressioni regolari
-		per accettare una stringa di
-		caratteri alfanumerici, punti,
-		trattini e underscore,
-		con una lunghezza compresa tra due e diciotto
-		caratteri. Questo dominio inoltre blocca
-		ripetizioni e composizioni di segni
-		di punteggiatura non validi.
-		
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa di caratteri alfanumerici
+		(inclusi i caratteri accentati)
+		di lunghezza compresa tra i due e i cento caratteri.
+		Inoltre, blocca l'inserimento di stringhe
+		con ripetizioni di segni di punteggiatura
+		e spazi che non siano validi.
 	}
 	\\
 	{
@@ -2167,14 +2109,15 @@ centrale.
 	{
 		Dominio per gli attributi code delle classi:
 		country e position.
-		Questo dominio sfrutta le espressioni regolari
-		per accettare stringhe dell'alfabeto maiuscole
-		che abbiano una lunghezza compresa tra
-		due e tre caratteri.
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa di caratteri 
+		dell'alfabeto inglese maiuscoli di 
+		lunghezza compresa tra
+		i due e i tre caratteri.
 	}
 	\\
 	{
-		dmYear
+		dmDate
 	}
 	&
 	{
@@ -2182,12 +2125,94 @@ centrale.
 	}
 	&
 	{
-		Dominio per gli attributi year delle classi:
-		CompetitionEdition, TeamPrizeCase e
-		PlayerPrizeCase.
-		Questo dominio non permette di far inserire
-		anni strettamente successivi
-		all'anno corrente più uno.
+		Dominio per tutti gli attributi di tipo Date.
+		Questo dominio permette di inserire date che siano
+		precedenti o uguali a quella corrente
+		e maggiori o uguali ad una data arbitraria
+		che permette l'inserimento di calciatori
+		che idealmente giochino la prima stagione
+		possibile.
+	}
+	\\
+	{
+		dmDescription
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per tutti gli attributi description.
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa di caratteri alfanumerici
+		(inclusi i caratteri accentati)
+		di lunghezza compresa tra i due e
+		i cinquecento caratteri.
+		Inoltre, blocca l'inserimento di stringhe
+		con ripetizioni di segni di punteggiatura
+		e spazi che non siano validi.
+	}
+	\\
+	{
+		dmPassword
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per l'attributo password di UserAccount.
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa alfanumerica
+		di lunghezza compresa tra gli otto e
+		i duecentocinquantacinque caratteri.
+		Inoltre, è necessaria la presenza
+		di almeno una cifra, una lettera maiuscola,
+		una lettera minuscola ed un carattere speciale.
+	}
+	\\
+	{
+		dmString
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per tutti i restanti attributi
+		di tipo	String.
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa di caratteri
+		(inclusi i caratteri accentati)
+		di lunghezza compresa tra i due e
+		i cento caratteri.
+		Inoltre, blocca l'inserimento di stringhe
+		con ripetizioni di segni di punteggiatura
+		e spazi che non siano validi.
+	}
+	\\
+	{
+		dmUsername
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per l'attributo username di UserAccount.
+		Questo dominio sfrutta l' espressione regolare
+		che accetta una stringa di caratteri alfanumerici
+		(inclusi i caratteri accentati), punti,
+		trattini e trattini bassi,
+		di lunghezza compresa tra i quattro e
+		i venti caratteri.
+		Inoltre, la stringa non deve iniziare e/o finire
+		con punti, trattini e trattini bassi.
+		
 	}
 	\\
 	{
@@ -2203,6 +2228,24 @@ centrale.
 		di tipo integer.
 		Questo dominio non permette di far inserire
 		valori numerici inferiori allo zero.
+	}
+	\\
+	{
+		dmYear
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per gli attributi year delle classi:
+		CompetitionEdition, TeamPrizeCase e
+		PlayerPrizeCase.
+		Questo dominio permette di inserire anni che siano
+		precedenti o uguali a quello corrente
+		e maggiori o uguali all'anno in cui è
+		ufficialmente nato il calcio.
 	}
 	\\
 \end{tblr}

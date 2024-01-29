@@ -628,7 +628,7 @@ CREATE TABLE fp_player_retired
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_retired TABLE
  * NAME : pk_player_retired
  *
- * DESC : Un calciatore puo' ritirarsi al piu' una volta
+ * DESC : Un calciatore può ritirarsi al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_retired
 ADD CONSTRAINT pk_player_retired
@@ -741,9 +741,9 @@ ON UPDATE CASCADE;
  *        in una squadra di calcio per stagione calcistica
  *
  *        NOTA: una stagione riferita ad una militanza in una squadra di calcio
- *              di tipo club sara' sempre a cavallo di due anni consecutivi
+ *              di tipo club sarà sempre a cavallo di due anni consecutivi
  *              (es. 2000-2001), una stagione riferita ad una militanza in una
- *              squadra di calcio di tipo nazionale sara' riferita ad un anno
+ *              squadra di calcio di tipo nazionale sarà riferita ad un anno
  *              (es. 2000)
  ******************************************************************************/
 CREATE TABLE fp_militancy
@@ -761,7 +761,7 @@ CREATE TABLE fp_militancy
  * NAME : pk_militancy
  *
  * DESC : Un calciatore non può militare nella stessa squadra di calcio
- *        piu' volte in uno stesso anno
+ *        più volte in uno stesso anno
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT pk_militancy
@@ -796,8 +796,8 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - ck_militancy TABLE
  * NAME : ck_militancy
  *
- * DESC : Una militanza di un calciatore in una squadra nazionale e' annuale,
- *        mentre in una squadra di calcio di tipo club puo' anche essere di
+ * DESC : Una militanza di un calciatore in una squadra nazionale è annuale,
+ *        mentre in una squadra di calcio di tipo club può anche essere di
  *        mezza stagione
  ******************************************************************************/
 ALTER TABLE	fp_militancy
@@ -1872,7 +1872,7 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
  * NAME : uq_play
  *
- * DESC : Un calciatore puo' giocare al piu' una volta per ogni edizione di
+ * DESC : Un calciatore può giocare al più una volta per ogni edizione di
  *        una competizione calcistica in una squadra di calcio
  ******************************************************************************/
 ALTER TABLE fp_play
@@ -1973,7 +1973,7 @@ CREATE TABLE fp_play_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
  * NAME : pk_play_statistic
  *
- * DESC : Un gioco puo' essere associato al piu' una volta ad una statistica
+ * DESC : Un gioco può essere associato al più una volta ad una statistica
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT pk_play_statistic

@@ -32,7 +32,7 @@ CREATE SCHEMA public;
  * TYPE : EXTENSION
  * NAME : hstore
  *
- * DESC : Estensione necessaria per rendere piu' comoda l'implementazione
+ * DESC : Estensione necessaria per rendere più comoda l'implementazione
  *        di alcune funzioni e trigger.
  *
  *        NOTA: per maggiori informazioni consultare la documentazione ufficiale

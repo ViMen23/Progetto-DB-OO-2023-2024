@@ -24,7 +24,7 @@
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce l'eta minima per un calciatore.
+ * DESC : Funzione che restituisce l'età minima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
  *              (Wikipidia, Transfermarkt, ...)
@@ -60,7 +60,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce l'eta massima per un calciatore.
+ * DESC : Funzione che restituisce l'età massima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
  *              (Wikipidia, Transfermarkt, ...)
@@ -190,7 +190,7 @@ LANGUAGE plpgsql;
  *        calciatore.
  *
  *        NOTA: per anno valido si intende un anno nel quale un calciatore
- *              puo' militare in una squadra di calcio
+ *              può militare in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION valid_year_range
 (
@@ -551,8 +551,8 @@ LANGUAGE plpgsql;
  *        ruolo compatibile con la combinazione di ruoli in input
  *
  *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione e' associabile ad una statistica
- *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
  *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION not_role_trophy
@@ -595,8 +595,8 @@ LANGUAGE plpgsql;
  *        ruolo compatibile con la combinazione di ruoli in input
  *
  *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione e' associabile ad una statistica
- *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
  *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION not_role_prize
@@ -905,7 +905,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un paese puo' essere contenuto in un altro
+ * DESC : Funzione che valuta se un paese può essere contenuto in un altro
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_be_inside
 (
@@ -996,9 +996,9 @@ LANGUAGE plpgsql;
  * DESC : Funzione che valuta se l'anno di inizio e fine di un'edizione di
  *        una competizione calcistica sono corretti.
  *
- *        NOTA: abbiamo effettuato una semplificazione che e' basata
+ *        NOTA: abbiamo effettuato una semplificazione che è basata
  *              sull'analisi di numerose competizioni (Wikipidia, Transermarkt).
- *              Un campionato e' sempre a cavallo di due anni.
+ *              Un campionato è sempre a cavallo di due anni.
  *              Una supercoppa sempre svolta in un solo anno.
  *              Un torneo per club a cavallo di due anni, un torneo per
  *              nazionali sempre svolto in un solo anno.
@@ -1387,8 +1387,8 @@ LANGUAGE plpgsql;
  *        una combinazione di ruoli
  *
  *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione e' associabile ad una statistica
- *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
  *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION role_fit_positions
@@ -1487,8 +1487,8 @@ LANGUAGE plpgsql;
  *        associabile ad una statistica.
  *
  *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione e' associabile ad una statistica
- *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
  *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION pos_fit_stat
@@ -1535,8 +1535,8 @@ LANGUAGE plpgsql;
  * DESC : Funzione che valuta se una squadra di calcio è compatibile con
  *        una competizione calcistica
  *
- *        NOTA: una squadra di calcio e' compatibile con una competizione
- *              calcistica se e' dello stesso tipo del tipo di squadre che
+ *        NOTA: una squadra di calcio è compatibile con una competizione
+ *              calcistica se è dello stesso tipo del tipo di squadre che
  *              possono partecipare alla suddetta competizione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
@@ -1774,11 +1774,11 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una squadra di calcio puo' partecipare ad
+ * DESC : Funzione che valuta se una squadra di calcio può partecipare ad
  *        un'edizione di una competizione calcistica.
  *
- *        NOTA: una squadra di calcio per ogni confederazione calcistica
- *              cui appartiene puo' partecipare solo ad un tipo di competizione
+ *        NOTA: Una squadra di calcio per ogni confederazione calcistica
+ *              cui appartiene può partecipare solo ad un tipo di competizione
  *              per ogni stagione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_take_part
@@ -1900,7 +1900,7 @@ LANGUAGE plpgsql;
  * RETURNS : boolean
  *
  * DESC : Funzione che valuta se la data di nascita e di ritiro di un
- *        calciatore rispettino i limiti di eta' da noi definiti.
+ *        calciatore rispettino i limiti di età da noi definiti.
  *
  *        NOTA: fare riferimento alle funzioni min_age e max_age
  ******************************************************************************/
@@ -1946,7 +1946,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se in un certo anno un calciatore e' disponibile
+ * DESC : Funzione che valuta se in un certo anno un calciatore è disponibile
  *        per una nuova militanza di un certo tipo di squadra e di un certo tipo
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION free_militancy
