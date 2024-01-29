@@ -18,76 +18,63 @@ che dovranno essere compiute sul database, vi è
 un impellente necessità di introdurre delle ridondanze.
 
 
-Prima operazione su tutte, è la visualizzazione di un 
-resoconto delle statistiche di un calciatore rispetto alla 
-sua militanza
-(operazione richiesta anche dalla traccia).
-Quest'ultimo infatti si potrebbe ottenere facendo una somma 
-delle  statistiche riferite ai Play che sono associati allo 
-specifico calciatore, alla squadra della militanza che si sta 
-tenendo in considerazione e che siano avvenuti nell'arco di 
-tempo in cui il calciatore in questione militava per quella 
-certa squadra.
+Un'operazione che deve essere effettuata ogni volta che
+si voglia compiere una delle seguenti operazioni
+per un calciatore:
+\begin{itemize}
+	\item Assegnare un trofeo;
+	\item Aggiungere un valore di una statistica
+		al play;
+	\item Aggiungere un valore di un attributo;
+	\item Assegnare un tag.
+\end{itemize}
+è quella di controllare quali sono i ruoli
+che il calciatore ha giocato durante la sua carriera.
+Questo ci porta quindi ad andare a controllare ogni volta
+le sue posizioni di gioco ed estrarne i ruoli.
+
+Per agevolare quest'operazione si è deciso di introdurre
+una ridondanza nella classe Player, che appunto conservi
+l'informazione sui ruoli in cui il calciatore fino a
+quel momento ha giocato.
+Per fare ciò si è deciso di creare un tipo enum
+\textbf{enRoleMix} che contenga tutte le combinazioni
+di ruoli possibili.
 
 
-Per evitare che ad ogni richiesta di questa operazione si 
-debba rifare il calcolo, soffermandoci nuovamente sul fatto 
-che si suppone che questa operazione venga effettuata un 
-numero molto elevato di volte, si vede la necessità di 
-aggiungere in \textbf{Militanza} un attributo \textbf{match} 
-che conservi il numero di presenze in campo di un calciatore 
-durante quella specifica militanza.
 
-Inoltre, vi è necessario aggiungere una classe 
-\textbf{MilitancyStatistic} che sarà associata a 
-\textbf{Statistic} e a \textbf{Militancy}, e che conterrà 
-come attributo, \textbf{score} che ha lo scopo di conservare 
-il valore di una certa statistica di un calciatore durante 
-una specifica militanza.
+Un'altra operazione che si suppone sia ricorrente è
+la visualizzazione delle 
+nazionalità di un giocatore.
 
-
-Un'altra operazione che si suppone sia ricorrente, è il 
-resoconto
-del numero di presenze in campo di un calciatore in una 
-determinata posizione.
-Questo calcolo si potrebbe ottere dalla somma dell'attributo 
-\textbf{match} delle tuple in Play associate al calciatore in 
-quella determinata posizione.
-
-Per velocizzare l'operzione si vede necessario, dunque, 
-introdurre nella classe \textbf{PlayPosition} un attributo 
-\textbf{match} che conservi il numero di presenze in campo di 
-un calciatore in una specifica posizione.
-
-
-L'ultima operazione, ovvero la visualizzazione delle 
-nazionalità di un giocatore, si potrebbe ottenere navigando 
+Questa informazione si potrebbe ottenere navigando 
 entrambe le associazioni che \textbf{Player} ha con 
 \textbf{Country}: bornCountry e Nationality.
 
-Visto che il nostro database ha come scopo primario l'essere 
+Visto che quest'informazione è utile per un eventuale
+controllo della militanza in nazionale e,
+visto che il nostro database ha come scopo primario l'essere 
 un sistema informativo per i calciatori, si vede necessario 
 aggiungere alla relazione Nationality anche la nazione di 
 nascita del calciatore così da velocizzare l'operazione, in 
 quanto così facendo basta navigare soltanto l'associazione 
 Nationality.
 
+
 \newpage
 \textbf{\large Eliminazione delle Generalizzazioni}
 
 Nonostante le numerose generalizzazioni presenti nel Class 
 Diagram, tutte hanno un qualcosa in comune, ovvero sono 
-generalizzazioni disgiunte totali, e in particolare le classi 
-figlie non hanno attributi propri, ma al massimo associazioni 
-con altre classi.
+generalizzazioni disgiunte totali.
 
 A seguito di ciò dunque, come metodo per eliminarle, si 
 deciso di adottare l'accorpamento delle figlie della 
 generalizzazione nel padre, aggiungendo dove necessario un 
 attributo \textbf{type} che distinguesse le varie istanze 
 della classe padre, e facendo le dovute correzioni ad 
-eventuali associazioni delle classi figlie con le altre 
-classi.
+eventuali attributi e/o associazioni delle classi figlie
+con le altre classi.
 
 Di seguito viene mostrato un elenco delle generalizzazioni e 
 di come sono state ristrutturate:
@@ -124,8 +111,8 @@ mantenendo la molteplicità invariata.
 
 Alla classe \textbf{Confederation}  non è stato aggiunto un 
 attributo \textbf{type} poiché si è sfruttato l'associazione 
-1 a 1 che le classi figlie di \textbf{Confederation} avevano 
-con le classi figlie di \textbf{Country}.
+1 a 1 (parziale) che le classi figlie di \textbf{Confederation}
+avevano con le classi figlie di \textbf{Country}.
 Dunque per comprendere a quale classe figlia una tupla di 
 \textbf{Confederation} corrisponde, bisogna basarsi 
 sull'attributo \textbf{type} della classe \textbf{Country}.
@@ -148,6 +135,10 @@ sono state accorpate, risultandone in un'unica associazione
 tra la classe \textbf{Confederation} e la classe 
 \textbf{Competition}, classe padre di 
 \textbf{NationalCompetition}.
+
+L'associazione della classe figlia \textbf{NationalConfederation} e
+\textbf{Team} è stata ricollegata alla classe padre mantenendo
+molteplicità invariata.
 
 \newpage
 \textbf{Competition}
@@ -177,48 +168,12 @@ valori:
 	\item League;
 	\item Super Cup.
 \end{itemize}
-
 Per quanto riguarda le associazioni:
 
 L'associazione tra \textbf{ClubCompetition} e 
 \textbf{Confederation}, è stata ricollegata alla classe padre 
 \textbf{Competition} mantenendone però la molteplicità 
 invariata.
-
-
-Le associazioni tra \textbf{NationalCompetition} e  
-\textbf{NationalCompetitionEdition} e tra 
-\textbf{ClubCompetition} e \textbf{ClubCompetitionEdition} 
-sono state accorpate, risultandone in un'unica associazione 
-(con molteplicità invariata) tra \textbf{Competition} e 
-\textbf{CompetitionEdition}, la classe padre di 
-\textbf{NationalCompetitionEdition} e 
-\textbf{ClubCompetitionEdition}.
-
-\bigskip
-\textbf{CompetitionEdition}
-\bigskip
-
-Alla classe \textbf{CompetitionEdition} non è stato aggiunto 
-un attributo \textbf{type} poiché si è sfruttata 
-l'associazione che vi era tra le sue classi figlie e le 
-classi figlie di \textbf{Competition}. Dunque per comprendere 
-a quale classe figlia una tupla di 
-\textbf{CompetitionEdition} corrisponde, bisogna basarsi 
-sull'attributo \textbf{teamType} della classe 
-\textbf{Competition}.
-
-Per quando riguarda le associazioni:
-
-Le associazioni tra \textbf{NationalCompetitionEdition} e 
-\textbf{NationalPartecipation} e tra 
-\textbf{ClubCompetitionEditon} e \textbf{ClubPartecipation}, 
-sono state accorpate, risultandone in un'unica associazione 
-(con molteplicità invariata) tra la classe 
-\textbf{CompetitionEdition} e \textbf{Partecipation}, la 
-classe padre di \textbf{NationalPartecipation} e 
-\textbf{ClubPartecipation}.
-
 
 \bigskip
 \textbf{Team}
@@ -228,46 +183,19 @@ Alla classe \textbf{Team} è stato aggiunto un attributo
 \textbf{type} di tipo enum chiamato \textbf{enTeam} (lo 
 stesso di Competition).
 
-Per quanto riguarda le associazioni:
-
-Le associazioni tra \textbf{National} e 
-\textbf{NationalPartecipation} e tra \textbf{Club} e 
-\textbf{ClubPartecipation}, sono state accorpate, 
-risultandone in un'unica associazione tra la classe 
-\textbf{Team} e \textbf{Partecipation} la classe padre di
-\textbf{NationalPartecipation} e \textbf{ClubPartecipation}
-
-
-\newpage
-
-\textbf{Partecipation}
-\bigskip
-
-Alla classe \textbf{Partecipation} non è stato aggiunto un 
-attributo \textbf{type} poiché si è sfruttata l'associazione 
-che vi era tra le sue classi figlie e le classi figlie di 
-\textbf{Team}. Dunque per comprendere a quale classe figlia 
-una tupla di \textbf{Partecipation} corrisponde, bisogna 
-basarsi sull'attributo \textbf{type} della classe 
-\textbf{Team}.
-
-Per quanto riguarda le associazioni:
-Sono già state gestite precedentemente.
-
 \bigskip
 \textbf{Trophy}
 \bigskip
 
 Alla classe \textbf{Trophy} è stato aggiunto un attributo 
-\textbf{type} di tipo enum chiamato \textbf{enAward}.
+\textbf{type} di tipo enum chiamato \textbf{enAward} e l'attributo
+\textbf{role} della classe figlia \textbf{PlayerTrophy}.
 
 Il tipo \textbf{enAward} assume i seguenti valori:
 \begin{itemize}
 	\item Player
 	\item Team
 \end{itemize}
-
-
 Per quanto riguarda le associazioni:
 
 L'associazione tra \textbf{TeamTrophy} e 
@@ -281,43 +209,26 @@ L'associazione tra \textbf{TeamTrophy} e
 
 Alla classe \textbf{Prize} è stato aggiunto un attributo 
 \textbf{type} di tipo enum chiamato \textbf{enAward} (lo 
-stesso tipo di Trophy).
+stesso tipo di Trophy) e l'attributo
+\textbf{role} della classe figlia \textbf{PlayerPrize}.
 
 Per quanto riguarda le associazioni:
 
 L'associazione tra \textbf{TeamPrize} e 
-\textbf{TeamPrizeCase} è stata ricollegata alla classe padre 
+\textbf{Team} è stata ricollegata alla classe padre 
 \textbf{Prize} mantenendo la molteplicità invariata.
 
-
 L'associazione tra \textbf{PlayerPrize} e 
-\textbf{PlayerPrizeCase} è stata ricollegata alla classe 
+\textbf{Player} è stata ricollegata alla classe 
 padre \textbf{Prize} mantenendo la molteplicità invariata.
 
-\bigskip
+\newpage
 \textbf{\large Eliminazioni Attributi Multivalore}
 \bigskip
 
-Vi sono tre attributi multivalore presenti nel Class Diagram:
-\begin{itemize}
-	\item L'attributo \textbf{role}
-		della classe \textbf{Prize};
-	\item L'attributo \textbf{role}
-		della classe \textbf{Trophy};
-	\item L'attributo \textbf{role}
-		della classe \textbf{Statistic}.
-\end{itemize}
+Nel Class Diagram non sono presenti Attributi Multivalore.
 
-Questo attributo assume la stessa funzione in tutte e tre le 
-Classi, ovvero quello di descrivere quella determinata classe 
-a quali ruoli può essere associata.
-
-
-Data l'importanza assunta da quest'attributo, si è deciso di 
-creare un tipo enum che contiene tutte le combinazioni di 
-ruoli possibili (ci possono essere massimo 4 ruoli).
-
-\newpage
+\bigskip
 \textbf{\large Eliminazione Attributi Strutturati}
 \bigskip
 
@@ -331,13 +242,14 @@ Nel Class Diagram non sono presenti Attributi Strutturati.
 L'unica accorpamento che potrebbe essere effettuato nel Class 
 Diagram è quello tra \textbf{Country} e 
 \textbf{Confederation}, poiché tra esse vi è un'associazione 
-1 a 1.
+1 a 1 (parziale).
 
 Si è arrivati però alla conclusione che c'è bisogno che le 
 due classi siano separate, perché nelle altre associazioni 
 che esse hanno con le altre classi, svolgono un ruolo 
 centrale.
 
+\newpage
 \bigskip
 \textbf{\large Scelta degli Identificatori Primari}
 \bigskip
@@ -701,7 +613,8 @@ centrale.
 	}
 	&
 	{
-		Esprime le militanze di un calciatore in una squadra.
+		Esprime le militanze di un calciatore in una squadra
+		per stagione.
 	}
 	&
 	{
@@ -712,16 +625,11 @@ centrale.
 	}
 	&
 	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di una Militanza.\\
-		\medskip\textbf{startSeason}(Integer):\\Rappresenta
-			la stagione d'inizio di una Militanza.\\
-		\medskip\textbf{typeStartSeason}(enSeason):\\Rappresenta
-			in che parte della stagione è iniziata la Militanza.\\
-		\medskip\textbf{endSeason}(Integer):\\Rappresenta
-			la stagione in cui termina la Militanza.\\
-		\medskip\textbf{typeEndSeason}(enSeason):\\Rappresenta
-			in che parte della stagione è terminata la Militanza.
+		\textbf{startYear}(Integer):\\Rappresenta
+			la stagione di riferimento di una Militanza.\\
+		\medskip\textbf{type}(enSeason):\\Rappresenta
+			fino a che parte della stagione un Calciatore
+			militava per quella Squadra.
 	}
 	\\
 	{
@@ -806,15 +714,6 @@ centrale.
 	
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
-    width = \textwidth
-}
-
 	{
 		\textbf{Player-Tag}
 	}
@@ -834,6 +733,15 @@ centrale.
 		
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth
+}
+
 	{
 		\textbf{Player-Position}
 	}
@@ -874,40 +782,6 @@ centrale.
 	}
 	\\
 	{
-		\textbf{Squad}
-	}
-	&
-	{
-		Esprime la rosa in un determinato anno di una squadra.
-	}
-	&
-	{
-		\textbf{Militancy [0 ... *]}:\\Indica che
-			una Militanza può essere associato a più Rose.\\
-		\medskip\textbf{Player [0 ... *]}:\\Indica che
-			un Calciatore può essere associato a più Rose.\\
-		\medskip\textbf{Team [0 ... *]}:\\Indica che
-			una Squadra può essere associata a più Rose.\\
-		\medskip\textbf{Squad -> Team [1]}:\\Indica che
-			una Rosa può essere associata ad una
-			e una sola Squadra.\\
-		\medskip\textbf{Squad -> Militancy [1]}:\\Indica che
-			una Rosa può essere associata ad una
-			e una sola Militanza.\\
-		\medskip\textbf{Squad -> Player [1]}:\\Indica che
-			una Rosa può essere associata ad un
-			e un solo Calciatore.
-	}
-	&
-	{
-		\textbf{startYear}(Integer):\\Rappresenta
-			la stagione di riferimento di una Rosa.\\
-		\medskip\textbf{type}(enSeason):\\Rappresenta
-			fino a che parte della stagione un Giocatore
-			era in Rosa.
-	}
-	\\
-	{
 		\textbf{TeamPrizeCase}
 	}
 	&
@@ -927,15 +801,6 @@ centrale.
 			l'anno di assegnazione di un Premio ad una Squadra.\\
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt}, column{4}= {10pt},
-    width = \textwidth
-}
-
 	{
 		\textbf{Team-Country}
 	}
@@ -997,6 +862,15 @@ centrale.
 		
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt}, column{4}= {50pt},
+    width = \textwidth
+}
+
 	{
 		\textbf{Competition-CompetitionEdition}
 	}
@@ -1108,17 +982,8 @@ centrale.
 		
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
-    width = \textwidth
-}
-
 	{
-		\textbf{PlayTrophyCase}	
+		\textbf{PlayerTrophyCase}	
 	}
 	&
 	{
@@ -1132,8 +997,8 @@ centrale.
 		\medskip\textbf{Trophy [0 ... *]}:\\Indica che
 			un Trofeo può essere associato
 			a più Bacheche.\\
-		\medskip\textbf{Squad [0 ... *]}:\\Indica che
-			una Rosa può essere associata
+		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
+			una Militanza può essere associata
 			a più Bacheche.\\
 		\medskip\textbf{PlayTrophyCase -> Partecipation [1]}:
 			\\Indica che una Bacheca può essere associata
@@ -1141,30 +1006,40 @@ centrale.
 		\medskip\textbf{PlayTrophyCase -> Trophy [1]}:
 			\\Indica che una Bacheca può essere associata
 			ad un e un solo Trofeo.\\
-		\medskip\textbf{PlayTrophyCase -> Squad [1]}:
+		\medskip\textbf{PlayTrophyCase -> Militancy [1]}:
 			\\Indica che una Bacheca può essere associata
-			ad una e una sola Rosa.
+			ad una e una sola Militanza.
 	}
 	&
 	{
 		
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth
+}
+
 	{
 		\textbf{Play}
 	}
 	&
 	{
-		Esprime in quale edizione un calciatore, in una squadra
-		e in una certa stagione, ha giocato.
+		Esprime in quale edizione di una competizione
+		un calciatore, che militava per una certa squadra,
+		ha giocato.
 	}
 	&
 	{
 		\textbf{Partecipation [0 ... *]}:\\Indica che
 			una Partecipazione può essere associata
 			a più Rose.\\
-		\medskip\textbf{Squad [0 ... *]}:\\Indica che
-			una Rosa può essere associata
+		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
+			una Militanza può essere associata
 			a più Partecipazioni.
 	}
 	&
@@ -1224,11 +1099,157 @@ centrale.
 	}
 	\\
 	{
+		uqCountryCode
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere paesi diversi con
+		lo stesso codice.
+	}
+	\\
+	{
+		uqCountryName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere paesi diversi con
+		lo stesso nome.
+	}
+	\\
+	{
+		uqConfederationLongName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere confederazioni calcistiche
+		diverse con lo stesso nome esteso.
+	}
+	\\
+	{
+		Controllo ConfederationSuper
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Una confederazione deve essere membro soltanto di una
+		una confederazione con tipo strettamente superiore.
+	}
+	\\
+	{
+		uqTeam
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere squadre di calcio diverse
+		con lo stesso nome.
+	}
+	\\
+	{
+		Controllo TeamCountry
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio deve essere associata soltanto
+		ad un paese che sia una nazione.
+		
+	}
+	\\
+	{
+		Controllo TeamConf
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio deve essere associata soltanto
+		alla confederazione che abbia come paese associato
+		lo stesso della squadra.
+	}
+	\\
+	{
+		Controllo TeamNatName
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio nazionale deve avere come nome
+		lo stesso del paese associato.
+	}
+	\\
+	{
+		uqCompetitionName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere competizioni calcistiche
+		diverse con lo stesso nome.
+	}
+	\\
+	{
+		Controllo Comp
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una competizione calcistica tra squadre nazionali
+		non deve avere associata una confederazione
+		di tipo nazionale.
+	}
+	\\
+	{
+		uqCompetitionEditionEndYear
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Ogni edizione di una competizione calcistica
+		deve finire in un anno diverso.
+	}
+	\\
+	{
 		ckCompetitionEditionRange
 	}
 	&
 	{
-		N-PLA
+		N-UPLA
 	}
 	&
 	{
@@ -1243,7 +1264,7 @@ centrale.
 	}
 	&
 	{
-		N-PLA
+		N-UPLA
 	}
 	&
 	{
@@ -1254,44 +1275,549 @@ centrale.
 	}
 	\\
 	{
-		ckMilitancyType
+		Controllo CompEdLeagueYears
 	}
 	&
 	{
-		N-PLA
+		INTERELAZIONALI
 	}
 	&
 	{
-		Tutti i tipi stagione (inizio o fine) in una Militanza
-		possono essere soltanto prima parte o seconda parte.
+		Un'edizione di una competizione calcistica
+		di tipo campionato non deve iniziare
+		e finire nello stesso anno.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth
+}
+
+	{
+		Controllo CompEdSuperCupYears
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un'edizione di una competizione calcistica
+		di tipo supercoppa deve iniziare
+		e finire nello stesso anno.
 	}
 	\\
 	{
-		ckMilitancySeason
+		Controllo CompEdCupNatYears
 	}
 	&
 	{
-		N-PLA
+		INTERELAZIONALI
 	}
 	&
 	{
-		In una Militanza, ogni stagione d'inizio deve
-		precedere o al massimo essere uguale
-		alla stagione di fine.
+		Un'edizione di una competizione calcistica
+		di tipo coppa tra squadre nazionali deve
+		iniziare e finire nello stesso anno.
 	}
 	\\
 	{
-		ckMilitancyValidCombo
+		Controllo CompEdCupClubYears
 	}
 	&
 	{
-		N-PLA
+		INTERELAZIONALI
 	}
 	&
 	{
-		Ogni militanza di un calciatore che inizi e termini
-		nella stessa stagione, non può iniziare
-		nella seconda parte e terminare nella prima parte.
+		Un'edizione di una competizione calcistica
+		di tipo coppa tra squadre club non deve
+		iniziare e finire nello stesso anno.
+	}
+	\\
+	{
+		Controllo CompEdSuperCupTotTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un'edizione di una competizione calcistica
+		di tipo SuperCoppa deve avere al massimo
+		sei squadre di calcio partecipanti.
+	}
+	\\
+	{
+		Controllo CompEdLeagueTotTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un'edizione di una competizione calcistica
+		di tipo campionato deve avere al massimo
+		cinquanta squadre di calcio partecipanti.
+	}
+	\\
+	{
+		Controllo CompEdCupNatTotTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un'edizione di una competizione calcistica
+		di tipo coppa, organizzata da una confederazione
+		di tipo nazionale, deve avere come numero
+		di squadre di calcio partecipanti una potenza di due
+	}
+	\\
+	{
+		Controllo CompEdCupIntTotTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un'edizione di una competizione calcistica
+		di tipo coppa, organizzata da una confederazione
+		di tipo diverso da nazionale, deve avere al massimo
+		cinquanta squadre di calcio partecipanti.	
+	}
+	\\
+	{
+		Controllo CompEdFreq
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		L'anno di inizio e fine di un'edizione
+		di una competizione calcistica, deve rispettare
+		la frequenza della sua competizione di riferimento.
+		
+	}
+	\\
+	{
+		Controllo PartTotTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La partecipazione di una squadra di calcio
+		ad un'edizione di una competizione calcistica
+		deve essere accettata soltanto se
+		il numero massimo di squadre partecipanti per
+		quell'edizione non è stato superato.
+	}
+	\\
+	{
+		Controllo PartTeamConf
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La partecipazione di una squadra di calcio
+		ad un'edizione di una competizione calcistica
+		deve essere accettata soltanto se
+		la confederazione che organizza
+		la competizione calcistica, è la stessa
+		della squadra di calcio oppure contiene
+		la confederazione associata alla squadra di calcio.
+	}
+	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth
+}
+
+	{
+		Controllo PartTeamType
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La partecipazione di una squadra di calcio
+		ad un'edizione di una competizione calcistica
+		deve essere accettata soltanto se
+		il tipo di squadra della competizione calcistica
+		è lo stesso della squadra di calcio
+		in considerazione.
+	}
+	\\
+	{
+		Controllo PartTeamComp
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La partecipazione di una squadra di calcio
+		ad un'edizione di una competizione calcistica
+		deve essere accettata soltanto se
+		la squadra non partecipi già ad un'altra edizione
+		di una competizione calcistica dello stesso tipo,
+		nello stesso anno e organizzata dalla
+		stessa confederazione.
+	}
+	\\
+	{
+		uqPlayer
+	}
+	&
+	{
+		INTRARELAZIONALI	
+	}
+	&
+	{
+		Non possono esistere calciatori diversi
+		con la stessa combinazione di nome,
+		cognome, data di nascita e paese di nascita.
+	}
+	\\
+	{
+		Controllo PlayerNat
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un calciatore deve essere
+		associato ad un paese che sia una nazione.
+	}
+	\\
+	{
+		Controllo PlayerRole
+	}
+	&
+	{
+		N-UPLA
+	}
+	&
+	{
+		Un calciatore, nel momento dell'inserimento,
+		deve avere come valore dell'attributo role
+		NULL.
+	}
+	\\
+	{
+		Controllo PlayerRetired
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La data di ritiro di un calciatore deve
+		essere successiva alla data di nascita più
+		un minimo età per diventare un calciatore,
+		più di sei mesi di attività professionale.
+	}
+	\\
+	{
+		Controllo PlayerRetiredMilitancy
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La data di ritiro di un calciatore deve
+		essere uguale o successiva all'anno
+		dell'ultima, in ordine di anni crescente,
+		militanza del calciatore.
+	}
+	\\
+	{
+		ckMilitancy
+	}
+	&
+	{
+		N-UPLA
+	}
+	&
+	{
+		 La militanza per un calciatore in una squadra nazionale
+		 deve durare per l'intera stagione in cui è stato convocato.
+	}
+	\\
+	{
+		Controllo MilitancyPlayer
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una militanza di un	calciatore per
+		una squadra di calcio deve essere accettata
+		soltanto se il calciatore ha almeno
+		una posizione di gioco.
+	}
+	\\
+	{
+		Controllo MilitancyValidRange
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		L'anno della militanza di un calciatore
+		per una squadra di calcio deve essere
+		un anno valido per il calciatore.
+	}
+	\\
+	{
+		Controllo MilitancyTeamNatPlayer
+	}
+	&
+	{
+		INTERELAZIONALI	
+	}
+	&
+	{
+		La militanza di un calciatore per
+		una squadra di calcio nazionale deve
+		essere accettata se il paese associato
+		alla squadra di calcio nazionale è una
+		nazionalità del calciatore.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth
+}
+	{
+		Controllo MilitancyTeamNat
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		La militanza di un calciatore per
+		una squadra di calcio nazionale deve
+		essere accettata se il calciatore non ha
+		nessuna militanza con altre
+		squadre di calcio nazionali.
+	}
+	\\
+	{
+		Controllo Militancy
+	}
+	&
+	{
+		INTRARELAZIONALI	
+	}
+	&
+	{
+		La militanza di un calciatore per
+		una squadra di calcio deve essere
+		accettata se non vi è una sovrapposizione
+		temporale con altre militanze dello
+		stesso calciatore per altre squadre di calcio
+		dello stesso tipo di quella in considerazione.
+	}
+	\\
+	{
+		uqTagName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere tag diversi con
+		lo stesso nome.
+	}
+	\\
+	{
+		uqTagDescription
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere tag diversi con
+		la stessa descrizione.
+	}
+	\\
+	{
+		Controllo PlayerTagGK
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un Tag di tipo portiere deve essere associato
+		ad un calciatore soltanto se portiere è uno dei
+		ruoli in campo del calciatore.
+	}
+	\\
+	{
+		uqPositionCode
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere posizioni di gioco
+		diverse con lo stesso codice.
+	}
+	\\
+	{
+		uqPositionName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere posizioni di gioco
+		diverse con lo stesso nome.
+	}
+	\\
+	{
+		uqAttributeName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere attributi diversi
+		con lo stesso nome.
+	}
+	\\
+	{
+		uqAttributeDescription
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere attributi diversi
+		con la stessa descrizione.
+	}
+	\\
+	{
+		Controllo PlayerAttributeGK
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un Attributo di tipo portiere deve essere associato
+		ad un calciatore soltanto se portiere è uno dei
+		ruoli in campo del calciatore.
+	}
+	\\
+	{
+		uqStatisticName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere statistiche diverse
+		con lo stesso nome.
+	}
+	\\
+	{
+		uqStatisticDescription
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere statistiche diverse
+		con la stessa descrizone.
+	}
+	\\
+	{
+		uqTrophyName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		 Non possono esistere trofei calcistici diversi
+		 con lo stesso nome.
+	}
+	\\
+	{
+		uqTrophyDescription
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere trofei calcistici diversi
+		con la stessa descrizione.
 	}
 	\\
 	{
@@ -1299,7 +1825,7 @@ centrale.
 	}
 	&
 	{
-		N-PLA
+		N-UPLA
 	}
 	&
 	{
@@ -1308,11 +1834,105 @@ centrale.
 	}
 	\\
 	{
+		Controllo TeamTrophyCase
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio deve essere associata
+		soltanto a trofei di tipo squadra.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth
+}
+
+	{
+		Controllo PlayerTrophyCaseMil
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un trofeo deve essere associato ad 
+		un calciatore soltanto se la sua militanza,
+		nella stagione in cui è stato vinto il trofeo,
+		non è stata per la prima parte.
+	}
+	\\
+	{
+		Controllo PlayerTrophyCaseTeam
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un trofeo di tipo squadra deve essere associato
+		ad un calciatore soltanto se la squadra di calcio
+		in cui il calciatore militava nella stagione
+		di assegnazione del trofeo, ha vinto quel trofeo.
+	}
+	\\
+	{
+		Controllo PlayerTrophyCaseRole
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un trofeo di tipo calciatore
+		in uno specifico ruolo deve essere associato
+		ad un calciatore soltanto se il ruolo a cui
+		è associato il trofeo è un ruolo di gioco
+		del calciatore
+	}
+	\\
+	{
+		uqPrizeName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere premi calcistici diversi
+		con lo stesso nome.
+	}
+	\\
+	{
+		uqPrizeDescription
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere premi calcistici diversi
+		con la stessa descrizione.
+	}
+	\\
+	{
 		ckPrize
 	}
 	&
 	{
-		N-PLA
+		N-UPLA
 	}
 	&
 	{
@@ -1321,11 +1941,79 @@ centrale.
 	}
 	\\
 	{
+		Controllo TeamPrize
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio deve essere associata
+		soltanto a premi di tipo squadra.
+	}
+	\\
+	{
+		Controllo PlayerPrize
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un calciatore deve essere associato soltanto
+		a premi di tipo calciatore.
+	}
+	\\
+	{
+		Controllo PlayerPrizeValidRange
+	}
+	&
+	{
+		INTERELAZIONALI	
+	}
+	&
+	{
+		L'anno di assegnazione di un premio ad
+		un calciatore deve essere un anno valido
+		del calciatore.
+	}
+	\\
+	{
+		Controllo PlayerPrizeRole
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un premio di tipo calciatore
+		in uno specifico ruolo deve essere associato
+		ad un calciatore soltanto se il ruolo a cui
+		è associato il premio è un ruolo di gioco
+		del calciatore.
+	}
+	\\
+	{
+		uqPlay
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		TODO
+	}
+	\\
+	{
 		ckPlay
 	}
 	&
 	{
-		N-PLA
+		N-UPLA
 	}
 	&
 	{
@@ -1334,267 +2022,188 @@ centrale.
 	}
 	\\
 	{
-		
+		Controllo PlayMatch
 	}
 	&
 	{
-		
+		INTERELAZIONALI
 	}
 	&
 	{
-		
+		Il numero di match di un gioco deve essere
+		al massimo pari al numero di squadre, che
+		possono partecipare all'edizione della competizione
+		associata, moltiplicato per quattro.
 	}
 	\\
 	{
-		
+		Controllo StatisticRole
 	}
 	&
 	{
-		
+		INTERELAZIONALI
 	}
 	&
 	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		
-	}
-	&
-	{
-		
-	}
-	&
-	{
-		
+		Una statistica che abbia l'attributo goalkeeper
+		true deve essere associata ad un gioco
+		soltanto se il calciatore associato ha tra
+		i suoi ruoli di gioco il portiere.
 	}
 	\\
 \end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{1-2}={100pt},
+    width = \textwidth
+}
+	
+	{
+		dmAlnum
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per gli attributi delle seguenti classi:\\
+		shortName e longName di Confederation;\\
+		name di Team;\\
+		name di Competition.\\
+		Questo dominio sfrutta le espressioni regolari
+		per accettare soltanto strighe alfanumeriche
+		(comprese lettere accentate) che abbiano
+		una lunghezza compresa tra due e cento caratteri,
+		ed evitare eventuali ripetizioni di caratteri
+		di punteggiatura e spazi non validi.
+	}
+	\\
+	{
+		dmDate
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per tutti gli attributi di tipo Date.
+		Questo dominio non permette l'inserimento di
+		date che siano successive alla data corrente.
+	}
+	\\
+	{
+		dmString
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per tutti i restanti attributi di tipo
+		String tranne l' attributo descrizione
+		eventualmente presente nella classe.
+		Questo dominio sfrutta le espressioni
+		regolari per accettare soltanto stringhe
+		(comprese lettere accentate) che abbiano
+		una lunghezza compresa tra due e cento caratteri.
+		Questo dominio inoltre blocca l'inserimento
+		di strighe con ripetizioni di segni
+		di punteggiatura e spazi che non siano validi.
+	}
+	\\
+	{
+		dmPassword
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per l'attributo password di UserAccount.
+		Questo dominio sfrutta le espressioni regolari
+		per controllare che siano stati inseriti
+		un numero, una lettera minuscola e maiuscola
+		e un carattere speciale e che la sua lunghezza
+		sia compresa tra otto e duecentocinquantacinque
+		caratteri.
+	}
+	\\
+	{
+		dmUsername
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per l'attributo username di UserAccount.
+		Questo dominio sfrutta le espressioni regolari
+		per accettare una stringa di
+		caratteri alfanumerici, punti,
+		trattini e underscore,
+		con una lunghezza compresa tra due e diciotto
+		caratteri. Questo dominio inoltre blocca
+		ripetizioni e composizioni di segni
+		di punteggiatura non validi.
+		
+	}
+	\\
+	{
+		dmCode
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per gli attributi code delle classi:
+		country e position.
+		Questo dominio sfrutta le espressioni regolari
+		per accettare stringhe dell'alfabeto maiuscole
+		che abbiano una lunghezza compresa tra
+		due e tre caratteri.
+	}
+	\\
+	{
+		dmYear
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per gli attributi year delle classi:
+		CompetitionEdition, TeamPrizeCase e
+		PlayerPrizeCase.
+		Questo dominio non permette di far inserire
+		anni strettamente successivi
+		all'anno corrente più uno.
+	}
+	\\
+	{
+		dmUint
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per tutti i restanti attributi
+		di tipo integer.
+		Questo dominio non permette di far inserire
+		valori numerici inferiori allo zero.
+	}
+	\\
+\end{tblr}
+
