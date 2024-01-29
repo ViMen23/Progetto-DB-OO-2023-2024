@@ -20,25 +20,26 @@
  * NAME : public
  *
  * DESC : Lo schema per il database.
- *        E' stato scelto di utilizzare lo schema public in quanto e'
+ *        È stato scelto di utilizzare lo schema public in quanto è
  *        il percorso di ricerca predefinito per ogni database in Postgresql,
- *        in questo modo si rendera' il codice piu' leggibile                            
+ *        in modo da rendere il codice più leggibile                            
  ******************************************************************************/
 DROP SCHEMA IF EXISTS public CASCADE;
 CREATE SCHEMA public;
 --------------------------------------------------------------------------------
 
-
 /******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
+ * TYPE : EXTENSION
+ * NAME : hstore
+ *
+ * DESC : Estensione necessaria per rendere più comoda l'implementazione
+ *        di alcune funzioni e trigger.
+ *
+ *        NOTA: per maggiori informazioni consultare la documentazione ufficiale
+ *              di Postgresql                      
  ******************************************************************************/
-
+CREATE EXTENSION hstore;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -50,7 +51,11 @@ CREATE SCHEMA public;
  * TYPE : DOMAIN
  * NAME : dm_alnum
  *
- * DESC : TODO
+ * DESC : Dominio per una stringa di caratteri alfanumerici
+ *        (inclusi i caratteri accentati) di lunghezza compresa tra i 2 e
+ *        i 100 caratteri.
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
  ******************************************************************************/
 CREATE DOMAIN dm_alnum AS varchar(100)
 CHECK
@@ -111,14 +116,122 @@ CHECK
 
 /*******************************************************************************
  * TYPE : DOMAIN
- * NAME : dm_pdate
+ * NAME : dm_code
  *
- * DESC : Dominio contenente le date precedenti o uguali a quella corrente
+ * DESC : Dominio per un codice di due o tre lettere maiuscole
  ******************************************************************************/
-CREATE DOMAIN dm_pdate AS date
+CREATE DOMAIN dm_code AS varchar(3)
 CHECK
 (
-	value <= current_date
+	value ~ '(?=^[\u0041-\u005A]{2,3}$)'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DOMAIN
+ * NAME : dm_date
+ *
+ * DESC : Dominio contenente le date precedenti o uguali a quella corrente
+ *        e maggiori o uguali ad una data arbitraria che permette l'inserimento
+ *        di calciatori che idealmente giochino la prima stagione possibile
+ ******************************************************************************/
+CREATE DOMAIN dm_date AS date
+CHECK
+(
+	value BETWEEN '1810-01-01' AND current_date
+);
+--------------------------------------------------------------------------------
+
+
+/******************************************************************************* 
+ * TYPE : DOMAIN
+ * NAME : dm_description
+ *
+ * DESC : Dominio per una stringa di caratteri alfanumerici
+ *        (inclusi i caratteri accentati) di lunghezza compresa tra i 2 e
+ *        i 500 caratteri.
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
+ ******************************************************************************/
+CREATE DOMAIN dm_description AS varchar(500)
+CHECK
+(
+	value ~ '(?=^'
+				'['
+					
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+					'\u0259'
+				']'
+				'['
+					'\u0020'
+					'\u0027'
+					'\u002C'
+					'\u002D'
+					'\u002E'
+					'\u002F'
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0060'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+					'\u0259'
+				']{0,498}'
+				'['
+					'\u002E'
+					'\u0030-\u0039'
+					'\u0041-\u005A'
+					'\u0061-\u007A'
+					'\u00C0-\u00D6'
+					'\u00D8-\u00F6'
+					'\u00F8-\u00FF'
+					'\u0100-\u017F'
+					'\u0180-\u024F'
+					'\u0259'
+				']'
+			'$)'
+			'(?!.*('
+				'[\u0020\u0027\u002D\u002F\u0060]{2}'
+				'|'
+				'[\u0027\u002C\u002D\u002E\u002F\u0060]{2}'
+				'|'
+				'\u0020\u002C'
+				'|'
+				'\u0020\u002E'
+			'))'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DOMAIN
+ * NAME : dm_password
+ *
+ * DESC : Dominio per la password.
+ *        Accetta una stringa alfanumerica di lunghezza compresa tra
+ *        gli 8 e i 255 caratteri.
+ *        È necessaria la presenza di almeno una cifra, una lettera maiuscola,
+ *        una lettera minuscola ed un carattere speciale
+ ******************************************************************************/
+CREATE DOMAIN dm_password AS varchar(255)
+CHECK
+(
+	value ~ '(?=^[\u0020-\u007E]{8,255}$)'
+			'(?=.*[\u0030-\u0039]{1})'
+			'(?=.*[\u0041-\u005A]{1})'
+			'(?=.*[\u0061-\u007A]{1})'
+			'(?=.*[\u0020-\u002F\u003A-\u0040\u005B-\u0060\u007B-\u007E]{1})'
 );
 --------------------------------------------------------------------------------
 
@@ -127,7 +240,10 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_string
  *
- * DESC : TODO
+ * DESC : Dominio per una stringa di caratteri (inclusi i caratteri accentati)
+ *        di lunghezza compresa tra i 2 e i 100 caratteri.
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
  ******************************************************************************/
 CREATE DOMAIN dm_string AS varchar(100)
 CHECK
@@ -180,53 +296,12 @@ CHECK
 --------------------------------------------------------------------------------
 
 
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_password
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_password AS varchar(255)
-CHECK
-(
-	value ~ '(?=^[\u0020-\u007E]{8,255}$)'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_code
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE DOMAIN dm_code AS varchar(3)
-CHECK
-(
-	value ~ '(?=^[\u0041-\u005A]{2,3}$)'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : DOMAIN
- * NAME : dm_usint
- *
- * DESC : Dominio contenente smallint non negativi
- ******************************************************************************/
-CREATE DOMAIN dm_usint AS smallint
-CHECK
-(
-	value >= 0
-);
---------------------------------------------------------------------------------
-
-
 /******************************************************************************* 
  * TYPE : DOMAIN
  * NAME : dm_username
  *
- * DESC : TODO
+ * DESC : Dominio per una stringa di caratteri alfanumerici, punti, trattini e
+ *        underscore di lunghezza compresa tra i 4 e i 20 caratteri.
  ******************************************************************************/
 CREATE DOMAIN dm_username AS varchar(20)
 CHECK
@@ -258,28 +333,31 @@ CHECK
 
 /*******************************************************************************
  * TYPE : DOMAIN
- * NAME : dm_year
+ * NAME : dm_usint
  *
- * DESC : Dominio contenente gli anni precedenti o uguali a quello corrente
+ * DESC : Dominio contenente smallint non negativi
  ******************************************************************************/
-CREATE DOMAIN dm_year AS smallint
+CREATE DOMAIN dm_usint AS smallint
 CHECK
 (
-	value BETWEEN 0 AND (extract(year from current_date) + 1)
+	value >= 0
 );
 --------------------------------------------------------------------------------
 
 
-/******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
+/*******************************************************************************
+ * TYPE : DOMAIN
+ * NAME : dm_year
+ *
+ * DESC : Dominio contenente gli anni precedenti o uguali a quello corrente
+ *        e superiore o uguale all'anno in cui è ufficialmente nato il calcio  
  ******************************************************************************/
-
+CREATE DOMAIN dm_year AS smallint
+CHECK
+(
+	value BETWEEN 1860 AND (extract(year from current_date))
+);
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -287,13 +365,55 @@ CHECK
  ******************************************************************************/
 
 
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : en_award
+ *
+ * DESC : Enum delle possibili tipologie di trofeo e premio calcistico
+ ******************************************************************************/
+CREATE TYPE en_award AS ENUM
+(
+	'PLAYER',
+	'TEAM'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : en_competition
+ *
+ * DESC : Enum delle possibili tipologie di competizione calcistica
+ ******************************************************************************/
+CREATE TYPE en_competition AS ENUM
+(
+	'CUP',
+	'LEAGUE',
+	'SUPER CUP'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : en_country
+ *
+ * DESC : Enum delle possibili tipologie di paese
+ ******************************************************************************/
+CREATE TYPE en_country AS ENUM
+(
+	'NATION',
+	'CONTINENT',
+	'WORLD'
+);
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
  * NAME : en_feature
  *
- * DESC : Enum delle possibili tipologie di attributi per un calciatore
+ * DESC : Enum delle possibili tipologie di attributo per un calciatore
  ******************************************************************************/
 CREATE TYPE en_feature AS ENUM
 (
@@ -310,36 +430,6 @@ CREATE TYPE en_feature AS ENUM
 	'TECHNICAL - DEFENDING',
 	'TECHNICAL - IN POSSESSION',
 	'TECHNICAL - OUT POSSESSION'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : en_competition
- *
- * DESC : Enum delle possibili tipologie di competizioni calcistiche
- ******************************************************************************/
-CREATE TYPE en_competition AS ENUM
-(
-	'CUP',
-	'LEAGUE',
-	'SUPER CUP'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : en_country
- *
- * DESC : Enum delle possibili tipologie di paesi
- ******************************************************************************/
-CREATE TYPE en_country AS ENUM
-(
-	'NATION',
-	'CONTINENT',
-	'WORLD'
 );
 --------------------------------------------------------------------------------
 
@@ -363,7 +453,7 @@ CREATE TYPE en_foot AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_role
  *
- * DESC : Enum delle possibili tipologie di ruoli di un calciatore
+ * DESC : Enum delle possibili tipologie di ruolo di un calciatore
  ******************************************************************************/
 CREATE TYPE en_role AS ENUM
 (
@@ -373,7 +463,6 @@ CREATE TYPE en_role AS ENUM
 	'FW'  -- attaccante
 );
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -406,9 +495,24 @@ CREATE TYPE en_role_mix AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : en_season
+ *
+ * DESC : Enum delle possibili tipologie di militanza riferite ad una stagione
+ ******************************************************************************/
+CREATE TYPE en_season AS ENUM
+(
+	'I PART',	-- solo prima parte di stagione
+	'II PART',	-- solo seconda parte di stagione
+	'FULL'		-- tutta la stagione
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : en_team
  *
- * DESC : Enum delle possibili tipologie di squadre di calcio
+ * DESC : Enum delle possibili tipologie di squadra di calcio
  ******************************************************************************/
 CREATE TYPE en_team AS ENUM
 (
@@ -416,33 +520,6 @@ CREATE TYPE en_team AS ENUM
 	'NATIONAL'
 );
 --------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : en_award
- *
- * DESC : Enum delle possibili tipologie di trofei e premi calcistici
- ******************************************************************************/
-CREATE TYPE en_award AS ENUM
-(
-	'PLAYER',
-	'TEAM'
-);
---------------------------------------------------------------------------------
-
-
-/******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : competitionUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
- ******************************************************************************/
-
 
 
 
@@ -462,10 +539,10 @@ CREATE TYPE en_award AS ENUM
  *
  * DESC : Funzione che valuta se esiste una tabella con un nome uguale alla
  *        stringa in input.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *        NOTA: la funzione considera come database prefedinito "fpdb" e
- *              come schema predefinito "public"
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public".
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION table_exists
 (
@@ -496,9 +573,11 @@ BEGIN
 		AND
 		table_name = name_table;
 	
+
 	IF (NOT existence) THEN
 		RAISE NOTICE 'Table % not exists', name_table;
 	END IF;
+
 
 	RETURN existence;
 	
@@ -506,7 +585,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -520,10 +598,10 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che valuta se esiste una colonna all'interno di una tabella,
  *        prendendo in input il nome di una tabella e di una colonna.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *        NOTA: la funzione considera come database prefedinito "fpdb" e
- *              come schema predefinito "public"
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public".
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION column_exists
 (
@@ -557,9 +635,11 @@ BEGIN
 		AND
 		column_name = name_column;
 
+
 	IF (NOT existence) THEN
 		RAISE NOTICE 'Column % not exists in table %', name_column, name_table;
 	END IF;
+
 
 	RETURN existence;
 
@@ -567,7 +647,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -581,9 +660,9 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che, preso in input il nome di una tabella e di una colonna,
  *        restituisce il tipo della colonna sotto forma di testo.
- *        Fa uso del catalogo di sistema di Postgresql
+ *        Fa uso del catalogo di sistema di Postgresql.
  *
- *		  NOTA: la funzione considera come database prefedinito "fpdb" e
+ *		  NOTA: La funzione considera come database predefinito "fpdb" e
  *              come schema predefinito "public"
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_type_column
@@ -618,13 +697,13 @@ BEGIN
 		AND
 		column_name = name_column;
 
+
 	RETURN type_column;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -643,7 +722,7 @@ LANGUAGE plpgsql;
  *        ES. separatore = '@'
  *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
  *
- *        L'idea di fondo e' quella di sfruttare la formattazione della
+ *        L'idea di fondo è quella di sfruttare la formattazione della
  *        stringa in input per estrarre tutte le informazioni necessarie
  *        utilizzando un contatore.
  *        Si immagini di costruire un array di stringhe contenente in ciascuna
@@ -664,19 +743,19 @@ LANGUAGE plpgsql;
  *        tabella, tutte le altre posizioni dispari faranno riferimento a
  *        nomi di colonne, mentre le posizioni pari immediatamente successive
  *        ai rispettivi valori.
- *        Sfruttando tali osservazioni mediante SQL dinamico sara' possibile
+ *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
  *        costruire la query desiderata.
  *        
- *        NOTA: importante osservare che tale funzione sfrutta la buona prassi,
+ *        NOTA: Importante osservare che tale funzione sfrutta la buona prassi,
  *              che abbiamo osservato quando possibile e necessario,
  *              di assegnare una chiave surrogata di tipo integer alle tabelle
- *              e di denominarla id  
+ *              e di denominarla id
  *
- *        NOTA: assicurarsi che i valori in input permettano di definire
+ *        NOTA: Assicurarsi che i valori in input permettano di definire
  *              in modo univoco una riga di una tabella.
  *              Non sono stati effettuati eccessivi, e dovuti, controlli
  *              sull'input in quanto si tratta di una funzione nata con lo
- *              scopo di semplificarci l'inserimento dei dati nel database
+ *              scopo di semplificare l'inserimento dei dati nel database
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
@@ -714,7 +793,11 @@ BEGIN
 	IN
 		-- suddivido la stringa in input in base alla posizione del separatore
 		-- per sfruttarne la formattazione
-		SELECT string_to_table(input_string, separator)
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
 	LOOP
 
 		-- se si tratta del nome della tabella
@@ -755,27 +838,27 @@ BEGIN
 			value_column = row_table.string_to_table;
 			
 			-- OSSERVAZIONE
-			-- in questo punto abbiamo sfruttato un'ulteriore peculiarita'
+			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
 			-- del nostro database
 			-- essenzialmente i tipi di dati che gestiamo si possono
 			-- dividere in due grandi categorie
 			-- categoria "testo", che contiene chiaramente i varchar,
 			-- text, ma anche date e altro
-			-- e categoria integer, di cui fanno parte i valori numerici
-			-- abbiamo pertanto sfruttato il fatto che indipendentemente
-			-- dai tipi e domini creati Postgresql salvi nel catalogo
+			-- e categoria integer, di cui fanno parte i valori numerici.
+			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
+			-- dai tipi e domini creati, Postgresql salvi nel catalogo
 			-- anche l'informazione sui tipi primitivi
-			-- pertanto se nel tipo della colonna non e' presente la
-			-- sottostringa 'int' si trattera' di un valore testuale
-			-- che necessita di essere messo tra singoli apici
-			-- per essere correttamente concatenato per formare
+			-- pertanto se nel tipo della colonna non è presente la
+			-- sottostringa 'int' si tratterà di un valore testuale
+			-- che necessita di essere posto tra singoli apici
+			-- per formare correttamente
 			-- la query da eseguire con SQL dinamico
 			IF (NOT type_column LIKE '%int%') THEN 
 				value_column = quote_literal(value_column);
 			END IF;
 			
 			-- aggiungo per permettere la creazione di una query
-			-- che filtra su piu' colonne
+			-- che filtra su più colonne
 			to_execute = to_execute || value_column || ' AND ';
 			
 		END IF;
@@ -804,19 +887,19 @@ BEGIN
 	--      AND
 	--      nome_colonnaN = valore_colonnaN;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 	
 	EXECUTE to_execute INTO id_to_find;
 	
+
 	RETURN id_to_find;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -833,6 +916,9 @@ LANGUAGE plpgsql;
  *        della tabella, il nome della colonna in questione e l'id che
  *        identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
+ *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_column
 (
@@ -885,18 +971,18 @@ BEGIN
 	-- WHERE
 	--      id = value_id;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 	
 	OPEN cur_to_execute FOR EXECUTE to_execute;
 	
 	type_column = get_type_column(name_table, name_column);
 	
-	-- se la colonna e' di tipo numerico
+	-- se la colonna è di tipo numerico
 	IF (type_column LIKE '%int%') THEN
 		FETCH cur_to_execute INTO tmp;
-		-- e' necessario castarla come text 
+		-- è necessario castarla come text 
 		value_column = CAST(tmp AS text); 
 	ELSE
 		FETCH cur_to_execute INTO value_column;
@@ -904,13 +990,13 @@ BEGIN
 	
 	CLOSE cur_to_execute;
 
+
 	RETURN value_column;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -925,6 +1011,9 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
  *        input il nome della tabella, e l'id che identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
+ *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_record
 (
@@ -966,11 +1055,12 @@ BEGIN
 	-- WHERE
 	--      id = value_id;
 	--
-	-- Per semplificare la visualizzazione e' stato scelto di formattare
-	-- la query in modo appropiato, sebbene quella ottenuta con la funzione
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
 	-- sia su una sola riga di testo
 
 	EXECUTE to_execute INTO rec_table;
+
 
 	RETURN rec_table;
 	
@@ -980,18 +1070,36 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : all_references
  *
- * IN      : text, integer
+ * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, integer)
  *
- * DESC : TODO
+ * DESC : Funzione che dato il nome di una tabella restituisce tutte le colonne
+ *        delle altre tabelle che fanno riferimento alla tabella in input,
+ *        ordinate per nome del constraint e per odine nel costraint decrescente
+ *        in modo tale che ogni volta che si raggiunge il valore di 1 si passi
+ *        ad un constraint differente, sotto forma di nuova tabella.
+ *        Fa uso del catalogo di sistema di Postgresql.
+ *
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public"
+ *
+ *        NOTA: È posssibile implementare tale funzione in modo più complesso
+ *              in termini generali ma si è scelto di sfruttare la "disciplina"
+ *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
+ *              (e non solo).
+ *              Nello specifico ogni constraint di tipo foreign key è stato
+ *              formalizzato nel seguente modo:
+ *
+ *              nomeTabellaCheRiferisce_fk_nomeTabellaDaRiferire
+ *
+ *              È pertanto stato possibile implementare tale funzione in modo
+ *              rapido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION all_references
 (
@@ -999,12 +1107,12 @@ CREATE OR REPLACE FUNCTION all_references
 )
 RETURNS TABLE
 (
-	constr			text,
-	table_to_ref	text,
-	col_to_ref		text,
-	table_ref		text,
-	col_ref			text,
-	col_ord			integer
+	constr			text,	-- nome del constraint
+	table_to_ref	text,	-- tabella referenziata
+	col_to_ref		text,	-- colonna della tabella referenziata
+	table_ref		text,	-- tabella che referenzia
+	col_ref			text,	-- colonna della tabella che referenzia
+	col_ord			integer	-- ordine della colonna della tabella che referenzia
 )
 RETURNS NULL ON NULL INPUT
 AS
@@ -1049,9 +1157,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_referenced
@@ -1061,7 +1166,25 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una riga di una tabella è referenziata.
+ *        Prende in input un separatore ed una stringa formattata in modo
+ *        appropiato.
+ *
+ *        ES. separatore = '@'
+ *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
+ *
+ *        L'idea di fondo è quella di sfruttare la formattazione della
+ *        stringa in input per estrarre tutte le informazioni necessarie
+ *        alla costruzione della query desiderata mediante SQL dinamico
+ *        in modo essenzialmente analogo a quello che viene fatto nella
+ *        funzione "get_id".
+ *
+ *        NOTA: Assicurarsi che i valori in input permettano di definire
+ *              in modo univoco una riga di una tabella.
+ *              Non sono stati effettuati eccessivi, e dovuti, controlli
+ *              sull'input in quanto si tratta di una funzione nata con lo
+ *              scopo di semplificare diversi trigger e pertanto l'input
+ *              sarà generato automaticamente e sarà corretto.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_referenced
 (
@@ -1090,6 +1213,9 @@ DECLARE
 	
 BEGIN
 
+	-- come prima cosa è necessario costruire la condizione del where
+	-- che andrà a completare la query
+
 	where_cond = '';
 	name_constr = '';
 	
@@ -1097,9 +1223,16 @@ BEGIN
 	
 	FOR row_table
 	IN
-		SELECT string_to_table(in_string, separator)
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(in_string, separator)
+
 	LOOP
 		
+		-- se si tratta del nome della tabella
 		IF (0 = counter) THEN
 
 			name_table = row_table.string_to_table;
@@ -1108,8 +1241,10 @@ BEGIN
 				RETURN NULL;
 			END IF;
 			
+			-- comincio a costruire la condizione del where 
 			where_cond = where_cond || 'WHERE ';
 			
+		-- se si tratta del nome di una colonna
 		ELSIF (1 = (counter % 2)) THEN
 		
 			name_column = row_table.string_to_table;
@@ -1120,18 +1255,19 @@ BEGIN
 			
 			type_column = get_type_column(name_table, name_column);
 			
+			-- aggiungo alla condizione del where il nome della colonna
 			where_cond = where_cond || name_table || '.' || name_column || ' = ';
-			
+
+		-- se si tratta del valore di una colonna	
 		ELSIF (0 = (counter % 2)) THEN
 		
 			value_column = row_table.string_to_table;
 			
 			IF (NOT type_column LIKE '%int%') THEN
-				 
-				value_column = quote_literal(value_column);
-				
+				value_column = quote_literal(value_column);	
 			END IF;
-				
+			
+			-- aggiungo alla condizione del where il valore della colonna
 			where_cond = where_cond || value_column || ' AND ';
 			
 		END IF;
@@ -1144,16 +1280,44 @@ BEGIN
 	
 	where_cond = where_cond || ';';
 
+	-- a questo punto avremo ottenuto la condizione del where
+	-- (seguendo l'esempio proposto):
+	-- 
+	-- WHERE
+	--      nome_tabella.nome_colonna1 = valore_colonna1
+	--      AND
+	--      nome_tabella.nome_colonna2 = valore_colonna2
+	--		AND
+	--		...
+	--		AND
+	--		nome_tabella.nome_colonnaN = valore_colonnaN;
+	--
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la condizione del where in modo appropriato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
+
+
+	-- a questo punto bisogna costruire la prima parte della query che andremo ad eseguire
 
 	counter = 0;
 
+	-- per ogni referenza alla riga della tabella in questione
 	FOR row_table
 	IN
-		SELECT * FROM all_references(name_table)
+		SELECT
+			*
+		FROM
+			all_references(name_table)
+
 	LOOP
 		
+		-- se si tratta di un nuovo contraint
 		IF (row_table.constr <> name_constr) THEN
 		
+			-- setto il constraint corrente
+			name_constr = row_table.constr;
+
+			-- costruisco la query da eseguire da zero
 			to_execute = '';
 			to_execute = to_execute || 'SELECT count(*)';
 			to_execute = to_execute || ' FROM ' || name_table;
@@ -1163,6 +1327,8 @@ BEGIN
 		
 		ELSE
 			
+			-- se è un constraint che è stato gia incontrato
+			-- la query da eseguire va estesa con le nuove colonne
 			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
 			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
 			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
@@ -1170,24 +1336,41 @@ BEGIN
 		END IF;
 		
 		
+		-- se si tratta dell'ultimo valore di una colonna della tabella che referenzia
+		-- è il momento di collegare la query con la condizione del where 
 		IF (1 = row_table.col_ord) THEN
-			
+
+			-- prima di collegare la condizione del where la query sarà:
+			--
+			-- SELECT
+			-- 		count(*)
+			-- FROM
+			-- 		nome_tabella
+			--		JOIN
+			--		nome_tabella_che_referenzia1
+			--		ON
+			--			nome_tabella.colonna_referenziata = nome_tabella_che_referenzia1.colonna_che_referenzia
+			-- ...
+			-- e così via..
+			--
+			-- Per semplificare la visualizzazione è stato scelto di formattare
+			-- la condizione del where in modo appropriato, sebbene quella ottenuta con la funzione
+			-- sia su una sola riga di testo
+
 			to_execute = to_execute || ' ' || where_cond;
-			
-			RAISE NOTICE '%', to_execute;
 
 			EXECUTE to_execute INTO counter;
-			
+
+			-- se il contatore è maggiore di 0 allora la riga in questione è referenziata			
 			IF (counter > 0) THEN
-				
-				RETURN TRUE;
-				
+				RETURN TRUE;		
 			END IF;
 				
 		END IF;
 		
 	END LOOP;
 
+	-- se si arriva a questo punto significa che la riga in questione non è referenziata
 	RETURN FALSE;
 	
 END;
@@ -1196,22 +1379,150 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-/******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : list_pk_columns
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : Funzione che preso in input il nome di una tabella restituisce
+ *        la lista delle colonne che formano la primary key della tabella
+ *        in questione, sotto forma di nuova tabella.
+ *        Fa uso del catalogo di sistema di Postgresql.
+ *
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public"
+ *
+ *        NOTA: È possibile implementare tale funzione in modo più complesso
+ *              in termini generali ma si è scelto di sfruttare la "disciplina"
+ *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
+ *              (e non solo).
+ *              Nello specifico ogni constraint di tipo primary key è stato
+ *              formalizzato nel seguente modo:
+ *
+ *              pk_nomeTabella
+ *
+ *              È pertanto stato possibile implementare tale funzione in modo
+ *              rapido
  ******************************************************************************/
- 
- 
- 
+CREATE OR REPLACE FUNCTION list_pk_columns
+(
+	IN	name_table	text
+)
+RETURNS TABLE
+(
+	name_column		text
+)
+RETURNS NULL ON NULL INPUT
+AS
+$$
+BEGIN
+
+	RETURN QUERY
+		SELECT
+			CAST(column_name AS text) AS name_column  
+		FROM
+			information_schema.constraint_column_usage
+		WHERE
+			table_catalog = 'fpdb'
+			AND
+			table_schema = 'public'
+			AND
+			table_name = name_table
+			AND
+			constraint_name LIKE 'pk_%';
+			
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : string_for_reference
+ *
+ * IN      : text, text, record
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che preso in input un separatore, il nome di una tabella e
+ *        un record di una riga della tabella in input costruisce mediante
+ *        SQL dinamico la stringa che poi potrà essere data in input alla
+ *        funzione "is_referenced".
+ *
+ *        NOTA: Fa uso dell'estensione hstore
+ *
+ *        NOTA: Non vengono effettuati eccessivi, e doverosi, controlli
+ *              sull'input in quanto è una funzione nata con lo scopo
+ *              di semplificare la scrittura di diversi trigger e pertanto
+ *              l'input sarà automatico e sempre corretto
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION string_for_reference
+(
+	IN	separator	text,
+	IN	name_table	text,
+	IN	rec_table	record
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	output_string	text;
+
+	name_column		text;
+
+	h_rec_table		hstore;	-- record di tipo hstore
+
+BEGIN
+
+	IF (NOT table_exists(name_table)) THEN
+		RETURN NULL;
+	END IF;
+
+	-- converte il record della tabella
+	-- per poter essere utilizzato dall'estensione hstore
+	h_rec_table = hstore(rec_table);
+
+	-- inizia a costruire la stringa in output col nome della tabella
+	output_string = '';
+	output_string = output_string || name_table;
+
+	-- per ogni nome di colonna della tabella che forma una primary key
+	FOR name_column
+	IN
+		SELECT
+			*
+		FROM
+			list_pk_columns(name_table)
+
+	LOOP
+
+		-- costruisci la stringa con nome colonna separatore
+		-- e valore colonna (ottenuto facilmente grazie all'estensione) 
+		output_string = output_string || separator || name_column;
+		output_string = output_string || separator || (h_rec_table->name_column);
+		
+	END LOOP;
+
+
+	RETURN output_string;
+			
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
 /*******************************************************************************
  * TABLES AND CONSTRAINTS
  ******************************************************************************/
-
 
 
 
@@ -1219,7 +1530,7 @@ LANGUAGE plpgsql;
  * TYPE : TABLE
  * NAME : fp_country
  *
- * DESC : Tabella contentente informazioni riguardanti i paesi
+ * DESC : Tabella contentente informazioni sui paesi
  ******************************************************************************/
 CREATE TABLE fp_country
 (
@@ -1278,8 +1589,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_confederation
  *
- * DESC : Tabella contentente informazioni riguardanti
- *        le confederazioni calcistiche
+ * DESC : Tabella contentente informazioni sulle confederazioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_confederation
 (
@@ -1288,7 +1598,7 @@ CREATE TABLE fp_confederation
 	short_name	dm_alnum 	NOT NULL,
 	long_name	dm_alnum	NOT NULL,
 	super_id	integer				  -- confederazione di grado immediatamente
-	                                  -- superiore della quale e' membro
+	                                  -- superiore della quale è membro
 );
 --------------------------------------------------------------------------------
 
@@ -1326,7 +1636,7 @@ UNIQUE
  * TYPE : UNIQUE CONSTRAINT - fp_confederation TABLE
  * NAME : uq_confederation_country_id
  *
- * DESC : Un paese deve appartenere al piu' ad una confederazione calcistica
+ * DESC : Un paese deve appartenere al più ad una confederazione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT uq_confederation_country_id
@@ -1341,9 +1651,7 @@ UNIQUE
  * NAME : confederation_fk_confederation
  *
  * DESC : Una confederazione calcistica fa riferimento alla confederazione
- *        calcistica di grado immediatamente superiore della quale e' membro.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
- *        confederazione calcistica membro 
+ *        calcistica di grado immediatamente superiore della quale è membro
  ******************************************************************************/
 ALTER TABLE fp_confederation
 ADD CONSTRAINT confederation_fk_confederation
@@ -1363,9 +1671,7 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_confederation TABLE
  * NAME : confederation_fk_country
  *
- * DESC : Una confederazione calcistica fa riferimento al paese di appartenenza.
- *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
- *        sulla confederazione calcistica
+ * DESC : Una confederazione calcistica fa riferimento al paese di appartenenza
  ******************************************************************************/
 ALTER TABLE	fp_confederation
 ADD CONSTRAINT confederation_fk_country
@@ -1387,7 +1693,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_team
  *
- * DESC : Tabella contentente informazioni riguardanti le squadre di calcio
+ * DESC : Tabella contentente informazioni sulle squadre di calcio
  ******************************************************************************/
 CREATE TABLE fp_team
 (
@@ -1428,12 +1734,25 @@ UNIQUE
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
+ * NAME : uq_team_type
+ *
+ * DESC : Vincolo creato per permettere la referenza da parte di militanza
+ ******************************************************************************/
+ALTER TABLE	fp_team
+ADD CONSTRAINT uq_team_type
+UNIQUE
+(
+	type,
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
  * NAME : team_fk_country
  *
- * DESC : Una squadra di calcio fa riferimento al paese di appartenenza.
- *        Un cambiamento del paese di appartenenza si ripercuotera' a cascata
- *        sulla squadra di calcio
+ * DESC : Una squadra di calcio fa riferimento al paese di appartenenza
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_country
@@ -1454,9 +1773,7 @@ ON UPDATE CASCADE;
  * NAME : team_fk_confederation
  *
  * DESC : Una squadra di calcio fa riferimento alla confederazione calcistica
- *        di appartenenza.
- *        Un cambiamento della confederazione calcistica di appartenenza
- *        si ripercuotera' a cascata sulla squadra di calcio
+ *        di appartenenza
  ******************************************************************************/
 ALTER TABLE	fp_team
 ADD CONSTRAINT team_fk_confederation
@@ -1478,8 +1795,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition
  *
- * DESC : Tabella contentente informazioni riguardanti
- *        le competizioni calcistiche
+ * DESC : Tabella contentente informazioni sulle competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition
 (
@@ -1526,9 +1842,7 @@ UNIQUE
  * NAME : competition_fk_confederation
  *
  * DESC : Una competizione calcistica fa riferimento alla confederazione
- *        calcistica di appartenenza.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
- *        competizione calcistica 
+ *        calcistica di appartenenza
  ******************************************************************************/
 ALTER TABLE	fp_competition
 ADD CONSTRAINT competition_fk_confederation
@@ -1550,46 +1864,46 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_competition_edition
  *
- * DESC : Tabella contentente informazioni riguardanti le edizioni
+ * DESC : Tabella contentente informazioni sulle edizioni
  *        delle competizioni calcistiche
  ******************************************************************************/
 CREATE TABLE fp_competition_edition
 (
-	id				serial		NOT NULL,
 	start_year		dm_year		NOT NULL,
-	end_year		dm_year		NOT NULL,
+	end_year		smallint	NOT NULL,
 	competition_id	integer		NOT NULL,
 	total_team		dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_competition_edition TABLE
- * NAME : pk_competition_edition
- *
- * DESC : Non possono esistere edizioni di competizioni calcistiche diverse
- *        con lo stesso id
- ******************************************************************************/
-ALTER TABLE	fp_competition_edition
-ADD CONSTRAINT pk_competition_edition
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_competition_edition TABLE
- * NAME : uq_competition_edition
+ * NAME : pk_competition_edition
  *
  * DESC : Ogni edizione di una competizione calcistica deve iniziare
  *        in un anno diverso
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
-ADD CONSTRAINT uq_competition_edition
-UNIQUE
+ADD CONSTRAINT pk_competition_edition
+PRIMARY KEY
 (
 	start_year,
+	competition_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_competition_edition TABLE
+ * NAME : uq_competition_edition_end_year
+ *
+ * DESC : Ogni edizione di una competizione calcistica deve finire
+ *        in un anno diverso
+ ******************************************************************************/
+ALTER TABLE	fp_competition_edition
+ADD CONSTRAINT uq_competition_edition_end_year
+UNIQUE
+(
+	end_year,
 	competition_id
 );
 --------------------------------------------------------------------------------
@@ -1618,7 +1932,7 @@ CHECK
  *        edizione di una competizione calcistica deve essere compreso tra
  *        un minimo di 2 ed un massimo di 128.
  *
- *        NOTA: il valore massimo, sebbene arbitrario, e' stato ottenuto
+ *        NOTA: Il valore massimo, sebbene arbitrario, è stato ottenuto
  *              mediante una ricerca dettagliata effettuata analizzando
  *              gli storici delle varie edizioni di competizioni calcistiche
  *              su Wikipidia, Transfermarkt e altri siti.
@@ -1637,9 +1951,7 @@ CHECK
  * NAME : competition_edition_fk_competition
  *
  * DESC : Un'edizione di una competizione calcistica fa riferimento alla 
- *        competizione calcistica cui appartiene.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata
- *        sull'edizione della competizione calcistica 
+ *        competizione calcistica a cui appartiene
  ******************************************************************************/
 ALTER TABLE	fp_competition_edition
 ADD CONSTRAINT competition_edition_fk_competition
@@ -1661,13 +1973,14 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_partecipation
  *
- * DESC : Tabella contentente informazioni riguardanti la partecipazione
+ * DESC : Tabella contentente informazioni sulla partecipazione
  *        di una squadra di calcio ad un'edizione di una competizioni calcistica
  ******************************************************************************/
 CREATE TABLE fp_partecipation
 (
-	competition_edition_id	integer	NOT NULL,
-	team_id					integer	NOT NULL
+	start_year		dm_year	NOT NULL,
+	competition_id	integer	NOT NULL,
+	team_id			integer	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1675,14 +1988,15 @@ CREATE TABLE fp_partecipation
  * TYPE : PRIMARY KEY CONSTRAINT - fp_partecipation TABLE
  * NAME : pk_partecipation
  *
- * DESC : Ogni squadra di calcio puo' partecipare al piu' una volta ad
+ * DESC : Ogni squadra di calcio può partecipare al più una volta ad
  *        un'edizione di una competizione calcistica
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT pk_partecipation
 PRIMARY KEY
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 );
 --------------------------------------------------------------------------------
@@ -1693,19 +2007,19 @@ PRIMARY KEY
  *
  * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
  *        competizione calcistica fa riferimento all'edizione della competizione
- *        calcistica in questione.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
- *        partecipazione
+ *        calcistica in questione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT partecipation_fk_competition_edition
 FOREIGN KEY
 (
-	competition_edition_id
+	start_year,
+	competition_id
 )
 REFERENCES fp_competition_edition
 (
-	id
+	start_year,
+	competition_id
 )
 ON DELETE CASCADE
 ON UPDATE CASCADE;
@@ -1717,9 +2031,7 @@ ON UPDATE CASCADE;
  *
  * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
  *        competizione calcistica fa riferimento alla squadra di calcio
- *        in questione.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sulla
- *        partecipazione
+ *        in questione
  ******************************************************************************/
 ALTER TABLE	fp_partecipation
 ADD CONSTRAINT partecipation_fk_team
@@ -1741,18 +2053,17 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player
  *
- * DESC : Tabella contentente informazioni riguardanti i calciatori
+ * DESC : Tabella contentente informazioni sui calciatori
  ******************************************************************************/
 CREATE TABLE fp_player
 (
 	id			serial		NOT NULL,
 	name		dm_string	NOT NULL,
 	surname		dm_string	NOT NULL,
-	foot		en_foot		NOT NULL, -- piede preferito
+	dob			dm_date		NOT NULL, -- data di nascita
 	country_id	integer		NOT NULL, -- id del paese di nascita
-	dob			dm_pdate	NOT NULL, -- data di nascita
-	career_time	daterange			  -- periodo di tempo nel quale il
-	                                  -- calciatore ha giocato
+	foot		en_foot		NOT NULL, -- piede preferito
+	role		en_role_mix			
 );
 --------------------------------------------------------------------------------
 
@@ -1792,9 +2103,7 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
  * NAME : player_fk_country
  *
- * DESC : Un calciatore fa riferimento al paese di nascita.
- *        Un cambiamento del paese di nascita si ripercuotera' a cascata
- *        sull calciatore
+ * DESC : Un calciatore fa riferimento al paese di nascita
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT player_fk_country
@@ -1814,9 +2123,58 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
+ * NAME : fp_player_retired
+ *
+ * DESC : Tabella contentente informazioni sui calciatori ritirati
+ ******************************************************************************/
+CREATE TABLE fp_player_retired
+(
+	player_id		integer	NOT NULL,
+	retired_date	dm_date	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_player_retired TABLE
+ * NAME : pk_player_retired
+ *
+ * DESC : Un calciatore può ritirarsi al più una volta
+ ******************************************************************************/
+ALTER TABLE fp_player_retired
+ADD CONSTRAINT pk_player_retired
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player_retired TABLE
+ * NAME : player_retired_fk_player
+ *
+ * DESC : Un calciatore ritirato fa riferimento ad un calciatore
+ ******************************************************************************/
+ALTER TABLE	fp_player_retired
+ADD CONSTRAINT player_retired_fk_player
+FOREIGN KEY
+(
+	player_id
+)
+REFERENCES fp_player
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
  * NAME : fp_nationality
  *
- * DESC : Tabella contentente informazioni riguardanti le nazionalita'
+ * DESC : Tabella contentente informazioni sulle nazionalità
  *        di un calciatore
  ******************************************************************************/
 CREATE TABLE fp_nationality
@@ -1830,7 +2188,7 @@ CREATE TABLE fp_nationality
  * TYPE : PRIMARY KEY CONSTRAINT - fp_nationality TABLE
  * NAME : pk_nationality
  *
- * DESC : Ogni calciatore non puo' essere associato piu' di una volta allo
+ * DESC : Un calciatore non può essere associato più di una volta allo
  *        stesso paese
  ******************************************************************************/
 ALTER TABLE fp_nationality
@@ -1846,9 +2204,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
  * NAME : nationality_fk_country
  *
- * DESC : La nazionalita' di un calciatore fa riferimento al paese in questione.
- *        Un cambiamento del paese si ripercuotera' a cascata sulla
- *        nazionalita'
+ * DESC : La nazionalità di un calciatore fa riferimento al paese in questione
  ******************************************************************************/
 ALTER TABLE	fp_nationality
 ADD CONSTRAINT nationality_fk_country
@@ -1868,10 +2224,8 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_nationality TABLE
  * NAME : nationality_fk_player
  *
- * DESC : La nazionalita' di un calciatore fa riferimento al calciatore
- *        in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
- *        nazionalita'
+ * DESC : La nazionalità di un calciatore fa riferimento al calciatore
+ *        in questione
  ******************************************************************************/
 ALTER TABLE	fp_nationality
 ADD CONSTRAINT nationality_fk_player
@@ -1893,16 +2247,22 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_militancy
  *
- * DESC : Tabella contentente informazioni riguardanti la militanza
- *        di un calciatore in una squadra di calcio
+ * DESC : Tabella contentente informazioni sulle militanze dei calciatori
+ *        in una squadra di calcio per stagione calcistica
+ *
+ *        NOTA: una stagione riferita ad una militanza in una squadra di calcio
+ *              di tipo club sarà sempre a cavallo di due anni consecutivi
+ *              (es. 2000-2001), una stagione riferita ad una militanza in una
+ *              squadra di calcio di tipo nazionale sarà riferita ad un anno
+ *              (es. 2000)
  ******************************************************************************/
 CREATE TABLE fp_militancy
 (
-	id			serial		NOT NULL,
-	team_id		integer		NOT NULL,
-	player_id	integer		NOT NULL,
-	date_range	daterange	NOT NULL,
-	match		dm_usint	NOT NULL
+	team_type		en_team		NOT NULL,
+	team_id			integer		NOT NULL,
+	player_id		integer		NOT NULL,
+	start_year		dm_year		NOT NULL,
+	type			en_season	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1910,13 +2270,16 @@ CREATE TABLE fp_militancy
  * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy TABLE
  * NAME : pk_militancy
  *
- * DESC : Non possono esistere militanze diverse con lo stesso id
+ * DESC : Un calciatore non può militare nella stessa squadra di calcio
+ *        più volte in uno stesso anno
  ******************************************************************************/
-ALTER TABLE fp_militancy
+ALTER TABLE	fp_militancy
 ADD CONSTRAINT pk_militancy
 PRIMARY KEY
 (
-	id
+	team_id,
+	player_id,
+	start_year
 );
 --------------------------------------------------------------------------------
 
@@ -1924,16 +2287,36 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_militancy TABLE
  * NAME : uq_militancy
  *
- * DESC : Un calciatore non puo' militare nella stessa squadra di calcio
- *        nello stesso intervallo di tempo
+ * DESC : Un calciatore non può militare nella stessa tipologia di squadra
+ *        di calcio nella stessa parte di una stagione calcistica
  ******************************************************************************/
-ALTER TABLE fp_militancy
+ALTER TABLE	fp_militancy
 ADD CONSTRAINT uq_militancy
 UNIQUE
 (
-	team_id,
+	team_type,
 	player_id,
-	date_range
+	start_year,
+	type
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - ck_militancy TABLE
+ * NAME : ck_militancy
+ *
+ * DESC : Una militanza di un calciatore in una squadra nazionale è annuale,
+ *        mentre in una squadra di calcio di tipo club può anche essere di
+ *        mezza stagione
+ ******************************************************************************/
+ALTER TABLE	fp_militancy
+ADD CONSTRAINT ck_militancy
+CHECK
+(
+	('NATIONAL' = team_type AND 'FULL' = type)
+	OR
+	team_type <> 'NATIONAL'
 );
 --------------------------------------------------------------------------------
 
@@ -1941,22 +2324,22 @@ UNIQUE
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_team
  *
- * DESC : La militanza di un calciatore in una squadra di calcio
- *        fa riferimento alla squadra di calcio in questione.
- *        Un cambiamento della squadra di calcio si ripercuotera' a cascata
- *        sulla militanza
+ * DESC : La squadra e il tipo di squadra di una militanza calcistica fanno
+ *        riferimento alla squadra di calcio in questione
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_team
 FOREIGN KEY
 (
-	team_id
+	team_id,
+	team_type
 )
 REFERENCES fp_team
 (
-	id
+	id,
+	type
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1964,10 +2347,8 @@ ON UPDATE CASCADE;
  * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy TABLE
  * NAME : militancy_fk_player
  *
- * DESC : La militanza di un calciatore in una squadra di calcio
- *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata sulla
- *        militanza
+ * DESC : Il calciatore di una militanza calcistica fa riferimento
+ *        al calciatore in questione
  ******************************************************************************/
 ALTER TABLE	fp_militancy
 ADD CONSTRAINT militancy_fk_player
@@ -1989,15 +2370,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_tag
  *
- * DESC : Tabella contentente informazioni riguardanti i tag che e' possibile
- *        associare ad un calciatore
+ * DESC : Tabella contentente informazioni sui tag che possono essere
+ *        associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_tag
 (
 	id			serial			NOT NULL,
-	type		en_feature	NOT NULL,
+	type		en_feature		NOT NULL,
 	name		dm_string		NOT NULL,
-	description	dm_string
+	description	dm_description
 );
 --------------------------------------------------------------------------------
 
@@ -2049,7 +2430,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_tag
  *
- * DESC : Tabella contentente informazioni riguardanti i tag associati
+ * DESC : Tabella contentente informazioni sui tag associati
  *        ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_tag
@@ -2063,7 +2444,7 @@ CREATE TABLE fp_player_tag
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_tag TABLE 
  * NAME : pk_player_tag
  *
- * DESC : Un calciatore puo' essere associato ad un tag al piu' una volta
+ * DESC : Un calciatore può essere associato ad un tag al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT pk_player_tag
@@ -2079,9 +2460,7 @@ PRIMARY KEY
  * NAME : player_tag_fk_player
  *
  * DESC : L'associazione di un calciatore ad un tag fa riferimento
- *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sull'associazione
+ *        al calciatore in questione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT player_tag_fk_player
@@ -2102,9 +2481,7 @@ ON UPDATE CASCADE;
  * NAME : player_tag_fk_tag
  *
  * DESC : L'associazione di un calciatore ad un tag fa riferimento
- *        al tag in questione.
- *        Un cambiamento del tag si ripercuotera' a cascata
- *        sull'associazione
+ *        al tag in questione
  ******************************************************************************/
 ALTER TABLE	fp_player_tag
 ADD CONSTRAINT player_tag_fk_tag
@@ -2116,7 +2493,7 @@ REFERENCES fp_tag
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2126,8 +2503,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_position
  *
- * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
- *        che un calciatore puo' assumere nel campo di gioco
+ * DESC : Tabella contentente informazioni sulle posizioni di gioco
+ *        che un calciatore può assumere nel campo di gioco
  ******************************************************************************/
 CREATE TABLE fp_position
 (
@@ -2186,15 +2563,13 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_position
  *
- * DESC : Tabella contentente informazioni riguardanti le posizioni di gioco
+ * DESC : Tabella contentente informazioni sulle posizioni di gioco
  *        associate ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_position
 (
 	player_id	integer		NOT NULL,
-	position_id	integer		NOT NULL,
-	match		dm_usint	NOT NULL  -- numero di partite giocate dal
-	                                  -- calciatore nella posizione
+	position_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -2202,8 +2577,8 @@ CREATE TABLE fp_player_position
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_position TABLE  
  * NAME : pk_player_position
  *
- * DESC : Un calciatore puo' essere associato ad una posizione di gioco
- *        al piu' una volta
+ * DESC : Un calciatore può essere associato ad una posizione di gioco
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT pk_player_position
@@ -2219,9 +2594,7 @@ PRIMARY KEY
  * NAME : player_position_fk_player
  *
  * DESC : L'associazione di un calciatore ad una posizione di gioco
- *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento al calciatore in questione
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT player_position_fk_player
@@ -2242,9 +2615,7 @@ ON UPDATE CASCADE;
  * NAME : player_position_fk_position
  *
  * DESC : L'associazione di un calciatore ad una posizione di gioco
- *        fa riferimento al calciatore in questione.
- *        Un cambiamento della posizione di gioco si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento al calciatore in questione
  ******************************************************************************/
 ALTER TABLE fp_player_position
 ADD CONSTRAINT player_position_fk_position
@@ -2266,15 +2637,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute
  *
- * DESC : Tabella contentente informazioni riguardanti gli attributi che
- *        e' possibile associare ad un calciatore
+ * DESC : Tabella contentente informazioni sugli attributi che
+ *        possono essere associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute
 (
-	id			serial		NOT NULL,
-	type		en_feature	NOT NULL,
-	name		dm_string	NOT NULL,
-	description	dm_string
+	id			serial			NOT NULL,
+	type		en_feature		NOT NULL,
+	name		dm_string		NOT NULL,
+	description	dm_description
 );
 --------------------------------------------------------------------------------
 
@@ -2326,7 +2697,7 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_player_attribute
  *
- * DESC : Tabella contentente informazioni riguardanti gli attributi
+ * DESC : Tabella contentente informazioni sugli attributi
  *        associati ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_attribute
@@ -2341,7 +2712,7 @@ CREATE TABLE fp_player_attribute
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_attribute TABLE  
  * NAME : pk_player_attribute
  *
- * DESC : Un calciatore puo' essere associato ad un attributo al piu' una volta
+ * DESC : Un calciatore può essere associato ad un attributo al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT pk_player_attribute
@@ -2353,13 +2724,25 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - fp_player_attribute TABLE  
+ * NAME : ck_player_attribute
+ *
+ * DESC : Controllo che il punteggio sia minore o uguale di 100
+ ******************************************************************************/
+ALTER TABLE fp_player_attribute
+ADD CONSTRAINT ck_player_attribute
+CHECK
+(
+	score <= 100
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_attribute TABLE
  * NAME : player_attribute_fk_player
  *
  * DESC : L'associazione di un calciatore ad un attributo
- *        fa riferimento al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento al calciatore in questione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT player_attribute_fk_player
@@ -2380,9 +2763,7 @@ ON UPDATE CASCADE;
  * NAME : player_attribute_fk_attribute
  *
  * DESC : L'associazione di un calciatore ad un attributo
- *        fa riferimento all'attributo in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento all'attributo in questione
  ******************************************************************************/
 ALTER TABLE fp_player_attribute
 ADD CONSTRAINT player_attribute_fk_attribute
@@ -2404,15 +2785,15 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic
  *
- * DESC : Tabella contentente informazioni riguardanti le statistiche che
- *        e' possibile associare ad un calciatore
+ * DESC : Tabella contentente informazioni sulle statistiche che
+ *        possono essere associate ad un calciatore
  ******************************************************************************/
 CREATE TABLE fp_statistic
 (
-	id			serial		NOT NULL,
-	role		en_role_mix	NOT NULL,
-	name		dm_string	NOT NULL,
-	description	dm_string
+	id			serial			NOT NULL,
+	goalkeeper	boolean 		NOT NULL,
+	name		dm_string		NOT NULL,
+	description	dm_description
 );
 --------------------------------------------------------------------------------
 
@@ -2464,13 +2845,13 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_trophy
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  ******************************************************************************/
 CREATE TABLE fp_trophy
 (
 	id			serial		NOT NULL,
 	type		en_award	NOT NULL,
-	role		en_role_mix	NOT NULL,
+	role		en_role				,
 	name		dm_string	NOT NULL,
 	description	dm_string
 );
@@ -2506,6 +2887,22 @@ UNIQUE
 
 /*******************************************************************************
  * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
+ * NAME : ck_trophy
+ *
+ * DESC : I trofei di squadra non devono essere associati ad alcun ruolo
+ ******************************************************************************/
+ALTER TABLE fp_trophy
+ADD CONSTRAINT ck_trophy
+CHECK
+(
+	type <> 'TEAM'
+	OR
+	('TEAM' = type AND role IS NULL)
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
  * NAME : uq_trophy_description
  *
  * DESC : Non possono esistere trofei calcistici diversi
@@ -2526,14 +2923,15 @@ UNIQUE
  * TYPE : TABLE
  * NAME : fp_team_trophy_case
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  *        vinti da una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_team_trophy_case
 (
-	team_id					integer	NOT NULL,
-	trophy_id				integer	NOT NULL,
-	competition_edition_id	integer	NOT NULL
+	team_id			integer		NOT NULL,
+	trophy_id		integer		NOT NULL,
+	start_year		dm_year		NOT NULL,
+	competition_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -2541,8 +2939,8 @@ CREATE TABLE fp_team_trophy_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team_trophy_case TABLE
  * NAME : pk_team_trophy_case
  *
- * DESC : Una squadra di calcio puo' vincere il trofeo associato
- *        ad un'edizione di una competizione calcistica al piu' una volta
+ * DESC : Una squadra di calcio può vincere il trofeo associato
+ *        ad un'edizione di una competizione calcistica al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT pk_team_trophy_case
@@ -2550,7 +2948,8 @@ PRIMARY KEY
 (
 	team_id,
 	trophy_id,
-	competition_edition_id	
+	start_year,
+	competition_id
 );
 --------------------------------------------------------------------------------
 
@@ -2560,21 +2959,21 @@ PRIMARY KEY
  *
  * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
  *        riferimento alla partecipazione della suddetta squadra
- *        all'edizione della competizione calcistica cui e' associato
- *        il trofeo vinto.
- *        Un cambiamento della partecipazione si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        all'edizione della competizione calcistica cui è associato
+ *        il trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT team_trophy_case_fk_partecipation
 FOREIGN KEY
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 REFERENCES fp_partecipation
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 ON DELETE CASCADE
@@ -2586,9 +2985,7 @@ ON UPDATE CASCADE;
  * NAME : team_trophy_case_fk_trophy
  *
  * DESC : Un trofeo calcistico vinto da una squadra di calcio fa
- *        riferimento al trofeo in questione.
- *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        riferimento al trofeo in questione
  ******************************************************************************/
 ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT team_trophy_case_fk_trophy
@@ -2610,15 +3007,16 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player_trophy_case
  *
- * DESC : Tabella contentente informazioni riguardanti i trofei calcistici
+ * DESC : Tabella contentente informazioni sui trofei calcistici
  *        vinti da un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_trophy_case
 (
-	player_id				integer NOT NULL,
-	team_id					integer	NOT NULL,
-	trophy_id				integer	NOT NULL,
-	competition_edition_id	integer	NOT NULL
+	player_id		integer NOT NULL,
+	team_id			integer	NOT NULL,
+	trophy_id		integer	NOT NULL,
+	start_year		dm_year	NOT NULL,
+	competition_id	integer	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -2626,9 +3024,9 @@ CREATE TABLE fp_player_trophy_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_trophy_case TABLE
  * NAME : pk_player_trophy_case
  *
- * DESC : Un calciatore che milita in una squadra di calcio puo' vincere
+ * DESC : Un calciatore che milita in una squadra di calcio può vincere
  *        il trofeo associato ad un'edizione di una competizione calcistica
- *        al piu' una volta
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
 ADD CONSTRAINT pk_player_trophy_case
@@ -2637,28 +3035,31 @@ PRIMARY KEY
 	player_id,
 	team_id,
 	trophy_id,
-	competition_edition_id
+	start_year,
+	competition_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player_trophy_case TABLE
- * NAME : player_trophy_case_fk_player
+ * NAME : player_trophy_case_fk_militancy
  *
- * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
- *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sull trofeo vinto
+ * DESC : Un trofeo calcistico vinto da un calciatore fa riferimento
+ *        alla militanza del calciatore nella squadra di calcio
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
-ADD CONSTRAINT player_trophy_case_fk_player
+ADD CONSTRAINT player_trophy_case_fk_militancy
 FOREIGN KEY
 (
-	player_id
+	player_id,
+	team_id,
+	start_year
 )
-REFERENCES fp_player
+REFERENCES fp_militancy
 (
-	id
+	player_id,
+	team_id,
+	start_year
 )
 ON DELETE CASCADE
 ON UPDATE CASCADE;
@@ -2670,20 +3071,20 @@ ON UPDATE CASCADE;
  *
  * DESC : Un trofeo calcistico vinto da un calciatore fa riferimento
  *        alla partecipazione della squadra di calcio all'edizione
- *        della competizione calcistica cui e' associato il trofeo vinto.
- *        Un cambiamento della partecipazione si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        della competizione calcistica cui è associato il trofeo vinto
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
 ADD CONSTRAINT player_trophy_case_fk_partecipation
 FOREIGN KEY
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 REFERENCES fp_partecipation
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 ON DELETE CASCADE
@@ -2695,9 +3096,7 @@ ON UPDATE CASCADE;
  * NAME : player_trophy_case_fk_trophy
  *
  * DESC : Un trofeo calcistico vinto da un calciatore che fa riferimento
- *        al trofeo calcistico in questione.
- *        Un cambiamento del trofeo calcistico si ripercuotera' a cascata
- *        sull trofeo vinto
+ *        al trofeo calcistico in questione
  ******************************************************************************/
 ALTER TABLE	fp_player_trophy_case
 ADD CONSTRAINT player_trophy_case_fk_trophy
@@ -2719,16 +3118,16 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_prize
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  ******************************************************************************/
 CREATE TABLE fp_prize
 (
-	id			serial		NOT NULL,
-	type		en_award	NOT NULL,
-	role		en_role_mix	NOT NULL,
-	name		dm_string	NOT NULL,
-	description	dm_string			,
-	given		dm_string	NOT NULL  -- ente che assegna il premio calcistico
+	id			serial			NOT NULL,
+	type		en_award		NOT NULL,
+	role		en_role					,
+	name		dm_string		NOT NULL,
+	description	dm_description			,
+	given		dm_string		NOT NULL  -- ente che assegna il premio calcistico
 );
 --------------------------------------------------------------------------------
 
@@ -2775,13 +3174,28 @@ UNIQUE
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
+ * NAME : ck_prize
+ *
+ * DESC : I premi di squadra non devono essere associati ad alcun ruolo
+ ******************************************************************************/
+ALTER TABLE fp_prize
+ADD CONSTRAINT ck_prize
+CHECK
+(
+	type <> 'TEAM'
+	OR
+	('TEAM' = type AND role IS NULL)
+);
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : TABLE
  * NAME : fp_team_prize_case
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  *        vinti da una squadra di calcio
  ******************************************************************************/
 CREATE TABLE fp_team_prize_case
@@ -2796,8 +3210,8 @@ CREATE TABLE fp_team_prize_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_team_prize_case TABLE
  * NAME : pk_team_prize_case
  *
- * DESC : Una squadra di calcio puo' vincere un premio calcistico in un anno
- *        al piu' una volta
+ * DESC : Una squadra di calcio può vincere un premio calcistico in un anno
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT pk_team_prize_case
@@ -2814,9 +3228,7 @@ PRIMARY KEY
  * NAME : team_prize_case_fk_prize
  *
  * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
- *        al premio in questione.
- *        Un cambiamento del premio si ripercuotera' a cascata
- *        sul premio vinto
+ *        al premio in questione
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT team_prize_case_fk_prize
@@ -2837,9 +3249,7 @@ ON UPDATE CASCADE;
  * NAME : team_prize_case_fk_team
  *
  * DESC : Un premio calcistico vinto da una squadra di calcio fa riferimento
- *        alla squadra in questione.
- *        Un cambiamento della squadra si ripercuotera' a cascata
- *        sul premio vinto
+ *        alla squadra in questione
  ******************************************************************************/
 ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT team_prize_case_fk_team
@@ -2861,7 +3271,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_player_prize_case
  *
- * DESC : Tabella contentente informazioni riguardanti i premi calcistici
+ * DESC : Tabella contentente informazioni sui premi calcistici
  *        vinti da un calciatore
  ******************************************************************************/
 CREATE TABLE fp_player_prize_case
@@ -2876,8 +3286,8 @@ CREATE TABLE fp_player_prize_case
  * TYPE : PRIMARY KEY CONSTRAINT - fp_player_prize_case TABLE
  * NAME : pk_player_prize_case
  *
- * DESC : Una calciatore puo' vincere un premio calcistico in un anno
- *        al piu' una volta
+ * DESC : Una calciatore può vincere un premio calcistico in un anno
+ *        al più una volta
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT pk_player_prize_case
@@ -2894,9 +3304,7 @@ PRIMARY KEY
  * NAME : player_prize_case_fk_player
  *
  * DESC : Un premio calcistico vinto da un calciatore fa riferimento
- *        al calciatore in questione.
- *        Un cambiamento del calciatore si ripercuotera' a cascata
- *        sul premio vinto
+ *        al calciatore in questione
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT player_prize_case_fk_player
@@ -2917,9 +3325,7 @@ ON UPDATE CASCADE;
  * NAME : player_prize_case_fk_prize
  *
  * DESC : Un premio calcistico vinto da un calciatore fa riferimento
- *        al premio in questione.
- *        Un cambiamento del premio si ripercuotera' a cascata
- *        sul premio vinto
+ *        al premio in questione
  ******************************************************************************/
 ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT player_prize_case_fk_prize
@@ -2941,22 +3347,20 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play
  *
- * DESC : Tabella contentente informazioni riguardanti il numero di partite
- *        giocate in una posizione del campo da gioco da un calciatore
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica
+ * DESC : Tabella contentente informazioni sul gioco di un calciatore in
+ *        un'edizione di una competizione calcistica e in una squadra di calcio
  *
- *        NOTA: per semplificare la notazione ci riferiremo a tale concetto
- *              come "gioco"
+ *        NOTA: per non appesantire la notazione ci riferiremo a tale
+ *               concetto come "gioco" 
  ******************************************************************************/
 CREATE TABLE fp_play
 (
-	id						serial		NOT NULL,
-	competition_edition_id	integer		NOT NULL,
-	team_id					integer		NOT NULL,
-	player_id				integer		NOT NULL,
-	position_id				integer		NOT NULL,
-	match					dm_usint	NOT NULL
+	id				serial		NOT NULL,
+	start_year		dm_year		NOT NULL,
+	competition_id	integer		NOT NULL,
+	team_id			integer		NOT NULL,
+	player_id		integer		NOT NULL,
+	match			dm_usint	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -2978,18 +3382,17 @@ PRIMARY KEY
  * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
  * NAME : uq_play
  *
- * DESC : Una calciatore puo' essere associato ad una posizione
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica al piu' una volta
+ * DESC : Un calciatore può giocare al più una volta per ogni edizione di
+ *        una competizione calcistica in una squadra di calcio
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT uq_play
 UNIQUE
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id,
-	player_id,
-	position_id
+	player_id
 );
 --------------------------------------------------------------------------------
 
@@ -2997,9 +3400,8 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - ck_play TABLE  
  * NAME : ck_play
  *
- * DESC : Una calciatore deve giocare almeno una partita in una posizione
- *        in una squadra di calcio partecipante ad un'edizione
- *        di una competizione calcistica
+ * DESC : Il numero di presenze di un calciatore in un gioco
+ *        deve essere maggiore di zero
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT ck_play
@@ -3014,20 +3416,21 @@ CHECK
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
  * NAME : play_fk_partecipation
  *
- * DESC : Un gioco fa riferimento alla partecipazione di una squadra di calcio
- *        ad un'edizione di una competizione calcistica.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
+ * DESC : Un gioco fa riferimento alla partecipazione della squadra di calcio
+ *        in questione nell'edizione della competizione calcistica in questione
  ******************************************************************************/
 ALTER TABLE fp_play
 ADD CONSTRAINT play_fk_partecipation
 FOREIGN KEY
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 REFERENCES fp_partecipation
 (
-	competition_edition_id,
+	start_year,
+	competition_id,
 	team_id
 )
 ON DELETE CASCADE
@@ -3036,23 +3439,24 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
- * NAME : play_fk_player_position
+ * NAME : play_fk_militancy
  *
- * DESC : Un gioco fa riferimento all'associazione tra un calciatore ed
- *        una posizione del campo da gioco.
- *        Un cambiamento di quest'ultima si ripercuotera' a cascata sul gioco
+ * DESC : Un gioco fa riferimento alla militanza del calciatore in questione
+ *        nella squadra di calcio in questione
  ******************************************************************************/
 ALTER TABLE fp_play
-ADD CONSTRAINT play_fk_player_position
+ADD CONSTRAINT play_fk_militancy
 FOREIGN KEY
 (
-	player_id,
-	position_id
+	start_year,
+	team_id,
+	player_id
 )
-REFERENCES fp_player_position
+REFERENCES fp_militancy
 (
-	player_id,
-	position_id
+	start_year,
+	team_id,
+	player_id
 )
 ON DELETE CASCADE
 ON UPDATE CASCADE;
@@ -3064,8 +3468,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_play_statistic
  *
- * DESC : Tabella contentente informazioni riguardanti le statistiche
- *        associate ad un gioco
+ * DESC : Tabella contentente informazioni sulle statistiche associate
+ *        ad un gioco
  ******************************************************************************/
 CREATE TABLE fp_play_statistic
 (
@@ -3079,7 +3483,7 @@ CREATE TABLE fp_play_statistic
  * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
  * NAME : pk_play_statistic
  *
- * DESC : Ad un gioco puo' essere associata al piu' una statistica
+ * DESC : Un gioco può essere associato al più una volta ad una statistica
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT pk_play_statistic
@@ -3095,9 +3499,7 @@ PRIMARY KEY
  * NAME : play_statistic_fk_play
  *
  * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento al gioco in questione.
- *        Un cambiamento del gioco si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento al gioco in questione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_play
@@ -3118,9 +3520,7 @@ ON UPDATE CASCADE;
  * NAME : play_statistic_fk_statistic
  *
  * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento alla statistica in questione.
- *        Un cambiamento della statistica si ripercuotera' a cascata
- *        sull'associazione
+ *        fa riferimento alla statistica in questione
  ******************************************************************************/
 ALTER TABLE fp_play_statistic
 ADD CONSTRAINT play_statistic_fk_statistic
@@ -3132,85 +3532,7 @@ REFERENCES fp_statistic
 (
 	id
 )
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_militancy_statistic
- *
- * DESC : Tabella contentente informazioni riguardanti le statistiche
- *        associate ad una militanza
- ******************************************************************************/
-CREATE TABLE fp_militancy_statistic
-(
-	militancy_id	integer		NOT NULL,
-	statistic_id	integer		NOT NULL,
-	score			dm_usint	NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_militancy_statistic TABLE  
- * NAME : pk_militancy_statistic
- *
- * DESC : Ad una militanza puo' essere associata al piu' una statistica
- ******************************************************************************/
-ALTER TABLE fp_militancy_statistic
-ADD CONSTRAINT pk_militancy_statistic
-PRIMARY KEY
-(
-	militancy_id,
-	statistic_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy_statistic TABLE
- * NAME : militancy_statistic_fk_militancy
- *
- * DESC : L'associazione di una militanza ad una statistica
- *        fa riferimento alla militanza in questione.
- *        Un cambiamento della militanza si ripercuotera' a cascata
- *        sull'associazione
- ******************************************************************************/
-ALTER TABLE fp_militancy_statistic
-ADD CONSTRAINT militancy_statistic_fk_militancy
-FOREIGN KEY
-(
-	militancy_id
-)
-REFERENCES fp_militancy
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_militancy_statistic TABLE
- * NAME : militancy_statistic_fk_statistic
- *
- * DESC : L'associazione di una militanza ad una statistica
- *        fa riferimento alla statistica in questione.
- *        Un cambiamento della statistica si ripercuotera' a cascata
- *        sull'associazione
- ******************************************************************************/
-ALTER TABLE fp_militancy_statistic
-ADD CONSTRAINT militancy_statistic_fk_statistic
-FOREIGN KEY
-(
-	statistic_id
-)
-REFERENCES fp_statistic
-(
-	id
-)
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -3221,7 +3543,7 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_user_account
  *
- * DESC : Tabella contentente informazioni riguardanti gli account utente
+ * DESC : Tabella contentente informazioni sugli account utente
  *        che possono utilizzare l'applicativo connesso al database
  ******************************************************************************/
 CREATE TABLE fp_user_account
@@ -3247,82 +3569,932 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 
-/******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
- ******************************************************************************/
-
-
-
 /*******************************************************************************
  * FUNCTION POST SCHEMA                                              
  ******************************************************************************/
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : min_age
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce l'età minima per un calciatore.
+ *
+ *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
+ *              (Wikipidia, Transfermarkt, ...)
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION min_age
+(
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	min_age	integer;
+
+BEGIN
+
+	min_age = 15;
+				
+	RETURN min_age;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : can_be_member
+ * NAME : max_age
  *
- * IN      : fp_confederation.id%TYPE, fp_confederation.id%TYPE
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce l'età massima per un calciatore.
+ *
+ *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
+ *              (Wikipidia, Transfermarkt, ...)
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION max_age
+(
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	max_age	integer;
+
+BEGIN
+
+	max_age = 50;
+				
+	RETURN max_age;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : min_militancy_year
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce l'anno di inizio della prima militanza
+ *        di un calciatore in una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION min_militancy_year
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	min_year	integer;
+
+BEGIN
+
+	min_year = NULL;
+
+	SELECT
+		min(start_year)
+	INTO
+		min_year
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player;
+
+	
+	RETURN min_year;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : max_militancy_year
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce l'anno di inizio dell'ultima militanza
+ *        di un calciatore in una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION max_militancy_year
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	max_year	integer;
+
+BEGIN
+
+	max_year = NULL;
+
+	SELECT
+		max(start_year)
+	INTO
+		max_year
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player;
+
+	
+	RETURN max_year;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : valid_year_range
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : integer, integer
+ * RETURNS : record
+ *
+ * DESC : Funzione che calcola e restituisce il range di anni validi per un
+ *        calciatore.
+ *
+ *        NOTA: per anno valido si intende un anno nel quale un calciatore
+ *              può militare in una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION valid_year_range
+(
+	IN	id_player	integer,
+	OUT	s_valid		integer,	-- inizio range anni validi
+	OUT	e_valid		integer		-- fine range anni validi
+)
+RETURNS record
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	year_dob		integer;
+	year_retired	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'dob', id_player);
+	year_dob = extract( year from CAST(tmp AS date));
+
+	s_valid = year_dob + min_age();
+
+	
+	IF (is_retired(id_player)) THEN
+
+		tmp = get_column('fp_player_retired', 'retired_date', id_player);
+		year_retired = extract( year from CAST(tmp AS date) );
+
+		e_valid = year_dob + year_retired - 1;
+
+	ELSE
+
+		e_valid = year_dob + max_age();
+	
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_retired
+ *
+ * IN      : integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se la prima confederazione calcistica in input
- *        puo' essere membro della seconda confederazione calcistica in input
- *        in base al tipo di paese ad esse associato.
- *        
- *        NOTA: per non appesantire eccessivamente la notazione in questa
- *              funzione useremo impropriamente il nome di variabile "type_conf"
- *              per denotare il tipo del paese associato alla confederazione 
+ * DESC : Funzione che valuta se un calciatore si sia ritirato o meno
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION can_be_member
+CREATE OR REPLACE FUNCTION is_retired
 (
-	IN	id_conf			fp_confederation.id%TYPE,
-	IN	id_super_conf	fp_confederation.id%TYPE
+	IN	id_player	integer
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+				
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			fp_player_retired
+		WHERE
+			player_id = id_player
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_national
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un calciatore ha mai giocato in nazionale
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_national
+(
+	IN	id_player	integer
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+				
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = 'NATIONAL'
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : national_team
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce la squadra nazionale per la quale un
+ *        calciatore ha giocato
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION national_team
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	id_team	integer;
+
+BEGIN
+
+	id_team = NULL;
+				
+	
+	SELECT
+		team_id
+	INTO
+		id_team
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player
+		AND
+		team_type = 'NATIONAL'
+	LIMIT
+		1;
+
+
+	RETURN id_team;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_militancy
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un calciatore ha militanze in squadre du calcio
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_militancy
+(
+	IN	id_player	integer
 )
 RETURNS boolean
 AS
 $$
 DECLARE
 
-	tmp				text;
-	id_country		integer;
+	has	boolean;
 
-	type_conf		text;
-	type_super_conf	text;
+BEGIN
+			
+	SELECT
+		count(*) >= 1
+	INTO
+		has
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player;
+	
+
+	IF (NOT has) THEN
+		RAISE NOTICE 'Player (id = %) does not have any militancy', id_player;
+	END IF;
+
+	RETURN has;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : gk_attributes
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce gli attributi di tipo portiere
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION gk_attributes
+(
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_attribute
+		WHERE
+			type = 'GOALKEEPER';
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : gk_tags
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce i tag di tipo portiere
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION gk_tags
+(
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_tag
+		WHERE
+			type = 'GOALKEEPER';
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : gk_statistics
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce le statistiche di tipo portiere
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION gk_statistics
+(
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_statistic
+		WHERE
+			goalkeeper = TRUE;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : player_play
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce i giochi di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION player_play
+(
+	id_player	integer
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_play
+		WHERE
+			player_id = id_player;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : not_role_trophy
+ *
+ * IN      : en_role_mix
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce i trofei individuali che non hanno un
+ *        ruolo compatibile con la combinazione di ruoli in input
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
+ *              del tipo della statistica in questione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION not_role_trophy
+(
+	role_player	en_role_mix
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_trophy
+		WHERE
+			type = 'PLAYER'
+			AND
+			role IS NOT NULL
+			AND
+			0 = position(role in role_player);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : not_role_prize
+ *
+ * IN      : en_role_mix
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce i premi individuali che non hanno un
+ *        ruolo compatibile con la combinazione di ruoli in input
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
+ *              del tipo della statistica in questione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION not_role_prize
+(
+	role_player	en_role_mix
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+				
+	RETURN QUERY
+		SELECT
+			id
+		FROM
+			fp_prize
+		WHERE
+			type = 'PLAYER'
+			AND
+			role IS NOT NULL
+			AND
+			0 = position(role in role_player);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_gk_attribute
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutte le associazioni ad attributi di tipo
+ *        portiere di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_gk_attribute
+(
+	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+			fp_player_attribute
+		WHERE
+			player_id = id_player
+			AND
+			attribute_id IN
+							(
+								SELECT
+									*
+								FROM
+									gk_attributes()
+							);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_gk_statistic
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutte le associazioni a statistiche di tipo
+ *        portiere di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_gk_statistic
+(
+	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+			fp_player_statistic
+		WHERE
+			player_id = id_player
+			AND
+			statistic_id IN 
+							(
+								SELECT
+									*
+								FROM
+									gk_statistics()
+							);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_gk_tag
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutte le associazioni a tag di tipo
+ *        portiere di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_gk_tag
+(
+	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+		fp_player_tag
+	WHERE
+		player_id = id_player
+		AND
+		tag_id IN
+					(
+						SELECT
+							*
+						FROM
+							gk_tags()
+					);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_not_role_prize
+ *
+ * IN      : integer, en_role_mix
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutti i premi individuali non compatibili
+ *        con i ruoli di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_not_role_prize
+(
+	id_player	integer,
+	role_player	en_role_mix
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+		fp_player_prize_case
+	WHERE
+		player_id = NEW.id
+		AND
+		prize_id IN
+					(
+						SELECT
+							*
+						FROM
+							not_role_prize(role_player)
+					);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_not_role_trophy
+ *
+ * IN      : integer, en_role_mix
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutti i trofei individuali non compatibili
+ *        con i ruoli di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_not_role_trophy
+(
+	id_player	integer,
+	role_player	en_role_mix
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+		player_id = NEW.id
+		AND
+		trophy_id IN
+					(
+						SELECT
+							*
+						FROM
+							not_role_trophy(role_player)
+					);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_club_militancy
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutte le militanze in una squadra
+ *        di tipo club di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_club_militancy
+(
+	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+		fp_militancy
+	WHERE
+		player_id = id_player
+		AND
+		team_type = 'CLUB';
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_national_militancy
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che elimina tutte le militanze in una squadra
+ *        di tipo nazionale di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_national_militancy
+(
+	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+				
+	DELETE FROM
+		fp_militancy
+	WHERE
+		player_id = id_player
+		AND
+		team_type = 'NATIONAL';
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : can_be_inside
+ *
+ * IN      : integer, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un paese può essere contenuto in un altro
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION can_be_inside
+(
+	IN	id_in_country		integer,	-- paese contenuto
+	IN	id_super_country	integer		-- paese contenente
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	type_in_country		text;
+	type_super_country	text;
 	
 BEGIN
-	
-	-- prendo il tipo del paese associato alla confederazione memebro
-	tmp = get_column('fp_confederation', 'id_country', id_conf);
-	id_country = CAST(tmp AS integer);					
-	type_conf = get_column('fp_country', 'type', id_country);
-
-	-- prendo il tipo del paese associato alla confederazione avente membro
-	tmp = get_column('fp_confederation', 'id_country', id_super_conf);
-	id_country = CAST(tmp AS integer);					
-	type_super_conf = get_column('fp_country', 'type', id_country);
+				
+	type_in_country = get_column('fp_country', 'type', id_in_country);
+	type_super_country = get_column('fp_country', 'type', id_super_country);
 
 	IF
 	(
-		('NATION' = type_conf AND 'CONTINENT' = type_super_conf)
+		('NATION' = type_in_country AND 'CONTINENT' = type_super_country)
 		OR
-		('CONTINENT' = type_conf AND 'WORLD' = type_super_conf)
-		OR
-		('WORLD' = type_conf AND type_super_conf IS NULL)
+		('CONTINENT' = type_in_country AND 'WORLD' = type_super_country)
 	)
 	THEN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE 'Confederation (id = %) cannot be member of confederation (id = %)', id_conf, id_super_conf;
+	RAISE NOTICE 'Country (id = %) cannot be inside of country (id = %)', id_in_country, id_super_country;
 	RETURN FALSE;
 	
 END;
@@ -3331,21 +4503,20 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_nation
  *
- * IN      : fp_country.id%TYPE
+ * IN      : integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se l'id di un paese in input e' di una nazione
+ * DESC : Funzione che valuta se un paese è di una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
-	IN	id_country	fp_country.id%TYPE
+	IN	id_country	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3372,59 +4543,90 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : conf_from_comp_ed
+ * NAME : corr_years_comp_ed
  *
- * IN      : fp_competition_edition.id%TYPE
+ * IN      : integer, smallint, smallint
  * INOUT   : void
  * OUT     : void
- * RETURNS : fp_confederation.id%TYPE
+ * RETURNS : boolean
  *
- * DESC : Funzione che dato in input l'id di un'edizione di una competizione
- *        calcistica restituisce l'id della confederazione calcistica associata
+ * DESC : Funzione che valuta se l'anno di inizio e fine di un'edizione di
+ *        una competizione calcistica sono corretti.
+ *
+ *        NOTA: abbiamo effettuato una semplificazione che è basata
+ *              sull'analisi di numerose competizioni (Wikipidia, Transermarkt).
+ *              Un campionato è sempre a cavallo di due anni.
+ *              Una supercoppa sempre svolta in un solo anno.
+ *              Un torneo per club a cavallo di due anni, un torneo per
+ *              nazionali sempre svolto in un solo anno.
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION conf_from_comp_ed
+CREATE OR REPLACE FUNCTION corr_years_comp_ed
 (
-	IN	id_comp_ed	fp_competition_edition.id%TYPE
+	IN	id_comp	integer,
+	IN	s_year	smallint,	-- anno inizio
+	IN	e_year	smallint	-- anno fine
 )
-RETURNS fp_confederation.id%TYPE
+RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
 
-	tmp		text;
-	id_comp	integer;
-
-	id_conf	integer;
+	type_comp		text;
+	team_type_comp	text;
 
 BEGIN
 	
-	-- prendo la competizione associata all'edizione
-	tmp = get_column('fp_competition_edition', 'competition_id', id_comp_ed);
-	id_comp = CAST(tmp AS integer);
+	type_comp = get_column('fp_competition', 'type', id_comp);
 
-	-- prendo la confederazione associata alla competizione
-	tmp = get_column('fp_competition', 'confederation_id', id_comp);
-	id_conf = CAST(tmp AS integer);
+	IF ('LEAGUE' = type_comp) THEN
+	
+		IF (1 = e_year - s_year) THEN
+			RETURN TRUE;
+		END IF;
+	
+	ELSIF ('SUPER CUP' = type_comp) THEN
+	
+		IF (0 = e_year - s_year) THEN
+			RETURN TRUE;
+		END IF;
+	
+	ELSIF ('CUP' = type_comp) THEN
+		
+		team_type_comp = get_column('fp_competition', 'team_type', id_comp);
 
-	RETURN id_conf;
+		IF ('NATIONAL' = team_type_comp) THEN
 
+			IF (0 = e_year - s_year) THEN
+				RETURN TRUE;
+			END IF;
+		
+		ELSIF ('CLUB' = team_type_comp) THEN
+
+			IF (1 = e_year - s_year) THEN
+				RETURN TRUE;
+			END IF;
+		
+		END IF;
+	END IF;
+
+
+	RAISE NOTICE 'Competition (id =  %) cannot have edition start in % and end in %', id_comp, s_year, e_year;
+	RETURN FALSE;
+	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : has_edition
  *
- * IN      : fp_competition.id%TYPE
+ * IN      : integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -3434,7 +4636,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_edition
 (
-	IN	id_comp	fp_competition.id%TYPE
+	IN	id_comp	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3457,6 +4659,7 @@ BEGIN
 	WHERE
 		competition_id = id_comp;
 
+
 	IF (NOT have) THEN
 		RAISE NOTICE 'Competition (id =  %) does not have editions', id_comp;
 	END IF;
@@ -3469,26 +4672,23 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : corr_freq
  *
- * IN      : fp_competition.id%TYPE, dm_year
+ * IN      : integer, smallint
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una competizione calcistica puo' avere
+ * DESC : Funzione che valuta se una competizione calcistica può avere
  *        un'edizione che inizia in un determinato anno, rispetto alla
  *        sua frequenza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_freq
 (
-	IN	id_comp	fp_competition.id%TYPE,
-	IN	s_year	dm_year                 -- anno di inizio
+	IN	id_comp	integer,
+	IN	s_year	smallint	-- anno di inizio
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3497,15 +4697,16 @@ $$
 DECLARE
 
 	tmp		text;
+
 	freq	integer;
-	a_year	integer; -- un anno di inizio di un'edizione
+	a_year	integer;	-- un anno di inizio di un'edizione
 	
 BEGIN
 	
 	tmp = get_column('fp_competition', 'frequency', id_comp);
 	freq = CAST(tmp AS integer);
 
-	-- se la frequenza della competizione calcistica e' annnuale o irregolare
+	-- se la frequenza della competizione calcistica è annnuale o irregolare
 	IF (freq <= 1) THEN
 		RETURN TRUE;
 	-- altrimenti
@@ -3524,7 +4725,7 @@ BEGIN
 		LIMIT
 			1;
 
-		-- ...e valuto se l'anno di inizio in input e' accettabile
+		-- ...e valuto se l'anno di inizio in input è accettabile
 		-- rispetto alla frequenza della competizione calcistica
 		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
@@ -3540,27 +4741,26 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : belong_to
  *
- * IN      : fp_team.id%TYPE, fp_confederation.id%TYPE
+ * IN      : integer, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
  * DESC : Funzione che valuta se una squadra di calcio appartiene ad una
- *        confederazione calcistica membro di un'altra confederazione
+ *        confederazione calcistica membro di un'altra confederazione.
  *        
- *        NOTA: per non appesantire eccessivamente la notazione in questa
+ *        NOTA: Per non appesantire eccessivamente la notazione in questa
  *              funzione useremo impropriamente il nome di variabile "type_conf"
  *              per denotare il tipo del paese associato alla confederazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION belong_to
 (
-	IN	id_team	fp_team.id%TYPE,
-	IN	id_conf	fp_confederation.id%TYPE
+	IN	id_team	integer,
+	IN	id_conf	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3578,7 +4778,7 @@ DECLARE
 	
 BEGIN
 
-	-- prendo il tipo del paese associato alla confederazione memebro
+	-- prendo il tipo del paese associato alla confederazione membro
 	tmp = get_column('fp_confederation', 'id_country', id_conf);
 	id_country = CAST(tmp AS integer);					
 	type_conf = get_column('fp_country', 'type', id_country);
@@ -3587,7 +4787,7 @@ BEGIN
 	tmp = get_column('fp_team', 'confederation_id', id_team);
 	id_conf_to_check = CAST(tmp AS integer);
 
-	-- se la confederazione in input e' nazionale
+	-- se la confederazione in input è nazionale
 	IF ('NATION' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -3599,7 +4799,7 @@ BEGIN
 	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
 	id_conf_to_check = CAST(tmp AS integer);
 	
-	-- se la confederazione in input e' continentale
+	-- se la confederazione in input è continentale
 	IF ('CONTINENT' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -3611,7 +4811,7 @@ BEGIN
 	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
 	id_conf_to_check = CAST(tmp AS integer);
 	
-	-- se la confederazione in input e' mondiale
+	-- se la confederazione in input è mondiale
 	IF ('WORLD' = type_conf) THEN
 		IF (id_conf_to_check = id_conf) THEN
 			RETURN TRUE;
@@ -3627,14 +4827,60 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : tot_team_comp_ed
+ *
+ * IN      : integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce il numero di team che possono partecipare
+ *        ad un'edizione di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tot_team_comp_ed
+(
+	IN	id_comp	integer,
+	IN	s_year	smallint	-- anno inizio
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
 
+	tot_team	integer;
+
+BEGIN
+
+	tot_team = NULL;
+
+	SELECT
+		total_team
+	INTO
+		tot_team
+	FROM
+		fp_competition_edition
+	WHERE
+		competition_id = id_comp
+		AND
+		start_year = s_year;
+
+
+	RETURN tot_team;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : has_place
  *
- * IN      : fp_competition_edition.id%TYPE
+ * IN      : integer, smallint
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
@@ -3644,7 +4890,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_place
 (
-	IN	id_comp_ed	fp_competition_edition.id%TYPE
+	IN	id_comp	integer,
+	IN	s_year	smallint
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3652,16 +4899,13 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	tot_team	integer;
 
 	have		boolean;
 
 BEGIN
 	
-	tmp = get_column('fp_competition_edition', 'total_team', id_comp_ed);
-	tot_team = CAST(tmp AS integer);
+	tot_team = tot_team_comp_ed(id_comp, s_year);
 
 	have = FALSE;
 
@@ -3672,10 +4916,13 @@ BEGIN
 	FROM
 		fp_partecipation
 	WHERE
-		competition_edition_id = id_comp_ed;
+		competition_id = id_comp
+		AND
+		start_year = s_year;
+
 
 	IF (NOT have) THEN
-		RAISE NOTICE 'Competition edition (id = %) does not have place', id_comp_ed;
+		RAISE NOTICE 'Competition (id = %), start year (%) does not have place', id_comp, s_year;
 	END IF;
 
 	RETURN have;
@@ -3686,22 +4933,27 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : has_role
+ * NAME : role_fit_positions
  *
- * IN      : fp_player.id%TYPE, en_role
+ * IN      : integer, en_role_mix
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un giocatore e' associato ad un ruolo di gioco
+ * DESC : Funzione che valuta se un calciatore ha posizioni compatibili con
+ *        una combinazione di ruoli
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
+ *              del tipo della statistica in questione
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION has_role
+CREATE OR REPLACE FUNCTION role_fit_positions
 (
-	IN	id_player		fp_player.id%TYPE,
-	IN	role_to_check	en_role
+	IN	id_player	integer,
+	IN	role_player	en_role_mix
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3723,18 +4975,20 @@ BEGIN
 			fp_player_position
 		WHERE
 			player_id = id_player
+
 	LOOP
 
 		role_pos = get_column('fp_position', 'role', pos_player);
 
-		IF (role_pos = role_to_check) THEN
+		IF (0 = position(role_pos IN role_player)) THEN
+			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
 			RETURN TRUE;
 		END IF;
 
 	END LOOP;
 
-	RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_to_check;
-	RETURN FALSE;
+	
+	RETURN TRUE;
 
 END;
 $$
@@ -3742,146 +4996,64 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : range_edition
+ * NAME : militancy_in
  *
- * IN      : fp_competition_edition.id%TYPE
- * INOUT   : void
- * OUT     : void
- * RETURNS : daterange
- *
- * DESC : Funzione che restituisce l'intervallo di tempo, in termini di
- *        data inizio e data fine di un'edizione di una competizione calcistica
- *
- *        NOTA: si tratta di date arbitrarie ottenute chiaramente per eccesso
- *              ma che sono state ottenute facendo numerossisime indagini
- *              avvalendosi di varie fonti (Wikipidia, Transfermarkt, ...)
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION range_edition
-(
-	IN	id_comp_ed	fp_competition_edition.id%TYPE
-)
-RETURNS daterange
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	time_range	daterange;
-	
-	s_year		integer; -- anno di inizio
-	e_year		integer; -- anno di fine
-
-	s_date		date; -- data di inizio
-	e_date		date; -- data di fine
-
-BEGIN
-	
-	s_year = get_column('fp_competition_edition', 'start_year', id_comp_ed);
-	e_year = get_column('fp_competition_edition', 'end_year', id_comp_ed);
-
-	-- se l'edizione termina nello stesso anno di inizio
-	IF (s_year = e_year) THEN
-		-- ..supponiamo che l'edizione duri tutto l'anno
-		s_date = make_date(s_year, 01, 01);
-		e_date = make_date(s_year, 12, 31);
-	-- altrimenti
-	ELSE
-		-- ..supponiamo che la competizione duri un anno a partire dal primo agosto
-		s_date = make_date(s_year, 08, 01);
-		e_date = make_date(e_year, 07, 31);
-	END IF;
-
-	time_range = daterange(s_date, e_date, '[]');
-
-	RETURN time_range;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : play_in_during
- *
- * IN      : fp_player.id%TYPE, fp_team.id%TYPE, daterange 
+ * IN      : integer, integer 
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un calciatore gioca in una squadra di calcio
- *        durante un intervallo di tempo, espresso come range di date
+ * DESC : Funzione che valuta se un calciatore ha una militanza in una squadra
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION play_in_during
+CREATE OR REPLACE FUNCTION militancy_in
 (
-	IN	id_player	fp_player.id%TYPE,
-	IN	id_team		fp_team.id%TYPE,
-	IN	time_range	daterange
+	IN	id_player	integer,
+	IN	id_team		integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	play	boolean;
-
 BEGIN
-	
-	play = FALSE;
 
 	SELECT
 		count(*) >= 1
-	INTO
-		play
 	FROM
 		fp_militancy
 	WHERE
 		team_id = id_team
 		AND
-		player_id = id_player
-		AND
-		date_range && time_range;
-
-	IF (NOT play) THEN
-		RAISE NOTICE 'Player (id = %) does not play in team (id = %) during date range %', id_player, id_team, time_range;
-	END IF;
-
-	RETURN play;
+		player_id = id_player;
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : pos_fit_stat
  *
- * IN      : fp_position.id%TYPE, fp_statistic.id%TYPE 
+ * IN      : integer, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una posizione del campo di gioco e'
- *        associabile ad una statistica
+ * DESC : Funzione che valuta se una posizione del campo di gioco è
+ *        associabile ad una statistica.
  *
- *        NOTA: considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione e' associabile ad una statistica
- *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione è associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione è una sottostringa
  *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION pos_fit_stat
 (
-	IN	id_pos		fp_position.id%TYPE,
-	IN	id_stat		fp_statistic.id%TYPE
+	IN	id_pos	integer,
+	IN	id_stat	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3901,7 +5073,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	RAISE NOTICE 'Position (id = %) cannot be associated wiht statistic (id = %)', id_pos, id_stat;
+	RAISE NOTICE 'Position (id = %) cannot be associated with statistic (id = %)', id_pos, id_stat;
 	RETURN FALSE;
 
 END;
@@ -3910,23 +5082,26 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : team_fit_comp
  *
- * IN      : fp_team.id%TYPE, fp_competition.id%TYPE 
+ * IN      : integer, integer 
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se una squadra di calcio e' compatibile con
- *        una competizione calcistica.
+ * DESC : Funzione che valuta se una squadra di calcio è compatibile con
+ *        una competizione calcistica
+ *
+ *        NOTA: una squadra di calcio è compatibile con una competizione
+ *              calcistica se è dello stesso tipo del tipo di squadre che
+ *              possono partecipare alla suddetta competizione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
 (
-	IN	id_team		fp_team.id%TYPE,
-	IN	id_comp		fp_competition.id%TYPE
+	IN	id_team	integer,
+	IN	id_comp	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -3937,206 +5112,44 @@ DECLARE
 	type_team		text;
 	type_team_comp	text;
 
-	compatibile		boolean;
-
 BEGIN
-	
-	compatibile = FALSE;
 
 	type_team = get_column('fp_team', 'type', id_team);
 	type_team_comp = get_column('fp_competition', 'team_type', id_comp);
 	
 	IF (type_team = type_team_comp) THEN
-		compatibile = TRUE;
+		RETURN TRUE;
 	ELSE
 		RAISE NOTICE 'Team (id = %) is not compatible to competition (id = %)', id_team, id_comp;
+		RETURN FALSE;
 	END IF;
 
-	RETURN compatibile;
-
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : fp_player.id%TYPE
- *
- * IN      : date
- * INOUT   : void
- * OUT     : void
- * RETURNS : daterange
- *
- * DESC : Funzione che restituisce l'intervallo valido di tempo di possibile
- *        attivita' per un calciatore
- *
- *        NOTE: le eta' minime e massime sono arbitrarie ma ottenute mediante
- *              numerose ricerche (su Wikipidia, Transfermarkt,..)
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION valid_daterange
-(
-	IN	id_player	fp_player.id%TYPE
-)
-RETURNS daterange
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp			text;
-
-	min_age		integer;
-	max_age		integer;
-
-	dob_player	date;	
-	year_dob	integer;
-	month_dob	integer;
-	day_dob		integer;
-
-	valid_range	daterange;
-	s_valid		date;
-	e_valid		date;
-
-BEGIN
-	
-	min_age = 14;
-	max_age = 50;
-
-	tmp = get_column('fp_player', 'dob', id_player);
-	dob_player = CAST(tmp AS date);
-
-	year_dob = extract(year from dob);
-	month_dob = extract(month from dob);
-	day_dob = extract(day from dob);
-
-	-- gestione del caso particolare nel quale il calciatore
-	-- sia nato il 29 febbraio
-	IF (2 = month_dob AND 29 = day_dob) THEN
-		month_dob = 3;
-		day_dob = 1;
-	END IF;
-
-	s_valid = make_date(year_dob + min_age, month_dob, day_dob);
-	e_valid = make_date(year_dob + max_age, month_dob, day_dob);
-
-	valid_range = daterange(s_valid, e_valid, '[]');
-
-	RETURN valid_range;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : free_club_militancy
- *
- * IN      : fp_player.id%TYPE, daterange
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION free_club_militancy
-(
-	IN	id_player	fp_player.id%TYPE,
-	IN	range_date	daterange
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-	
-	RETURN
-	(
-		SELECT
-			count(*) < 1
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			upper(date_range) IS NOT NULL
-			AND
-			date_range && range_date
-	);
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : free_national_militancy
- *
- * IN      : fp_player.id%TYPE, fp_country.id%TYPE
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION free_national_militancy
-(
-	IN	id_player	fp_player.id%TYPE,
-	IN	id_country	fp_country.id%TYPE
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-
-	RETURN
-	(
-		SELECT
-			count(*) < 1
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			upper(date_range) IS NULL
-	);	
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : corr_tot_team
  *
- * IN      : fp_competition.id%TYPE, dm_usint
+ * IN      : integer, smallint
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
  * DESC : Funzione che valuta se il numero massimo di squadre di calcio che
  *        possono partecipare ad una competizione calcistica sia coerente
- *        con il tipo di competizione
+ *        con il tipo di competizione.
  *
- *        NOTE: i valori limite sono arbitrari ma ottenuti grazie a numerose
+ *        NOTE: I valori limite sono arbitrari ma ottenuti grazie a numerose
  *              ricerche (su Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_tot_team
 (
-	IN	id_comp		fp_competition.id%TYPE,
-	IN	tot_team	dm_usint
+	IN	id_comp		integer,
+	IN	tot_team	smallint
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -4157,19 +5170,19 @@ BEGIN
 	
 	type_comp = get_column('fp_competition', 'type', id_comp);
 
-	-- se la competizione calcistica e' una supercoppa
+	-- se la competizione calcistica è una supercoppa
 	IF ('SUPER CUP' = type_comp) THEN
 		-- al massimo sono possibili 6 squadre partecipanti
 		IF (tot_team <= 6) THEN
 			RETURN TRUE;
 		END IF;
-	-- se la competizione calcistica e' un campionato
+	-- se la competizione calcistica è un campionato
 	ELSIF ('LEAGUE' = type_comp) THEN
 		-- al massimo sono possibili 50 squadre partecipanti
 		IF (tot_team <= 50) THEN
 			RETURN TRUE;
 		END IF;
-	-- se la competizione calcistica e' un torneo
+	-- se la competizione calcistica è un torneo
 	ELSIF ('CUP' = type_comp) THEN
 
 		tmp = get_column('fp_competition', 'confederation_id', id_comp);
@@ -4182,7 +5195,7 @@ BEGIN
 
 		-- se si tratta di una coppa nazionale
 		IF ('NATION' = type_country) THEN
-			-- e' una competizione ad eliminazione diretta
+			-- è una competizione ad eliminazione diretta
 			-- e il numero di partecipanti deve essere una potenza di 2
 			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
 				RETURN TRUE;
@@ -4206,28 +5219,28 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : similar_comp
  *
- * IN      : fp_competition.id%TYPE
+ * IN      : integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : SETOF fp_competition.id%TYPE
+ * RETURNS : SETOF integer
  *
  * DESC : Funzione che restituisce l'id di tutte le competizioni calcistiche
  *        simili a quella in input.
  *
- *        NOTA: per simile si intende una competizione calcistica
+ *        NOTA: Per simile si intende una competizione calcistica
+ *              appartenente alla stessa confederazione calcistica,
  *              dello stesso tipo e alla quale possono partecipare
  *              lo stesso tipo di squadre di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp
 (
-	IN	id_comp	fp_competition.id%TYPE
+	IN	id_comp	integer
 )
-RETURNS SETOF fp_competition.id%TYPE
+RETURNS SETOF integer
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -4261,44 +5274,48 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : similar_comp_ed
  *
- * IN      : fp_competition_edition.id%TYPE
+ * IN      : integer, smallint
  * INOUT   : void
  * OUT     : void
- * RETURNS : SETOF fp_competition_edition.id%TYPE
+ * RETURNS : TABLE (integer, integer)
  *
- * DESC : Funzione che restituisce l'id di tutte le edizioni di competizioni
+ * DESC : Funzione che restituisce l'id di tutte le edizione di competizioni
  *        calcistiche simili a quella in input.
  *
- *        NOTA: per simile si intende un'edizione di una competizione
- *              calcistica simile con lo stesso anno di inizio e fine
+ *        NOTA: Per simile si intende una competizione calcistica simile
+ *              che ha inizio nello stesso anno 
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp_ed
 (
-	IN	id_comp_ed	fp_competition_edition.id%TYPE
+	IN	id_comp	integer,
+	IN	s_year	smallint
 )
-RETURNS SETOF fp_competition.id%TYPE
+RETURNS TABLE
+(
+	competition_id	integer,
+	start_year		integer
+)
 RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	rec_comp_ed	record;
-
 BEGIN
-	
-	rec_comp_ed = get_record('fp_competition_edition', id_comp_ed);
 
 	RETURN QUERY
 		SELECT
-			id
+			competition_id,
+			start_year
 		FROM
 			fp_competition_edition
 		WHERE
-			start_year = rec_comp_ed.start_year
+			start_year = s_year
 			AND
-			end_year = rec_comp_ed.end_year
-			AND
-			competition_id IN (SELECT similar_comp(rec_comp_ed.competition_id));
+			competition_id IN
+							(
+								SELECT
+									*
+								FROM
+									similar_comp(id_comp)
+							);
 	
 END;
 $$
@@ -4311,17 +5328,23 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : can_take_part
  *
- * IN      : fp_team.id%TYPE, fp_competition_edition.id%TYPE
+ * IN      : integer, integer, smallint
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una squadra di calcio può partecipare ad
+ *        un'edizione di una competizione calcistica.
+ *
+ *        NOTA: Una squadra di calcio per ogni confederazione calcistica
+ *              cui appartiene può partecipare solo ad un tipo di competizione
+ *              per ogni stagione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_take_part
 (
-	IN	id_team		fp_team.id%TYPE,
-	IN	id_comp_ed	fp_competition_edition.id%TYPE
+	IN	id_team	integer,
+	IN	id_comp	integer,
+	IN	s_year	smallint	-- anno inizio
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -4329,27 +5352,46 @@ AS
 $$
 DECLARE
 
-	can	boolean;
+	can			boolean;
+
+	rec_comp_ed	record;
 
 BEGIN
 	
 	can = FALSE;
 
-	SELECT
-		count(*) < 1
-	INTO
-		can
-	FROM
-		fp_partecipation
-	WHERE
-		team_id = id_team
-		AND
-		competition_edition_id IN (SELECT similar_comp_ed(id_comp_ed));
+	-- per ogni edizione simile di competizioni calcistiche
+	FOR rec_comp_ed
+	IN
+		SELECT
+			*
+		FROM
+			similar_comp_ed(id_comp, s_year)
+	LOOP
 
-	IF (NOT can) THEN
-		RAISE NOTICE 'Team (id = %) cannot partecipate to competition edition (id = %)', id_team, id_comp_ed;
-	END IF;
-
+		SELECT
+			count(*) < 1
+		INTO
+			can
+		FROM
+			fp_partecipation
+		WHERE
+			team_id = id_team
+			AND
+			competition_id = rec_comp_ed.competition_id
+			AND
+			start_year = rec_comp_ed.start_year;
+									
+		-- se la squadra di calcio partecipa ad un'edizione simile
+		IF (NOT can) THEN
+			RAISE NOTICE 'Team (id = %) cannot partecipate'
+				'to competition (id = %) start year (%)',
+				id_team, id_comp, s_year;
+			RETURN can;
+		END IF;
+	
+	END LOOP;
+		
 	RETURN can;
 
 END;
@@ -4362,17 +5404,17 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : has_nationality
  *
- * IN      : fp_player.id%TYPE, fp_country.id%TYPE
+ * IN      : integer, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un calciatore ha una certa nazionalita'
+ * DESC : Funzione che valuta se un calciatore ha una certa nazionalità
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_nationality
 (
-	IN	id_player	fp_player.id%TYPE,
-	IN	id_country	fp_country.id%TYPE
+	IN	id_player	integer,
+	IN	id_country	integer
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -4397,6 +5439,7 @@ BEGIN
 		AND
 		country_id = id_country;
 	
+
 	IF (NOT have) THEN
 		RAISE NOTICE 'Player (id = %) has not nationatity country (id = %)', id_player, id_country;
 	END IF;
@@ -4408,18 +5451,434 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : corr_age_limit
+ *
+ * IN      : date, date
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se la data di nascita e di ritiro di un
+ *        calciatore rispettino i limiti di età da noi definiti.
+ *
+ *        NOTA: fare riferimento alle funzioni min_age e max_age
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION corr_age_limit
+(
+	IN	birth_date		date,
+	IN	retired_date	date
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	year_birth_date		integer;
+	year_retired_date	integer;
+
+BEGIN
+
+	year_birth_date = extract(year from birth_date);
+	year_retired_date = extract(year from retired_date);
+
+
+	IF ((year_retired_date - year_birth_date) BETWEEN min_age() AND max_age()) THEN
+		RETURN TRUE;
+	END IF;
+
+
+	RETURN FALSE;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
- * PROJECT NAME : FOOTBALL PLAYER DATABASE
+ * TYPE : FUNCTION
+ * NAME : free_militancy
  *
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
- * FIELD        : COMPUTER SCIENCE
- * CLASS        : DATA BASES I
- * TEACHER      : SILVIO BARRA
- * YEAR         : 2023-2024
+ * IN      : integer, en_team, smallint, en_season
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se in un certo anno un calciatore è disponibile
+ *        per una nuova militanza di un certo tipo di squadra e di un certo tipo
  ******************************************************************************/
+CREATE OR REPLACE FUNCTION free_militancy
+(
+	IN	id_player	integer,
+	IN	type_team	en_team,
+	IN	s_year		smallint,
+	IN	type_year	en_season
+)
+RETURNS boolean
+AS
+$$
+DECLARE
 
+	free	boolean;
+
+BEGIN
+
+	free = FALSE;
+
+	IF ('I PART' = type_year) THEN
+	
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year
+			AND
+			type IN ('I PART', 'FULL');
+	
+	ELSIF ('II PART' = type_year) THEN
+	
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year
+			AND
+			type IN ('II PART', 'FULL');
+
+	ELSIF ('FULL' = type_year) THEN
+
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year;
+		
+	END IF;
+
+
+	IF (NOT free) THEN
+		RAISE NOTICE 'Player (id = %) cannot have a militancy (type = %) starting in year % of type %', id_player, type_team, s_year, type;
+	END IF;
+
+	RETURN free;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : remove_all_trophy_season
+ *
+ * IN      : integer, integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che rimuove tutti i trofei assegnati ad un calciatore
+ *        nella sua militanza in una squadra in un certo anno
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION remove_all_trophy_season
+(
+	IN	id_player	integer,
+	IN	id_team		integer,
+	IN	s_year		smallint
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+		player_id = id_player
+		AND
+		team_id = id_team
+		AND
+		start_year = s_year;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : assign_all_trophy_season
+ *
+ * IN      : integer, integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : Funzione che assegna ad un calciatore tutti i trofei vinti da una
+ *        squadra in un certo anno
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION assign_all_trophy_season
+(
+	IN	id_player	integer,
+	IN	id_team		integer,
+	IN	s_year		smallint
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	rec_team_trophy	record;
+
+BEGIN
+
+	FOR rec_team_trophy
+	IN
+		SELECT
+			*
+		FROM
+			fp_team_trophy_case
+		WHERE
+			team_id = id_team
+			AND
+			start_year = s_year
+
+	LOOP
+
+		INSERT INTO
+			fp_player_trophy_case
+			(
+				player_id,
+				team_id,
+				trophy_id,
+				start_year,
+				competition_id
+			)
+		VALUES
+		(
+			id_player,
+			id_team,
+			rec_team_trophy.trophy_id,
+			s_year,
+			rec_team_trophy.competition_id
+		);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_role
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che restituisce la combinazione di ruoli di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_role
+(
+	IN	id_player	integer
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+	role_player		text;
+	new_role_player	text;
+
+BEGIN
+
+	new_role_player = '';
+
+	-- per ogni ruolo associato alle posizioni del calciatore
+	-- in ordine di enum
+	FOR role_player
+	IN
+		SELECT DISTINCT
+			role
+		FROM
+			fp_player_position
+		WHERE
+			player_id = id_player
+		ORDER BY
+			role
+
+	LOOP
+
+		-- aggiungi alla combinazione di ruoli del giocatore
+		new_role_player = new_role_player || role_player;
+		new_role_player = new_role_player || '-';
+
+	END LOOP;
+
+	new_role_player = trim(new_role_player, '-');
+
+	RETURN new_role_player;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : position_number
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che restituisce il numero di posizioni associate ad un
+ *        calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION position_number
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+BEGIN
+
+	RETURN
+	(
+		SELECT
+			count(*)
+		FROM
+			fp_player_position
+		WHERE
+			player_id = id_player
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_has_trophy
+ *
+ * IN      : integer, integer, smallint, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : Funzione che valuta se una squadra di calcio ha vinto un trofeo
+ *        associato ad un'edizione di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION team_has_trophy
+(
+	IN	id_team		integer,
+	IN	id_trophy	integer,
+	IN	s_year		smallint,
+	IN	id_comp		integer
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			fp_team_trophy_case
+		WHERE
+			team_id = id_team
+			AND
+			trophy_id = id_trophy
+			AND
+			start_year = s_year
+			AND
+			competition_id = id_comp
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_type_militancy
+ *
+ * IN      : integer, integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che restituisce il tipo di milianza dato in input
+ *        un calciatore, una squadra di calcio e un anno di inzio militanza
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_type_militancy
+(
+	IN	id_player	integer,
+	IN	id_team		integer,
+	IN	s_year		smallint
+)
+RETURNS text
+AS
+$$
+BEGIN
+
+	RETURN
+	(
+		SELECT
+			type
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_id = id_team
+			AND
+			start_year = s_year
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -4428,12 +5887,13 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_confederation TRIGGER 
- * NAME : tf_bi_confederation
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bu_if_referenced_refuse
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che accetta un aggiornamento solo se la
+ *        riga della tabella che ha scatenato il trigger non è referenziata
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_confederation
+CREATE OR REPLACE FUNCTION tf_bu_if_referenced_refuse
 (
 )
 RETURNS trigger
@@ -4441,10 +5901,101 @@ AS
 $$
 BEGIN
 
-	IF (can_be_member(NEW.id, NEW.super_id)) THEN
+	IF (NOT is_referenced('@', string_for_reference('@', TG_TABLE_NAME, OLD))) THEN
 		RETURN NEW;
 	END IF;
 	
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_refuse
+ *
+ * DESC : Funzione che rifiuta qualsiasi aggiornamento
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_refuse
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_country_name
+ *
+ * DESC : Funzione che a seguito dell'aggiornamento del nome di un paese
+ *        aggiorna il nome della squadra nazionale ad esso associata
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_country_name
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	UPDATE
+		fp_team
+	SET
+		name = NEW.name
+	WHERE
+		type = 'NATIONAL'
+		AND
+		country_id = NEW.id;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bi_confederation
+ *
+ * DESC : Funzione che controlla se la nuova confederazione calcistica che
+ *        si desidera inserire rispetti il vincolo di contentimento in
+ *        un'altra confederazione di tipo appropriato
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_confederation
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp						text;
+
+	id_country_super_conf	integer;
+
+BEGIN
+
+	tmp = get_column('fp_confederation', 'country_id', NEW.super_id);
+	id_country_super_conf = CAST(tmp AS integer);
+
+
+	IF (can_be_inside(NEW.country_id, id_country_super_conf)) THEN
+		RETURN NEW;
+	END IF;
+
+
 	RETURN NULL;
 	
 END;
@@ -4454,10 +6005,11 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_team
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la nuova squadra di calcio che si vuole
+ *        inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_team
 (
@@ -4476,26 +6028,30 @@ BEGIN
 	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
+
+	-- se la squadra è associata ad una nazione
+	-- e la confederazione associata alla squadra è associata alla stessa
+	-- nazione della squadra
 	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
 
 		IF ('CLUB' = NEW.type) THEN
-		
 			RETURN NEW;
-		
+
+		-- se la squadra è di tipo nazionale deve avere lo stesso nome
+		-- della nazione cui è associata		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
 			name_country = get_column('fp_country', 'name', NEW.country_id);
 
 			IF (NEW.name = name_country) THEN
-		
 				RETURN NEW;
-		
 			END IF;
 
 		END IF;
 
 	END IF;
 	
+
 	RETURN NULL;
 	
 END;
@@ -4504,12 +6060,47 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_team_name
+ *
+ * DESC : Funzione che controlla che il nuovo nome di una squadra di calcio
+ *        di tipo nazionale sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_team_name
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	name_country	text;
+
+BEGIN
+
+	name_country = get_column('fp_country', 'name', OLD.country_id);
+
+
+	IF (NEW.name = name_country) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_competition TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_competition
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la nuova competizione calcistica che
+ *        si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_competition
 (
@@ -4520,6 +6111,7 @@ $$
 DECLARE
 
 	tmp					text;
+
 	id_country_conf		integer;
 	type_country_conf	text;
 
@@ -4530,12 +6122,13 @@ BEGIN
 
 	type_country_conf = get_column('fp_country', 'type', id_country_conf);
 
+	-- non possono esistere competizioni per squadre nazionali
+	-- organizzate da una confederazione nazionale
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
-
 		RETURN NEW;
-	
 	END IF;
-	
+
+
 	RETURN NULL;
 	
 END;
@@ -4544,12 +6137,12 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_competition_edition TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_competition_edition
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la nuova edizione di una competizione
+ *        calcistica che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_competition_edition
 (
@@ -4559,26 +6152,31 @@ AS
 $$
 BEGIN
 
-	IF (NOT has_edition(NEW.competition_id)) THEN
+	IF
+	(
+		-- se l'edizione iniza e termina negli anni corretti
+		corr_years_comp_ed(NEW.competition_id, NEW.start_year, NEW.end_year)
+		AND
+		-- ..ed ha il corretto numero di squadre partecipanti in base al tipo 
+		corr_tot_team(NEW.competition_id, NEW.total_team)
+	)
+	THEN
 
-		RETURN NEW;
-	
-	ELSE
-	
-		IF
-		(
-			corr_freq(NEW.competition_id, NEW.start_year)
-			AND
-			corr_tot_team(NEW.competition_id, NEW.total_team)
-		) 
-		THEN
-	
+		IF (NOT has_edition(NEW.competition_id)) THEN
 			RETURN NEW;
-	
+
+		ELSE
+			-- se esiste già un'edizione della competizione
+			-- quella che si vuole inserire deve rispettare la frequenza della competizione
+			IF (corr_freq(NEW.competition_id, NEW.start_year)) THEN
+				RETURN NEW;
+			END IF;
+
 		END IF;
-	
+
 	END IF;
-	
+
+
 	RETURN NULL;
 	
 END;
@@ -4587,12 +6185,13 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_partecipation TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_partecipation
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la nuova partecipazione di una squadra
+ *        di calcio ad un'edizione di una competizione calcistica che
+ *        si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_partecipation
 (
@@ -4602,32 +6201,35 @@ AS
 $$
 DECLARE
 
-	tmp		text;
-	id_conf	integer;
-	id_comp	integer;
+	tmp				text;
+
+	id_conf_comp	integer;
 
 BEGIN
 
-	id_conf = conf_from_comp_ed(NEW.competition_edition_id);
+	tmp = get_column('fp_competition', 'confederation_id', NEW.competition_id);
+	id_conf_comp = CAST(tmp AS integer);
 
-	tmp = get_column('fp_competition_edition', 'competition_id', NEW.competition_edition_id);
-	id_comp = CAST(tmp AS integer);
 
 	IF
 	(
-		has_place(NEW.competition_edition_id)
+		-- se l'edizione ha ancora posti disponibili
+		has_place(NEW.competition_id, NEW.start_year)
 		AND
-		belong_to(NEW.team_id, id_conf)
+		-- ..e la squadra appartiene alla confederazione che organizza la competizione
+		belong_to(NEW.team_id, id_conf_comp)
 		AND
+		-- ..e la squadra è compatibile con la competizione
 		team_fit_comp(NEW.team_id, id_comp)
 		AND
-		can_take_part(NEW.team_id, NEW.competition_edition_id)
+		-- ..e la squadra non partecipa ad altre edizioni simili nella stessa confederazione
+		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year)
 	)
 	THEN
 		RETURN NEW;
 	END IF;
 	
-	raise notice 'SOMETHING HAS GONE WRONG';
+
 	RETURN NULL;
 	
 END;
@@ -4637,12 +6239,76 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_player
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo calciatore che si vuole inserire
+ *        sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	-- deve essere nato in una nazione
+	-- ed inizialmente non avere ruoli
+	IF (is_nation(NEW.country_id) AND NEW.role IS NULL) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ai_player
+ *
+ * DESC : Funzione che dopo l'inserimento di un calciatore ne aggiorna la
+ *        nazionalità
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_player
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	INSERT INTO
+		fp_nationality
+		(
+			country_id,
+			player_id
+		)
+	VALUES
+	(
+		NEW.country_id,
+		NEW.id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_country
+ *
+ * DESC : Funzione che controlla che l'aggiornamento del paese di nascita di
+ *        un calciatore sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_country
 (
 )
 RETURNS trigger
@@ -4654,7 +6320,8 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RETURN NULL;
+
+	RETURN OLD;
 	
 END;
 $$
@@ -4663,10 +6330,192 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_nationality TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_role
+ *
+ * DESC : Funzione che controlla che l'aggiornamento del ruolo di un calciatore
+ *        sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_role
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	-- se il nuovo ruolo è compatibile con tutte le posizioni del calciatore
+	IF (role_fit_positions(NEW.id, NEW.role)) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_dob
+ *
+ * DESC : Funzione che controlla che l'aggiornamento della data di nascita di
+ *        un calciatore sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_dob
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	retired_date	date;
+
+	born_year		integer;
+
+BEGIN
+
+	IF (is_retired(NEW.id)) THEN
+
+		tmp = get_column('fp_player_retired', 'retired_date', NEW.id);
+		retired_date = CAST(tmp AS date);
+
+		IF (NOT corr_age_limit(NEW.dob, retired_date)) THEN
+			RETURN OLD;
+		END IF;
+	
+	END IF;
+
+
+	IF (has_militancy(NEW.id)) THEN
+
+		born_year = extract(year from NEW.dob);
+
+		IF (min_militancy_year(NEW.id) - born_year < min_age()) THEN
+			RETURN OLD;
+		END IF;
+
+
+		IF (NOT is_retired(NEW.id)) THEN
+
+			IF (max_militancy_year(NEW.id) - born_year > max_age()) THEN
+				RETURN OLD;
+			END IF;
+
+		END IF;
+		
+	END IF;
+
+
+	RETURN NEW;
+		
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_player_country
+ *
+ * DESC : Funzione che dopo l'aggiornamento del paese di nascita di un
+ *        calciatore, aggiorna la nazionalità del calciatore ed elimina
+ *        la vecchia nazionalità se non sono presenti militanze nazionali
+ *        associate al vecchio paese di nascita
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_player_country
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	id_team	integer;
+
+BEGIN
+
+	id_team = national_team_from_country(OLD.country_id);
+
+
+	IF (NOT has_militancy(NEW.id, id_team)) THEN
+
+		DELETE FROM
+			fp_nationality
+		WHERE
+			country_id = OLD.country_id
+			AND
+			player_id = NEW.id;
+
+	END IF;
+
+
+	INSERT INTO
+		fp_nationality
+		(
+			country_id,
+			player_id
+		)
+	VALUES
+	(
+		NEW.country_id,
+		NEW.id
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_player_role
+ *
+ * DESC : Funzione che dopo l'aggiornamento del ruolo di un calciatore
+ *        aggiorna gli attributi, le statistiche, i tag, i premi e i trofei
+ *        associati al ruolo del calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_player_role
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	-- se il calciatore ha perso il ruolo di portiere
+	IF ((OLD.role LIKE '%GK%') AND (NEW.role NOT LIKE '%GK%')) THEN
+
+		PERFORM delete_gk_attribute(NEW.id);
+		PERFORM delete_gk_statistic(NEW.id);
+		PERFORM delete_gk_tag(NEW.id);
+
+	END IF;
+	
+
+	PERFORM delete_not_role_trophy(NEW.id, NEW.role);
+	PERFORM delete_not_role_prize(NEW.id, NEW.role);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_nationality
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la nuova nazionalità da inserire sia
+ *        riferita ad una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_nationality
 (
@@ -4680,6 +6529,7 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+
 	RETURN NULL;
 
 END;
@@ -4688,12 +6538,93 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bd_nationality
+ *
+ * DESC : Funzione che controlla che la nazionalità che si vuole eliminare
+ *        non sia quella riferita alla nazione di nascita di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_nationality
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp					text;
+
+	id_country_player	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'country_id', OLD.player_id);
+	id_country_player = CAST(tmp AS integer);
+
+
+	IF (OLD.country_id <> id_country_player) THEN
+		RETURN OLD;
+	END IF;
+
+
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_militancy TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ad_nationality
+ *
+ * DESC : Funzione che dopo l'eliminazione di una nazionalità elimina
+ *        la militanza nazionale associata alla nazione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ad_nationality
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_country	integer;
+
+	id_team		integer;
+
+BEGIN
+
+	IF (is_national(OLD.player_id)) THEN
+
+		id_team = national_team();
+
+		tmp = get_column('fp_team', 'country_id', id_team);
+		id_country = CAST(tmp AS integer);
+
+		
+		IF (OLD.country_id = id_country) THEN
+			PERFORM delete_national_militancy(OLD.player_id);
+		END IF;
+
+	END IF; 
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_militancy
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se la nuova militanza di un calciatore in una
+ *        squadra di calcio che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_militancy
 (
@@ -4704,48 +6635,56 @@ $$
 DECLARE
 
 	tmp			text;
-	dob_player	date;
-	type_team	text;
-	valid_range	daterange;
+
+	start_valid	integer;
+	end_valid	integer;
+
+	role_player	text;
+
+	id_country	integer;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'dob', NEW.player_id);
-	dob_player = CAST(tmp AS date);
-	
-	valid_range = valid_daterange(dob_player);
+	role_player = get_column('fp_player', 'role', NEW.player_id);
 
-	type_team = get_column('fp_team', 'type', NEW.team_id);
+	-- il calciatore deve avere un ruolo
+	IF (role_player IS NOT NULL) THEN
 
-	IF ('CLUB' = type_team) THEN
+		SELECT * FROM valid_year_range(NEW.player_id)
+		INTO start_valid, end_valid;
 
-		IF
-		(
-			NEW.date_range <@ valid_range
-			AND
-			free_club_militancy(NEW.player_id, NEW.date_range)
-		)
-		THEN
-			RETURN NEW;
-		END IF;
+		-- la militanza deve essere in un anno valido
+		IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
 
-	ELSIF ('NATIONAL' = type_team) THEN
+			IF ('NATIONAL' = NEW.team_type) THEN
 
-		IF
-		(
-			has_nationality(NEW.player_id, rec_team.country_id)
-			AND
-			upper(NEW.date_range) IS NULL
-			AND
-			lower(NEW.date_range) <@ valid_range
-			AND
-			free_national_militancy(NEW.player_id, rec_team.country_id)
-		)
-		THEN
-			RETURN NEW;
+				tmp = get_column('fp_team', 'country_id', NEW.team_id);
+				id_country = CAST(tmp AS integer);
+
+				IF (NOT has_nationality(NEW.player_id, id_country)) THEN
+					RETURN NULL;
+				END IF;
+
+				IF (is_national(NEW.player_id)) THEN
+
+					-- se è una militanza nazionale e il calciatore ha gia
+					-- militato in nazionale la squadra deve essere la stessa
+					IF (national_team(NEW.player_id) <> NEW.team_id) THEN
+						RETURN NULL;
+					END IF;
+
+				END IF;
+
+			END IF;
+
+			IF (free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
+				RETURN NEW;
+			END IF;
+			
 		END IF;
 
 	END IF;
+
 
 	RETURN NULL;
 	
@@ -4755,12 +6694,65 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ai_militancy
+ *
+ * DESC : Funzione che dopo l'inserimento di una militanza che è riferita
+ *        alla seconda parte di stagione assegna i trofei vinti dalla squadra
+ *        in quella stagione al calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_militancy
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player_tag TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_au_militancy
+ *
+ * DESC : Funzione che dopo l'aggiornamento della militanza assegna o rimuove
+ *        i trofei
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_militancy
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
+	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
+		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
+	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
+		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_tag
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'associazione tra calciatore e tag di
+ *        tipo portiere che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player_tag
 (
@@ -4770,21 +6762,17 @@ AS
 $$
 DECLARE
 
-	type_tag	text;
+	role_player	text;
 
 BEGIN
 
-	type_tag = get_column('fp_tag', 'type', NEW.tag_id);
+	role_player = get_column('fp_player', 'role', NEW.player_id);
 
-	IF
-	(
-		type_tag <> 'GOALKEEPER'
-		OR
-		('GOALKEEPER' = type_tag AND has_role(NEW.player_id, 'GK'))
-	)
-	THEN
+
+	IF (role_player LIKE '%GK%') THEN
 		RETURN NEW;
 	END IF;
+	
 	
 	RETURN NULL;
 	
@@ -4794,12 +6782,124 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ai_player_position
+ *
+ * DESC : Funzione che dopo l'inserimento di una nuova associazione tra un
+ *        calciatore ed una posizione aggiorna il ruolo del calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_player_position
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	role_player		text;
+	new_role_player	text;
+
+BEGIN
+
+	new_role_player = new_role(NEW.player_id);
+
+	role_player = get_column('fp_player', 'role', NEW.player_id);
+
+
+	IF (role_player IS NULL OR role_player <> new_role_player) THEN
+		
+		UPDATE
+			fp_player
+		SET
+			role = new_role_player
+		WHERE
+			id = NEW.player_id;
+
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player_attribute TRIGGER 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_player_position
+ *
+ * DESC : Funzione che prima dell'eliminazione di un'associazione tra un
+ *        calciatore ed una posizione si assicura che non sia l'unica posizione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_player_position
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (position_number(OLD.player_id) > 1 OR OLD.player_id IS NULL) THEN
+		RETURN OLD;
+	END IF;
+
+
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ad_player_position
+ *
+ * DESC : Funzione che dopo l'eliminazione di una nuova associazione tra un
+ *        calciatore ed una posizione aggiorna il ruolo del calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ad_player_position
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	role_player		text;
+	new_role_player	text;
+
+BEGIN
+
+	new_role_player = new_role(OLD.player_id);
+
+	role_player = get_column('fp_player', 'role', OLD.player_id);
+
+
+	IF (role_player IS NULL OR role_player <> new_role_player) THEN
+		
+		UPDATE
+			fp_player
+		SET
+			role = new_role_player
+		WHERE
+			id = OLD.player_id;
+
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_attribute
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'associazione tra calciatore e attributo
+ *        di tipo portiere che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player_attribute
 (
@@ -4809,21 +6909,16 @@ AS
 $$
 DECLARE
 
-	type_column	text;
+	role_player	text;
 
 BEGIN
 
-	type_column = get_column('fp_attribute', 'type', NEW.attribute_id);
+	role_player = get_column('fp_player', 'role', NEW.player_id);
 
-	IF
-	(
-		type_column <> 'GOALKEEPER'
-		OR
-		('GOALKEEPER' = type_column AND has_role(NEW.player_id, 'GK'))
-	)
-	THEN
+	IF (role_player LIKE '%GK%') THEN
 		RETURN NEW;
 	END IF;
+	
 	
 	RETURN NULL;
 	
@@ -4833,12 +6928,12 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team_trophy_case TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_team_trophy_case
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo trofeo che si vuole assegnare
+ *        ad una squadra di calcio sia compatibile
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_team_trophy_case
 (
@@ -4848,13 +6943,13 @@ AS
 $$
 DECLARE
 
-	type_trohy	text;
+	type_trophy	text;
 
 BEGIN
 
-	type_trohy = get_column('fp_trophy', 'type', NEW.trophy_id);
+	type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
 
-	IF ('TEAM' = type_trohy) THEN
+	IF ('TEAM' = type_trophy) THEN
 		RETURN NEW;
 	END IF;
 	
@@ -4867,10 +6962,105 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_player_trophy_case TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ai_team_trophy_case
+ *
+ * DESC : Funzione che dopo l'assegnazione di un trofeo ad una squadra di
+ *        calcio assegna il trofeo a tutti i giocatori che militano in quella
+ *        squadra a fine stagione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_team_trophy_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	id_player	integer;
+
+BEGIN
+
+	FOR id_player
+	IN
+		SELECT
+			player_id
+		FROM
+			fp_militancy
+		WHERE
+			team_id = NEW.team_id
+			AND
+			start_year = NEW.start_year
+			AND
+			type <> 'I PART'
+	
+	LOOP
+
+		INSERT INTO
+			fp_player_trophy_case
+			(
+				player_id,
+				team_id,
+				trophy_id,
+				start_year,
+				competition_id
+			)
+		VALUES
+		(
+			id_player,
+			NEW.team_id,
+			NEW.id,
+			NEW.start_year,
+			NEW.competition_id
+		);
+
+	END LOOP;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_ad_team_trophy_case
+ *
+ * DESC : Funzione che dopo l'eliminazione di un trofeo ad una squadra di
+ *        calcio rimuove il trofeo a tutti i giocatori che militano in quella
+ *        squadra a fine stagione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ad_team_trophy_case
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+		team_id = OLD.team_id
+		AND
+		trophy_id = OLD.id
+		AND
+		start_year = OLD.start_year
+		AND
+		competition_id = OLD.competition_id;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_player_trophy_case
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo trofeo che si vuole assegnare
+ *        ad un calciatore sia compatibile
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player_trophy_case
 (
@@ -4880,44 +7070,51 @@ AS
 $$
 DECLARE
 
-	type_trohy	text;
-	time_range	daterange;
-	existence	integer;
+	type_militancy	text;
+
+	type_trophy		text;
+	role_trophy		text;
+
+	role_player		text;
 
 BEGIN
 
-	time_range = range_edition(NEW.competition_edition_id);
+	type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
 
-	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
 
-		type_trohy = get_column('fp_trophy', 'type', NEW.trophy_id);
+	IF (type_militancy <> 'I PART') THEN
 
-		IF ('TEAM' = type_trohy) THEN
+		type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
 
-			existence = NULL;
+		IF ('TEAM' = type_trophy) THEN
 
-			SELECT
-				id
-			INTO
-				existence
-			FROM
-				fp_team_trophy_case
-			WHERE
-				competition_edition_id = NEW.competition_edition_id
-				AND
-				team_id = NEW.team_id
-				AND
-				trophy_id = NEW.trophy_id;
-			
-			IF (existence IS NOT NULL) THEN
+			-- se si tratta di un trofeo di squadra la squadra in questione deve avere il trofeo
+			IF (team_has_trophy(NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id)) THEN
 				RETURN NEW;
 			END IF;
-		ELSE
-			RETURN NEW;
+		
+		ELSIF ('PLAYER' = type_trophy) THEN
+
+			role_trophy = get_column('fp_trophy', 'role', NEW.trophy_id);
+
+			IF (role_trophy IS NULL) THEN
+				RETURN NEW;
+			
+			ELSE
+
+				role_player = get_column('fp_player', 'role', NEW.player_id);
+
+				IF (position(role_trophy in role_player) > 0) THEN
+					RETURN NEW;
+				END IF;
+
+			END IF;
+		
 		END IF;
 
 	END IF;
 	
+
 	RETURN NULL;
 	
 END;
@@ -4927,10 +7124,127 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_team_prize_case TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bd_player_trophy_case
+ *
+ * DESC : Funzione che controlla che sia possibile eliminare un trofeo
+ *        assegnato ad un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_player_trophy_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_militancy	text;
+
+	type_trophy		text;
+	role_trophy		text;
+
+	role_player		text;
+
+BEGIN
+
+	type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
+
+	IF ('TEAM' = type_trophy) THEN
+
+		type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
+	
+		-- se il trofeo è di squadra
+		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
+		-- o se il calciatore non milita nella parte finale di stagione
+		IF
+		(
+			team_has_trophy(NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id)
+			AND
+			type_militancy <> 'I PART' 
+		)
+		THEN
+			RETURN NULL;
+		END IF;
+	
+	END IF;
+	
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bi_player_prize_case
+ *
+ * DESC : Funzione che controlla che il nuovo premio che si vuole assegnare
+ *        ad un calciatore sia compatibile
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_prize_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	type_prize		text;
+	role_prize		text;
+
+	start_valid	integer;
+	end_valid	integer;
+	role_player 	text;
+
+BEGIN
+
+	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
+	
+	IF ('PLAYER' = type_prize) THEN
+
+		SELECT * FROM valid_year_range(NEW.player_id)
+		INTO start_valid, end_valid;
+	
+		-- il premio deve essere assegnato in un anno valido
+		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
+
+			role_prize = get_column('fp_prize', 'role', NEW.prize_id);
+
+			IF (role_prize IS NULL) THEN		
+				RETURN NEW;
+			
+			ELSE
+
+				role_player = get_column('fp_player', 'role', NEW.player_id);
+			
+				IF (position(role_prize in role_player) > 0) THEN
+					RETURN NEW;
+				END IF;
+
+			END IF;
+		
+		END IF;
+	
+	END IF;
+	
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_team_prize_case
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo premio che si vuole assegnare
+ *        ad una squadra di calcio sia compatibile
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_team_prize_case
 (
@@ -4946,10 +7260,12 @@ BEGIN
 
 	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
 
+
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
 	END IF;
-	
+
+
 	RETURN NULL;
 	
 END;
@@ -4959,10 +7275,15 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_play TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_play
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo gioco che si vuole inserire
+ *        sia valido
+ *
+ *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *              un'approssimazione per eccesso basata su numerose osservazioni
+ *              (Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_play
 (
@@ -4972,16 +7293,18 @@ AS
 $$
 DECLARE
 
-	time_range	daterange;
+	tot_team	integer;
 
 BEGIN
 
-	time_range = range_edition(NEW.competition_edition_id);
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
 
-	IF (play_in_during(NEW.player_id, NEW.team_id, time_range)) THEN
+
+	IF (NEW.match <= tot_team * 4) THEN
 		RETURN NEW;
 	END IF;
-	
+
+
 	RETURN NULL;
 	
 END;
@@ -4991,10 +7314,50 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION - tg_bi_play_statistic TRIGGER 
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_play_match
+ *
+ * DESC : Funzione che controlla che l'aggiornamento delle partite disputate
+ *        riferite ad un gioco sia valido
+ *
+ *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *              un'approssimazione per eccesso basata su numerose osservazioni
+ *              (Wikipidia, Transfermarkt, ...)
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_play_match
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tot_team	integer;
+
+BEGIN
+
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
+
+
+	IF (NEW.match <= tot_team * 4) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
  * NAME : tf_bi_play_statistic
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'associazione tra gioco e statistica
+ *        che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_play_statistic
 (
@@ -5004,25 +7367,137 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-	id_player_pos	integer;
-	id_pos			integer;
+	tmp			text;
+
+	gk_stat		boolean;
+	
+	id_player	integer;
+	role_player	integer;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'player_position_id', NEW.play_id);
-	id_player_pos = CAST(tmp AS integer);
+	tmp = get_column('fp_statistic', 'goalkeeper', NEW.statistic_id);
+	gk_stat = CAST(tmp AS boolean);
 
-	tmp = get_column('fp_player_position', 'position_id', id_player_pos);
-	id_pos = CAST(tmp AS integer);
-
-
-	IF (pos_fit_stat(id_pos, statistic_id)) THEN
+	
+	IF (NOT gk_stat) THEN	
 		RETURN NEW;
+	
+	ELSE
+
+		tmp = get_column('fp_play', 'player_id', NEW.play_id);
+		id_player = CAST(tmp AS integer);
+
+		role_player = get_column('fp_player', 'role', id_player);
+
+
+		IF (role_player LIKE '%GK%') THEN	
+			RETURN NEW;
+		END IF;
+
 	END IF;
 	
+
 	RETURN NULL;
 
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bi_player_retired
+ *
+ * DESC : Funzione che controlla che il giocatore ritirato che si vuole
+ *        inserire sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_retired
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	born_date		date;
+	retired_year	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'dob', NEW.id);
+	born_date = CAST(tmp AS date);
+
+	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
+		RETURN NULL;	
+	END IF;
+	
+
+	IF (has_militancy(NEW.id)) THEN
+
+		retired_year = extract(year from NEW.retired_date);
+	
+		IF (max_militancy_year(NEW.id) >= retired_year) THEN
+			RETURN NULL;
+		END IF;
+	
+	END IF;
+
+
+	RETURN NEW;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_retired_date
+ *
+ * DESC : Funzione che controlla che l'aggiornamento della data di ritiro per
+ *        il giocatore ritirato sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_retired_date
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	born_date		date;
+	retired_year	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'dob', NEW.id);
+	born_date = CAST(tmp AS date);
+
+	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
+		RETURN OLD;	
+	END IF;
+	
+
+	IF (has_militancy(NEW.id)) THEN
+
+		retired_year = extract(year from NEW.retired_date);
+	
+		IF (max_militancy_year(NEW.id) >= retired_year) THEN
+			RETURN OLD;
+		END IF;
+	
+	END IF;
+
+
+	RETURN NEW;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -5036,23 +7511,95 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
+ * COUNTRY
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_country
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del tipo di paese
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_country_referenced
+BEFORE UPDATE ON fp_country
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_country_name
+ *
+ * DESC : Trigger che si attiverà dopo l'aggiornamento del nome di paese
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_country_name
+AFTER UPDATE ON fp_country
+FOR EACH ROW
+WHEN
+(
+	OLD.name IS DISTINCT FROM NEW.name
+)
+EXECUTE FUNCTION tf_au_country_name();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * CONFEDERATION
+ ******************************************************************************/
+
+/*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_confederation
  *
- * DESC : Trigger per l'inserimento di una nuova confederazione calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento di una confederazione
+ *        calcistica contenuta in un'altra confederazione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
 BEFORE INSERT ON fp_confederation
 FOR EACH ROW
+WHEN
+(
+	NEW.super_id IS NOT NULL
+)
 EXECUTE FUNCTION tf_bi_confederation();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_confederation_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del paese o
+ *        della confederazione contenente di una confederazione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_confederation_referenced
+BEFORE UPDATE ON fp_confederation
+FOR EACH ROW
+WHEN
+(
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+	OR
+	OLD.super_id IS DISTINCT FROM NEW.super_id
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TEAM
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_team
  *
- * DESC : Trigger per l'inserimento di una nuova squadra di calcio
+ * DESC : Trigger che si attiverà prima dell'inserimento di una squadra di
+ *        calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
 BEFORE INSERT ON fp_team
@@ -5060,12 +7607,60 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del paese o
+ *        del tipo della confederazione di una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_referenced
+BEFORE UPDATE ON fp_team
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	OR
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+	OR
+	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_name
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del nome
+ *        di una squadra di calcio di tipo nazionale
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_name
+BEFORE UPDATE ON fp_team
+FOR EACH ROW
+WHEN
+(
+	OLD.name IS DISTINCT FROM NEW.name
+	AND
+	OLD.type IS NOT DISTINCT FROM NEW.type
+	AND
+	'NATIONAL' = OLD.type
+)
+EXECUTE FUNCTION tf_bu_team_name();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * COMPETITION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_competition
  *
- * DESC : Trigger per l'inserimento di una nuova competizione calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento di una competizione
+ *        calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
@@ -5073,13 +7668,58 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_competition_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del tipo o del
+ *        tipo di squadra o della condeferazione di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_competition_referenced
+BEFORE UPDATE ON fp_competition
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	OR
+	OLD.team_type IS DISTINCT FROM NEW.team_type
+	OR
+	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_competition_freq_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della frequenza
+ *        di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_competition_freq_refuse
+BEFORE UPDATE ON fp_competition
+FOR EACH ROW
+WHEN
+(
+	OLD.frequency IS DISTINCT FROM NEW.frequency
+	AND
+	NEW.frequency <> 0
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * COMPETITION EDITION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_competition_edition
  *
- * DESC : Trigger per l'inserimento di una nuova edizione di una competizione
- *        calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento di un'edizione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition_edition
 BEFORE INSERT ON fp_competition_edition
@@ -5087,13 +7727,31 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition_edition();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_competition_edition_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'edizione
+ *        di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_competition_edition_refuse
+BEFORE UPDATE ON fp_competition_edition
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PARTECIPATION
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_partecipation
  *
- * DESC : Trigger per l'inserimento di una nuova partecipazione di una
- *        squadra di calcio ad un'edizione di una competizione calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento di una partecipazione
+ *        di una squadra di calcio ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_partecipation
 BEFORE INSERT ON fp_partecipation
@@ -5101,12 +7759,30 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_partecipation();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_partecipation_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della partecipazione
+ *        di una squadra di calcio ad un'edizione di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_partecipation_refuse
+BEFORE UPDATE ON fp_partecipation
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_player
  *
- * DESC : Trigger per l'inserimento di una nuovo calciatore
+ * DESC : Trigger che si attiverà prima dell'inserimento di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player
 BEFORE INSERT ON fp_player
@@ -5114,12 +7790,98 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_player
+ *
+ * DESC : Trigger che si attiverà dopo dell'inserimento di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_player
+AFTER INSERT ON fp_player
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_player();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_country
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del paese di nascita
+ *        di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_country
+BEFORE UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+)
+EXECUTE FUNCTION tf_bu_player_country();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_role
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dei ruoli di un
+ *        calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player_role
+BEFORE UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_bu_player_role();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_player_country
+ *
+ * DESC : Trigger che si attiverà dopo l'aggiornamento del paese di nascita
+ *        di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player_country
+AFTER UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.country_id IS DISTINCT FROM NEW.country_id
+)
+EXECUTE FUNCTION tf_au_player_country();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_player_role
+ *
+ * DESC : Trigger che si attiverà dopo l'aggiornamento dei ruoli di un
+ *        calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_player_role
+AFTER UPDATE ON fp_player
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_au_player_role();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * NATIONALITY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_nationality
  *
- * DESC : Trigger per l'inserimento di una nuova nazionalita' di un calciatore
+ * DESC : Trigger che si attiverà prima dell'inserimento di una nazionalità
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_nationality
 BEFORE INSERT ON fp_nationality
@@ -5127,13 +7889,57 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_nationality();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_nationality_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della nazionalità
+ *        di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_nationality_refuse
+BEFORE UPDATE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_nationality
+ *
+ * DESC : Trigger che si attiverà prima dell'eliminazione della nazionalità
+ *        di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bf_nationality
+BEFORE DELETE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_nationality();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_nationality
+ *
+ * DESC : Trigger che si attiverà dopo l'eliminazione della nazionalità
+ *        di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_nationality
+AFTER DELETE ON fp_nationality
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_nationality();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * MILITANCY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_militancy
  *
- * DESC : Trigger per l'inserimento di una nuova militanza di un calciatore
- *        in una squadra di calcio
+ * DESC : Trigger che si attiverà prima dell'inserimento di una militanza
+ *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_militancy
 BEFORE INSERT ON fp_militancy
@@ -5141,13 +7947,110 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_militancy();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_militancy
+ *
+ * DESC : Trigger che si attiverà dopo l'inserimento di una militanza riferita
+ *        alla parte finale della stagione o all'intera stagione
+ *        di un calciatore in una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_militancy
+AFTER INSERT ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	'II PART' = NEW.type
+	OR
+	'FULL' = NEW.type
+)
+EXECUTE FUNCTION tf_ai_militancy();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_militancy_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della squadra di
+ *        calcio o del tipo di squadra di calcio o del calciatore o
+ *        dell'anno di inizio di una militanza
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_militancy_refuse
+BEFORE UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	OLD.team_id IS DISTINCT FROM NEW.team_id
+	OR
+	OLD.team_type IS DISTINCT FROM NEW.team_type
+	OR
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+	OR
+	OLD.start_year IS DISTINCT FROM NEW.start_year
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_au_militancy
+ *
+ * DESC : Trigger che si attiverà dopo l'aggiornamento di una militanza
+ *        riferita alla prima parte di stagione
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_au_militancy
+AFTER UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	AND
+	(
+		'I PART' = OLD.type
+		OR
+		'I PART' = NEW.type
+	)
+)
+EXECUTE FUNCTION tf_au_militancy();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TAG
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_tag_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un tag
+ *        di tipo portiere
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_tag_referenced
+BEFORE UPDATE ON fp_tag
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	AND
+	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER TAG
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_player_tag
  *
- * DESC : Trigger per l'inserimento di una nuova associazione tra un
- *        calciatore ed un tag
+ * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
+ *        tra un calciatore ed un tag di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
@@ -5155,13 +8058,137 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_tag();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_tag_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
+ *        tra un calciatore ed un tag
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_tag_refuse
+BEFORE UPDATE ON fp_player_tag
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * POSITION
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_position_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo
+ *        associato ad una posizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_position_referenced
+BEFORE UPDATE ON fp_position
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER POSITION
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_player_position
+ *
+ * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
+ *        tra un calciatore ed una posizione
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_player_position
+AFTER INSERT ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_player_position();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_position_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
+ *        tra un calciatore ed una posizione
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_position_refuse
+BEFORE UPDATE ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_player_position
+ *
+ * DESC : Trigger che si attiverà prima dell'eliminazione dell'associazione
+ *        tra un calciatore ed una posizione
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bd_player_position
+BEFORE DELETE ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_player_position();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_player_position
+ *
+ * DESC : Trigger che si attiverà dopo l'eliminazione dell'associazione
+ *        tra un calciatore ed una posizione
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_player_position
+AFTER DELETE ON fp_player_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_player_position();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * ATTRIBUTE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_attribute_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un attributo
+ *        di tipo portiere
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_attribute_referenced
+BEFORE UPDATE ON fp_attribute
+FOR EACH ROW
+WHEN
+(
+	OLD.type IS DISTINCT FROM NEW.type
+	AND
+	('GOALKEEPER' = OLD.type OR 'GOALKEEPER' = NEW.type)
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER ATTRIBUTE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_player_attribute
  *
- * DESC : Trigger per l'inserimento di una nuova associazione tra un
- *        calciatore ed un attributo
+ * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
+ *        tra un calciatore ed un attributo
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_attribute
 BEFORE INSERT ON fp_player_attribute
@@ -5169,13 +8196,85 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_attribute();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_attribute_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
+ *        tra un calciatore ed un attributo
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_attribute_refuse
+BEFORE UPDATE ON fp_player_attribute
+FOR EACH ROW
+WHEN
+(
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+	OR
+	OLD.attribute_id IS DISTINCT FROM NEW.attribute_id
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * STATISTIC
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_statistic_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo
+ *        associato ad una statistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_statistic_referenced
+BEFORE UPDATE ON fp_statistic
+FOR EACH ROW
+WHEN
+(
+	OLD.goalkeeper IS DISTINCT FROM NEW.goalkeeper
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TROPHY
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_trophy_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
+ *        tipo di un trofeo calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_trophy_referenced
+BEFORE UPDATE ON fp_trophy
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+	OR
+	OLD.type IS DISTINCT FROM NEW.type
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TEAM TROPHY CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_team_trophy_case
  *
- * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
- *        ad una squadra di calcio
+ * DESC : Trigger che si attiverà prima dell'assegnazione di un trofeo
+ *        calcistico ad una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team_trophy_case
 BEFORE INSERT ON fp_team_trophy_case
@@ -5183,13 +8282,57 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team_trophy_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ai_team_trophy_case
+ *
+ * DESC : Trigger che si attiverà dopo l'assegnazione di un trofeo calcistico
+ *        ad una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ai_team_trophy_case
+AFTER INSERT ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_ai_team_trophy_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_trophy_case_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un trofeo
+ *        calcistico assegnato ad una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_trophy_case_refuse
+BEFORE UPDATE ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_ad_team_trophy_case
+ *
+ * DESC : Trigger che si attiverà dopo l'aggiornamento di un trofeo
+ *        calcistico assegnato ad una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_ad_team_trophy_case
+AFTER DELETE ON fp_team_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_ad_team_trophy_case();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER TROPHY CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_player_trophy_case
  *
- * DESC : Trigger per l'inserimento di un nuovo trofeo calcistico assegnato
- *        ad un calciatore
+ * DESC : Trigger che si attiverà prima dell'assegnazione di un trofeo
+ *        calcistico ad un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_trophy_case
 BEFORE INSERT ON fp_player_trophy_case
@@ -5197,12 +8340,68 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_player_trophy_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_trophy_case_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un trofeo
+ *        calcistico assegnato ad un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_trophy_case_refuse
+BEFORE UPDATE ON fp_player_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bd_player_trophy_case
+ *
+ * DESC : Trigger che si attiverà dopo l'eliminazione di un trofeo
+ *        calcistico assegnato ad un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bd_player_trophy_case
+BEFORE DELETE ON fp_player_trophy_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bd_player_trophy_case();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PRIZE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_prize_referenced
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
+ *        tipo di un premio calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_prize_referenced
+BEFORE UPDATE ON fp_prize
+FOR EACH ROW
+WHEN
+(
+	OLD.role IS DISTINCT FROM NEW.role
+	OR
+	OLD.type IS DISTINCT FROM NEW.type
+)
+EXECUTE FUNCTION tf_bu_if_referenced_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TEAM PRIZE CASE
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_team_prize_case
  *
- * DESC : Trigger per l'inserimento di un nuovo premio calcistico assegnato
+ * DESC : Trigger che si attiverà prima dell'assegnazione di premio calcistico
  *        ad una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team_prize_case
@@ -5211,12 +8410,62 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_team_prize_case();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_team_prize_case_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del premio
+ *        calcistico assegnato ad una squadra di calcio
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_team_prize_case_refuse
+BEFORE UPDATE ON fp_team_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER PRIZE CASE
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player_prize_case
+ *
+ * DESC : Trigger che si attiverà prima dell'assegnazione di premio calcistico
+ *        ad un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player_prize_case
+BEFORE INSERT ON fp_player_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_player_prize_case();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_prize_case_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del premio
+ *        calcistico assegnato ad un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_prize_case_refuse
+BEFORE UPDATE ON fp_player_prize_case
+FOR EACH ROW
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAY
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_play
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'inserimento di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_play
 BEFORE INSERT ON fp_play
@@ -5224,12 +8473,59 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'edizione della
+ *        competizione calcistica o della squadra di calcio o del calciatore
+ *        associato ad un gioco
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play_refuse
+BEFORE UPDATE ON fp_play
+FOR EACH ROW
+WHEN
+(
+	OLD.start_year IS DISTINCT FROM NEW.start_year
+	OR
+	OLD.competition_id IS DISTINCT FROM NEW.competition_id
+	OR
+	OLD.team_id IS DISTINCT FROM NEW.team_id
+	OR
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play_match
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del numero di
+ *        partite associate ad un gioco
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play_match
+BEFORE UPDATE ON fp_play
+FOR EACH ROW
+WHEN
+(
+	OLD.match IS DISTINCT FROM NEW.match
+)
+EXECUTE FUNCTION tf_bu_play_match();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAY STATISTIC
+ ******************************************************************************/
 
 /*******************************************************************************
  * TYPE : TRIGGER
  * NAME : tg_bi_play_statistic
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'insermento di un'associazione
+ *        tra un gioco ed una statistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_play_statistic
 BEFORE INSERT ON fp_play_statistic
@@ -5237,3 +8533,74 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bi_play_statistic();
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_play_statistic_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
+ *        o della statistica dell'associazione tra un gioco ed una statistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_play_statistic_refuse
+BEFORE UPDATE ON fp_play_statistic
+FOR EACH ROW
+WHEN
+(
+	OLD.play_id IS DISTINCT FROM NEW.play_id
+	OR
+	OLD.statistic_id IS DISTINCT FROM NEW.statistic_id
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * PLAYER RETIRED
+ ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_player_retired
+ *
+ * DESC : Trigger che si attiverà prima dell'inserimento di un calciatore
+ *        ritirato
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_player_retired
+BEFORE INSERT ON fp_player_retired
+FOR EACH ROW
+EXECUTE FUNCTION tf_bi_player_retired();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_retired_refuse
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore di
+ *        riferimento di un calciatore ritirato
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_retired_refuse
+BEFORE UPDATE ON fp_player_retired
+FOR EACH ROW
+WHEN
+(
+	OLD.player_id IS DISTINCT FROM NEW.player_id
+)
+EXECUTE FUNCTION tf_bu_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_player_retired_date
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della data di
+ *        ritiro di un calciatore ritirato
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_player_retired_date
+BEFORE UPDATE ON fp_player_retired
+FOR EACH ROW
+WHEN
+(
+	OLD.retired_date IS DISTINCT FROM NEW.retired_date
+)
+EXECUTE FUNCTION tf_bu_player_retired_date();
+--------------------------------------------------------------------------------

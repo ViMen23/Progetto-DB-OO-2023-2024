@@ -188,7 +188,7 @@ WHEN
 (
 	OLD.type IS DISTINCT FROM NEW.type
 	OR
-	OLD.type_team IS DISTINCT FROM NEW.type_team
+	OLD.team_type IS DISTINCT FROM NEW.team_type
 	OR
 	OLD.confederation_id IS DISTINCT FROM NEW.confederation_id
 )
@@ -561,10 +561,6 @@ EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
 FOR EACH ROW
-WHEN
-(
-	'GOALKEEPER' = NEW.type
-)
 EXECUTE FUNCTION tf_bi_player_tag();
 --------------------------------------------------------------------------------
 
@@ -703,10 +699,6 @@ EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 CREATE OR REPLACE TRIGGER tg_bi_player_attribute
 BEFORE INSERT ON fp_player_attribute
 FOR EACH ROW
-WHEN
-(
-	'GOALKEEPER' = NEW.type
-)
 EXECUTE FUNCTION tf_bi_player_attribute();
 --------------------------------------------------------------------------------
 
@@ -747,7 +739,7 @@ BEFORE UPDATE ON fp_statistic
 FOR EACH ROW
 WHEN
 (
-	OLD.role IS DISTINCT FROM NEW.role
+	OLD.goalkeeper IS DISTINCT FROM NEW.goalkeeper
 )
 EXECUTE FUNCTION tf_bu_if_referenced_refuse();
 --------------------------------------------------------------------------------

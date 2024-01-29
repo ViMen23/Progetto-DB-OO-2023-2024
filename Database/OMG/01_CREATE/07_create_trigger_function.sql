@@ -524,7 +524,7 @@ BEGIN
 
 	IF (has_militancy(NEW.id)) THEN
 
-		born_year = extract year from NEW.dob;
+		born_year = extract(year from NEW.dob);
 
 		IF (min_militancy_year(NEW.id) - born_year < min_age()) THEN
 			RETURN OLD;
@@ -623,15 +623,15 @@ BEGIN
 	-- se il calciatore ha perso il ruolo di portiere
 	IF ((OLD.role LIKE '%GK%') AND (NEW.role NOT LIKE '%GK%')) THEN
 
-		delete_gk_attribute(NEW.id);
-		delete_gk_statistic(NEW.id);
-		delete_gk_tag(NEW.id);
+		PERFORM delete_gk_attribute(NEW.id);
+		PERFORM delete_gk_statistic(NEW.id);
+		PERFORM delete_gk_tag(NEW.id);
 
 	END IF;
 	
 
-	delete_not_role_trophy(NEW.id, NEW.role);
-	delete_not_role_prize(NEW.id, NEW.role);
+	PERFORM delete_not_role_trophy(NEW.id, NEW.role);
+	PERFORM delete_not_role_prize(NEW.id, NEW.role);
 
 END;
 $$
@@ -737,7 +737,7 @@ BEGIN
 
 		
 		IF (OLD.country_id = id_country) THEN
-			delete_national_militancy(OLD.player_id);
+			PERFORM delete_national_militancy(OLD.player_id);
 		END IF;
 
 	END IF; 
@@ -779,7 +779,8 @@ BEGIN
 	-- il calciatore deve avere un ruolo
 	IF (role_player IS NOT NULL) THEN
 
-		valid_year_range(NEW.player_id, start_valid, end_valid);
+		SELECT * FROM valid_year_range(NEW.player_id)
+		INTO start_valid, end_valid;
 
 		-- la militanza deve essere in un anno valido
 		IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
@@ -838,7 +839,7 @@ AS
 $$
 BEGIN
 
-	assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+	PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	
 END;
 $$
@@ -863,10 +864,10 @@ BEGIN
 
 	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
 	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
-		assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
 	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
-		remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	END IF;
 	
 END;
@@ -891,20 +892,30 @@ $$
 DECLARE
 
 	role_player	text;
+	role_tag	text;
 
 BEGIN
 
-	role_player = get_column('fp_player', 'role', NEW.player_id);
+	role_tag = get_column('fp_tag', 'role', NEW.tag_id);
+	
+	
+	IF ('GOALKEEPER' = role_tag) THEN
+	
+		role_player = get_column('fp_player', 'role', NEW.player_id);
 
-
-	IF (role_player LIKE '%GK%') THEN
-		RETURN NEW;
+		IF (role_player LIKE '%GK%') THEN
+			RETURN NEW;
+		ELSE
+			RETURN NULL;
+		END IF;
+		
 	END IF;
 	
 	
-	RETURN NULL;
+	RETURN NEW;
 	
 END;
+
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
@@ -1038,17 +1049,27 @@ $$
 DECLARE
 
 	role_player	text;
+	role_attr	text;
 
 BEGIN
 
-	role_player = get_column('fp_player', 'role', NEW.player_id);
+	role_attr = get_column('fp_attribute', 'role', NEW.attribute_id);
+	
+	
+	IF ('GOALKEEPER' = role_attr) THEN
+	
+		role_player = get_column('fp_player', 'role', NEW.player_id);
 
-	IF (role_player LIKE '%GK%') THEN
-		RETURN NEW;
+		IF (role_player LIKE '%GK%') THEN
+			RETURN NEW;
+		ELSE
+			RETURN NULL;
+		END IF;
+		
 	END IF;
 	
 	
-	RETURN NULL;
+	RETURN NEW;
 	
 END;
 $$
@@ -1325,6 +1346,7 @@ DECLARE
 
 	start_valid	integer;
 	end_valid	integer;
+	role_player	text;
 
 BEGIN
 
@@ -1332,7 +1354,8 @@ BEGIN
 	
 	IF ('PLAYER' = type_prize) THEN
 
-		valid_year_range(NEW.player_id, start_valid, end_valid);
+		SELECT * FROM valid_year_range(NEW.player_id)
+		INTO start_valid, end_valid;
 	
 		-- il premio deve essere assegnato in un anno valido
 		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
@@ -1539,7 +1562,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che il giocatore ritirato che si vuole
  *        inserire sia valido
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tg_bi_player_retired
+CREATE OR REPLACE FUNCTION tf_bi_player_retired
 (
 )
 RETURNS trigger
@@ -1564,7 +1587,7 @@ BEGIN
 
 	IF (has_militancy(NEW.id)) THEN
 
-		retired_year = extract year from NEW.retired_date;
+		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.id) >= retired_year) THEN
 			RETURN NULL;
@@ -1588,7 +1611,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che l'aggiornamento della data di ritiro per
  *        il giocatore ritirato sia valido
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tg_bu_player_retired_date
+CREATE OR REPLACE FUNCTION tf_bu_player_retired_date
 (
 )
 RETURNS trigger
@@ -1613,7 +1636,7 @@ BEGIN
 
 	IF (has_militancy(NEW.id)) THEN
 
-		retired_year = extract year from NEW.retired_date;
+		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.id) >= retired_year) THEN
 			RETURN OLD;

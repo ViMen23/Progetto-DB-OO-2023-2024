@@ -184,12 +184,12 @@ LANGUAGE plpgsql;
  * IN      : integer
  * INOUT   : void
  * OUT     : integer, integer
- * RETURNS : boolean
+ * RETURNS : record
  *
  * DESC : Funzione che calcola e restituisce il range di anni validi per un
  *        calciatore.
  *
- *        NOTA: per anno valido si intende un anno nel quale un calciatore
+ *        NOTA: Per anno valido si intende un anno nel quale un calciatore
  *              può militare in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION valid_year_range
@@ -198,7 +198,7 @@ CREATE OR REPLACE FUNCTION valid_year_range
 	OUT	s_valid		integer,	-- inizio range anni validi
 	OUT	e_valid		integer		-- fine range anni validi
 )
-RETURNS boolean
+RETURNS record
 AS
 $$
 DECLARE
@@ -211,7 +211,7 @@ DECLARE
 BEGIN
 
 	tmp = get_column('fp_player', 'dob', id_player);
-	year_dob = extract year from CAST(tmp AS date);
+	year_dob = extract(year from CAST(tmp AS date));
 
 	s_valid = year_dob + min_age();
 
@@ -219,7 +219,7 @@ BEGIN
 	IF (is_retired(id_player)) THEN
 
 		tmp = get_column('fp_player_retired', 'retired_date', id_player);
-		year_retired = extract year from CAST(tmp AS date);
+		year_retired = extract(year from CAST(tmp AS date));
 
 		e_valid = year_dob + year_retired - 1;
 
@@ -300,7 +300,7 @@ BEGIN
 		WHERE
 			player_id = id_player
 			AND
-			team_type = 'NATIONAL';
+			team_type = 'NATIONAL'
 	);
 	
 END;
@@ -1363,7 +1363,8 @@ BEGIN
 
 
 	IF (NOT have) THEN
-		RAISE NOTICE 'Competition (id = %) [%-%] does not have place', id_comp, s_year;
+		RAISE NOTICE 'Competition (id = %) start year (%)'
+			'does not have place', id_comp, s_year;
 	END IF;
 
 	RETURN have;
@@ -1421,7 +1422,7 @@ BEGIN
 
 		role_pos = get_column('fp_position', 'role', pos_player);
 
-		IF (0 = position(role_pos, role_player)) THEN
+		IF (0 = position(role_pos IN role_player)) THEN
 			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
 			RETURN TRUE;
 		END IF;
@@ -1825,7 +1826,9 @@ BEGIN
 									
 		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
-			RAISE NOTICE 'Team (id = %) cannot partecipate to competition (id = %) [%-%]', id_team, id_comp, s_year;
+			RAISE NOTICE 'Team (id = %) cannot partecipate'
+				'to competition (id = %) start year (%)',
+				id_team, id_comp, s_year;
 			RETURN can;
 		END IF;
 	
@@ -1920,13 +1923,13 @@ DECLARE
 
 BEGIN
 
-	year_birth_date = extract year from birth_date;
-	year_retired_date = extract year from retired_date;
+	year_birth_date = extract(year from birth_date);
+	year_retired_date = extract(year from retired_date);
 
 
 	IF ((year_retired_date - year_birth_date) BETWEEN min_age() AND max_age()) THEN
 		RETURN TRUE;
-	END;
+	END IF;
 
 
 	RETURN FALSE;
@@ -2172,7 +2175,7 @@ BEGIN
 		WHERE
 			player_id = id_player
 		ORDER BY
-			role;
+			role
 
 	LOOP
 
