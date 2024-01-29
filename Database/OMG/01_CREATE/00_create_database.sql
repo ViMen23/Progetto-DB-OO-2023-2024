@@ -18,7 +18,8 @@
  * NAME : fpdb
  *
  * DESC : Il database per il progetto.
- *        fpdb sta per football player database
+ *
+ *        NOTA: fpdb sta per football player database
  ******************************************************************************/
 CREATE DATABASE fpdb;
 --------------------------------------------------------------------------------

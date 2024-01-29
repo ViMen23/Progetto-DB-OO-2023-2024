@@ -14,6 +14,7 @@
  * FUNCTION POST SCHEMA                                              
  ******************************************************************************/
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : min_age
@@ -23,7 +24,10 @@
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'eta minima per un calciatore.
+ *
+ *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
+ *              (Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION min_age
 (
@@ -46,6 +50,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : max_age
@@ -55,7 +60,10 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'eta massima per un calciatore.
+ *
+ *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
+ *              (Wikipidia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_age
 (
@@ -78,6 +86,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : min_militancy_year
@@ -87,7 +96,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'anno di inizio della prima militanza
+ *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION min_militancy_year
 (
@@ -121,6 +131,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : max_militancy_year
@@ -130,7 +141,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'anno di inizio dell'ultima militanza
+ *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_militancy_year
 (
@@ -164,6 +176,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : valid_year_range
@@ -173,13 +186,17 @@ LANGUAGE plpgsql;
  * OUT     : integer, integer
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che calcola e restituisce il range di anni validi per un
+ *        calciatore.
+ *
+ *        NOTA: per anno valido si intende un anno nel quale un calciatore
+ *              puo' militare in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION valid_year_range
 (
 	IN	id_player	integer,
-	OUT	s_valid		integer,
-	OUT	e_valid		integer
+	OUT	s_valid		integer,	-- inizio range anni validi
+	OUT	e_valid		integer		-- fine range anni validi
 )
 RETURNS boolean
 AS
@@ -217,6 +234,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_retired
@@ -226,7 +244,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore si sia ritirato o meno
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_retired
 (
@@ -252,6 +270,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_national
@@ -261,7 +280,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore ha mai giocato in nazionale
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_national
 (
@@ -289,6 +308,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : national_team
@@ -296,15 +316,16 @@ LANGUAGE plpgsql;
  * IN      : integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : boolean
+ * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce la squadra nazionale per la quale un
+ *        calciatore ha giocato
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION national_team
 (
 	IN	id_player	integer
 )
-RETURNS boolean
+RETURNS integer
 AS
 $$
 DECLARE
@@ -337,6 +358,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : has_militancy
@@ -346,7 +368,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore ha militanze in squadre du calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_militancy
 (
@@ -382,6 +404,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : gk_attributes
@@ -391,7 +414,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce gli attributi di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION gk_attributes
 (
@@ -414,6 +437,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : gk_tags
@@ -423,7 +447,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce i tag di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION gk_tags
 (
@@ -446,6 +470,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : gk_statistics
@@ -455,7 +480,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce le statistiche di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION gk_statistics
 (
@@ -488,7 +513,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce i giochi di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION player_play
 (
@@ -522,7 +547,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce i trofei individuali che non hanno un
+ *        ruolo compatibile con la combinazione di ruoli in input
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione e' associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION not_role_trophy
 (
@@ -560,7 +591,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : SETOF integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce i premi individuali che non hanno un
+ *        ruolo compatibile con la combinazione di ruoli in input
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione e' associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION not_role_prize
 (
@@ -588,6 +625,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : delete_gk_attribute
@@ -597,7 +635,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le associazioni ad attributi di tipo
+ *        portiere di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_gk_attribute
 (
@@ -626,6 +665,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : delete_gk_statistic
@@ -635,7 +675,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le associazioni a statistiche di tipo
+ *        portiere di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_gk_statistic
 (
@@ -664,6 +705,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : delete_gk_tag
@@ -673,7 +715,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le associazioni a tag di tipo
+ *        portiere di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_gk_tag
 (
@@ -702,6 +745,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : delete_not_role_prize
@@ -711,7 +755,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutti i premi individuali non compatibili
+ *        con i ruoli di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_not_role_prize
 (
@@ -728,12 +773,19 @@ BEGIN
 	WHERE
 		player_id = NEW.id
 		AND
-		prize_id IN (SELECT * FROM not_role_prize(NEW.role));
+		prize_id IN
+					(
+						SELECT
+							*
+						FROM
+							not_role_prize(role_player)
+					);
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -744,7 +796,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutti i trofei individuali non compatibili
+ *        con i ruoli di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_not_role_trophy
 (
@@ -761,12 +814,19 @@ BEGIN
 	WHERE
 		player_id = NEW.id
 		AND
-		trophy_id IN (SELECT * FROM not_role_trophy(NEW.role));
+		trophy_id IN
+					(
+						SELECT
+							*
+						FROM
+							not_role_trophy(role_player)
+					);
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -777,7 +837,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le militanze in una squadra
+ *        di tipo club di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_club_militancy
 (
@@ -800,6 +861,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : delete_national_militancy
@@ -809,7 +871,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le militanze in una squadra
+ *        di tipo nazionale di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_national_militancy
 (
@@ -842,12 +905,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un paese puo' essere contenuto in un altro
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_be_inside
 (
-	IN	id_in_country		integer,
-	IN	id_super_country	integer
+	IN	id_in_country		integer,	-- paese contenuto
+	IN	id_super_country	integer		-- paese contenente
 )
 RETURNS boolean
 AS
@@ -881,7 +944,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_nation
@@ -891,7 +953,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se l'id di un paese in input è di una nazione
+ * DESC : Funzione che valuta se un paese è di una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
@@ -922,7 +984,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : corr_years_comp_ed
@@ -932,13 +993,21 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se l'anno di inizio e fine di un'edizione di
+ *        una competizione calcistica sono corretti.
+ *
+ *        NOTA: abbiamo effettuato una semplificazione che e' basata
+ *              sull'analisi di numerose competizioni (Wikipidia, Transermarkt).
+ *              Un campionato e' sempre a cavallo di due anni.
+ *              Una supercoppa sempre svolta in un solo anno.
+ *              Un torneo per club a cavallo di due anni, un torneo per
+ *              nazionali sempre svolto in un solo anno.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_years_comp_ed
 (
 	IN	id_comp	integer,
-	IN	s_year	smallint,
-	IN	e_year	smallint
+	IN	s_year	smallint,	-- anno inizio
+	IN	e_year	smallint	-- anno fine
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -986,7 +1055,6 @@ BEGIN
 
 
 	RAISE NOTICE 'Competition (id =  %) cannot have edition start in % and end in %', id_comp, s_year, e_year;
-
 	RETURN FALSE;
 	
 END;
@@ -1032,6 +1100,7 @@ BEGIN
 	WHERE
 		competition_id = id_comp;
 
+
 	IF (NOT have) THEN
 		RAISE NOTICE 'Competition (id =  %) does not have editions', id_comp;
 	END IF;
@@ -1042,9 +1111,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
-
 
 
 /*******************************************************************************
@@ -1116,7 +1182,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : belong_to
@@ -1154,7 +1219,7 @@ DECLARE
 	
 BEGIN
 
-	-- prendo il tipo del paese associato alla confederazione memebro
+	-- prendo il tipo del paese associato alla confederazione membro
 	tmp = get_column('fp_confederation', 'id_country', id_conf);
 	id_country = CAST(tmp AS integer);					
 	type_conf = get_column('fp_country', 'type', id_country);
@@ -1212,12 +1277,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il numero di team che possono partecipare
+ *        ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tot_team_comp_ed
 (
 	IN	id_comp	integer,
-	IN	s_year	smallint
+	IN	s_year	smallint	-- anno inizio
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -1241,6 +1307,7 @@ BEGIN
 		competition_id = id_comp
 		AND
 		start_year = s_year;
+
 
 	RETURN tot_team;
 
@@ -1294,6 +1361,7 @@ BEGIN
 		AND
 		start_year = s_year;
 
+
 	IF (NOT have) THEN
 		RAISE NOTICE 'Competition (id = %) [%-%] does not have place', id_comp, s_year;
 	END IF;
@@ -1306,7 +1374,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : role_fit_positions
@@ -1316,7 +1383,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore ha posizioni compatibili con
+ *        una combinazione di ruoli
+ *
+ *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
+ *              che una posizione e' associabile ad una statistica
+ *              se e soltanto se il ruolo della posizione e' una sottostringa
+ *              del tipo della statistica in questione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION role_fit_positions
 (
@@ -1348,14 +1421,10 @@ BEGIN
 
 		role_pos = get_column('fp_position', 'role', pos_player);
 
-
 		IF (0 = position(role_pos, role_player)) THEN
-		
 			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
 			RETURN TRUE;
-		
 		END IF;
-
 
 	END LOOP;
 
@@ -1368,10 +1437,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : militancy_in
@@ -1381,7 +1446,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se un calciatore ha una militanza in una squadra
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION militancy_in
 (
@@ -1407,7 +1472,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -1459,7 +1523,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : team_fit_comp
@@ -1471,6 +1534,10 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che valuta se una squadra di calcio è compatibile con
  *        una competizione calcistica
+ *
+ *        NOTA: una squadra di calcio e' compatibile con una competizione
+ *              calcistica se e' dello stesso tipo del tipo di squadre che
+ *              possono partecipare alla suddetta competizione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_fit_comp
 (
@@ -1486,29 +1553,22 @@ DECLARE
 	type_team		text;
 	type_team_comp	text;
 
-	compatibile		boolean;
-
 BEGIN
-	
-	compatibile = FALSE;
 
 	type_team = get_column('fp_team', 'type', id_team);
 	type_team_comp = get_column('fp_competition', 'team_type', id_comp);
 	
 	IF (type_team = type_team_comp) THEN
-		compatibile = TRUE;
+		RETURN TRUE;
 	ELSE
 		RAISE NOTICE 'Team (id = %) is not compatible to competition (id = %)', id_team, id_comp;
+		RETURN FALSE;
 	END IF;
-
-	RETURN compatibile;
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
 
 
 /*******************************************************************************
@@ -1600,7 +1660,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : similar_comp
@@ -1614,6 +1673,7 @@ LANGUAGE plpgsql;
  *        simili a quella in input.
  *
  *        NOTA: Per simile si intende una competizione calcistica
+ *              appartenente alla stessa confederazione calcistica,
  *              dello stesso tipo e alla quale possono partecipare
  *              lo stesso tipo di squadre di calcio
  ******************************************************************************/
@@ -1660,7 +1720,11 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (integer, integer)
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'id di tutte le edizione di competizioni
+ *        calcistiche simili a quella in input.
+ *
+ *        NOTA: Per simile si intende una competizione calcistica simile
+ *              che ha inizio nello stesso anno 
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION similar_comp_ed
 (
@@ -1710,13 +1774,18 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una squadra di calcio puo' partecipare ad
+ *        un'edizione di una competizione calcistica.
+ *
+ *        NOTA: una squadra di calcio per ogni confederazione calcistica
+ *              cui appartiene puo' partecipare solo ad un tipo di competizione
+ *              per ogni stagione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_take_part
 (
 	IN	id_team	integer,
 	IN	id_comp	integer,
-	IN	s_year	smallint
+	IN	s_year	smallint	-- anno inizio
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -1732,6 +1801,7 @@ BEGIN
 	
 	can = FALSE;
 
+	-- per ogni edizione simile di competizioni calcistiche
 	FOR rec_comp_ed
 	IN
 		SELECT
@@ -1753,7 +1823,7 @@ BEGIN
 			AND
 			start_year = rec_comp_ed.start_year;
 									
-
+		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
 			RAISE NOTICE 'Team (id = %) cannot partecipate to competition (id = %) [%-%]', id_team, id_comp, s_year;
 			RETURN can;
@@ -1808,6 +1878,7 @@ BEGIN
 		AND
 		country_id = id_country;
 	
+
 	IF (NOT have) THEN
 		RAISE NOTICE 'Player (id = %) has not nationatity country (id = %)', id_player, id_country;
 	END IF;
@@ -1828,7 +1899,10 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se la data di nascita e di ritiro di un
+ *        calciatore rispettino i limiti di eta' da noi definiti.
+ *
+ *        NOTA: fare riferimento alle funzioni min_age e max_age
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION corr_age_limit
 (
@@ -1851,9 +1925,7 @@ BEGIN
 
 
 	IF ((year_retired_date - year_birth_date) BETWEEN min_age() AND max_age()) THEN
-	
 		RETURN TRUE;
-	
 	END;
 
 
@@ -1869,19 +1941,20 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : free_militancy
  *
- * IN      : integer, integer, en_team, smallint
+ * IN      : integer, en_team, smallint, en_season
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se in un certo anno un calciatore e' disponibile
+ *        per una nuova militanza di un certo tipo di squadra e di un certo tipo
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION free_militancy
 (
 	IN	id_player	integer,
-	IN	id_team		integer,
 	IN	type_team	en_team,
-	IN	s_year		smallint
+	IN	s_year		smallint,
+	IN	type_year	en_season
 )
 RETURNS boolean
 AS
@@ -1894,24 +1967,60 @@ BEGIN
 
 	free = FALSE;
 
-	SELECT
-		count(*) = 0
-	INTO
-		free
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player
-		AND
-		team_id = id_team
-		AND
-		team_type = type_team
-		AND
-		start_year = s_year;
+	IF ('I PART' = type_year) THEN
+	
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year
+			AND
+			type IN ('I PART', 'FULL');
+	
+	ELSIF ('II PART' = type_year) THEN
+	
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year
+			AND
+			type IN ('II PART', 'FULL');
+
+	ELSIF ('FULL' = type_year) THEN
+
+		SELECT
+			count(*) = 0
+		INTO
+			free
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = type_team
+			AND
+			start_year = s_year;
+		
+	END IF;
 
 
 	IF (NOT free) THEN
-		RAISE NOTICE 'Player (id = %) has already a militancy (type = %) starting in year %', id_player, type_team, s_year
+		RAISE NOTICE 'Player (id = %) cannot have a militancy (type = %) starting in year % of type %', id_player, type_team, s_year, type;
 	END IF;
 
 	RETURN free;
@@ -1930,7 +2039,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che rimuove tutti i trofei assegnati ad un calciatore
+ *        nella sua militanza in una squadra in un certo anno
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION remove_all_trophy_season
 (
@@ -1967,7 +2077,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che assegna ad un calciatore tutti i trofei vinti da una
+ *        squadra in un certo anno
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION assign_all_trophy_season
 (
@@ -2032,7 +2143,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce la combinazione di ruoli di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_role
 (
@@ -2050,6 +2161,8 @@ BEGIN
 
 	new_role_player = '';
 
+	-- per ogni ruolo associato alle posizioni del calciatore
+	-- in ordine di enum
 	FOR role_player
 	IN
 		SELECT DISTINCT
@@ -2063,6 +2176,7 @@ BEGIN
 
 	LOOP
 
+		-- aggiungi alla combinazione di ruoli del giocatore
 		new_role_player = new_role_player || role_player;
 		new_role_player = new_role_player || '-';
 
@@ -2088,7 +2202,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il numero di posizioni associate ad un
+ *        calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION position_number
 (
@@ -2124,7 +2239,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una squadra di calcio ha vinto un trofeo
+ *        associato ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_has_trophy
 (
@@ -2170,7 +2286,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il tipo di milianza dato in input
+ *        un calciatore, una squadra di calcio e un anno di inzio militanza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_type_militancy
 (

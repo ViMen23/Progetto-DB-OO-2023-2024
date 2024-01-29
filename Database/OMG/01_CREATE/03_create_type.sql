@@ -15,29 +15,16 @@
  ******************************************************************************/
 
 
-
-
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : en_feature
+ * NAME : en_award
  *
- * DESC : Enum delle possibili tipologie di attributo per un calciatore
+ * DESC : Enum delle possibili tipologie di trofeo e premio calcistico
  ******************************************************************************/
-CREATE TYPE en_feature AS ENUM
+CREATE TYPE en_award AS ENUM
 (
-	'GOALKEEPER',
-	'KEY ATTRIBUTE',
-	'MEDICAL',
-	'MENTAL',
-	'PHYSICAL',
-	'SET PIECE',
-	'TACTICAL - ATTACKING',
-	'TACTICAL - DEFENDING',
-	'TEAM WORK',
-	'TECHNICAL - ATTACKING',
-	'TECHNICAL - DEFENDING',
-	'TECHNICAL - IN POSSESSION',
-	'TECHNICAL - OUT POSSESSION'
+	'PLAYER',
+	'TEAM'
 );
 --------------------------------------------------------------------------------
 
@@ -68,6 +55,31 @@ CREATE TYPE en_country AS ENUM
 	'NATION',
 	'CONTINENT',
 	'WORLD'
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
+ * NAME : en_feature
+ *
+ * DESC : Enum delle possibili tipologie di attributo per un calciatore
+ ******************************************************************************/
+CREATE TYPE en_feature AS ENUM
+(
+	'GOALKEEPER',
+	'KEY ATTRIBUTE',
+	'MEDICAL',
+	'MENTAL',
+	'PHYSICAL',
+	'SET PIECE',
+	'TACTICAL - ATTACKING',
+	'TACTICAL - DEFENDING',
+	'TEAM WORK',
+	'TECHNICAL - ATTACKING',
+	'TECHNICAL - DEFENDING',
+	'TECHNICAL - IN POSSESSION',
+	'TECHNICAL - OUT POSSESSION'
 );
 --------------------------------------------------------------------------------
 
@@ -135,13 +147,13 @@ CREATE TYPE en_role_mix AS ENUM
  * TYPE : ENUM TYPE
  * NAME : en_season
  *
- * DESC : TODO
+ * DESC : Enum delle possibili tipologie di militanza riferite ad una stagione
  ******************************************************************************/
 CREATE TYPE en_season AS ENUM
 (
-	'I PART',
-	'II PART',
-	'FULL'
+	'I PART',	-- solo prima parte di stagione
+	'II PART',	-- solo seconda parte di stagione
+	'FULL'		-- tutta la stagione
 );
 --------------------------------------------------------------------------------
 
@@ -156,20 +168,5 @@ CREATE TYPE en_team AS ENUM
 (
 	'CLUB',
 	'NATIONAL'
-);
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
- * NAME : en_award
- *
- * DESC : Enum delle possibili tipologie di trofeo e premio calcistico
- ******************************************************************************/
-CREATE TYPE en_award AS ENUM
-(
-	'PLAYER',
-	'TEAM'
 );
 --------------------------------------------------------------------------------

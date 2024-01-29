@@ -32,7 +32,11 @@ CREATE SCHEMA public;
  * TYPE : EXTENSION
  * NAME : hstore
  *
- * DESC : TODO                          
+ * DESC : Estensione necessaria per rendere piu' comoda l'implementazione
+ *        di alcune funzioni e trigger.
+ *
+ *        NOTA: per maggiori informazioni consultare la documentazione ufficiale
+ *              di Postgresql                      
  ******************************************************************************/
 CREATE EXTENSION hstore;
 --------------------------------------------------------------------------------

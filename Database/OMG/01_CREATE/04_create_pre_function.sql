@@ -2,12 +2,11 @@
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : competitionUTER SCIENCE                                            
+ * FIELD        : COMPUTER SCIENCE                                            
  * CLASS        : DATA BASES I                                                
  * TEACHER      : SILVIO BARRA                                                
  * YEAR         : 2023-2024                                                   
  ******************************************************************************/
-
 
 
 
@@ -61,9 +60,11 @@ BEGIN
 		AND
 		table_name = name_table;
 	
+
 	IF (NOT existence) THEN
 		RAISE NOTICE 'Table % not exists', name_table;
 	END IF;
+
 
 	RETURN existence;
 	
@@ -71,7 +72,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -122,9 +122,11 @@ BEGIN
 		AND
 		column_name = name_column;
 
+
 	IF (NOT existence) THEN
 		RAISE NOTICE 'Column % not exists in table %', name_column, name_table;
 	END IF;
+
 
 	RETURN existence;
 
@@ -132,7 +134,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -183,13 +184,13 @@ BEGIN
 		AND
 		column_name = name_column;
 
+
 	RETURN type_column;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -235,13 +236,13 @@ LANGUAGE plpgsql;
  *        NOTA: Importante osservare che tale funzione sfrutta la buona prassi,
  *              che abbiamo osservato quando possibile e necessario,
  *              di assegnare una chiave surrogata di tipo integer alle tabelle
- *              e di denominarla id. 
+ *              e di denominarla id
  *
  *        NOTA: Assicurarsi che i valori in input permettano di definire
  *              in modo univoco una riga di una tabella.
  *              Non sono stati effettuati eccessivi, e dovuti, controlli
  *              sull'input in quanto si tratta di una funzione nata con lo
- *              scopo di semplificare l'inserimento dei dati nel database.
+ *              scopo di semplificare l'inserimento dei dati nel database
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_id
 (
@@ -279,7 +280,11 @@ BEGIN
 	IN
 		-- suddivido la stringa in input in base alla posizione del separatore
 		-- per sfruttarne la formattazione
-		SELECT string_to_table(input_string, separator)
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
 	LOOP
 
 		-- se si tratta del nome della tabella
@@ -375,13 +380,13 @@ BEGIN
 	
 	EXECUTE to_execute INTO id_to_find;
 	
+
 	RETURN id_to_find;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -398,6 +403,9 @@ LANGUAGE plpgsql;
  *        della tabella, il nome della colonna in questione e l'id che
  *        identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: e' possibile utilizzare tale funzione solo su tabelle che
+ *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_column
 (
@@ -469,13 +477,13 @@ BEGIN
 	
 	CLOSE cur_to_execute;
 
+
 	RETURN value_column;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -490,6 +498,9 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
  *        input il nome della tabella, e l'id che identifica la riga.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: e' possibile utilizzare tale funzione solo su tabelle che
+ *              hanno una colonna chiamata id
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_record
 (
@@ -537,14 +548,13 @@ BEGIN
 
 	EXECUTE to_execute INTO rec_table;
 
+
 	RETURN rec_table;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
 
 
 /*******************************************************************************
@@ -556,7 +566,27 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, integer)
  *
- * DESC : TODO
+ * DESC : Funzione che dato il nome di una tabella restituisce tutte le colonne
+ *        delle altre tabelle che fanno riferimento alla tabella in input,
+ *        ordinate per nome del constraint e per odine nel costraint decrescente
+ *        in modo tale che ogni volta che si raggiunge il valore di 1 si passi
+ *        ad un constraint differente, sotto forma di nuova tabella.
+ *        Fa uso del catalogo di sistema di Postgresql.
+ *
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public"
+ *
+ *        NOTA: e' posssibile implementare tale funzione in modo piu' complesso
+ *              in termini generali ma si e' scelto di sfruttare la "disciplina"
+ *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
+ *              (e non solo).
+ *              Nello specifico ogni constraint di tipo foreign key e' stato
+ *              formalizzato nel seguente modo:
+ *
+ *              nomeTabellaCheRiferisce_fk_nomeTabellaDaRiferire
+ *
+ *              E' pertanto stato possibile implementare tale funzione in modo
+ *              rapido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION all_references
 (
@@ -564,12 +594,12 @@ CREATE OR REPLACE FUNCTION all_references
 )
 RETURNS TABLE
 (
-	constr			text,
-	table_to_ref	text,
-	col_to_ref		text,
-	table_ref		text,
-	col_ref			text,
-	col_ord			integer
+	constr			text,	-- nome del constraint
+	table_to_ref	text,	-- tabella referenziata
+	col_to_ref		text,	-- colonna della tabella referenziata
+	table_ref		text,	-- tabella che referenzia
+	col_ref			text,	-- colonna della tabella che referenzia
+	col_ord			integer	-- ordine della colonna della tabella che referenzia
 )
 RETURNS NULL ON NULL INPUT
 AS
@@ -614,9 +644,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : is_referenced
@@ -626,7 +653,25 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che valuta se una riga di una tabella e' referenziata.
+ *        Prende in input un separatore ed una stringa formattata in modo
+ *        appropiato.
+ *
+ *        ES. separatore = '@'
+ *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
+ *
+ *        L'idea di fondo è quella di sfruttare la formattazione della
+ *        stringa in input per estrarre tutte le informazioni necessarie
+ *        alla costruzione della query desiderata mediante SQL dinamico
+ *        in modo essenzialmente analogo a quello che viene fatto nella
+ *        funzione "get_id".
+ *
+ *        NOTA: Assicurarsi che i valori in input permettano di definire
+ *              in modo univoco una riga di una tabella.
+ *              Non sono stati effettuati eccessivi, e dovuti, controlli
+ *              sull'input in quanto si tratta di una funzione nata con lo
+ *              scopo di semplificare diversi trigger e pertanto l'input
+ *              sara' generato automaticamente e sara' corretto.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_referenced
 (
@@ -655,6 +700,9 @@ DECLARE
 	
 BEGIN
 
+	-- come prima cosa e' necessario costruire la condizione del where
+	-- che andra' a completare la query
+
 	where_cond = '';
 	name_constr = '';
 	
@@ -662,9 +710,16 @@ BEGIN
 	
 	FOR row_table
 	IN
-		SELECT string_to_table(in_string, separator)
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(in_string, separator)
+
 	LOOP
 		
+		-- se si tratta del nome della tabella
 		IF (0 = counter) THEN
 
 			name_table = row_table.string_to_table;
@@ -673,8 +728,10 @@ BEGIN
 				RETURN NULL;
 			END IF;
 			
+			-- comincio a costruire la condizione del where 
 			where_cond = where_cond || 'WHERE ';
 			
+		-- se si tratta del nome di una colonna
 		ELSIF (1 = (counter % 2)) THEN
 		
 			name_column = row_table.string_to_table;
@@ -685,18 +742,19 @@ BEGIN
 			
 			type_column = get_type_column(name_table, name_column);
 			
+			-- aggiungo alla condizione del where il nome della colonna
 			where_cond = where_cond || name_table || '.' || name_column || ' = ';
-			
+
+		-- se si tratta del valore di una colonna	
 		ELSIF (0 = (counter % 2)) THEN
 		
 			value_column = row_table.string_to_table;
 			
 			IF (NOT type_column LIKE '%int%') THEN
-				 
-				value_column = quote_literal(value_column);
-				
+				value_column = quote_literal(value_column);	
 			END IF;
-				
+			
+			-- aggiungo alla condizione del where il valore della colonna
 			where_cond = where_cond || value_column || ' AND ';
 			
 		END IF;
@@ -709,16 +767,44 @@ BEGIN
 	
 	where_cond = where_cond || ';';
 
+	-- a questo punto avremo ottenuto la condizione del where
+	-- (seguendo l'esempio proposto):
+	-- 
+	-- WHERE
+	--      nome_tabella.nome_colonna1 = valore_colonna1
+	--      AND
+	--      nome_tabella.nome_colonna2 = valore_colonna2
+	--		AND
+	--		...
+	--		AND
+	--		nome_tabella.nome_colonnaN = valore_colonnaN;
+	--
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la condizione del where in modo appropriato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
+
+
+	-- a questo punto bisogna costruire la prima parte della query che andremo ad eseguire
 
 	counter = 0;
 
+	-- per ogni referenza alla riga della tabella in questione
 	FOR row_table
 	IN
-		SELECT * FROM all_references(name_table)
+		SELECT
+			*
+		FROM
+			all_references(name_table)
+
 	LOOP
 		
+		-- se si tratta di un nuovo contraint
 		IF (row_table.constr <> name_constr) THEN
 		
+			-- setto il constraint corrente
+			name_constr = row_table.constr;
+
+			-- costruisco la query da eseguire da zero
 			to_execute = '';
 			to_execute = to_execute || 'SELECT count(*)';
 			to_execute = to_execute || ' FROM ' || name_table;
@@ -728,6 +814,8 @@ BEGIN
 		
 		ELSE
 			
+			-- se e' un constraint che e' stato gia incontrato
+			-- la query da eseguire va estesa con le nuove colonne
 			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
 			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
 			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
@@ -735,31 +823,47 @@ BEGIN
 		END IF;
 		
 		
+		-- se si tratta dell'ultimo valore di una colonna della tabella che referenzia
+		-- e' il momento di collegare la query con la condizione del where 
 		IF (1 = row_table.col_ord) THEN
-			
+
+			-- prima di collegare la condizione del where la query sara':
+			--
+			-- SELECT
+			-- 		count(*)
+			-- FROM
+			-- 		nome_tabella
+			--		JOIN
+			--		nome_tabella_che_referenzia1
+			--		ON
+			--			nome_tabella.colonna_referenziata = nome_tabella_che_referenzia1.colonna_che_referenzia
+			-- ...
+			-- e cosi' via..
+			--
+			-- Per semplificare la visualizzazione è stato scelto di formattare
+			-- la condizione del where in modo appropriato, sebbene quella ottenuta con la funzione
+			-- sia su una sola riga di testo
+
 			to_execute = to_execute || ' ' || where_cond;
-			
-			RAISE NOTICE '%', to_execute;
 
 			EXECUTE to_execute INTO counter;
-			
+
+			-- se il contatore e' maggiore di 0 allora la riga in questione e' referenziata			
 			IF (counter > 0) THEN
-				
-				RETURN TRUE;
-				
+				RETURN TRUE;		
 			END IF;
 				
 		END IF;
 		
 	END LOOP;
 
+	-- se si arriva a questo punto significa che la riga in questione non e' referenziata
 	RETURN FALSE;
 	
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -771,7 +875,25 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Funzione che preso in input il nome di una tabella restituisce
+ *        la lista delle colonne che formano la primary key della tabella
+ *        in questione, sotto forma di nuova tabella.
+ *        Fa uso del catalogo di sistema di Postgresql.
+ *
+ *        NOTA: La funzione considera come database predefinito "fpdb" e
+ *              come schema predefinito "public"
+ *
+ *        NOTA: e' possibile implementare tale funzione in modo piu' complesso
+ *              in termini generali ma si e' scelto di sfruttare la "disciplina"
+ *              che abbiamo utilizzato nello scrivere i nomi dei vari constraint
+ *              (e non solo).
+ *              Nello specifico ogni constraint di tipo primary key e' stato
+ *              formalizzato nel seguente modo:
+ *
+ *              pk_nomeTabella
+ *
+ *              E' pertanto stato possibile implementare tale funzione in modo
+ *              rapido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION list_pk_columns
 (
@@ -815,7 +937,17 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che preso in input un separatore, il nome di una tabella e
+ *        un record di una riga della tabella in input costruisce mediante
+ *        SQL dinamico la stringa che poi potra' essere data in input alla
+ *        funzione "is_referenced".
+ *
+ *        NOTA: fa uso dell'estensione hstore
+ *
+ *        NOTA: non vengono effettuati eccessivi, e doverosi, controlli
+ *              sull'input in quanto e' una funzione nata con lo scopo
+ *              di semplificare la scrittura di diversi trigger e pertanto
+ *              l'input sara' automatico e sempre corretto
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION string_for_reference
 (
@@ -830,35 +962,42 @@ $$
 DECLARE
 
 	output_string	text;
+
 	name_column		text;
-	h_rec_table		hstore;
+
+	h_rec_table		hstore;	-- record di tipo hstore
 
 BEGIN
 
-	
 	IF (NOT table_exists(name_table)) THEN
 		RETURN NULL;
 	END IF;
 
+	-- converte il record della tabella
+	-- per poter essere utilizzato dall'estensione hstore
 	h_rec_table = hstore(rec_table);
 
+	-- inizia a costruire la stringa in output col nome della tabella
 	output_string = '';
 	output_string = output_string || name_table;
 
+	-- per ogni nome di colonna della tabella che forma una primary key
 	FOR name_column
 	IN
 		SELECT
 			*
 		FROM
 			list_pk_columns(name_table)
+
 	LOOP
 
+		-- costruisci la stringa con nome colonna separatore
+		-- e valore colonna (ottenuto facilmente grazie all'estensione) 
 		output_string = output_string || separator || name_column;
 		output_string = output_string || separator || (h_rec_table->name_column);
 		
 	END LOOP;
 
-	RAISE NOTICE '%', output_string;
 
 	RETURN output_string;
 			
