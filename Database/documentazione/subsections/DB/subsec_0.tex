@@ -1,1 +1,96 @@
+\newpage
 \subsection{\Large Analisi dei Requisiti}
+
+Nell'affrontare questo progetto abbiamo deciso, su consiglio dei Docenti, di analizzare
+la traccia proposta da una prospettiva piu' ampia; lasciando ai calciatori un ruolo centrale
+ma inserendoli in un contesto piu' ampio e complesso che e' il mondo del calcio.
+
+Per riuscire nel nostro intento abbiamo quindi dovuto svolgere numerose indagini e ricerche
+sui principali siti di informazione riguardanti il calcio; nello specifico ci siamo basati sulle
+informazioni reperite su Wikipidia, siti ufficiali delle principali confederazioni calcistiche,
+Transfermarkt, Fantagazzetta, FootballManager e vari altri siti e giornali di stampo calcistico.
+
+Con non poca difficolta' abbiamo cercato di astrarre quelle che sembravano essere le
+caratteristiche fondamentali dei sitema calcio nel mondo e di inserirle, al meglio delle nostre
+possibilita', nel progetto assegnatoci.
+
+Una prima costante che abbiamo notato sin da subito e' che il sistema calcio e' un sistema
+gerarchico strutturato come un vero e proprio governo e formato da confederazioni internazionali,
+federazioni nazionali e leghe calcistiche (es. FIFA, UEFA, COMBEBOL, FIGC, ...) che definiscono
+le regole del gioco, organizzano le varie competizioni e sono pertanto il fulcro di
+tutto il sistema calcio.
+
+NOTA. Per semplicita' a partire da questo momento con il termine confederazione faremo
+riferimento indistintamente a confederazioni, federazioni, leghe o qualasi altro ente
+organizzativo che abbia un ruolo nel governo del calcio.
+
+Ogni confederazione e' associata con uno ed un solo paese.
+
+NOTA. Come per le confederazioni anche il concetto di paese per noi sara' un'astrazione.
+Identificheremo come paese i concetti di regione, nazione, continente e persino il mondo intero.
+
+Data la relazione che intercorre tra un paese ed una confederazione calcistica, queste ultime,
+potranno essere suddivise in tre grandi categorie:
+\begin{itemize}
+	\item confederazioni nazionali;
+	\item confederazioni continentali;
+	\item confederazioni mondiali.
+\end{itemize}
+
+Sottolineiamo che tale suddivisione e' in un certo senso una semplificazione in quanto
+esistono confederazioni subcontinentali, confederazioni regionali e cosi' via; ci e' sembrato
+superfuo entrare cosi' eccessivamente nello specifico visto il nostro scopo.
+
+D'altra parte risulta immediato che il concetto di paese non sia legato esclusivamente a quello
+di confederazione calcistica; (come anche sottolineato nella traccia) una squadra di calcio,
+sia essa di tipo club o nazionale, chiaramente appartiene ad una nazione, e lo stesso discorso
+si puo' estendere al concetto di calciatore, e ancor di piu' di persona.
+Ogni calciatore avra' una nazione di nascita e, possibilmente, varie nazionalita'.
+
+Il concetto di paese, quindi, risulta centrale per il mondo del calcio e pertanto per i nostri
+scopi sara' necessario mapparlo come classe.
+
+Ritornando al concetto di confederazione, una costante che abbiamo ritrovato grazie alle nostre
+ricerche, e' che, come gia' accennato, sono organizzate in ordine gerarchico: le confederazioni
+nazionali possono essere membro di confederazioni continentali che a loro volta possono essere
+membro di confederazioni mondiali (es. la FIGC e' membro della UEFA che a sua volta e' membro
+della FIFA).
+Questo pattern si ripresenta per la quasi totalita' delle confederazioni che abbiamo osservato,
+le uniche e rare eccezioni fanno capo a confederazioni minori isolate che quindi non sono in
+associazione con nessun'altra confederazione.
+
+E'indiscutibile che il concetto di confederazione calcistica, assieme a quello di paese,
+formano la base sulla quale si poggia tutta l'organizzazione calcistica mondiale, e pertanto
+nel nostro progetto avremo bisogno di una classe confederazione.
+
+Come detto in precedenza, ciascuna confederazione organizza diverse competizioni calcistiche.
+Una competizione calcistica puo'essere analizzata sotto diversi punti di vista;
+se prendiamo come elemento discriminante il tipo di squadra che puo' parteciparvi, e' possibile
+dividere le competizioni calcistiche in due grandi categorie:
+\begin{itemize}
+	\item competizioni per squadre di tipo club;
+	\item competizioni per squadre di tipo nazionale.
+\end{itemize}
+
+Tuttavia, se come elemento discriminante prendiamo la formula che caratterizza una competizione
+calcistica, queste possono essere raggruppate in tre grandi categorie
+\begin{itemize}
+	\item competizioni di tipo campionato;
+	\item competizioni di tipo torneo;
+	\item competizioni di tipo supercoppa.
+\end{itemize}
+
+Ad essere onesti, l'analisi delle competizioni calcistiche e' ben piu' complessa di quella
+che stiamo mostrando in questo momento. Ogni competizione non solo ha una formula, che per altro
+puo' cambiare in base all'edizione della competizione che si sta considerando, ma anche un numero
+di partecipanti che e' variabile e pertanto risulta estremamente complicato astrarre tutte
+queste informazioni.
+Nonostante le difficolta' abbiamo tentato di mantenere entrambi i punti di vista sulle
+competizioni calcistiche e, lasciandoci guidare dalla traccia, abbiamo scelto di preferire una
+delle due prospettive.
+
+Nella traccia si fa un chiaro riferimento alle squadre di calcio e pertanto ci e' sembrato
+piu' corretto prediligere la prospettiva che mettesse in risalto questo aspetto maggiormente;
+pertanto per i nostri scopi il concetto di competizione calcistica sara' in primo luogo
+considerato in base al tipo di squadra che puo' parteciparvi e solo in secondo luogo
+considerato in base al tipo di formula.
