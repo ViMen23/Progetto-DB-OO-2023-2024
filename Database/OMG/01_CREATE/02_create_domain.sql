@@ -22,8 +22,8 @@
  * DESC : Dominio per una stringa di caratteri alfanumerici
  *        (inclusi i caratteri accentati) di lunghezza compresa tra i 2 e
  *        i 100 caratteri.
- *        Blocca l'inserimento di stringhe con ripetizioni di sengni di
- *        pungeggiatura e spazi che non siano validi
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
  ******************************************************************************/
 CREATE DOMAIN dm_alnum AS varchar(100)
 CHECK
@@ -102,7 +102,7 @@ CHECK
  *
  * DESC : Dominio contenente le date precedenti o uguali a quella corrente
  *        e maggiori o uguali ad una data arbitraria che permette l'inserimento
- *        di un giocatore che idealmente gioca la prima stagione possibile
+ *        di calciatori che idealmente giochino la prima stagione possibile
  ******************************************************************************/
 CREATE DOMAIN dm_date AS date
 CHECK
@@ -119,8 +119,8 @@ CHECK
  * DESC : Dominio per una stringa di caratteri alfanumerici
  *        (inclusi i caratteri accentati) di lunghezza compresa tra i 2 e
  *        i 500 caratteri.
- *        Blocca l'inserimento di stringhe con ripetizioni di sengni di
- *        pungeggiatura e spazi che non siano validi
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
  ******************************************************************************/
 CREATE DOMAIN dm_description AS varchar(500)
 CHECK
@@ -210,8 +210,8 @@ CHECK
  *
  * DESC : Dominio per una stringa di caratteri (inclusi i caratteri accentati)
  *        di lunghezza compresa tra i 2 e i 100 caratteri.
- *        Blocca l'inserimento di stringhe con ripetizioni di sengni di
- *        pungeggiatura e spazi che non siano validi
+ *        Blocca l'inserimento di stringhe con ripetizioni di segni di
+ *        punteggiatura e spazi che non siano validi
  ******************************************************************************/
 CREATE DOMAIN dm_string AS varchar(100)
 CHECK
