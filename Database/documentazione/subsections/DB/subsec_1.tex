@@ -1,5 +1,5 @@
 \newpage
-\subsection{\Large Progettazione Concettuale}
+\subsection{Progettazione Concettuale}
 
 Riassumendo l'analisi dei requisiti fatta precedentemente, si e' giunti alla conclusione
 che per modellare il nostro progetto avremo bisogno di:
@@ -67,14 +67,14 @@ implementate senza approfondire tutte le ulteriori classi associative ed associa
 che saranno chiaramente descritte in modo schematico nei diagrammi UML e poi affrontate
 in modo approfondito nel dizionario delle associazioni e nella documentazione interna al codice.
 \newpage
-\subsubsection{\Large Class Diagram non ristrutturato}
+\subsection{Class Diagram non ristrutturato}
 
 \includegraphics[width=\textwidth]{res/class_diagram_not_ristr}
 \newpage
 
-\subsubsection{\Large Ristrutturazione del Class Diagram}
+\subsection{Ristrutturazione del Class Diagram}
 
-\textbf{\large Analisi delle Ridondanze}
+\subsubsection{Analisi delle Ridondanze}
 
 Possiamo constatare che non ci sono attributi ridondanti.
 
@@ -127,7 +127,7 @@ Nationality.
 
 
 \newpage
-\textbf{\large Eliminazione delle Generalizzazioni}
+\subsubsection{Eliminazione delle Generalizzazioni}
 
 Nonostante le numerose generalizzazioni presenti nel Class 
 Diagram, tutte hanno un qualcosa in comune, ovvero sono 
@@ -288,19 +288,19 @@ L'associazione tra \textbf{PlayerPrize} e
 padre \textbf{Prize} mantenendo la molteplicità invariata.
 
 \newpage
-\textbf{\large Eliminazioni Attributi Multivalore}
+\subsubsection{Eliminazioni Attributi Multivalore}
 \bigskip
 
 Nel Class Diagram non sono presenti Attributi Multivalore.
 
 \bigskip
-\textbf{\large Eliminazione Attributi Strutturati}
+\subsubsection{Eliminazione Attributi Strutturati}
 \bigskip
 
 Nel Class Diagram non sono presenti Attributi Strutturati.
 
 \bigskip
-\textbf{\large Partizionamento/Accorpamento di Entità
+\subsubsection{Partizionamento/Accorpamento di Entità
 		e Associazioni}
 \bigskip
 
@@ -316,19 +316,18 @@ centrale.
 
 \newpage
 \bigskip
-\textbf{\large Scelta degli Identificatori Primari}
+\subsubsection{Scelta degli Identificatori Primari}
 \bigskip
 
 \newpage
-\subsubsection{\Large Class Diagram ristrutturato}
+\subsection{Class Diagram ristrutturato}
 \includegraphics[width=\textwidth]{res/class_diagram_ristr}
 \newpage
 
-\subsubsection{\Large Dizionario}
+\subsection{Dizionario}
 
-\begin{center}
-	\textbf{Dizionario delle Classi}
-\end{center}
+\subsubsection{Dizionario delle Classi}
+
 
 
 \begin{tblr}{
@@ -647,9 +646,8 @@ centrale.
 
 \newpage
 
-\begin{center}
-	\textbf{Dizionario delle Associazioni}
-\end{center}
+\subsubsection{Dizionario delle Associazioni}
+
 
 
 \begin{tblr}{
@@ -1143,9 +1141,8 @@ centrale.
 
 \newpage
 
-\begin{center}
-	\textbf{Dizionario dei Vincoli}
-\end{center}
+\subsubsection{Dizionario dei Vincoli}
+
 
 \begin{tblr}{
     hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
