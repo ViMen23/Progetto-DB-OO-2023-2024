@@ -386,8 +386,8 @@ $$
 BEGIN
 
 	-- deve essere nato in una nazione
-	-- ed inizialmente non avere ruoli
-	IF (is_nation(NEW.country_id) AND NEW.role IS NULL) THEN
+	-- ed inizialmente avere tutte i ruolo
+	IF (is_nation(NEW.country_id) AND 'GK-DF-MF-FW' = NEW.role) THEN
 		RETURN NEW;
 	END IF;
 
@@ -780,57 +780,49 @@ DECLARE
 	start_valid	integer;
 	end_valid	integer;
 
-	role_player	en_role_mix;
-
 	id_country	integer;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'role', NEW.player_id);
-	role_player = CAST(tmp AS en_role_mix);
+	SELECT
+		*
+	INTO
+		start_valid,
+		end_valid
+	FROM
+		valid_year_range(NEW.player_id);
 
-	-- il calciatore deve avere un ruolo
-	IF (role_player IS NOT NULL) THEN
+	-- la militanza deve essere in un anno valido
+	IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
 
-		SELECT
-			*
-		INTO
-			start_valid,
-			end_valid
-		FROM
-			valid_year_range(NEW.player_id);
+		IF ('NATIONAL' = NEW.team_type) THEN
 
-		-- la militanza deve essere in un anno valido
-		IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
+			tmp = get_column('fp_team', 'country_id', NEW.team_id);
+			id_country = CAST(tmp AS integer);
 
-			IF ('NATIONAL' = NEW.team_type) THEN
+			IF (NOT has_nationality(NEW.player_id, id_country)) THEN
+				RETURN NULL;
+			END IF;
 
-				tmp = get_column('fp_team', 'country_id', NEW.team_id);
-				id_country = CAST(tmp AS integer);
+			IF (is_national(NEW.player_id)) THEN
 
-				IF (NOT has_nationality(NEW.player_id, id_country)) THEN
+				-- se è una militanza nazionale e il calciatore ha gia
+				-- militato in nazionale la squadra deve essere la stessa
+				IF (national_team(NEW.player_id) <> NEW.team_id) THEN
 					RETURN NULL;
 				END IF;
 
-				IF (is_national(NEW.player_id)) THEN
-
-					-- se è una militanza nazionale e il calciatore ha gia
-					-- militato in nazionale la squadra deve essere la stessa
-					IF (national_team(NEW.player_id) <> NEW.team_id) THEN
-						RETURN NULL;
-					END IF;
-
-				END IF;
-
 			END IF;
 
-			IF (free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
-				RETURN NEW;
-			END IF;
-			
 		END IF;
 
+		IF (free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
+			RETURN NEW;
+		END IF;
+		
 	END IF;
+
+
 
 
 	RETURN NULL;
@@ -972,7 +964,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', NEW.player_id);
 	role_player = CAST(tmp AS en_role_mix);
 
-	IF (role_player IS NULL OR role_player <> new_role_player) THEN
+	IF (role_player <> new_role_player) THEN
 		
 		UPDATE
 			fp_player
@@ -986,34 +978,6 @@ BEGIN
 
 	RETURN NULL;
 	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION
- * NAME : tf_bd_player_position
- *
- * DESC : Funzione che prima dell'eliminazione di un'associazione tra un
- *        calciatore ed una posizione si assicura che non sia l'unica posizione
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bd_player_position
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	IF (position_number(OLD.player_id) > 1 OR OLD.player_id IS NULL) THEN
-		RETURN OLD;
-	END IF;
-
-
-	RETURN NULL;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -1049,7 +1013,7 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 
-	IF (role_player IS NULL OR role_player <> new_role_player) THEN
+	IF (role_player <> new_role_player) THEN
 		
 		UPDATE
 			fp_player

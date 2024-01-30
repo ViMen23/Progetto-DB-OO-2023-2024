@@ -14,6 +14,9 @@ Con non poca difficolta' abbiamo cercato di astrarre quelle che sembravano esser
 caratteristiche fondamentali dei sitema calcio nel mondo e di inserirle, al meglio delle nostre
 possibilita', nel progetto assegnatoci.
 
+\bigskip
+\bigskip
+
 Una prima costante che abbiamo notato sin da subito e' che il sistema calcio e' un sistema
 gerarchico strutturato come un vero e proprio governo e formato da confederazioni internazionali,
 federazioni nazionali e leghe calcistiche (es. FIFA, UEFA, COMBEBOL, FIGC, ...) che definiscono
@@ -47,9 +50,6 @@ sia essa di tipo club o nazionale, chiaramente appartiene ad una nazione, e lo s
 si puo' estendere al concetto di calciatore, e ancor di piu' di persona.
 Ogni calciatore avra' una nazione di nascita e, possibilmente, varie nazionalita'.
 
-Il concetto di paese, quindi, risulta centrale per il mondo del calcio e pertanto per i nostri
-scopi sara' necessario mapparlo come classe.
-
 Ritornando al concetto di confederazione, una costante che abbiamo ritrovato grazie alle nostre
 ricerche, e' che, come gia' accennato, sono organizzate in ordine gerarchico: le confederazioni
 nazionali possono essere membro di confederazioni continentali che a loro volta possono essere
@@ -60,8 +60,10 @@ le uniche e rare eccezioni fanno capo a confederazioni minori isolate che quindi
 associazione con nessun'altra confederazione.
 
 E'indiscutibile che il concetto di confederazione calcistica, assieme a quello di paese,
-formano la base sulla quale si poggia tutta l'organizzazione calcistica mondiale, e pertanto
-nel nostro progetto avremo bisogno di una classe confederazione.
+formano la base sulla quale si poggia tutta l'organizzazione calcistica mondiale.
+
+\bigskip
+\bigskip
 
 Come detto in precedenza, ciascuna confederazione organizza diverse competizioni calcistiche.
 Una competizione calcistica puo'essere analizzata sotto diversi punti di vista;
@@ -72,8 +74,8 @@ dividere le competizioni calcistiche in due grandi categorie:
 	\item competizioni per squadre di tipo nazionale.
 \end{itemize}
 
-Tuttavia, se come elemento discriminante prendiamo la formula che caratterizza una competizione
-calcistica, queste possono essere raggruppate in tre grandi categorie
+Tuttavia, se come elemento discriminante prendiamo il format che caratterizza una competizione
+calcistica, queste possono essere raggruppate in tre grandi categorie:
 \begin{itemize}
 	\item competizioni di tipo campionato;
 	\item competizioni di tipo torneo;
@@ -81,10 +83,11 @@ calcistica, queste possono essere raggruppate in tre grandi categorie
 \end{itemize}
 
 Ad essere onesti, l'analisi delle competizioni calcistiche e' ben piu' complessa di quella
-che stiamo mostrando in questo momento. Ogni competizione non solo ha una formula, che per altro
-puo' cambiare in base all'edizione della competizione che si sta considerando, ma anche un numero
-di partecipanti che e' variabile e pertanto risulta estremamente complicato astrarre tutte
-queste informazioni.
+che stiamo mostrando in questo momento, infatti una competizione ha anche una formula
+(girone all'italiana, eliminazione diretta, \dots),
+che puo' cambiare in base all'edizione della competizione che si sta considerando,
+ma anche un numero di partecipanti che e' variabile e pertanto risulta estremamente
+complicato astrarre tutte queste informazioni.
 Nonostante le difficolta' abbiamo tentato di mantenere entrambi i punti di vista sulle
 competizioni calcistiche e, lasciandoci guidare dalla traccia, abbiamo scelto di preferire una
 delle due prospettive.
@@ -93,7 +96,106 @@ Nella traccia si fa un chiaro riferimento alle squadre di calcio e pertanto ci e
 piu' corretto prediligere la prospettiva che mettesse in risalto questo aspetto maggiormente;
 pertanto per i nostri scopi il concetto di competizione calcistica sara' in primo luogo
 considerato in base al tipo di squadra che puo' parteciparvi e solo in secondo luogo
-considerato in base al tipo di formula.
+considerato in base al tipo di format.
 
-Risulta immediato che anche il concetto di competizione calcistica sara' mappato come classe.
+\bigskip
+\bigskip
 
+Come ben noto, ogni competizione calcistica ha diverse edizioni ciascuna delle quali
+si svolge durante una specifica stagione calcistica.
+Dalle ricerche effettuate e' emerso che un'edizione di una competiione nell'ambito della
+confederazione che la organizza e rispetto alle altre competizioni dello stesso format
+ha un livello di importanza diverso (es. nella FIGC la serie A e' il campionato di primo
+livello, la serie B il campionato di secondo livello).
+Quello che abbiamo osservato e' che non possa esistere una squadra di calcio che, nella
+stessa stagione, partecipa a due competizioni dello stesso format orgnizzate dalla stessa
+confederazione.
+
+NOTA. Una stagione calcistica e' a tutti gli effetti l'unita' di misura temporale del calcio
+e va a cavallo di due anni consecutivi (es. Stagione 2023-2024).
+
+In un'edizione di una competizione, chiaramente, si affrontano le diverse squadre di calcio
+che vi partecipano e, al termine della competizione, in base al piazzamento raggiunto le
+squadre partecipanti potranno vincere dei trofei.
+
+Un trofeo, quindi, risulta essere indissolubilmente legato ad un'edizione di una competizione
+calcistica; d'altra parte, le nostre ricerche hanno evidenziato la presenza di trofei calcistici
+indipendenti dalle competizioni.
+
+Pertanto, dal punto di vista astratto, si e' reso necessario differenziare i trofei calcistici
+che per noi saranno sempre associati a delle competizioni, dai premi calcistici che invece
+saranno totalmente indipendenti.
+
+\bigskip
+\bigskip
+
+Questo e', in estrema sintesi, l'arricchimento che abbiamo deciso di portare al nostro progetto.
+Ricordiamo pero' che il contetto cardine del nostro lavoro e' costruire un sistema informativo
+per la gestione di calciatori di tutto il mondo.
+
+Chiaramente le ricerche effettuate e le conclusioni a cui siamo giunti non sono semplicemente
+un esercizio di stile ma ci permetteranno di affinare, sebbene aumentando la complessita'
+generale, la descrizione dei calciatori.
+
+\bigskip
+\bigskip
+
+Come indicato da traccia un calciatore ha una carriera durante la quale puo' militare in diverse
+squadre di calcio.
+
+A questo proposito e' doveroso fare una importante precisazione. Vista la natura piu' dettagliata
+della nostra visione del progetto, anche il concetto di militanza di un calciatore in una squadra
+di calcio sara' piu' dettagliato.
+
+Il nostro concetto astratto di militanza sara' la presenza di un calciatore in una squadra
+durante una stagione calcistica, visto che, come detto, la stagione e' l'unita' di misura
+temporale del mondo calcio.
+
+Abbiamo deciso quindi di non considerare la data di inizio e fine di una certa militanza in
+quanto al nostro livello di dettaglio e' impossibile da gestire in modo coerente e corretto,
+mantenendo anche un certo livello di astrazione.
+A seguito delle nostre ricerche abbiamo notato che il regolamento mondiale del gioco calcio
+prevede che un cambio di militanza di un calciatore da una squadra ad un'altra puo' avvenire
+solo in particolari periodi di tempo, detti "finestre di mercato", che per altro sono variabili
+in base alla stagione considerata e alla confederazione calcistica cui fanno riferimento;
+ecco il motivo per il quale non e' possibile utilizzare le date come richiesto da traccia.
+
+Quello che abbiamo fatto e' quindi gestire le militanze per stagione calcistica.
+
+Durante una militanza in una squadra un calciatore potra' quindi giocare un certo numero di
+partite di un'edizione di una competizione cui partecipa la squadra in cui milita.
+
+Come richiesto da traccia, durante una partita, e nel complesso in un'edizione, si terra' traccia
+di alcune statistiche riferite al gioco del calciatore in una squadra partecipante ad
+un'edizione.
+
+NOTA. Dal punto di vista astratto una statistica di gioco e' un qualsiasi evento misurabile
+e statisticamente rilevante connesso col gioco del calcio
+(numero di goal, numero di assist, \dots).
+
+Similmente a quello che accade per una squadra anche un calciatore potra' vincere dei trofei.
+Come da traccia, tali trofei potranno essere individuali o di squadra.
+
+Nello specifico i trofei di squadra saranno vinti da una squadra e per transitivita' poi
+assegnati a tutti i calciatori che militano nella suddetta squadra durante quella stagione.
+
+Analogamente un calciatore potra' vincere premi calcistici individuali (Pallone d'oro).
+
+Un calciatore e' inoltre caratterizzato da una serie di posizioni di gioco.
+
+Inoltre, come da traccia, ad un calciatore possono essere associati dei tag che mettono in
+risalto le specialita' del calciatore.
+
+In aggiunta, prendendo ispirazione da FootballManager, si e' deciso di includere nella
+descrizione del calciatore anche una serie di attributi che ne descrivessero in modo quantitativo
+le capacita' sotto diversi punti di vista.
+
+Infine, un calciatore potra' ritirarsi dal gioco in una certa data.
+
+\bigskip
+\bigskip
+
+Un'ultima precisazione. Abbiamo deciso di escludere dalla nostra trattazione sia il calcio
+femminile che il calcio giovanile visto che non avrebbe aggiunto nulla al progetto in questione.
+Sarebbe stato comunque gestibile in modo essenzialmente identico aggiungendo qualche attributo
+aggiuntivo; e' stato pertanto ritenuto uno sforzo inutile, come per altro il calcio che giocano.

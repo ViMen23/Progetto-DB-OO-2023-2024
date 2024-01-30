@@ -1,7 +1,72 @@
+\newpage
 \subsection{\Large Progettazione Concettuale}
 
-\newpage
+Riassumendo l'analisi dei requisiti fatta precedentemente, si e' giunti alla conclusione
+che per modellare il nostro progetto avremo bisogno di:
+\begin{itemize}
+	\item una classe Country avente un nome unico e un codice ISO 3166-1-alpha-3,
+		che si specializza in 3 sotto-classi:	
+		\begin{itemize}
+			\item Nation;
+			\item Continent;
+			\item World.
+		\end{itemize}
+	\item una classe Confederation avente un nome esteso unico ed un nome abbreviato,
+		che si specializza in 3 sotto-classi:	
+		\begin{itemize}
+			\item National Confederation;
+			\item Continent Confederation;
+			\item World Confederation.
+		\end{itemize}
+	\item una classe Competition avente un nome unico ed una frequenza, che ne indica la
+		cadenza. Tale classe si specializza in 2 sotto classi:	
+		\begin{itemize}
+			\item Club Competition;
+			\item National Competition.
+		\end{itemize}	
+		Ciascuna di queste sotto-classi si specializza poi in base al format in:
+		\begin{itemize}
+			\item League;
+			\item Cup;
+			\item Super Cup.
+		\end{itemize}
+	\item una classe Competition Edition (debole in quanto non ha senso di esistere
+		senza la classe Competition) avente un anno di inizio dell'edizione, un anno di fine
+		e il numero di squadre che vi possono partecipare	
+	\item una classe Team avente un nome unico, che di specializza in 2 sotto-classi:
+		\begin{itemize}
+			\item Club Team;
+			\item National Team.
+		\end{itemize}	
+	\item una classe Trophy avente un nome unico e una descrizione facoltativa,
+		che di specializza in 2 sotto-classi:
+		\begin{itemize}
+			\item Player Trophy, avente un ruolo facoltativo;
+			\item Team Trophy.
+		\end{itemize}
+	\item una classe Prize avente un nome unico, una descrizione facoltativa e il nome
+		dell'ente che lo assegna, che di specializza in 2 sotto-classi:	
+		\begin{itemize}
+			\item Player Prize, avente un ruolo facoltativo;
+			\item Team Prize.
+		\end{itemize}	
+	\item una classe Player avente un nome, cognome, data di nascita, un piede preferito
+		ed una data di ritiro facoltativa
+	\item una classe Position avente un ruolo, un codice unico e un nome unico	
+	\item una classe Tag avente un tipo, un nome unico ed una descrizione facoltativa	
+	\item una classe Attribute avente un tipo, un nome unico ed una descrizione facoltativa	
+	\item una classe Statistic avente un valore booleano che indica se si tratta di una
+		statistica riferita esclusivamente ai portieri, un nome unico ed una descrizione
+		facoltativa		
+	\item una classe User Account avente un username unico, una password ed un livello di
+		privilegio
+\end{itemize}
 
+Sottolineiamo che abbiamo dato solo una descrizione sommaria delle principali classi
+implementate senza approfondire tutte le ulteriori classi associative ed associazioni
+che saranno chiaramente descritte in modo schematico nei diagrammi UML e poi affrontate
+in modo approfondito nel dizionario delle associazioni e nella documentazione interna al codice.
+\newpage
 \subsubsection{\Large Class Diagram non ristrutturato}
 
 \includegraphics[width=\textwidth]{res/class_diagram_not_ristr}

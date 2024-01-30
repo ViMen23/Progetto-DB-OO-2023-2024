@@ -634,19 +634,6 @@ EXECUTE FUNCTION tf_bu_refuse();
 
 /*******************************************************************************
  * TYPE : TRIGGER
- * NAME : tg_bd_player_position
- *
- * DESC : Trigger che si attiverà prima dell'eliminazione dell'associazione
- *        tra un calciatore ed una posizione
- ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_bd_player_position
-BEFORE DELETE ON fp_player_position
-FOR EACH ROW
-EXECUTE FUNCTION tf_bd_player_position();
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : TRIGGER
  * NAME : tg_ad_player_position
  *
  * DESC : Trigger che si attiverà dopo l'eliminazione dell'associazione

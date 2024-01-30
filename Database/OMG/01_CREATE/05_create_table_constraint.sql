@@ -553,7 +553,7 @@ CREATE TABLE fp_player
 	dob			dm_date		NOT NULL, -- data di nascita
 	country_id	integer		NOT NULL, -- id del paese di nascita
 	foot		en_foot		NOT NULL, -- piede preferito
-	role		en_role_mix			
+	role		en_role_mix	NOT NULL		
 );
 --------------------------------------------------------------------------------
 

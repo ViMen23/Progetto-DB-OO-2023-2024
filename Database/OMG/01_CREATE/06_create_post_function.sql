@@ -2265,49 +2265,15 @@ BEGIN
 
 	END LOOP;
 
+	IF ('' = tmp) THEN
+		tmp = 'GK-DF-MF-FW';
+	END IF;
+
 	tmp = trim(tmp, '-');
 
 	role_player = CAST(tmp AS en_role_mix);
 
 	RETURN role_player;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : position_number
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : Funzione che restituisce il numero di posizioni associate ad un
- *        calciatore
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION position_number
-(
-	IN	id_player	integer
-)
-RETURNS integer
-AS
-$$
-BEGIN
-
-	RETURN
-	(
-		SELECT
-			count(*)
-		FROM
-			fp_player_position
-		WHERE
-			player_id = id_player
-	);
 
 END;
 $$
