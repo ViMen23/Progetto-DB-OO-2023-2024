@@ -1243,7 +1243,7 @@ BEGIN
 	tmp = get_column('fp_confederation', 'id_country', id_conf);
 	id_country = CAST(tmp AS integer);					
 	tmp = get_column('fp_country', 'type', id_country);
-	type_conf = CAST(tmp AS en_country)
+	type_conf = CAST(tmp AS en_country);
 
 	-- prendo la confederazione calcistica associata alla squadra di calcio
 	tmp = get_column('fp_team', 'confederation_id', id_team);
@@ -1539,7 +1539,7 @@ BEGIN
 	role_pos = CAST(tmp AS en_role);
 
 	tmp = get_column('fp_statistic', 'type', id_stat);
-	type_stat = CAST(tmp AS en_feature)
+	type_stat = CAST(tmp AS en_feature);
 
 	IF (position(CAST(role_pos AS text) in CAST(type_stat AS text)) > 0) THEN
 		RETURN TRUE;
@@ -1647,7 +1647,7 @@ DECLARE
 BEGIN
 	
 	tmp = get_column('fp_competition', 'type', id_comp);
-	type_comp = CAST(tmp AS en_competition)
+	type_comp = CAST(tmp AS en_competition);
 
 	-- se la competizione calcistica è una supercoppa
 	IF ('SUPER CUP' = type_comp) THEN

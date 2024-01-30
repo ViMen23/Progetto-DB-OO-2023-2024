@@ -1423,7 +1423,7 @@ BEGIN
 		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
 
 			tmp = get_column('fp_prize', 'role', NEW.prize_id);
-			role_prize = CAST(tmp AS en_role)
+			role_prize = CAST(tmp AS en_role);
 
 			IF (role_prize IS NULL) THEN		
 				RETURN NEW;
