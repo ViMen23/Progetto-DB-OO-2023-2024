@@ -1,3 +1,19 @@
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * INSERT FP_TEAM
+ ******************************************************************************/
+
+
 INSERT INTO fp_team (type, name, country_id, confederation_id)
 VALUES
 (
@@ -161,4 +177,12 @@ VALUES
 	'SPAL',
 	get_id('@', 'fp_country@name@Italy'),
 	get_id('@', 'fp_confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'NATIONAL',
+	'ITALIA',
+	get_id('@', 'fp_country@name@Italy'),
+	get_id('@', 'fp_confederation@long_name@Federazione Italiana Giuoco Calcio')
 );
+--------------------------------------------------------------------------------
+

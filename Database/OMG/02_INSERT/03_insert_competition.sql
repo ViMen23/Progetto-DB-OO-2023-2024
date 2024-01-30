@@ -5021,6 +5021,5 @@ VALUES
 		'fp_confederation@long_name@Federación Salvadoreña de Fútbol'
 	)
 );
-
 --------------------------------------------------------------------------------
 

@@ -87,6 +87,8 @@ BEGIN
 		type = 'NATIONAL'
 		AND
 		country_id = NEW.id;
+		
+	RETURN NULL;
 	
 END;
 $$
@@ -423,6 +425,7 @@ BEGIN
 		NEW.country_id,
 		NEW.id
 	);
+	RETURN NULL;
 	
 END;
 $$
@@ -598,6 +601,8 @@ BEGIN
 		NEW.id
 	);
 	
+	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -618,10 +623,17 @@ CREATE OR REPLACE FUNCTION tf_au_player_role
 RETURNS trigger
 AS
 $$
+DECLARE
+
+	old_role TEXT;
+	new_role TEXT;
 BEGIN
 
+	old_role = CAST(OLD.role AS TEXT);
+	new_role = CAST(NEW.role AS TEXT);
+	
 	-- se il calciatore ha perso il ruolo di portiere
-	IF ((OLD.role LIKE '%GK%') AND (NEW.role NOT LIKE '%GK%')) THEN
+	IF ((old_role LIKE '%GK%') AND (new_role NOT LIKE '%GK%')) THEN
 
 		PERFORM delete_gk_attribute(NEW.id);
 		PERFORM delete_gk_statistic(NEW.id);
@@ -632,6 +644,8 @@ BEGIN
 
 	PERFORM delete_not_role_trophy(NEW.id, NEW.role);
 	PERFORM delete_not_role_prize(NEW.id, NEW.role);
+	
+	RETURN NULL;
 
 END;
 $$
@@ -742,6 +756,8 @@ BEGIN
 
 	END IF; 
 	
+	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -841,6 +857,8 @@ BEGIN
 
 	PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	
+	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -869,6 +887,8 @@ BEGIN
 	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	END IF;
+	
+	RETURN NULL;
 	
 END;
 $$
@@ -936,8 +956,8 @@ AS
 $$
 DECLARE
 
-	role_player		text;
-	new_role_player	text;
+	role_player	en_role_mix;
+	new_role_player	en_role_mix;
 
 BEGIN
 
@@ -956,6 +976,8 @@ BEGIN
 			id = NEW.player_id;
 
 	END IF;
+	
+	RETURN NULL;
 	
 END;
 $$
@@ -1026,6 +1048,8 @@ BEGIN
 			id = OLD.player_id;
 
 	END IF;
+	
+	RETURN NULL;
 	
 END;
 $$
@@ -1165,6 +1189,8 @@ BEGIN
 
 	END LOOP;
 	
+	RETURN NULL;
+	
 END;
 $$
 LANGUAGE plpgsql;
@@ -1197,6 +1223,8 @@ BEGIN
 		start_year = OLD.start_year
 		AND
 		competition_id = OLD.competition_id;
+		
+	RETURN NULL;
 	
 END;
 $$

@@ -562,7 +562,13 @@ CREATE OR REPLACE FUNCTION not_role_trophy
 RETURNS SETOF integer
 AS
 $$
+DECLARE
+
+	tmp_role_player	TEXT;
+	
 BEGIN
+	
+	tmp_role_player = CAST(role_player AS TEXT);
 				
 	RETURN QUERY
 		SELECT
@@ -574,7 +580,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(role in role_player);
+			0 = position(CAST(role AS TEXT) in tmp_role_player);
 	
 END;
 $$
@@ -606,7 +612,13 @@ CREATE OR REPLACE FUNCTION not_role_prize
 RETURNS SETOF integer
 AS
 $$
+DECLARE
+
+	tmp_role_player TEXT;
+
 BEGIN
+	
+	tmp_role_player = CAST(role_player AS TEXT);
 				
 	RETURN QUERY
 		SELECT
@@ -618,7 +630,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(role in role_player);
+			0 = position(CAST(role AS TEXT) in tmp_role_player);
 	
 END;
 $$
@@ -688,9 +700,16 @@ $$
 BEGIN
 				
 	DELETE FROM
-			fp_player_statistic
+			fp_play_statistic
 		WHERE
-			player_id = id_player
+			play_id IN
+						(
+							SELECT
+								*
+							FROM
+								player_play(id_player)
+						
+						)
 			AND
 			statistic_id IN 
 							(
@@ -771,7 +790,7 @@ BEGIN
 	DELETE FROM
 		fp_player_prize_case
 	WHERE
-		player_id = NEW.id
+		player_id = id_player
 		AND
 		prize_id IN
 					(
@@ -812,7 +831,7 @@ BEGIN
 	DELETE FROM
 		fp_player_trophy_case
 	WHERE
-		player_id = NEW.id
+		player_id = id_player
 		AND
 		trophy_id IN
 					(
@@ -2144,7 +2163,7 @@ LANGUAGE plpgsql;
  * IN      : integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : text
+ * RETURNS : en_role_mix
  *
  * DESC : Funzione che restituisce la combinazione di ruoli di un calciatore
  ******************************************************************************/
@@ -2152,7 +2171,7 @@ CREATE OR REPLACE FUNCTION new_role
 (
 	IN	id_player	integer
 )
-RETURNS text
+RETURNS en_role_mix
 AS
 $$
 DECLARE
@@ -2169,13 +2188,16 @@ BEGIN
 	FOR role_player
 	IN
 		SELECT DISTINCT
-			role
+			pos.role
 		FROM
-			fp_player_position
+			fp_player_position AS plpos
+			JOIN
+			fp_position AS pos
+				ON plpos.position_id = pos.id
 		WHERE
-			player_id = id_player
+			plpos.player_id = id_player
 		ORDER BY
-			role
+			pos.role
 
 	LOOP
 
@@ -2187,7 +2209,7 @@ BEGIN
 
 	new_role_player = trim(new_role_player, '-');
 
-	RETURN new_role_player;
+	RETURN CAST(new_role_player AS en_role_mix);
 
 END;
 $$

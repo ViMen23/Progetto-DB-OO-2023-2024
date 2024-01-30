@@ -120,132 +120,68 @@ VALUES
 	'CLUB'
 ),
 (
-	2014,
-	'FULL',
+	daterange('2014-07-01', '2016-07-14', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@Udinese Calcio'),
-	'CLUB'
+	get_id('@', 'fp_team@name@Udinese Calcio')
 ),
 (
-	2015,
-	'FULL',
+	daterange('2016-07-15', '2018-06-30', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@Udinese Calcio'),
-	'CLUB'
+	get_id('@', 'fp_team@name@SPAL')
 ),
 (
-	2016,
-	'FULL',
+	daterange('2018-07-01', '2018-07-05', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@SPAL'),
-	'CLUB'
+	get_id('@', 'fp_team@name@Udinese Calcio')
 ),
 (
-	2017,
-	'FULL',
+	daterange('2018-07-06', '2019-06-30', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@SPAL'),
-	'CLUB'
+	get_id('@', 'fp_team@name@SSC Napoli')
 ),
 (
-	2018,
-	'FULL',
+	daterange('2019-07-01','2019-07-01', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
+	get_id('@', 'fp_team@name@Udinese Calcio')
 ),
 (
-	2019,
-	'FULL',
+	daterange('2019-07-02', '2024-06-30', '[]'),
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
+		get_id('@', 'fp_country@code@ITA')
 	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
-),
-(
-	2020,
-	'FULL',
-	get_id
-	(
-		'@',
-		'fp_player@name@Alex@surname@Meret'
-		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
-	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
-),
-(
-	2021,
-	'FULL',
-	get_id
-	(
-		'@',
-		'fp_player@name@Alex@surname@Meret'
-		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
-	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
-),
-(
-	2022,
-	'FULL',
-	get_id
-	(
-		'@',
-		'fp_player@name@Alex@surname@Meret'
-		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
-	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
-),
-(
-	2023,
-	'FULL',
-	get_id
-	(
-		'@',
-		'fp_player@name@Alex@surname@Meret'
-		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
-	),
-	get_id('@', 'fp_team@name@SSC Napoli'),
-	'CLUB'
+	get_id('@', 'fp_team@name@SSC Napoli')
 );

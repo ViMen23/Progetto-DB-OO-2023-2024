@@ -1,4 +1,3 @@
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -13,24 +12,26 @@
 /*******************************************************************************
  * INSERT fp_position
  ******************************************************************************/
+
+
 INSERT INTO fp_position (role, code, name)
 VALUES
 ('GK', 'GK', 'Goalkeeper'),
 ('DF', 'CB', 'Centre-Back'),
-('DF', 'RB', 'Right-Back'),
 ('DF', 'LB', 'Left-Back'),
 ('DF', 'LWB', 'Left-Wing-Back'),
+('DF', 'RB', 'Right-Back'),
 ('DF', 'RWB', 'Right-Wing-Back'),
-('MF', 'RM', 'Right Midfielder'),
-('MF', 'CM', 'Centre Midfielder'),
-('MF', 'CDM', 'Defensive Midfielder'),
-('MF', 'CAM', 'Attacking Midfielder'),
-('MF', 'LM', 'Left Midfielder'),
-('FW', 'RW', 'Right Winger'),
-('FW', 'RF', 'Right Forward'),
-('FW', 'ST', 'Striker'),
+('MF', 'AM', 'Attacking Midfield'),
+('MF', 'CM', 'Central Midfield'),
+('MF', 'DM', 'Defensive Midfield'),
+('MF', 'LM', 'Left Midfield'),
+('MF', 'RM', 'Right Midfield'),
 ('FW', 'CF', 'Centre Forward'),
 ('FW', 'LF', 'Left Forward'),
-('FW', 'LW', 'Left Winger');
+('FW', 'LW', 'Left Winger'),
+('FW', 'RW', 'Right Winger'),
+('FW', 'RF', 'Right Forward'),
+('FW', 'SS', 'Second Striker');
 --------------------------------------------------------------------------------
 
