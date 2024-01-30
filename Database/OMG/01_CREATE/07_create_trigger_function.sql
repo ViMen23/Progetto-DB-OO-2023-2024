@@ -244,14 +244,15 @@ DECLARE
 	tmp					text;
 
 	id_country_conf		integer;
-	type_country_conf	text;
+	type_country_conf	en_country;
 
 BEGIN
 
 	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
 	id_country_conf = CAST(tmp AS integer);
 
-	type_country_conf = get_column('fp_country', 'type', id_country_conf);
+	tmp = get_column('fp_country', 'type', id_country_conf);
+	type_country_conf = CAST(tmp AS en_country);
 
 	-- non possono esistere competizioni per squadre nazionali
 	-- organizzate da una confederazione nazionale
@@ -425,6 +426,8 @@ BEGIN
 		NEW.country_id,
 		NEW.id
 	);
+
+
 	RETURN NULL;
 	
 END;
@@ -623,17 +626,10 @@ CREATE OR REPLACE FUNCTION tf_au_player_role
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	old_role TEXT;
-	new_role TEXT;
 BEGIN
-
-	old_role = CAST(OLD.role AS TEXT);
-	new_role = CAST(NEW.role AS TEXT);
 	
 	-- se il calciatore ha perso il ruolo di portiere
-	IF ((old_role LIKE '%GK%') AND (new_role NOT LIKE '%GK%')) THEN
+	IF ((CAST(OLD.role AS text) LIKE '%GK%') AND (CAST(NEW.role AS text) NOT LIKE '%GK%')) THEN
 
 		PERFORM delete_gk_attribute(NEW.id);
 		PERFORM delete_gk_statistic(NEW.id);
@@ -784,19 +780,25 @@ DECLARE
 	start_valid	integer;
 	end_valid	integer;
 
-	role_player	text;
+	role_player	en_role_mix;
 
 	id_country	integer;
 
 BEGIN
 
-	role_player = get_column('fp_player', 'role', NEW.player_id);
+	tmp = get_column('fp_player', 'role', NEW.player_id);
+	role_player = CAST(tmp AS en_role_mix);
 
 	-- il calciatore deve avere un ruolo
 	IF (role_player IS NOT NULL) THEN
 
-		SELECT * FROM valid_year_range(NEW.player_id)
-		INTO start_valid, end_valid;
+		SELECT
+			*
+		INTO
+			start_valid,
+			end_valid
+		FROM
+			valid_year_range(NEW.player_id);
 
 		-- la militanza deve essere in un anno valido
 		IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
@@ -911,21 +913,22 @@ AS
 $$
 DECLARE
 
-	role_player	text;
-	role_tag	text;
+	tmp			text;
+
+	role_player	en_role_mix;
+	role_tag	en_feature;
 
 BEGIN
 
-	role_tag = get_column('fp_tag', 'role', NEW.tag_id);
-	
+	tmp = get_column('fp_tag', 'role', NEW.tag_id);
+	role_tag = CAST(tmp AS en_feature);
 	
 	IF ('GOALKEEPER' = role_tag) THEN
 	
-		role_player = get_column('fp_player', 'role', NEW.player_id);
+		tmp = get_column('fp_player', 'role', NEW.player_id);
+		role_player = CAST(tmp AS en_role_mix);
 
-		IF (role_player LIKE '%GK%') THEN
-			RETURN NEW;
-		ELSE
+		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
 			RETURN NULL;
 		END IF;
 		
@@ -956,15 +959,18 @@ AS
 $$
 DECLARE
 
-	role_player	en_role_mix;
+	tmp				text;
+
+	role_player		en_role_mix;
 	new_role_player	en_role_mix;
 
 BEGIN
 
 	new_role_player = new_role(NEW.player_id);
 
-	role_player = get_column('fp_player', 'role', NEW.player_id);
 
+	tmp = get_column('fp_player', 'role', NEW.player_id);
+	role_player = CAST(tmp AS en_role_mix);
 
 	IF (role_player IS NULL OR role_player <> new_role_player) THEN
 		
@@ -977,6 +983,7 @@ BEGIN
 
 	END IF;
 	
+
 	RETURN NULL;
 	
 END;
@@ -1028,14 +1035,18 @@ AS
 $$
 DECLARE
 
-	role_player		text;
-	new_role_player	text;
+	tmp				text;
+
+	role_player		en_role_mix;
+	new_role_player	en_role_mix;
 
 BEGIN
 
 	new_role_player = new_role(OLD.player_id);
 
-	role_player = get_column('fp_player', 'role', OLD.player_id);
+
+	tmp = get_column('fp_player', 'role', OLD.player_id);
+	role_player = CAST(tmp AS en_role_mix);
 
 
 	IF (role_player IS NULL OR role_player <> new_role_player) THEN
@@ -1049,6 +1060,7 @@ BEGIN
 
 	END IF;
 	
+
 	RETURN NULL;
 	
 END;
@@ -1072,21 +1084,22 @@ AS
 $$
 DECLARE
 
-	role_player	text;
-	role_attr	text;
+	tmp			text;
+
+	role_player	en_role_mix;
+	role_attr	en_feature;
 
 BEGIN
 
-	role_attr = get_column('fp_attribute', 'role', NEW.attribute_id);
-	
+	tmp = get_column('fp_attribute', 'role', NEW.attribute_id);
+	role_attr = CAST(tmp AS en_feature);
 	
 	IF ('GOALKEEPER' = role_attr) THEN
 	
-		role_player = get_column('fp_player', 'role', NEW.player_id);
+		tmp = get_column('fp_player', 'role', NEW.player_id);
+		role_player = CAST(tmp AS en_role_mix);
 
-		IF (role_player LIKE '%GK%') THEN
-			RETURN NEW;
-		ELSE
+		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
 			RETURN NULL;
 		END IF;
 		
@@ -1116,16 +1129,20 @@ AS
 $$
 DECLARE
 
-	type_trophy	text;
+	tmp			text;
+
+	type_trophy	en_award;
 
 BEGIN
 
-	type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
+	tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
+	type_trophy = CAST(tmp AS en_award);
 
 	IF ('TEAM' = type_trophy) THEN
 		RETURN NEW;
 	END IF;
 	
+
 	RETURN NULL;
 	
 END;
@@ -1223,7 +1240,8 @@ BEGIN
 		start_year = OLD.start_year
 		AND
 		competition_id = OLD.competition_id;
-		
+
+
 	RETURN NULL;
 	
 END;
@@ -1247,12 +1265,15 @@ AS
 $$
 DECLARE
 
-	type_militancy	text;
+	tmp				text;
 
-	type_trophy		text;
-	role_trophy		text;
+	type_militancy	en_season;
 
-	role_player		text;
+	type_trophy		en_award;
+
+	role_trophy		en_role;
+
+	role_player		en_role_mix;
 
 BEGIN
 
@@ -1261,7 +1282,8 @@ BEGIN
 
 	IF (type_militancy <> 'I PART') THEN
 
-		type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
+		tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
+		type_trophy = CAST(tmp AS en_award);
 
 		IF ('TEAM' = type_trophy) THEN
 
@@ -1272,16 +1294,18 @@ BEGIN
 		
 		ELSIF ('PLAYER' = type_trophy) THEN
 
-			role_trophy = get_column('fp_trophy', 'role', NEW.trophy_id);
+			tmp = get_column('fp_trophy', 'role', NEW.trophy_id);
+			role_trophy = CAST(tmp AS en_role);
 
 			IF (role_trophy IS NULL) THEN
 				RETURN NEW;
 			
 			ELSE
 
-				role_player = get_column('fp_player', 'role', NEW.player_id);
+				tmp = get_column('fp_player', 'role', NEW.player_id);
+				role_player = CAST(tmp AS en_role_mix);
 
-				IF (position(role_trophy in role_player) > 0) THEN
+				IF (position(CAST(role_trophy AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
 				END IF;
 
@@ -1315,16 +1339,16 @@ AS
 $$
 DECLARE
 
-	type_militancy	text;
+	tmp				text;
 
-	type_trophy		text;
-	role_trophy		text;
+	type_militancy	en_season;
 
-	role_player		text;
+	type_trophy		en_award;
 
 BEGIN
 
-	type_trophy = get_column('fp_trophy', 'type', NEW.trophy_id);
+	tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
+	type_trophy = CAST(tmp AS en_award);
 
 	IF ('TEAM' = type_trophy) THEN
 
@@ -1369,35 +1393,47 @@ AS
 $$
 DECLARE
 
-	type_prize		text;
-	role_prize		text;
+	tmp			text;
+
+	type_prize	en_award;
+	role_prize	en_role;
 
 	start_valid	integer;
 	end_valid	integer;
-	role_player	text;
+
+	role_player	en_role_mix;
 
 BEGIN
 
-	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
+	tmp = get_column('fp_prize', 'type', NEW.prize_id);
+	type_prize = CAST(tmp AS en_award);
 	
 	IF ('PLAYER' = type_prize) THEN
 
-		SELECT * FROM valid_year_range(NEW.player_id)
-		INTO start_valid, end_valid;
+		SELECT
+			*
+		INTO
+			start_valid,
+			end_valid
+		FROM
+			valid_year_range(NEW.player_id);
+		
 	
 		-- il premio deve essere assegnato in un anno valido
 		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
 
-			role_prize = get_column('fp_prize', 'role', NEW.prize_id);
+			tmp = get_column('fp_prize', 'role', NEW.prize_id);
+			role_prize = CAST(tmp AS en_role)
 
 			IF (role_prize IS NULL) THEN		
 				RETURN NEW;
 			
 			ELSE
 
-				role_player = get_column('fp_player', 'role', NEW.player_id);
-			
-				IF (position(role_prize in role_player) > 0) THEN
+				tmp = get_column('fp_player', 'role', NEW.player_id);
+				role_player = CAST(tmp AS en_role_mix);
+
+				IF (position(CAST(role_prize AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
 				END IF;
 
@@ -1431,12 +1467,14 @@ AS
 $$
 DECLARE
 
-	type_prize	text;
+	tmp			text;
+
+	type_prize	en_award;
 
 BEGIN
 
-	type_prize = get_column('fp_prize', 'type', NEW.prize_id);
-
+	tmp = get_column('fp_prize', 'type', NEW.prize_id);
+	type_prize = CAST(tmp AS en_award);
 
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
@@ -1549,7 +1587,7 @@ DECLARE
 	gk_stat		boolean;
 	
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -1565,10 +1603,10 @@ BEGIN
 		tmp = get_column('fp_play', 'player_id', NEW.play_id);
 		id_player = CAST(tmp AS integer);
 
-		role_player = get_column('fp_player', 'role', id_player);
+		tmp = get_column('fp_player', 'role', id_player);
+		role_player = CAST(tmp AS en_role_mix);
 
-
-		IF (role_player LIKE '%GK%') THEN	
+		IF (CAST(role_player AS text) LIKE '%GK%') THEN	
 			RETURN NEW;
 		END IF;
 

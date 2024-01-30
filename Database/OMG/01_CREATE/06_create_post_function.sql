@@ -562,13 +562,7 @@ CREATE OR REPLACE FUNCTION not_role_trophy
 RETURNS SETOF integer
 AS
 $$
-DECLARE
-
-	tmp_role_player	TEXT;
-	
 BEGIN
-	
-	tmp_role_player = CAST(role_player AS TEXT);
 				
 	RETURN QUERY
 		SELECT
@@ -580,7 +574,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(CAST(role AS TEXT) in tmp_role_player);
+			0 = position(CAST(role AS text) in CAST(role_player AS text));
 	
 END;
 $$
@@ -612,13 +606,7 @@ CREATE OR REPLACE FUNCTION not_role_prize
 RETURNS SETOF integer
 AS
 $$
-DECLARE
-
-	tmp_role_player TEXT;
-
 BEGIN
-	
-	tmp_role_player = CAST(role_player AS TEXT);
 				
 	RETURN QUERY
 		SELECT
@@ -630,7 +618,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(CAST(role AS TEXT) in tmp_role_player);
+			0 = position(CAST(role AS TEXT) in CAST(role_player AS text));
 	
 END;
 $$
@@ -769,7 +757,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : delete_not_role_prize
  *
- * IN      : integer, en_role_mix
+ * IN      : integer, en_role
  * INOUT   : void
  * OUT     : void
  * RETURNS : void
@@ -780,7 +768,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION delete_not_role_prize
 (
 	id_player	integer,
-	role_player	en_role_mix
+	role_player	en_role
 )
 RETURNS void
 AS
@@ -810,7 +798,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : delete_not_role_trophy
  *
- * IN      : integer, en_role_mix
+ * IN      : integer, en_role
  * INOUT   : void
  * OUT     : void
  * RETURNS : void
@@ -821,7 +809,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION delete_not_role_trophy
 (
 	id_player	integer,
-	role_player	en_role_mix
+	role_player	en_role
 )
 RETURNS void
 AS
@@ -936,13 +924,18 @@ AS
 $$
 DECLARE
 
-	type_in_country		text;
-	type_super_country	text;
+	tmp					text;
+
+	type_in_country		en_country;
+	type_super_country	en_country;
 	
 BEGIN
 				
-	type_in_country = get_column('fp_country', 'type', id_in_country);
-	type_super_country = get_column('fp_country', 'type', id_super_country);
+	tmp = get_column('fp_country', 'type', id_in_country);
+	type_in_country = CAST(tmp AS en_country);
+
+	tmp = get_column('fp_country', 'type', id_super_country);
+	type_super_country = CAST(tmp AS en_country);
 
 	IF
 	(
@@ -984,16 +977,20 @@ AS
 $$
 DECLARE
 
-	type_country	text;
+	tmp				text;
+
+	type_country	en_country;
 
 BEGIN
 	
-	type_country = get_column('fp_country', 'type', id_country);
+	tmp = get_column('fp_country', 'type', id_country);
+	type_country = CAST(tmp AS en_country);
 
 	IF ('NATION' = type_country) THEN
 		RETURN TRUE;
 	END IF;
 	
+
 	RAISE NOTICE 'Country (id =  %) is not a nation', id_country;
 	RETURN FALSE;
 	
@@ -1034,12 +1031,15 @@ AS
 $$
 DECLARE
 
-	type_comp		text;
-	team_type_comp	text;
+	tmp				text;
+
+	type_comp		en_competition;
+	team_type_comp	en_team;
 
 BEGIN
 	
-	type_comp = get_column('fp_competition', 'type', id_comp);
+	tmp = get_column('fp_competition', 'type', id_comp);
+	type_comp = CAST(tmp AS en_competition);
 
 	IF ('LEAGUE' = type_comp) THEN
 	
@@ -1055,7 +1055,8 @@ BEGIN
 	
 	ELSIF ('CUP' = type_comp) THEN
 		
-		team_type_comp = get_column('fp_competition', 'team_type', id_comp);
+		tmp = get_column('fp_competition', 'team_type', id_comp);
+		team_type_comp = CAST(tmp AS en_team);
 
 		IF ('NATIONAL' = team_type_comp) THEN
 
@@ -1230,7 +1231,7 @@ DECLARE
 
 	tmp					text;
 
-	type_conf			text;
+	type_conf			en_country;
 
 	id_country			integer;
 
@@ -1241,7 +1242,8 @@ BEGIN
 	-- prendo il tipo del paese associato alla confederazione membro
 	tmp = get_column('fp_confederation', 'id_country', id_conf);
 	id_country = CAST(tmp AS integer);					
-	type_conf = get_column('fp_country', 'type', id_country);
+	tmp = get_column('fp_country', 'type', id_country);
+	type_conf = CAST(tmp AS en_country)
 
 	-- prendo la confederazione calcistica associata alla squadra di calcio
 	tmp = get_column('fp_team', 'confederation_id', id_team);
@@ -1278,6 +1280,7 @@ BEGIN
 		END IF;
 	END IF;
 	
+
 	RAISE NOTICE 'Team (id =  %) does not belong to confederation (id = %)', id_team, id_conf;
 	RETURN FALSE;
 	
@@ -1422,8 +1425,10 @@ AS
 $$
 DECLARE
 
+	tmp			text;
+
 	pos_player	integer;
-	role_pos	text;
+	role_pos	en_role;
 
 BEGIN
 	
@@ -1439,9 +1444,10 @@ BEGIN
 
 	LOOP
 
-		role_pos = get_column('fp_position', 'role', pos_player);
+		tmp = get_column('fp_position', 'role', pos_player);
+		role_pos = CAST(tmp AS en_role);	-- conversione superflua ma effettuata per coerenza
 
-		IF (0 = position(role_pos IN role_player)) THEN
+		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
 			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
 			RETURN TRUE;
 		END IF;
@@ -1522,15 +1528,20 @@ AS
 $$
 DECLARE
 
-	role_pos	text;
-	type_stat	text;
+	tmp			text;
+
+	role_pos	en_role;
+	type_stat	en_feature;
 
 BEGIN
 	
-	role_pos = get_column('fp_position', 'role', id_pos);
-	type_stat = get_column('fp_statistic', 'type', id_stat);
+	tmp = get_column('fp_position', 'role', id_pos);
+	role_pos = CAST(tmp AS en_role);
 
-	IF (position(role_pos in type_stat) > 0) THEN
+	tmp = get_column('fp_statistic', 'type', id_stat);
+	type_stat = CAST(tmp AS en_feature)
+
+	IF (position(CAST(role_pos AS text) in CAST(type_stat AS text)) > 0) THEN
 		RETURN TRUE;
 	END IF;
 
@@ -1570,14 +1581,20 @@ AS
 $$
 DECLARE
 
-	type_team		text;
-	type_team_comp	text;
+	tmp				text;
+
+	type_team		en_team;
+	type_team_comp	en_team;
 
 BEGIN
 
-	type_team = get_column('fp_team', 'type', id_team);
-	type_team_comp = get_column('fp_competition', 'team_type', id_comp);
-	
+	tmp = get_column('fp_team', 'type', id_team);
+	type_team = CAST(tmp AS en_team);
+
+	tmp = get_column('fp_competition', 'team_type', id_comp);
+	type_team_comp = CAST(tmp AS en_team);
+
+
 	IF (type_team = type_team_comp) THEN
 		RETURN TRUE;
 	ELSE
@@ -1624,12 +1641,13 @@ DECLARE
 
 	id_country		integer;
 
-	type_country	text;
-	type_comp		text;
+	type_country	en_country;
+	type_comp		en_competition;
 	
 BEGIN
 	
-	type_comp = get_column('fp_competition', 'type', id_comp);
+	tmp = get_column('fp_competition', 'type', id_comp);
+	type_comp = CAST(tmp AS en_competition)
 
 	-- se la competizione calcistica è una supercoppa
 	IF ('SUPER CUP' = type_comp) THEN
@@ -1652,7 +1670,8 @@ BEGIN
 		tmp = get_column('fp_confederation', 'country_id', id_conf);
 		id_country = CAST(tmp_text AS integer);
 
-		type_country = get_column('fp_country', 'type', id_country);
+		tmp = get_column('fp_country', 'type', id_country);
+		type_country = CAST(tmp AS en_country);
 
 		-- se si tratta di una coppa nazionale
 		IF ('NATION' = type_country) THEN
@@ -2158,6 +2177,40 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : list_player_position
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : SETOF integer
+ *
+ * DESC : Funzione che restituisce tutte le posizioni di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION list_player_position
+(
+	IN	id_player	integer
+)
+RETURNS SETOF integer
+AS
+$$
+BEGIN
+
+	RETURN QUERY
+		SELECT
+			position_id
+		FROM
+			fp_player_position
+		WHERE
+			player_id = id_player;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : new_role
  *
  * IN      : integer
@@ -2176,40 +2229,47 @@ AS
 $$
 DECLARE
 
-	role_player		text;
-	new_role_player	text;
+	tmp			text;	-- stringa temporanea per costruire il nuovo ruolo
+
+	role_pos	en_role;
+	role_player	en_role_mix;
 
 BEGIN
 
-	new_role_player = '';
+	tmp = '';
 
 	-- per ogni ruolo associato alle posizioni del calciatore
 	-- in ordine di enum
-	FOR role_player
+	FOR role_pos
 	IN
 		SELECT DISTINCT
-			pos.role
+			role
 		FROM
-			fp_player_position AS plpos
-			JOIN
-			fp_position AS pos
-				ON plpos.position_id = pos.id
+			fp_position
 		WHERE
-			plpos.player_id = id_player
+			id IN
+				(
+					SELECT
+						*
+					FROM
+						list_player_position(id_player)
+				)
 		ORDER BY
-			pos.role
+			role
 
 	LOOP
 
 		-- aggiungi alla combinazione di ruoli del giocatore
-		new_role_player = new_role_player || role_player;
-		new_role_player = new_role_player || '-';
+		tmp = tmp || CAST(role_player AS text);
+		tmp = tmp || '-';
 
 	END LOOP;
 
-	new_role_player = trim(new_role_player, '-');
+	tmp = trim(tmp, '-');
 
-	RETURN CAST(new_role_player AS en_role_mix);
+	role_player = CAST(tmp AS en_role_mix);
+
+	RETURN role_player;
 
 END;
 $$
@@ -2262,7 +2322,7 @@ LANGUAGE plpgsql;
  * IN      : integer, integer, smallint, integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : integer
+ * RETURNS : boolean
  *
  * DESC : Funzione che valuta se una squadra di calcio ha vinto un trofeo
  *        associato ad un'edizione di una competizione calcistica
@@ -2309,7 +2369,7 @@ LANGUAGE plpgsql;
  * IN      : integer, integer, smallint
  * INOUT   : void
  * OUT     : void
- * RETURNS : text
+ * RETURNS : en_season
  *
  * DESC : Funzione che restituisce il tipo di milianza dato in input
  *        un calciatore, una squadra di calcio e un anno di inzio militanza
@@ -2320,7 +2380,7 @@ CREATE OR REPLACE FUNCTION get_type_militancy
 	IN	id_team		integer,
 	IN	s_year		smallint
 )
-RETURNS text
+RETURNS en_season
 AS
 $$
 BEGIN
