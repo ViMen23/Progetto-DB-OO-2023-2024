@@ -1,7 +1,7 @@
 \newpage
 \subsection{Progettazione Concettuale}
 
-Riassumendo l'analisi dei requisiti fatta precedentemente, si e' giunti alla conclusione
+Riassumendo l'analisi dei requisiti fatta precedentemente, si è giunti alla conclusione
 che per modellare il nostro progetto avremo bisogno di:
 \begin{itemize}
 	\item una classe Country avente un nome unico e un codice ISO 3166-1-alpha-3,
@@ -73,7 +73,8 @@ in modo approfondito nel dizionario delle associazioni e nella documentazione in
 \newpage
 
 \subsection{Ristrutturazione del Class Diagram}
-
+%TODO: discorso sulla dissociazione della data di ritiro
+%TODO: discorso sull'inserimento dell'associazione ridondante su team della confederazione di appartenenza.
 \subsubsection{Analisi delle Ridondanze}
 
 Possiamo constatare che non ci sono attributi ridondanti.
@@ -469,7 +470,7 @@ centrale.
 			la data di nascita.\\
 		\medskip\textbf{foot}(enFoot):\\Rappresenta
 			il piede preferito di un Calciatore.\\
-		\medskip\textbf{role}(enRoleMix)[derivato, parziale]:
+		\medskip\textbf{role}(enRoleMix)[derivato]:
 			\\Rappresenta i possibili ruoli di gioco
 			di un Calciatore.
 	}

@@ -757,7 +757,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : delete_not_role_prize
  *
- * IN      : integer, en_role
+ * IN      : integer, en_role_mix
  * INOUT   : void
  * OUT     : void
  * RETURNS : void
@@ -768,7 +768,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION delete_not_role_prize
 (
 	id_player	integer,
-	role_player	en_role
+	role_player	en_role_mix
 )
 RETURNS void
 AS
@@ -798,7 +798,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : delete_not_role_trophy
  *
- * IN      : integer, en_role
+ * IN      : integer, en_role_mix
  * INOUT   : void
  * OUT     : void
  * RETURNS : void
@@ -809,7 +809,7 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION delete_not_role_trophy
 (
 	id_player	integer,
-	role_player	en_role
+	role_player	en_role_mix
 )
 RETURNS void
 AS
@@ -2061,7 +2061,7 @@ BEGIN
 
 
 	IF (NOT free) THEN
-		RAISE NOTICE 'Player (id = %) cannot have a militancy (type = %) starting in year % of type %', id_player, type_team, s_year, type;
+		RAISE NOTICE 'Player (id = %) cannot have a militancy (type = %) starting in year % of type %', id_player, type_team, s_year, type_year;
 	END IF;
 
 	RETURN free;
@@ -2260,7 +2260,7 @@ BEGIN
 	LOOP
 
 		-- aggiungi alla combinazione di ruoli del giocatore
-		tmp = tmp || CAST(role_player AS text);
+		tmp = tmp || CAST(role_pos AS text);
 		tmp = tmp || '-';
 
 	END LOOP;

@@ -10,12 +10,12 @@
 
  
 /*******************************************************************************
- * INSERT FP_CONFEDERATION
+ * INSERT CONFEDERATION
  ******************************************************************************/
 
 
 /*******************************************************************************
- * INSERT WORLD TYPE FP_CONFEDERATION
+ * INSERT WORLD TYPE CONFEDERATION
  ******************************************************************************/
 INSERT INTO fp_confederation (short_name, long_name, country_id, super_id)
 VALUES
@@ -72,7 +72,7 @@ VALUES
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * INSERT NATION TYPE FP_CONFEDERATION
+ * INSERT NATION TYPE CONFEDERATION
  ******************************************************************************/
 INSERT INTO fp_confederation (short_name, long_name, country_id, super_id)
 VALUES

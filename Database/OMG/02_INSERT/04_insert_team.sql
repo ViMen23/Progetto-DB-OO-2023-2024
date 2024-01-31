@@ -10,7 +10,7 @@
 
 
 /*******************************************************************************
- * INSERT FP_TEAM
+ * INSERT TEAM
  ******************************************************************************/
 
 
@@ -183,6 +183,24 @@ VALUES
 	'ITALIA',
 	get_id('@', 'fp_country@name@Italy'),
 	get_id('@', 'fp_confederation@long_name@Federazione Italiana Giuoco Calcio')
+),
+(
+	'CLUB',
+	'Fudbalski klub Vojvodina',
+	get_id('@', 'fp_country@name@Serbia'),
+	get_id('@', 'fp_confederation@long_name@Football Association of Serbia')
+),
+(
+	'CLUB',
+	'Koninklijke Racing Club Genk',
+	get_id('@', 'fp_country@name@Belgium'),
+	get_id('@', 'fp_confederation@long_name@Royal Belgian Football Association')
+),
+(
+	'CLUB',
+	'Al-Hilal SFC',
+	get_id('@', 'fp_country@name@Saudi Arabia'),
+	get_id('@', 'fp_confederation@long_name@Saudi Arabian Football Federation')
 );
 --------------------------------------------------------------------------------
 

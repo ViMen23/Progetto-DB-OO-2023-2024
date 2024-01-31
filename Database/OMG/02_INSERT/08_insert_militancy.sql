@@ -1,3 +1,18 @@
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * INSERT MILITANCY
+ ******************************************************************************/
+
 INSERT INTO fp_militancy (start_year, type, player_id, team_id, team_type)
 VALUES
 (
@@ -16,20 +31,6 @@ VALUES
 ),
 (
 	2018,
-	'FULL',
-	get_id
-	(
-		'@', 
-		'fp_player@name@Victor James@surname@Osimhen'
-		'@dob@1998-12-29@country_id@' ||
-		get_id('@', 'fp_country@name@Nigeria')
-	),
-	get_id('@', 'fp_team@name@VfL Wolfsburg'),
-	'CLUB'
-	
-),
-(
-	2019,
 	'FULL',
 	get_id
 	(
@@ -120,68 +121,277 @@ VALUES
 	'CLUB'
 ),
 (
-	daterange('2014-07-01', '2016-07-14', '[]'),
+	2014,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@Udinese Calcio')
+	get_id('@', 'fp_team@name@Udinese Calcio'),
+	'CLUB'
 ),
 (
-	daterange('2016-07-15', '2018-06-30', '[]'),
+	2015,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@SPAL')
+	get_id('@', 'fp_team@name@Udinese Calcio'),
+	'CLUB'
 ),
 (
-	daterange('2018-07-01', '2018-07-05', '[]'),
+	2016,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@Udinese Calcio')
+	get_id('@', 'fp_team@name@SPAL'),
+	'CLUB'
 ),
 (
-	daterange('2018-07-06', '2019-06-30', '[]'),
+	2017,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@SSC Napoli')
+	get_id('@', 'fp_team@name@SPAL'),
+	'CLUB'
 ),
 (
-	daterange('2019-07-01','2019-07-01', '[]'),
+	2018,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@Udinese Calcio')
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
 ),
 (
-	daterange('2019-07-02', '2024-06-30', '[]'),
+	2019,
+	'FULL',
 	get_id
 	(
 		'@',
 		'fp_player@name@Alex@surname@Meret'
 		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@code@ITA')
+		get_id('@', 'fp_country@name@Italy')
 	),
-	get_id('@', 'fp_team@name@SSC Napoli')
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
+),
+(
+	2020,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Alex@surname@Meret'
+		'@dob@1997-03-22@country_id@' ||
+		get_id('@', 'fp_country@name@Italy')
+	),
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
+),
+(
+	2021,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Alex@surname@Meret'
+		'@dob@1997-03-22@country_id@' ||
+		get_id('@', 'fp_country@name@Italy')
+	),
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
+),
+(
+	2022,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Alex@surname@Meret'
+		'@dob@1997-03-22@country_id@' ||
+		get_id('@', 'fp_country@name@Italy')
+	),
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
+),
+(
+	2023,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Alex@surname@Meret'
+		'@dob@1997-03-22@country_id@' ||
+		get_id('@', 'fp_country@name@Italy')
+	),
+	get_id('@', 'fp_team@name@SSC Napoli'),
+	'CLUB'
+),
+(
+	2013,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@Fudbalski klub Vojvodina'),
+	'CLUB'
+),
+(
+	2014,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@Koninklijke Racing Club Genk'),
+	'CLUB'
+),
+(
+	2015,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2016,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2017,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2018,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2019,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2020,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2021,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2022,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@SS Lazio'),
+	'CLUB'
+),
+(
+	2023,
+	'FULL',
+	get_id
+	(
+		'@',
+		'fp_player@name@Sergej@surname@Milinkovic-Savic'
+		'@dob@1995-02-27@country_id@' ||
+		get_id('@', 'fp_country@name@Spain')
+	),
+	get_id('@', 'fp_team@name@Al-Hilal SFC'),
+	'CLUB'
 );
+--------------------------------------------------------------------------------
+

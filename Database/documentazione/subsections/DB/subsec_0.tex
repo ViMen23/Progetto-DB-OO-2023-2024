@@ -2,96 +2,96 @@
 \subsection{Analisi dei Requisiti}
 
 Nell'affrontare questo progetto abbiamo deciso, su consiglio dei Docenti, di analizzare
-la traccia proposta da una prospettiva piu' ampia; lasciando ai calciatori un ruolo centrale
-ma inserendoli in un contesto piu' ampio e complesso che e' il mondo del calcio.
+la traccia proposta da una prospettiva più ampia; lasciando ai calciatori un ruolo centrale
+ma inserendoli in un contesto più ampio e complesso che è il mondo del calcio.
 
 Per riuscire nel nostro intento abbiamo quindi dovuto svolgere numerose indagini e ricerche
 sui principali siti di informazione riguardanti il calcio; nello specifico ci siamo basati sulle
 informazioni reperite su Wikipedia, siti ufficiali delle principali confederazioni calcistiche,
 Transfermarkt, Fantagazzetta, FootballManager e vari altri siti e giornali di stampo calcistico.
 
-Con non poca difficolta' abbiamo cercato di astrarre quelle che sembravano essere le
-caratteristiche fondamentali dei sistema calcio nel mondo e di inserirle, al meglio delle nostre
-possibilita', nel progetto assegnatoci.
+Con non poca difficoltà abbiamo cercato di astrarre quelle che sembravano essere le
+caratteristiche fondamentali del sistema calcio nel mondo e di inserirle, al meglio delle nostre
+possibilità, nel progetto assegnatoci.
 
 \bigskip
 \bigskip
 
-Una prima costante che abbiamo notato sin da subito e' che il sistema calcio e' un sistema
+Una prima costante che abbiamo notato sin da subito è che il sistema calcio è un sistema
 gerarchico strutturato come un vero e proprio governo e formato da confederazioni internazionali,
 federazioni nazionali e leghe calcistiche (es. FIFA, UEFA, COMBEBOL, FIGC, ...) che definiscono
 le regole del gioco, organizzano le varie competizioni e sono pertanto il fulcro di
 tutto il sistema calcio.
 
-Per semplicita' a partire da questo momento con il termine confederazione faremo
+Per semplicità a partire da questo momento con il termine confederazione faremo
 riferimento indistintamente a confederazioni, federazioni, leghe o qualasi altro ente
 organizzativo che abbia un ruolo nel governo del calcio.
 
-Ogni confederazione calcistica e' associata con uno ed un solo paese.\newline
-Come per le confederazioni anche il concetto di paese per noi sara' un'astrazione.
+Ogni confederazione calcistica è associata con uno ed un solo paese.\newline
+Come per le confederazioni anche il concetto di paese per noi sarà un'astrazione.
 Identificheremo come paese i concetti di regione, nazione, continente e persino il mondo intero.
 
 Data la relazione che intercorre tra un paese ed una confederazione calcistica, queste ultime,
 potranno essere suddivise in tre grandi categorie:
 \begin{itemize}
-	\item confederazioni nazionali;
-	\item confederazioni continentali;
-	\item confederazioni mondiali.
+	\item Confederazioni nazionali;
+	\item Confederazioni continentali;
+	\item Confederazioni mondiali.
 \end{itemize}
 
-Sottolineiamo che tale suddivisione e' in un certo senso una semplificazione in quanto
-esistono confederazioni subcontinentali, confederazioni regionali e cosi' via; ci e' sembrato
-superfuo entrare cosi' eccessivamente nello specifico visto il nostro scopo.
+Sottolineiamo che tale suddivisione è in un certo senso una semplificazione in quanto
+esistono confederazioni subcontinentali, confederazioni regionali e così via; ci è sembrato
+superfluo entrare così eccessivamente nello specifico visto il nostro scopo.
 
-Un'ulteriore costante che abbiamo ritrovato grazie alle nostre ricerche, e' che,
-come gia' accennato, le confederazioni sono organizzate in ordine gerarchico: le confederazioni
+Un'ulteriore costante che abbiamo ritrovato grazie alle nostre ricerche, è che,
+come già accennato, le confederazioni sono organizzate in ordine gerarchico: le confederazioni
 nazionali possono essere membro di confederazioni continentali che a loro volta possono essere
-membro di confederazioni mondiali (es. la FIGC e' membro della UEFA che a sua volta e' membro
+membro di confederazioni mondiali (es. la FIGC è membro della UEFA che a sua volta è membro
 della FIFA).
-Questo pattern si ripresenta per la quasi totalita' delle confederazioni che abbiamo osservato,
+Questo pattern si ripresenta per la quasi totalità delle confederazioni che abbiamo osservato,
 le uniche e rare eccezioni fanno capo a confederazioni minori isolate che quindi non sono in
 associazione con nessun'altra confederazione.
 
-E'indiscutibile che il concetto di confederazione calcistica, assieme a quello di paese,
+È indiscutibile che il concetto di confederazione calcistica, insieme a quello di paese,
 formano la base sulla quale si poggia tutta l'organizzazione calcistica mondiale.
 
 \bigskip
 \bigskip
 
 Come detto in precedenza, ciascuna confederazione organizza diverse competizioni calcistiche.
-Una competizione calcistica puo'essere analizzata sotto diversi punti di vista;
-se prendiamo come elemento discriminante il tipo di squadra che puo' parteciparvi, e' possibile
+Una competizione calcistica può essere analizzata sotto diversi punti di vista;
+se prendiamo come elemento discriminante il tipo di squadra che può parteciparvi, è possibile
 dividere le competizioni calcistiche in due grandi categorie:
 \begin{itemize}
-	\item competizioni per squadre di tipo club;
-	\item competizioni per squadre di tipo nazionale.
+	\item Competizioni per squadre di tipo club;
+	\item Competizioni per squadre di tipo nazionale.
 \end{itemize}
 
 Tuttavia, se come elemento discriminante prendiamo il format che caratterizza una competizione
 calcistica, queste possono essere raggruppate in tre grandi categorie:
 \begin{itemize}
-	\item competizioni di tipo campionato;
-	\item competizioni di tipo torneo;
-	\item competizioni di tipo supercoppa.
+	\item Competizioni di tipo campionato;
+	\item Competizioni di tipo torneo;
+	\item Competizioni di tipo supercoppa.
 \end{itemize}
 
-Ad essere onesti, l'analisi delle competizioni calcistiche e' ben piu' complessa di quella
+Ad essere onesti, l'analisi delle competizioni calcistiche è ben più complessa di quella
 che stiamo mostrando in questo momento, infatti una competizione ha anche una formula
 (girone all'italiana, eliminazione diretta, \dots),
-che puo' cambiare in base all'edizione della competizione che si sta considerando,
-ma anche un numero di partecipanti che e' variabile e pertanto risulta estremamente
+che può cambiare in base all'edizione della competizione che si sta considerando,
+ma anche un numero di partecipanti che è variabile e pertanto risulta estremamente
 complicato astrarre tutte queste informazioni.
-Nonostante le difficolta' abbiamo tentato di mantenere entrambi i punti di vista sulle
+Nonostante le difficoltà abbiamo tentato di mantenere entrambi i punti di vista sulle
 competizioni calcistiche e, lasciandoci guidare dalla traccia, abbiamo scelto di preferire una
 delle due prospettive.
 
-Nella traccia si fa un chiaro riferimento alle squadre di calcio e pertanto ci e' sembrato
-piu' corretto prediligere la prospettiva che mettesse in risalto questo aspetto maggiormente;
-pertanto per i nostri scopi il concetto di competizione calcistica sara' in primo luogo
-considerato in base al tipo di squadra che puo' parteciparvi e solo in secondo luogo
+Nella traccia si fa un chiaro riferimento alle squadre di calcio e pertanto ci è sembrato
+più corretto prediligere la prospettiva che mettesse in risalto questo aspetto maggiormente;
+pertanto per i nostri scopi il concetto di competizione calcistica sarà in primo luogo
+considerato in base al tipo di squadra che può parteciparvi e solo in secondo luogo
 considerato in base al tipo di format.
 
-Un'importante precisazione. Una confederazione nazionale non potra' organizzare competizioni
+Un'importante precisazione. Una confederazione nazionale non potrà organizzare competizioni
 calcistiche per squadre di tipo nazionale.
 
 \bigskip
@@ -99,15 +99,15 @@ calcistiche per squadre di tipo nazionale.
 
 Come ben noto, ogni competizione ha diverse edizioni ciascuna delle quali si svolge durante
 una specifica stagione calcistica.
-Dalle ricerche effettuate e' emerso che un'edizione di una competizione nell'ambito della
+Dalle ricerche effettuate è emerso che un'edizione di una competizione nell'ambito della
 confederazione che la organizza e rispetto alle altre competizioni dello stesso format
-ha un livello di importanza diverso (es. nella FIGC la serie A e' il campionato di primo
+ha un livello di importanza diverso (es. nella FIGC la serie A è il campionato di primo
 livello, la serie B il campionato di secondo livello).
-Quello che abbiamo osservato e' che non possa esistere una squadra di calcio che, nella
+Quello che abbiamo osservato è che non possa esistere una squadra di calcio che, nella
 stessa stagione, partecipi a due competizioni dello stesso format orgnizzate dalla stessa
 confederazione.
 
-Una stagione calcistica e' a tutti gli effetti l'unita' di misura temporale del calcio
+Una stagione calcistica è a tutti gli effetti l'unità di misura temporale del calcio
 e va a cavallo di due anni consecutivi (es. Stagione 2023-2024).
 
 In un'edizione di una competizione, chiaramente, si affrontano le diverse squadre di calcio
@@ -118,117 +118,117 @@ Un trofeo, quindi, risulta essere indissolubilmente legato ad un'edizione di una
 calcistica; d'altra parte, le nostre ricerche hanno evidenziato la presenza di trofei calcistici
 indipendenti dalle competizioni.
 
-Pertanto, dal punto di vista astratto, si e' reso necessario differenziare i trofei calcistici
+Pertanto, dal punto di vista astratto, si è reso necessario differenziare i trofei calcistici
 che per noi saranno sempre associati a delle competizioni, dai premi calcistici che invece
 saranno totalmente indipendenti.
 
-Un ultimo concetto chiave di tutto il mondo del calcio, e' ovviamenta la squadra di calcio.
+Un ultimo concetto chiave di tutto il mondo del calcio, è ovviamenta la squadra di calcio.
 Una squadra di calcio chiaramente appartiene ad una nazione e fa sempre parte della
-confederazione della nazioni a cui e' associata.
-D'altra parte e' immediato che una squadra di calcio possa far parte di due grandi categorie:
+confederazione della nazioni a cui è associata.
+D'altra parte è immediato che una squadra di calcio possa far parte di due grandi categorie:
 \begin{itemize}
-	\item squadra di calcio di tipo club;
-	\item squadra di calcio di tipo nazionale.
+	\item Squadra di calcio di tipo club;
+	\item Squadra di calcio di tipo nazionale.
 \end{itemize}
 
-Inoltre, grazie alle nostre ricerche, e' risultato che una squadra di calcio puo' partecipare
+Inoltre, grazie alle nostre ricerche, è risultato che una squadra di calcio può partecipare
 solo alle competizioni (del tipo di squadra corrispondente) organizzate dalla confederazione
-di cui e' membro o da confederazioni che contengono la confederazione calcistica di cui
-e' membro (es. la Salernitana, squadra di calcio di tipo club che appartiene alla FIGC,
-puo' partecipare alle competizioni organizzate dalla FIGC, ma anche a quelle organizzate
-dalla UEFA (Professore la Salernitana in Europa e' e rimarra' un sogno),
+di cui è membro o da confederazioni che contengono la confederazione calcistica di cui
+è membro (es. la Salernitana, squadra di calcio di tipo club che appartiene alla FIGC,
+può partecipare alle competizioni organizzate dalla FIGC, ma anche a quelle organizzate
+dalla UEFA (Professore la Salernitana in Europa è e rimarrà un sogno),
 ma non alle competizioni organizzate dalla COMBEBOL).
 
 Un'ultima precisazione. Abbiamo deciso di escludere dalla nostra trattazione sia il calcio
 femminile che il calcio giovanile visto che non avrebbe aggiunto nulla al progetto in questione.
 Sarebbe stato comunque gestibile in modo essenzialmente identico aggiungendo qualche attributo
-aggiuntivo; e' stato pertanto ritenuto uno sforzo inutile, come per altro il calcio che giocano.
+aggiuntivo; è stato pertanto ritenuto uno sforzo inutile, come per altro il calcio che giocano.
 \bigskip
 \bigskip
 
-Questo e', in estrema sintesi, l'arricchimento che abbiamo deciso di portare al nostro progetto.
-Ricordiamo pero' che il concetto cardine del nostro lavoro e' costruire un sistema informativo
+Questo è, in estrema sintesi, l'arricchimento che abbiamo deciso di portare al nostro progetto.
+Ricordiamo però che il concetto cardine del nostro lavoro è costruire un sistema informativo
 per la gestione di calciatori di tutto il mondo.
 
 Chiaramente le ricerche effettuate e le conclusioni a cui siamo giunti non sono semplicemente
-un esercizio di stile ma ci permetteranno di affinare, sebbene aumentando la complessita'
+un esercizio di stile ma ci permetteranno di affinare, sebbene aumentando la complessità
 generale, la descrizione dei calciatori.
 
 \bigskip
 \bigskip
 
-Ogni calciatore avra' una nazione di nascita e, possibilmente, varie nazionalita' e
-come indicato da traccia avra' una carriera durante la quale puo' militare in diverse
+Ogni calciatore avrà una nazione di nascita e, possibilmente, varie nazionalità e
+come indicato da traccia avrà una carriera durante la quale può militare in diverse
 squadre di calcio.
 
-A questo proposito e' doveroso fare una importante precisazione. Vista la natura piu' dettagliata
+A questo proposito è doveroso fare una importante precisazione. Vista la natura più dettagliata
 della nostra visione del progetto, anche il concetto di militanza di un calciatore in una squadra
-di calcio sara' piu' dettagliato.
+di calcio sarà più dettagliato.
 
-Il nostro concetto astratto di militanza sara' la presenza di un calciatore in una squadra
-durante una stagione calcistica, visto che, come detto, la stagione e' l'unita' di misura
+Il nostro concetto astratto di militanza sarà la presenza di un calciatore in una squadra
+durante una stagione calcistica, visto che, come detto, la stagione è l'unità di misura
 temporale del mondo calcio.
 
 Abbiamo deciso quindi di non considerare la data di inizio e fine di una certa militanza in
-quanto al nostro livello di dettaglio e' impossibile da gestire in modo coerente e corretto,
+quanto al nostro livello di dettaglio è impossibile da gestire in modo coerente e corretto,
 mantenendo anche un certo livello di astrazione.
 Infatti, a seguito delle nostre ricerche abbiamo notato che il regolamento vigente
 prevede che un cambio di militanza di un calciatore da una squadra ad un'altra
 possa avvenire solo in particolari periodi di tempo, detti "finestre di mercato",
 che per altro sono variabili in base alla stagione considerata e alla confederazione
-calcistica cui fanno riferimento; ecco il motivo per il quale non e' possibile utilizzare
+calcistica cui fanno riferimento; ecco il motivo per il quale non è possibile utilizzare
 le date come richiesto da traccia.
-Sarebbe impossibile controllare correttamente le variazioni della militanza di un calciatore
+Sarebbe, infatti, impossibile controllare correttamente le variazioni della militanza di un calciatore
 durante la sua carriera e potrebbe accadere che il calciatore in questione in una stagione
-possa militare in piu'squadre di quelle possibili secondo il regolamento.
+possa militare in più squadre di quelle possibili secondo il regolamento.
 
 Ultimo appunto riferito alla militanza. Per le militanze di calciatori in squadre di tipo
 nazionale abbiamo seguito le indicazioni del regolamento corrente secondo il quale un calciatore
-puo' giocare solo per una squadra nazionale in tutta la sua carriera. Tale squadra
-deve rappresentare una nazione per la quale il calciatore ha una nazionalita'.
+può giocare solo per una squadra nazionale in tutta la sua carriera. Tale squadra
+deve rappresentare una nazione per la quale il calciatore ha una nazionalità.
 
-Quello che abbiamo fatto e' quindi gestire le militanze per stagione calcistica.
+Quello che abbiamo fatto è quindi gestire le militanze per stagione calcistica.
 
-Durante una militanza in una squadra un calciatore potra' quindi giocare un certo numero di
+Durante una militanza in una squadra un calciatore potrà quindi giocare un certo numero di
 partite di un'edizione di una competizione cui partecipa la squadra in cui milita.
 
 Al gioco di un calciatore in un'edizione di una competizione calcistica saranno associate
 alcune statistiche.
 
-Dal punto di vista astratto una statistica di gioco e' un qualsiasi evento misurabile durante
+Dal punto di vista astratto una statistica di gioco è un qualsiasi evento misurabile durante
 una partita e statisticamente rilevante connesso col gioco del calcio
 (numero di goal, numero di assist, \dots).
 
-Similmente a quello che accade per una squadra anche un calciatore potra' vincere dei trofei.
+Similmente a quello che accade per una squadra anche un calciatore potrà vincere dei trofei.
 Come da traccia, tali trofei potranno essere individuali o di squadra.
-Pertanto un trofeo potra' appartenere a due categorie:
+Pertanto un trofeo potrà appartenere a due categorie:
 \begin{itemize}
-	\item trofeo individuale;
-	\item trofeo di squadra.
+	\item Trofeo individuale;
+	\item Trofeo di squadra.
 \end{itemize}
 
-Nello specifico i trofei di squadra saranno vinti da una squadra e per transitivita' poi
+Nello specifico i trofei di squadra saranno vinti da una squadra e per transitività poi
 assegnati a tutti i calciatori che militano nella suddetta squadra durante quella stagione.
 Quelli individuali, invece, potranno essere vinti solo dai singoli calciatori.
 
-Analogamente un calciatore potra' vincere premi calcistici individuali (Pallone d'oro).
+Analogamente un calciatore potrà vincere premi calcistici individuali (Pallone d'oro).
 Anche in questo caso, i premi potranno appartenere a due categorie:
 \begin{itemize}
-	\item premio individuale;
-	\item premio di squadra.
+	\item Premio individuale;
+	\item Premio di squadra.
 \end{itemize}
 
-Con l'importante differenza che un premio di squadra non potra' essere assegnato ad un
+Con l'importante differenza che un premio di squadra non potrà essere assegnato ad un
 calciatore.
 
-Un calciatore e' inoltre caratterizzato da una serie di posizioni di gioco che ne andranno a
+Un calciatore è inoltre caratterizzato da una serie di posizioni di gioco che ne andranno a
 definire i ruoli.
 
 Inoltre, come da traccia, ad un calciatore possono essere associati dei tag che mettono in
-risalto le specialita' del calciatore.
+risalto le specialità del calciatore.
 
-In aggiunta, prendendo ispirazione da FootballManager, si e' deciso di includere nella
+In aggiunta, prendendo ispirazione da FootballManager, si è deciso di includere nella
 descrizione del calciatore anche una serie di attributi che ne descrivessero in modo quantitativo
-le capacita' sotto diversi punti di vista.
+le capacità sotto diversi punti di vista.
 
-Infine, un calciatore potra' ritirarsi dal gioco in una certa data.
+Infine, un calciatore potrà ritirarsi dal gioco in una certa data.

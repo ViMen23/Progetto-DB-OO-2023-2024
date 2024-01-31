@@ -702,12 +702,12 @@ BEGIN
 	id_country_player = CAST(tmp AS integer);
 
 
-	IF (OLD.country_id <> id_country_player) THEN
-		RETURN OLD;
+	IF (OLD.country_id = id_country_player) THEN
+		RETURN NULL;
 	END IF;
 
 
-	RETURN NULL;
+	RETURN OLD;
 
 END;
 $$
