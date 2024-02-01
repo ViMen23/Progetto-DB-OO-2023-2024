@@ -24,10 +24,11 @@
  ******************************************************************************/
 CREATE TABLE fp_country
 (
-	id		serial		NOT NULL,
-	type	en_country	NOT NULL,
-	code	dm_code		NOT NULL,
-	name	dm_string	NOT NULL
+	id			serial		NOT NULL,
+	type		en_country	NOT NULL,
+	code		dm_code		NOT NULL,
+	name		dm_string	NOT NULL,
+	super_id	integer		
 );
 --------------------------------------------------------------------------------
 
@@ -73,6 +74,25 @@ UNIQUE
 );
 --------------------------------------------------------------------------------
 
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_country TABLE
+ * NAME : country_fk_country
+ *
+ * DESC : Un paese fa riferimento al paese che lo contiene
+ ******************************************************************************/
+ALTER TABLE fp_country
+ADD CONSTRAINT country_fk_country
+FOREIGN KEY
+(
+	super_id
+)
+REFERENCES fp_country
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -553,7 +573,7 @@ CREATE TABLE fp_player
 	dob			dm_date		NOT NULL, -- data di nascita
 	country_id	integer		NOT NULL, -- id del paese di nascita
 	foot		en_foot		NOT NULL, -- piede preferito
-	role		en_role_mix	NOT NULL		
+	role		en_role_mix		
 );
 --------------------------------------------------------------------------------
 
@@ -865,10 +885,10 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_tag
 (
-	id			serial			NOT NULL,
-	type		en_feature		NOT NULL,
-	name		dm_string		NOT NULL,
-	description	dm_description
+	id			serial		NOT NULL,
+	goalkeeper	boolean		NOT NULL,
+	positive	boolean		NOT NULL,
+	name		dm_string	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -899,21 +919,6 @@ UNIQUE
 	name
 );
 --------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_tag TABLE
- * NAME : uq_tag_description
- *
- * DESC : Non possono esistere tag diversi con la stessa descrizione
- ******************************************************************************/
-ALTER TABLE	fp_tag
-ADD CONSTRAINT uq_tag_description
-UNIQUE
-(
-	description
-);
---------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -1125,117 +1130,52 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_attribute
+ * NAME : fp_attribute_mental
  *
- * DESC : Tabella contentente informazioni sugli attributi che
- *        possono essere associati ad un calciatore
+ * DESC : TODO
  ******************************************************************************/
-CREATE TABLE fp_attribute
+CREATE TABLE fp_attribute_mental
 (
-	id			serial			NOT NULL,
-	type		en_feature		NOT NULL,
-	name		dm_string		NOT NULL,
-	description	dm_description
+	player_id		integer			NOT NULL			 ,
+	aggrssion		dm_attribute	NOT NULL	DEFAULT 0,
+	anticipation	dm_attribute	NOT NULL	DEFAULT 0,
+	bravery			dm_attribute	NOT NULL	DEFAULT 0,
+	composure		dm_attribute	NOT NULL	DEFAULT 0,
+	concentration	dm_attribute	NOT NULL	DEFAULT 0,
+	decision		dm_attribute	NOT NULL	DEFAULT 0,
+	determination	dm_attribute	NOT NULL	DEFAULT 0,
+	flair			dm_attribute	NOT NULL	DEFAULT 0,
+	leadership		dm_attribute	NOT NULL	DEFAULT 0,
+	off_the_ball	dm_attribute	NOT NULL	DEFAULT 0,
+	positioning		dm_attribute	NOT NULL	DEFAULT 0,
+	teamwork		dm_attribute	NOT NULL	DEFAULT 0,
+	vision			dm_attribute	NOT NULL	DEFAULT 0,
+	work_rate		dm_attribute	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute TABLE   
- * NAME : pk_attribute
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_mental TABLE   
+ * NAME : pk_attribute_mental
  *
- * DESC : Non possono esistere attributi diversi con lo stesso id
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE fp_attribute
-ADD CONSTRAINT pk_attribute
+ALTER TABLE fp_attribute_mental
+ADD CONSTRAINT pk_attribute_mental
 PRIMARY KEY
 (
-	id
+	player_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_attribute TABLE
- * NAME : uq_attribute_name
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute TABLE
+ * NAME : attribute_mental_fk_player
  *
- * DESC : Non possono esistere attributi diversi con lo stesso nome
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	fp_attribute
-ADD CONSTRAINT uq_attribute_name
-UNIQUE
-(
-	name
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_attribute TABLE
- * NAME : uq_attribute_description
- *
- * DESC : Non possono esistere attributi diversi con la stessa descrizione
- ******************************************************************************/
-ALTER TABLE	fp_attribute
-ADD CONSTRAINT uq_attribute_description
-UNIQUE
-(
-	description
-);
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_player_attribute
- *
- * DESC : Tabella contentente informazioni sugli attributi
- *        associati ad un calciatore
- ******************************************************************************/
-CREATE TABLE fp_player_attribute
-(
-	player_id		integer		NOT NULL,
-	attribute_id	integer		NOT NULL,
-	score			dm_usint	NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_player_attribute TABLE  
- * NAME : pk_player_attribute
- *
- * DESC : Un calciatore può essere associato ad un attributo al più una volta
- ******************************************************************************/
-ALTER TABLE fp_player_attribute
-ADD CONSTRAINT pk_player_attribute
-PRIMARY KEY
-(
-	player_id,
-	attribute_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_player_attribute TABLE  
- * NAME : ck_player_attribute
- *
- * DESC : Controllo che il punteggio sia minore o uguale di 100
- ******************************************************************************/
-ALTER TABLE fp_player_attribute
-ADD CONSTRAINT ck_player_attribute
-CHECK
-(
-	score <= 100
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_player_attribute TABLE
- * NAME : player_attribute_fk_player
- *
- * DESC : L'associazione di un calciatore ad un attributo
- *        fa riferimento al calciatore in questione
- ******************************************************************************/
-ALTER TABLE fp_player_attribute
-ADD CONSTRAINT player_attribute_fk_player
+ALTER TABLE fp_attribute_mental
+ADD CONSTRAINT attribute_mental_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -1248,87 +1188,285 @@ ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
+
+
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_player_attribute TABLE
- * NAME : player_attribute_fk_attribute
+ * TYPE : TABLE
+ * NAME : fp_attribute_physical
  *
- * DESC : L'associazione di un calciatore ad un attributo
- *        fa riferimento all'attributo in questione
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE fp_player_attribute
-ADD CONSTRAINT player_attribute_fk_attribute
+CREATE TABLE fp_attribute_physical
+(
+	player_id		integer			NOT NULL			 ,
+	acceleration	dm_attribute	NOT NULL	DEFAULT 0,
+	agility			dm_attribute	NOT NULL	DEFAULT 0,
+	balance			dm_attribute	NOT NULL	DEFAULT 0,
+	jumping_reach	dm_attribute	NOT NULL	DEFAULT 0,
+	natural_fitness	dm_attribute	NOT NULL	DEFAULT 0,
+	pace			dm_attribute	NOT NULL	DEFAULT 0,
+	stamina			dm_attribute	NOT NULL	DEFAULT 0,
+	strenght		dm_attribute	NOT NULL	DEFAULT 0,
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_physical TABLE   
+ * NAME : pk_attribute_physical
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_physical
+ADD CONSTRAINT pk_attribute_physical
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_physical TABLE
+ * NAME : attribute_physical_fk_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_physical
+ADD CONSTRAINT attribute_physical_fk_player
 FOREIGN KEY
 (
-	attribute_id
+	player_id
 )
-REFERENCES fp_attribute
+REFERENCES fp_player
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_attribute_technical
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE fp_attribute_technical
+(
+	player_id			integer			NOT NULL			 ,
+	corners				dm_attribute	NOT NULL	DEFAULT 0,
+	crossing			dm_attribute	NOT NULL	DEFAULT 0,
+	dribbling			dm_attribute	NOT NULL	DEFAULT 0,
+	finishing			dm_attribute	NOT NULL	DEFAULT 0,
+	first_touch			dm_attribute	NOT NULL	DEFAULT 0,
+	free_kick_taking	dm_attribute	NOT NULL	DEFAULT 0,
+	heading				dm_attribute	NOT NULL	DEFAULT 0,
+	long_shots			dm_attribute	NOT NULL	DEFAULT 0,
+	long_throws			dm_attribute	NOT NULL	DEFAULT 0,
+	marking				dm_attribute	NOT NULL	DEFAULT 0,
+	passing				dm_attribute	NOT NULL	DEFAULT 0,
+	penality_taking		dm_attribute	NOT NULL	DEFAULT 0,
+	tackling			dm_attribute	NOT NULL	DEFAULT 0,
+	technique			dm_attribute	NOT NULL	DEFAULT 0
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_technical TABLE   
+ * NAME : pk_attribute_technical
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_technical
+ADD CONSTRAINT pk_attribute_technical
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_technical TABLE
+ * NAME : attribute_technical_fk_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_technical
+ADD CONSTRAINT attribute_technical_fk_player
+FOREIGN KEY
+(
+	player_id
+)
+REFERENCES fp_player
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_attribute_goalkeeping
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE fp_attribute_goalkeeping
+(
+	player_id				integer			NOT NULL			 ,
+	aerial_reach			dm_attribute	NOT NULL	DEFAULT 0,
+	command_of_area			dm_attribute	NOT NULL	DEFAULT 0,
+	communication			dm_attribute	NOT NULL	DEFAULT 0,
+	eccentricity			dm_attribute	NOT NULL	DEFAULT 0,
+	first_touch				dm_attribute	NOT NULL	DEFAULT 0,
+	handling				dm_attribute	NOT NULL	DEFAULT 0,
+	kicking					dm_attribute	NOT NULL	DEFAULT 0,
+	one_on_ones				dm_attribute	NOT NULL	DEFAULT 0,
+	passing					dm_attribute	NOT NULL	DEFAULT 0,
+	punching_tencency		dm_attribute	NOT NULL	DEFAULT 0,
+	reflexes				dm_attribute	NOT NULL	DEFAULT 0,
+	rushing_out_tendency	dm_attribute	NOT NULL	DEFAULT 0,
+	throwing				dm_attribute	NOT NULL	DEFAULT 0
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_goalkeeping TABLE   
+ * NAME : pk_attribute_goalkeeping
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_goalkeeping
+ADD CONSTRAINT pk_attribute_goalkeeping
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_goalkeeping TABLE
+ * NAME : attribute_goalkeeping_fk_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_goalkeeping
+ADD CONSTRAINT attribute_goalkeeping_fk_player
+FOREIGN KEY
+(
+	player_id
+)
+REFERENCES fp_player
+(
+	id
+)
+ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
 
 
+
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_statistic
+ * NAME : fp_statistic_general
  *
- * DESC : Tabella contentente informazioni sulle statistiche che
- *        possono essere associate ad un calciatore
+ * DESC : TODO
  ******************************************************************************/
-CREATE TABLE fp_statistic
+CREATE TABLE fp_statistic_general
 (
-	id			serial			NOT NULL,
-	goalkeeper	boolean 		NOT NULL,
-	name		dm_string		NOT NULL,
-	description	dm_description
+	play_id			serial		NOT NULL			 ,
+	goal_scored		dm_usint 	NOT NULL	DEFAULT 0,
+	assist			dm_usint 	NOT NULL	DEFAULT 0,
+	yellow_card		dm_usint 	NOT NULL	DEFAULT 0,
+	red_card		dm_usint 	NOT NULL	DEFAULT 0,
+	penalty_scored	dm_usint 	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic TABLE  
- * NAME : pk_statistic
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_general TABLE  
+ * NAME : pk_statistic_general
  *
- * DESC : Non possono esistere statistiche diverse con lo stesso id
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE fp_statistic
-ADD CONSTRAINT pk_statistic
+ALTER TABLE fp_statistic_general
+ADD CONSTRAINT pk_statistic_general
 PRIMARY KEY
 (
+	play_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_general TABLE
+ * NAME : statistic_general_fk_play
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_statistic_general
+ADD CONSTRAINT statistic_general_fk_play
+FOREIGN KEY
+(
+	play_id
+)
+REFERENCES fp_play
+(
 	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_statistic_goalkeeper
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE fp_statistic_goalkeeper
+(
+	play_id			serial		NOT NULL			 ,
+	goal_conceded	dm_usint 	NOT NULL	DEFAULT 0,
+	penalty_saved	dm_usint 	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_statistic TABLE
- * NAME : uq_statistic_name
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_goalkeeper TABLE  
+ * NAME : pk_statistic_goalkeeper
  *
- * DESC : Non possono esistere statistiche diverse con lo stesso nome
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	fp_statistic
-ADD CONSTRAINT uq_statistic_name
-UNIQUE
+ALTER TABLE fp_statistic_goalkeeper
+ADD CONSTRAINT pk_statistic_goalkeeper
+PRIMARY KEY
 (
-	name
+	play_id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_statistic TABLE
- * NAME : uq_statistic_description
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_goalkeeper TABLE
+ * NAME : statistic_goalkeeper_fk_play
  *
- * DESC : Non possono esistere statistiche diverse con la stessa descrizone
+ * DESC : TODO
  ******************************************************************************/
-ALTER TABLE	fp_statistic
-ADD CONSTRAINT uq_statistic_description
-UNIQUE
+ALTER TABLE fp_statistic_goalkeeper
+ADD CONSTRAINT statistic_goalkeeper_fk_play
+FOREIGN KEY
 (
-	description
-);
+	play_id
+)
+REFERENCES fp_play
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -1342,8 +1480,7 @@ CREATE TABLE fp_trophy
 	id			serial		NOT NULL,
 	type		en_award	NOT NULL,
 	role		en_role				,
-	name		dm_string	NOT NULL,
-	description	dm_string
+	name		dm_string	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -1390,23 +1527,6 @@ CHECK
 	('TEAM' = type AND role IS NULL)
 );
 --------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_trophy TABLE
- * NAME : uq_trophy_description
- *
- * DESC : Non possono esistere trofei calcistici diversi
- *        con la stessa descrizione
- ******************************************************************************/
-ALTER TABLE fp_trophy
-ADD CONSTRAINT uq_trophy_description
-UNIQUE
-(
-	description
-);
---------------------------------------------------------------------------------
-
-
 
 
 /*******************************************************************************
@@ -1616,7 +1736,6 @@ CREATE TABLE fp_prize
 	type		en_award		NOT NULL,
 	role		en_role					,
 	name		dm_string		NOT NULL,
-	description	dm_description			,
 	given		dm_string		NOT NULL  -- ente che assegna il premio calcistico
 );
 --------------------------------------------------------------------------------
@@ -1646,21 +1765,6 @@ ADD CONSTRAINT uq_prize_name
 UNIQUE
 (
 	name
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_prize TABLE
- * NAME : uq_prize_description
- *
- * DESC : Non possono esistere premi calcistici diversi
- *        con la stessa descrizione
- ******************************************************************************/
-ALTER TABLE fp_prize
-ADD CONSTRAINT uq_prize_description
-UNIQUE
-(
-	description
 );
 --------------------------------------------------------------------------------
 
@@ -1845,12 +1949,12 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_play
 (
-	id				serial		NOT NULL,
-	start_year		dm_year		NOT NULL,
-	competition_id	integer		NOT NULL,
-	team_id			integer		NOT NULL,
-	player_id		integer		NOT NULL,
-	match			dm_usint	NOT NULL
+	id				serial		NOT NULL			 ,
+	start_year		dm_year		NOT NULL			 ,
+	competition_id	integer		NOT NULL			 ,
+	team_id			integer		NOT NULL			 ,
+	player_id		integer		NOT NULL			 ,
+	match			dm_usint	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
@@ -1885,22 +1989,6 @@ UNIQUE
 	player_id
 );
 --------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - ck_play TABLE  
- * NAME : ck_play
- *
- * DESC : Il numero di presenze di un calciatore in un gioco
- *        deve essere maggiore di zero
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT ck_play
-CHECK
-(
-	match > 0
-);
---------------------------------------------------------------------------------
-
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
@@ -1951,81 +2039,6 @@ REFERENCES fp_militancy
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_play_statistic
- *
- * DESC : Tabella contentente informazioni sulle statistiche associate
- *        ad un gioco
- ******************************************************************************/
-CREATE TABLE fp_play_statistic
-(
-	play_id			integer		NOT NULL,
-	statistic_id	integer		NOT NULL,
-	score			dm_usint	NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_play_statistic TABLE  
- * NAME : pk_play_statistic
- *
- * DESC : Un gioco può essere associato al più una volta ad una statistica
- ******************************************************************************/
-ALTER TABLE fp_play_statistic
-ADD CONSTRAINT pk_play_statistic
-PRIMARY KEY
-(
-	play_id,
-	statistic_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
- * NAME : play_statistic_fk_play
- *
- * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento al gioco in questione
- ******************************************************************************/
-ALTER TABLE fp_play_statistic
-ADD CONSTRAINT play_statistic_fk_play
-FOREIGN KEY
-(
-	play_id
-)
-REFERENCES fp_play
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_play_statistic TABLE
- * NAME : play_statistic_fk_statistic
- *
- * DESC : L'associazione di un gioco ad una statistica
- *        fa riferimento alla statistica in questione
- ******************************************************************************/
-ALTER TABLE fp_play_statistic
-ADD CONSTRAINT play_statistic_fk_statistic
-FOREIGN KEY
-(
-	statistic_id
-)
-REFERENCES fp_statistic
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
 
 
 

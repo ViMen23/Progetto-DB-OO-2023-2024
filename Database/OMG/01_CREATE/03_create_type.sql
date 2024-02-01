@@ -61,31 +61,6 @@ CREATE TYPE en_country AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : en_feature
- *
- * DESC : Enum delle possibili tipologie di attributo per un calciatore
- ******************************************************************************/
-CREATE TYPE en_feature AS ENUM
-(
-	'GOALKEEPER',
-	'KEY ATTRIBUTE',
-	'MEDICAL',
-	'MENTAL',
-	'PHYSICAL',
-	'SET PIECE',
-	'TACTICAL - ATTACKING',
-	'TACTICAL - DEFENDING',
-	'TEAM WORK',
-	'TECHNICAL - ATTACKING',
-	'TECHNICAL - DEFENDING',
-	'TECHNICAL - IN POSSESSION',
-	'TECHNICAL - OUT POSSESSION'
-);
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
  * NAME : en_foot
  *
  * DESC : Enum delle possibili tipologie di piede preferito di un calciatore
