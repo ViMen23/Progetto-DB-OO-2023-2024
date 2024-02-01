@@ -210,7 +210,8 @@ CREATE TABLE fp_team
 	id					serial		NOT NULL,
 	type				en_team 	NOT NULL,
 	country_id			integer		NOT NULL,
-	name				dm_alnum	NOT NULL,
+	long_name			dm_alnum	NOT NULL,
+	short_name			dm_code		NOT NULL,
 	confederation_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
@@ -239,7 +240,7 @@ ALTER TABLE	fp_team
 ADD CONSTRAINT uq_team
 UNIQUE
 (
-	name
+	long_name
 );
 --------------------------------------------------------------------------------
 
@@ -573,7 +574,8 @@ CREATE TABLE fp_player
 	dob			dm_date		NOT NULL, -- data di nascita
 	country_id	integer		NOT NULL, -- id del paese di nascita
 	foot		en_foot		NOT NULL, -- piede preferito
-	role		en_role_mix		
+	position_id	integer		NOT NULL,
+	role		en_role_mix	NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -622,6 +624,26 @@ FOREIGN KEY
 	country_id
 )
 REFERENCES fp_country
+(
+	id
+)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
+ * NAME : player_fk_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	fp_player
+ADD CONSTRAINT player_fk_position
+FOREIGN KEY
+(
+	position_id
+)
+REFERENCES fp_position
 (
 	id
 )
