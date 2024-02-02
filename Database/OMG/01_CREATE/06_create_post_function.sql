@@ -17,6 +17,317 @@
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : world_exists
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION world_exists
+(
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+				
+	RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			fp_country
+		WHERE
+			type = 'WORLD'
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : all_continent_exists
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION all_continent_exists
+(
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+				
+	RETURN
+	(
+		SELECT
+			count(*) >= 7
+		FROM
+			fp_country
+		WHERE
+			type = 'CONTINENT'
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : place_for_country
+ *
+ * IN      : en_country
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION place_for_country
+(
+	IN	type_country	en_country
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+				
+	IF ('NATION' = type_country) THEN
+		RETURN TRUE;
+	ELSIF ('CONTINENT' = type_country) THEN
+		RETURN (NOT all_continent_exists());
+	ELSIF ('WORLD' = type_country) THEN
+		RETURN (NOT world_exists());
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : conf_from_country
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION conf_from_country
+(
+	IN	id_country	integer
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	id_conf		integer;
+
+BEGIN
+
+	id_conf = NULL;
+
+	SELECT
+		id
+	INTO
+		id_conf
+	FROM
+		fp_confederation
+	WHERE
+		country_id = id_country;
+
+
+	RETURN id_conf;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_national_team
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_national_team
+(
+	IN	id_country	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	rec_country	record;
+
+	id_conf		integer;
+
+BEGIN
+
+	rec_country = get_record('fp_country', id_country);
+
+	IF (rec_country.type <> 'NATION') THEN
+		RAISE NOTICE 'Error. Cannot create national team. Country (id = %) is not a nation', id_country;
+		RETURN;
+	END IF;
+
+
+	INSERT INTO
+		fp_team
+		(
+			type,
+			country_id,
+			long_name,
+			short_name
+		)
+	VALUES
+	(
+		'NATIONAL',
+		id_country,
+		rec_country.name,
+		rec_country.code
+	);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_all_gk
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_all_gk
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+BEGIN
+
+	PERFORM delete_gk_tag(id_player);
+
+
+	DELETE FROM
+		fp_attribute_goalkeeping
+	WHERE
+		player_id = id_player;
+
+
+	DELETE FROM
+		fp_statistic_goalkeeper
+	WHERE
+		play_id IN
+					(
+						SELECT
+							*
+						FROM
+							player_play(id_player)
+					);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_all_gk
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_all_gk
+(
+	IN	id_player	integer
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	id_play	integer;
+
+BEGIN
+
+	INSERT INTO
+		fp_attribute_goalkeeping
+		(
+			player_id
+		)
+	VALUES
+	(
+		id_player
+	);
+
+	
+	FOR id_play
+	IN
+		SELECT
+			*
+		FROM
+			player_play(id_player)
+	
+	LOOP
+
+		INSERT INTO
+			fp_statistic_goalkeeper
+			(
+				play_id
+			)
+		VALUES
+		(
+			id_play
+		);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : min_age
  *
  * IN      : void
@@ -405,38 +716,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : gk_attributes
- *
- * IN      : void
- * INOUT   : void
- * OUT     : void
- * RETURNS : SETOF integer
- *
- * DESC : Funzione che restituisce gli attributi di tipo portiere
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION gk_attributes
-(
-)
-RETURNS SETOF integer
-AS
-$$
-BEGIN
-				
-	RETURN QUERY
-		SELECT
-			id
-		FROM
-			fp_attribute
-		WHERE
-			type = 'GOALKEEPER';
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -462,39 +741,6 @@ BEGIN
 			id
 		FROM
 			fp_tag
-		WHERE
-			type = 'GOALKEEPER';
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : gk_statistics
- *
- * IN      : void
- * INOUT   : void
- * OUT     : void
- * RETURNS : SETOF integer
- *
- * DESC : Funzione che restituisce le statistiche di tipo portiere
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION gk_statistics
-(
-)
-RETURNS SETOF integer
-AS
-$$
-BEGIN
-				
-	RETURN QUERY
-		SELECT
-			id
-		FROM
-			fp_statistic
 		WHERE
 			goalkeeper = TRUE;
 	
@@ -619,93 +865,6 @@ BEGIN
 			role IS NOT NULL
 			AND
 			0 = position(CAST(role AS TEXT) in CAST(role_player AS text));
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : delete_gk_attribute
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : void
- *
- * DESC : Funzione che elimina tutte le associazioni ad attributi di tipo
- *        portiere di un calciatore
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION delete_gk_attribute
-(
-	id_player	integer
-)
-RETURNS void
-AS
-$$
-BEGIN
-				
-	DELETE FROM
-			fp_player_attribute
-		WHERE
-			player_id = id_player
-			AND
-			attribute_id IN
-							(
-								SELECT
-									*
-								FROM
-									gk_attributes()
-							);
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : delete_gk_statistic
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : void
- *
- * DESC : Funzione che elimina tutte le associazioni a statistiche di tipo
- *        portiere di un calciatore
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION delete_gk_statistic
-(
-	id_player	integer
-)
-RETURNS void
-AS
-$$
-BEGIN
-				
-	DELETE FROM
-			fp_play_statistic
-		WHERE
-			play_id IN
-						(
-							SELECT
-								*
-							FROM
-								player_play(id_player)
-						
-						)
-			AND
-			statistic_id IN 
-							(
-								SELECT
-									*
-								FROM
-									gk_statistics()
-							);
 	
 END;
 $$
@@ -907,47 +1066,37 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : can_be_inside
  *
- * IN      : integer, integer
+ * IN      : en_country, en_country
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un paese può essere contenuto in un altro
+ * DESC : Funzione che valuta se una tipologia di paese può essere contenuta
+ *        in un'altra tipologia
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION can_be_inside
 (
-	IN	id_in_country		integer,	-- paese contenuto
-	IN	id_super_country	integer		-- paese contenente
+	IN	type_in_country		en_country,	-- tipo paese contenuto
+	IN	type_super_country	en_country	-- tipo paese contenente
 )
 RETURNS boolean
 AS
 $$
-DECLARE
-
-	tmp					text;
-
-	type_in_country		en_country;
-	type_super_country	en_country;
-	
 BEGIN
-				
-	tmp = get_column('fp_country', 'type', id_in_country);
-	type_in_country = CAST(tmp AS en_country);
-
-	tmp = get_column('fp_country', 'type', id_super_country);
-	type_super_country = CAST(tmp AS en_country);
 
 	IF
 	(
 		('NATION' = type_in_country AND 'CONTINENT' = type_super_country)
 		OR
 		('CONTINENT' = type_in_country AND 'WORLD' = type_super_country)
+		OR
+		('WORLD' = type_in_country AND type_super_country IS NULL)
 	)
 	THEN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE 'Country (id = %) cannot be inside of country (id = %)', id_in_country, id_super_country;
+	RAISE NOTICE '% cannot be inside %', type_in_country, type_super_country;
 	RETURN FALSE;
 	
 END;
@@ -1213,10 +1362,6 @@ LANGUAGE plpgsql;
  *
  * DESC : Funzione che valuta se una squadra di calcio appartiene ad una
  *        confederazione calcistica membro di un'altra confederazione.
- *        
- *        NOTA: Per non appesantire eccessivamente la notazione in questa
- *              funzione useremo impropriamente il nome di variabile "type_conf"
- *              per denotare il tipo del paese associato alla confederazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION belong_to
 (
@@ -1229,58 +1374,42 @@ AS
 $$
 DECLARE
 
-	tmp					text;
+	tmp				text;
 
-	type_conf			en_country;
+	type_conf		en_country;
 
-	id_country			integer;
+	id_country		integer;
 
-	id_conf_to_check	integer;
+	id_conf_team	integer;
 	
 BEGIN
 
-	-- prendo il tipo del paese associato alla confederazione membro
-	tmp = get_column('fp_confederation', 'id_country', id_conf);
+	-- prendo la confederazione di cui la squadra e' membro
+	tmp = get_column('fp_team', 'country_id', id_team);
 	id_country = CAST(tmp AS integer);					
-	tmp = get_column('fp_country', 'type', id_country);
-	type_conf = CAST(tmp AS en_country);
+	
+	id_conf_team = conf_from_country(id_country);
 
-	-- prendo la confederazione calcistica associata alla squadra di calcio
-	tmp = get_column('fp_team', 'confederation_id', id_team);
-	id_conf_to_check = CAST(tmp AS integer);
 
-	-- se la confederazione in input è nazionale
-	IF ('NATION' = type_conf) THEN
-		IF (id_conf_to_check = id_conf) THEN
-			RETURN TRUE;
-		END IF;
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
 	END IF;
 
-	-- prendo la confederazione calcistica contenente quella
-	-- associata alla squadra di calcio
-	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
-	id_conf_to_check = CAST(tmp AS integer);
-	
-	-- se la confederazione in input è continentale
-	IF ('CONTINENT' = type_conf) THEN
-		IF (id_conf_to_check = id_conf) THEN
-			RETURN TRUE;
-		END IF;
-	END IF;
-	
-	-- prendo la confederazione calcistica che contiene quella contenente quella
-	-- associata alla squadra di calcio
-	tmp = get_column('fp_confederation', 'super_id', id_conf_to_check);
-	id_conf_to_check = CAST(tmp AS integer);
-	
-	-- se la confederazione in input è mondiale
-	IF ('WORLD' = type_conf) THEN
-		IF (id_conf_to_check = id_conf) THEN
-			RETURN TRUE;
-		END IF;
-	END IF;
-	
+	tmp = get_column('fp_confederation', 'super_id', id_conf_team);
+	id_conf_team = CAST(tmp AS integer);
 
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
+	END IF;
+
+	tmp = get_column('fp_confederation', 'super_id', id_conf_team);
+	id_conf_team = CAST(tmp AS integer);
+
+	IF (id_conf_team = id_conf) THEN
+		RETURN TRUE;
+	END IF;
+	
+	
 	RAISE NOTICE 'Team (id =  %) does not belong to confederation (id = %)', id_team, id_conf;
 	RETURN FALSE;
 	
@@ -1307,7 +1436,7 @@ CREATE OR REPLACE FUNCTION tot_team_comp_ed
 	IN	id_comp	integer,
 	IN	s_year	smallint	-- anno inizio
 )
-RETURNS boolean
+RETURNS integer
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -1373,7 +1502,7 @@ BEGIN
 	have = FALSE;
 
 	SELECT
-		count(*) < tot_team
+		(count(*) < tot_team)
 	INTO
 		have
 	FROM
@@ -1456,97 +1585,6 @@ BEGIN
 
 	
 	RETURN TRUE;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : militancy_in
- *
- * IN      : integer, integer 
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore ha una militanza in una squadra
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION militancy_in
-(
-	IN	id_player	integer,
-	IN	id_team		integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-BEGIN
-
-	SELECT
-		count(*) >= 1
-	FROM
-		fp_militancy
-	WHERE
-		team_id = id_team
-		AND
-		player_id = id_player;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : pos_fit_stat
- *
- * IN      : integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se una posizione del campo di gioco è
- *        associabile ad una statistica.
- *
- *        NOTA: Considerando l'enum "en_role_mix" possiamo osservare facilmente
- *              che una posizione è associabile ad una statistica
- *              se e soltanto se il ruolo della posizione è una sottostringa
- *              del tipo della statistica in questione
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION pos_fit_stat
-(
-	IN	id_pos	integer,
-	IN	id_stat	integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp			text;
-
-	role_pos	en_role;
-	type_stat	en_feature;
-
-BEGIN
-	
-	tmp = get_column('fp_position', 'role', id_pos);
-	role_pos = CAST(tmp AS en_role);
-
-	tmp = get_column('fp_statistic', 'type', id_stat);
-	type_stat = CAST(tmp AS en_feature);
-
-	IF (position(CAST(role_pos AS text) in CAST(type_stat AS text)) > 0) THEN
-		RETURN TRUE;
-	END IF;
-
-	RAISE NOTICE 'Position (id = %) cannot be associated with statistic (id = %)', id_pos, id_stat;
-	RETURN FALSE;
 
 END;
 $$
@@ -1772,8 +1810,8 @@ CREATE OR REPLACE FUNCTION similar_comp_ed
 )
 RETURNS TABLE
 (
-	competition_id	integer,
-	start_year		integer
+	id_similar_comp	integer,
+	same_s_year		smallint
 )
 RETURNS NULL ON NULL INPUT
 AS
@@ -1783,7 +1821,7 @@ BEGIN
 	RETURN QUERY
 		SELECT
 			competition_id,
-			start_year
+			CAST(start_year AS smallint) 
 		FROM
 			fp_competition_edition
 		WHERE
@@ -1858,15 +1896,15 @@ BEGIN
 		WHERE
 			team_id = id_team
 			AND
-			competition_id = rec_comp_ed.competition_id
+			competition_id = rec_comp_ed.id_similar_comp
 			AND
-			start_year = rec_comp_ed.start_year;
+			start_year = rec_comp_ed.same_s_year;
 									
 		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
-			RAISE NOTICE 'Team (id = %) cannot partecipate'
-				'to competition (id = %) start year (%)',
-				id_team, id_comp, s_year;
+			RAISE NOTICE	'Team (id = %) cannot partecipate'
+							'to competition (id = %) start year (%)',
+							id_team, id_comp, s_year;
 			RETURN can;
 		END IF;
 	
@@ -2365,6 +2403,340 @@ BEGIN
 			start_year = s_year
 	);
 
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_attributes
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_attributes
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	role_player	en_role_mix;
+
+BEGIN
+
+	INSERT INTO
+		fp_attribute_mental
+		(
+			player_id
+		)
+	VALUES
+	(
+		id_player
+	);
+
+
+	INSERT INTO
+		fp_attribute_physical
+		(
+			player_id
+		)
+	VALUES
+	(
+		id_player
+	);
+
+
+	INSERT INTO
+		fp_attribute_technical
+		(
+			player_id
+		)
+	VALUES
+	(
+		id_player
+	);
+
+	tmp = get_column('fp_player', 'role', id_player);
+	role_player = CAST(tmp AS en_role_mix);
+
+	IF ('GK' = role_player) THEN
+
+		INSERT INTO
+			fp_attribute_goalkeeping
+			(
+				player_id
+			)
+		VALUES
+		(
+			id_player
+		);
+
+	END IF;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_play_from_militancy
+ *
+ * IN      : integer, integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_play_from_militancy
+(
+	IN	id_player	integer,
+	IN	id_team		integer,
+	IN	s_year		smallint
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	id_comp	integer;
+
+BEGIN
+
+	FOR id_comp
+	IN
+		SELECT
+			competition_id
+		FROM
+			fp_partecipation
+		WHERE
+			start_year = s_year
+			AND
+			team_id = id_team
+	
+	LOOP
+
+		INSERT INTO
+			fp_play
+			(
+				start_year,
+				competition_id,
+				team_id,
+				player_id
+			)
+		VALUES
+		(
+			s_year,
+			id_comp,
+			id_team,
+			id_player
+		);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_play_from_partecipation
+ *
+ * IN      : integer, integer, smallint
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_play_from_partecipation
+(
+	IN	id_team	integer,
+	IN	s_year	smallint,
+	IN	id_comp	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	id_player	integer;
+
+BEGIN
+
+	FOR id_player
+	IN
+		SELECT
+			player_id
+		FROM
+			fp_militancy
+		WHERE
+			start_year = s_year
+			AND
+			team_id = id_team
+	
+	LOOP
+
+		INSERT INTO
+			fp_play
+			(
+				start_year,
+				competition_id,
+				team_id,
+				player_id
+			)
+		VALUES
+		(
+			s_year,
+			id_comp,
+			id_team,
+			id_player
+		);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : create_statistics
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION create_statistics
+(
+	IN	id_play	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_player	integer;
+	role_player	integer;
+
+BEGIN
+
+	INSERT INTO
+		fp_statistic_general
+		(
+			play_id
+		)
+	VALUES
+	(
+		id_play
+	);
+
+
+	tmp = get_column('fp_play', 'player_id', id_play);
+	id_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_player', 'role', id_play);
+	role_player = CAST(tmp AS en_role_mix);
+
+
+	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+
+		INSERT INTO
+			fp_statistic_goalkeeper
+			(
+				play_id
+			)
+		VALUES
+		(
+			id_play
+		);
+		
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_zero_statistics
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_zero_statistics
+(
+	IN	id_play	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_player	integer;
+	role_player	integer;
+
+BEGIN
+
+	UPDATE
+		fp_statistic_general
+	SET
+		goal_scored = 0,
+		assist = 0,
+		yellow_card	= 0,
+		red_card = 0,
+		penalty_scored = 0
+	WHERE
+		play_id = id_play;
+
+
+	tmp = get_column('fp_play', 'player_id', id_play);
+	id_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_player', 'role', id_play);
+	role_player = CAST(tmp AS en_role_mix);
+
+
+	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+
+		UPDATE
+			fp_statistic_goalkeeper
+		SET
+			goal_conceded = 0,
+			penalty_saved = 0
+		WHERE
+			play_id = id_play;
+		
+	END IF;
+	
 END;
 $$
 LANGUAGE plpgsql;

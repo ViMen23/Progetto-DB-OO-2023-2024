@@ -201,109 +201,6 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_team
- *
- * DESC : Tabella contentente informazioni sulle squadre di calcio
- ******************************************************************************/
-CREATE TABLE fp_team
-(
-	id					serial		NOT NULL,
-	type				en_team 	NOT NULL,
-	country_id			integer		NOT NULL,
-	long_name			dm_alnum	NOT NULL,
-	short_name			dm_code		NOT NULL,
-	confederation_id	integer		NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_team TABLE
- * NAME : pk_team
- *
- * DESC : Non possono esistere squadre di calcio diverse con lo stesso id
- ******************************************************************************/
-ALTER TABLE	fp_team
-ADD CONSTRAINT pk_team
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
- * NAME : uq_team
- *
- * DESC : Non possono esistere squadre di calcio diverse con lo stesso nome
- ******************************************************************************/
-ALTER TABLE	fp_team
-ADD CONSTRAINT uq_team
-UNIQUE
-(
-	long_name
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
- * NAME : uq_team_type
- *
- * DESC : Vincolo creato per permettere la referenza da parte di militanza
- ******************************************************************************/
-ALTER TABLE	fp_team
-ADD CONSTRAINT uq_team_type
-UNIQUE
-(
-	type,
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
- * NAME : team_fk_country
- *
- * DESC : Una squadra di calcio fa riferimento al paese di appartenenza
- ******************************************************************************/
-ALTER TABLE	fp_team
-ADD CONSTRAINT team_fk_country
-FOREIGN KEY
-(
-	country_id
-)
-REFERENCES fp_country
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
- * NAME : team_fk_confederation
- *
- * DESC : Una squadra di calcio fa riferimento alla confederazione calcistica
- *        di appartenenza
- ******************************************************************************/
-ALTER TABLE	fp_team
-ADD CONSTRAINT team_fk_confederation
-FOREIGN KEY
-(
-	confederation_id
-)
-REFERENCES fp_confederation
-(
-	id
-)
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
  * NAME : fp_competition
  *
  * DESC : Tabella contentente informazioni sulle competizioni calcistiche
@@ -482,81 +379,143 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_partecipation
+ * NAME : fp_team
  *
- * DESC : Tabella contentente informazioni sulla partecipazione
- *        di una squadra di calcio ad un'edizione di una competizioni calcistica
+ * DESC : Tabella contentente informazioni sulle squadre di calcio
  ******************************************************************************/
-CREATE TABLE fp_partecipation
+CREATE TABLE fp_team
 (
-	start_year		dm_year	NOT NULL,
-	competition_id	integer	NOT NULL,
-	team_id			integer	NOT NULL
+	id					serial		NOT NULL,
+	type				en_team 	NOT NULL,
+	country_id			integer		NOT NULL,
+	long_name			dm_alnum	NOT NULL,
+	short_name			dm_code		NOT NULL
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_partecipation TABLE
- * NAME : pk_partecipation
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_team TABLE
+ * NAME : pk_team
  *
- * DESC : Ogni squadra di calcio può partecipare al più una volta ad
- *        un'edizione di una competizione calcistica
+ * DESC : Non possono esistere squadre di calcio diverse con lo stesso id
  ******************************************************************************/
-ALTER TABLE	fp_partecipation
-ADD CONSTRAINT pk_partecipation
+ALTER TABLE	fp_team
+ADD CONSTRAINT pk_team
 PRIMARY KEY
 (
-	start_year,
-	competition_id,
-	team_id
+	id
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
- * NAME : partecipation_fk_competition_edition
+ * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
+ * NAME : uq_team
  *
- * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
- *        competizione calcistica fa riferimento all'edizione della competizione
- *        calcistica in questione
+ * DESC : Non possono esistere squadre di calcio diverse con lo stesso nome
  ******************************************************************************/
-ALTER TABLE	fp_partecipation
-ADD CONSTRAINT partecipation_fk_competition_edition
-FOREIGN KEY
+ALTER TABLE	fp_team
+ADD CONSTRAINT uq_team
+UNIQUE
 (
-	start_year,
-	competition_id
-)
-REFERENCES fp_competition_edition
-(
-	start_year,
-	competition_id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+	long_name
+);
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
- * NAME : partecipation_fk_team
+ * TYPE : UNIQUE CONSTRAINT - fp_team TABLE
+ * NAME : uq_team_type
  *
- * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
- *        competizione calcistica fa riferimento alla squadra di calcio
- *        in questione
+ * DESC : Vincolo creato per permettere la referenza da parte di militanza
  ******************************************************************************/
-ALTER TABLE	fp_partecipation
-ADD CONSTRAINT partecipation_fk_team
+ALTER TABLE	fp_team
+ADD CONSTRAINT uq_team_type
+UNIQUE
+(
+	type,
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_team TABLE
+ * NAME : team_fk_country
+ *
+ * DESC : Una squadra di calcio fa riferimento al paese di appartenenza
+ ******************************************************************************/
+ALTER TABLE	fp_team
+ADD CONSTRAINT team_fk_country
 FOREIGN KEY
 (
-	team_id
+	country_id
 )
-REFERENCES fp_team
+REFERENCES fp_country
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_position
+ *
+ * DESC : Tabella contentente informazioni sulle posizioni di gioco
+ *        che un calciatore può assumere nel campo di gioco
+ ******************************************************************************/
+CREATE TABLE fp_position
+(
+	id		serial		NOT NULL,
+	role	en_role		NOT NULL,
+	code	dm_code		NOT NULL,
+	name	dm_string	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_position TABLE
+ * NAME : pk_position
+ *
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso id
+ ******************************************************************************/
+ALTER TABLE	fp_position
+ADD CONSTRAINT pk_position
+PRIMARY KEY
+(
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
+ * NAME : uq_position_code
+ *
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso codice
+ ******************************************************************************/
+ALTER TABLE	fp_position
+ADD CONSTRAINT uq_position_code
+UNIQUE
+(
+	code
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
+ * NAME : uq_position_name
+ *
+ * DESC : Non possono esistere posizioni di gioco diverse con lo stesso nome
+ ******************************************************************************/
+ALTER TABLE	fp_position
+ADD CONSTRAINT uq_position_name
+UNIQUE
+(
+	name
+);
+--------------------------------------------------------------------------------
+
 
 
 
@@ -777,6 +736,86 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
+ * NAME : fp_partecipation
+ *
+ * DESC : Tabella contentente informazioni sulla partecipazione
+ *        di una squadra di calcio ad un'edizione di una competizioni calcistica
+ ******************************************************************************/
+CREATE TABLE fp_partecipation
+(
+	start_year		dm_year	NOT NULL,
+	competition_id	integer	NOT NULL,
+	team_id			integer	NOT NULL
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_partecipation TABLE
+ * NAME : pk_partecipation
+ *
+ * DESC : Ogni squadra di calcio può partecipare al più una volta ad
+ *        un'edizione di una competizione calcistica
+ ******************************************************************************/
+ALTER TABLE	fp_partecipation
+ADD CONSTRAINT pk_partecipation
+PRIMARY KEY
+(
+	start_year,
+	competition_id,
+	team_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
+ * NAME : partecipation_fk_competition_edition
+ *
+ * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
+ *        competizione calcistica fa riferimento all'edizione della competizione
+ *        calcistica in questione
+ ******************************************************************************/
+ALTER TABLE	fp_partecipation
+ADD CONSTRAINT partecipation_fk_competition_edition
+FOREIGN KEY
+(
+	start_year,
+	competition_id
+)
+REFERENCES fp_competition_edition
+(
+	start_year,
+	competition_id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_partecipation TABLE
+ * NAME : partecipation_fk_team
+ *
+ * DESC : La partecipazione di una squadra di calcio ad un'edizione di una
+ *        competizione calcistica fa riferimento alla squadra di calcio
+ *        in questione
+ ******************************************************************************/
+ALTER TABLE	fp_partecipation
+ADD CONSTRAINT partecipation_fk_team
+FOREIGN KEY
+(
+	team_id
+)
+REFERENCES fp_team
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
  * NAME : fp_militancy
  *
  * DESC : Tabella contentente informazioni sulle militanze dei calciatori
@@ -891,6 +930,111 @@ FOREIGN KEY
 REFERENCES fp_player
 (
 	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_play
+ *
+ * DESC : Tabella contentente informazioni sul gioco di un calciatore in
+ *        un'edizione di una competizione calcistica e in una squadra di calcio
+ *
+ *        NOTA: per non appesantire la notazione ci riferiremo a tale
+ *               concetto come "gioco" 
+ ******************************************************************************/
+CREATE TABLE fp_play
+(
+	id				serial		NOT NULL			 ,
+	start_year		dm_year		NOT NULL			 ,
+	competition_id	integer		NOT NULL			 ,
+	team_id			integer		NOT NULL			 ,
+	player_id		integer		NOT NULL			 ,
+	match			dm_usint	NOT NULL	DEFAULT 0
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_play TABLE  
+ * NAME : pk_play
+ *
+ * DESC : Non possono esistere giochi diversi con lo stesso id
+ ******************************************************************************/
+ALTER TABLE fp_play
+ADD CONSTRAINT pk_play
+PRIMARY KEY
+(
+	id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
+ * NAME : uq_play
+ *
+ * DESC : Un calciatore può giocare al più una volta per ogni edizione di
+ *        una competizione calcistica in una squadra di calcio
+ ******************************************************************************/
+ALTER TABLE fp_play
+ADD CONSTRAINT uq_play
+UNIQUE
+(
+	start_year,
+	competition_id,
+	team_id,
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
+ * NAME : play_fk_partecipation
+ *
+ * DESC : Un gioco fa riferimento alla partecipazione della squadra di calcio
+ *        in questione nell'edizione della competizione calcistica in questione
+ ******************************************************************************/
+ALTER TABLE fp_play
+ADD CONSTRAINT play_fk_partecipation
+FOREIGN KEY
+(
+	start_year,
+	competition_id,
+	team_id
+)
+REFERENCES fp_partecipation
+(
+	start_year,
+	competition_id,
+	team_id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
+ * NAME : play_fk_militancy
+ *
+ * DESC : Un gioco fa riferimento alla militanza del calciatore in questione
+ *        nella squadra di calcio in questione
+ ******************************************************************************/
+ALTER TABLE fp_play
+ADD CONSTRAINT play_fk_militancy
+FOREIGN KEY
+(
+	start_year,
+	team_id,
+	player_id
+)
+REFERENCES fp_militancy
+(
+	start_year,
+	team_id,
+	player_id
 )
 ON DELETE CASCADE
 ON UPDATE CASCADE;
@@ -1018,66 +1162,6 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_position
- *
- * DESC : Tabella contentente informazioni sulle posizioni di gioco
- *        che un calciatore può assumere nel campo di gioco
- ******************************************************************************/
-CREATE TABLE fp_position
-(
-	id		serial		NOT NULL,
-	role	en_role		NOT NULL,
-	code	dm_code		NOT NULL,
-	name	dm_string	NOT NULL
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_position TABLE
- * NAME : pk_position
- *
- * DESC : Non possono esistere posizioni di gioco diverse con lo stesso id
- ******************************************************************************/
-ALTER TABLE	fp_position
-ADD CONSTRAINT pk_position
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
- * NAME : uq_position_code
- *
- * DESC : Non possono esistere posizioni di gioco diverse con lo stesso codice
- ******************************************************************************/
-ALTER TABLE	fp_position
-ADD CONSTRAINT uq_position_code
-UNIQUE
-(
-	code
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_position TABLE
- * NAME : uq_position_name
- *
- * DESC : Non possono esistere posizioni di gioco diverse con lo stesso nome
- ******************************************************************************/
-ALTER TABLE	fp_position
-ADD CONSTRAINT uq_position_name
-UNIQUE
-(
-	name
-);
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
  * NAME : fp_player_position
  *
  * DESC : Tabella contentente informazioni sulle posizioni di gioco
@@ -1147,6 +1231,69 @@ REFERENCES fp_position
 ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TABLE
+ * NAME : fp_attribute_goalkeeping
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE TABLE fp_attribute_goalkeeping
+(
+	player_id				integer			NOT NULL			 ,
+	aerial_reach			dm_attribute	NOT NULL	DEFAULT 0,
+	command_of_area			dm_attribute	NOT NULL	DEFAULT 0,
+	communication			dm_attribute	NOT NULL	DEFAULT 0,
+	eccentricity			dm_attribute	NOT NULL	DEFAULT 0,
+	first_touch_gk			dm_attribute	NOT NULL	DEFAULT 0,
+	handling				dm_attribute	NOT NULL	DEFAULT 0,
+	kicking					dm_attribute	NOT NULL	DEFAULT 0,
+	one_on_ones				dm_attribute	NOT NULL	DEFAULT 0,
+	passing_gk				dm_attribute	NOT NULL	DEFAULT 0,
+	punching_tencency		dm_attribute	NOT NULL	DEFAULT 0,
+	reflexes				dm_attribute	NOT NULL	DEFAULT 0,
+	rushing_out_tendency	dm_attribute	NOT NULL	DEFAULT 0,
+	throwing				dm_attribute	NOT NULL	DEFAULT 0
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_goalkeeping TABLE   
+ * NAME : pk_attribute_goalkeeping
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_goalkeeping
+ADD CONSTRAINT pk_attribute_goalkeeping
+PRIMARY KEY
+(
+	player_id
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_goalkeeping TABLE
+ * NAME : attribute_goalkeeping_fk_player
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE fp_attribute_goalkeeping
+ADD CONSTRAINT attribute_goalkeeping_fk_player
+FOREIGN KEY
+(
+	player_id
+)
+REFERENCES fp_player
+(
+	id
+)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+--------------------------------------------------------------------------------
+
+
 
 
 
@@ -1228,7 +1375,7 @@ CREATE TABLE fp_attribute_physical
 	natural_fitness	dm_attribute	NOT NULL	DEFAULT 0,
 	pace			dm_attribute	NOT NULL	DEFAULT 0,
 	stamina			dm_attribute	NOT NULL	DEFAULT 0,
-	strenght		dm_attribute	NOT NULL	DEFAULT 0,
+	strenght		dm_attribute	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
@@ -1265,6 +1412,7 @@ REFERENCES fp_player
 ON DELETE CASCADE
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************
@@ -1315,66 +1463,6 @@ PRIMARY KEY
  ******************************************************************************/
 ALTER TABLE fp_attribute_technical
 ADD CONSTRAINT attribute_technical_fk_player
-FOREIGN KEY
-(
-	player_id
-)
-REFERENCES fp_player
-(
-	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_attribute_goalkeeping
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE TABLE fp_attribute_goalkeeping
-(
-	player_id				integer			NOT NULL			 ,
-	aerial_reach			dm_attribute	NOT NULL	DEFAULT 0,
-	command_of_area			dm_attribute	NOT NULL	DEFAULT 0,
-	communication			dm_attribute	NOT NULL	DEFAULT 0,
-	eccentricity			dm_attribute	NOT NULL	DEFAULT 0,
-	first_touch				dm_attribute	NOT NULL	DEFAULT 0,
-	handling				dm_attribute	NOT NULL	DEFAULT 0,
-	kicking					dm_attribute	NOT NULL	DEFAULT 0,
-	one_on_ones				dm_attribute	NOT NULL	DEFAULT 0,
-	passing					dm_attribute	NOT NULL	DEFAULT 0,
-	punching_tencency		dm_attribute	NOT NULL	DEFAULT 0,
-	reflexes				dm_attribute	NOT NULL	DEFAULT 0,
-	rushing_out_tendency	dm_attribute	NOT NULL	DEFAULT 0,
-	throwing				dm_attribute	NOT NULL	DEFAULT 0
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_goalkeeping TABLE   
- * NAME : pk_attribute_goalkeeping
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_attribute_goalkeeping
-ADD CONSTRAINT pk_attribute_goalkeeping
-PRIMARY KEY
-(
-	player_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_goalkeeping TABLE
- * NAME : attribute_goalkeeping_fk_player
- *
- * DESC : TODO
- ******************************************************************************/
-ALTER TABLE fp_attribute_goalkeeping
-ADD CONSTRAINT attribute_goalkeeping_fk_player
 FOREIGN KEY
 (
 	player_id
@@ -1952,111 +2040,6 @@ FOREIGN KEY
 REFERENCES fp_prize
 (
 	id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : TABLE
- * NAME : fp_play
- *
- * DESC : Tabella contentente informazioni sul gioco di un calciatore in
- *        un'edizione di una competizione calcistica e in una squadra di calcio
- *
- *        NOTA: per non appesantire la notazione ci riferiremo a tale
- *               concetto come "gioco" 
- ******************************************************************************/
-CREATE TABLE fp_play
-(
-	id				serial		NOT NULL			 ,
-	start_year		dm_year		NOT NULL			 ,
-	competition_id	integer		NOT NULL			 ,
-	team_id			integer		NOT NULL			 ,
-	player_id		integer		NOT NULL			 ,
-	match			dm_usint	NOT NULL	DEFAULT 0
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_play TABLE  
- * NAME : pk_play
- *
- * DESC : Non possono esistere giochi diversi con lo stesso id
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT pk_play
-PRIMARY KEY
-(
-	id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : UNIQUE CONSTRAINT - fp_play TABLE  
- * NAME : uq_play
- *
- * DESC : Un calciatore può giocare al più una volta per ogni edizione di
- *        una competizione calcistica in una squadra di calcio
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT uq_play
-UNIQUE
-(
-	start_year,
-	competition_id,
-	team_id,
-	player_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
- * NAME : play_fk_partecipation
- *
- * DESC : Un gioco fa riferimento alla partecipazione della squadra di calcio
- *        in questione nell'edizione della competizione calcistica in questione
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT play_fk_partecipation
-FOREIGN KEY
-(
-	start_year,
-	competition_id,
-	team_id
-)
-REFERENCES fp_partecipation
-(
-	start_year,
-	competition_id,
-	team_id
-)
-ON DELETE CASCADE
-ON UPDATE CASCADE;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FOREIGN KEY CONSTRAINT - fp_play TABLE  
- * NAME : play_fk_militancy
- *
- * DESC : Un gioco fa riferimento alla militanza del calciatore in questione
- *        nella squadra di calcio in questione
- ******************************************************************************/
-ALTER TABLE fp_play
-ADD CONSTRAINT play_fk_militancy
-FOREIGN KEY
-(
-	start_year,
-	team_id,
-	player_id
-)
-REFERENCES fp_militancy
-(
-	start_year,
-	team_id,
-	player_id
 )
 ON DELETE CASCADE
 ON UPDATE CASCADE;

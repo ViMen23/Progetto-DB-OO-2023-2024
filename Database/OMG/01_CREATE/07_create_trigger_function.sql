@@ -17,12 +17,12 @@
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION
- * NAME : tf_bu_if_referenced_refuse
+ * NAME : tf_if_referenced_refuse
  *
  * DESC : Funzione che controlla che accetta un aggiornamento solo se la
  *        riga della tabella che ha scatenato il trigger non è referenziata
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_if_referenced_refuse
+CREATE OR REPLACE FUNCTION tf_if_referenced_refuse
 (
 )
 RETURNS trigger
@@ -31,10 +31,20 @@ $$
 BEGIN
 
 	IF (NOT is_referenced('@', string_for_reference('@', TG_TABLE_NAME, OLD))) THEN
-		RETURN NEW;
+		IF ('UPDATE' = TG_OP) THEN
+			RETURN NEW;
+		ELSIF ('DELETE' = TG_OP) THEN
+			RETURN OLD;
+		END IF;
 	END IF;
 	
-	RETURN OLD;
+	
+	IF ('UPDATE' = TG_OP) THEN
+		RETURN OLD;
+	ELSIF ('DELETE' = TG_OP) THEN
+		RETURN NULL;
+	END IF;
+	
 	
 END;
 $$
@@ -43,12 +53,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bu_refuse
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_refuse
  *
- * DESC : Funzione che rifiuta qualsiasi aggiornamento
+ * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_refuse
+CREATE OR REPLACE FUNCTION tf_refuse
 (
 )
 RETURNS trigger
@@ -56,7 +66,13 @@ AS
 $$
 BEGIN
 
-	RETURN OLD;
+	IF ('INSERT' = TG_OP) THEN
+		RETURN NULL;
+	ELSIF ('UPDATE' = TG_OP) THEN
+		RETURN OLD;
+	ELSIF ('DELETE' = TG_OP) THEN
+		RETURN NULL;
+	END IF;
 	
 END;
 $$
@@ -65,13 +81,12 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_au_country_name
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_refuse
  *
- * DESC : Funzione che a seguito dell'aggiornamento del nome di un paese
- *        aggiorna il nome della squadra nazionale ad esso associata
+ * DESC : Funzione che rifiuta qualsiasi eliminazione
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_au_country_name
+CREATE OR REPLACE FUNCTION tf_bd_refuse
 (
 )
 RETURNS trigger
@@ -79,15 +94,6 @@ AS
 $$
 BEGIN
 
-	UPDATE
-		fp_team
-	SET
-		name = NEW.name
-	WHERE
-		type = 'NATIONAL'
-		AND
-		country_id = NEW.id;
-		
 	RETURN NULL;
 	
 END;
@@ -97,7 +103,72 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_country
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_country
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp					text;
+
+	type_super_country	en_country;
+
+BEGIN
+
+	IF (place_for_country(NEW.type)) THEN
+
+		tmp = get_column('fp_country', 'type', NEW.super_id);
+		type_super_country = CAST(tmp AS en_country);
+
+		IF (can_be_inside(NEW.type, type_super_country)) THEN
+			RETURN NEW;
+		END IF;
+
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ai_country_nation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_country_nation
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	PERFORM create_national_team(NEW.id);
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_confederation
  *
  * DESC : Funzione che controlla se la nuova confederazione calcistica che
@@ -112,17 +183,26 @@ AS
 $$
 DECLARE
 
-	tmp						text;
+	tmp					text;
 
-	id_country_super_conf	integer;
+	id_country_super	integer;
+
+	type_country		en_country;
+	type_country_super	en_country;
+
 
 BEGIN
+
+	tmp = get_column('fp_country', 'type', NEW.country_id);
+	type_country = CAST(tmp AS en_country);
 
 	tmp = get_column('fp_confederation', 'country_id', NEW.super_id);
-	id_country_super_conf = CAST(tmp AS integer);
+	id_country_super = CAST(tmp AS integer);
+	tmp = get_column('fp_country', 'type', id_country_super);
+	type_country_super = CAST(tmp AS en_country);
 
 
-	IF (can_be_inside(NEW.country_id, id_country_super_conf)) THEN
+	IF (can_be_inside(type_country, type_country_super)) THEN
 		RETURN NEW;
 	END IF;
 
@@ -136,98 +216,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bi_team
- *
- * DESC : Funzione che controlla che la nuova squadra di calcio che si vuole
- *        inserire sia valida
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_team
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp				text;
-	id_country_conf	integer;
-	name_country 	text;
-
-BEGIN
-
-	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
-	id_country_conf = CAST(tmp AS integer);
-
-
-	-- se la squadra è associata ad una nazione
-	-- e la confederazione associata alla squadra è associata alla stessa
-	-- nazione della squadra
-	IF (is_nation(NEW.country_id) AND NEW.country_id = id_country_conf) THEN
-
-		IF ('CLUB' = NEW.type) THEN
-			RETURN NEW;
-
-		-- se la squadra è di tipo nazionale deve avere lo stesso nome
-		-- della nazione cui è associata		
-		ELSIF ('NATIONAL' = NEW.type) THEN
-
-			name_country = get_column('fp_country', 'name', NEW.country_id);
-
-			IF (NEW.name = name_country) THEN
-				RETURN NEW;
-			END IF;
-
-		END IF;
-
-	END IF;
-	
-
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bu_team_name
- *
- * DESC : Funzione che controlla che il nuovo nome di una squadra di calcio
- *        di tipo nazionale sia valido
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_team_name
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	name_country	text;
-
-BEGIN
-
-	name_country = get_column('fp_country', 'name', OLD.country_id);
-
-
-	IF (NEW.name = name_country) THEN
-		RETURN NEW;
-	END IF;
-
-
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_competition
  *
  * DESC : Funzione che controlla che la nuova competizione calcistica che
@@ -270,7 +259,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_competition_edition
  *
  * DESC : Funzione che controlla che la nuova edizione di una competizione
@@ -318,14 +307,13 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bi_partecipation
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_team
  *
- * DESC : Funzione che controlla che la nuova partecipazione di una squadra
- *        di calcio ad un'edizione di una competizione calcistica che
- *        si vuole inserire sia valida
+ * DESC : Funzione che controlla che la nuova squadra di calcio che si vuole
+ *        inserire sia valida
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_partecipation
+CREATE OR REPLACE FUNCTION tf_bi_team
 (
 )
 RETURNS trigger
@@ -333,32 +321,30 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
-	id_conf_comp	integer;
+	code_country	text;
+	name_country 	text;
 
 BEGIN
 
-	tmp = get_column('fp_competition', 'confederation_id', NEW.competition_id);
-	id_conf_comp = CAST(tmp AS integer);
+	-- se la squadra è associata ad una nazione
+	IF (is_nation(NEW.country_id)) THEN
 
+		IF ('CLUB' = NEW.type) THEN
+			RETURN NEW;
 
-	IF
-	(
-		-- se l'edizione ha ancora posti disponibili
-		has_place(NEW.competition_id, NEW.start_year)
-		AND
-		-- ..e la squadra appartiene alla confederazione che organizza la competizione
-		belong_to(NEW.team_id, id_conf_comp)
-		AND
-		-- ..e la squadra è compatibile con la competizione
-		team_fit_comp(NEW.team_id, id_comp)
-		AND
-		-- ..e la squadra non partecipa ad altre edizioni simili nella stessa confederazione
-		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year)
-	)
-	THEN
-		RETURN NEW;
+		-- se la squadra è di tipo nazionale deve avere lo stesso nome
+		-- della nazione cui è associata		
+		ELSIF ('NATIONAL' = NEW.type) THEN
+
+			code_country = get_column('fp_country', 'code', NEW.country_id);
+			name_country = get_column('fp_country', 'name', NEW.country_id);
+
+			IF (NEW.short_name = code_country AND NEW.long_name = name_country) THEN
+				RETURN NEW;
+			END IF;
+
+		END IF;
+
 	END IF;
 	
 
@@ -371,7 +357,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player
  *
  * DESC : Funzione che controlla che il nuovo calciatore che si vuole inserire
@@ -383,12 +369,23 @@ CREATE OR REPLACE FUNCTION tf_bi_player
 RETURNS trigger
 AS
 $$
+DECLARE
+
+	tmp			text;
+
+	role_pos	en_role_mix;
+
 BEGIN
 
-	-- deve essere nato in una nazione
-	-- ed inizialmente avere tutte i ruolo
-	IF (is_nation(NEW.country_id) AND 'GK-DF-MF-FW' = NEW.role) THEN
-		RETURN NEW;
+	IF (is_nation(NEW.country_id)) THEN
+
+		tmp = get_column('fp_position', 'role', NEW.position_id);
+		role_pos = CAST(tmp AS en_role_mix);
+
+		IF (NEW.role = role_pos) THEN
+			RETURN NEW;
+		END IF;
+
 	END IF;
 
 
@@ -401,7 +398,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_player
  *
  * DESC : Funzione che dopo l'inserimento di un calciatore ne aggiorna la
@@ -428,6 +425,22 @@ BEGIN
 	);
 
 
+	INSERT INTO
+		fp_player_position
+		(
+			player_id,
+			position_id
+		)
+	VALUES
+	(
+		NEW.id,
+		NEW.position_id
+	);
+
+
+	PERFORM create_attributes(NEW.id);
+
+
 	RETURN NULL;
 	
 END;
@@ -437,7 +450,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bu_player_country
  *
  * DESC : Funzione che controlla che l'aggiornamento del paese di nascita di
@@ -464,37 +477,17 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bu_player_role
- *
- * DESC : Funzione che controlla che l'aggiornamento del ruolo di un calciatore
- *        sia valido
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_player_role
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	-- se il nuovo ruolo è compatibile con tutte le posizioni del calciatore
-	IF (role_fit_positions(NEW.id, NEW.role)) THEN
-		RETURN NEW;
-	END IF;
 
 
-	RETURN OLD;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
+
+
+
+
+
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bu_player_dob
  *
  * DESC : Funzione che controlla che l'aggiornamento della data di nascita di
@@ -558,6 +551,35 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION 
+ * NAME : tf_bu_player_role
+ *
+ * DESC : Funzione che controlla che l'aggiornamento del ruolo di un calciatore
+ *        sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_role
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	-- se il nuovo ruolo è compatibile con tutte le posizioni del calciatore
+	IF (role_fit_positions(NEW.id, NEW.role)) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_player_country
  *
  * DESC : Funzione che dopo l'aggiornamento del paese di nascita di un
@@ -613,7 +635,42 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_au_player_pos
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_player_pos
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+	
+	INSERT INTO
+		fp_player_position
+		(
+			player_id,
+			position_id
+		)
+	VALUES
+	(
+		NEW.id,
+		NEW.position_id
+	);
+	
+
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_player_role
  *
  * DESC : Funzione che dopo l'aggiornamento del ruolo di un calciatore
@@ -630,11 +687,9 @@ BEGIN
 	
 	-- se il calciatore ha perso il ruolo di portiere
 	IF ((CAST(OLD.role AS text) LIKE '%GK%') AND (CAST(NEW.role AS text) NOT LIKE '%GK%')) THEN
-
-		PERFORM delete_gk_attribute(NEW.id);
-		PERFORM delete_gk_statistic(NEW.id);
-		PERFORM delete_gk_tag(NEW.id);
-
+		PERFORM delete_all_gk(NEW.id);
+	ELSIF ((CAST(OLD.role AS text) NOT LIKE '%GK%') AND (CAST(NEW.role AS text) LIKE '%GK%')) THEN
+		PERFORM create_all_gk(NEW.id);
 	END IF;
 	
 
@@ -650,7 +705,105 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tg_bi_player_retired
+ *
+ * DESC : Funzione che controlla che il giocatore ritirato che si vuole
+ *        inserire sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_player_retired
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	born_date		date;
+	retired_year	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'dob', NEW.id);
+	born_date = CAST(tmp AS date);
+
+	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
+		RETURN NULL;	
+	END IF;
+	
+
+	IF (has_militancy(NEW.id)) THEN
+
+		retired_year = extract(year from NEW.retired_date);
+	
+		IF (max_militancy_year(NEW.id) >= retired_year) THEN
+			RETURN NULL;
+		END IF;
+	
+	END IF;
+
+
+	RETURN NEW;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tg_bu_player_retired_date
+ *
+ * DESC : Funzione che controlla che l'aggiornamento della data di ritiro per
+ *        il giocatore ritirato sia valido
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_player_retired_date
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	born_date		date;
+	retired_year	integer;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'dob', NEW.id);
+	born_date = CAST(tmp AS date);
+
+	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
+		RETURN OLD;	
+	END IF;
+	
+
+	IF (has_militancy(NEW.id)) THEN
+
+		retired_year = extract(year from NEW.retired_date);
+	
+		IF (max_militancy_year(NEW.id) >= retired_year) THEN
+			RETURN OLD;
+		END IF;
+	
+	END IF;
+
+
+	RETURN NEW;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_nationality
  *
  * DESC : Funzione che controlla che la nuova nazionalità da inserire sia
@@ -678,7 +831,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_nationality
  *
  * DESC : Funzione che controlla che la nazionalità che si vuole eliminare
@@ -716,7 +869,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_ad_nationality
  *
  * DESC : Funzione che dopo l'eliminazione di una nazionalità elimina
@@ -761,7 +914,85 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_partecipation
+ *
+ * DESC : Funzione che controlla che la nuova partecipazione di una squadra
+ *        di calcio ad un'edizione di una competizione calcistica che
+ *        si vuole inserire sia valida
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_partecipation
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	id_conf_comp	integer;
+
+BEGIN
+
+	tmp = get_column('fp_competition', 'confederation_id', NEW.competition_id);
+	id_conf_comp = CAST(tmp AS integer);
+
+
+	IF
+	(
+		-- se l'edizione ha ancora posti disponibili
+		has_place(NEW.competition_id, NEW.start_year)
+		AND
+		-- ..e la squadra appartiene alla confederazione che organizza la competizione
+		belong_to(NEW.team_id, id_conf_comp)
+		AND
+		-- ..e la squadra è compatibile con la competizione
+		team_fit_comp(NEW.team_id, NEW.competition_id)
+		AND
+		-- ..e la squadra non partecipa ad altre edizioni simili nella stessa confederazione
+		can_take_part(NEW.team_id, NEW.competition_id, NEW.start_year)
+	)
+	THEN
+		RETURN NEW;
+	END IF;
+	
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ai_partecipation
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_partecipation
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	PERFORM create_play_from_partecipation(NEW.team_id, NEW.start_year, NEW.competition_id);
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_militancy
  *
  * DESC : Funzione che valuta se la nuova militanza di un calciatore in una
@@ -823,8 +1054,6 @@ BEGIN
 	END IF;
 
 
-
-
 	RETURN NULL;
 	
 END;
@@ -849,8 +1078,14 @@ AS
 $$
 BEGIN
 
-	PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
-	
+	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
+		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+	END IF;
+
+
+	PERFORM create_play_from_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
+
+
 	RETURN NULL;
 	
 END;
@@ -860,7 +1095,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_militancy
  *
  * DESC : Funzione che dopo l'aggiornamento della militanza assegna o rimuove
@@ -882,6 +1117,138 @@ BEGIN
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	END IF;
 	
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_play
+ *
+ * DESC : Funzione che controlla che il nuovo gioco che si vuole inserire
+ *        sia valido
+ *
+ *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *              un'approssimazione per eccesso basata su numerose osservazioni
+ *              (Wikipidia, Transfermarkt, ...)
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_play
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tot_team	integer;
+
+BEGIN
+
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
+
+
+	IF (NEW.match <= tot_team * 4) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_ai_play
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_ai_play
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	PERFORM create_statistics(NEW.id);
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bu_play_match
+ *
+ * DESC : Funzione che controlla che l'aggiornamento delle partite disputate
+ *        riferite ad un gioco sia valido
+ *
+ *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *              un'approssimazione per eccesso basata su numerose osservazioni
+ *              (Wikipidia, Transfermarkt, ...)
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_play_match
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tot_team	integer;
+
+BEGIN
+
+	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
+
+
+	IF (NEW.match <= tot_team * 4) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN OLD;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_au_play_match
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_au_play_match
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (0 = NEW.match) THEN
+		PERFORM set_zero_statistics(NEW.id);
+	END IF;
+
+
 	RETURN NULL;
 	
 END;
@@ -907,15 +1274,16 @@ DECLARE
 
 	tmp			text;
 
+	goalkeeper	boolean;
+
 	role_player	en_role_mix;
-	role_tag	en_feature;
 
 BEGIN
 
-	tmp = get_column('fp_tag', 'role', NEW.tag_id);
-	role_tag = CAST(tmp AS en_feature);
+	tmp = get_column('fp_tag', 'goalkeeper', NEW.tag_id);
+	goalkeeper = CAST(tmp AS boolean);
 	
-	IF ('GOALKEEPER' = role_tag) THEN
+	IF (goalkeeper) THEN
 	
 		tmp = get_column('fp_player', 'role', NEW.player_id);
 		role_player = CAST(tmp AS en_role_mix);
@@ -986,6 +1354,45 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_player_position
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_player_position
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp				text;
+
+	id_pos_player	integer;
+
+BEGIN
+
+	id_pos_player = NULL;
+
+	tmp = get_column('fp_player', 'position_id', OLD.player_id);
+	id_pos_player = CAST(tmp AS integer);
+
+
+	IF ((id_pos_player IS NULL) OR (id_pos_player <> OLD.position_id)) THEN
+		RETURN OLD;
+	END IF;
+	
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_ad_player_position
  *
  * DESC : Funzione che dopo l'eliminazione di una nuova associazione tra un
@@ -1035,12 +1442,11 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION
- * NAME : tf_bi_player_attribute
+ * NAME : tf_bi_attribute_goalkeeping
  *
- * DESC : Funzione che controlla che l'associazione tra calciatore e attributo
- *        di tipo portiere che si vuole inserire sia valida
+ * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_player_attribute
+CREATE OR REPLACE FUNCTION tf_bi_attribute_goalkeeping
 (
 )
 RETURNS trigger
@@ -1051,25 +1457,17 @@ DECLARE
 	tmp			text;
 
 	role_player	en_role_mix;
-	role_attr	en_feature;
 
 BEGIN
 
-	tmp = get_column('fp_attribute', 'role', NEW.attribute_id);
-	role_attr = CAST(tmp AS en_feature);
-	
-	IF ('GOALKEEPER' = role_attr) THEN
-	
-		tmp = get_column('fp_player', 'role', NEW.player_id);
-		role_player = CAST(tmp AS en_role_mix);
+	tmp = get_column('fp_player', 'role', NEW.player_id);
+	role_player = CAST(tmp AS en_role_mix);
 
-		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
-			RETURN NULL;
-		END IF;
-		
+	IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
+		RETURN NULL;	
 	END IF;
-	
-	
+
+
 	RETURN NEW;
 	
 END;
@@ -1079,7 +1477,207 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_attribute_goalkeeping
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_attribute_goalkeeping
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	role_player	en_role_mix;
+
+BEGIN
+
+	role_player = NULL;
+
+	tmp = get_column('fp_player', 'role', OLD.player_id);
+	role_player = CAST(tmp AS en_role_mix);
+
+	IF ((role_player IS NOT NULL) AND (CAST(role_player AS text) LIKE '%GK%')) THEN
+		RETURN OLD;	
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_attribute_references
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_attribute_references
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_player	integer;
+
+BEGIN
+
+	id_player = NULL;
+
+	tmp = get_column('fp_player', 'id', OLD.player_id);
+	id_player = CAST(tmp AS integer);
+
+	IF (id_player IS NOT NULL) THEN
+		RETURN OLD;	
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bu_statistic
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_statistic
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	match_play	integer;
+
+BEGIN
+
+	tmp = get_column('fp_play', 'match', NEW.play_id);
+	match_play = CAST(tmp AS integer);
+
+	IF (match_play > 0) THEN
+		RETURN NEW;	
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_statistic_general
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_statistic_general
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp		text;
+
+	id_play	integer;
+
+BEGIN
+
+	id_play = NULL;
+
+	tmp = get_column('fp_play', 'id', OLD.play_id);
+	id_play = CAST(tmp AS integer);
+
+	IF (id_play IS NOT NULL) THEN
+		RETURN OLD;	
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bd_statistic_goalkeeper
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bd_statistic_goalkeeper
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_play		integer;
+
+	id_player	integer;
+	role_player	integer;
+
+BEGIN
+
+	id_play = NULL;
+
+	tmp = get_column('fp_play', 'id', OLD.play_id);
+	id_play = CAST(tmp AS integer);
+
+	IF (id_play IS NOT NULL) THEN
+
+		tmp = get_column('fp_play', 'player_id', OLD.play_id);
+		id_player = CAST(tmp AS integer);
+
+		tmp = get_column('fp_player', 'role', OLD.player_id);
+		role_player = CAST(tmp AS en_role_mix);
+
+		IF (CAST(role_player AS text) LIKE '%GK%') THEN
+			RETURN OLD;
+		END IF;
+			
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_team_trophy_case
  *
  * DESC : Funzione che controlla che il nuovo trofeo che si vuole assegnare
@@ -1116,7 +1714,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_team_trophy_case
  *
  * DESC : Funzione che dopo l'assegnazione di un trofeo ad una squadra di
@@ -1179,7 +1777,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_ad_team_trophy_case
  *
  * DESC : Funzione che dopo l'eliminazione di un trofeo ad una squadra di
@@ -1215,7 +1813,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_trophy_case
  *
  * DESC : Funzione che controlla che il nuovo trofeo che si vuole assegnare
@@ -1289,7 +1887,7 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_player_trophy_case
  *
  * DESC : Funzione che controlla che sia possibile eliminare un trofeo
@@ -1343,7 +1941,44 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_team_prize_case
+ *
+ * DESC : Funzione che controlla che il nuovo premio che si vuole assegnare
+ *        ad una squadra di calcio sia compatibile
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_team_prize_case
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	type_prize	en_award;
+
+BEGIN
+
+	tmp = get_column('fp_prize', 'type', NEW.prize_id);
+	type_prize = CAST(tmp AS en_award);
+
+	IF ('TEAM' = type_prize) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_prize_case
  *
  * DESC : Funzione che controlla che il nuovo premio che si vuole assegnare
@@ -1409,273 +2044,6 @@ BEGIN
 	
 
 	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION
- * NAME : tf_bi_team_prize_case
- *
- * DESC : Funzione che controlla che il nuovo premio che si vuole assegnare
- *        ad una squadra di calcio sia compatibile
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_team_prize_case
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp			text;
-
-	type_prize	en_award;
-
-BEGIN
-
-	tmp = get_column('fp_prize', 'type', NEW.prize_id);
-	type_prize = CAST(tmp AS en_award);
-
-	IF ('TEAM' = type_prize) THEN
-		RETURN NEW;
-	END IF;
-
-
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bi_play
- *
- * DESC : Funzione che controlla che il nuovo gioco che si vuole inserire
- *        sia valido
- *
- *        NOTA: per il numero massimo di partite per team abbiamo effettuato
- *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_play
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tot_team	integer;
-
-BEGIN
-
-	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
-
-
-	IF (NEW.match <= tot_team * 4) THEN
-		RETURN NEW;
-	END IF;
-
-
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bu_play_match
- *
- * DESC : Funzione che controlla che l'aggiornamento delle partite disputate
- *        riferite ad un gioco sia valido
- *
- *        NOTA: per il numero massimo di partite per team abbiamo effettuato
- *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_play_match
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tot_team	integer;
-
-BEGIN
-
-	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
-
-
-	IF (NEW.match <= tot_team * 4) THEN
-		RETURN NEW;
-	END IF;
-
-
-	RETURN OLD;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tf_bi_play_statistic
- *
- * DESC : Funzione che controlla che l'associazione tra gioco e statistica
- *        che si vuole inserire sia valida
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_play_statistic
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp			text;
-
-	gk_stat		boolean;
-	
-	id_player	integer;
-	role_player	en_role_mix;
-
-BEGIN
-
-	tmp = get_column('fp_statistic', 'goalkeeper', NEW.statistic_id);
-	gk_stat = CAST(tmp AS boolean);
-
-	
-	IF (NOT gk_stat) THEN	
-		RETURN NEW;
-	
-	ELSE
-
-		tmp = get_column('fp_play', 'player_id', NEW.play_id);
-		id_player = CAST(tmp AS integer);
-
-		tmp = get_column('fp_player', 'role', id_player);
-		role_player = CAST(tmp AS en_role_mix);
-
-		IF (CAST(role_player AS text) LIKE '%GK%') THEN	
-			RETURN NEW;
-		END IF;
-
-	END IF;
-	
-
-	RETURN NULL;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tg_bi_player_retired
- *
- * DESC : Funzione che controlla che il giocatore ritirato che si vuole
- *        inserire sia valido
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bi_player_retired
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp				text;
-
-	born_date		date;
-	retired_year	integer;
-
-BEGIN
-
-	tmp = get_column('fp_player', 'dob', NEW.id);
-	born_date = CAST(tmp AS date);
-
-	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		RETURN NULL;	
-	END IF;
-	
-
-	IF (has_militancy(NEW.id)) THEN
-
-		retired_year = extract(year from NEW.retired_date);
-	
-		IF (max_militancy_year(NEW.id) >= retired_year) THEN
-			RETURN NULL;
-		END IF;
-	
-	END IF;
-
-
-	RETURN NEW;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION 
- * NAME : tg_bu_player_retired_date
- *
- * DESC : Funzione che controlla che l'aggiornamento della data di ritiro per
- *        il giocatore ritirato sia valido
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bu_player_retired_date
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp				text;
-
-	born_date		date;
-	retired_year	integer;
-
-BEGIN
-
-	tmp = get_column('fp_player', 'dob', NEW.id);
-	born_date = CAST(tmp AS date);
-
-	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		RETURN OLD;	
-	END IF;
-	
-
-	IF (has_militancy(NEW.id)) THEN
-
-		retired_year = extract(year from NEW.retired_date);
-	
-		IF (max_militancy_year(NEW.id) >= retired_year) THEN
-			RETURN OLD;
-		END IF;
-	
-	END IF;
-
-
-	RETURN NEW;
 	
 END;
 $$
