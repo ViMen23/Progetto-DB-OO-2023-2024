@@ -1546,7 +1546,7 @@ centrale.
 
 \begin{tblr}{
     hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth, cell{1}{1-3} = {blue!10!white}
+    width = \textwidth, cell{1}{1-3} = {blue!10!white}, column{2}= {110pt}
 }
 	{
 		Vincolo
@@ -1634,7 +1634,7 @@ centrale.
 	&
 	{
 		Un paese deve essere contenuto soltanto in un paese
-		con tipo strettamente superiore
+		con tipo strettamente superiore.\\
 		(es. NATION->CONTINENT->WORLD).
 	}
 	\\
@@ -1661,12 +1661,12 @@ centrale.
 	&
 	{
 		Una confederazione deve essere membro soltanto di una
-		una confederazione con tipo strettamente superiore
-		(es. NATIONAL->CONTINENTAL->WORLD).
+		una confederazione con tipo strettamente superiore.\\
+		(es. NATION->CONTINENT->WORLD).
 	}
 	\\
 	{
-		uqCompetitionName
+		\textbf{uqCompetitionName}
 	}
 	&
 	{
@@ -1679,7 +1679,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo Comp
+		\textbf{Controllo Comp}
 	}
 	&
 	{
@@ -1693,7 +1693,7 @@ centrale.
 	}
 	\\
 	{
-		uqCompetitionEditionEndYear
+		\textbf{uqCompetitionEditionEndYear}
 	}
 	&
 	{
@@ -1706,7 +1706,7 @@ centrale.
 	}
 	\\
 	{
-		ckCompetitionEditionRange
+		\textbf{ckCompetitionEditionRange}
 	}
 	&
 	{
@@ -1721,7 +1721,7 @@ centrale.
 	}
 	\\
 	{
-		ckCompetitionEditionTotalTeam
+		\textbf{ckCompetitionEditionTotalTeam}
 	}
 	&
 	{
@@ -1736,7 +1736,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdLeagueYears
+		\textbf{Controllo CompEdLeagueYears}
 	}
 	&
 	{
@@ -1750,7 +1750,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdSuperCupYears
+		\textbf{Controllo CompEdSuperCupYears}
 	}
 	&
 	{
@@ -1763,8 +1763,17 @@ centrale.
 		e finire nello stesso anno.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth, column{2}= {110pt}
+}
+
 	{
-		Controllo CompEdCupNatYears
+		\textbf{Controllo CompEdCupNatYears}
 	}
 	&
 	{
@@ -1778,7 +1787,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdCupClubYears
+		\textbf{Controllo CompEdCupClubYears}
 	}
 	&
 	{
@@ -1792,7 +1801,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdSuperCupTotTeam
+		\textbf{Controllo CompEdSuperCupTotTeam}
 	}
 	&
 	{
@@ -1806,7 +1815,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdLeagueTotTeam
+		\textbf{Controllo CompEdLeagueTotTeam}
 	}
 	&
 	{
@@ -1820,7 +1829,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdCupNatTotTeam
+		\textbf{Controllo CompEdCupNatTotTeam}
 	}
 	&
 	{
@@ -1831,11 +1840,11 @@ centrale.
 		Un'edizione di una competizione calcistica
 		di tipo coppa, organizzata da una confederazione
 		di tipo nazionale, deve avere come numero
-		di squadre di calcio partecipanti una potenza di due
+		di squadre di calcio partecipanti una potenza di due.
 	}
 	\\
 	{
-		Controllo CompEdCupIntTotTeam
+		\textbf{Controllo CompEdCupIntTotTeam}
 	}
 	&
 	{
@@ -1850,7 +1859,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo CompEdFreq
+		\textbf{Controllo CompEdFreq}
 	}
 	&
 	{
@@ -1878,7 +1887,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo TeamCountry
+		\textbf{Controllo TeamCountry}
 	}
 	&
 	{
@@ -1892,7 +1901,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo TeamNatLongName
+		\textbf{Controllo TeamNatLongName}
 	}
 	&
 	{
@@ -1918,7 +1927,7 @@ centrale.
 	}
 	\\
 	{
-		uqPositionCode
+		\textbf{uqPositionCode}
 	}
 	&
 	{
@@ -1931,7 +1940,7 @@ centrale.
 	}
 	\\
 	{
-		uqPositionName
+		\textbf{uqPositionName}
 	}
 	&
 	{
@@ -1944,7 +1953,7 @@ centrale.
 	}
 	\\
 	{
-		uqPlayer
+		\textbf{uqPlayer}
 	}
 	&
 	{
@@ -1958,7 +1967,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerNat
+		\textbf{Controllo PlayerBornNat}
 	}
 	&
 	{
@@ -1966,12 +1975,22 @@ centrale.
 	}
 	&
 	{
-		Un calciatore deve essere
-		associato ad un paese che sia una nazione.
+		Un calciatore deve essere associato ad
+		un paese di nascita che sia una nazione.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth , column{2}= {110pt}
+}
+
 	{
-		Controllo PlayerRole
+		\textbf{Controllo PlayerRole}
 	}
 	&
 	{
@@ -1979,22 +1998,54 @@ centrale.
 	}
 	&
 	{
-		Un calciatore, nel momento dell'inserimento,
+		Un calciatore, al momento dell'inserimento,
 		deve avere come valore dell'attributo role
-		NULL.
+		il valore di role della posizione principale associata.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth
-}
-
 	{
-		Controllo PartTotTeam
+		\textbf{Controllo PlayerRetiredDate}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La sottrazione tra la data di ritiro di un calciatore e
+		la sua data di nascita deve essere compresa tra
+		l'età minima di un calciatore e l'età massima.
+	}
+	\\
+	{
+		\textbf{Controllo PlayerRetiredMilitancy}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		La data di ritiro di un calciatore deve
+		essere successiva all'anno d'inizio
+		dell'ultima militanza giocata dal calciatore.
+	}
+	\\
+	{
+		\textbf{Controllo Nationality}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un calciatore ha come nazionalità soltanto
+		paesi che siano una nazione.
+	}
+	\\
+	{
+		\textbf{Controllo PartTotTeam}
 	}
 	&
 	{
@@ -2006,11 +2057,11 @@ centrale.
 		ad un'edizione di una competizione calcistica
 		deve essere accettata soltanto se
 		il numero massimo di squadre partecipanti per
-		quell'edizione non è stato superato.
+		quell'edizione non è stato raggiunto.
 	}
 	\\
 	{
-		Controllo PartTeamConf
+		\textbf{Controllo PartTeamConf}
 	}
 	&
 	{
@@ -2027,18 +2078,8 @@ centrale.
 		la confederazione associata alla squadra di calcio.
 	}
 	\\
-\end{tblr}
-
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth
-}
-
 	{
-		Controllo PartTeamType
+		\textbf{Controllo PartTeamType}
 	}
 	&
 	{
@@ -2055,7 +2096,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PartTeamComp
+		\textbf{Controllo PartTeamComp}
 	}
 	&
 	{
@@ -2073,37 +2114,21 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerRetired
+		\textbf{uqMilitancy}
 	}
 	&
 	{
-		INTERELAZIONALI
+		INTRARELAZIONALI
 	}
 	&
 	{
-		La data di ritiro di un calciatore deve
-		essere successiva alla data di nascita più
-		un minimo età per diventare un calciatore,
-		più di sei mesi di attività professionale.
+		Un calciatore non può militare nella stessa tipologia
+		di squadra di calcio nella stessa parte
+		di una stagione calcistica.
 	}
 	\\
 	{
-		Controllo PlayerRetiredMilitancy
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		La data di ritiro di un calciatore deve
-		essere uguale o successiva all'anno
-		dell'ultima, in ordine di anni crescente,
-		militanza del calciatore.
-	}
-	\\
-	{
-		ckMilitancy
+		\textbf{ckMilitancy}
 	}
 	&
 	{
@@ -2116,7 +2141,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo MilitancyPlayer
+		\textbf{Controllo MilitancyValidRange}
 	}
 	&
 	{
@@ -2124,28 +2149,22 @@ centrale.
 	}
 	&
 	{
-		Una militanza di un	calciatore per
-		una squadra di calcio deve essere accettata
-		soltanto se il calciatore ha almeno
-		una posizione di gioco.
-	}
-	\\
-	{
-		Controllo MilitancyValidRange
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		L'anno della militanza di un calciatore
+		L'anno d'inizio della militanza di un calciatore
 		per una squadra di calcio deve essere
 		un anno valido per il calciatore.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth , column{2}={110pt}
+}
 	{
-		Controllo MilitancyTeamNatPlayer
+		\textbf{Controllo MilitancyTeamNatPlayer}
 	}
 	&
 	{
@@ -2160,17 +2179,8 @@ centrale.
 		nazionalità del calciatore.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth
-}
 	{
-		Controllo MilitancyTeamNat
+		\textbf{Controllo MilitancyTeamNat}
 	}
 	&
 	{
@@ -2181,12 +2191,12 @@ centrale.
 		La militanza di un calciatore per
 		una squadra di calcio nazionale deve
 		essere accettata se il calciatore non ha
-		nessuna militanza con altre
-		squadre di calcio nazionali.
+		nessun'altra militanza con squadre di calcio nazionali
+		diverse da quella considerata.
 	}
 	\\
 	{
-		Controllo Militancy
+		\textbf{Controllo Militancy}
 	}
 	&
 	{
@@ -2203,7 +2213,36 @@ centrale.
 	}
 	\\
 	{
-		uqTagName
+		\textbf{uqPlay}
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Un calciatore può giocare al più una volta
+		per ogni edizione di una competizione calcistica
+		in una squadra di calcio.
+	}
+	\\
+	{
+		\textbf{Controllo PlayMatch}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Il numero di match di un gioco deve essere
+		al massimo pari al numero di squadre, che
+		possono partecipare all'edizione della competizione
+		associata, moltiplicato per quattro.
+	}
+	\\
+	{
+		\textbf{uqTagName}
 	}
 	&
 	{
@@ -2216,20 +2255,7 @@ centrale.
 	}
 	\\
 	{
-		uqTagDescription
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere tag diversi con
-		la stessa descrizione.
-	}
-	\\
-	{
-		Controllo PlayerTagGK
+		\textbf{Controllo PlayerTagGK}
 	}
 	&
 	{
@@ -2237,52 +2263,13 @@ centrale.
 	}
 	&
 	{
-		Un Tag di tipo portiere deve essere associato
+		Un Tag per i portieri deve essere associato
 		ad un calciatore soltanto se portiere è uno dei
 		ruoli in campo del calciatore.
 	}
 	\\
 	{
-		uqAttributeName
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere attributi diversi
-		con lo stesso nome.
-	}
-	\\
-	{
-		uqAttributeDescription
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere attributi diversi
-		con la stessa descrizione.
-	}
-	\\
-	{
-		ckPlayerAttribute
-	}
-	&
-	{
-		N-UPLA
-	}
-	&
-	{
-		Il punteggio di un attributo deve essere
-		al massimo pari a cento.
-	}
-	\\
-	{
-		Controllo PlayerAttributeGK
+		\textbf{Controllo AttrGkPlayer}
 	}
 	&
 	{
@@ -2290,39 +2277,27 @@ centrale.
 	}
 	&
 	{
-		Un Attributo di tipo portiere deve essere associato
+		Un Attributo per i portieri deve essere associato
 		ad un calciatore soltanto se portiere è uno dei
 		ruoli in campo del calciatore.
 	}
 	\\
 	{
-		uqStatisticName
+		\textbf{Controllo StatisticGkPlayer}
 	}
 	&
 	{
-		INTRARELAZIONALI
+		INTERELAZIONALI
 	}
 	&
 	{
-		Non possono esistere statistiche diverse
-		con lo stesso nome.
+		Una Statistica per i portieri deve essere associato
+		ad un calciatore soltanto se portiere è uno dei
+		ruoli in campo del calciatore.
 	}
 	\\
 	{
-		uqStatisticDescription
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere statistiche diverse
-		con la stessa descrizone.
-	}
-	\\
-	{
-		uqTrophyName
+		\textbf{uqTrophyName}
 	}
 	&
 	{
@@ -2335,20 +2310,7 @@ centrale.
 	}
 	\\
 	{
-		uqTrophyDescription
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere trofei calcistici diversi
-		con la stessa descrizione.
-	}
-	\\
-	{
-		ckTrophy
+		\textbf{ckTrophy}
 	}
 	&
 	{
@@ -2361,7 +2323,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo TeamTrophyCase
+		\textbf{Controllo TeamTrophyCase}
 	}
 	&
 	{
@@ -2373,17 +2335,8 @@ centrale.
 		soltanto a trofei di tipo squadra.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth
-}
-
 	{
-		Controllo PlayerTrophyCaseMil
+		\textbf{Controllo PlayerTrophyCaseMil}
 	}
 	&
 	{
@@ -2397,8 +2350,17 @@ centrale.
 		non è stata per la prima parte.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth , column{2}={110pt}
+}
+
 	{
-		Controllo PlayerTrophyCaseTeam
+		\textbf{Controllo PlayerTrophyCaseTeam}
 	}
 	&
 	{
@@ -2413,7 +2375,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerTrophyCaseRole
+		\textbf{Controllo PlayerTrophyCaseRole}
 	}
 	&
 	{
@@ -2429,7 +2391,7 @@ centrale.
 	}
 	\\
 	{
-		uqPrizeName
+		\textbf{uqPrizeName}
 	}
 	&
 	{
@@ -2442,20 +2404,7 @@ centrale.
 	}
 	\\
 	{
-		uqPrizeDescription
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere premi calcistici diversi
-		con la stessa descrizione.
-	}
-	\\
-	{
-		ckPrize
+		\textbf{ckPrize}
 	}
 	&
 	{
@@ -2468,7 +2417,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo TeamPrize
+		\textbf{Controllo TeamPrize}
 	}
 	&
 	{
@@ -2481,7 +2430,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerPrize
+		\textbf{Controllo PlayerPrize}
 	}
 	&
 	{
@@ -2494,7 +2443,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerPrizeValidRange
+		\textbf{Controllo PlayerPrizeValidRange}
 	}
 	&
 	{
@@ -2508,7 +2457,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo PlayerPrizeRole
+		\textbf{Controllo PlayerPrizeRole}
 	}
 	&
 	{
@@ -2524,74 +2473,7 @@ centrale.
 	}
 	\\
 	{
-		uqPlay
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Un calciatore può giocare al più una volta
-		per ogni edizione di una competizione calcistica
-		in una squadra di calcio.
-	}
-	\\
-	{
-		ckPlay
-	}
-	&
-	{
-		N-UPLA
-	}
-	&
-	{
-		Il numero di presenze di un calciatore in un gioco
-		deve essere maggiore di zero.
-	}
-	\\
-	{
-		Controllo PlayMatch
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Il numero di match di un gioco deve essere
-		al massimo pari al numero di squadre, che
-		possono partecipare all'edizione della competizione
-		associata, moltiplicato per quattro.
-	}
-	\\
-\end{tblr}
-
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{1-2}={100pt},
-    width = \textwidth
-}
-	
-	{
-		Controllo StatisticRole
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Una statistica che abbia l'attributo goalkeeper
-		true deve essere associata ad un gioco
-		soltanto se il calciatore associato ha tra
-		i suoi ruoli di gioco il portiere.
-	}
-	\\
-	{
-		dmAlnum
+		\textbf{dmAlnum}
 	}
 	&
 	{
@@ -2613,7 +2495,21 @@ centrale.
 	}
 	\\
 	{
-		dmCode
+		\textbf{dmAttribute}
+	}
+	&
+	{
+		DOMINIO
+	}
+	&
+	{
+		Dominio per gli attributi delle classi Attribute.
+		Questo dominio permette l'inserimento di
+		valori numerici che siano compresi tra zero e cento.
+	}
+	\\
+	{
+		\textbf{dmCode}
 	}
 	&
 	{
@@ -2630,8 +2526,18 @@ centrale.
 		i due e i tre caratteri.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{2}={110pt},
+    width = \textwidth
+}
+	
 	{
-		dmDate
+		\textbf{dmDate}
 	}
 	&
 	{
@@ -2649,27 +2555,7 @@ centrale.
 	}
 	\\
 	{
-		dmDescription
-	}
-	&
-	{
-		DOMINIO
-	}
-	&
-	{
-		Dominio per tutti gli attributi description.
-		Questo dominio sfrutta l' espressione regolare
-		che accetta una stringa di caratteri alfanumerici
-		(inclusi i caratteri accentati)
-		di lunghezza compresa tra i due e
-		i cinquecento caratteri.
-		Inoltre, blocca l'inserimento di stringhe
-		con ripetizioni di segni di punteggiatura
-		e spazi che non siano validi.
-	}
-	\\
-	{
-		dmPassword
+		\textbf{dmPassword}
 	}
 	&
 	{
@@ -2688,7 +2574,7 @@ centrale.
 	}
 	\\
 	{
-		dmString
+		\textbf{dmString}
 	}
 	&
 	{
@@ -2709,7 +2595,7 @@ centrale.
 	}
 	\\
 	{
-		dmUsername
+		\textbf{dmUsername}
 	}
 	&
 	{
@@ -2730,7 +2616,7 @@ centrale.
 	}
 	\\
 	{
-		dmUint
+		\textbf{dmUsint}
 	}
 	&
 	{
@@ -2745,7 +2631,7 @@ centrale.
 	}
 	\\
 	{
-		dmYear
+		\textbf{dmYear}
 	}
 	&
 	{
