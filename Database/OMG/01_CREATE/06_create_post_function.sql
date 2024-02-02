@@ -2714,7 +2714,7 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-/*
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -2750,11 +2750,7 @@ DECLARE
 
 BEGIN
 
-	BEGIN
-
 	error = FALSE;
-
-	SAVEPOINT refuse_all;
 
 	IF (e_year <= s_year) THEN
 		error = TRUE;
@@ -2793,8 +2789,28 @@ BEGIN
 
 	IF (chek_year IS NULL) THEN
 		error = TRUE;
-		ROLLBACK TO refuse_all;
 	END IF;
+
+
+	IF (error) THEN
+
+		DELETE FROM
+			fp_militancy
+		WHERE
+			team_type = type_team
+			AND
+			team_id = id_team
+			AND
+			player_id = id_player
+			AND
+			start_year = s_year
+			AND
+			type = type_s_year;
+
+		RETURN;
+
+	END IF;
+
 
 
 	FOR year IN (s_year + 1)..(e_year - 1)
@@ -2827,10 +2843,51 @@ BEGIN
 		
 		IF (chek_year IS NULL) THEN
 			error = TRUE;
-			ROLLBACK TO refuse_all;
 		END IF;
 
+		EXIT WHEN error;
+
 	END LOOP;
+
+
+	IF (error) THEN
+
+		DELETE FROM
+			fp_militancy
+		WHERE
+			team_type = type_team
+			AND
+			team_id = id_team
+			AND
+			player_id = id_player
+			AND
+			start_year = s_year
+			AND
+			type = type_s_year;
+
+
+		FOR year IN (s_year + 1)..(e_year - 1)
+		LOOP
+
+			DELETE FROM
+				fp_militancy
+			WHERE
+				team_type = type_team
+				AND
+				team_id = id_team
+				AND
+				player_id = id_player
+				AND
+				start_year = year
+				AND
+				type = 'FULL';
+
+		END LOOP;
+
+
+		RETURN;
+
+	END IF;
 
 
 	chek_year = NULL;
@@ -2860,18 +2917,66 @@ BEGIN
 	
 	IF (chek_year IS NULL) THEN
 		error = TRUE;
-		ROLLBACK TO refuse_all;
 	END IF;
 
 
-	COMMIT;
+	IF (error) THEN
+
+		DELETE FROM
+			fp_militancy
+		WHERE
+			team_type = type_team
+			AND
+			team_id = id_team
+			AND
+			player_id = id_player
+			AND
+			start_year = s_year
+			AND
+			type = type_s_year;
+
+
+		FOR year IN (s_year + 1)..(e_year - 1)
+		LOOP
+
+			DELETE FROM
+				fp_militancy
+			WHERE
+				team_type = type_team
+				AND
+				team_id = id_team
+				AND
+				player_id = id_player
+				AND
+				start_year = year
+				AND
+				type = 'FULL';
+
+		END LOOP;
+
+
+		DELETE FROM
+			fp_militancy
+		WHERE
+			team_type = type_team
+			AND
+			team_id = id_team
+			AND
+			player_id = id_player
+			AND
+			start_year = e_year
+			AND
+			type = type_e_year;
+
+	END IF;
+
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-*/
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
