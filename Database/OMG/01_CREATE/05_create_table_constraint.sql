@@ -294,7 +294,14 @@ ON UPDATE CASCADE;
 CREATE TABLE fp_competition_edition
 (
 	start_year		dm_year		NOT NULL,
-	end_year		smallint	NOT NULL,
+	end_year		smallint	NOT NULL
+		GENERATED ALWAYS AS
+		end_year_comp_ed
+		(
+			competition_id,
+			start_year
+		)
+		STORED							,
 	competition_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
