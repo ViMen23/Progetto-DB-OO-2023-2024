@@ -13,10 +13,13 @@
 /*******************************************************************************
  * INSERT prize
  ******************************************************************************/
-INSERT INTO prize (type, name, descr, given, year)
+INSERT INTO fp_prize (type, name, given, role)
 VALUES
-('PLAYER', 'Ballon d''Or', 'TODO', 'France Football', 1956),
-('PLAYER', 'Trofeo Bravo', 'TODO', 'Guerin Sportivo', 1978);
+('PLAYER', 'Ballon d''Or', 'France Football', NULL),
+('PLAYER', 'European Golden Shoe', 'European Sports Media', NULL),
+('PLAYER', 'FIFA Fair Play Award', 'FIFA', NULL),
+('PLAYER', 'FIFA Puskás Award', 'FIFA', NULL),
+('TEAM', 'Targa UEFA', 'UEFA', NULL),
+('PLAYER', 'Miglior portiere dell''anno IFFHS', 'IFFHS', 'GK');
 --------------------------------------------------------------------------------
-
 

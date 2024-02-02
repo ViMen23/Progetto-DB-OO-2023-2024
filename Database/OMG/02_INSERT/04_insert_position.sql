@@ -1,4 +1,3 @@
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -11,17 +10,31 @@
 
 
 /*******************************************************************************
- * INSERT fp_trophy
+ * INSERT fp_position
  ******************************************************************************/
-INSERT INTO fp_trophy (type, name, description)
+
+
+INSERT INTO fp_position (role, code, name)
 VALUES
-( 'TEAM'	, 'First place'			, 'TODO' ),
-( 'PLAYER'	, 'Most Valuable Player', 'TODO' ),
-( 'PLAYER'	, 'Best Young Player'	, 'TODO' ),
-( 'PLAYER'	, 'Best Striker'		, 'TODO' ),
-( 'PLAYER'	, 'Best Midfielder'		, 'TODO' ),
-( 'PLAYER'	, 'Best Defender'		, 'TODO' ),
-( 'PLAYER'	, 'Best Goalkeeper'		, 'TODO' ),
-( 'PLAYER'	, 'Goal of the Season'	, 'TODO' );
+('GK', 'GK', 'Goalkeeper'),
+('DF', 'CB', 'Centre-Back'),
+('DF', 'LB', 'Left-Back'),
+('DF', 'LD', 'Left Defender'),
+('DF', 'RB', 'Right-Back'),
+('DF', 'RD', 'Right Defender'),
+('DF', 'SW', 'Sweeper'),
+('MF', 'AM', 'Attacking Midfield'),
+('MF', 'CM', 'Central Midfield'),
+('MF', 'DM', 'Defensive Midfield'),
+('MF', 'LM', 'Left Midfield'),
+('MF', 'MW', 'Mid-Wing'),
+('MF', 'RM', 'Right Midfield'),
+('FW', 'CF', 'Centre Forward'),
+('FW', 'FN', 'False Nine'),
+('FW', 'LF', 'Left Forward'),
+('FW', 'LW', 'Left Winger'),
+('FW', 'RW', 'Right Winger'),
+('FW', 'RF', 'Right Forward'),
+('FW', 'SS', 'Second Striker');
 --------------------------------------------------------------------------------
 

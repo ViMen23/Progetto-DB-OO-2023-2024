@@ -1,3 +1,4 @@
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -10,28 +11,15 @@
 
 
 /*******************************************************************************
- * INSERT fp_position
+ * INSERT tag
  ******************************************************************************/
-
-
-INSERT INTO fp_position (role, code, name)
+INSERT INTO fp_tag (type, name, given, role)
 VALUES
-('GK', 'GK', 'Goalkeeper'),
-('DF', 'CB', 'Centre-Back'),
-('DF', 'LB', 'Left-Back'),
-('DF', 'LWB', 'Left-Wing-Back'),
-('DF', 'RB', 'Right-Back'),
-('DF', 'RWB', 'Right-Wing-Back'),
-('MF', 'AM', 'Attacking Midfield'),
-('MF', 'CM', 'Central Midfield'),
-('MF', 'DM', 'Defensive Midfield'),
-('MF', 'LM', 'Left Midfield'),
-('MF', 'RM', 'Right Midfield'),
-('FW', 'CF', 'Centre Forward'),
-('FW', 'LF', 'Left Forward'),
-('FW', 'LW', 'Left Winger'),
-('FW', 'RW', 'Right Winger'),
-('FW', 'RF', 'Right Forward'),
-('FW', 'SS', 'Second Striker');
+('PLAYER', 'Ballon d''Or', 'France Football', NULL),
+('PLAYER', 'European Golden Shoe', 'European Sports Media', NULL),
+('PLAYER', 'FIFA Fair Play Award', 'FIFA', NULL),
+('PLAYER', 'FIFA Puskás Award', 'FIFA', NULL),
+('TEAM', 'Targa UEFA', 'UEFA', NULL),
+('PLAYER', 'Miglior portiere dell''anno IFFHS', 'IFFHS', 'GK');
 --------------------------------------------------------------------------------
 
