@@ -1627,6 +1627,46 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bi_statistic_goalkeeper
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bi_statistic_goalkeeper
+(
+)
+RETURNS trigger
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_player	integer;
+	role_player	en_role_mix;
+
+BEGIN
+
+	tmp = get_column('fp_play', 'player_id', NEW.play_id);
+	id_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_player', 'role', id_player);
+	role_player = CAST(tmp AS en_role_mix);
+
+	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+		RETURN OLD;
+	END IF;
+
+
+	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_statistic_goalkeeper
  *
  * DESC : TODO
@@ -1644,7 +1684,7 @@ DECLARE
 	id_play		integer;
 
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -1658,7 +1698,7 @@ BEGIN
 		tmp = get_column('fp_play', 'player_id', OLD.play_id);
 		id_player = CAST(tmp AS integer);
 
-		tmp = get_column('fp_player', 'role', OLD.player_id);
+		tmp = get_column('fp_player', 'role', id_player);
 		role_player = CAST(tmp AS en_role_mix);
 
 		IF (CAST(role_player AS text) LIKE '%GK%') THEN

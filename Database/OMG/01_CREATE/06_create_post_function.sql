@@ -72,7 +72,7 @@ BEGIN
 	RETURN
 	(
 		SELECT
-			count(*) >= 7
+			count(*) >= 6
 		FROM
 			fp_country
 		WHERE
@@ -2743,3 +2743,777 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : insert_militancy_from_to
+ *
+ * IN      : en_team, integer, integer, smallint, en_season, smallint, en_season
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION insert_militancy_from_to
+(
+	IN	type_team	en_team,
+	IN	id_team		integer,
+	IN	id_player	integer,
+	IN	s_year		smallint,
+	IN	type_s_year	en_season,
+	IN	e_year		smallint,
+	IN	type_e_year	en_season
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	error		boolean;
+
+	chek_year	smallint;
+
+	year		smallint;
+
+BEGIN
+
+	BEGIN
+
+	error = FALSE;
+
+	SAVEPOINT refuse_all;
+
+	IF (e_year <= s_year) THEN
+		error = TRUE;
+	END IF;
+
+
+	IF (error) THEN
+		RETURN;
+	END IF;
+	
+
+	chek_year = NULL;
+
+	INSERT INTO
+		fp_militancy
+		(
+			team_type,
+			team_id,
+			player_id,
+			start_year,
+			type
+		)
+	VALUES
+	(
+		type_team,
+		id_team	,
+		id_player,
+		s_year,
+		type_s_year
+	)
+	RETURNING
+		start_year
+	INTO
+		chek_year;
+
+
+	IF (chek_year IS NULL) THEN
+		error = TRUE;
+		ROLLBACK TO refuse_all;
+	END IF;
+
+
+	FOR year IN (s_year + 1)..(e_year - 1)
+	LOOP
+
+		chek_year = NULL;
+
+		INSERT INTO
+			fp_militancy
+			(
+				team_type,
+				team_id,
+				player_id,
+				start_year,
+				type
+			)
+		VALUES
+		(
+			type_team,
+			id_team	,
+			id_player,
+			year,
+			'FULL'
+		)
+		RETURNING
+			start_year
+		INTO
+			chek_year;
+
+		
+		IF (chek_year IS NULL) THEN
+			error = TRUE;
+			ROLLBACK TO refuse_all;
+		END IF;
+
+	END LOOP;
+
+
+	chek_year = NULL;
+
+	INSERT INTO
+		fp_militancy
+		(
+			team_type,
+			team_id,
+			player_id,
+			start_year,
+			type
+		)
+	VALUES
+	(
+		type_team,
+		id_team	,
+		id_player,
+		e_year,
+		type_e_year
+	)
+	RETURNING
+		start_year
+	INTO
+		chek_year;
+
+	
+	IF (chek_year IS NULL) THEN
+		error = TRUE;
+		ROLLBACK TO refuse_all;
+	END IF;
+
+
+	COMMIT;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+*/
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : random_between
+ *
+ * IN      : integer, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : smallint
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION random_between
+(
+	IN	s_range	integer,
+	IN	e_range	integer
+)
+RETURNS smallint
+AS
+$$
+BEGIN
+
+	RETURN CAST(floor(random() * (e_range - s_range + 1) + s_range) AS smallint);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_attribute_mental
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_attribute_mental
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	UPDATE
+		fp_attribute_mental
+	SET
+		aggression = random_between(0, 10),
+		anticipation = random_between(0, 10),
+		bravery = random_between(0, 10),
+		composure = random_between(0, 10),
+		concentration = random_between(0, 10),
+		decision = random_between(0, 10),
+		determination = random_between(0, 10),
+		flair = random_between(0, 10),
+		leadership = random_between(0, 10),
+		off_the_ball = random_between(0, 10),
+		positioning = random_between(0, 10),
+		teamwork = random_between(0, 10),
+		vision = random_between(0, 10),
+		work_rate = random_between(0, 10)
+	WHERE
+		player_id = id_player;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_attribute_physical
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_attribute_physical
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	UPDATE
+		fp_attribute_physical
+	SET
+		acceleration = random_between(0, 10),
+		agility = random_between(0, 10),
+		balance = random_between(0, 10),
+		jumping_reach = random_between(0, 10),
+		natural_fitness = random_between(0, 10),
+		pace = random_between(0, 10),
+		stamina = random_between(0, 10),
+		strenght = random_between(0, 10)
+	WHERE
+		player_id = id_player;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_attribute_technical
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_attribute_technical
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	UPDATE
+		fp_attribute_technical
+	SET
+		corners = random_between(0, 10),
+		crossing = random_between(0, 10),
+		dribbling = random_between(0, 10),
+		finishing = random_between(0, 10),
+		first_touch = random_between(0, 10),
+		free_kick_taking = random_between(0, 10),
+		heading = random_between(0, 10),
+		long_shots = random_between(0, 10),
+		long_throws = random_between(0, 10),
+		marking = random_between(0, 10),
+		passing = random_between(0, 10),
+		penality_taking = random_between(0, 10),
+		tackling = random_between(0, 10),
+		technique = random_between(0, 10)	
+	WHERE
+		player_id = id_player;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_attribute_goalkeeping
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_attribute_goalkeeping
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	role_player	en_role_mix;
+
+BEGIN
+
+	tmp = get_column('fp_player', 'role', id_player);
+	role_player = CAST(tmp AS en_role_mix);
+
+	IF (0 = position('GK' in role_player)) THEN
+		RETURN;
+	END IF;
+
+
+	UPDATE
+		fp_attribute_goalkeeping
+	SET
+		aerial_reach = random_between(0, 10),
+		command_of_area = random_between(0, 10),
+		communication = random_between(0, 10),
+		eccentricity = random_between(0, 10),
+		first_touch_gk = random_between(0, 10),
+		handling = random_between(0, 10),
+		kicking = random_between(0, 10),
+		one_on_ones = random_between(0, 10),
+		passing_gk = random_between(0, 10),
+		punching_tencency = random_between(0, 10),
+		reflexes = random_between(0, 10),
+		rushing_out_tendency = random_between(0, 10),
+		throwing = random_between(0, 10)
+	WHERE
+		player_id = id_player;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_attribute
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_attribute
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	PERFORM set_random_attribute_mental(id_player);
+
+	PERFORM set_random_attribute_physical(id_player);
+
+	PERFORM set_random_attribute_technical(id_player);
+
+	PERFORM set_random_attribute_goalkeeping(id_player);
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_statistic_general
+ *
+ * IN      : integer, integer, en_role
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_statistic_general
+(
+	IN	id_play		integer,
+	IN	match_play	integer,
+	IN	main_role	en_role
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	IF ('GK' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_scored = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
+			assist = random_between(0, CAST(floor(match_play * 0.1) AS integer)),
+			yellow_card = random_between(0, CAST(floor(match_play * 0.2) AS integer)),
+			red_card = random_between(0, CAST(floor(match_play * 0.1) AS integer)),
+			penalty_scored = random_between(0, CAST(floor(match_play * 0.05) AS integer))
+		WHERE
+			play_id = id_play;
+
+	ELSIF ('DF' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_scored = random_between(0, CAST(floor(match_play * 0.2) AS integer)),
+			assist = random_between(0, CAST(floor(match_play * 0.3) AS integer)),
+			yellow_card = random_between(0, CAST(floor(match_play * 0.4) AS integer)),
+			red_card = random_between(0, CAST(floor(match_play * 0.3) AS integer)),
+			penalty_scored = random_between(0, CAST(floor(match_play * 0.2) AS integer))
+		WHERE
+			play_id = id_play;
+
+	ELSIF ('MF' = main_role) THEN
+		
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_scored = random_between(0, CAST(floor(match_play * 0.4) AS integer)),
+			assist = random_between(0, CAST(floor(match_play * 0.6) AS integer)),
+			yellow_card = random_between(0, CAST(floor(match_play * 0.3) AS integer)),
+			red_card = random_between(0, CAST(floor(match_play * 0.25) AS integer)),
+			penalty_scored = random_between(0, CAST(floor(match_play * 0.35) AS integer))
+		WHERE
+			play_id = id_play;
+
+	ELSIF ('FW' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_scored = random_between(0, CAST(floor(match_play * 0.9) AS integer)),
+			assist = random_between(0, CAST(floor(match_play * 0.5) AS integer)),
+			yellow_card = random_between(0, CAST(floor(match_play * 0.2) AS integer)),
+			red_card = random_between(0, CAST(floor(match_play * 0.1) AS integer)),
+			penalty_scored = random_between(0, CAST(floor(match_play * 0.5) AS integer))
+		WHERE
+			play_id = id_play;
+
+	END IF;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_statistic_goalkeeper
+ *
+ * IN      : integer, integer, en_role
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_statistic_goalkeeper
+(
+	IN	id_play		integer,
+	IN	match_play	integer,
+	IN	main_role	en_role
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	id_player	integer;
+
+	role_player	en_role_mix;
+
+BEGIN
+
+	tmp = get_column('fp_play', 'player_id', id_play);
+	id_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_player', 'role', id_player);
+	role_player = CAST(tmp AS en_role_mix);
+
+	IF (0 = position('GK' in role_player)) THEN
+		RETURN;
+	END IF;
+
+	 
+	IF ('GK' = main_role) THEN
+		
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_conceded = random_between(0, CAST(floor(match_play * 0.75) AS integer)),
+			penalty_saved = random_between(0, CAST(floor(match_play * 0.35) AS integer))
+		WHERE
+			play_id = id_play;
+
+	ELSIF ('DF' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
+			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
+		WHERE
+			play_id = id_play;
+
+	ELSIF ('MF' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
+			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
+		WHERE
+			play_id = id_play;
+	
+	ELSIF ('FW' = main_role) THEN
+
+		UPDATE
+			fp_statistic_general
+		SET
+			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
+			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
+		WHERE
+			play_id = id_play;
+
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_statistic
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_statistic
+(
+	IN	id_play	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+	
+	tmp				text;
+
+	id_comp			integer;
+
+	s_year			smallint;
+
+	tot_team		integer;
+
+	match_play		integer;
+
+	id_player		integer;
+	id_pos_player	integer;
+	role_pos_player	en_role;
+
+BEGIN
+
+	tmp = get_column('fp_play', 'competition_id', id_play);
+	id_comp = CAST(tmp AS integer);
+
+	tmp = get_column('fp_play', 'start_year', id_play);
+	s_year = CAST(tmp AS integer);
+
+	tot_team = tot_team_comp_ed(id_comp, s_year);
+
+
+	UPDATE
+		fp_play
+	SET
+		match = random_between(1, tot_team * 4)
+	WHERE
+		play_id = id_play;
+
+
+	tmp = get_column('fp_play', 'match', id_play);
+	match_play = CAST(tmp AS integer);
+
+	
+	tmp = get_column('fp_play', 'player_id', id_play);
+	id_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_player', 'postition_id', id_player);
+	id_pos_player = CAST(tmp AS integer);
+
+	tmp = get_column('fp_position', 'role', id_pos_player);
+	role_pos_player = CAST(tmp AS en_role);
+
+
+	PERFORM set_random_statistic_general(id_play, match_play, role_pos_player);
+
+	PERFORM set_random_statistic_goalkeeper(id_play, match_play, role_pos_player);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_all_statistic
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_all_statistic
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	id_play	integer;
+
+BEGIN
+
+	FOR id_play
+	IN
+		SELECT
+			id
+		FROM
+			fp_play
+		WHERE
+			player_id = id_player
+		
+	LOOP
+
+		PERFORM set_random_statistic(id_play);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random
+(
+	IN	id_player	integer
+)
+RETURNS void
+AS
+$$
+BEGIN
+
+	PERFORM set_random_attribute(id_player);
+
+	PERFORM set_random_all_statistic(id_player);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : set_random_all
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : void
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_random_all
+(
+)
+RETURNS void
+AS
+$$
+DECLARE
+
+	id_player	integer;
+
+BEGIN
+
+	FOR id_player
+	IN
+		SELECT
+			id
+		FROM
+			fp_player
+
+	LOOP
+
+		PERFORM set_random(id_player);
+
+	END LOOP;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+

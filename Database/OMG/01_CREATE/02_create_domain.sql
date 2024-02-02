@@ -91,7 +91,7 @@ CHECK
 CREATE DOMAIN dm_attribute AS smallint
 CHECK
 (
-	value BETWEEN 0 AND 100
+	value BETWEEN 0 AND 10
 );
 --------------------------------------------------------------------------------
 

@@ -75,6 +75,22 @@ UNIQUE
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - fp_country TABLE
+ * NAME : ck_country
+ *
+ * DESC : TODO
+ ******************************************************************************/
+ALTER TABLE	fp_country
+ADD CONSTRAINT ck_country
+CHECK
+(
+	('WORLD' = type AND super_id IS NULL)
+	OR
+	type <> 'WORLD'
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_country TABLE
  * NAME : country_fk_country
  *
@@ -1306,7 +1322,7 @@ ON UPDATE CASCADE;
 CREATE TABLE fp_attribute_mental
 (
 	player_id		integer			NOT NULL			 ,
-	aggrssion		dm_attribute	NOT NULL	DEFAULT 0,
+	aggression		dm_attribute	NOT NULL	DEFAULT 0,
 	anticipation	dm_attribute	NOT NULL	DEFAULT 0,
 	bravery			dm_attribute	NOT NULL	DEFAULT 0,
 	composure		dm_attribute	NOT NULL	DEFAULT 0,
