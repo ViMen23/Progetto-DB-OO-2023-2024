@@ -298,8 +298,10 @@ CREATE TABLE fp_competition_edition
 		GENERATED ALWAYS AS
 		end_year_comp_ed
 		(
-			competition_id,
-			start_year
+			(
+				competition_id,
+				start_year
+			)
 		)
 		STORED							,
 	competition_id	integer		NOT NULL
