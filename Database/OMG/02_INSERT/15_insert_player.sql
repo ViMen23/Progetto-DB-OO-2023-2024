@@ -14,14 +14,15 @@
  ******************************************************************************/
 
 
-INSERT INTO fp_player (name, surname, dob, foot, role,country_id)
+INSERT INTO fp_player (name, surname, dob, foot, position_id, role, country_id)
 VALUES
 (
 	'Alex',
 	'Meret',
 	'1997-03-22',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -29,7 +30,8 @@ VALUES
 	'Gollini',
 	'1995-03-18',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -37,7 +39,8 @@ VALUES
 	'Sirigu',
 	'1987-01-12',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -45,7 +48,8 @@ VALUES
 	'Idasiak',
 	'2002-02-03',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Poland')
 ),
 (
@@ -53,7 +57,8 @@ VALUES
 	'Boffelli',
 	'2004-09-04',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -61,7 +66,8 @@ VALUES
 	'Marfella',
 	'1999-09-15',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -69,7 +75,8 @@ VALUES
 	'Kim',
 	'1996-11-15',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@South Korea')
 ),
 (
@@ -77,7 +84,8 @@ VALUES
 	'Rrahmani',
 	'1994-02-24',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Jugoslavia')
 ),
 (
@@ -85,7 +93,8 @@ VALUES
 	'Østigård',
 	'1999-11-28',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Norway')
 ),
 (
@@ -93,7 +102,8 @@ VALUES
 	'Jesus',
 	'1991-06-10',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Brazil')
 ),
 (
@@ -101,7 +111,8 @@ VALUES
 	'Olivera',
 	'1991-05-27',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Uruguay')
 ),
 (
@@ -109,7 +120,8 @@ VALUES
 	'Rui',
 	'1997-03-22',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Portugal')
 ),
 (
@@ -117,7 +129,8 @@ VALUES
 	'Di Lorenzo',
 	'1993-08-04',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -125,7 +138,8 @@ VALUES
 	'Zanoli',
 	'2000-10-03',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -133,7 +147,8 @@ VALUES
 	'Bereszyński',
 	'1992-07-12',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Poland')
 ),
 (
@@ -141,7 +156,8 @@ VALUES
 	'Lobotka',
 	'1994-11-25',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Defensive Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Slovakia')
 ),
 (
@@ -149,7 +165,8 @@ VALUES
 	'Demme',
 	'1991-11-21',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Defensive Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Germany')
 ),
 (
@@ -157,7 +174,8 @@ VALUES
 	'Anguissa',
 	'1995-11-16',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Cameroon')
 ),
 (
@@ -165,7 +183,8 @@ VALUES
 	'Zieliński',
 	'1994-05-20',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Poland')
 ),
 (
@@ -173,7 +192,8 @@ VALUES
 	'Ndombélé',
 	'1996-12-28',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@France')
 ),
 (
@@ -181,7 +201,8 @@ VALUES
 	'Zedadka',
 	'2000-06-09',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@France')
 ),
 (
@@ -189,7 +210,8 @@ VALUES
 	'Elmas',
 	'1999-09-24',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Attacking Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@North Macedonia')
 ),
 (
@@ -197,7 +219,8 @@ VALUES
 	'Gaetano',
 	'2000-05-05',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Attacking Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -205,7 +228,8 @@ VALUES
 	'Kvaratskhelia',
 	'2001-02-12',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Georgia')
 ),
 (
@@ -213,7 +237,8 @@ VALUES
 	'Zerbin',
 	'1999-03-03',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -221,7 +246,8 @@ VALUES
 	'Lozano',
 	'1995-07-30',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Mexico')
 ),
 (
@@ -229,7 +255,8 @@ VALUES
 	'Politano',
 	'1993-08-03',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -237,7 +264,8 @@ VALUES
 	'Ounas',
 	'1996-11-11',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@France')
 ),
 (
@@ -245,7 +273,8 @@ VALUES
 	'Raspadori',
 	'2000-02-18',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Second Striker'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -253,7 +282,8 @@ VALUES
 	'Osimhen',
 	'1998-12-29',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre Forward'),
+	'FW',
 	get_id('@', 'fp_country@name@Nigeria')
 ),
 (
@@ -261,7 +291,8 @@ VALUES
 	'Simeone',
 	'1995-07-05',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre Forward'),
+	'FW',
 	get_id('@', 'fp_country@name@Argentina')
 ),
 (
@@ -269,7 +300,8 @@ VALUES
 	'Provedel',
 	'1994-03-17',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -277,7 +309,8 @@ VALUES
 	'Mandas',
 	'2001-09-17',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Greece')
 ),
 (
@@ -285,7 +318,8 @@ VALUES
 	'Sepe',
 	'1991-05-08',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Goalkeeper'),
+	'GK',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -293,7 +327,8 @@ VALUES
 	'Casale',
 	'1998-02-14',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -301,7 +336,8 @@ VALUES
 	'Romagnoli',
 	'1995-01-12',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -309,7 +345,8 @@ VALUES
 	'Gil',
 	'1993-04-17',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Spain')
 ),
 (
@@ -317,7 +354,8 @@ VALUES
 	'Gila',
 	'2000-08-29',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Spain')
 ),
 (
@@ -325,7 +363,8 @@ VALUES
 	'Pellegrini',
 	'1999-03-07',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -333,7 +372,8 @@ VALUES
 	'Kamenović',
 	'2000-07-16',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Jugoslavia')
 ),
 (
@@ -341,7 +381,8 @@ VALUES
 	'Marusic',
 	'1992-10-17',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Jugoslavia')
 ),
 (
@@ -349,7 +390,8 @@ VALUES
 	'Hysaj',
 	'1994-02-02',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right-Back'),
+	'DF',
 	get_id('@', 'fp_country@name@Albania')
 ),
 (
@@ -357,7 +399,8 @@ VALUES
 	'Rovella',
 	'2001-12-04',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Defensive Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -365,7 +408,8 @@ VALUES
 	'Cataldi',
 	'1994-08-06',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Defensive Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -373,7 +417,8 @@ VALUES
 	'Guendouzi',
 	'1999-04-14',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@France')
 ),
 (
@@ -381,7 +426,8 @@ VALUES
 	'Alberto',
 	'1992-09-28',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Spain')
 ),
 (
@@ -389,7 +435,8 @@ VALUES
 	'Vecino',
 	'1991-08-24',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Uruguay')
 ),
 (
@@ -397,7 +444,8 @@ VALUES
 	'Lazzari',
 	'1993-11-29',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -405,7 +453,8 @@ VALUES
 	'Kamada',
 	'1996-08-05',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Attacking Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Japan')
 ),
 (
@@ -413,7 +462,8 @@ VALUES
 	'Anderson',
 	'1999-09-23',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Attacking Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Brazil')
 ),
 (
@@ -421,7 +471,8 @@ VALUES
 	'Zaccagni',
 	'1995-06-16',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -429,7 +480,8 @@ VALUES
 	'González',
 	'2003-01-07',
 	'LEFT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Paraguay')
 ),
 (
@@ -437,7 +489,8 @@ VALUES
 	'Fernandes',
 	'2006-03-10',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Left Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Guinea-Bissau')
 ),
 (
@@ -445,7 +498,8 @@ VALUES
 	'Isaksen',
 	'2001-04-19',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Denmark')
 ),
 (
@@ -453,7 +507,8 @@ VALUES
 	'Anderson',
 	'1993-04-15',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Brazil')
 ),
 (
@@ -461,7 +516,8 @@ VALUES
 	'Rodríguez',
 	'1987-07-28',
 	'EITHER',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Spain')
 ),
 (
@@ -469,7 +525,8 @@ VALUES
 	'Lombardi',
 	'1995-08-19',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Right Winger'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -477,7 +534,8 @@ VALUES
 	'Castellanos',
 	'1998-10-03',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre Forward'),
+	'FW',
 	get_id('@', 'fp_country@name@Argentina')
 ),
 (
@@ -485,7 +543,8 @@ VALUES
 	'Immobile',
 	'1990-02-20',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Centre Forward'),
+	'FW',
 	get_id('@', 'fp_country@name@Italy')
 ),
 (
@@ -493,7 +552,8 @@ VALUES
 	'Milinkovic-Savic',
 	'1995-02-27',
 	'RIGHT',
-	'GK-DF-MF-FW',
+	get_id('@', 'fp_position@name@Central Midfield'),
+	'MF',
 	get_id('@', 'fp_country@name@Spain')
 );
 --------------------------------------------------------------------------------
