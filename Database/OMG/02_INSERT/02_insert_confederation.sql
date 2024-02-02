@@ -28,7 +28,7 @@ VALUES
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * INSERT CONTINENT TYPE FP_CONFEDERATION
+ * INSERT CONTINENT TYPE CONFEDERATION
  ******************************************************************************/
 INSERT INTO fp_confederation (short_name, long_name, country_id, super_id)
 VALUES

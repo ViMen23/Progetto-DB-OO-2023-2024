@@ -10,9 +10,8 @@
 
 
 /*******************************************************************************
- * INSERT FP_COMPETITION
+ * INSERT COMPETITION
  ******************************************************************************/
-
 INSERT INTO fp_competition (type, team_type, name, frequency, confederation_id)
 VALUES
 (
