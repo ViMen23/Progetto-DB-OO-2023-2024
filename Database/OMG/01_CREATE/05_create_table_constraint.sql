@@ -295,8 +295,7 @@ CREATE TABLE fp_competition_edition
 (
 	start_year		dm_year		NOT NULL,
 	end_year		smallint	NOT NULL,
-	competition_id	integer		NOT NULL,
-	total_team		dm_usint	NOT NULL
+	competition_id	integer		NOT NULL
 );
 --------------------------------------------------------------------------------
 
@@ -345,28 +344,6 @@ ADD CONSTRAINT ck_competition_edition_range
 CHECK
 (
 	(end_year - start_year) BETWEEN 0 AND 1
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
- * NAME : ck_competition_edition_total_team
- *
- * DESC : Il numero di squadre di calcio che possono partecipare ad una
- *        edizione di una competizione calcistica deve essere compreso tra
- *        un minimo di 2 ed un massimo di 128.
- *
- *        NOTA: Il valore massimo, sebbene arbitrario, è stato ottenuto
- *              mediante una ricerca dettagliata effettuata analizzando
- *              gli storici delle varie edizioni di competizioni calcistiche
- *              su Wikipidia, Transfermarkt e altri siti.
- *              Abbiamo considerato sempre la fase finale di una competizione
- ******************************************************************************/
-ALTER TABLE	fp_competition_edition
-ADD CONSTRAINT ck_competition_edition_total_team
-CHECK
-(
-	total_team BETWEEN 2 AND 128
 );
 --------------------------------------------------------------------------------
 

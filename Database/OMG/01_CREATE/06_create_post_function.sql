@@ -1153,89 +1153,6 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : corr_years_comp_ed
- *
- * IN      : integer, smallint, smallint
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se l'anno di inizio e fine di un'edizione di
- *        una competizione calcistica sono corretti.
- *
- *        NOTA: abbiamo effettuato una semplificazione che è basata
- *              sull'analisi di numerose competizioni (Wikipidia, Transermarkt).
- *              Un campionato è sempre a cavallo di due anni.
- *              Una supercoppa sempre svolta in un solo anno.
- *              Un torneo per club a cavallo di due anni, un torneo per
- *              nazionali sempre svolto in un solo anno.
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION corr_years_comp_ed
-(
-	IN	id_comp	integer,
-	IN	s_year	smallint,	-- anno inizio
-	IN	e_year	smallint	-- anno fine
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp				text;
-
-	type_comp		en_competition;
-	team_type_comp	en_team;
-
-BEGIN
-	
-	tmp = get_column('fp_competition', 'type', id_comp);
-	type_comp = CAST(tmp AS en_competition);
-
-	IF ('LEAGUE' = type_comp) THEN
-	
-		IF (1 = e_year - s_year) THEN
-			RETURN TRUE;
-		END IF;
-	
-	ELSIF ('SUPER CUP' = type_comp) THEN
-	
-		IF (0 = e_year - s_year) THEN
-			RETURN TRUE;
-		END IF;
-	
-	ELSIF ('CUP' = type_comp) THEN
-		
-		tmp = get_column('fp_competition', 'team_type', id_comp);
-		team_type_comp = CAST(tmp AS en_team);
-
-		IF ('NATIONAL' = team_type_comp) THEN
-
-			IF (0 = e_year - s_year) THEN
-				RETURN TRUE;
-			END IF;
-		
-		ELSIF ('CLUB' = team_type_comp) THEN
-
-			IF (1 = e_year - s_year) THEN
-				RETURN TRUE;
-			END IF;
-		
-		END IF;
-	END IF;
-
-
-	RAISE NOTICE 'Competition (id =  %) cannot have edition start in % and end in %', id_comp, s_year, e_year;
-	RETURN FALSE;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
  * NAME : has_edition
  *
  * IN      : integer
@@ -1423,20 +1340,18 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : tot_team_comp_ed
+ * NAME : max_team_comp
  *
- * IN      : integer, smallint
+ * IN      : integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce il numero di team che possono partecipare
- *        ad un'edizione di una competizione calcistica
+ * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION tot_team_comp_ed
+CREATE OR REPLACE FUNCTION max_team_comp
 (
-	IN	id_comp	integer,
-	IN	s_year	smallint	-- anno inizio
+	IN	id_comp	integer
 )
 RETURNS integer
 RETURNS NULL ON NULL INPUT
@@ -1444,25 +1359,81 @@ AS
 $$
 DECLARE
 
-	tot_team	integer;
+	rec_comp	record;
 
 BEGIN
 
-	tot_team = NULL;
+	rec_comp = get_record('fp_competition', id_comp);
 
-	SELECT
-		total_team
-	INTO
-		tot_team
-	FROM
-		fp_competition_edition
-	WHERE
-		competition_id = id_comp
-		AND
-		start_year = s_year;
+	IF ('LEAGUE' = rec_comp.type) THEN
+		RETURN 40;
+	
+	ELSIF ('SUPER CUP' = rec_comp.type) THEN
+		RETURN 6;
+	
+	ELSIF ('CUP' = rec_comp.type) THEN
+
+		IF ('CLUB' = rec_comp.team_type) THEN
+			RETURN 128;
+	
+		ELSIF ('NATIONAL' = rec_comp.team_type) THEN
+			RETURN 48;
+	
+		END IF;
+
+	END IF;
 
 
-	RETURN tot_team;
+	RETURN NULL;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : max_match_comp
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION max_match_comp
+(
+	IN	id_comp	integer
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	tmp			text;
+
+	type_comp	en_competition;
+
+BEGIN
+
+	tmp = get_column('fp_competition', 'type',id_comp);
+	type_comp = CAST(tmp AS en_competition);
+
+	IF ('LEAGUE' = type_comp) THEN
+		RETURN 40;
+	
+	ELSIF ('SUPER CUP' = type_comp) THEN
+		RETURN 3;
+	
+	ELSIF ('CUP' = type_comp) THEN
+		RETURN 10;
+
+	END IF;
+
+
+	RETURN NULL;
 
 END;
 $$
@@ -1493,18 +1464,15 @@ AS
 $$
 DECLARE
 
-	tot_team	integer;
-
-	have		boolean;
+	have	boolean;
 
 BEGIN
 	
-	tot_team = tot_team_comp_ed(id_comp, s_year);
-
 	have = FALSE;
 
+
 	SELECT
-		(count(*) < tot_team)
+		(count(*) < max_team_comp(id_comp))
 	INTO
 		have
 	FROM
@@ -1519,6 +1487,7 @@ BEGIN
 		RAISE NOTICE 'Competition (id = %) start year (%)'
 			'does not have place', id_comp, s_year;
 	END IF;
+
 
 	RETURN have;
 
@@ -3183,7 +3152,7 @@ BEGIN
 			fp_statistic_general
 		SET
 			goal_scored = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
-			assist = random_between(0, CAST(floor(match_play * 0.1) AS integer)),
+			assist = random_between(0, CAST(floor(match_play * 0.05) AS integer)),
 			yellow_card = random_between(0, CAST(floor(match_play * 0.2) AS integer)),
 			red_card = random_between(0, CAST(floor(match_play * 0.1) AS integer)),
 			penalty_scored = random_between(0, CAST(floor(match_play * 0.05) AS integer))
@@ -3282,7 +3251,7 @@ BEGIN
 		UPDATE
 			fp_statistic_general
 		SET
-			goal_conceded = random_between(0, CAST(floor(match_play * 0.75) AS integer)),
+			goal_conceded = random_between(0, CAST(floor(match_play * 1.25) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.35) AS integer))
 		WHERE
 			play_id = id_play;
@@ -3366,13 +3335,13 @@ BEGIN
 	tmp = get_column('fp_play', 'start_year', id_play);
 	s_year = CAST(tmp AS integer);
 
-	tot_team = tot_team_comp_ed(id_comp, s_year);
+
 
 
 	UPDATE
 		fp_play
 	SET
-		match = random_between(1, tot_team * 4)
+		match = random_between(1, max_match_comp(id_comp))
 	WHERE
 		play_id = id_play;
 

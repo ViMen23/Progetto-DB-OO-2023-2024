@@ -273,29 +273,17 @@ AS
 $$
 BEGIN
 
-	IF
-	(
-		-- se l'edizione iniza e termina negli anni corretti
-		corr_years_comp_ed(NEW.competition_id, NEW.start_year, NEW.end_year)
-		AND
-		-- ..ed ha il corretto numero di squadre partecipanti in base al tipo 
-		corr_tot_team(NEW.competition_id, NEW.total_team)
-	)
-	THEN
+	IF (NOT has_edition(NEW.competition_id)) THEN
+		RETURN NEW;
 
-		IF (NOT has_edition(NEW.competition_id)) THEN
+	ELSE
+		-- se esiste già un'edizione della competizione
+		-- quella che si vuole inserire deve rispettare la frequenza della competizione
+		IF (corr_freq(NEW.competition_id, NEW.start_year)) THEN
 			RETURN NEW;
-
-		ELSE
-			-- se esiste già un'edizione della competizione
-			-- quella che si vuole inserire deve rispettare la frequenza della competizione
-			IF (corr_freq(NEW.competition_id, NEW.start_year)) THEN
-				RETURN NEW;
-			END IF;
-
 		END IF;
 
-	END IF;
+	END IF;	
 
 
 	RETURN NULL;
@@ -1143,16 +1131,9 @@ CREATE OR REPLACE FUNCTION tf_bi_play
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tot_team	integer;
-
 BEGIN
 
-	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
-
-
-	IF (NEW.match <= tot_team * 4) THEN
+	IF (NEW.match <= max_match_comp(NEW.competition_id)) THEN
 		RETURN NEW;
 	END IF;
 
@@ -1208,16 +1189,9 @@ CREATE OR REPLACE FUNCTION tf_bu_play_match
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tot_team	integer;
-
 BEGIN
 
-	tot_team = tot_team_comp_ed(NEW.competition_id, NEW.start_year);
-
-
-	IF (NEW.match <= tot_team * 4) THEN
+	IF (NEW.match <= max_match_comp(NEW.competition_id)) THEN
 		RETURN NEW;
 	END IF;
 
