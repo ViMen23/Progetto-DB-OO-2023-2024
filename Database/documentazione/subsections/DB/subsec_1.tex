@@ -666,10 +666,8 @@ centrale.
 	{
 		\textbf{startYear}(Integer)[chiave parziale]:
 			\\Rappresenta l'anno di inizio di un'Edizione.\\
-		\medskip\textbf{endYear}(Integer)[chiave parziale]:
-			\\Rappresenta l'anno di fine di un'Edizione.\\
-		\medskip\textbf{totalTeam}(Integer):\\Rappresenta
-			il numero di team che partecipano in un'Edizione.
+		\medskip\textbf{endYear}(Integer)[derivato]:
+			\\Rappresenta l'anno di fine di un'Edizione.
 	}
 	\\
 	{
@@ -1693,172 +1691,6 @@ centrale.
 	}
 	\\
 	{
-		\textbf{uqCompetitionEditionEndYear}
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Ogni edizione di una competizione calcistica
-		deve finire in un anno diverso.
-	}
-	\\
-	{
-		\textbf{ckCompetitionEditionRange}
-	}
-	&
-	{
-		N-UPLA
-	}
-	&
-	{
-		Ogni edizione di una competizione calcistica deve
-		iniziare e finire nello stesso anno o
-		al massimo terminare l'anno successivo
-		a quello di inizio.
-	}
-	\\
-	{
-		\textbf{ckCompetitionEditionTotalTeam}
-	}
-	&
-	{
-		N-UPLA
-	}
-	&
-	{
-		Il numero di squadre di calcio che possono partecipare
-		ad una edizione di una competizione calcistica
-		deve essere compreso tra un minimo di 2 ed
-		un massimo di 128.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdLeagueYears}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo campionato non deve iniziare
-		e finire nello stesso anno.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdSuperCupYears}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo supercoppa deve iniziare
-		e finire nello stesso anno.
-	}
-	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth, column{2}= {110pt}
-}
-
-	{
-		\textbf{Controllo CompEdCupNatYears}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo coppa tra squadre nazionali deve
-		iniziare e finire nello stesso anno.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdCupClubYears}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo coppa tra squadre club non deve
-		iniziare e finire nello stesso anno.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdSuperCupTotTeam}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo SuperCoppa deve avere al massimo
-		sei squadre di calcio partecipanti.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdLeagueTotTeam}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo campionato deve avere al massimo
-		cinquanta squadre di calcio partecipanti.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdCupNatTotTeam}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo coppa, organizzata da una confederazione
-		di tipo nazionale, deve avere come numero
-		di squadre di calcio partecipanti una potenza di due.
-	}
-	\\
-	{
-		\textbf{Controllo CompEdCupIntTotTeam}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un'edizione di una competizione calcistica
-		di tipo coppa, organizzata da una confederazione
-		di tipo diverso da nazionale, deve avere al massimo
-		cinquanta squadre di calcio partecipanti.	
-	}
-	\\
-	{
 		\textbf{Controllo CompEdFreq}
 	}
 	&
@@ -1867,9 +1699,9 @@ centrale.
 	}
 	&
 	{
-		L'anno di inizio e fine di un'edizione
-		di una competizione calcistica, deve rispettare
-		la frequenza della sua competizione di riferimento.
+		L'anno di inizio di un'edizione di una competizione calcistica,
+		deve rispettare la frequenza della sua competizione
+		di riferimento.
 		
 	}
 	\\
@@ -1914,6 +1746,7 @@ centrale.
 	}
 	\\
 	{
+	
 		\textbf{Controllo TeamNatShortName}
 	}
 	&
@@ -1926,6 +1759,15 @@ centrale.
 		suo nome abbreviato uguale al codice del paese associato.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth, column{2}= {110pt}
+}
+
 	{
 		\textbf{uqPositionCode}
 	}
@@ -1979,16 +1821,6 @@ centrale.
 		un paese di nascita che sia una nazione.
 	}
 	\\
-\end{tblr}
-
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth , column{2}= {110pt}
-}
-
 	{
 		\textbf{Controllo PlayerRole}
 	}
@@ -2061,59 +1893,6 @@ centrale.
 	}
 	\\
 	{
-		\textbf{Controllo PartTeamConf}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		La partecipazione di una squadra di calcio
-		ad un'edizione di una competizione calcistica
-		deve essere accettata soltanto se
-		la confederazione che organizza
-		la competizione calcistica, è la stessa
-		della squadra di calcio oppure contiene
-		la confederazione associata alla squadra di calcio.
-	}
-	\\
-	{
-		\textbf{Controllo PartTeamType}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		La partecipazione di una squadra di calcio
-		ad un'edizione di una competizione calcistica
-		deve essere accettata soltanto se
-		il tipo di squadra della competizione calcistica
-		è lo stesso della squadra di calcio
-		in considerazione.
-	}
-	\\
-	{
-		\textbf{Controllo PartTeamComp}
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		La partecipazione di una squadra di calcio
-		ad un'edizione di una competizione calcistica
-		deve essere accettata soltanto se
-		la squadra non partecipi già ad un'altra edizione
-		di una competizione calcistica dello stesso tipo,
-		nello stesso anno e organizzata dalla
-		stessa confederazione.
-	}
-	\\
-	{
 		\textbf{uqMilitancy}
 	}
 	&
@@ -2154,15 +1933,6 @@ centrale.
 		un anno valido per il calciatore.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth , column{2}={110pt}
-}
 	{
 		\textbf{Controllo MilitancyTeamNatPlayer}
 	}
@@ -2195,6 +1965,18 @@ centrale.
 		diverse da quella considerata.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth , column{2}={110pt}
+}
+
+
 	{
 		\textbf{Controllo Militancy}
 	}
@@ -2227,7 +2009,7 @@ centrale.
 	}
 	\\
 	{
-		\textbf{Controllo PlayMatch}
+		\textbf{Controllo PlayMatchCup}
 	}
 	&
 	{
@@ -2235,10 +2017,37 @@ centrale.
 	}
 	&
 	{
-		Il numero di match di un gioco deve essere
-		al massimo pari al numero di squadre, che
-		possono partecipare all'edizione della competizione
-		associata, moltiplicato per quattro.
+		Il numero di match di un gioco per un'edizione
+		di una competizione di tipo coppa deve essere
+		al massimo pari a dieci.
+	}
+	\\
+	{
+		\textbf{Controllo PlayMatchLeague}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Il numero di match di un gioco per un'edizione
+		di una competizione di tipo campionato deve essere
+		al massimo pari a quaranta.
+	}
+	\\
+	{
+		\textbf{Controllo PlayMatchSuperCup}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Il numero di match di un gioco per un'edizione
+		di una competizione di tipo supercoppa deve essere
+		al massimo pari a tre.
 	}
 	\\
 	{
@@ -2350,15 +2159,6 @@ centrale.
 		non è stata per la prima parte.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth , column{2}={110pt}
-}
-
 	{
 		\textbf{Controllo PlayerTrophyCaseTeam}
 	}
@@ -2374,6 +2174,15 @@ centrale.
 		di assegnazione del trofeo, ha vinto quel trofeo.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth , column{2}={110pt}
+}
+
 	{
 		\textbf{Controllo PlayerTrophyCaseRole}
 	}
@@ -2526,16 +2335,6 @@ centrale.
 		i due e i tre caratteri.
 	}
 	\\
-\end{tblr}
-
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{2}={110pt},
-    width = \textwidth
-}
-	
 	{
 		\textbf{dmDate}
 	}
@@ -2554,6 +2353,16 @@ centrale.
 		possibile.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]},  column{2}={110pt},
+    width = \textwidth
+}
+	
 	{
 		\textbf{dmPassword}
 	}

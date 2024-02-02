@@ -325,38 +325,6 @@ PRIMARY KEY
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_competition_edition TABLE
- * NAME : uq_competition_edition_end_year
- *
- * DESC : Ogni edizione di una competizione calcistica deve finire
- *        in un anno diverso
- ******************************************************************************/
-ALTER TABLE	fp_competition_edition
-ADD CONSTRAINT uq_competition_edition_end_year
-UNIQUE
-(
-	end_year,
-	competition_id
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : CHECK CONSTRAINT - fp_competition_edition TABLE
- * NAME : ck_competition_edition_range
- *
- * DESC : Ogni edizione di una competizione calcistica deve iniziare e finire
- *        nello stesso anno o al massimo terminare l'anno successivo a quello
- *        di inizio
- ******************************************************************************/
-ALTER TABLE	fp_competition_edition
-ADD CONSTRAINT ck_competition_edition_range
-CHECK
-(
-	(end_year - start_year) BETWEEN 0 AND 1
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_competition_edition TABLE
  * NAME : competition_edition_fk_competition
  *
