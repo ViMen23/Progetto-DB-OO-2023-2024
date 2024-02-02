@@ -213,6 +213,8 @@ BEGIN
 		rec_country.code
 	);
 	
+	RETURN;
+		
 END;
 $$
 LANGUAGE plpgsql;
@@ -1578,7 +1580,7 @@ BEGIN
 
 		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
 			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
-			RETURN TRUE;
+			RETURN FALSE;
 		END IF;
 
 	END LOOP;

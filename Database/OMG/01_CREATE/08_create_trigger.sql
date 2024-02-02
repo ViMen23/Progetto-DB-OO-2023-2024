@@ -67,7 +67,7 @@ EXECUTE FUNCTION tf_refuse();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_country_refuse
-BEFORE UPDATE ON fp_country
+BEFORE DELETE ON fp_country
 FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ EXECUTE FUNCTION tf_refuse();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_confederation_refuse
-BEFORE UPDATE ON fp_confederation
+BEFORE DELETE ON fp_confederation
 FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
@@ -155,7 +155,7 @@ EXECUTE FUNCTION tf_refuse();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_refuse
-BEFORE UPDATE ON fp_competition
+BEFORE DELETE ON fp_competition
 FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
@@ -198,7 +198,7 @@ EXECUTE FUNCTION tf_refuse();
  * DESC : TODO
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_edition_referred
-BEFORE UPDATE ON fp_competition_edition
+BEFORE DELETE ON fp_competition_edition
 FOR EACH ROW
 EXECUTE FUNCTION tf_if_referenced_refuse();
 --------------------------------------------------------------------------------

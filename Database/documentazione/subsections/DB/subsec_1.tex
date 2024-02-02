@@ -332,7 +332,7 @@ centrale.
 
 
 \begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
     width = \textwidth, cell{1}{1-3} = {blue!10!white}
 }
 	{
@@ -348,26 +348,293 @@ centrale.
 	}
 	\\
 	{
-		Attribute
+		\textbf{AttributeGoalkeeping}
 	}
 	&
 	{
-		Rappresenta gli attributi di un calciatore.
+		Rappresenta gli attributi di un portiere.
 	}
 	&
 	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di un Attributo.\\
-		\medskip\textbf{type}(enFeature):\\Rappresenta
-			il tipo di un Attributo.\\
-		\medskip\textbf{name}(String)[chiave naturale]:
-			\\Rappresenta il nome di un Attributo.\\
-		\medskip\textbf{description}(String)[parziale]:
-			\\Rappresenta la descrizione di un Attributo.
+		\textbf{aerialReach}(Integer)[default 0]:\\
+			Quantifica la capacità fisica di un portiere
+			di affrontare situazioni aeree.\\
+		\medskip\textbf{commandOfArea}(Integer)[default 0]:\\
+			Quantifica la capacità del portiere
+			di prendere istintivamente il controllo
+			della sua area di rigore.\\
+		\medskip\textbf{communication}(Integer)[default 0]:\\
+			 Quantifica la capacità del portiere di comunicare
+			 con la sua linea difensiva e organizzare
+			 il lato difensivo della squadra.\\
+		\medskip\textbf{eccentricity}(Integer)[default 0]:\\
+			Quantifica la tendenza del portiere
+			a fare l'imprevisto, con o senza palla.\\
+		\medskip\textbf{firstTouchGk}(Integer)[default 0]:\\
+			Quantifica quanto un portiere sia bravo
+			a ricevere la palla e a controllarla
+			immediatamente quando gli viene passata.\\
+		\medskip\textbf{handling}(Integer)[default 0]:\\
+			Quantifica la capacità del portiere
+			di trattenere la palla quando effettua una parata.\\
+		\medskip\textbf{kicking}(Integer)[default 0]:\\
+			Quantifica sia la distanza che
+			il portiere può calciare e la precisione che
+			può trovare sia dai rilanci a mano che
+			dalle ripartenza da palla ferma.\\
+		\medskip\textbf{oneOnOnes}(Integer)[default 0]:\\
+			Quantifica la capacità del portiere
+			di fare bene quando si trova
+			di fronte a un avversario in una situazione
+			di uno contro uno.\\
+		\medskip\textbf{passingGk}(Integer)[default 0]:\\
+			Quantifica la capacità di un portiere di trovare
+			con successo un compagno di squadra con il pallone,
+			e la bravura di un portiere nel passare il pallone.\\
+		\medskip\textbf{punchingTendency}(Integer)[default 0]:\\
+			Quantifica l'inclinazione del portiere
+			a respingere il pallone in situazioni
+			in cui potrebbe forse tentare di afferrarlo.\\
+		\medskip\textbf{reflexes}(Integer)[default 0]:\\
+			Quantifica la capacità del portiere
+			di reagire a eventi imprevedibili con
+			un alto tasso di successo.\\
+		\medskip\textbf{rushingOutTendency}(Integer)[default 0]:\\
+			Quantifica la tendenza del portiere a uscire
+			dalla propria posizione per reagire
+			a passaggi filtranti e cross.\\
+		\medskip\textbf{throwing}(Integer)[default 0]:\\
+			Quantifica la capacità del portiere di lanciare
+			con precisione il pallone con le sue mani.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
 	{
-		Competition
+		\textbf{AttributeMental}
+	}
+	&
+	{
+		Rappresenta gli attributi mentali di un calciatore.
+	}
+	&
+	{
+		\textbf{aggression}(Integer)[default 0]:\\
+			Quantifica l'atteggiamento di un calciatore
+			in termini di mentalità di gioco, ma
+			non necessariamente indica
+			una tendenza alla scorrettezza.\\
+		\medskip\textbf{anticipation}(Integer)[default 0]:\\
+			 Quantifica la capacità di un calciatore a prevedere
+			 e reagire a un evento.\\
+		\medskip\textbf{bravery}(Integer)[default 0]:\\
+			Quantifica principalmente quanto il calciatore
+			sia dedicato sul campo.\\
+		\medskip\textbf{composure}(Integer)[default 0]:\\
+			Quantifica la tranquillità mentale del calciatore
+			e la sua capacità, in particolare con il pallone
+			ma anche senza di esso, di prendere decisioni
+			più intelligenti.\\
+		\medskip\textbf{concentration}(Integer)[default 0]:\\
+			Quantifica la concentrazione mentale di un calciatore
+			e l'attenzione ai dettagli su base evento per evento,
+			dove i calciatori con alta concentrazione
+			saranno in grado di concentrarsi meglio
+			per un tempo più lungo e rispondere agli incidenti
+			sia precocemente che tardi nella partita.\\
+		\medskip\textbf{decision}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di fare la scelta corretta, sia con
+			che senza il pallone,
+			nella maggior parte dei casi.\\
+		\medskip\textbf{determination}(Integer)[default 0]:\\
+			Quantifica l'impegno e la determinazione
+			di un calciatore nel voler avere successo
+			sia dentro che fuori dal campo.\\
+		\medskip\textbf{flair}(Integer)[default 0]:\\
+			Quantifica il talento naturale del calciatore
+			nel essere creativo e occasionalmente imprevedibile.\\
+		\medskip\textbf{leadership}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di influenzare gli altri calciatori
+			intorno a lui sul campo.\\
+		\medskip\textbf{offTheBall}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di muoversi quando non è in possesso della palla,
+			rendendosi disponibile per ricevere un passaggio
+			in una posizione più pericolosa.\\
+		\medskip\textbf{positioning}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore di leggere
+			le situazioni e posizionarsi di conseguenza
+			nel modo migliore possibile per affrontare
+			gli eventi in corso.\\
+		\medskip\textbf{teamwork}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di seguire le istruzioni tattiche
+			mentre lavora per e insieme
+			ai suoi compagni di squadra.\\
+		\medskip\textbf{vision}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di individuare una potenziale opportunità.\\
+		\medskip\textbf{workRate}(Integer)[default 0]:\\
+			Quantifica la determinazione mentale del calciatore
+			nel lavorare al massimo delle proprie capacità.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+	{
+		\textbf{AttributePhysical}
+	}
+	&
+	{
+		Rappresenta gli attributi fisici di un calciatore.
+	}
+	&
+	{
+		\textbf{acceleration}(Integer)[default 0]:\\
+			Quantifica quanto rapidamente il calciatore
+			raggiunge la massima velocità
+			da una posizione di partenza ferma.\\
+		\medskip\textbf{agility}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore di iniziare,
+			fermarsi e muoversi in diverse direzioni
+			a vari livelli di velocità,
+			sia con che senza il pallone.\\
+		\medskip\textbf{balance}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di mantenere l'equilibrio e rimanere in piedi
+			con e senza il pallone, controllando
+			le proprie azioni durante il movimento,
+			un giro di scatto o il cambio di direzione.\\
+		\medskip\textbf{jumpingReach}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di raggiungere il pallone in aria.\\
+		\medskip\textbf{naturalFitness}(Integer)[default 0]:\\
+			Non è un attributo tipico in relazione
+			ad una capacità sul campo di un calciatore,
+			ma quantifica piuttosto i suoi geni e
+			il livello di forma fisica.\\
+		\medskip\textbf{pace}(Integer)[default 0]:\\
+			Quantifica la massima velocità di un calciatore.\\
+		\medskip\textbf{stamina}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di sopportare attività fisiche
+			ad alto livello per un lungo periodo di tempo.\\
+		\medskip\textbf{strenght}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di esercitare la propria forza fisica
+			su un avversario a proprio vantaggio.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{AttributeTechnical}
+	}
+	&
+	{
+		Rappresenta gli attributi tecnici di un calciatore.
+	}
+	&
+	{
+		\textbf{corners}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di eseguire un calcio d'angolo con precisione.\\
+		\medskip\textbf{crossing}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			nel calciare il pallone, principalmente
+			ma non esclusivamente, dalle aree laterali
+			con precisione.\\
+		\medskip\textbf{dribbling}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di correre con il pallone e manipolarlo
+			sotto stretto controllo.\\
+		\medskip\textbf{finishing}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di segnare quando gli viene presentata
+			un'opportunità.\\
+		\medskip\textbf{firstTouch}(Integer)[default 0]:\\
+			Quantifica quanto un calciatore sia bravo
+			a ricevere la palla e a controllarla
+			immediatamente quando gli viene passata.\\ 
+		\medskip\textbf{freeKickTaking}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			nel calciare una palla ferma.\\
+		\medskip\textbf{heading}(Integer)[default 0]:\\
+			Quantifica esclusivamente la capacità
+			di un calciatore nel colpire il pallone
+			con la testa e nel gestire le situazioni aeree.\\
+		\medskip\textbf{longShots}(Integer)[default 0]:\\
+			Quantifica la capacità di un giocatore
+			nel tirare da distanza, o più precisamente
+			dall'esterno dell'area di rigore.\\
+		\medskip\textbf{longThrows}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore di eseguire
+			un lancio lungo, che può essere vantaggioso
+			nelle situazioni di attacco o per far uscire
+			la palla dalle zone difensive e
+			portarla più rapidamente nell'ultimo
+			terzo del campo.\\
+		\medskip\textbf{marking}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			di restare vicino alla sua diretta opposizione
+			nelle situazioni difensive.\\
+		\medskip\textbf{passing}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore di trovare
+			con successo un compagno di squadra con il pallone,
+			e la bravura di un calciatore nel passare il pallone.\\
+		\medskip\textbf{penaltyTaking}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore
+			dal dischetto del rigore e determina
+			il successo e il fallimento del calcio di rigore.\\
+		\medskip\textbf{tackling}(Integer)[default 0]:\\
+			Quantifica la capacità di un calciatore nel vincere
+			il pallone pulitamente, senza commettere falli,
+			quando affronta un altro calciatore.\\
+		\medskip\textbf{technique}(Integer)[default 0]:\\
+			Quantifica la raffinatezza di un calciatore con
+			il pallone - la loro qualità estetica con il pallone,
+			sia che si tratti della competenza
+			nel passare la palla, nel tirare, nel crossare o
+			nel dribblare con il pallone.
+	}
+	\\
+\end{tblr}
+
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{Competition}
 	}
 	&
 	{
@@ -389,7 +656,7 @@ centrale.
 	}
 	\\
 	{
-		CompetitionEdition
+		\textbf{CompetitionEdition}
 	}
 	&
 	{
@@ -406,7 +673,7 @@ centrale.
 	}
 	\\
 	{
-		Confederation
+		\textbf{Confederation}
 	}
 	&
 	{
@@ -422,16 +689,8 @@ centrale.
 			\\Rappresenta il nome esteso di una Confederazione.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
 	{
-		Country
+		\textbf{Country}
 	}
 	&
 	{
@@ -452,7 +711,7 @@ centrale.
 	}
 	\\
 	{
-		Player
+		\textbf{Player}
 	}
 	&
 	{
@@ -475,8 +734,19 @@ centrale.
 			di un Calciatore.
 	}
 	\\
+\end{tblr}
+
+
+\newpage
+
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+
 	{
-		PlayerRetired
+		\textbf{PlayerRetired}
 	}
 	&
 	{
@@ -489,11 +759,11 @@ centrale.
 	}
 	\\
 	{
-		Position
+		\textbf{Position}
 	}
 	&
 	{
-		Rappresenta le posizioni di gioco di un Calciatore.
+		Rappresenta le posizioni di gioco di un calciatore.
 	}
 	&
 	{
@@ -507,17 +777,8 @@ centrale.
 			\\Rappresenta il nome di una Posizione.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
-
 	{
-		Prize
+		\textbf{Prize}
 	}
 	&
 	{
@@ -533,35 +794,52 @@ centrale.
 			il ruolo a cui è associato un Premio.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Premio.\\
-		\medskip\textbf{description}(String)[parziale]:
-			\\Rappresenta la descrizione del Premio.\\
 		\medskip\textbf{given}(String):\\Rappresenta
 			il nome della società calcistica
 			che conferisce il Premio.
 	}
 	\\
 	{
-		Statistic
+		\textbf{StatisticGeneral}
 	}
 	&
 	{
-		Rappresenta le statistiche di un calciatore.
+		Rappresenta le statistiche generali di un calciatore.
 	}
 	&
 	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo della Statistica.\\
-		\medskip\textbf{goalkeeper}(Boolean):\\Rappresenta
-			se true che la Stastistica è associata
-			soltanto al portiere, altrimenti a tutti i ruoli.\\
-		\medskip\textbf{name}(String):\\Rappresenta
-			il nome della Statistica.\\
-		\medskip\textbf{description}(String)[parziale]:
-			\\Rappresenta la descrizione della Statistica.
+		\textbf{goalScored}(Integer)[default 0]:\\
+			Rappresenta il numero di goal segnati
+			da un calciatore.\\
+		\medskip\textbf{assist}(Integer)[default 0]:\\
+			Rappresenta il numero di assist di un calciatore.\\
+		\medskip\textbf{yellowCard}(Integer)[default 0]:\\
+			Rappresenta il numero di cartellini gialli
+			presi da un calciatore.\\
+		\medskip\textbf{redCard}(Integer)[default 0]:\\
+			Rappresenta il numero di rigori segnati
+			da un calciatore.
 	}
 	\\
 	{
-		Tag
+		\textbf{StatisticGoalkeeper}
+	}
+	&
+	{
+		Rappresenta le statistiche di un portiere.
+	}
+	&
+	{
+		\textbf{goalConceded}(Integer)[default 0]:\\
+			Rappresenta il numero di goal subiti
+			da un portiere.\\
+		\medskip\textbf{penaltySaved}(Integer)[default 0]:\\
+			Rappresenta il numero di rigori parati
+			da un portiere.
+	}
+	\\
+	{
+		\textbf{Tag}
 	}
 	&
 	{
@@ -571,16 +849,26 @@ centrale.
 	{
 		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
 			l'identificativo del Tag.\\
-		\medskip\textbf{type}(enFeature):\\Rappresenta
-			il tipo del Tag.\\
+		\medskip\textbf{goalkeeper}(Boolean):\\
+			Rappresenta se un tag è per un portiere oppure no.\\
+		\medskip\textbf{positive}(Boolean):\\
+			Rappresenta se un tag indica una specialità
+			di un calciatore o un suo difetto.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
-			\\Rappresenta il nome del Tag.\\
-		\medskip\textbf{description}(String)[parziale]:
-			\\Rappresenta la descrizione del Tag.
+			\\Rappresenta il nome del Tag.
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+
 	{
-		Team
+		\textbf{Team}
 	}
 	&
 	{
@@ -592,21 +880,14 @@ centrale.
 			l'identificativo della Squadra.\\
 		\medskip\textbf{type}(enTeam):\\Rappresenta
 			il tipo della Squadra.\\
-		\medskip\textbf{name}(String)[chiave naturale]:
-			\\Rappresenta il nome della Squadra.
+		\medskip\textbf{shortName}(String):\\
+			Rappresenta il nome abbreviato della Squadra.\\
+		\medskip\textbf{longName}(String)[chiave naturale]:
+			\\Rappresenta il nome esteso della Squadra.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1}= {100pt},
-    width = \textwidth
-}
-
 	{
-		Trophy
+		\textbf{Trophy}
 	}
 	&
 	{
@@ -621,13 +902,11 @@ centrale.
 		\medskip\textbf{role}(enRole)[parziale]:\\Rappresenta
 			il ruolo a cui è associato un Trofeo.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
-			\\Rappresenta il nome del Trofeo.\\
-		\medskip\textbf{description}(String)[parziale]:
-			\\Rappresenta la descrizione del Trofeo.\\
+			\\Rappresenta il nome del Trofeo.
 	}
 	\\
 	{
-		UserAccount
+		\textbf{UserAccount}
 	}
 	&
 	{
@@ -673,72 +952,6 @@ centrale.
 	}
 	\\
 	{
-		\textbf{Militancy}
-	}
-	&
-	{
-		Esprime le militanze di un calciatore in una squadra
-		per stagione.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può militare in più Squadre.\\
-		\medskip\textbf{Team [0 ... *]}:\\Indica che una Squadra
-			può essere associata a più Calciatori.
-	}
-	&
-	{
-		\textbf{startYear}(Integer):\\Rappresenta
-			la stagione di riferimento di una Militanza.\\
-		\medskip\textbf{type}(enSeason):\\Rappresenta
-			fino a che parte della stagione un Calciatore
-			militava per quella Squadra.
-	}
-	\\
-	{
-		\textbf{PlayerPrizeCase}
-	}
-	&
-	{
-		Esprime i premi di un calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che
-			un Calciatore può essere associato a più Premi.\\
-		\medskip\textbf{Prize [0 ... *]}:\\Indica che
-			un Premio può essere associato, in anni diversi,
-			a più Premi.
-				
-	}
-	&
-	{
-		\textbf{assignYear}(Integer):\\Rappresenta
-			l'anno di assegnazione del Premio al Calciatore.
-	}
-	\\
-	{
-		\textbf{Nationality}
-	}
-	&
-	{
-		Esprime le nazionalità di un calciatore.
-	}
-	&
-	{
-		\textbf{Country [0 ... *]}:\\Indica che
-			uno stesso paese può essere associato a più
-			calciatore.\\
-		\medskip\textbf{Player [0 ... *]}:\\Indica che
-			un calciatore può avere più nazionalità.
-	}
-	&
-	{
-	
-	}
-	\\
-	{
 		\textbf{bornCountry}
 	}
 	&
@@ -748,7 +961,7 @@ centrale.
 	&
 	{
 		\textbf{Country [0 ... *]}:\\Indica che
-			un paese può essere il paese di nascita
+			uno stesso paese può essere il paese di nascita
 			di più calciatori.\\
 		\medskip\textbf{Player [1]}:\\Indica che
 			un calciatore ha uno e un solo paese di nascita.
@@ -759,189 +972,12 @@ centrale.
 	}
 	\\
 	{
-		\textbf{Player-PlayerRetired}
-	}
-	&
-	{
-		Esprime i calciatori ritirati.
-	}
-	&
-	{
-		\textbf{Player [0 ... 1]}:\\Indica che
-			un Calciatore può essere o non essere ritirato.\\
-		\medskip\textbf{PlayerRetired [1]}:\\Indica che
-			una data di ritiro si riferisce ad uno
-			e un solo Calciatore. 
-	}
-	&
-	{
-	
-	}
-	\\
-	{
-		\textbf{Player-Tag}
-	}
-	&
-	{
-		Esprime i tag di un calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che
-			un Calciatore può essere associato a più Tag.\\
-		\medskip\textbf{Tag [0 ... *]}:\\Indica che
-			uno Tag può essere associato a più Calciatori.
-	}
-	&
-	{
-		
-	}
-	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
-    width = \textwidth
-}
-
-	{
-		\textbf{Player-Position}
-	}
-	&
-	{
-		Esprime le posizioni di gioco di un calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che
-			un Calciatore può essere associato a più Posizioni.\\
-		\medskip\textbf{Position [0 ... *]}:\\Indica che
-			una Posizione può essere associata a più Calciatori.
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		\textbf{PlayerAttribute}
-	}
-	&
-	{
-		Esprime gli attributi di un calciatore.
-	}
-	&
-	{
-		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
-			può essere associato a più Attributi.\\
-		\medskip\textbf{Attribute [0 ... *]}:\\Indica che 
-			un Attributo può essere associato a più Calciatori.
-	}
-	&
-	{
-		\textbf{score}(Integer):\\Rappresenta il valore
-			di un Attributo associato al Calciatore.
-	}
-	\\
-	{
-		\textbf{TeamPrizeCase}
-	}
-	&
-	{
-		Esprime i premi di una squadra.
-	}
-	&
-	{
-		\textbf{Team [0 ... *]}:\\Indica che
-			una Squadra può essere associata a più Premi.\\
-		\medskip\textbf{Prize [0 ... *]}:\\Indica che
-			un Premio, in anni diversi, a più Squadre.
-	}
-	&
-	{
-		\textbf{assignYear}(Integer):\\Rappresenta
-			l'anno di assegnazione di un Premio ad una Squadra.\\
-	}
-	\\
-	{
-		\textbf{Team-Country}
-	}
-	&
-	{
-		Esprime la nazionalità di una squadra.
-	}
-	&
-	{
-		\textbf{Team [1]}:\\Indica che una Squadra
-			può essere associata ad un e un solo Paese.\\
-		\medskip\textbf{Country [0 ... *]}:\\Indica che
-			un Paese può essere associato a più Squadre.	
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		\textbf{Team-Confederation}
-	}
-	&
-	{
-		Esprime la confederazione di cui è membro una squadra.
-	}
-	&
-	{
-		\textbf{Team [1]}:\\Indica che una Squadra
-			può essere associata ad un e un solo Paese.\\
-		\medskip\textbf{Confederation [0 ... *]}:\\Indica che
-			una Confederazione può essere associata
-			a più Squadre.
-	}
-	&
-	{
-		
-	}
-	\\
-	{
-		\textbf{Partecipation}
-	}
-	&
-	{
-		Esprime  la partecipazione di una squadra
-		ad un'edizione di una competizione.
-	}
-	&
-	{
-		\textbf{Team [0 ... *]}:\\Indica che una Squadra
-			può partecipare a più Edizioni.\\
-		\medskip\textbf{CompetitionEdition [0 ... *]}:
-			\\Indica che una Edizione può essere associata
-			a più squadre.
-
-	}
-	&
-	{
-		
-	}
-	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt}, column{4}= {50pt},
-    width = \textwidth
-}
-
-	{
 		\textbf{Competition-CompetitionEdition}
 	}
 	&
 	{
 		Esprime le edizioni di una competizione.\\
-		È una relazione identificante.
+		È un'associazione identificante.
 	}
 	&
 	{
@@ -995,8 +1031,8 @@ centrale.
 			membra di un'altra Confederazione.\\
 		\medskip\textbf{Confederation [0 ... *]
 			ruolo (contiene)}:\\
-			Indica che una Confederazione può essere associata
-			a più Confederazioni.
+			Indica che una Confederazione può contenere
+			più Confederazioni.
 	}
 	&
 	{
@@ -1016,9 +1052,128 @@ centrale.
 		\textbf{Confederation [1]}:\\Indica che
 			una Confederazione può essere associata
 			ad un e un solo Paese.\\
-		\medskip\textbf{Country [0 ... 1]}:\\Indica che
-			un Paese può essere associata a nessuna o ad una
-			Confederazione.
+		\medskip\textbf{Country [1]}:\\Indica che
+			un Paese può essere associato ad una
+			e una sola Confederazione.
+	}
+	&
+	{
+		
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {90pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{Country-Country}
+	}
+	&
+	{
+		Esprime la possibilità di un paese di
+		essere contenuto geograficamente in un altro paese,
+		oppure di contenere paesi.
+	}
+	&
+	{
+		\textbf{Country [0 ... 1] ruolo (contenuto)}:\\
+			Indica che un Paese può o non può essere
+			geograficamente contenuto in un altro Paese.\\
+		\medskip\textbf{Country [0 ... *]
+			ruolo (contiene)}:\\
+			Indica che un Paese può contenere
+			più paesi.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{MainPosition}
+	}
+	&
+	{
+		Esprime la posizione principale di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [1]}:\\Indica che un calciatore
+			ha una e una sola posizione principale.\\
+		\medskip\textbf{Position [0 ... *]}:\\Indica che
+			una stessa posizione può essere la posizione principale
+			di più calciatori.
+	}
+	&
+	{
+	
+	}
+	\\
+	{
+		\textbf{Militancy}
+	}
+	&
+	{
+		Esprime le militanze di un calciatore in una squadra
+		per stagione.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che un Calciatore
+			può militare in più Squadre.\\
+		\medskip\textbf{Team [0 ... *]}:\\Indica che una Squadra
+			può essere associata a più Calciatori.
+	}
+	&
+	{
+		\textbf{startYear}(Integer):\\Rappresenta
+			la stagione di riferimento di una Militanza.\\
+		\medskip\textbf{type}(enSeason):\\Rappresenta
+			fino a che parte della stagione un Calciatore
+			militava per quella Squadra.
+	}
+	\\
+	{
+		\textbf{Nationality}
+	}
+	&
+	{
+		Esprime le nazionalità di un calciatore.
+	}
+	&
+	{
+		\textbf{Country [0 ... *]}:\\Indica che
+			uno stesso paese può essere associato a più
+			calciatore.\\
+		\medskip\textbf{Player [1 ... *]}:\\Indica che
+			un calciatore ha una o più nazionalità.
+	}
+	&
+	{
+	
+	}
+	\\
+	{
+		\textbf{Partecipation}
+	}
+	&
+	{
+		Esprime  la partecipazione di una squadra
+		ad un'edizione di una competizione.
+	}
+	&
+	{
+		\textbf{Team [0 ... *]}:\\Indica che una Squadra
+			può partecipare a più Edizioni.\\
+		\medskip\textbf{CompetitionEdition [0 ... *]}:
+			\\Indica che una Edizione può essere associata
+			a più squadre.
+
 	}
 	&
 	{
@@ -1046,6 +1201,270 @@ centrale.
 		
 	}
 	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {105pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{Play}
+	}
+	&
+	{
+		Esprime in quale edizione di una competizione
+		un calciatore, che militava per una certa squadra,
+		ha giocato.
+	}
+	&
+	{
+		\textbf{Partecipation [0 ... *]}:\\Indica che
+			una Partecipazione può essere associata
+			a più Rose.\\
+		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
+			una Militanza può essere associata
+			a più Partecipazioni.
+	}
+	&
+	{
+		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
+			l'identificativo di un Gioco.\\
+		\medskip\textbf{match}(Integer):\\Rappresenta
+			il numero di presenze di un calciatore
+			in un Gioco.
+	}
+	\\
+	{
+		\textbf{Play-StatisticGeneral}
+	}
+	&
+	{
+		Esprime le stastistiche generali di un calciatore
+		per un gioco.\\È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Play [1]}:\\Indica che un Gioco si riferisce
+			ad uno e una sola Statistica generale.\\
+		\medskip\textbf{StatisticGeneral [1]}:\\Indica che
+			una Statistica generale si riferisce
+			ad un e un solo Gioco.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{Play-StatisticGoalkeeper}
+	}
+	&
+	{
+		Esprime le statistiche di un portiere per un gioco.\\
+		È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Play [0 ... 1]}:\\Indica che un Gioco può
+			essere o non essere associato alle Statistiche
+			per portieri.\\
+		\medskip\textbf{StatisticGoalKeeper[1]}:\\Indica che
+			una Statistica per portieri si riferisce
+			ad un e un solo Gioco.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{Player-AttributeGoalkeeping}
+	}
+	&
+	{
+		Esprime i calciatori associati agli
+		attributi dei portieri.\\È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Player [0 ... 1]}:\\Indica che un Calciatore
+			può essere o non essere associato ad un Attributo
+			dei portieri.\\
+		\medskip\textbf{AttributeGoalkeeping [1]}:\\Indica che
+			un Attributo dei portieri si riferisce
+			ad un e un solo Calciatore.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{Player-AttributeMental}
+	}
+	&
+	{
+		Esprime i calciatori associati ad un Attributo mentale.\\
+		È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Player [1]}:\\Indica che un Calciatore
+			si riferisce ad un e un solo Attributo mentale.\\
+		\medskip\textbf{AttributeMental [1]}:\\Indica che
+			un Attributo mentale si riferisce ad un
+			e un solo Calciatore.
+	}
+	&
+	{
+	
+	}
+	\\
+	{
+		\textbf{Player-AttributePhysical}
+	}
+	&
+	{
+		Esprime i calciatori associati ad un Attributo fisico.\\
+		È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Player [1]}:\\Indica che un Calciatore
+			si riferisce ad un e un solo Attributo fisico.\\
+		\medskip\textbf{AttributePhysical [1]}:\\Indica che
+			un Attributo fisico si riferisce ad un
+			e un solo Calciatore.
+	}
+	&
+	{
+		
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{Player-AttributeTechnical}
+	}
+	&
+	{
+		Esprime i calciatori associati ad un Attributo tecnico.\\
+		È un'associazione identificante.
+	}
+	&
+	{
+		\textbf{Player [1]}:\\Indica che un Calciatore
+			si riferisce ad un e un solo Attributo tecnico.\\
+		\medskip\textbf{AttributeTechnical [1]}:\\Indica che
+			un Attributo tecnico si riferisce ad un
+			e un solo Calciatore.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{Player-PlayerRetired}
+	}
+	&
+	{
+		Esprime i calciatori ritirati.
+	}
+	&
+	{
+		\textbf{Player [0 ... 1]}:\\Indica che
+			un Calciatore può essere o non essere ritirato.\\
+		\medskip\textbf{PlayerRetired [1]}:\\Indica che
+			una data di ritiro si riferisce ad uno
+			e un solo Calciatore. 
+	}
+	&
+	{
+	
+	}
+	\\
+	{
+		\textbf{Player-Position}
+	}
+	&
+	{
+		Esprime le posizioni di gioco di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [1 ... *]}:\\Indica che
+			un Calciatore può essere associato
+			a una o più Posizioni.\\
+		\medskip\textbf{Position [0 ... *]}:\\Indica che
+			una Posizione può essere associata a più Calciatori.
+	}
+	&
+	{
+		
+	}
+	\\
+	{
+		\textbf{PlayerPrizeCase}
+	}
+	&
+	{
+		Esprime i premi di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Premi.\\
+		\medskip\textbf{Prize [0 ... *]}:\\Indica che
+			un Premio può essere associato, in anni diversi,
+			a più Premi.
+				
+	}
+	&
+	{
+		\textbf{assignYear}(Integer):\\Rappresenta
+			l'anno di assegnazione del Premio al Calciatore.
+	}
+	\\
+	{
+		\textbf{Player-Tag}
+	}
+	&
+	{
+		Esprime i tag di un calciatore.
+	}
+	&
+	{
+		\textbf{Player [0 ... *]}:\\Indica che
+			un Calciatore può essere associato a più Tag.\\
+		\medskip\textbf{Tag [0 ... *]}:\\Indica che
+			uno Tag può essere associato a più Calciatori.
+	}
+	&
+	{
+		
+	}
+	\\
+\end{tblr}
+
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
+    width = \textwidth
+}
+
 	{
 		\textbf{PlayerTrophyCase}	
 	}
@@ -1079,66 +1498,46 @@ centrale.
 		
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]X[l]}, column{1-2}= {100pt},
-    width = \textwidth
-}
-
 	{
-		\textbf{Play}
+		\textbf{Team-Country}
 	}
 	&
 	{
-		Esprime in quale edizione di una competizione
-		un calciatore, che militava per una certa squadra,
-		ha giocato.
+		Esprime la nazionalità di una squadra.
 	}
 	&
 	{
-		\textbf{Partecipation [0 ... *]}:\\Indica che
-			una Partecipazione può essere associata
-			a più Rose.\\
-		\medskip\textbf{Militancy [0 ... *]}:\\Indica che
-			una Militanza può essere associata
-			a più Partecipazioni.
+		\textbf{Team [1]}:\\Indica che una Squadra
+			può essere associata ad un e un solo Paese.\\
+		\medskip\textbf{Country [0 ... *]}:\\Indica che
+			un Paese può essere associato a più Squadre.	
 	}
 	&
 	{
-		\textbf{id}(Integer)[chiave surrogata]:\\Rappresenta
-			l'identificativo di un Gioco.\\
-		\medskip\textbf{match}(Integer):\\Rappresenta
-			il numero di presenze di un calciatore
-			in un Gioco.
+		
 	}
 	\\
 	{
-		\textbf{PlayStatistic}
+		\textbf{TeamPrizeCase}
 	}
 	&
 	{
-		Esprime le statistiche di un gioco.
+		Esprime i premi di una squadra.
 	}
 	&
 	{
-		\textbf{Play [0 ... *]}:\\Indica che
-			un Gioco può essere associato
-			a più Statistiche.\\
-		\medskip\textbf{Statistic [0 ... *]}:\\Indica che
-			una Statistica può essere associata
-			a più Giochi.\\
+		\textbf{Team [0 ... *]}:\\Indica che
+			una Squadra può essere associata a più Premi.\\
+		\medskip\textbf{Prize [0 ... *]}:\\Indica che
+			un Premio, in anni diversi, a più Squadre.
 	}
 	&
 	{
-		\textbf{score}(Integer):\\Rappresenta
-			il valore di una Statistica per un Gioco.
+		\textbf{assignYear}(Integer):\\Rappresenta
+			l'anno di assegnazione di un Premio ad una Squadra.\\
 	}
 	\\
 \end{tblr}
-
 
 \newpage
 
@@ -1162,7 +1561,7 @@ centrale.
 	}
 	\\
 	{
-		uqCountryCode
+		\textbf{uqCountryCode}
 	}
 	&
 	{
@@ -1175,7 +1574,7 @@ centrale.
 	}
 	\\
 	{
-		uqCountryName
+		\textbf{uqCountryName}
 	}
 	&
 	{
@@ -1188,7 +1587,59 @@ centrale.
 	}
 	\\
 	{
-		uqConfederationLongName
+		\textbf{ckCountrySuper}
+	}
+	&
+	{
+		N-UPLA
+	}
+	&
+	{
+		Un paese di tipo mondo non ha un paese che lo contiene.
+	}
+	\\
+	{
+		\textbf{Controllo CountryContinent}
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Il numero di paesi di tipo continente può essere
+		al massimo uguale a sette.
+	}
+	\\
+	{
+		\textbf{Controllo CountryWorld}
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Il numero di paesi di tipo mondo può essere
+		al massimo uguale a uno.
+	}
+	\\
+	{
+		\textbf{Controllo CountrySuper}
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Un paese deve essere contenuto soltanto in un paese
+		con tipo strettamente superiore
+		(es. NATION->CONTINENT->WORLD).
+	}
+	\\
+	{
+		\textbf{uqConfederationLongName}
 	}
 	&
 	{
@@ -1201,7 +1652,7 @@ centrale.
 	}
 	\\
 	{
-		Controllo ConfederationSuper
+		\textbf{Controllo ConfederationSuper}
 	}
 	&
 	{
@@ -1210,61 +1661,8 @@ centrale.
 	&
 	{
 		Una confederazione deve essere membro soltanto di una
-		una confederazione con tipo strettamente superiore.
-	}
-	\\
-	{
-		uqTeam
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere squadre di calcio diverse
-		con lo stesso nome.
-	}
-	\\
-	{
-		Controllo TeamCountry
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Una squadra di calcio deve essere associata soltanto
-		ad un paese che sia una nazione.
-		
-	}
-	\\
-	{
-		Controllo TeamConf
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Una squadra di calcio deve essere associata soltanto
-		alla confederazione che abbia come paese associato
-		lo stesso della squadra.
-	}
-	\\
-	{
-		Controllo TeamNatName
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Una squadra di calcio nazionale deve avere come nome
-		lo stesso del paese associato.
+		una confederazione con tipo strettamente superiore
+		(es. NATIONAL->CONTINENTAL->WORLD).
 	}
 	\\
 	{
@@ -1351,15 +1749,6 @@ centrale.
 		e finire nello stesso anno.
 	}
 	\\
-\end{tblr}
-
-\newpage
-
-\begin{tblr}{
-    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
-    width = \textwidth
-}
-
 	{
 		Controllo CompEdSuperCupYears
 	}
@@ -1476,6 +1865,135 @@ centrale.
 	}
 	\\
 	{
+		\textbf{uqTeam}
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere squadre di calcio diverse
+		con lo stesso nome.
+	}
+	\\
+	{
+		Controllo TeamCountry
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio deve essere associata soltanto
+		ad un paese che sia una nazione.
+		
+	}
+	\\
+	{
+		Controllo TeamNatLongName
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio nazionale deve avere il
+		suo nome esteso  uguale al nome del paese associato.
+	}
+	\\
+	{
+		\textbf{Controllo TeamNatShortName}
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Una squadra di calcio nazionale deve avere il
+		suo nome abbreviato uguale al codice del paese associato.
+	}
+	\\
+	{
+		uqPositionCode
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere posizioni di gioco
+		diverse con lo stesso codice.
+	}
+	\\
+	{
+		uqPositionName
+	}
+	&
+	{
+		INTRARELAZIONALI
+	}
+	&
+	{
+		Non possono esistere posizioni di gioco
+		diverse con lo stesso nome.
+	}
+	\\
+	{
+		uqPlayer
+	}
+	&
+	{
+		INTRARELAZIONALI	
+	}
+	&
+	{
+		Non possono esistere calciatori diversi
+		con la stessa combinazione di nome,
+		cognome, data di nascita e paese di nascita.
+	}
+	\\
+	{
+		Controllo PlayerNat
+	}
+	&
+	{
+		INTERELAZIONALI
+	}
+	&
+	{
+		Un calciatore deve essere
+		associato ad un paese che sia una nazione.
+	}
+	\\
+	{
+		Controllo PlayerRole
+	}
+	&
+	{
+		N-UPLA
+	}
+	&
+	{
+		Un calciatore, nel momento dell'inserimento,
+		deve avere come valore dell'attributo role
+		NULL.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+    hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, 
+    width = \textwidth
+}
+
+	{
 		Controllo PartTotTeam
 	}
 	&
@@ -1552,47 +2070,6 @@ centrale.
 		di una competizione calcistica dello stesso tipo,
 		nello stesso anno e organizzata dalla
 		stessa confederazione.
-	}
-	\\
-	{
-		uqPlayer
-	}
-	&
-	{
-		INTRARELAZIONALI	
-	}
-	&
-	{
-		Non possono esistere calciatori diversi
-		con la stessa combinazione di nome,
-		cognome, data di nascita e paese di nascita.
-	}
-	\\
-	{
-		Controllo PlayerNat
-	}
-	&
-	{
-		INTERELAZIONALI
-	}
-	&
-	{
-		Un calciatore deve essere
-		associato ad un paese che sia una nazione.
-	}
-	\\
-	{
-		Controllo PlayerRole
-	}
-	&
-	{
-		N-UPLA
-	}
-	&
-	{
-		Un calciatore, nel momento dell'inserimento,
-		deve avere come valore dell'attributo role
-		NULL.
 	}
 	\\
 	{
@@ -1763,32 +2240,6 @@ centrale.
 		Un Tag di tipo portiere deve essere associato
 		ad un calciatore soltanto se portiere è uno dei
 		ruoli in campo del calciatore.
-	}
-	\\
-	{
-		uqPositionCode
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere posizioni di gioco
-		diverse con lo stesso codice.
-	}
-	\\
-	{
-		uqPositionName
-	}
-	&
-	{
-		INTRARELAZIONALI
-	}
-	&
-	{
-		Non possono esistere posizioni di gioco
-		diverse con lo stesso nome.
 	}
 	\\
 	{
