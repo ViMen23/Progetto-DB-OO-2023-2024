@@ -282,7 +282,7 @@ CREATE OR REPLACE FUNCTION create_all_gk
 (
 	IN	id_player	integer
 )
-RETURNS integer
+RETURNS void
 AS
 $$
 DECLARE
@@ -3346,7 +3346,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
-	IF (0 = position('GK' in role_player)) THEN
+	IF (0 = position('GK' in CAST(role_player AS text))) THEN
 		RETURN;
 	END IF;
 
@@ -3354,7 +3354,7 @@ BEGIN
 	IF ('GK' = main_role) THEN
 		
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 1.25) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.35) AS integer))
@@ -3364,7 +3364,7 @@ BEGIN
 	ELSIF ('DF' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
@@ -3374,7 +3374,7 @@ BEGIN
 	ELSIF ('MF' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
@@ -3384,7 +3384,7 @@ BEGIN
 	ELSIF ('FW' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
@@ -3458,7 +3458,7 @@ BEGIN
 	tmp = get_column('fp_play', 'player_id', id_play);
 	id_player = CAST(tmp AS integer);
 
-	tmp = get_column('fp_player', 'postition_id', id_player);
+	tmp = get_column('fp_player', 'position_id', id_player);
 	id_pos_player = CAST(tmp AS integer);
 
 	tmp = get_column('fp_position', 'role', id_pos_player);

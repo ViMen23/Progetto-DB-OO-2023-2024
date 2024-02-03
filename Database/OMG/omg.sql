@@ -6943,7 +6943,7 @@ BEGIN
 	IF ('GK' = main_role) THEN
 		
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 1.25) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.35) AS integer))
@@ -6953,7 +6953,7 @@ BEGIN
 	ELSIF ('DF' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
@@ -6963,7 +6963,7 @@ BEGIN
 	ELSIF ('MF' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
@@ -6973,7 +6973,7 @@ BEGIN
 	ELSIF ('FW' = main_role) THEN
 
 		UPDATE
-			fp_statistic_general
+			fp_statistic_goalkeeper
 		SET
 			goal_conceded = random_between(0, CAST(floor(match_play * 0.01) AS integer)),
 			penalty_saved = random_between(0, CAST(floor(match_play * 0.01) AS integer))
