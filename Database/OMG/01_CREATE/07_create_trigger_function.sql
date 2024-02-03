@@ -1627,7 +1627,7 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
-		RETURN OLD;
+		RETURN NEW;
 	END IF;
 
 

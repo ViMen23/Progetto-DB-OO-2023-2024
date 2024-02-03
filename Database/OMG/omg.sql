@@ -3874,7 +3874,7 @@ CREATE OR REPLACE FUNCTION create_all_gk
 (
 	IN	id_player	integer
 )
-RETURNS integer
+RETURNS void
 AS
 $$
 DECLARE
@@ -6200,7 +6200,7 @@ DECLARE
 	tmp			text;
 
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -6218,7 +6218,7 @@ BEGIN
 	tmp = get_column('fp_play', 'player_id', id_play);
 	id_player = CAST(tmp AS integer);
 
-	tmp = get_column('fp_player', 'role', id_play);
+	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
 
@@ -6754,7 +6754,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
-	IF (0 = position('GK' in role_player)) THEN
+	IF (0 = position('GK' in CAST(role_player AS text))) THEN
 		RETURN;
 	END IF;
 
@@ -6935,7 +6935,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
-	IF (0 = position('GK' in role_player)) THEN
+	IF (0 = position('GK' in CAST(role_player AS text))) THEN
 		RETURN;
 	END IF;
 
@@ -7037,7 +7037,7 @@ BEGIN
 	SET
 		match = random_between(1, max_match_comp(id_comp))
 	WHERE
-		play_id = id_play;
+		id = id_play;
 
 
 	tmp = get_column('fp_play', 'match', id_play);
@@ -7047,7 +7047,7 @@ BEGIN
 	tmp = get_column('fp_play', 'player_id', id_play);
 	id_player = CAST(tmp AS integer);
 
-	tmp = get_column('fp_player', 'postition_id', id_player);
+	tmp = get_column('fp_player', 'position_id', id_player);
 	id_pos_player = CAST(tmp AS integer);
 
 	tmp = get_column('fp_position', 'role', id_pos_player);
@@ -8810,7 +8810,7 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
-		RETURN OLD;
+		RETURN NEW;
 	END IF;
 
 

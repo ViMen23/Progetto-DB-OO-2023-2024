@@ -2608,7 +2608,7 @@ DECLARE
 	tmp			text;
 
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -2626,7 +2626,7 @@ BEGIN
 	tmp = get_column('fp_play', 'player_id', id_play);
 	id_player = CAST(tmp AS integer);
 
-	tmp = get_column('fp_player', 'role', id_play);
+	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
 
@@ -3165,7 +3165,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
-	IF (0 = position('GK' in role_player)) THEN
+	IF (0 = position('GK' in CAST(role_player AS text))) THEN
 		RETURN;
 	END IF;
 
@@ -3448,7 +3448,7 @@ BEGIN
 	SET
 		match = random_between(1, max_match_comp(id_comp))
 	WHERE
-		play_id = id_play;
+		id = id_play;
 
 
 	tmp = get_column('fp_play', 'match', id_play);
