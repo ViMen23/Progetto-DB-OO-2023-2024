@@ -82,28 +82,6 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : TRIGGER FUNCTION
- * NAME : tf_bd_refuse
- *
- * DESC : Funzione che rifiuta qualsiasi eliminazione
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_bd_refuse
-(
-)
-RETURNS trigger
-AS
-$$
-BEGIN
-
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_country
  *
  * DESC : TODO
