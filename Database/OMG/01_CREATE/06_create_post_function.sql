@@ -50,7 +50,7 @@ BEGIN
 		type = 'WORLD';
 
 
-	IF (NOT exist) THEN
+	IF (exist) THEN
 		RAISE NOTICE E'Reached maximum number of Worlds'
 			'Function: world_exists()';
 	END IF;
@@ -99,7 +99,7 @@ BEGIN
 		type = 'CONTINENT';
 
 
-	IF (NOT exist) THEN
+	IF (exist) THEN
 		RAISE NOTICE E'Reached maximum number of Continents'
 			'Function: all_continent_exists()';
 	END IF;
@@ -128,6 +128,7 @@ CREATE OR REPLACE FUNCTION place_for_country
 	IN	type_country	en_country
 )
 RETURNS boolean
+RETURNS NULL ON NULL INPUT
 AS
 $$
 BEGIN
@@ -162,6 +163,7 @@ CREATE OR REPLACE FUNCTION conf_from_country
 	IN	id_country	integer
 )
 RETURNS integer
+RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
@@ -245,6 +247,9 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
+	RAISE NOTICE E'Created national team for country (id = %)\n'
+		'Function: create_national_team(integer)', id_country;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -290,7 +295,10 @@ BEGIN
 						FROM
 							player_play(id_player)
 					);
-	
+
+	RAISE NOTICE E'Deleted attribute and statistic goalkeeper'
+		'of player (id = %)\nFunction: delete_all_gk(integer)', id_player;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -354,6 +362,10 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 	END LOOP;
+
+
+	RAISE NOTICE E'Created attribute and statistic goalkeeper'
+		'of player (id = %)\nFunction: create_all_gk(integer)', id_player;
 
 END;
 $$
@@ -975,7 +987,10 @@ BEGIN
 						FROM
 							gk_tags()
 					);
-	
+
+	RAISE NOTICE E'Deleted goalkeeper tags of player (id = %)\n'
+		'Function: delete_gk_tag(integer)', id_player;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -1016,6 +1031,9 @@ BEGIN
 						FROM
 							not_role_prize(role_player)
 					);
+
+	RAISE NOTICE E'Deleted prize which role is not one of player (id = %)'
+		'\nFunction: delete_not_role_prize(integer, en_role_mix)', id_player;
 	
 END;
 $$
@@ -1058,6 +1076,9 @@ BEGIN
 							not_role_trophy(role_player)
 					);
 	
+	RAISE NOTICE E'Deleted trophy which role is not one of player (id = %)'
+		'\nFunction: delete_not_role_trophy(integer, en_role_mix)', id_player;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -1091,6 +1112,9 @@ BEGIN
 		player_id = id_player
 		AND
 		team_type = 'CLUB';
+
+	RAISE NOTICE E'Delete all club militacy of player (id = %)\n'
+		'Function: delete_club_militancy(integer)', id_player;
 	
 END;
 $$
@@ -1125,7 +1149,11 @@ BEGIN
 		player_id = id_player
 		AND
 		team_type = 'NATIONAL';
-	
+
+	RAISE NOTICE E'Delete all national militacy of player (id = %)\n'
+		'Function: delete_national_militancy(integer)', id_player;
+
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -1707,97 +1735,6 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : corr_tot_team
- *
- * IN      : integer, smallint
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se il numero massimo di squadre di calcio che
- *        possono partecipare ad una competizione calcistica sia coerente
- *        con il tipo di competizione.
- *
- *        NOTE: I valori limite sono arbitrari ma ottenuti grazie a numerose
- *              ricerche (su Wikipidia, Transfermarkt, ...)
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION corr_tot_team
-(
-	IN	id_comp		integer,
-	IN	tot_team	smallint
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp				text;
-
-	id_conf			integer;
-
-	id_country		integer;
-
-	type_country	en_country;
-	type_comp		en_competition;
-	
-BEGIN
-	
-	tmp = get_column('fp_competition', 'type', id_comp);
-	type_comp = CAST(tmp AS en_competition);
-
-	-- se la competizione calcistica è una supercoppa
-	IF ('SUPER CUP' = type_comp) THEN
-		-- al massimo sono possibili 6 squadre partecipanti
-		IF (tot_team <= 6) THEN
-			RETURN TRUE;
-		END IF;
-	-- se la competizione calcistica è un campionato
-	ELSIF ('LEAGUE' = type_comp) THEN
-		-- al massimo sono possibili 50 squadre partecipanti
-		IF (tot_team <= 50) THEN
-			RETURN TRUE;
-		END IF;
-	-- se la competizione calcistica è un torneo
-	ELSIF ('CUP' = type_comp) THEN
-
-		tmp = get_column('fp_competition', 'confederation_id', id_comp);
-		id_conf = CAST(tmp_text AS integer);
-
-		tmp = get_column('fp_confederation', 'country_id', id_conf);
-		id_country = CAST(tmp_text AS integer);
-
-		tmp = get_column('fp_country', 'type', id_country);
-		type_country = CAST(tmp AS en_country);
-
-		-- se si tratta di una coppa nazionale
-		IF ('NATION' = type_country) THEN
-			-- è una competizione ad eliminazione diretta
-			-- e il numero di partecipanti deve essere una potenza di 2
-			IF (floor(log(2, tot_team)) = ceil(log(2, tot_team))) THEN
-				RETURN TRUE;
-			END IF;
-		-- se si tratta di una coppa internazionale
-		ELSE
-			-- al massimo sono possibili 50 squadre partecipanti
-			IF (tot_team <= 50) THEN
-				RETURN TRUE;
-			END IF;
-		END IF;
-
-	END IF;
-
-	RAISE NOTICE 'Competition (id = %) has no correct total team number (%)', id_comp, tot_team;
-	RETURN FALSE;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
  * NAME : similar_comp
  *
  * IN      : integer
@@ -2021,7 +1958,8 @@ BEGIN
 	
 
 	IF (NOT have) THEN
-		RAISE NOTICE 'Player (id = %) has not nationatity country (id = %)', id_player, id_country;
+		RAISE NOTICE E'Player (id = %) has not nationatity country (id = %)\n'
+			'Function: has_nationality(integer, integer)', id_player, id_country;
 	END IF;
 
 	RETURN have;
@@ -2211,6 +2149,11 @@ BEGIN
 		AND
 		start_year = s_year;
 
+	RAISE NOTICE E'Deleted all trophy won by team (id = %), in year % that'
+		'were assigned to player (id = %)\nFunction: '
+		'remove_all_trophy_season(integer, integer, smallint)', id_team,
+		s_year, id_player;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -2277,6 +2220,11 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 	END LOOP;
+
+	RAISE NOTICE E'Assigned all trophy won by team (id = %), in year % '
+		'to player (id = %)\nFunction: '
+		'assign_all_trophy_season(integer, integer, smallint)', id_team,
+		s_year, id_player;
 
 END;
 $$
@@ -2411,23 +2359,41 @@ CREATE OR REPLACE FUNCTION team_has_trophy
 RETURNS boolean
 AS
 $$
+DECLARE
+
+	has	boolean;
+
 BEGIN
 
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_team_trophy_case
-		WHERE
-			team_id = id_team
-			AND
-			trophy_id = id_trophy
-			AND
-			start_year = s_year
-			AND
-			competition_id = id_comp
-	);
+	has = FALSE;
+
+	
+	SELECT
+		count(*) >= 1
+	INTO
+		has
+	FROM
+		fp_team_trophy_case
+	WHERE
+		team_id = id_team
+		AND
+		trophy_id = id_trophy
+		AND
+		start_year = s_year
+		AND
+		competition_id = id_comp;
+
+
+	IF (NOT has) THEN
+
+		RAISE NOTICE E'Team (id = %) did not win the trophy (id = %)'
+			'of the competition edition (competition_id = % , start_year = %)\n'
+			'Function: team_has_trophy(integer, integer, smallint, integer)',
+			id_team, id_trophy, id_comp, s_year;
+
+	END IF;
+
+	RETURN has;
 
 END;
 $$
@@ -2540,6 +2506,9 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
+	RAISE NOTICE E'Created attribute for player (id = %)\nFunction: '
+		'create_attributes(integer)', id_player;
+
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
@@ -2556,10 +2525,8 @@ BEGIN
 		)
 		ON CONFLICT DO NOTHING;
 
-	ELSE
-
-		RAISE NOTICE E'Player (id = %) is not a goalkeeper\n'
-			'Function: create_attributes(integer)', id_player
+		RAISE NOTICE E'Created goalkeeper attribute for player (id = %)\n'
+			'Function: create_attributes(integer)', id_player;
 
 	END IF;
 
@@ -2626,6 +2593,11 @@ BEGIN
 
 	END LOOP;
 
+	RAISE NOTICE E'Created play from militancy (team_id = % , player_id = % , '
+		'start_year = %)\nFunction:'
+		'create_play_from_militancy(integer, integer, smallint)', id_team,
+		id_player, s_year;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -2646,8 +2618,8 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION create_play_from_partecipation
 (
 	IN	id_team	integer,
-	IN	s_year	smallint,
-	IN	id_comp	integer
+	IN	id_comp	integer,
+	IN	s_year	smallint
 )
 RETURNS void
 AS
@@ -2689,6 +2661,12 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 	END LOOP;
+
+
+	RAISE NOTICE E'Created play from partecipation (team_id = % , '
+		'competition_id = % , start_year = % \nFunction:'
+		'create_play_from_partecipation(integer, integer, smallint)', id_team,
+		id_comp, s_year;
 
 END;
 $$
@@ -2741,7 +2719,7 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 
-	RAISE NOTICE 'Created General Statistics of player (id = %) for play (id = %)'
+	RAISE NOTICE E'Created General Statistics of player (id = %) for play (id = %)'
 		'\nFunction: create_statistics(integer)', id_player, id_play;
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
@@ -2757,7 +2735,7 @@ BEGIN
 		)
 		ON CONFLICT DO NOTHING;
 
-		RAISE NOTICE 'Created Goalkeeper Statistics of player (id = %)'
+		RAISE NOTICE E'Created Goalkeeper Statistics of player (id = %)'
 			'for play (id = %)\nFunction: create_statistics(integer)',
 			id_player, id_play;
 		
@@ -2814,7 +2792,7 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_play);
 	role_player = CAST(tmp AS en_role_mix);
 
-	RAISE NOTICE 'Set to zero General Statistics of player (id = %)'
+	RAISE NOTICE E'Set to zero General Statistics of player (id = %)'
 		'for play (id = %)\nFunction: create_statistics(integer)',
 		id_player, id_play;
 
@@ -2828,7 +2806,7 @@ BEGIN
 		WHERE
 			play_id = id_play;
 		
-		RAISE NOTICE 'Set to zero Goalkeeper Statistics of player (id = %)'
+		RAISE NOTICE E'Set to zero Goalkeeper Statistics of player (id = %)'
 			'for play (id = %)\nFunction: set_zero_statistics(integer)',
 			id_player, id_play;
 

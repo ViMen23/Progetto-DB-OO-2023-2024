@@ -428,6 +428,10 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
+	RAISE NOTICE E'Created nationality and player_position of player(id = %) '
+		'with country (id = %) and position (id = %)\n'
+		'Trigger Function: tf_ai_player()', NEW.id, NEW.country_id,
+		NEW.position_id;
 
 	PERFORM create_attributes(NEW.id);
 
@@ -468,15 +472,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
 
 
 /*******************************************************************************
@@ -625,6 +620,10 @@ BEGIN
 			AND
 			player_id = NEW.id;
 
+		RAISE NOTICE E'Deleted nationality of player (id = %) '
+			'with country (id = %)\n Trigger Function: '
+			'tf_au_player_country()', NEW.id, OLD.country_id;
+
 	END IF;
 
 
@@ -641,6 +640,9 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 	
+	RAISE NOTICE E'Created nationality of player (id = %) '
+			'with country (id = %)\n Trigger Function: '
+			'tf_au_player_country()', NEW.id, NEW.country_id;
 
 	RETURN NULL;
 	
@@ -677,6 +679,10 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 	
+	RAISE NOTICE E'Created player_position of player (id = %) '
+			'with position (id = %)\n Trigger Function: '
+			'tf_au_player_pos()', NEW.id, NEW.position_id;
+
 
 	RETURN NULL;
 
@@ -1025,9 +1031,8 @@ BEGIN
 	END IF;
 	
 	RAISE NOTICE E'Error for Partecipation (start_year = % , competition_id = %, '
-		'team_id = %)\n'
-		'Trigger Function: tf_bi_partecipation()', NEW.start_year,
-		NEW,competition_id, NEW.team_id;
+		'team_id = %)\n Trigger Function: tf_bi_partecipation()', NEW.start_year,
+		NEW.competition_id, NEW.team_id;
 
 
 	RETURN NULL;
@@ -1170,16 +1175,9 @@ BEGIN
 	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 
-		RAISE NOTICE E'Assigned all trophy for militancy(team_type = % , '
-			'team_id = % , player_id = % , start_year = % , type = % )\n'
-			'Trigger Function: tf_ai_militancy()', NEW.team_type, NEW.team_id,
-			NEW.player_id, NEW.start_year, NEW.type;
-
 	END IF;
 
-
 	PERFORM create_play_from_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
-
 
 	RETURN NULL;
 	
@@ -1206,24 +1204,12 @@ BEGIN
 
 	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
 	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
-
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
-
-		RAISE NOTICE E'Assigned all trophy for militancy(team_type = % , '
-			'team_id = % , player_id = % , start_year = % , type = % )\n'
-			'Trigger Function: tf_au_militancy()', NEW.team_type, NEW.team_id,
-			NEW.player_id, NEW.start_year, NEW.type;
 
 	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
 	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
-
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
-
-		RAISE NOTICE E'Removed all trophy for militancy(team_type = % , '
-			'team_id = % , player_id = % , start_year = % , type = % )\n'
-			'Trigger Function: tf_au_militancy()', NEW.team_type, NEW.team_id,
-			NEW.player_id, NEW.start_year, NEW.type;
-		tf_bi_play
+		
 	END IF;
 	
 
@@ -1957,9 +1943,14 @@ BEGIN
 			NEW.id,
 			NEW.start_year,
 			NEW.competition_id
-		);
+		)
+		ON CONFLICT DO NOTHING;
 
 	END LOOP;
+
+	RAISE NOTICE E'Assigned trophy (id = % , start_year = %) to all players'
+		'of the team (id = %) in that season\nTrigger Function: '
+		'tf_ai_team_trophy_case()', NEW.trophy_id, NEW.start_year, NEW.team_id;
 	
 	RETURN NULL;
 	
@@ -1997,6 +1988,10 @@ BEGIN
 		competition_id = OLD.competition_id;
 
 
+	RAISE NOTICE E'Delete of the trophy (id = % , start_year = %) from all players'
+		'of the team (id = %) in that season\nTrigger Function: '
+		'tf_ad_team_trophy_case()', NEW.trophy_id, NEW.start_year, NEW.team_id;
+	
 	RETURN NULL;
 	
 END;
@@ -2062,6 +2057,10 @@ BEGIN
 
 				IF (position(CAST(role_trophy AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
+				ELSE
+
+					RAISE NOTICE 'The role of the player trophy is not'
+						'one of roles of the player.';
 				END IF;
 
 			END IF;
@@ -2070,6 +2069,11 @@ BEGIN
 
 	END IF;
 	
+	RAISE NOTICE E'Error of player_trophy_case (player_id = % , team_id = % , '
+		'trophy_id = % , start_year = % , competition_id = %)\n'
+		'Trigger Function: tf_bi_player_trophy_case()',NEW.player_id,
+		NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+ 
 
 	RETURN NULL;
 	
@@ -2119,6 +2123,14 @@ BEGIN
 			type_militancy <> 'I PART' 
 		)
 		THEN
+
+			RAISE NOTICE E'Cannot delete player_trophy_case (player_id = % , '
+				'team_id = % , trophy_id = % , start_year = % , competition_id = %), '
+				'because the team still has the trophy and the militancy'
+				'start year type is not "I PART"\n'
+				'Trigger Function: tf_bd_player_trophy_case()',NEW.player_id,
+				NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+ 
 			RETURN NULL;
 		END IF;
 	
@@ -2160,6 +2172,11 @@ BEGIN
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
 	END IF;
+
+	RAISE NOTICE E'Error of team_prize_case (team_id = % , prize_id = % , '
+		'assign_year = %) because prize is not of type team\n'
+		'Trigger Function: tf_bi_team_prize_case()',
+		NEW.team_id, NEW.prize_id, NEW.assign_year;
 
 
 	RETURN NULL;
@@ -2227,14 +2244,27 @@ BEGIN
 
 				IF (position(CAST(role_prize AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
+				ELSE
+
+					RAISE NOTICE 'The role of the player prize is not'
+						'one of roles of the player.';
+
 				END IF;
 
 			END IF;
-		
+		ELSE
+			RAISE NOTICE '% is not between % and %', NEW.assign_year,
+				start_valid, end_valid;
 		END IF;
-	
+	ELSE
+		RAISE NOTICE 'Type of prize is not player';
 	END IF;
 	
+	RAISE NOTICE E'Error of player_prize_case (player_id = % , prize_id = % , '
+		'assign_year = %)\n'
+		'Trigger Function: tf_bi_player_prize_case()',
+		NEW.player_id, NEW.prize_id, NEW.assign_year;
+
 
 	RETURN NULL;
 	
