@@ -111,6 +111,8 @@ BEGIN
 
 	END IF;
 
+	RAISE NOTICE E'Error for Country %\nTrigger Function: tf_bi_country()',
+		NEW.name;
 
 	RETURN NULL;
 	
@@ -184,6 +186,8 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for Confederation %\nTrigger Function:'
+		'tf_bi_confederation()', NEW.long_name;
 
 	RETURN NULL;
 	
@@ -227,6 +231,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Confederation of type % can''t organize competition %'
+		'for team of type %\nTrigger Function: tf_bi_competition()',
+		type_country_conf, NEW.name, NEW.team_type;
 
 	RETURN NULL;
 	
@@ -263,6 +270,9 @@ BEGIN
 
 	END IF;	
 
+	RAISE NOTICE E'Error for Competition Edition (competition_id = %, '
+		'start_year = %)\nTrigger Function: tf_bi_confederation()',
+		NEW.competition_id, NEW.start_year;
 
 	RETURN NULL;
 	
@@ -309,10 +319,17 @@ BEGIN
 				RETURN NEW;
 			END IF;
 
+			RAISE NOTICE 'Team of type % doesn''t have as short_name (%)'
+				'and/or long_name (%) the name and code'
+				'of the country associated (id = %)', NEW.type, NEW.short_name,
+				NEW.long_name, NEW.country_id;
+				
 		END IF;
 
 	END IF;
 	
+	RAISE NOTICE E'Error for Team %\nTrigger Function: tf_bi_team()',
+		NEW.long_name;
 
 	RETURN NULL;
 	
@@ -352,8 +369,14 @@ BEGIN
 			RETURN NEW;
 		END IF;
 
+		RAISE NOTICE 'Role (%) of Player is not the same'
+			'of the role (%) of the associated position (id = %)',
+			NEW.role, role_pos, NEW.position_id;
+
 	END IF;
 
+	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
+		'Trigger Function: tf_bi_player()', NEW.name, NEW.surname;
 
 	RETURN NULL;
 	
@@ -388,7 +411,8 @@ BEGIN
 	(
 		NEW.country_id,
 		NEW.id
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 
 	INSERT INTO
@@ -401,7 +425,8 @@ BEGIN
 	(
 		NEW.id,
 		NEW.position_id
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 
 	PERFORM create_attributes(NEW.id);
@@ -434,6 +459,8 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
+		'Trigger Function: tf_bu_player_country()', OLD.name, OLD.surname;
 
 	RETURN OLD;
 	
@@ -473,7 +500,11 @@ DECLARE
 
 	born_year		integer;
 
+	temp			boolean;
+
 BEGIN
+
+	temp = TRUE;
 
 	IF (is_retired(NEW.id)) THEN
 
@@ -481,7 +512,7 @@ BEGIN
 		retired_date = CAST(tmp AS date);
 
 		IF (NOT corr_age_limit(NEW.dob, retired_date)) THEN
-			RETURN OLD;
+			temp = FALSE;
 		END IF;
 	
 	END IF;
@@ -492,20 +523,35 @@ BEGIN
 		born_year = extract(year from NEW.dob);
 
 		IF (min_militancy_year(NEW.id) - born_year < min_age()) THEN
-			RETURN OLD;
+			
+			temp = FALSE;
+
+			RAISE NOTICE 'The age of a player for his minimum militancy'
+				'is earlier than the minimum age of a player';
 		END IF;
 
 
 		IF (NOT is_retired(NEW.id)) THEN
 
 			IF (max_militancy_year(NEW.id) - born_year > max_age()) THEN
-				RETURN OLD;
+				temp = FALSE;
+
+				RAISE NOTICE 'The age of a player for his maximum militancy'
+					'is later than the maximum age of a player';
 			END IF;
 
 		END IF;
 		
 	END IF;
 
+	IF (NOT temp) THEN
+
+		RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
+		'Trigger Function: tf_bu_player_dob()', OLD.name, OLD.surname;
+
+		RETURN OLD;
+
+	END IF;
 
 	RETURN NEW;
 		
@@ -535,6 +581,8 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
+		'Trigger Function: tf_bu_player_role()', OLD.name, OLD.surname;
 
 	RETURN OLD;
 	
@@ -568,7 +616,7 @@ BEGIN
 	id_team = national_team_from_country(OLD.country_id);
 
 
-	IF (NOT has_militancy(NEW.id, id_team)) THEN
+	IF (NOT has_national_militancy(NEW.id, id_team)) THEN
 
 		DELETE FROM
 			fp_nationality
@@ -590,8 +638,10 @@ BEGIN
 	(
 		NEW.country_id,
 		NEW.id
-	);
+	)
+	ON CONFLICT DO NOTHING;
 	
+
 	RETURN NULL;
 	
 END;
@@ -624,7 +674,8 @@ BEGIN
 	(
 		NEW.id,
 		NEW.position_id
-	);
+	)
+	ON CONFLICT DO NOTHING;
 	
 
 	RETURN NULL;
@@ -690,26 +741,43 @@ DECLARE
 	born_date		date;
 	retired_year	integer;
 
+	temp			boolean;
+
 BEGIN
 
-	tmp = get_column('fp_player', 'dob', NEW.id);
+	temp = TRUE;
+
+	tmp = get_column('fp_player', 'dob', NEW.player_id);
 	born_date = CAST(tmp AS date);
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		RETURN NULL;	
+		temp = FALSE;
 	END IF;
 	
 
-	IF (has_militancy(NEW.id)) THEN
+	IF (has_militancy(NEW.player_id)) THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
-		IF (max_militancy_year(NEW.id) >= retired_year) THEN
-			RETURN NULL;
+		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
+
+			temp = FALSE;
+
+			RAISE NOTICE 'The maximum militancy of a player is'
+				'in the same retired year or after it (%)', retired_year;
+
 		END IF;
 	
 	END IF;
 
+	IF (NOT temp) THEN
+
+		RAISE NOTICE E'Error for player_retired (player_id = %)\n'
+		'Trigger Function: tf_bi_player_retired()', NEW.player_id;
+
+		RETURN NULL;
+
+	END IF;
 
 	RETURN NEW;
 	
@@ -739,26 +807,44 @@ DECLARE
 	born_date		date;
 	retired_year	integer;
 
+	temp			boolean;
+
 BEGIN
 
-	tmp = get_column('fp_player', 'dob', NEW.id);
+	temp = TRUE;
+
+	tmp = get_column('fp_player', 'dob', NEW.player_id);
 	born_date = CAST(tmp AS date);
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		RETURN OLD;	
+		temp = FALSE;	
 	END IF;
 	
 
-	IF (has_militancy(NEW.id)) THEN
+	IF (has_militancy(NEW.player_id)) THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
-		IF (max_militancy_year(NEW.id) >= retired_year) THEN
-			RETURN OLD;
+		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
+			
+			temp = FALSE;
+
+			RAISE NOTICE 'The maximum militancy of a player is'
+				'in the same retired year or after it (%)', retired_year;
+
+
 		END IF;
 	
 	END IF;
 
+	IF (NOT temp) THEN
+
+		RAISE NOTICE E'Error for player_retired (player_id = %)\n'
+		'Trigger Function: tf_bu_player_retired_date()', NEW.player_id;
+
+		RETURN OLD;
+
+	END IF;
 
 	RETURN NEW;
 	
@@ -787,6 +873,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for nationality (player_id = %, country_id = %)\n'
+		'Trigger Function: tf_bi_nationality()',
+		NEW.player_id, NEW.country_id;
 
 	RETURN NULL;
 
@@ -822,6 +911,12 @@ BEGIN
 
 
 	IF (OLD.country_id = id_country_player) THEN
+
+		RAISE NOTICE E'Cannot delete nationality (player_id = %, country_id = %)'
+			'because it is the born country of the player\n'
+			'Trigger Function: tf_bd_nationality()',
+			NEW.player_id, NEW.country_id;
+
 		RETURN NULL;
 	END IF;
 
@@ -867,9 +962,15 @@ BEGIN
 		
 		IF (OLD.country_id = id_country) THEN
 			PERFORM delete_national_militancy(OLD.player_id);
+
+			RAISE NOTICE E'Deleted national militancies associated to'
+			'player (id = %) and national team of country (id = %)\n'
+			'Trigger Function: tf_bd_nationality()',
+			NEW.player_id, NEW.country_id;
+
 		END IF;
 
-	END IF; 
+	END IF;
 	
 	RETURN NULL;
 	
@@ -923,6 +1024,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
+	RAISE NOTICE E'Error for Partecipation (start_year = % , competition_id = %, '
+		'team_id = %)\n'
+		'Trigger Function: tf_bi_partecipation()', NEW.start_year,
+		NEW,competition_id, NEW.team_id;
+
 
 	RETURN NULL;
 	
@@ -979,7 +1085,11 @@ DECLARE
 
 	id_country	integer;
 
+	temp		boolean;
+
 BEGIN
+
+	temp = TRUE;
 
 	SELECT
 		*
@@ -998,7 +1108,7 @@ BEGIN
 			id_country = CAST(tmp AS integer);
 
 			IF (NOT has_nationality(NEW.player_id, id_country)) THEN
-				RETURN NULL;
+				temp = FALSE;
 			END IF;
 
 			IF (is_national(NEW.player_id)) THEN
@@ -1006,21 +1116,34 @@ BEGIN
 				-- se è una militanza nazionale e il calciatore ha gia
 				-- militato in nazionale la squadra deve essere la stessa
 				IF (national_team(NEW.player_id) <> NEW.team_id) THEN
-					RETURN NULL;
+
+					temp = FALSE;
+
+					RAISE NOTICE 'Player (id = %) has a national militancy'
+						'with another team already', NEW.player_id;
+
 				END IF;
 
 			END IF;
 
 		END IF;
 
-		IF (free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
-			RETURN NEW;
+		IF (NOT free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
+			temp = FALSE;
 		END IF;
 		
 	END IF;
 
+	IF (NOT temp) THEN
 
-	RETURN NULL;
+		RAISE NOTICE E'Error for Militancy (team_type = % , team_id = % , '
+			'player_id = % , start_year = % , type = % )\n'
+			'Trigger Function: tf_bi_militancy()', NEW.team_type, NEW.team_id,
+			NEW.player_id, NEW.start_year, NEW.type;
+
+	END IF;
+
+	RETURN NEW;
 	
 END;
 $$
@@ -1046,6 +1169,12 @@ BEGIN
 
 	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+
+		RAISE NOTICE E'Assigned all trophy for militancy(team_type = % , '
+			'team_id = % , player_id = % , start_year = % , type = % )\n'
+			'Trigger Function: tf_ai_militancy()', NEW.team_type, NEW.team_id,
+			NEW.player_id, NEW.start_year, NEW.type;
+
 	END IF;
 
 
@@ -1077,10 +1206,24 @@ BEGIN
 
 	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
 	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
+
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+
+		RAISE NOTICE E'Assigned all trophy for militancy(team_type = % , '
+			'team_id = % , player_id = % , start_year = % , type = % )\n'
+			'Trigger Function: tf_au_militancy()', NEW.team_type, NEW.team_id,
+			NEW.player_id, NEW.start_year, NEW.type;
+
 	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
 	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
+
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
+
+		RAISE NOTICE E'Removed all trophy for militancy(team_type = % , '
+			'team_id = % , player_id = % , start_year = % , type = % )\n'
+			'Trigger Function: tf_au_militancy()', NEW.team_type, NEW.team_id,
+			NEW.player_id, NEW.start_year, NEW.type;
+		tf_bi_play
 	END IF;
 	
 
@@ -1115,6 +1258,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for Play (id = % ), number of match is'
+			'greater than its maximum\nTrigger Function: tf_bi_play()',
+			NEW.id;
 
 	RETURN NULL;
 	
@@ -1173,6 +1319,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error for Play (id = % ), number of match is'
+			'greater than its maximum\nTrigger Function: tf_bu_play_match()',
+			OLD.id;
 
 	RETURN OLD;
 	
@@ -1197,7 +1346,13 @@ $$
 BEGIN
 
 	IF (0 = NEW.match) THEN
+
 		PERFORM set_zero_statistics(NEW.id);
+
+		RAISE NOTICE E'Set to zero statistic for Play(id = %) because'
+		'number of match equals zero\nTrigger Function: tf_au_play_match()',
+		NEW.id;
+
 	END IF;
 
 
@@ -1241,6 +1396,12 @@ BEGIN
 		role_player = CAST(tmp AS en_role_mix);
 
 		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
+
+			RAISE NOTICE E'Error for player_tag (player_id = % , tag_id = %), '
+				'cannot associated tag for goalkeeper to a player that'
+				'is not a goalkeeper\nTrigger Function: tf_bi_player_tag()',
+				NEW.player_id, NEW.tag_id;
+
 			RETURN NULL;
 		END IF;
 		
@@ -1293,6 +1454,10 @@ BEGIN
 		WHERE
 			id = NEW.player_id;
 
+		RAISE NOTICE E'Update of role of the player (id = %), because'
+			'it has changed\nTrigger Function: tf_ai_player_position()',
+			NEW.player_id
+
 	END IF;
 	
 
@@ -1334,6 +1499,10 @@ BEGIN
 		RETURN OLD;
 	END IF;
 	
+
+	RAISE NOTICE E'Cannot delete the position (id = %) because'
+		'it is the main position of player (id = %)', OLD.position_id,
+		OLD.player_id;
 
 	RETURN NULL;
 	
@@ -1383,6 +1552,10 @@ BEGIN
 
 	END IF;
 	
+	RAISE NOTICE E'Update of role of the player (id = %), because'
+			'it has changed\nTrigger Function: tf_ad_player_position()',
+			OLD.player_id;
+
 
 	RETURN NULL;
 	
@@ -1416,6 +1589,11 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
+
+		RAISE NOTICE E'Error of attribute goalkeeping for player (id = %), because'
+			'the player is not a goalkeeper\nTrigger Function: '
+			'tf_bi_attribute_goalkeeping()', NEW.player_id;
+
 		RETURN NULL;	
 	END IF;
 
@@ -1454,11 +1632,17 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	IF ((role_player IS NOT NULL) AND (CAST(role_player AS text) LIKE '%GK%')) THEN
-		RETURN OLD;	
+
+		RAISE NOTICE E'Cannot delete the attribute goalkeeping for player (id = %)'
+			'because it still references a goalkeeper\nTrigger Function: '
+			'tf_bd_attribute_goalkeeping()', OLD.player_id;
+
+		RETURN NULL;	
+
 	END IF;
 
-
-	RETURN NULL;
+	
+	RETURN OLD;
 	
 END;
 $$
@@ -1491,10 +1675,14 @@ BEGIN
 	tmp = get_column('fp_player', 'id', OLD.player_id);
 	id_player = CAST(tmp AS integer);
 
-	IF (id_player IS NOT NULL) THEN
+	IF (id_player IS NULL) THEN
 		RETURN OLD;	
 	END IF;
 
+	RAISE NOTICE E'Cannot delete the attribute for player (id = %)'
+		'because it still references a player\nTrigger Function: '
+		'tf_bd_attribute_references()', OLD.player_id;
+	
 
 	RETURN NULL;
 	
@@ -1531,8 +1719,12 @@ BEGIN
 		RETURN NEW;	
 	END IF;
 
+	RAISE NOTICE E'Cannot update general statistic for play (id = %)'
+		'because number of match is zero\nTrigger Function: '
+		'tf_bu_statistic()', NEW.play_id;
+	
 
-	RETURN NULL;
+	RETURN OLD;
 	
 END;
 $$
@@ -1564,11 +1756,14 @@ BEGIN
 	tmp = get_column('fp_play', 'id', OLD.play_id);
 	id_play = CAST(tmp AS integer);
 
-	IF (id_play IS NOT NULL) THEN
+	IF (id_play IS NULL) THEN
 		RETURN OLD;	
 	END IF;
 
-
+	RAISE NOTICE E'Cannot delete general statistic for play (id = %)'
+		'because it still references a play\nTrigger Function: '
+		'tf_bd_statistic_general()', OLD.play_id;
+	
 	RETURN NULL;
 	
 END;
@@ -1608,6 +1803,9 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
+	RAISE NOTICE E'Error of statistic goalkeeper for play (id = %), because'
+			'the player is not a goalkeeper\nTrigger Function: '
+			'tf_bi_statistic_goalkeeper()', NEW.play;
 
 	RETURN NULL;
 	
@@ -1633,34 +1831,32 @@ DECLARE
 
 	tmp			text;
 
-	id_play		integer;
-
 	id_player	integer;
 	role_player	en_role_mix;
 
 BEGIN
 
-	id_play = NULL;
+	tmp = get_column('fp_play', 'player_id', OLD.play_id);
+	id_player = CAST(tmp AS integer);
 
-	tmp = get_column('fp_play', 'id', OLD.play_id);
-	id_play = CAST(tmp AS integer);
-
-	IF (id_play IS NOT NULL) THEN
-
-		tmp = get_column('fp_play', 'player_id', OLD.play_id);
-		id_player = CAST(tmp AS integer);
+	IF (id_player IS NOT NULL) THEN
 
 		tmp = get_column('fp_player', 'role', id_player);
 		role_player = CAST(tmp AS en_role_mix);
 
 		IF (CAST(role_player AS text) LIKE '%GK%') THEN
-			RETURN OLD;
+
+			RAISE NOTICE E'Cannot delete goalkeeper statistic for play (id = %)'
+				'because it still references a play of a goalkeeper\n'
+				'Trigger Function: tf_bd_statistic_goalkeeper()', OLD.play_id;
+	
+			RETURN NULL;
 		END IF;
 			
 	END IF;
 
 
-	RETURN NULL;
+	RETURN OLD;
 	
 END;
 $$
@@ -1696,6 +1892,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
+	RAISE NOTICE E'Error of team_trophy_case (team_id = % , trophy_id = % , '
+		'start_year = % , competition_id = %) because trophy is not'
+		'of type team\nTrigger Function: tf_bi_team_trophy_case()',
+		NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+
 
 	RETURN NULL;
 	

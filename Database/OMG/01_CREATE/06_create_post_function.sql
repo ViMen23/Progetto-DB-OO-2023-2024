@@ -32,17 +32,31 @@ CREATE OR REPLACE FUNCTION world_exists
 RETURNS boolean
 AS
 $$
+DECLARE
+
+	exist	boolean;
+
 BEGIN
+
+	exist = FALSE;
 				
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_country
-		WHERE
-			type = 'WORLD'
-	);
+	SELECT
+		count(*) >= 1
+	INTO
+		exist
+	FROM
+		fp_country
+	WHERE
+		type = 'WORLD';
+
+
+	IF (NOT exist) THEN
+		RAISE NOTICE E'Reached maximum number of Worlds'
+			'Function: world_exists()';
+	END IF;
+
+	RETURN exist;
+	
 	
 END;
 $$
@@ -67,17 +81,30 @@ CREATE OR REPLACE FUNCTION all_continent_exists
 RETURNS boolean
 AS
 $$
+DECLARE
+
+	exist	boolean;
+
 BEGIN
-				
-	RETURN
-	(
-		SELECT
-			count(*) >= 6
-		FROM
-			fp_country
-		WHERE
-			type = 'CONTINENT'
-	);
+
+	exist = FALSE;
+
+	SELECT
+		count(*) >= 6
+	INTO
+		exist
+	FROM
+		fp_country
+	WHERE
+		type = 'CONTINENT';
+
+
+	IF (NOT exist) THEN
+		RAISE NOTICE E'Reached maximum number of Continents'
+			'Function: all_continent_exists()';
+	END IF;
+
+	RETURN exist;
 	
 END;
 $$
@@ -192,8 +219,12 @@ BEGIN
 	rec_country = get_record('fp_country', id_country);
 
 	IF (rec_country.type <> 'NATION') THEN
-		RAISE NOTICE 'Error. Cannot create national team. Country (id = %) is not a nation', id_country;
+
+		RAISE NOTICE E'Error. Cannot create national team. Country (id = %) is not a nation\n'
+			'Function: create_national_team(integer)', id_country;
+
 		RETURN;
+
 	END IF;
 
 
@@ -211,10 +242,9 @@ BEGIN
 		id_country,
 		rec_country.name,
 		rec_country.code
-	);
-	
-	RETURN;
-		
+	)
+	ON CONFLICT DO NOTHING;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -299,7 +329,8 @@ BEGIN
 	VALUES
 	(
 		id_player
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 	
 	FOR id_play
@@ -319,7 +350,8 @@ BEGIN
 		VALUES
 		(
 			id_play
-		);
+		)
+		ON CONFLICT DO NOTHING;
 
 	END LOOP;
 
@@ -566,17 +598,31 @@ CREATE OR REPLACE FUNCTION is_retired
 RETURNS boolean
 AS
 $$
+DECLARE
+
+	retired	boolean;	
+
 BEGIN
-				
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_player_retired
-		WHERE
-			player_id = id_player
-	);
+
+	retired = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		retired
+	FROM
+		fp_player_retired
+	WHERE
+		player_id = id_player;
+
+
+	IF (NOT retired) THEN
+		RAISE NOTICE E'Player (id = %) has not retired yet\n'
+			'Function: is_retired(integer)', id_player;
+	END IF;
+
+	RETURN retired;
+	
 	
 END;
 $$
@@ -602,20 +648,34 @@ CREATE OR REPLACE FUNCTION is_national
 RETURNS boolean
 AS
 $$
+DECLARE
+
+	have	boolean;
+
 BEGIN
-				
-	RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			team_type = 'NATIONAL'
-	);
-	
+
+	have = FALSE;
+
+	SELECT
+		count(*) >= 1
+	INTO
+		have
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player
+		AND
+		team_type = 'NATIONAL'
+	LIMIT 1;
+
+
+	IF (NOT have) THEN
+		RAISE NOTICE E'Player (id = %) does not have any national militancy\n'
+			'Function: is_national(integer)', id_player;
+	END IF;
+
+	RETURN have;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -639,6 +699,7 @@ CREATE OR REPLACE FUNCTION national_team
 	IN	id_player	integer
 )
 RETURNS integer
+RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
@@ -663,6 +724,12 @@ BEGIN
 	LIMIT
 		1;
 
+	IF (id_team IS NULL) THEN
+
+		RAISE NOTICE E'Player (id = %) does not have any national militancy\n'
+			'Function: national_team(integer)', id_player;
+
+	END IF;
 
 	RETURN id_team;
 	
@@ -681,7 +748,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un calciatore ha militanze in squadre du calcio
+ * DESC : Funzione che valuta se un calciatore ha militanze in squadre di calcio
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION has_militancy
 (
@@ -707,7 +774,8 @@ BEGIN
 	
 
 	IF (NOT has) THEN
-		RAISE NOTICE 'Player (id = %) does not have any militancy', id_player;
+		RAISE NOTICE E'Player (id = %) does not have any militancy\n'
+			'Function: has_militancy(integer)', id_player;
 	END IF;
 
 	RETURN has;
@@ -1098,7 +1166,10 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE '% cannot be inside %', type_in_country, type_super_country;
+	RAISE NOTICE E'% cannot be inside %\nFunction:'
+		'can_be_inside(en_country, en_country)', type_in_country,
+		type_super_country;
+
 	RETURN FALSE;
 	
 END;
@@ -1141,8 +1212,9 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
+	RAISE NOTICE E'Country (id =  %) is not a nation\n'
+		'Function: is_nation(integer)', id_country;
 
-	RAISE NOTICE 'Country (id =  %) is not a nation', id_country;
 	RETURN FALSE;
 	
 END;
@@ -1190,7 +1262,10 @@ BEGIN
 
 
 	IF (NOT have) THEN
-		RAISE NOTICE 'Competition (id =  %) does not have editions', id_comp;
+
+		RAISE NOTICE E'Competition (id =  %) does not have editions\n'
+			'Function: has_edition(integer)', id_comp;
+
 	END IF;
 
 	RETURN have;
@@ -1261,7 +1336,9 @@ BEGIN
 		END IF;
 	END IF;
 	
-	RAISE NOTICE 'Competition (id =  %) cannot start in year %, bad frequency', id_comp, s_year;
+	RAISE NOTICE E'Competition (id =  %) cannot start in year %, bad frequency\n'
+		'Function: corr_freq(integer, smallint)', id_comp, s_year;
+
 	RETURN FALSE;
 	
 END;
@@ -1329,7 +1406,8 @@ BEGIN
 	END IF;
 	
 	
-	RAISE NOTICE 'Team (id =  %) does not belong to confederation (id = %)', id_team, id_conf;
+	RAISE NOTICE E'Team (id =  %) does not belong to confederation (id = %)\n'
+		'Function: belong_to(integer, integer)', id_team, id_conf;
 	RETURN FALSE;
 	
 END;
@@ -1484,8 +1562,11 @@ BEGIN
 
 
 	IF (NOT have) THEN
-		RAISE NOTICE 'Competition (id = %) start year (%)'
-			'does not have place', id_comp, s_year;
+
+		RAISE NOTICE E'Competition (id = %) start year (%)'
+			'does not have place\nFunction: has_place(integer, smallint)',
+			id_comp, s_year;
+
 	END IF;
 
 
@@ -1548,7 +1629,11 @@ BEGIN
 		role_pos = CAST(tmp AS en_role);	-- conversione superflua ma effettuata per coerenza
 
 		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
-			RAISE NOTICE 'Player (id =  %) does not have role %', id_player, role_pos;
+
+			RAISE NOTICE E'Player (id =  %) does not have role %\n'
+				'Function: role_fit_positions(integer, en_role_mix)',
+				id_player, role_pos;
+
 			RETURN FALSE;
 		END IF;
 
@@ -1607,8 +1692,11 @@ BEGIN
 	IF (type_team = type_team_comp) THEN
 		RETURN TRUE;
 	ELSE
-		RAISE NOTICE 'Team (id = %) is not compatible to competition (id = %)', id_team, id_comp;
+
+		RAISE NOTICE E'Team (id = %) is not compatible to competition (id = %)\n'
+			'Function: team_fit_comp(integer, integer)', id_team, id_comp;
 		RETURN FALSE;
+
 	END IF;
 
 END;
@@ -1873,9 +1961,12 @@ BEGIN
 									
 		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
-			RAISE NOTICE	'Team (id = %) cannot partecipate'
-							'to competition (id = %) start year (%)',
-							id_team, id_comp, s_year;
+
+			RAISE NOTICE E'Team (id = %) cannot partecipate'
+				'to competition (id = %) start year (%)\n'
+				'Function: can_take_part(integer, integer, smallint)',
+				id_team, id_comp, s_year;
+
 			RETURN can;
 		END IF;
 	
@@ -1978,6 +2069,9 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
+	RAISE NOTICE E' % is not between % and %\nFunction:'
+		'corr_age_limit(date, date)', year_retired_date - year_birth_date,
+		min_age(), max_age();
 
 	RETURN FALSE;
 
@@ -2070,7 +2164,12 @@ BEGIN
 
 
 	IF (NOT free) THEN
-		RAISE NOTICE 'Player (id = %) cannot have a militancy (type = %) starting in year % of type %', id_player, type_team, s_year, type_year;
+
+		RAISE NOTICE E'Player (id = %) cannot have a militancy (type = %)'
+		'starting in year % of type %\nFunction: '
+		'free_militancy(integer, en_team, smallint, en_season)',
+		id_player, type_team, s_year, type_year;
+
 	END IF;
 
 	RETURN free;
@@ -2174,7 +2273,8 @@ BEGIN
 			rec_team_trophy.trophy_id,
 			s_year,
 			rec_team_trophy.competition_id
-		);
+		)
+		ON CONFLICT DO NOTHING;
 
 	END LOOP;
 
@@ -2274,13 +2374,12 @@ BEGIN
 
 	END LOOP;
 
-	IF ('' = tmp) THEN
-		tmp = 'GK-DF-MF-FW';
-	END IF;
-
 	tmp = trim(tmp, '-');
 
 	role_player = CAST(tmp AS en_role_mix);
+
+	RAISE NOTICE E'Created new role of a player (id = %)\nFunction: '
+		'new_role(integer)', id_player;
 
 	RETURN role_player;
 
@@ -2414,7 +2513,8 @@ BEGIN
 	VALUES
 	(
 		id_player
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 
 	INSERT INTO
@@ -2425,7 +2525,8 @@ BEGIN
 	VALUES
 	(
 		id_player
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 
 	INSERT INTO
@@ -2436,7 +2537,8 @@ BEGIN
 	VALUES
 	(
 		id_player
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
@@ -2451,7 +2553,13 @@ BEGIN
 		VALUES
 		(
 			id_player
-		);
+		)
+		ON CONFLICT DO NOTHING;
+
+	ELSE
+
+		RAISE NOTICE E'Player (id = %) is not a goalkeeper\n'
+			'Function: create_attributes(integer)', id_player
 
 	END IF;
 
@@ -2513,7 +2621,8 @@ BEGIN
 			id_comp,
 			id_team,
 			id_player
-		);
+		)
+		ON CONFLICT DO NOTHING;
 
 	END LOOP;
 
@@ -2576,7 +2685,8 @@ BEGIN
 			id_comp,
 			id_team,
 			id_player
-		);
+		)
+		ON CONFLICT DO NOTHING;
 
 	END LOOP;
 
@@ -2620,7 +2730,8 @@ BEGIN
 	VALUES
 	(
 		id_play
-	);
+	)
+	ON CONFLICT DO NOTHING;
 
 
 	tmp = get_column('fp_play', 'player_id', id_play);
@@ -2629,6 +2740,9 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
+
+	RAISE NOTICE 'Created General Statistics of player (id = %) for play (id = %)'
+		'\nFunction: create_statistics(integer)', id_player, id_play;
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
 
@@ -2640,7 +2754,12 @@ BEGIN
 		VALUES
 		(
 			id_play
-		);
+		)
+		ON CONFLICT DO NOTHING;
+
+		RAISE NOTICE 'Created Goalkeeper Statistics of player (id = %)'
+			'for play (id = %)\nFunction: create_statistics(integer)',
+			id_player, id_play;
 		
 	END IF;
 	
@@ -2695,6 +2814,9 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_play);
 	role_player = CAST(tmp AS en_role_mix);
 
+	RAISE NOTICE 'Set to zero General Statistics of player (id = %)'
+		'for play (id = %)\nFunction: create_statistics(integer)',
+		id_player, id_play;
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
 
@@ -2706,6 +2828,10 @@ BEGIN
 		WHERE
 			play_id = id_play;
 		
+		RAISE NOTICE 'Set to zero Goalkeeper Statistics of player (id = %)'
+			'for play (id = %)\nFunction: set_zero_statistics(integer)',
+			id_player, id_play;
+
 	END IF;
 	
 END;
@@ -3591,3 +3717,111 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : national_team_from_country
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION national_team_from_country
+(
+	IN id_country	integer
+)
+RETURNS integer
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	id_team	integer;
+
+BEGIN
+
+	id_team = NULL;
+
+	SELECT
+		id
+	INTO
+		id_team
+	FROM
+		fp_team
+	WHERE
+		country_id = id_country
+		AND
+		type = 'NATIONAL';
+
+	IF (id_team IS NULL) THEN
+
+		RAISE NOTICE E'Country (id = %) hasn''t a national team\n'
+			'Function: national_team_from_country(integer)', id_country;
+	END IF;
+
+	RETURN id_team;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : has_national_militancy
+ *
+ * IN      : integer, integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un calciatore ha militanze
+ *        per una certa squadra di calcio nazionale
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION has_national_militancy
+(
+	IN	id_player	integer,
+	IN	id_team		integer
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	has	boolean;
+
+BEGIN
+			
+	SELECT
+		count(*) >= 1
+	INTO
+		has
+	FROM
+		fp_militancy
+	WHERE
+		player_id = id_player
+		AND
+		team_id = id_team
+		AND
+		team_type = 'NATIONAL'
+	LIMIT 1;
+	
+
+	IF (NOT has) THEN
+
+		RAISE NOTICE E'Player (id = %) does not have any militancy'
+			'with team (id = %)\nFunction: '
+			'has_national_militancy(integer, integer)', id_player, id_team;
+
+	END IF;
+
+	RETURN has;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
