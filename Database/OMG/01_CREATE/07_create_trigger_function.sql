@@ -56,7 +56,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_refuse
  *
- * DESC : TODO
+ * DESC : Funzione che rifiuta una qualsiasi operazione che attivi il trigger
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_refuse
 (
@@ -84,7 +84,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_country
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo paese che si vuole inserire
+ *        sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_country
 (
@@ -126,7 +127,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_country_nation
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di un paese ne crea
+ *        la squadra nazionale corrispondente
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_country_nation
 (
@@ -391,7 +393,8 @@ LANGUAGE plpgsql;
  * NAME : tf_ai_player
  *
  * DESC : Funzione che dopo l'inserimento di un calciatore ne aggiorna la
- *        nazionalità
+ *        nazionalità, l'associazione tra calciatore e posizione e
+ *        crea gli attributi riferiti al calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_player
 (
@@ -656,7 +659,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_player_pos
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'aggiornamento della posizione principale di un
+ *        calciatore, aggiorna l'associazione tra calciatore e posizione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_player_pos
 (
@@ -864,8 +868,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_nationality
  *
- * DESC : Funzione che controlla che la nuova nazionalità da inserire sia
- *        riferita ad una nazione
+ * DESC : Funzione che controlla che la nuova nazionalità
+ *        che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_nationality
 (
@@ -1047,7 +1051,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_partecipation
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di una partecipazione
+ *        ne crea i giochi corrispondenti
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_partecipation
 (
@@ -1230,7 +1235,7 @@ LANGUAGE plpgsql;
  *
  *        NOTA: per il numero massimo di partite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_play
 (
@@ -1261,7 +1266,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_play
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di un gioco ne crea
+ *        le statistiche corrispondenti
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_play
 (
@@ -1291,7 +1297,7 @@ LANGUAGE plpgsql;
  *
  *        NOTA: per il numero massimo di partite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bu_play_match
 (
@@ -1321,7 +1327,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_play_match
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'aggiornamento del numero di partite
+ *        di un gioco setta le statistiche corrispondenti a zero se
+ *        il numero di partite è uguale a zero
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_play_match
 (
@@ -1354,8 +1362,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_tag
  *
- * DESC : Funzione che controlla che l'associazione tra calciatore e tag di
- *        tipo portiere che si vuole inserire sia valida
+ * DESC : Funzione che controlla che l'associazione tra calciatore e tag
+ *        che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player_tag
 (
@@ -1459,7 +1467,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_player_position
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'associazione tra un
+ *        calciatore ed una posizione che si vuole eliminare
+ *        non sia la posizione principale del calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_player_position
 (
@@ -1555,7 +1565,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo per portieri di un calciatore
+ *        che si vuole inserire sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_attribute_goalkeeping
 (
@@ -1596,7 +1607,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo per portieri di un calciatore
+ *        che si vuole eliminare non si riferisca ad un calciatore
+ *        che ha tra i suoi ruoli di gioco il portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_attribute_goalkeeping
 (
@@ -1640,7 +1653,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_attribute_references
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo di un calciatore
+ *        che si vuole eliminare non si riferisca più ad un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_attribute_references
 (
@@ -1682,7 +1696,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bu_statistic
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'aggiornamento delle statistiche
+ *        di un gioco sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bu_statistic
 (
@@ -1721,7 +1736,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_statistic_general
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica generale di un gioco
+ *        che si vuole eliminare non si riferisca più ad un gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_statistic_general
 (
@@ -1762,7 +1778,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica per portieri di un gioco
+ *        che si vuole inserire sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_statistic_goalkeeper
 (
@@ -1805,7 +1822,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica per portieri di un gioco
+ *        che si vuole eliminare non si riferisca ad un gioco associato
+ *        ad un calciatore che ha tra i suoi ruoli di gioco il portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_statistic_goalkeeper
 (
