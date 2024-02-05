@@ -2004,7 +2004,7 @@ BEGIN
 	WHERE
 		team_id = OLD.team_id
 		AND
-		trophy_id = OLD.id
+		trophy_id = OLD.trophy_id
 		AND
 		start_year = OLD.start_year
 		AND

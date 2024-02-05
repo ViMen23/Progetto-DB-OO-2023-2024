@@ -19,6 +19,12 @@ VALUES
 	get_id('@', 'fp_trophy@name@First place'),
 	get_id('@', 'fp_competition@name@Serie A'),
 	2022
+),
+(
+	get_id('@', 'fp_team@long_name@SS Lazio'),
+	get_id('@', 'fp_trophy@name@Second place'),
+	get_id('@', 'fp_competition@name@Serie A'),
+	2022
 );
 --------------------------------------------------------------------------------
 
