@@ -1969,9 +1969,9 @@ BEGIN
 
 	END LOOP;
 
-	RAISE NOTICE E'Assigned trophy (id = %) for'
+	RAISE NOTICE E'Assigned trophy (id = %) for '
 		'edition of competition(id = % , start_year = %) to all players'
-		'of the team (id = %) in that season\nTrigger Function: '
+		' of the team (id = %) in that season\nTrigger Function: '
 		'tf_ai_team_trophy_case()', NEW.trophy_id, NEW.competition_id,
 		NEW.start_year, NEW.team_id;
 	
