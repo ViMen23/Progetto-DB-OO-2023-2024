@@ -2387,7 +2387,7 @@ BEGIN
 	IF (NOT has) THEN
 
 		RAISE NOTICE E'Team (id = %) did not win the trophy (id = %)'
-			'of the competition edition (competition_id = % , start_year = %)\n'
+			' of the competition edition (competition_id = % , start_year = %)\n'
 			'Function: team_has_trophy(integer, integer, smallint, integer)',
 			id_team, id_trophy, id_comp, s_year;
 

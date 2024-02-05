@@ -2129,19 +2129,20 @@ DECLARE
 
 BEGIN
 
-	tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
+	tmp = get_column('fp_trophy', 'type', OLD.trophy_id);
+	
 	type_trophy = CAST(tmp AS en_award);
 
 	IF ('TEAM' = type_trophy) THEN
 
-		type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
+		type_militancy = get_type_militancy(OLD.player_id, OLD.team_id, OLD.start_year);
 	
 		-- se il trofeo è di squadra
 		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
 		-- o se il calciatore non milita nella parte finale di stagione
 		IF
 		(
-			team_has_trophy(NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id)
+			team_has_trophy(OLD.team_id, OLD.trophy_id, OLD.start_year, OLD.competition_id)
 			AND
 			type_militancy <> 'I PART' 
 		)
@@ -2151,8 +2152,8 @@ BEGIN
 				'team_id = % , trophy_id = % , start_year = % , competition_id = %), '
 				'because the team still has the trophy and the militancy'
 				'start year type is not "I PART"\n'
-				'Trigger Function: tf_bd_player_trophy_case()',NEW.player_id,
-				NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+				'Trigger Function: tf_bd_player_trophy_case()',OLD.player_id,
+				OLD.team_id, OLD.trophy_id, OLD.start_year, OLD.competition_id;
  
 			RETURN NULL;
 		END IF;
