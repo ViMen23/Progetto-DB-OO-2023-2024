@@ -36,7 +36,7 @@ EXECUTE FUNCTION tf_bi_country();
  * TYPE : TRIGGER
  * NAME : tg_ai_country_nation
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di un paese di tipo nazione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_country_nation
 AFTER INSERT ON fp_country
@@ -64,7 +64,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_country_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un paese
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_country_refuse
 BEFORE DELETE ON fp_country
@@ -82,8 +82,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_confederation
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una confederazione
- *        calcistica contenuta in un'altra confederazione
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
 BEFORE INSERT ON fp_confederation
@@ -108,7 +108,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_confederation_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_confederation_refuse
 BEFORE DELETE ON fp_confederation
@@ -126,8 +127,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una competizione
- *        calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
@@ -139,8 +140,8 @@ EXECUTE FUNCTION tf_bi_competition();
  * TYPE : TRIGGER
  * NAME : tg_bu_competition_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del tipo o del
- *        tipo di squadra o della condeferazione di una competizione calcistica
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition_refuse
 BEFORE UPDATE ON fp_competition
@@ -152,7 +153,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_competition_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_refuse
 BEFORE DELETE ON fp_competition
@@ -182,7 +184,7 @@ EXECUTE FUNCTION tf_bi_competition_edition();
  * TYPE : TRIGGER
  * NAME : tg_bu_competition_edition_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'edizione
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un'edizione
  *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition_edition_refuse
@@ -195,7 +197,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_competition_edition_referred
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un'edizione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_edition_referred
 BEFORE DELETE ON fp_competition_edition
@@ -213,8 +216,8 @@ EXECUTE FUNCTION tf_if_referenced_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_team
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una squadra di
- *        calcio
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
 BEFORE INSERT ON fp_team
@@ -226,7 +229,9 @@ EXECUTE FUNCTION tf_bi_team();
  * TYPE : TRIGGER
  * NAME : tg_bu_team_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id o del
+ *        paese associato o del tipo o se il tipo è nazionale
+ *        di una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_team_refuse
 BEFORE UPDATE ON fp_team
@@ -266,7 +271,7 @@ EXECUTE FUNCTION tf_bi_player();
  * TYPE : TRIGGER
  * NAME : tg_ai_player
  *
- * DESC : Trigger che si attiverà dopo dell'inserimento di un calciatore
+ * DESC : Trigger che si attiverà dopo l'inserimento di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_player
 AFTER INSERT ON fp_player
@@ -278,7 +283,8 @@ EXECUTE FUNCTION tf_ai_player();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_id_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_id_refuse
 BEFORE UPDATE ON fp_player
@@ -311,7 +317,8 @@ EXECUTE FUNCTION tf_bu_player_country();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_dob
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della data di nascita
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_dob
 BEFORE UPDATE ON fp_player
@@ -327,8 +334,8 @@ EXECUTE FUNCTION tf_bu_player_dob();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_role
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dei ruoli di un
- *        calciatore
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dei ruoli
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_role
 BEFORE UPDATE ON fp_player
@@ -361,7 +368,8 @@ EXECUTE FUNCTION tf_au_player_country();
  * TYPE : TRIGGER
  * NAME : tg_au_player_pos
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'aggiornamento della posizione
+ *        principale di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_au_player_pos
 AFTER UPDATE ON fp_player
@@ -400,8 +408,8 @@ EXECUTE FUNCTION tf_au_player_role();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_retired
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un calciatore
- *        ritirato
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di un calciatore ritirato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_retired
 BEFORE INSERT ON fp_player_retired
@@ -524,7 +532,8 @@ EXECUTE FUNCTION tf_bi_partecipation();
  * TYPE : TRIGGER
  * NAME : tg_ai_partecipation
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di una partecipazione di
+ *        una squadra di calcio ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_partecipation
 AFTER INSERT ON fp_partecipation
@@ -568,8 +577,7 @@ EXECUTE FUNCTION tf_bi_militancy();
  * TYPE : TRIGGER
  * NAME : tg_ai_militancy
  *
- * DESC : Trigger che si attiverà dopo l'inserimento di una militanza riferita
- *        alla parte finale della stagione o all'intera stagione
+ * DESC : Trigger che si attiverà dopo l'inserimento di una militanza
  *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_militancy
@@ -647,7 +655,7 @@ EXECUTE FUNCTION tf_bi_play();
  * TYPE : TRIGGER
  * NAME : tg_ai_play
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_play
 AFTER INSERT ON fp_play
@@ -659,7 +667,10 @@ EXECUTE FUNCTION tf_ai_play();
  * TYPE : TRIGGER
  * NAME : tg_bu_play_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id o
+ *        dell'anno di inizio di un'edizione di una competizione o
+ *        della competizione a cui l'edizione si riferisce o della squadra di
+ *        calcio o del calciatore di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_play_refuse
 BEFORE UPDATE ON fp_play
@@ -700,7 +711,8 @@ EXECUTE FUNCTION tf_bu_play_match();
  * TYPE : TRIGGER
  * NAME : tg_au_play_match
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'aggiornamento del numero di
+ *        partite associate ad un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_au_play_match
 AFTER UPDATE ON fp_play
@@ -723,7 +735,6 @@ EXECUTE FUNCTION tf_au_play_match();
  * NAME : tg_bu_tag_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento di un tag
- *        di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_tag_refuse
 BEFORE UPDATE ON fp_tag
@@ -735,7 +746,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_tag_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_tag_refuse
 BEFORE DELETE ON fp_tag
@@ -753,8 +764,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_tag
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
- *        tra un calciatore ed un tag di tipo portiere
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di un'associazione tra un calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
@@ -766,8 +777,8 @@ EXECUTE FUNCTION tf_bi_player_tag();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_tag_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
- *        tra un calciatore ed un tag
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        dell'associazione tra un calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_tag_refuse
 BEFORE UPDATE ON fp_player_tag
@@ -785,8 +796,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bu_position_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo
- *        associato ad una posizione calcistica
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di una posizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_position_refuse
 BEFORE UPDATE ON fp_position
@@ -798,7 +809,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_position_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una posizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_position_refuse
 BEFORE DELETE ON fp_position
@@ -816,8 +828,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_ai_player_position
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà dopo l'inserimento
+ *        di un'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_player_position
 AFTER INSERT ON fp_player_position
@@ -829,8 +841,8 @@ EXECUTE FUNCTION tf_ai_player_position();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_position_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_position_refuse
 BEFORE UPDATE ON fp_player_position
@@ -842,7 +854,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_player_position
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_player_position
 BEFORE DELETE ON fp_player_position
@@ -854,8 +867,8 @@ EXECUTE FUNCTION tf_bd_player_position();
  * TYPE : TRIGGER
  * NAME : tg_ad_player_position
  *
- * DESC : Trigger che si attiverà dopo l'eliminazione dell'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà dopo l'eliminazione
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ad_player_position
 AFTER DELETE ON fp_player_position
@@ -873,7 +886,8 @@ EXECUTE FUNCTION tf_ad_player_position();
  * TYPE : TRIGGER
  * NAME : tg_bi_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        dell'attributo per portieri di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_attribute_goalkeeping
 BEFORE INSERT ON fp_attribute_goalkeeping
@@ -885,7 +899,8 @@ EXECUTE FUNCTION tf_bi_attribute_goalkeeping();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo per portieri
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_attribute_goalkeeping
 BEFORE UPDATE ON fp_attribute_goalkeeping
@@ -901,7 +916,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo per portieri di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_goalkeeping
 BEFORE DELETE ON fp_attribute_goalkeeping
@@ -918,7 +934,8 @@ EXECUTE FUNCTION tf_bd_attribute_goalkeeping();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_mental_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo mentale
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_mental_refuse
 BEFORE UPDATE ON fp_attribute_mental
@@ -934,7 +951,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_mental
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo mentale di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_mental
 BEFORE DELETE ON fp_attribute_mental
@@ -952,7 +970,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_physical_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo fisico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_physical_refuse
 BEFORE UPDATE ON fp_attribute_physical
@@ -968,7 +987,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_phisycal
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo fisico di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_phisycal
 BEFORE DELETE ON fp_attribute_physical
@@ -986,7 +1006,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_technical_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo tecnico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_technical_refuse
 BEFORE UPDATE ON fp_attribute_technical
@@ -1002,7 +1023,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_technical
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo tecnico di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_technical
 BEFORE DELETE ON fp_attribute_technical
@@ -1020,8 +1042,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_general_refuse
  *
- * DESC : TODO
- ******************************************************************************/
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
+ *        di riferimento di una statistica generale ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_general_refuse
 BEFORE UPDATE ON fp_statistic_general
 FOR EACH ROW
@@ -1036,7 +1058,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_general
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una
+ *        statistica generale quando il gioco a cui si riferisce resta invariato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_general
 BEFORE UPDATE ON fp_statistic_general
@@ -1052,7 +1075,8 @@ EXECUTE FUNCTION tf_bu_statistic();
  * TYPE : TRIGGER
  * NAME : tg_bd_statistic_general
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        della statistica generale di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_statistic_general
 BEFORE DELETE ON fp_statistic_general
@@ -1070,7 +1094,8 @@ EXECUTE FUNCTION tf_bd_statistic_general();
  * TYPE : TRIGGER
  * NAME : tg_bi_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una statistica per portieri di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_statistic_goalkeeper
 BEFORE INSERT ON fp_statistic_goalkeeper
@@ -1082,7 +1107,8 @@ EXECUTE FUNCTION tf_bi_statistic_goalkeeper();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_goalkeeper_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
+ *        di riferimento di una statistica per portieri
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_goalkeeper_refuse
 BEFORE UPDATE ON fp_statistic_goalkeeper
@@ -1098,7 +1124,9 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una
+ *        statistica per portieri quando il gioco a cui si riferisce
+ *        resta invariato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_goalkeeper
 BEFORE UPDATE ON fp_statistic_goalkeeper
@@ -1114,7 +1142,8 @@ EXECUTE FUNCTION tf_bu_statistic();
  * TYPE : TRIGGER
  * NAME : tg_bd_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        della statistica per portieri di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_statistic_goalkeeper
 BEFORE DELETE ON fp_statistic_goalkeeper
@@ -1131,8 +1160,8 @@ EXECUTE FUNCTION tf_bd_statistic_goalkeeper();
  * TYPE : TRIGGER
  * NAME : tg_bu_trophy_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
- *        tipo di un trofeo calcistico
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di un trofeo calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_trophy_refuse
 BEFORE UPDATE ON fp_trophy
@@ -1143,7 +1172,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_trophy_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di un trofeo calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_trophy_refuse
 BEFORE DELETE ON fp_trophy
@@ -1198,7 +1228,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_ad_team_trophy_case
  *
- * DESC : Trigger che si attiverà dopo l'aggiornamento di un trofeo
+ * DESC : Trigger che si attiverà dopo l'eliminazione di un trofeo
  *        calcistico assegnato ad una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ad_team_trophy_case
@@ -1243,7 +1273,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_player_trophy_case
  *
- * DESC : Trigger che si attiverà dopo l'eliminazione di un trofeo
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un trofeo
  *        calcistico assegnato ad un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_player_trophy_case
@@ -1262,8 +1292,8 @@ EXECUTE FUNCTION tf_bd_player_trophy_case();
  * TYPE : TRIGGER
  * NAME : tg_bu_prize_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
- *        tipo di un premio calcistico
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di un premio calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_prize_refuse
 BEFORE UPDATE ON fp_prize
@@ -1275,7 +1305,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_prize_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di un premio calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_prize_refuse
 BEFORE DELETE ON fp_prize
