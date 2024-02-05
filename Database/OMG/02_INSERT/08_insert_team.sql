@@ -193,6 +193,102 @@ VALUES
 	'HIL',
 	'Al-Hilal SFC',
 	get_id('@', 'fp_country@name@Saudi Arabia')
-);
+),
+(
+	'CLUB',
+	'AST',
+	'Aston Villa',
+	get_id('@', 'fp_country@name@England')
+),
+(
+	'CLUB',
+	'TOT',
+	'Tottenham Hotspur FC',
+	get_id('@', 'fp_country@name@England')
+),
+(
+	'CLUB',
+	'PAL',
+	'Palermo FC',
+	get_id('@', 'fp_country@name@Italy')
+),
+(
+	'CLUB',
+	'PAL',
+	'US Ancona',
+	get_id('@', 'fp_country@name@Italy')
+),
+(
+	'CLUB',
+	'PSG',
+	'FC Paris Saint-Germain',
+	get_id('@', 'fp_country@name@France')
+),
+(
+	'CLUB',
+	'SIV',
+	'Siviglia FC',
+	get_id('@', 'fp_country@name@Spain')
+),
+(
+	'CLUB',
+	'SIV',
+	'CA Osasuna',
+	get_id('@', 'fp_country@name@Spain')
+),
+(
+	'CLUB',
+	'NIZ',
+	'OGC Nizza',
+	get_id('@', 'fp_country@name@France')
+),
+(
+	'CLUB',
+	'KAR',
+	'Fatih Karagümrük',
+	get_id('@', 'fp_country@name@Türkiye')
+),
+(
+	'CLUB',
+	'JHM',
+	'Jeonbuk Hyundai Motors',
+	get_id('@', 'fp_country@name@South Korea')
+),
+(
+	'CLUB',
+	'BEG',
+	'Beijing Guoan',
+	get_id('@', 'fp_country@name@China')
+),
+(
+	'CLUB',
+	'FEN',
+	'Fenerbahce',
+	get_id('@', 'fp_country@name@Türkiye')
+),
+(
+	'CLUB',
+	'BAM',
+	'FC Bayern Monaco',
+	get_id('@', 'fp_country@name@Germany')
+),
+(
+	'CLUB',
+	'PAR',
+	'FK Partizani',
+	get_id('@', 'fp_country@name@Albania')
+),
+(
+	'CLUB',
+	'SPA',
+	'RNK Spalato',	
+	get_id('@', 'fp_country@name@Croatia')
+),
+(
+	'CLUB',
+	'ZAG',
+	'GNK Dinamo Zagabria',
+	get_id('@', 'fp_country@name@Croatia')
+),
 --------------------------------------------------------------------------------
 
