@@ -130,7 +130,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_attribute
  *
- * DESC : TODO
+ * DESC : Dominio contenenete tutti i numeri interi da 0 a 10
  ******************************************************************************/
 CREATE DOMAIN dm_attribute AS smallint
 CHECK
@@ -1283,8 +1283,7 @@ BEGIN
 			
 			-- se è un constraint che è stato gia incontrato
 			-- la query da eseguire va estesa con le nuove colonne
-			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
-			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
+			to_execute = to_execute || ' AND ' || name_table || '.' || row_table.col_to_ref;
 			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
 			
 		END IF;
@@ -1489,7 +1488,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'anno di fine di un'edizione di una
+ *        competizione calcistica
+ *
+ *        NOTA: abbiamo applicato una semplificazione giustificata dalle
+ *              numerosissime evidenze date dalle tante ricerche su siti
+ *              specializzati (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION end_year_comp_ed
 (
@@ -1505,33 +1509,20 @@ DECLARE
 
 	tmp				text;
 
-	type_comp		en_competition;
 	team_type_comp	en_team;
 
 BEGIN
 	
-	tmp = get_column('fp_competition', 'type', id_comp);
-	type_comp = CAST(tmp AS en_competition);
+	tmp = get_column('fp_competition', 'team_type', id_comp);
+	team_type_comp = CAST(tmp AS en_team);
 
-	IF ('LEAGUE' = type_comp) THEN
+		
+	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
-	
-	ELSIF ('SUPER CUP' = type_comp) THEN
+	ELSIF ('NATIONAL' = team_type_comp) THEN
 		RETURN s_year;
-		
-	ELSIF ('CUP' = type_comp) THEN
-		
-		tmp = get_column('fp_competition', 'team_type', id_comp);
-		team_type_comp = CAST(tmp AS en_team);
-
-		IF ('NATIONAL' = team_type_comp) THEN
-			RETURN s_year;
-		
-		ELSIF ('CLUB' = team_type_comp) THEN
-			RETURN s_year + 1;
-		
-		END IF;
 	END IF;
+
 
 	RETURN NULL;
 	
@@ -1621,7 +1612,7 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - fp_country TABLE
  * NAME : ck_country
  *
- * DESC : TODO
+ * DESC : Controllare che solo il mondo non sia contenuto in altri paesi
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT ck_country
@@ -1649,8 +1640,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -1732,8 +1723,8 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -1752,8 +1743,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -1821,8 +1812,8 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -1838,7 +1829,7 @@ CREATE TABLE fp_competition_edition
 (
 	start_year		dm_year		NOT NULL,
 	end_year		smallint	NOT NULL
-		GENERATED ALWAYS AS
+		GENERATED ALWAYS AS	
 		(
 			end_year_comp_ed
 			(
@@ -1884,8 +1875,8 @@ REFERENCES fp_competition
 (
 	id
 )
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -1965,8 +1956,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -2099,15 +2090,15 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
  * NAME : player_fk_position
  *
- * DESC : TODO
+ * DESC : Un calciatore fa riferimento alla sua posizione principale
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT player_fk_position
@@ -2119,8 +2110,8 @@ REFERENCES fp_position
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -2220,8 +2211,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -2299,7 +2290,7 @@ REFERENCES fp_competition_edition
 	start_year,
 	competition_id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2321,7 +2312,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2423,7 +2414,7 @@ REFERENCES fp_team
 	id,
 	type
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2667,7 +2658,7 @@ REFERENCES fp_tag
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2741,7 +2732,7 @@ REFERENCES fp_position
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2751,7 +2742,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi che caratterizzano
+ *        un portiere
  ******************************************************************************/
 CREATE TABLE fp_attribute_goalkeeping
 (
@@ -2776,7 +2768,8 @@ CREATE TABLE fp_attribute_goalkeeping
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_goalkeeping TABLE   
  * NAME : pk_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi di un portiere fa riferimento ad
+ *        un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_goalkeeping
 ADD CONSTRAINT pk_attribute_goalkeeping
@@ -2790,7 +2783,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_goalkeeping TABLE
  * NAME : attribute_goalkeeping_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi di un portiere fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_goalkeeping
 ADD CONSTRAINT attribute_goalkeeping_fk_player
@@ -2814,7 +2807,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_mental
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi mentali che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_mental
 (
@@ -2840,7 +2834,7 @@ CREATE TABLE fp_attribute_mental
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_mental TABLE   
  * NAME : pk_attribute_mental
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi mentali fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_mental
 ADD CONSTRAINT pk_attribute_mental
@@ -2854,7 +2848,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute TABLE
  * NAME : attribute_mental_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi mentali fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_mental
 ADD CONSTRAINT attribute_mental_fk_player
@@ -2876,7 +2870,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_physical
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi fisici che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_physical
 (
@@ -2896,7 +2891,7 @@ CREATE TABLE fp_attribute_physical
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_physical TABLE   
  * NAME : pk_attribute_physical
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi fisici fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_physical
 ADD CONSTRAINT pk_attribute_physical
@@ -2910,7 +2905,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_physical TABLE
  * NAME : attribute_physical_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi fisici fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_physical
 ADD CONSTRAINT attribute_physical_fk_player
@@ -2932,7 +2927,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_technical
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi tecnici che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_technical
 (
@@ -2958,7 +2954,7 @@ CREATE TABLE fp_attribute_technical
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_technical TABLE   
  * NAME : pk_attribute_technical
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi tecnici fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_technical
 ADD CONSTRAINT pk_attribute_technical
@@ -2972,7 +2968,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_technical TABLE
  * NAME : attribute_technical_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi tecnici fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_technical
 ADD CONSTRAINT attribute_technical_fk_player
@@ -2995,7 +2991,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic_general
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sulle statistiche generali che
+ *        caratterizzano un gioco
  ******************************************************************************/
 CREATE TABLE fp_statistic_general
 (
@@ -3012,7 +3009,7 @@ CREATE TABLE fp_statistic_general
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_general TABLE  
  * NAME : pk_statistic_general
  *
- * DESC : TODO
+ * DESC : Ogni insieme di statistiche generali fa riferimento ad un solo gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_general
 ADD CONSTRAINT pk_statistic_general
@@ -3026,7 +3023,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_general TABLE
  * NAME : statistic_general_fk_play
  *
- * DESC : TODO
+ * DESC : Le statistiche generali fanno riferimento ad un gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_general
 ADD CONSTRAINT statistic_general_fk_play
@@ -3047,7 +3044,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sulle statistiche di portiere che
+ *        caratterizzano un gioco
  ******************************************************************************/
 CREATE TABLE fp_statistic_goalkeeper
 (
@@ -3061,7 +3059,7 @@ CREATE TABLE fp_statistic_goalkeeper
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_goalkeeper TABLE  
  * NAME : pk_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Ogni insieme di statistiche di portiere fa riferimento ad un solo gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_goalkeeper
 ADD CONSTRAINT pk_statistic_goalkeeper
@@ -3075,7 +3073,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_goalkeeper TABLE
  * NAME : statistic_goalkeeper_fk_play
  *
- * DESC : TODO
+ * DESC : Le statistiche di portiere fanno riferimento ad un gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_goalkeeper
 ADD CONSTRAINT statistic_goalkeeper_fk_play
@@ -3230,7 +3228,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -3341,7 +3339,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -3457,7 +3455,7 @@ REFERENCES fp_prize
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -3554,7 +3552,7 @@ REFERENCES fp_prize
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -3616,7 +3614,7 @@ PRIMARY KEY
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che controlla se esista gia il mondo
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION world_exists
 (
@@ -3641,15 +3639,16 @@ BEGIN
 	WHERE
 		type = 'WORLD';
 
-
+	-- DEBUG
 	IF (exist) THEN
-		RAISE NOTICE E'Reached maximum number of Worlds'
-			'Function: world_exists()';
+		RAISE NOTICE
+			E'Function: world_exists\n'
+			'Reached maximum number of Worlds';
 	END IF;
 
+
 	RETURN exist;
-	
-	
+		
 END;
 $$
 LANGUAGE plpgsql;
@@ -3665,7 +3664,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che controlla se esistano gia tutti i continenti
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION all_continent_exists
 (
@@ -3690,11 +3689,13 @@ BEGIN
 	WHERE
 		type = 'CONTINENT';
 
-
+	-- DEBUG
 	IF (exist) THEN
-		RAISE NOTICE E'Reached maximum number of Continents'
-			'Function: all_continent_exists()';
+		RAISE NOTICE
+			E'Function: all_continent_exists\n'
+			'Reached maximum number of Continents';
 	END IF;
+
 
 	RETURN exist;
 	
@@ -3713,7 +3714,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che controlla se ci sia posto per il paese che si vuole
+		  inserire
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION place_for_country
 (
@@ -3748,7 +3750,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce la confederazione associata al paese in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION conf_from_country
 (
@@ -3775,6 +3777,13 @@ BEGIN
 	WHERE
 		country_id = id_country;
 
+	-- DEBUG
+	IF (id_conf IS NULL) THEN
+		RAISE NOTICE
+			E'Function: conf_from_country\n'
+			'No confederation for country (id = %)', id_country;
+	END IF;
+
 
 	RETURN id_conf;
 
@@ -3793,7 +3802,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che crea la squadra nazionale di un paese
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_national_team
 (
@@ -3812,10 +3821,13 @@ BEGIN
 
 	rec_country = get_record('fp_country', id_country);
 
-	IF (rec_country.type <> 'NATION') THEN
 
-		RAISE NOTICE E'Error. Cannot create national team. Country (id = %) is not a nation\n'
-			'Function: create_national_team(integer)', id_country;
+	IF (rec_country.type <> 'NATION') THEN
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: create_national_team\n'
+			'Error. Cannot create national team.'
+			' Country (id = %) is not a nation', id_country;
 
 		RETURN;
 
@@ -3839,8 +3851,10 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
-	RAISE NOTICE E'Created national team for country (id = %)\n'
-		'Function: create_national_team(integer)', id_country;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_national_team\n'
+		'Created national team for country (id = %)', id_country;
 
 END;
 $$
@@ -3857,7 +3871,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che elimina tutte le statistiche, i tag e gli attributi
+ *        associati al ruolo di portiere per un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_all_gk
 (
@@ -3888,8 +3903,11 @@ BEGIN
 							player_play(id_player)
 					);
 
-	RAISE NOTICE E'Deleted attribute and statistic goalkeeper'
-		'of player (id = %)\nFunction: delete_all_gk(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_all_gk\n'
+		'Deleted attribute and statistic goalkeeper'
+		'of player (id = %)', id_player;
 
 END;
 $$
@@ -3906,7 +3924,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che crea tutte le statistiche, i tag e gli attributi
+ *        associati al ruolo di portiere per un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_all_gk
 (
@@ -3955,9 +3974,11 @@ BEGIN
 
 	END LOOP;
 
-
-	RAISE NOTICE E'Created attribute and statistic goalkeeper'
-		'of player (id = %)\nFunction: create_all_gk(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_all_gk\n'
+		'Created attribute and statistic goalkeeper'
+		'of player (id = %)', id_player;
 
 END;
 $$
@@ -3976,7 +3997,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'età minima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION min_age
 (
@@ -4012,7 +4033,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'età massima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_age
 (
@@ -4072,7 +4093,14 @@ BEGIN
 	WHERE
 		player_id = id_player;
 
-	
+	-- DEBUG
+	IF (min_year IS NULL) THEN
+		RAISE NOTICE
+			E'Function: min_militancy_year\n'
+			'Player (id = %) has no militancy', id_player;
+	END IF;
+
+
 	RETURN min_year;
 
 END;
@@ -4117,7 +4145,14 @@ BEGIN
 	WHERE
 		player_id = id_player;
 
+	-- DEBUG
+	IF (max_year IS NULL) THEN
+		RAISE NOTICE
+			E'Function: min_militancy_year\n'
+			'Player (id = %) has no militancy', id_player;
+	END IF;
 	
+
 	RETURN max_year;
 
 END;
@@ -4148,6 +4183,7 @@ CREATE OR REPLACE FUNCTION valid_year_range
 	OUT	e_valid		integer		-- fine range anni validi
 )
 RETURNS record
+RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
@@ -4173,9 +4209,8 @@ BEGIN
 		e_valid = year_dob + year_retired - 1;
 
 	ELSE
-
 		e_valid = year_dob + max_age();
-	
+
 	END IF;
 	
 END;
@@ -4200,6 +4235,7 @@ CREATE OR REPLACE FUNCTION is_retired
 	IN	id_player	integer
 )
 RETURNS boolean
+RETURNS NULL ON NULL INPUT
 AS
 $$
 DECLARE
@@ -4220,13 +4256,15 @@ BEGIN
 		player_id = id_player;
 
 
+	-- DEBUG
 	IF (NOT retired) THEN
-		RAISE NOTICE E'Player (id = %) has not retired yet\n'
-			'Function: is_retired(integer)', id_player;
+		RAISE NOTICE
+			E'Function: is_retired\n'
+			'Player (id = %) has not retired yet', id_player;
 	END IF;
 
+
 	RETURN retired;
-	
 	
 END;
 $$
@@ -4273,9 +4311,11 @@ BEGIN
 	LIMIT 1;
 
 
+	-- DEBUG
 	IF (NOT have) THEN
-		RAISE NOTICE E'Player (id = %) does not have any national militancy\n'
-			'Function: is_national(integer)', id_player;
+		RAISE NOTICE
+			E'Function: is_national\n'
+			'Player (id = %) does not have any national militancy', id_player;
 	END IF;
 
 	RETURN have;
@@ -4328,15 +4368,77 @@ BEGIN
 	LIMIT
 		1;
 
+
+	-- DEBUG
 	IF (id_team IS NULL) THEN
-
-		RAISE NOTICE E'Player (id = %) does not have any national militancy\n'
-			'Function: national_team(integer)', id_player;
-
+		RAISE NOTICE
+			E'Function: national_team\n'
+			'Player (id = %) does not have any national militancy', id_player;
 	END IF;
+
 
 	RETURN id_team;
 	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_free_militancy
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un calciatore non ha una militanza di un
+ *        tipo specifico in un determinato anno
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_free_militancy
+(
+	IN	type_team	en_team,
+	IN	id_team		integer,
+	IN	id_player	integer,
+	IN	s_year		smallint
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	free	boolean;
+
+BEGIN
+			
+	SELECT
+		count(*) < 1
+	INTO
+		free
+	FROM
+		fp_militancy
+	WHERE
+		team_type = type_team
+		AND
+		team_id <> id_team
+		AND
+		player_id = id_player
+		AND
+		start_year = s_year;
+	
+
+	IF (NOT free) THEN
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: is_free_militancy\n'
+			'Player (id = %) does not have any militancy in %', id_player, s_year;
+	END IF;
+
+
+	RETURN free;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -4378,9 +4480,12 @@ BEGIN
 	
 
 	IF (NOT has) THEN
-		RAISE NOTICE E'Player (id = %) does not have any militancy\n'
-			'Function: has_militancy(integer)', id_player;
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: has_militancy\n'
+			'Player (id = %) does not have any militancy', id_player;
 	END IF;
+
 
 	RETURN has;
 
@@ -4580,8 +4685,10 @@ BEGIN
 							gk_tags()
 					);
 
-	RAISE NOTICE E'Deleted goalkeeper tags of player (id = %)\n'
-		'Function: delete_gk_tag(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_gk_tag\n'
+		'Deleted goalkeeper tags of player (id = %)', id_player;
 
 END;
 $$
@@ -4624,8 +4731,10 @@ BEGIN
 							not_role_prize(role_player)
 					);
 
-	RAISE NOTICE E'Deleted prize which role is not one of player (id = %)'
-		'\nFunction: delete_not_role_prize(integer, en_role_mix)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_not_role_prize\n'
+		'Deleted prize which role is not one of player (id = %)', id_player;
 	
 END;
 $$
@@ -4668,8 +4777,10 @@ BEGIN
 							not_role_trophy(role_player)
 					);
 	
-	RAISE NOTICE E'Deleted trophy which role is not one of player (id = %)'
-		'\nFunction: delete_not_role_trophy(integer, en_role_mix)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_not_role_trophy\n'
+		'Deleted trophy which role is not one of player (id = %)', id_player;
 
 END;
 $$
@@ -4705,8 +4816,10 @@ BEGIN
 		AND
 		team_type = 'CLUB';
 
-	RAISE NOTICE E'Delete all club militacy of player (id = %)\n'
-		'Function: delete_club_militancy(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_club_militancy\n'
+		'Delete all club militacy of player (id = %)', id_player;
 	
 END;
 $$
@@ -4742,8 +4855,10 @@ BEGIN
 		AND
 		team_type = 'NATIONAL';
 
-	RAISE NOTICE E'Delete all national militacy of player (id = %)\n'
-		'Function: delete_national_militancy(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: delete_national_militancy\n'
+		'Delete all national militacy of player (id = %)', id_player;
 
 
 END;
@@ -4786,9 +4901,11 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE E'% cannot be inside %\nFunction:'
-		'can_be_inside(en_country, en_country)', type_in_country,
-		type_super_country;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: can_be_inside\n'
+		'% cannot be inside %', type_in_country, type_super_country;
+
 
 	RETURN FALSE;
 	
@@ -4807,7 +4924,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : Funzione che valuta se un paese è di una nazione
+ * DESC : Funzione che valuta se un paese è una nazione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_nation
 (
@@ -4832,8 +4949,11 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
-	RAISE NOTICE E'Country (id =  %) is not a nation\n'
-		'Function: is_nation(integer)', id_country;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: is_nation\n'
+		'Country (id =  %) is not a nation', id_country;
+		
 
 	RETURN FALSE;
 	
@@ -4882,11 +5002,12 @@ BEGIN
 
 
 	IF (NOT have) THEN
-
-		RAISE NOTICE E'Competition (id =  %) does not have editions\n'
-			'Function: has_edition(integer)', id_comp;
-
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: has_edition\n'
+			'Competition (id =  %) does not have editions', id_comp;
 	END IF;
+
 
 	RETURN have;
 	
@@ -4954,11 +5075,16 @@ BEGIN
 		IF (0 = ((s_year - a_year) % freq)) THEN
 			RETURN TRUE;
 		END IF;
+
 	END IF;
 	
-	RAISE NOTICE E'Competition (id =  %) cannot start in year %, bad frequency\n'
-		'Function: corr_freq(integer, smallint)', id_comp, s_year;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: corr_freq\n'
+		'Competition (id =  %) cannot start in year %,'
+		' bad frequency', id_comp, s_year;
 
+	
 	RETURN FALSE;
 	
 END;
@@ -5025,9 +5151,13 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: belong_to\n'
+		'Team (id =  %) does not belong to'
+		' confederation (id = %)', id_team, id_conf;
 	
-	RAISE NOTICE E'Team (id =  %) does not belong to confederation (id = %)\n'
-		'Function: belong_to(integer, integer)', id_team, id_conf;
+
 	RETURN FALSE;
 	
 END;
@@ -5045,7 +5175,13 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il massimo numero di possibili di squadre
+ *        di calcio partecipanti per una competizione calcistica in base alla
+ *        tipologia della stessa
+ *
+ *        NOTA: i valori sono per eccesso ed arbitrari ma ottenuti mediante
+ *              numerose ricerche su siti specializzati
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_team_comp
 (
@@ -5062,6 +5198,7 @@ DECLARE
 BEGIN
 
 	rec_comp = get_record('fp_competition', id_comp);
+
 
 	IF ('LEAGUE' = rec_comp.type) THEN
 		RETURN 40;
@@ -5089,6 +5226,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : max_match_comp
@@ -5098,7 +5236,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce il massimo numero di partite che e' possibile
+ *        disputare in una competizione in base alla tipologia della stessa
+ *
+ *        NOTA: i valori sono per eccesso ed arbitrari ma ottenuti mediante
+ *              numerose ricerche su siti specializzati
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_match_comp
 (
@@ -5118,6 +5261,7 @@ BEGIN
 
 	tmp = get_column('fp_competition', 'type',id_comp);
 	type_comp = CAST(tmp AS en_competition);
+
 
 	IF ('LEAGUE' = type_comp) THEN
 		RETURN 40;
@@ -5182,11 +5326,11 @@ BEGIN
 
 
 	IF (NOT have) THEN
-
-		RAISE NOTICE E'Competition (id = %) start year (%)'
-			'does not have place\nFunction: has_place(integer, smallint)',
-			id_comp, s_year;
-
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: has_place\n'
+			'Competition (id = %) in start year (%)'
+			'does not have place\n', id_comp, s_year;
 	END IF;
 
 
@@ -5246,15 +5390,17 @@ BEGIN
 	LOOP
 
 		tmp = get_column('fp_position', 'role', pos_player);
-		role_pos = CAST(tmp AS en_role);	-- conversione superflua ma effettuata per coerenza
+		role_pos = CAST(tmp AS en_role);
 
 		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
 
-			RAISE NOTICE E'Player (id =  %) does not have role %\n'
-				'Function: role_fit_positions(integer, en_role_mix)',
-				id_player, role_pos;
+			-- DEBUG
+			RAISE NOTICE
+				E'Function: role_fit_positions\n'
+				'Player (id =  %) does not have role %',id_player, role_pos;
 
 			RETURN FALSE;
+
 		END IF;
 
 	END LOOP;
@@ -5311,10 +5457,15 @@ BEGIN
 
 	IF (type_team = type_team_comp) THEN
 		RETURN TRUE;
+	
 	ELSE
 
-		RAISE NOTICE E'Team (id = %) is not compatible to competition (id = %)\n'
-			'Function: team_fit_comp(integer, integer)', id_team, id_comp;
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: team_fit_comp\n'
+			'Team (id = %) is not compatible to'
+			' competition (id = %)', id_team, id_comp;
+		
 		RETURN FALSE;
 
 	END IF;
@@ -5450,7 +5601,7 @@ CREATE OR REPLACE FUNCTION can_take_part
 (
 	IN	id_team	integer,
 	IN	id_comp	integer,
-	IN	s_year	smallint	-- anno inizio
+	IN	s_year	smallint
 )
 RETURNS boolean
 RETURNS NULL ON NULL INPUT
@@ -5490,17 +5641,21 @@ BEGIN
 									
 		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
-
-			RAISE NOTICE E'Team (id = %) cannot partecipate'
-				'to competition (id = %) start year (%)\n'
-				'Function: can_take_part(integer, integer, smallint)',
-				id_team, id_comp, s_year;
+			-- DEBUG
+			RAISE NOTICE
+				E'Function: can_take_part\n'
+				'Team (id = %) cannot partecipate'
+				'to competition (id = %)'
+				' in start year (%)', id_team, id_comp, s_year;
 
 			RETURN can;
+
 		END IF;
 	
+
 	END LOOP;
-		
+
+
 	RETURN can;
 
 END;
@@ -5537,6 +5692,7 @@ BEGIN
 	
 	have = FALSE;
 
+
 	SELECT
 		count(*) >= 1
 	INTO
@@ -5550,10 +5706,14 @@ BEGIN
 	
 
 	IF (NOT have) THEN
-		RAISE NOTICE E'Player (id = %) has not nationatity country (id = %)\n'
-			'Function: has_nationality(integer, integer)', id_player, id_country;
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: has_nationality\n'
+			'Player (id = %) has not nationatity'
+			' country (id = %)', id_player, id_country;
 	END IF;
 
+	
 	RETURN have;
 
 END;
@@ -5599,9 +5759,12 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	RAISE NOTICE E' % is not between % and %\nFunction:'
-		'corr_age_limit(date, date)', year_retired_date - year_birth_date,
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: corr_age_limit\n'
+		' % is not between % and %', year_retired_date - year_birth_date,
 		min_age(), max_age();
+
 
 	RETURN FALSE;
 
@@ -5694,13 +5857,14 @@ BEGIN
 
 
 	IF (NOT free) THEN
-
-		RAISE NOTICE E'Player (id = %) cannot have a militancy (type = %)'
-		'starting in year % of type %\nFunction: '
-		'free_militancy(integer, en_team, smallint, en_season)',
-		id_player, type_team, s_year, type_year;
-
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: free_militancy\n'
+			'Player (id = %) cannot have a militancy (type = %)'
+			' starting in year % of type %',
+			id_player, type_team, s_year, type_year;
 	END IF;
+
 
 	RETURN free;
 
@@ -5741,10 +5905,11 @@ BEGIN
 		AND
 		start_year = s_year;
 
-	RAISE NOTICE E'Deleted all trophy won by team (id = %), in year % that'
-		'were assigned to player (id = %)\nFunction: '
-		'remove_all_trophy_season(integer, integer, smallint)', id_team,
-		s_year, id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: remove_all_trophy_season\n'
+		'Deleted all trophy won by team (id = %), in year % that'
+		'were assigned to player (id = %)', id_team, s_year, id_player;
 
 END;
 $$
@@ -5813,10 +5978,11 @@ BEGIN
 
 	END LOOP;
 
-	RAISE NOTICE E'Assigned all trophy won by team (id = %), in year % '
-		'to player (id = %)\nFunction: '
-		'assign_all_trophy_season(integer, integer, smallint)', id_team,
-		s_year, id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: assign_all_trophy_season\n'
+		'Assigned all trophy won by team (id = %), in year %'
+		' to player (id = %)', id_team, s_year, id_player;
 
 END;
 $$
@@ -5918,8 +6084,11 @@ BEGIN
 
 	role_player = CAST(tmp AS en_role_mix);
 
-	RAISE NOTICE E'Created new role of a player (id = %)\nFunction: '
-		'new_role(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: new_role\n'
+		'Created new role of a player (id = %)', id_player;
+
 
 	RETURN role_player;
 
@@ -5977,13 +6146,14 @@ BEGIN
 
 
 	IF (NOT has) THEN
-
-		RAISE NOTICE E'Team (id = %) did not win the trophy (id = %)'
-			'of the competition edition (competition_id = % , start_year = %)\n'
-			'Function: team_has_trophy(integer, integer, smallint, integer)',
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: team_has_trophy\n'
+			'Team (id = %) did not win the trophy (id = %)'
+			' of the competition edition (competition_id = % , start_year = %)',
 			id_team, id_trophy, id_comp, s_year;
-
 	END IF;
+
 
 	RETURN has;
 
@@ -6046,7 +6216,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che crea gli attributi per un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_attributes
 (
@@ -6098,8 +6268,10 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
-	RAISE NOTICE E'Created attribute for player (id = %)\nFunction: '
-		'create_attributes(integer)', id_player;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_attributes\n'
+		'Created attribute for player (id = %)', id_player;
 
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
@@ -6117,8 +6289,10 @@ BEGIN
 		)
 		ON CONFLICT DO NOTHING;
 
-		RAISE NOTICE E'Created goalkeeper attribute for player (id = %)\n'
-			'Function: create_attributes(integer)', id_player;
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: create_attributes\n'
+			'Created goalkeeper attribute for player (id = %)', id_player;
 
 	END IF;
 
@@ -6136,7 +6310,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che data una militanza di un calciatore crea i giochi
+ *        per tale giocatore per ogni competizione cui partecipa la squadra
+ *        nel periodo della militanza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_play_from_militancy
 (
@@ -6185,10 +6361,11 @@ BEGIN
 
 	END LOOP;
 
-	RAISE NOTICE E'Created play from militancy (team_id = % , player_id = % , '
-		'start_year = %)\nFunction:'
-		'create_play_from_militancy(integer, integer, smallint)', id_team,
-		id_player, s_year;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_play_from_militancy\n'
+		'Created play from militancy (team_id = % , player_id = % ,'
+		' start_year = %)', id_team, id_player, s_year;
 
 END;
 $$
@@ -6205,7 +6382,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che data una partecipazione di una squadra di calcio ad
+ *        una competizione crea i giochi riferiti alla suddetta competizione
+ *        per tutti i calciatori che militano nella squadra in quel momento
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_play_from_partecipation
 (
@@ -6254,11 +6433,11 @@ BEGIN
 
 	END LOOP;
 
-
-	RAISE NOTICE E'Created play from partecipation (team_id = % , '
-		'competition_id = % , start_year = % \nFunction:'
-		'create_play_from_partecipation(integer, integer, smallint)', id_team,
-		id_comp, s_year;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_play_from_partecipation\n'
+		'Created play from partecipation (team_id = % , '
+		'competition_id = % , start_year = %', id_team,id_comp, s_year;
 
 END;
 $$
@@ -6274,7 +6453,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che crea le statistiche associate al gioco di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_statistics
 (
@@ -6310,9 +6489,11 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_player);
 	role_player = CAST(tmp AS en_role_mix);
 
-
-	RAISE NOTICE E'Created General Statistics of player (id = %) for play (id = %)'
-		'\nFunction: create_statistics(integer)', id_player, id_play;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_statistics\n'
+		'Created general statistics of player (id = %) for play (id = %)',
+		id_player, id_play;
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
 
@@ -6327,8 +6508,10 @@ BEGIN
 		)
 		ON CONFLICT DO NOTHING;
 
-		RAISE NOTICE E'Created Goalkeeper Statistics of player (id = %)'
-			'for play (id = %)\nFunction: create_statistics(integer)',
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: create_statistics\n'
+			'Created goalkeeper statistics of player (id = %) for play (id = %)',
 			id_player, id_play;
 		
 	END IF;
@@ -6348,7 +6531,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta a zero i valori delle statistiche di un gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_zero_statistics
 (
@@ -6384,9 +6567,11 @@ BEGIN
 	tmp = get_column('fp_player', 'role', id_play);
 	role_player = CAST(tmp AS en_role_mix);
 
-	RAISE NOTICE E'Set to zero General Statistics of player (id = %)'
-		'for play (id = %)\nFunction: create_statistics(integer)',
-		id_player, id_play;
+	-- DEBUG
+	RAISE NOTICE
+		E'Function: create_statistics\n'
+		'Set to zero general statistics of player (id = %)'
+		'for play (id = %)', id_player, id_play;
 
 	IF (CAST(role_player AS text) LIKE '%GK%') THEN
 
@@ -6398,9 +6583,11 @@ BEGIN
 		WHERE
 			play_id = id_play;
 		
-		RAISE NOTICE E'Set to zero Goalkeeper Statistics of player (id = %)'
-			'for play (id = %)\nFunction: set_zero_statistics(integer)',
-			id_player, id_play;
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: create_statistics\n'
+			'Set to zero goalkeeper statistics of player (id = %)'
+			'for play (id = %)', id_player, id_play;
 
 	END IF;
 	
@@ -6421,7 +6608,14 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che permette l'inserimento di una militanza di un calciatore
+ *        in una squadra di calcio per un periodo di tempo superiore ad una
+ *        singola stagione
+ *
+ *        NOTA: la funzione risulta poco elegante visto che Postgresql non
+ *              permette l'utilizzo di Transactions all'interno di funzioni.
+ *              L'idea di fondo e' costruire una transaction manualmente
+ *              inserendo le varie mililtanze e nel caso di errore rimuoverle
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION insert_militancy_from_to
 (
@@ -6477,6 +6671,7 @@ BEGIN
 		s_year,
 		type_s_year
 	)
+	ON CONFLICT DO NOTHING
 	RETURNING
 		start_year
 	INTO
@@ -6531,6 +6726,7 @@ BEGIN
 			year,
 			'FULL'
 		)
+		ON CONFLICT DO NOTHING
 		RETURNING
 			start_year
 		INTO
@@ -6605,6 +6801,7 @@ BEGIN
 		e_year,
 		type_e_year
 	)
+	ON CONFLICT DO NOTHING
 	RETURNING
 		start_year
 	INTO
@@ -6683,7 +6880,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : smallint
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce un numero casuale in un range di interi dato
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION random_between
 (
@@ -6711,7 +6908,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico gli attributi mentali di un
+ *        calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_attribute_mental
 (
@@ -6756,7 +6954,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico gli attributi fisici di un
+ *        calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_attribute_physical
 (
@@ -6795,7 +6994,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico gli attributi tecnici di un
+ *        calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_attribute_technical
 (
@@ -6841,7 +7041,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico gli attributi di portiere di un
+ *        calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_attribute_goalkeeping
 (
@@ -6900,7 +7101,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico gli attributi di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_attribute
 (
@@ -6934,7 +7135,11 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico le statistiche generali di un
+ *        calciatore.
+ *
+ *        NOTA: prende il ruolo principale del calciatore per creare statistiche
+ *              piu' realistiche
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_statistic_general
 (
@@ -7015,7 +7220,11 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo randomico le statistiche di portiere di un
+ *        calciatore.
+ *
+ *        NOTA: prende il ruolo principale del calciatore per creare statistiche
+ *              piu' realistiche
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_statistic_goalkeeper
 (
@@ -7103,7 +7312,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo casuale le statistiche di un gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_statistic
 (
@@ -7137,8 +7346,6 @@ BEGIN
 	s_year = CAST(tmp AS integer);
 
 
-
-
 	UPDATE
 		fp_play
 	SET
@@ -7149,7 +7356,6 @@ BEGIN
 
 	tmp = get_column('fp_play', 'match', id_play);
 	match_play = CAST(tmp AS integer);
-
 	
 	tmp = get_column('fp_play', 'player_id', id_play);
 	id_player = CAST(tmp AS integer);
@@ -7180,7 +7386,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo casuale le statistiche di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_all_statistic
 (
@@ -7225,7 +7431,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo casuale gli attributi le statistiche
+ *        di un calciatore 
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random
 (
@@ -7255,7 +7462,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : void
  *
- * DESC : TODO
+ * DESC : Funzione che setta in modo casuale gli attributi le statistiche
+ *        di tutti i calciatori 
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_random_all
 (
@@ -7297,7 +7505,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce la squadra nazionale dato un paese
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION national_team_from_country
 (
@@ -7315,6 +7523,7 @@ BEGIN
 
 	id_team = NULL;
 
+
 	SELECT
 		id
 	INTO
@@ -7326,11 +7535,14 @@ BEGIN
 		AND
 		type = 'NATIONAL';
 
-	IF (id_team IS NULL) THEN
 
-		RAISE NOTICE E'Country (id = %) hasn''t a national team\n'
-			'Function: national_team_from_country(integer)', id_country;
+	IF (id_team IS NULL) THEN
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: national_team_from_country\n'
+			'Country (id = %) has not a national team',id_country;
 	END IF;
+
 
 	RETURN id_team;
 
@@ -7382,12 +7594,13 @@ BEGIN
 	
 
 	IF (NOT has) THEN
-
-		RAISE NOTICE E'Player (id = %) does not have any militancy'
-			'with team (id = %)\nFunction: '
-			'has_national_militancy(integer, integer)', id_player, id_team;
-
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: has_national_militancy\n'
+			'Player (id = %) does not have any militancy'
+			'with team (id = %)', id_player, id_team;
 	END IF;
+
 
 	RETURN has;
 
@@ -7455,7 +7668,7 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_refuse
  *
- * DESC : TODO
+ * DESC : Funzione che rifiuta una qualsiasi operazione che attivi il trigger
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_refuse
 (
@@ -7483,7 +7696,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_country
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che il nuovo paese che si vuole inserire
+ *        sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_country
 (
@@ -7510,8 +7724,11 @@ BEGIN
 
 	END IF;
 
-	RAISE NOTICE E'Error for Country %\nTrigger Function: tf_bi_country()',
-		NEW.name;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_country\n'
+		'Refuse insert for country: (name = %)', NEW.name;
+
 
 	RETURN NULL;
 	
@@ -7525,7 +7742,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_country_nation
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di un paese ne crea
+ *        la squadra nazionale corrispondente
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_country_nation
 (
@@ -7585,8 +7803,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Confederation %\nTrigger Function:'
-		'tf_bi_confederation()', NEW.long_name;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_confederation\n'
+		'Refuse insert for confederation: (long name = %)', NEW.long_name;
+
 
 	RETURN NULL;
 	
@@ -7630,9 +7851,12 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Confederation of type % can''t organize competition %'
-		'for team of type %\nTrigger Function: tf_bi_competition()',
-		type_country_conf, NEW.name, NEW.team_type;
+
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_competition\n'
+		'Refuse insert for competition: (name = %)', NEW.name;
+
 
 	RETURN NULL;
 	
@@ -7669,9 +7893,13 @@ BEGIN
 
 	END IF;	
 
-	RAISE NOTICE E'Error for Competition Edition (competition_id = %, '
-		'start_year = %)\nTrigger Function: tf_bi_confederation()',
+
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_competition_edition\n'
+		'Refuse insert for competition edition: (comp_id = %, s_year = %)',
 		NEW.competition_id, NEW.start_year;
+
 
 	RETURN NULL;
 	
@@ -7717,18 +7945,17 @@ BEGIN
 			IF (NEW.short_name = code_country AND NEW.long_name = name_country) THEN
 				RETURN NEW;
 			END IF;
-
-			RAISE NOTICE 'Team of type % doesn''t have as short_name (%)'
-				'and/or long_name (%) the name and code'
-				'of the country associated (id = %)', NEW.type, NEW.short_name,
-				NEW.long_name, NEW.country_id;
 				
 		END IF;
 
 	END IF;
 	
-	RAISE NOTICE E'Error for Team %\nTrigger Function: tf_bi_team()',
-		NEW.long_name;
+
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_team\n'
+		'Refuse insert for team: (long name = %)', NEW.long_name;
+
 
 	RETURN NULL;
 	
@@ -7768,14 +7995,13 @@ BEGIN
 			RETURN NEW;
 		END IF;
 
-		RAISE NOTICE 'Role (%) of Player is not the same'
-			'of the role (%) of the associated position (id = %)',
-			NEW.role, role_pos, NEW.position_id;
-
 	END IF;
 
-	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
-		'Trigger Function: tf_bi_player()', NEW.name, NEW.surname;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_player\n'
+		'Refuse insert for player: (name = %, surname = %)',
+		NEW.name, NEW.surname;
 
 	RETURN NULL;
 	
@@ -7790,7 +8016,8 @@ LANGUAGE plpgsql;
  * NAME : tf_ai_player
  *
  * DESC : Funzione che dopo l'inserimento di un calciatore ne aggiorna la
- *        nazionalità
+ *        nazionalità, l'associazione tra calciatore e posizione e
+ *        crea gli attributi riferiti al calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_player
 (
@@ -7827,10 +8054,6 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
-	RAISE NOTICE E'Created nationality and player_position of player(id = %) '
-		'with country (id = %) and position (id = %)\n'
-		'Trigger Function: tf_ai_player()', NEW.id, NEW.country_id,
-		NEW.position_id;
 
 	PERFORM create_attributes(NEW.id);
 
@@ -7862,8 +8085,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
-		'Trigger Function: tf_bu_player_country()', OLD.name, OLD.surname;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bu_player_country\n'
+		'Refuse update born country for player: (name = %, surname = %)',
+		NEW.name, NEW.surname;
 
 	RETURN OLD;
 	
@@ -7917,11 +8143,7 @@ BEGIN
 		born_year = extract(year from NEW.dob);
 
 		IF (min_militancy_year(NEW.id) - born_year < min_age()) THEN
-			
 			temp = FALSE;
-
-			RAISE NOTICE 'The age of a player for his minimum militancy'
-				'is earlier than the minimum age of a player';
 		END IF;
 
 
@@ -7929,9 +8151,6 @@ BEGIN
 
 			IF (max_militancy_year(NEW.id) - born_year > max_age()) THEN
 				temp = FALSE;
-
-				RAISE NOTICE 'The age of a player for his maximum militancy'
-					'is later than the maximum age of a player';
 			END IF;
 
 		END IF;
@@ -7940,8 +8159,11 @@ BEGIN
 
 	IF (NOT temp) THEN
 
-		RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
-		'Trigger Function: tf_bu_player_dob()', OLD.name, OLD.surname;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bu_player_dob\n'
+			'Refuse update dob for player: (name = %, surname = %)',
+			NEW.name, NEW.surname;
 
 		RETURN OLD;
 
@@ -7975,8 +8197,12 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Player (name = % , surname = %)\n'
-		'Trigger Function: tf_bu_player_role()', OLD.name, OLD.surname;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bu_player_dob\n'
+		'Refuse update role for player: (name = %, surname = %)',
+		NEW.name, NEW.surname;
+
 
 	RETURN OLD;
 	
@@ -8001,29 +8227,7 @@ CREATE OR REPLACE FUNCTION tf_au_player_country
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	id_team	integer;
-
 BEGIN
-
-	id_team = national_team_from_country(OLD.country_id);
-
-
-	IF (NOT has_national_militancy(NEW.id, id_team)) THEN
-
-		DELETE FROM
-			fp_nationality
-		WHERE
-			country_id = OLD.country_id
-			AND
-			player_id = NEW.id;
-
-		RAISE NOTICE E'Deleted nationality of player (id = %) '
-			'with country (id = %)\n Trigger Function: '
-			'tf_au_player_country()', NEW.id, OLD.country_id;
-
-	END IF;
 
 
 	INSERT INTO
@@ -8039,9 +8243,6 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 	
-	RAISE NOTICE E'Created nationality of player (id = %) '
-			'with country (id = %)\n Trigger Function: '
-			'tf_au_player_country()', NEW.id, NEW.country_id;
 
 	RETURN NULL;
 	
@@ -8055,7 +8256,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_player_pos
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'aggiornamento della posizione principale di un
+ *        calciatore, aggiorna l'associazione tra calciatore e posizione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_player_pos
 (
@@ -8078,10 +8280,6 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 	
-	RAISE NOTICE E'Created player_position of player (id = %) '
-			'with position (id = %)\n Trigger Function: '
-			'tf_au_player_pos()', NEW.id, NEW.position_id;
-
 
 	RETURN NULL;
 
@@ -8165,24 +8363,23 @@ BEGIN
 		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
-
 			temp = FALSE;
-
-			RAISE NOTICE 'The maximum militancy of a player is'
-				'in the same retired year or after it (%)', retired_year;
-
 		END IF;
 	
 	END IF;
 
 	IF (NOT temp) THEN
 
-		RAISE NOTICE E'Error for player_retired (player_id = %)\n'
-		'Trigger Function: tf_bi_player_retired()', NEW.player_id;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bi_player_retired\n'
+			'Refuse insert player retired: (player id = %)', NEW.player_id;
+
 
 		RETURN NULL;
 
 	END IF;
+
 
 	RETURN NEW;
 	
@@ -8231,21 +8428,17 @@ BEGIN
 		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
-			
 			temp = FALSE;
-
-			RAISE NOTICE 'The maximum militancy of a player is'
-				'in the same retired year or after it (%)', retired_year;
-
-
 		END IF;
 	
 	END IF;
 
 	IF (NOT temp) THEN
 
-		RAISE NOTICE E'Error for player_retired (player_id = %)\n'
-		'Trigger Function: tf_bu_player_retired_date()', NEW.player_id;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bu_player_retired_date\n'
+			'Refuse update player retired date: (player id = %)', NEW.player_id;
 
 		RETURN OLD;
 
@@ -8263,8 +8456,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_nationality
  *
- * DESC : Funzione che controlla che la nuova nazionalità da inserire sia
- *        riferita ad una nazione
+ * DESC : Funzione che controlla che la nuova nazionalità
+ *        che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_nationality
 (
@@ -8278,9 +8471,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for nationality (player_id = %, country_id = %)\n'
-		'Trigger Function: tf_bi_nationality()',
-		NEW.player_id, NEW.country_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_nationality\n'
+		'Refuse insert nationality: (country id = %, player id = %)',
+		NEW.country_id, NEW.player_id;
 
 	RETURN NULL;
 
@@ -8317,12 +8512,14 @@ BEGIN
 
 	IF (OLD.country_id = id_country_player) THEN
 
-		RAISE NOTICE E'Cannot delete nationality (player_id = %, country_id = %)'
-			'because it is the born country of the player\n'
-			'Trigger Function: tf_bd_nationality()',
-			NEW.player_id, NEW.country_id;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bd_nationality\n'
+			'Refuse delete nationality: (country id = %, player id = %)',
+			OLD.country_id, OLD.player_id;
 
 		RETURN NULL;
+
 	END IF;
 
 
@@ -8367,12 +8564,6 @@ BEGIN
 		
 		IF (OLD.country_id = id_country) THEN
 			PERFORM delete_national_militancy(OLD.player_id);
-
-			RAISE NOTICE E'Deleted national militancies associated to'
-			'player (id = %) and national team of country (id = %)\n'
-			'Trigger Function: tf_bd_nationality()',
-			NEW.player_id, NEW.country_id;
-
 		END IF;
 
 	END IF;
@@ -8429,9 +8620,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
-	RAISE NOTICE E'Error for Partecipation (start_year = % , competition_id = %, '
-		'team_id = %)\n Trigger Function: tf_bi_partecipation()', NEW.start_year,
-		NEW.competition_id, NEW.team_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_partecipation\n'
+		'Refuse insert partecipation: (comp id = %, s_year = %, team id = %)',
+		NEW.competition_id, NEW.start_year, NEW.team_id;
 
 
 	RETURN NULL;
@@ -8446,7 +8639,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_partecipation
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di una partecipazione
+ *        ne crea i giochi corrispondenti
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_partecipation
 (
@@ -8456,7 +8650,7 @@ AS
 $$
 BEGIN
 
-	PERFORM create_play_from_partecipation(NEW.team_id, NEW.start_year, NEW.competition_id);
+	PERFORM create_play_from_partecipation(NEW.team_id, NEW.competition_id, NEW.start_year);
 
 
 	RETURN NULL;
@@ -8520,12 +8714,7 @@ BEGIN
 				-- se è una militanza nazionale e il calciatore ha gia
 				-- militato in nazionale la squadra deve essere la stessa
 				IF (national_team(NEW.player_id) <> NEW.team_id) THEN
-
 					temp = FALSE;
-
-					RAISE NOTICE 'Player (id = %) has a national militancy'
-						'with another team already', NEW.player_id;
-
 				END IF;
 
 			END IF;
@@ -8540,12 +8729,14 @@ BEGIN
 
 	IF (NOT temp) THEN
 
-		RAISE NOTICE E'Error for Militancy (team_type = % , team_id = % , '
-			'player_id = % , start_year = % , type = % )\n'
-			'Trigger Function: tf_bi_militancy()', NEW.team_type, NEW.team_id,
-			NEW.player_id, NEW.start_year, NEW.type;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bi_militancy\n'
+			'Refuse insert militancy: (player id = %, s_year = %, team id = %)',
+			NEW.player_id, NEW.start_year, NEW.team_id;
 			
 		RETURN NULL;
+
 	END IF;
 
 	RETURN NEW;
@@ -8577,9 +8768,37 @@ BEGIN
 
 	END IF;
 
+
 	PERFORM create_play_from_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
 
 	RETURN NULL;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : TRIGGER FUNCTION
+ * NAME : tf_bu_militancy
+ *
+ * DESC : Funzione che valuta se sia possibile aggiornare una militanza
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION tf_bu_militancy
+(
+)
+RETURNS trigger
+AS
+$$
+BEGIN
+
+	IF (is_free_militancy(NEW.team_type, NEW.team_id, NEW.player_id, NEW.start_year)) THEN
+		RETURN NEW;
+	END IF;
+
+
+	RETURN OLD;
 	
 END;
 $$
@@ -8630,7 +8849,7 @@ LANGUAGE plpgsql;
  *
  *        NOTA: per il numero massimo di partite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_play
 (
@@ -8644,9 +8863,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Play (id = % ), number of match is'
-			'greater than its maximum\nTrigger Function: tf_bi_play()',
-			NEW.id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_play\n'
+		'Refuse insert play: (play id = %)', NEW.play_id;
+
 
 	RETURN NULL;
 	
@@ -8661,7 +8882,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_ai_play
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'inserimento di un gioco ne crea
+ *        le statistiche corrispondenti
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_ai_play
 (
@@ -8691,7 +8913,7 @@ LANGUAGE plpgsql;
  *
  *        NOTA: per il numero massimo di partite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bu_play_match
 (
@@ -8705,9 +8927,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Play (id = % ), number of match is'
-			'greater than its maximum\nTrigger Function: tf_bu_play_match()',
-			OLD.id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bu_play_match\n'
+		'Refuse update play match: (play id = %)', NEW.play_id;
+
 
 	RETURN OLD;
 	
@@ -8721,7 +8945,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_play_match
  *
- * DESC : TODO
+ * DESC : Funzione che dopo l'aggiornamento del numero di partite
+ *        di un gioco setta le statistiche corrispondenti a zero se
+ *        il numero di partite è uguale a zero
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_play_match
 (
@@ -8732,13 +8958,7 @@ $$
 BEGIN
 
 	IF (0 = NEW.match) THEN
-
 		PERFORM set_zero_statistics(NEW.id);
-
-		RAISE NOTICE E'Set to zero statistic for Play(id = %) because'
-		'number of match equals zero\nTrigger Function: tf_au_play_match()',
-		NEW.id;
-
 	END IF;
 
 
@@ -8754,8 +8974,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_player_tag
  *
- * DESC : Funzione che controlla che l'associazione tra calciatore e tag di
- *        tipo portiere che si vuole inserire sia valida
+ * DESC : Funzione che controlla che l'associazione tra calciatore e tag
+ *        che si vuole inserire sia valida
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_player_tag
 (
@@ -8783,12 +9003,14 @@ BEGIN
 
 		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
 
-			RAISE NOTICE E'Error for player_tag (player_id = % , tag_id = %), '
-				'cannot associated tag for goalkeeper to a player that'
-				'is not a goalkeeper\nTrigger Function: tf_bi_player_tag()',
+			-- DEBUG
+			RAISE NOTICE
+				E'Trigger Function: tf_bi_player_tag\n'
+				'Refuse insert player_tag: (player id = %, tag id = %)',
 				NEW.player_id, NEW.tag_id;
 
 			RETURN NULL;
+
 		END IF;
 		
 	END IF;
@@ -8840,10 +9062,6 @@ BEGIN
 		WHERE
 			id = NEW.player_id;
 
-		RAISE NOTICE E'Update of role of the player (id = %), because'
-			'it has changed\nTrigger Function: tf_ai_player_position()',
-			NEW.player_id;
-
 	END IF;
 	
 
@@ -8859,7 +9077,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_player_position
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'associazione tra un
+ *        calciatore ed una posizione che si vuole eliminare
+ *        non sia la posizione principale del calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_player_position
 (
@@ -8886,9 +9106,11 @@ BEGIN
 	END IF;
 	
 
-	RAISE NOTICE E'Cannot delete the position (id = %) because'
-		'it is the main position of player (id = %)', OLD.position_id,
-		OLD.player_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bd_player_position\n'
+		'Refuse delete player_position: (player id = %, position id = %)',
+		OLD.player_id, OLD.player_id;
 
 	RETURN NULL;
 	
@@ -8938,10 +9160,6 @@ BEGIN
 
 	END IF;
 	
-	RAISE NOTICE E'Update of role of the player (id = %), because'
-			'it has changed\nTrigger Function: tf_ad_player_position()',
-			OLD.player_id;
-
 
 	RETURN NULL;
 	
@@ -8955,7 +9173,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo per portieri di un calciatore
+ *        che si vuole inserire sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_attribute_goalkeeping
 (
@@ -8976,11 +9195,13 @@ BEGIN
 
 	IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
 
-		RAISE NOTICE E'Error of attribute goalkeeping for player (id = %), because'
-			'the player is not a goalkeeper\nTrigger Function: '
-			'tf_bi_attribute_goalkeeping()', NEW.player_id;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bi_attribute_goalkeeping\n'
+			'Refuse insert attribute_goalkeeping: (player id = %)', NEW.player_id;
 
-		RETURN NULL;	
+		RETURN NULL;
+
 	END IF;
 
 
@@ -8996,7 +9217,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo per portieri di un calciatore
+ *        che si vuole eliminare non si riferisca ad un calciatore
+ *        che ha tra i suoi ruoli di gioco il portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_attribute_goalkeeping
 (
@@ -9019,9 +9242,10 @@ BEGIN
 
 	IF ((role_player IS NOT NULL) AND (CAST(role_player AS text) LIKE '%GK%')) THEN
 
-		RAISE NOTICE E'Cannot delete the attribute goalkeeping for player (id = %)'
-			'because it still references a goalkeeper\nTrigger Function: '
-			'tf_bd_attribute_goalkeeping()', OLD.player_id;
+		-- DEBUG
+		RAISE NOTICE
+			E'Trigger Function: tf_bd_attribute_goalkeeping\n'
+			'Refuse delete attribute_goalkeeping: (player id = %)', OLD.player_id;
 
 		RETURN NULL;	
 
@@ -9040,7 +9264,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_attribute_references
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'attributo di un calciatore
+ *        che si vuole eliminare non si riferisca più ad un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_attribute_references
 (
@@ -9065,9 +9290,10 @@ BEGIN
 		RETURN OLD;	
 	END IF;
 
-	RAISE NOTICE E'Cannot delete the attribute for player (id = %)'
-		'because it still references a player\nTrigger Function: '
-		'tf_bd_attribute_references()', OLD.player_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bd_attribute_references\n'
+		'Refuse delete attribute: (player id = %)', OLD.player_id;
 	
 
 	RETURN NULL;
@@ -9082,7 +9308,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bu_statistic
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che l'aggiornamento delle statistiche
+ *        di un gioco sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bu_statistic
 (
@@ -9105,9 +9332,10 @@ BEGIN
 		RETURN NEW;	
 	END IF;
 
-	RAISE NOTICE E'Cannot update general statistic for play (id = %)'
-		'because number of match is zero\nTrigger Function: '
-		'tf_bu_statistic()', NEW.play_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bu_statistic\n'
+		'Refuse update statistic: (play id = %)', NEW.play_id;
 	
 
 	RETURN OLD;
@@ -9121,7 +9349,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_statistic_general
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica generale di un gioco
+ *        che si vuole eliminare non si riferisca più ad un gioco
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_statistic_general
 (
@@ -9146,9 +9375,10 @@ BEGIN
 		RETURN OLD;	
 	END IF;
 
-	RAISE NOTICE E'Cannot delete general statistic for play (id = %)'
-		'because it still references a play\nTrigger Function: '
-		'tf_bd_statistic_general()', OLD.play_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bd_statistic_general\n'
+		'Refuse delete statistic_general: (play id = %)', OLD.play_id;
 	
 	RETURN NULL;
 	
@@ -9162,7 +9392,8 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bi_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica per portieri di un gioco
+ *        che si vuole inserire sia valido
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bi_statistic_goalkeeper
 (
@@ -9189,9 +9420,10 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error of statistic goalkeeper for play (id = %), because'
-			'the player is not a goalkeeper\nTrigger Function: '
-			'tf_bi_statistic_goalkeeper()', NEW.play;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_statistic_goalkeeper\n'
+		'Refuse insert statistic_goalkeeper: (play id = %)', NEW.play_id;
 
 	RETURN NULL;
 	
@@ -9205,7 +9437,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_bd_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Funzione che controlla che la statistica per portieri di un gioco
+ *        che si vuole eliminare non si riferisca ad un gioco associato
+ *        ad un calciatore che ha tra i suoi ruoli di gioco il portiere
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_bd_statistic_goalkeeper
 (
@@ -9232,9 +9466,10 @@ BEGIN
 
 		IF (CAST(role_player AS text) LIKE '%GK%') THEN
 
-			RAISE NOTICE E'Cannot delete goalkeeper statistic for play (id = %)'
-				'because it still references a play of a goalkeeper\n'
-				'Trigger Function: tf_bd_statistic_goalkeeper()', OLD.play_id;
+			-- DEBUG
+			RAISE NOTICE
+				E'Trigger Function: tf_bd_statistic_goalkeeper\n'
+				'Refuse delete statistic_goalkeeper: (play id = %)', OLD.play_id;
 	
 			RETURN NULL;
 		END IF;
@@ -9277,10 +9512,12 @@ BEGIN
 	IF ('TEAM' = type_trophy) THEN
 		RETURN NEW;
 	END IF;
-	
-	RAISE NOTICE E'Error of team_trophy_case (team_id = % , trophy_id = % , '
-		'start_year = % , competition_id = %) because trophy is not'
-		'of type team\nTrigger Function: tf_bi_team_trophy_case()',
+
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_team_trophy_case\n'
+		'Refuse insert team_trophy_case:'
+		' (team id = %, trophy id = %, s_year = %, comp id = %)',
 		NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
 
 
@@ -9340,7 +9577,7 @@ BEGIN
 		(
 			id_player,
 			NEW.team_id,
-			NEW.id,
+			NEW.trophy_id,
 			NEW.start_year,
 			NEW.competition_id
 		)
@@ -9348,9 +9585,6 @@ BEGIN
 
 	END LOOP;
 
-	RAISE NOTICE E'Assigned trophy (id = % , start_year = %) to all players'
-		'of the team (id = %) in that season\nTrigger Function: '
-		'tf_ai_team_trophy_case()', NEW.trophy_id, NEW.start_year, NEW.team_id;
 	
 	RETURN NULL;
 	
@@ -9381,17 +9615,13 @@ BEGIN
 	WHERE
 		team_id = OLD.team_id
 		AND
-		trophy_id = OLD.id
+		trophy_id = OLD.trophy_id
 		AND
 		start_year = OLD.start_year
 		AND
 		competition_id = OLD.competition_id;
 
 
-	RAISE NOTICE E'Delete of the trophy (id = % , start_year = %) from all players'
-		'of the team (id = %) in that season\nTrigger Function: '
-		'tf_ad_team_trophy_case()', NEW.trophy_id, NEW.start_year, NEW.team_id;
-	
 	RETURN NULL;
 	
 END;
@@ -9457,10 +9687,6 @@ BEGIN
 
 				IF (position(CAST(role_trophy AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
-				ELSE
-
-					RAISE NOTICE 'The role of the player trophy is not'
-						'one of roles of the player.';
 				END IF;
 
 			END IF;
@@ -9469,10 +9695,12 @@ BEGIN
 
 	END IF;
 	
-	RAISE NOTICE E'Error of player_trophy_case (player_id = % , team_id = % , '
-		'trophy_id = % , start_year = % , competition_id = %)\n'
-		'Trigger Function: tf_bi_player_trophy_case()',NEW.player_id,
-		NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_player_trophy_case\n'
+		'Refuse insert player_trophy_case:'
+		' (player id = %, team id = %, trophy id = %, s_year = %, comp id = %)',
+		NEW.player_id, NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
  
 
 	RETURN NULL;
@@ -9506,30 +9734,31 @@ DECLARE
 
 BEGIN
 
-	tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
+	tmp = get_column('fp_trophy', 'type', OLD.trophy_id);
+	
 	type_trophy = CAST(tmp AS en_award);
 
 	IF ('TEAM' = type_trophy) THEN
 
-		type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
+		type_militancy = get_type_militancy(OLD.player_id, OLD.team_id, OLD.start_year);
 	
 		-- se il trofeo è di squadra
 		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
 		-- o se il calciatore non milita nella parte finale di stagione
 		IF
 		(
-			team_has_trophy(NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id)
+			team_has_trophy(OLD.team_id, OLD.trophy_id, OLD.start_year, OLD.competition_id)
 			AND
 			type_militancy <> 'I PART' 
 		)
 		THEN
 
-			RAISE NOTICE E'Cannot delete player_trophy_case (player_id = % , '
-				'team_id = % , trophy_id = % , start_year = % , competition_id = %), '
-				'because the team still has the trophy and the militancy'
-				'start year type is not "I PART"\n'
-				'Trigger Function: tf_bd_player_trophy_case()',NEW.player_id,
-				NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
+			-- DEBUG
+			RAISE NOTICE
+				E'Trigger Function: tf_bd_player_trophy_case\n'
+				'Refuse delete player_trophy_case:'
+				' (player id = %, team id = %, trophy id = %, s_year = %, comp id = %)',
+				NEW.player_id, NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
  
 			RETURN NULL;
 		END IF;
@@ -9573,10 +9802,12 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error of team_prize_case (team_id = % , prize_id = % , '
-		'assign_year = %) because prize is not of type team\n'
-		'Trigger Function: tf_bi_team_prize_case()',
-		NEW.team_id, NEW.prize_id, NEW.assign_year;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_team_prize_case\n'
+		'Refuse insert team_prize_case:'
+		' (team id = %, prize id = %, s_year = %, comp id = %)',
+		NEW.team_id, NEW.prize_id, NEW.start_year, NEW.competition_id;
 
 
 	RETURN NULL;
@@ -9644,26 +9875,20 @@ BEGIN
 
 				IF (position(CAST(role_prize AS text) in CAST(role_player AS text)) > 0) THEN
 					RETURN NEW;
-				ELSE
-
-					RAISE NOTICE 'The role of the player prize is not'
-						'one of roles of the player.';
-
 				END IF;
 
 			END IF;
-		ELSE
-			RAISE NOTICE '% is not between % and %', NEW.assign_year,
-				start_valid, end_valid;
+
 		END IF;
-	ELSE
-		RAISE NOTICE 'Type of prize is not player';
+	
 	END IF;
 	
-	RAISE NOTICE E'Error of player_prize_case (player_id = % , prize_id = % , '
-		'assign_year = %)\n'
-		'Trigger Function: tf_bi_player_prize_case()',
-		NEW.player_id, NEW.prize_id, NEW.assign_year;
+	-- DEBUG
+	RAISE NOTICE
+		E'Trigger Function: tf_bi_player_prize_case\n'
+		'Refuse insert player_prize_case:'
+		' (player id = %, team id = %, prize id = %, s_year = %, comp id = %)',
+		NEW.player_id, NEW.team_id, NEW.prize_id, NEW.start_year, NEW.competition_id;
 
 
 	RETURN NULL;
@@ -9710,9 +9935,21 @@ EXECUTE FUNCTION tf_bi_country();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_country_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento di un paese
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_country_refuse
+BEFORE INSERT ON fp_country
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_ai_country_nation
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di un paese di tipo nazione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_country_nation
 AFTER INSERT ON fp_country
@@ -9740,7 +9977,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_country_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un paese
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_country_refuse
 BEFORE DELETE ON fp_country
@@ -9758,13 +9995,26 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_confederation
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una confederazione
- *        calcistica contenuta in un'altra confederazione
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_confederation
 BEFORE INSERT ON fp_confederation
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_confederation();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_confederation_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una confederazione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_confederation_refuse
+BEFORE INSERT ON fp_confederation
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -9784,7 +10034,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_confederation_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una confederazione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_confederation_refuse
 BEFORE DELETE ON fp_confederation
@@ -9802,8 +10053,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_competition
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una competizione
- *        calcistica
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
@@ -9813,10 +10064,23 @@ EXECUTE FUNCTION tf_bi_competition();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_competition_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_competition_refuse
+BEFORE INSERT ON fp_competition
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_competition_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del tipo o del
- *        tipo di squadra o della condeferazione di una competizione calcistica
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition_refuse
 BEFORE UPDATE ON fp_competition
@@ -9828,7 +10092,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_competition_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_refuse
 BEFORE DELETE ON fp_competition
@@ -9858,7 +10123,7 @@ EXECUTE FUNCTION tf_bi_competition_edition();
  * TYPE : TRIGGER
  * NAME : tg_bu_competition_edition_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'edizione
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di un'edizione
  *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_competition_edition_refuse
@@ -9871,7 +10136,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_competition_edition_referred
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un'edizione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_competition_edition_referred
 BEFORE DELETE ON fp_competition_edition
@@ -9889,8 +10155,8 @@ EXECUTE FUNCTION tf_if_referenced_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_team
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di una squadra di
- *        calcio
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_team
 BEFORE INSERT ON fp_team
@@ -9902,7 +10168,9 @@ EXECUTE FUNCTION tf_bi_team();
  * TYPE : TRIGGER
  * NAME : tg_bu_team_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id o del
+ *        paese associato o del tipo o se il tipo è nazionale
+ *        di una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_team_refuse
 BEFORE UPDATE ON fp_team
@@ -9942,7 +10210,7 @@ EXECUTE FUNCTION tf_bi_player();
  * TYPE : TRIGGER
  * NAME : tg_ai_player
  *
- * DESC : Trigger che si attiverà dopo dell'inserimento di un calciatore
+ * DESC : Trigger che si attiverà dopo l'inserimento di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_player
 AFTER INSERT ON fp_player
@@ -9954,7 +10222,8 @@ EXECUTE FUNCTION tf_ai_player();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_id_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_id_refuse
 BEFORE UPDATE ON fp_player
@@ -9987,7 +10256,8 @@ EXECUTE FUNCTION tf_bu_player_country();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_dob
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento della data di nascita
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_dob
 BEFORE UPDATE ON fp_player
@@ -10003,8 +10273,8 @@ EXECUTE FUNCTION tf_bu_player_dob();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_role
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dei ruoli di un
- *        calciatore
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dei ruoli
+ *        di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_role
 BEFORE UPDATE ON fp_player
@@ -10037,7 +10307,8 @@ EXECUTE FUNCTION tf_au_player_country();
  * TYPE : TRIGGER
  * NAME : tg_au_player_pos
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'aggiornamento della posizione
+ *        principale di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_au_player_pos
 AFTER UPDATE ON fp_player
@@ -10076,8 +10347,8 @@ EXECUTE FUNCTION tf_au_player_role();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_retired
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un calciatore
- *        ritirato
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di un calciatore ritirato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_retired
 BEFORE INSERT ON fp_player_retired
@@ -10200,7 +10471,8 @@ EXECUTE FUNCTION tf_bi_partecipation();
  * TYPE : TRIGGER
  * NAME : tg_ai_partecipation
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di una partecipazione di
+ *        una squadra di calcio ad un'edizione di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_partecipation
 AFTER INSERT ON fp_partecipation
@@ -10244,8 +10516,7 @@ EXECUTE FUNCTION tf_bi_militancy();
  * TYPE : TRIGGER
  * NAME : tg_ai_militancy
  *
- * DESC : Trigger che si attiverà dopo l'inserimento di una militanza riferita
- *        alla parte finale della stagione o all'intera stagione
+ * DESC : Trigger che si attiverà dopo l'inserimento di una militanza
  *        di un calciatore in una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_militancy
@@ -10276,6 +10547,30 @@ WHEN
 	OLD.start_year IS DISTINCT FROM NEW.start_year
 )
 EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_militancy
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una militanza
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_militancy
+BEFORE UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	OLD.team_id IS NOT DISTINCT FROM NEW.team_id
+	AND
+	OLD.team_type IS NOT DISTINCT FROM NEW.team_type
+	AND
+	OLD.player_id IS NOT DISTINCT FROM NEW.player_id
+	AND
+	OLD.start_year IS NOT DISTINCT FROM NEW.start_year
+	AND
+	OLD.type <> 'FULL'
+)
+EXECUTE FUNCTION tf_bu_militancy();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -10323,7 +10618,7 @@ EXECUTE FUNCTION tf_bi_play();
  * TYPE : TRIGGER
  * NAME : tg_ai_play
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'inserimento di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_play
 AFTER INSERT ON fp_play
@@ -10335,7 +10630,10 @@ EXECUTE FUNCTION tf_ai_play();
  * TYPE : TRIGGER
  * NAME : tg_bu_play_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento dell'id o
+ *        dell'anno di inizio di un'edizione di una competizione o
+ *        della competizione a cui l'edizione si riferisce o della squadra di
+ *        calcio o del calciatore di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_play_refuse
 BEFORE UPDATE ON fp_play
@@ -10376,7 +10674,8 @@ EXECUTE FUNCTION tf_bu_play_match();
  * TYPE : TRIGGER
  * NAME : tg_au_play_match
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà dopo l'aggiornamento del numero di
+ *        partite associate ad un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_au_play_match
 AFTER UPDATE ON fp_play
@@ -10396,10 +10695,21 @@ EXECUTE FUNCTION tf_au_play_match();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_tag_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento di un tag
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_tag_refuse
+BEFORE INSERT ON fp_tag
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_tag_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento di un tag
- *        di tipo portiere
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_tag_refuse
 BEFORE UPDATE ON fp_tag
@@ -10411,7 +10721,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_tag_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_tag_refuse
 BEFORE DELETE ON fp_tag
@@ -10429,8 +10739,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bi_player_tag
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
- *        tra un calciatore ed un tag di tipo portiere
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di un'associazione tra un calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_player_tag
 BEFORE INSERT ON fp_player_tag
@@ -10442,8 +10752,8 @@ EXECUTE FUNCTION tf_bi_player_tag();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_tag_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
- *        tra un calciatore ed un tag
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        dell'associazione tra un calciatore ed un tag
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_tag_refuse
 BEFORE UPDATE ON fp_player_tag
@@ -10459,10 +10769,23 @@ EXECUTE FUNCTION tf_refuse();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_position_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una posizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_position_refuse
+BEFORE INSERT ON fp_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_position_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo
- *        associato ad una posizione calcistica
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di una posizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_position_refuse
 BEFORE UPDATE ON fp_position
@@ -10474,7 +10797,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_position_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di una posizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_position_refuse
 BEFORE DELETE ON fp_position
@@ -10492,8 +10816,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_ai_player_position
  *
- * DESC : Trigger che si attiverà prima dell'inserimento di un'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà dopo l'inserimento
+ *        di un'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ai_player_position
 AFTER INSERT ON fp_player_position
@@ -10505,8 +10829,8 @@ EXECUTE FUNCTION tf_ai_player_position();
  * TYPE : TRIGGER
  * NAME : tg_bu_player_position_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento dell'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_player_position_refuse
 BEFORE UPDATE ON fp_player_position
@@ -10518,7 +10842,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_player_position
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_player_position
 BEFORE DELETE ON fp_player_position
@@ -10530,8 +10855,8 @@ EXECUTE FUNCTION tf_bd_player_position();
  * TYPE : TRIGGER
  * NAME : tg_ad_player_position
  *
- * DESC : Trigger che si attiverà dopo l'eliminazione dell'associazione
- *        tra un calciatore ed una posizione
+ * DESC : Trigger che si attiverà dopo l'eliminazione
+ *        dell'associazione tra un calciatore ed una posizione
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ad_player_position
 AFTER DELETE ON fp_player_position
@@ -10549,7 +10874,8 @@ EXECUTE FUNCTION tf_ad_player_position();
  * TYPE : TRIGGER
  * NAME : tg_bi_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        dell'attributo per portieri di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_attribute_goalkeeping
 BEFORE INSERT ON fp_attribute_goalkeeping
@@ -10561,7 +10887,8 @@ EXECUTE FUNCTION tf_bi_attribute_goalkeeping();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo per portieri
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_attribute_goalkeeping
 BEFORE UPDATE ON fp_attribute_goalkeeping
@@ -10577,7 +10904,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo per portieri di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_goalkeeping
 BEFORE DELETE ON fp_attribute_goalkeeping
@@ -10594,7 +10922,8 @@ EXECUTE FUNCTION tf_bd_attribute_goalkeeping();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_mental_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo mentale
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_mental_refuse
 BEFORE UPDATE ON fp_attribute_mental
@@ -10610,7 +10939,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_mental
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo mentale di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_mental
 BEFORE DELETE ON fp_attribute_mental
@@ -10628,7 +10958,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_physical_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo fisico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_physical_refuse
 BEFORE UPDATE ON fp_attribute_physical
@@ -10644,7 +10975,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_phisycal
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo fisico di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_phisycal
 BEFORE DELETE ON fp_attribute_physical
@@ -10662,7 +10994,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_attribute_technical_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del calciatore
+ *        di riferimento di un attributo tecnico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_attribute_technical_refuse
 BEFORE UPDATE ON fp_attribute_technical
@@ -10678,7 +11011,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_attribute_technical
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        dell'attributo tecnico di un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_attribute_technical
 BEFORE DELETE ON fp_attribute_technical
@@ -10696,7 +11030,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_general_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
+ *        di riferimento di una statistica generale 
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_general_refuse
 BEFORE UPDATE ON fp_statistic_general
@@ -10712,7 +11047,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_general
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una
+ *        statistica generale quando il gioco a cui si riferisce resta invariato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_general
 BEFORE UPDATE ON fp_statistic_general
@@ -10728,7 +11064,8 @@ EXECUTE FUNCTION tf_bu_statistic();
  * TYPE : TRIGGER
  * NAME : tg_bd_statistic_general
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        della statistica generale di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_statistic_general
 BEFORE DELETE ON fp_statistic_general
@@ -10746,7 +11083,8 @@ EXECUTE FUNCTION tf_bd_statistic_general();
  * TYPE : TRIGGER
  * NAME : tg_bi_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'inserimento
+ *        di una statistica per portieri di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bi_statistic_goalkeeper
 BEFORE INSERT ON fp_statistic_goalkeeper
@@ -10758,7 +11096,8 @@ EXECUTE FUNCTION tf_bi_statistic_goalkeeper();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_goalkeeper_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
+ *        di riferimento di una statistica per portieri
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_goalkeeper_refuse
 BEFORE UPDATE ON fp_statistic_goalkeeper
@@ -10774,7 +11113,9 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bu_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una
+ *        statistica per portieri quando il gioco a cui si riferisce
+ *        resta invariato
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_goalkeeper
 BEFORE UPDATE ON fp_statistic_goalkeeper
@@ -10790,7 +11131,8 @@ EXECUTE FUNCTION tf_bu_statistic();
  * TYPE : TRIGGER
  * NAME : tg_bd_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        della statistica per portieri di un gioco
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_statistic_goalkeeper
 BEFORE DELETE ON fp_statistic_goalkeeper
@@ -10805,13 +11147,27 @@ EXECUTE FUNCTION tf_bd_statistic_goalkeeper();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_trophy_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di un trofeo calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_trophy_refuse
+BEFORE INSERT ON fp_trophy
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_trophy_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
- *        tipo di un trofeo calcistico
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di un trofeo calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_trophy_refuse
 BEFORE UPDATE ON fp_trophy
+FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
@@ -10819,10 +11175,12 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_trophy_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di un trofeo calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_trophy_refuse
 BEFORE DELETE ON fp_trophy
+FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
@@ -10874,7 +11232,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_ad_team_trophy_case
  *
- * DESC : Trigger che si attiverà dopo l'aggiornamento di un trofeo
+ * DESC : Trigger che si attiverà dopo l'eliminazione di un trofeo
  *        calcistico assegnato ad una squadra di calcio
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_ad_team_trophy_case
@@ -10919,7 +11277,7 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_player_trophy_case
  *
- * DESC : Trigger che si attiverà dopo l'eliminazione di un trofeo
+ * DESC : Trigger che si attiverà prima dell'eliminazione di un trofeo
  *        calcistico assegnato ad un calciatore
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_player_trophy_case
@@ -10936,10 +11294,23 @@ EXECUTE FUNCTION tf_bd_player_trophy_case();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_prize_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di un premio calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_prize_refuse
+BEFORE INSERT ON fp_prize
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_prize_refuse
  *
- * DESC : Trigger che si attiverà prima dell'aggiornamento del ruolo o del
- *        tipo di un premio calcistico
+ * DESC : Trigger che si attiverà prima dell'aggiornamento
+ *        di un premio calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_prize_refuse
 BEFORE UPDATE ON fp_prize
@@ -10951,7 +11322,8 @@ EXECUTE FUNCTION tf_refuse();
  * TYPE : TRIGGER
  * NAME : tg_bd_prize_refuse
  *
- * DESC : TODO
+ * DESC : Trigger che si attiverà prima dell'eliminazione
+ *        di un premio calcistico
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_prize_refuse
 BEFORE DELETE ON fp_prize
@@ -11023,3 +11395,109 @@ EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE
+ *
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
+ * FIELD        : COMPUTER SCIENCE
+ * CLASS        : DATA BASES I
+ * TEACHER      : SILVIO BARRA
+ * YEAR         : 2023-2024
+ ******************************************************************************/
+
+
+
+/*******************************************************************************
+ * TRIGGER BEFORE OUR INSERT
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_country_refuse
+ *
+ * DESC : Consenti l'inserimento di paesi
+ ******************************************************************************/
+ALTER TABLE
+    fp_country
+DISABLE TRIGGER
+    tg_bi_country_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_confederation_refuse
+ *
+ * DESC : Consenti l'inserimento di confederazioni calcistiche
+ ******************************************************************************/
+ALTER TABLE
+    fp_confederation
+DISABLE TRIGGER
+    tg_bi_confederation_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_competition_refuse
+ *
+ * DESC : Consenti l'inserimento di competizioni calcistiche
+ ******************************************************************************/
+ALTER TABLE
+    fp_competition
+DISABLE TRIGGER
+    tg_bi_competition_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_tag_refuse
+ *
+ * DESC : Consenti l'inserimento di tag
+ ******************************************************************************/
+ALTER TABLE
+    fp_tag
+DISABLE TRIGGER
+    tg_bi_tag_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_position_refuse
+ *
+ * DESC : Consenti l'inserimento di posizioni
+ ******************************************************************************/
+ALTER TABLE
+    fp_position
+DISABLE TRIGGER
+    tg_bi_position_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_trophy_refuse
+ *
+ * DESC : Consenti l'inserimento di trofei calcistici
+ ******************************************************************************/
+ALTER TABLE
+    fp_trophy
+DISABLE TRIGGER
+    tg_bi_trophy_refuse;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : DISABLE TRIGGER
+ * NAME : tg_bi_prize_refuse
+ *
+ * DESC : Consenti l'inserimento di premi calcistici
+ ******************************************************************************/
+ALTER TABLE
+    fp_prize
+DISABLE TRIGGER
+    tg_bi_prize_refuse;
+--------------------------------------------------------------------------------

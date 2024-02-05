@@ -86,7 +86,7 @@ CHECK
  * TYPE : DOMAIN
  * NAME : dm_attribute
  *
- * DESC : TODO
+ * DESC : Dominio contenenete tutti i numeri interi da 0 a 10
  ******************************************************************************/
 CREATE DOMAIN dm_attribute AS smallint
 CHECK

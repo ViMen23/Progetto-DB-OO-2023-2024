@@ -134,7 +134,7 @@ VALUES
 	'CLUB'
 ),
 (
-	2006
+	2006,
 	'FULL',
 	get_id
 	(
@@ -286,7 +286,7 @@ VALUES
 		'@dob@1996-11-15@country_id@' ||
 		get_id('@', 'fp_country@name@South Korea')
 	),
-	get_id('@', 'fp_team@long_name@SCC Napoli'),
+	get_id('@', 'fp_team@long_name@SSC Napoli'),
 	'CLUB'
 ),
 (
@@ -327,7 +327,7 @@ VALUES
 	),
 	get_id('@', 'fp_team@long_name@GNK Dinamo Zagabria'),
 	'CLUB'
-)
+);
 --------------------------------------------------------------------------------
 
 

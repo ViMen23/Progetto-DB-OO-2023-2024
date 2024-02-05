@@ -51,8 +51,8 @@ BEGIN
 
 	-- DEBUG
 	IF (exist) THEN
-		RAISE NOTICE E
-			'Function: world_exists\n'
+		RAISE NOTICE
+			E'Function: world_exists\n'
 			'Reached maximum number of Worlds';
 	END IF;
 
@@ -101,8 +101,8 @@ BEGIN
 
 	-- DEBUG
 	IF (exist) THEN
-		RAISE NOTICE E
-			'Function: all_continent_exists\n'
+		RAISE NOTICE
+			E'Function: all_continent_exists\n'
 			'Reached maximum number of Continents';
 	END IF;
 
@@ -189,13 +189,65 @@ BEGIN
 
 	-- DEBUG
 	IF (id_conf IS NULL) THEN
-		RAISE NOTICE E
-			'Function: conf_from_country\n'
+		RAISE NOTICE
+			E'Function: conf_from_country\n'
 			'No confederation for country (id = %)', id_country;
 	END IF;
 
 
 	RETURN id_conf;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_retired_date
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : date
+ *
+ * DESC : Funzione che restituisce la data di ritiro di un calciatore
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_retired_date
+(
+	IN	id_player	integer
+)
+RETURNS date
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	ret_date	date;
+
+BEGIN
+
+	ret_date = NULL;
+
+	SELECT
+		retired_date
+	INTO
+		ret_date
+	FROM
+		fp_player_retired
+	WHERE
+		player_id = id_player;
+
+	-- DEBUG
+	IF (ret_date IS NULL) THEN
+		RAISE NOTICE
+			E'Function: get_retired_date\n'
+			'Player (id = %) has not retired', id_player;
+	END IF;
+
+
+	RETURN ret_date;
 
 END;
 $$
@@ -234,8 +286,8 @@ BEGIN
 
 	IF (rec_country.type <> 'NATION') THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: create_national_team\n'
+		RAISE NOTICE
+			E'Function: create_national_team\n'
 			'Error. Cannot create national team.'
 			' Country (id = %) is not a nation', id_country;
 
@@ -262,8 +314,8 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_national_team\n'
+	RAISE NOTICE
+		E'Function: create_national_team\n'
 		'Created national team for country (id = %)', id_country;
 
 END;
@@ -288,7 +340,7 @@ CREATE OR REPLACE FUNCTION delete_all_gk
 (
 	IN	id_player	integer
 )
-RETURNS integer
+RETURNS void
 AS
 $$
 BEGIN
@@ -314,8 +366,8 @@ BEGIN
 					);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_all_gk\n'
+	RAISE NOTICE
+		E'Function: delete_all_gk\n'
 		'Deleted attribute and statistic goalkeeper'
 		'of player (id = %)', id_player;
 
@@ -385,8 +437,8 @@ BEGIN
 	END LOOP;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_all_gk\n'
+	RAISE NOTICE
+		E'Function: create_all_gk\n'
 		'Created attribute and statistic goalkeeper'
 		'of player (id = %)', id_player;
 
@@ -407,7 +459,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'età minima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION min_age
 (
@@ -443,7 +495,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che restituisce l'età massima per un calciatore.
  *
  *        NOTA: valore arbitrario ma ottenuto grazie a numerose ricerche
- *              (Wikipidia, Transfermarkt, ...)
+ *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION max_age
 (
@@ -504,9 +556,9 @@ BEGIN
 		player_id = id_player;
 
 	-- DEBUG
-	IF (min_year ID NULL) THEN
-		RAISE NOTICE E
-			'Function: min_militancy_year\n'
+	IF (min_year IS NULL) THEN
+		RAISE NOTICE
+			E'Function: min_militancy_year\n'
 			'Player (id = %) has no militancy', id_player;
 	END IF;
 
@@ -556,9 +608,9 @@ BEGIN
 		player_id = id_player;
 
 	-- DEBUG
-	IF (max_year ID NULL) THEN
-		RAISE NOTICE E
-			'Function: min_militancy_year\n'
+	IF (max_year IS NULL) THEN
+		RAISE NOTICE
+			E'Function: min_militancy_year\n'
 			'Player (id = %) has no militancy', id_player;
 	END IF;
 	
@@ -613,8 +665,7 @@ BEGIN
 	
 	IF (is_retired(id_player)) THEN
 
-		tmp = get_column('fp_player_retired', 'retired_date', id_player);
-		year_retired = extract(year from CAST(tmp AS date));
+		year_retired = extract(year from get_retired_date(id_player));
 
 		e_valid = year_dob + year_retired - 1;
 
@@ -668,8 +719,8 @@ BEGIN
 
 	-- DEBUG
 	IF (NOT retired) THEN
-		RAISE NOTICE E
-			'Function: is_retired\n'
+		RAISE NOTICE
+			E'Function: is_retired\n'
 			'Player (id = %) has not retired yet', id_player;
 	END IF;
 
@@ -723,8 +774,8 @@ BEGIN
 
 	-- DEBUG
 	IF (NOT have) THEN
-		RAISE NOTICE E
-			'Function: is_national\n'
+		RAISE NOTICE
+			E'Function: is_national\n'
 			'Player (id = %) does not have any national militancy', id_player;
 	END IF;
 
@@ -781,14 +832,74 @@ BEGIN
 
 	-- DEBUG
 	IF (id_team IS NULL) THEN
-		RAISE NOTICE E
-			'Function: national_team\n'
+		RAISE NOTICE
+			E'Function: national_team\n'
 			'Player (id = %) does not have any national militancy', id_player;
 	END IF;
 
 
 	RETURN id_team;
 	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_free_militancy
+ *
+ * IN      : integer
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : Funzione che valuta se un calciatore non ha una militanza di un
+ *        tipo specifico in un determinato anno
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_free_militancy
+(
+	IN	type_team	en_team,
+	IN	id_team		integer,
+	IN	id_player	integer,
+	IN	s_year		smallint
+)
+RETURNS boolean
+AS
+$$
+DECLARE
+
+	free	boolean;
+
+BEGIN
+			
+	SELECT
+		count(*) < 1
+	INTO
+		free
+	FROM
+		fp_militancy
+	WHERE
+		team_type = type_team
+		AND
+		team_id <> id_team
+		AND
+		player_id = id_player
+		AND
+		start_year = s_year;
+	
+
+	IF (NOT free) THEN
+		-- DEBUG
+		RAISE NOTICE
+			E'Function: is_free_militancy\n'
+			'Player (id = %) does not have any militancy in %', id_player, s_year;
+	END IF;
+
+
+	RETURN free;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -831,8 +942,8 @@ BEGIN
 
 	IF (NOT has) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: has_militancy\n'
+		RAISE NOTICE
+			E'Function: has_militancy\n'
 			'Player (id = %) does not have any militancy', id_player;
 	END IF;
 
@@ -1036,8 +1147,8 @@ BEGIN
 					);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_gk_tag\n'
+	RAISE NOTICE
+		E'Function: delete_gk_tag\n'
 		'Deleted goalkeeper tags of player (id = %)', id_player;
 
 END;
@@ -1082,8 +1193,8 @@ BEGIN
 					);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_not_role_prize\n'
+	RAISE NOTICE
+		E'Function: delete_not_role_prize\n'
 		'Deleted prize which role is not one of player (id = %)', id_player;
 	
 END;
@@ -1128,8 +1239,8 @@ BEGIN
 					);
 	
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_not_role_trophy\n'
+	RAISE NOTICE
+		E'Function: delete_not_role_trophy\n'
 		'Deleted trophy which role is not one of player (id = %)', id_player;
 
 END;
@@ -1167,8 +1278,8 @@ BEGIN
 		team_type = 'CLUB';
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_club_militancy\n'
+	RAISE NOTICE
+		E'Function: delete_club_militancy\n'
 		'Delete all club militacy of player (id = %)', id_player;
 	
 END;
@@ -1206,8 +1317,8 @@ BEGIN
 		team_type = 'NATIONAL';
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: delete_national_militancy\n'
+	RAISE NOTICE
+		E'Function: delete_national_militancy\n'
 		'Delete all national militacy of player (id = %)', id_player;
 
 
@@ -1252,8 +1363,8 @@ BEGIN
 	END IF;
 	
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: can_be_inside\n'
+	RAISE NOTICE
+		E'Function: can_be_inside\n'
 		'% cannot be inside %', type_in_country, type_super_country;
 
 
@@ -1300,8 +1411,8 @@ BEGIN
 	END IF;
 	
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: is_nation\n'
+	RAISE NOTICE
+		E'Function: is_nation\n'
 		'Country (id =  %) is not a nation', id_country;
 		
 
@@ -1353,8 +1464,8 @@ BEGIN
 
 	IF (NOT have) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: has_edition\n'
+		RAISE NOTICE
+			E'Function: has_edition\n'
 			'Competition (id =  %) does not have editions', id_comp;
 	END IF;
 
@@ -1429,8 +1540,8 @@ BEGIN
 	END IF;
 	
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: corr_freq\n'
+	RAISE NOTICE
+		E'Function: corr_freq\n'
 		'Competition (id =  %) cannot start in year %,'
 		' bad frequency', id_comp, s_year;
 
@@ -1502,8 +1613,8 @@ BEGIN
 	END IF;
 	
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: belong_to\n'
+	RAISE NOTICE
+		E'Function: belong_to\n'
 		'Team (id =  %) does not belong to'
 		' confederation (id = %)', id_team, id_conf;
 	
@@ -1677,8 +1788,8 @@ BEGIN
 
 	IF (NOT have) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: has_place\n'
+		RAISE NOTICE
+			E'Function: has_place\n'
 			'Competition (id = %) in start year (%)'
 			'does not have place\n', id_comp, s_year;
 	END IF;
@@ -1745,8 +1856,8 @@ BEGIN
 		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
 
 			-- DEBUG
-			RAISE NOTICE E
-				'Function: role_fit_positions\n'
+			RAISE NOTICE
+				E'Function: role_fit_positions\n'
 				'Player (id =  %) does not have role %',id_player, role_pos;
 
 			RETURN FALSE;
@@ -1811,8 +1922,8 @@ BEGIN
 	ELSE
 
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: team_fit_comp\n'
+		RAISE NOTICE
+			E'Function: team_fit_comp\n'
 			'Team (id = %) is not compatible to'
 			' competition (id = %)', id_team, id_comp;
 		
@@ -1992,11 +2103,11 @@ BEGIN
 		-- se la squadra di calcio partecipa ad un'edizione simile
 		IF (NOT can) THEN
 			-- DEBUG
-			RAISE NOTICE E
-				'Function: can_take_part\n',
+			RAISE NOTICE
+				E'Function: can_take_part\n'
 				'Team (id = %) cannot partecipate'
 				'to competition (id = %)'
-				' in start year (%)\n',id_team, id_comp, s_year;
+				' in start year (%)', id_team, id_comp, s_year;
 
 			RETURN can;
 
@@ -2057,8 +2168,8 @@ BEGIN
 
 	IF (NOT have) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: has_nationality\n'
+		RAISE NOTICE
+			E'Function: has_nationality\n'
 			'Player (id = %) has not nationatity'
 			' country (id = %)', id_player, id_country;
 	END IF;
@@ -2110,8 +2221,8 @@ BEGIN
 	END IF;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: corr_age_limit\n'
+	RAISE NOTICE
+		E'Function: corr_age_limit\n'
 		' % is not between % and %', year_retired_date - year_birth_date,
 		min_age(), max_age();
 
@@ -2208,8 +2319,8 @@ BEGIN
 
 	IF (NOT free) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: free_militancy\n'
+		RAISE NOTICE
+			E'Function: free_militancy\n'
 			'Player (id = %) cannot have a militancy (type = %)'
 			' starting in year % of type %',
 			id_player, type_team, s_year, type_year;
@@ -2256,8 +2367,8 @@ BEGIN
 		start_year = s_year;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: remove_all_trophy_season\n'
+	RAISE NOTICE
+		E'Function: remove_all_trophy_season\n'
 		'Deleted all trophy won by team (id = %), in year % that'
 		'were assigned to player (id = %)', id_team, s_year, id_player;
 
@@ -2329,8 +2440,8 @@ BEGIN
 	END LOOP;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: assign_all_trophy_season\n'
+	RAISE NOTICE
+		E'Function: assign_all_trophy_season\n'
 		'Assigned all trophy won by team (id = %), in year %'
 		' to player (id = %)', id_team, s_year, id_player;
 
@@ -2435,8 +2546,8 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: new_role\n'
+	RAISE NOTICE
+		E'Function: new_role\n'
 		'Created new role of a player (id = %)', id_player;
 
 
@@ -2497,8 +2608,8 @@ BEGIN
 
 	IF (NOT has) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: team_has_trophy\n'
+		RAISE NOTICE
+			E'Function: team_has_trophy\n'
 			'Team (id = %) did not win the trophy (id = %)'
 			' of the competition edition (competition_id = % , start_year = %)',
 			id_team, id_trophy, id_comp, s_year;
@@ -2619,8 +2730,8 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_attributes\n'
+	RAISE NOTICE
+		E'Function: create_attributes\n'
 		'Created attribute for player (id = %)', id_player;
 
 	tmp = get_column('fp_player', 'role', id_player);
@@ -2640,8 +2751,8 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: create_attributes\n'
+		RAISE NOTICE
+			E'Function: create_attributes\n'
 			'Created goalkeeper attribute for player (id = %)', id_player;
 
 	END IF;
@@ -2712,8 +2823,8 @@ BEGIN
 	END LOOP;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_play_from_militancy\n'
+	RAISE NOTICE
+		E'Function: create_play_from_militancy\n'
 		'Created play from militancy (team_id = % , player_id = % ,'
 		' start_year = %)', id_team, id_player, s_year;
 
@@ -2784,8 +2895,8 @@ BEGIN
 	END LOOP;
 
 	-- DEBUG
-	RAISE NOTICE E
-		'nFunction: create_play_from_partecipation\n'
+	RAISE NOTICE
+		E'Function: create_play_from_partecipation\n'
 		'Created play from partecipation (team_id = % , '
 		'competition_id = % , start_year = %', id_team,id_comp, s_year;
 
@@ -2840,8 +2951,8 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_statistics\n'
+	RAISE NOTICE
+		E'Function: create_statistics\n'
 		'Created general statistics of player (id = %) for play (id = %)',
 		id_player, id_play;
 
@@ -2859,8 +2970,8 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: create_statistics\n'
+		RAISE NOTICE
+			E'Function: create_statistics\n'
 			'Created goalkeeper statistics of player (id = %) for play (id = %)',
 			id_player, id_play;
 		
@@ -2895,7 +3006,7 @@ DECLARE
 	tmp			text;
 
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -2918,8 +3029,8 @@ BEGIN
 	role_player = CAST(tmp AS en_role_mix);
 
 	-- DEBUG
-	RAISE NOTICE E
-		'Function: create_statistics\n'
+	RAISE NOTICE
+		E'Function: create_statistics\n'
 		'Set to zero general statistics of player (id = %)'
 		'for play (id = %)', id_player, id_play;
 
@@ -2934,8 +3045,8 @@ BEGIN
 			play_id = id_play;
 		
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: create_statistics\n'
+		RAISE NOTICE
+			E'Function: create_statistics\n'
 			'Set to zero goalkeeper statistics of player (id = %)'
 			'for play (id = %)', id_player, id_play;
 
@@ -3021,11 +3132,11 @@ BEGIN
 		s_year,
 		type_s_year
 	)
+	ON CONFLICT DO NOTHING
 	RETURNING
 		start_year
 	INTO
-		chek_year
-	ON CONFLICT DO NOTHING;
+		chek_year;
 
 
 	IF (chek_year IS NULL) THEN
@@ -3076,11 +3187,11 @@ BEGIN
 			year,
 			'FULL'
 		)
+		ON CONFLICT DO NOTHING
 		RETURNING
 			start_year
 		INTO
-			chek_year
-		ON CONFLICT DO NOTHING;
+			chek_year;
 
 		
 		IF (chek_year IS NULL) THEN
@@ -3151,11 +3262,11 @@ BEGIN
 		e_year,
 		type_e_year
 	)
+	ON CONFLICT DO NOTHING
 	RETURNING
 		start_year
 	INTO
-		chek_year
-	ON CONFLICT DO NOTHING;
+		chek_year;
 
 	
 	IF (chek_year IS NULL) THEN
@@ -3888,8 +3999,8 @@ BEGIN
 
 	IF (id_team IS NULL) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: national_team_from_country\n'
+		RAISE NOTICE
+			E'Function: national_team_from_country\n'
 			'Country (id = %) has not a national team',id_country;
 	END IF;
 
@@ -3945,8 +4056,8 @@ BEGIN
 
 	IF (NOT has) THEN
 		-- DEBUG
-		RAISE NOTICE E
-			'Function: has_national_militancy\n'
+		RAISE NOTICE
+			E'Function: has_national_militancy\n'
 			'Player (id = %) does not have any militancy'
 			'with team (id = %)', id_player, id_team;
 	END IF;

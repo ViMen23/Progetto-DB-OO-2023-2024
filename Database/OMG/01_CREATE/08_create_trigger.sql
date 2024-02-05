@@ -34,6 +34,18 @@ EXECUTE FUNCTION tf_bi_country();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_country_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento di un paese
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_country_refuse
+BEFORE INSERT ON fp_country
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_ai_country_nation
  *
  * DESC : Trigger che si attiverà dopo l'inserimento di un paese di tipo nazione
@@ -93,6 +105,19 @@ EXECUTE FUNCTION tf_bi_confederation();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_confederation_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una confederazione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_confederation_refuse
+BEFORE INSERT ON fp_confederation
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_confederation_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento
@@ -134,6 +159,19 @@ CREATE OR REPLACE TRIGGER tg_bi_competition
 BEFORE INSERT ON fp_competition
 FOR EACH ROW
 EXECUTE FUNCTION tf_bi_competition();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_competition_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una competizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_competition_refuse
+BEFORE INSERT ON fp_competition
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -496,19 +534,6 @@ FOR EACH ROW
 EXECUTE FUNCTION tf_bd_nationality();
 --------------------------------------------------------------------------------
 
-/*******************************************************************************
- * TYPE : TRIGGER
- * NAME : tg_ad_nationality
- *
- * DESC : Trigger che si attiverà dopo l'eliminazione della nazionalità
- *        di un calciatore
- ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_ad_nationality
-AFTER DELETE ON fp_nationality
-FOR EACH ROW
-EXECUTE FUNCTION tf_ad_nationality();
---------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -608,6 +633,30 @@ WHEN
 	OLD.start_year IS DISTINCT FROM NEW.start_year
 )
 EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bu_militancy
+ *
+ * DESC : Trigger che si attiverà prima dell'aggiornamento di una militanza
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bu_militancy
+BEFORE UPDATE ON fp_militancy
+FOR EACH ROW
+WHEN
+(
+	OLD.team_id IS NOT DISTINCT FROM NEW.team_id
+	AND
+	OLD.team_type IS NOT DISTINCT FROM NEW.team_type
+	AND
+	OLD.player_id IS NOT DISTINCT FROM NEW.player_id
+	AND
+	OLD.start_year IS NOT DISTINCT FROM NEW.start_year
+	AND
+	OLD.type <> 'FULL'
+)
+EXECUTE FUNCTION tf_bu_militancy();
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -732,6 +781,18 @@ EXECUTE FUNCTION tf_au_play_match();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_tag_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento di un tag
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_tag_refuse
+BEFORE INSERT ON fp_tag
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_tag_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento di un tag
@@ -791,6 +852,19 @@ EXECUTE FUNCTION tf_refuse();
 /*******************************************************************************
  * POSITION
  ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_position_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di una posizione calcistica
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_position_refuse
+BEFORE INSERT ON fp_position
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : TRIGGER
@@ -1043,7 +1117,8 @@ EXECUTE FUNCTION tf_bd_attribute_references();
  * NAME : tg_bu_statistic_general_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento del gioco
- *        di riferimento di una statistica generale ******************************************************************************/
+ *        di riferimento di una statistica generale 
+ ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_statistic_general_refuse
 BEFORE UPDATE ON fp_statistic_general
 FOR EACH ROW
@@ -1158,6 +1233,19 @@ EXECUTE FUNCTION tf_bd_statistic_goalkeeper();
 
 /*******************************************************************************
  * TYPE : TRIGGER
+ * NAME : tg_bi_trophy_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di un trofeo calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_trophy_refuse
+BEFORE INSERT ON fp_trophy
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : TRIGGER
  * NAME : tg_bu_trophy_refuse
  *
  * DESC : Trigger che si attiverà prima dell'aggiornamento
@@ -1165,6 +1253,7 @@ EXECUTE FUNCTION tf_bd_statistic_goalkeeper();
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bu_trophy_refuse
 BEFORE UPDATE ON fp_trophy
+FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
@@ -1177,6 +1266,7 @@ EXECUTE FUNCTION tf_refuse();
  ******************************************************************************/
 CREATE OR REPLACE TRIGGER tg_bd_trophy_refuse
 BEFORE DELETE ON fp_trophy
+FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
@@ -1287,6 +1377,19 @@ EXECUTE FUNCTION tf_bd_player_trophy_case();
 /*******************************************************************************
  * PRIZE
  ******************************************************************************/
+
+/*******************************************************************************
+ * TYPE : TRIGGER
+ * NAME : tg_bi_prize_refuse
+ *
+ * DESC : Trigger che rifiuta l'inserimento
+ *        di un premio calcistico
+ ******************************************************************************/
+CREATE OR REPLACE TRIGGER tg_bi_prize_refuse
+BEFORE INSERT ON fp_prize
+FOR EACH ROW
+EXECUTE FUNCTION tf_refuse();
+--------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : TRIGGER

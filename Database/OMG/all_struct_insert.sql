@@ -2570,7 +2570,6 @@ VALUES
 --------------------------------------------------------------------------------
 
 
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -2585,7 +2584,6 @@ VALUES
 /*******************************************************************************
  * INSERT COMPETITION
  ******************************************************************************/
-
 INSERT INTO fp_competition (type, team_type, name, frequency, confederation_id)
 VALUES
 (
@@ -7592,6 +7590,226 @@ VALUES
 	(
 		'@',
 		'fp_confederation@long_name@Federación Salvadoreña de Fútbol'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'FIFA World Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Internationale de Football Association'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'AFC Asian Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'AFC Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'AFC Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'Africa Cup of Nations',
+	2,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CAF Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CAF Confederation Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'CAF Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'	
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'CONCACAF Gold Cup',
+	2,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CONCACAF Champions Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'CONMEBOL Copa América',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Libertadores de América',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Sudamericana',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'CONMEBOL Recopa Sudamericana',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'OFC Nations Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Oceania Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'OFC Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Oceania Football Confederation'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'UEFA European Championship',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Europa League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Conference League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
 	)
 );
 --------------------------------------------------------------------------------

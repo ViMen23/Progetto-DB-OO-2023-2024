@@ -1021,7 +1021,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Funzione che restituisce l'anno di fine di un'edizione di una
+ *        competizione calcistica
+ *
+ *        NOTA: abbiamo applicato una semplificazione giustificata dalle
+ *              numerosissime evidenze date dalle tante ricerche su siti
+ *              specializzati (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION end_year_comp_ed
 (

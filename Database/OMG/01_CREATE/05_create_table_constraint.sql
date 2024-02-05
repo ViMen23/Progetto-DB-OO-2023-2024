@@ -78,7 +78,7 @@ UNIQUE
  * TYPE : CHECK CONSTRAINT - fp_country TABLE
  * NAME : ck_country
  *
- * DESC : TODO
+ * DESC : Controllare che solo il mondo non sia contenuto in altri paesi
  ******************************************************************************/
 ALTER TABLE	fp_country
 ADD CONSTRAINT ck_country
@@ -106,8 +106,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -189,8 +189,8 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -209,8 +209,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -278,8 +278,8 @@ REFERENCES fp_confederation
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -341,8 +341,8 @@ REFERENCES fp_competition
 (
 	id
 )
-ON DELETE CASCADE
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -422,8 +422,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -556,15 +556,15 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
  * NAME : player_fk_position
  *
- * DESC : TODO
+ * DESC : Un calciatore fa riferimento alla sua posizione principale
  ******************************************************************************/
 ALTER TABLE	fp_player
 ADD CONSTRAINT player_fk_position
@@ -576,8 +576,8 @@ REFERENCES fp_position
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 
@@ -677,8 +677,8 @@ REFERENCES fp_country
 (
 	id
 )
-ON DELETE RESTRICT
-ON UPDATE CASCADE;
+ON DELETE NO ACTION
+ON UPDATE NO ACTION;
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
@@ -756,7 +756,7 @@ REFERENCES fp_competition_edition
 	start_year,
 	competition_id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -778,7 +778,7 @@ REFERENCES fp_team
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -880,7 +880,7 @@ REFERENCES fp_team
 	id,
 	type
 )
-ON DELETE CASCADE
+ON DELETE RESTRICT
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1124,7 +1124,7 @@ REFERENCES fp_tag
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1198,7 +1198,7 @@ REFERENCES fp_position
 (
 	id
 )
-ON DELETE RESTRICT
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1208,7 +1208,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi che caratterizzano
+ *        un portiere
  ******************************************************************************/
 CREATE TABLE fp_attribute_goalkeeping
 (
@@ -1233,7 +1234,8 @@ CREATE TABLE fp_attribute_goalkeeping
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_goalkeeping TABLE   
  * NAME : pk_attribute_goalkeeping
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi di un portiere fa riferimento ad
+ *        un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_goalkeeping
 ADD CONSTRAINT pk_attribute_goalkeeping
@@ -1247,7 +1249,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_goalkeeping TABLE
  * NAME : attribute_goalkeeping_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi di un portiere fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_goalkeeping
 ADD CONSTRAINT attribute_goalkeeping_fk_player
@@ -1271,7 +1273,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_mental
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi mentali che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_mental
 (
@@ -1297,7 +1300,7 @@ CREATE TABLE fp_attribute_mental
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_mental TABLE   
  * NAME : pk_attribute_mental
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi mentali fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_mental
 ADD CONSTRAINT pk_attribute_mental
@@ -1311,7 +1314,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute TABLE
  * NAME : attribute_mental_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi mentali fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_mental
 ADD CONSTRAINT attribute_mental_fk_player
@@ -1333,7 +1336,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_physical
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi fisici che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_physical
 (
@@ -1353,7 +1357,7 @@ CREATE TABLE fp_attribute_physical
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_physical TABLE   
  * NAME : pk_attribute_physical
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi fisici fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_physical
 ADD CONSTRAINT pk_attribute_physical
@@ -1367,7 +1371,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_physical TABLE
  * NAME : attribute_physical_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi fisici fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_physical
 ADD CONSTRAINT attribute_physical_fk_player
@@ -1389,7 +1393,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_attribute_technical
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sugli attributi tecnici che
+ *        caratterizzano un calciatore
  ******************************************************************************/
 CREATE TABLE fp_attribute_technical
 (
@@ -1415,7 +1420,7 @@ CREATE TABLE fp_attribute_technical
  * TYPE : PRIMARY KEY CONSTRAINT - fp_attribute_technical TABLE   
  * NAME : pk_attribute_technical
  *
- * DESC : TODO
+ * DESC : Ogni insieme di attributi tecnici fa riferimento ad un solo calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_technical
 ADD CONSTRAINT pk_attribute_technical
@@ -1429,7 +1434,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_attribute_technical TABLE
  * NAME : attribute_technical_fk_player
  *
- * DESC : TODO
+ * DESC : Gli attributi tecnici fanno riferimento ad un calciatore
  ******************************************************************************/
 ALTER TABLE fp_attribute_technical
 ADD CONSTRAINT attribute_technical_fk_player
@@ -1452,7 +1457,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic_general
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sulle statistiche generali che
+ *        caratterizzano un gioco
  ******************************************************************************/
 CREATE TABLE fp_statistic_general
 (
@@ -1469,7 +1475,7 @@ CREATE TABLE fp_statistic_general
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_general TABLE  
  * NAME : pk_statistic_general
  *
- * DESC : TODO
+ * DESC : Ogni insieme di statistiche generali fa riferimento ad un solo gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_general
 ADD CONSTRAINT pk_statistic_general
@@ -1483,7 +1489,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_general TABLE
  * NAME : statistic_general_fk_play
  *
- * DESC : TODO
+ * DESC : Le statistiche generali fanno riferimento ad un gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_general
 ADD CONSTRAINT statistic_general_fk_play
@@ -1504,7 +1510,8 @@ ON UPDATE CASCADE;
  * TYPE : TABLE
  * NAME : fp_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Tabella contenente informazioni sulle statistiche di portiere che
+ *        caratterizzano un gioco
  ******************************************************************************/
 CREATE TABLE fp_statistic_goalkeeper
 (
@@ -1518,7 +1525,7 @@ CREATE TABLE fp_statistic_goalkeeper
  * TYPE : PRIMARY KEY CONSTRAINT - fp_statistic_goalkeeper TABLE  
  * NAME : pk_statistic_goalkeeper
  *
- * DESC : TODO
+ * DESC : Ogni insieme di statistiche di portiere fa riferimento ad un solo gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_goalkeeper
 ADD CONSTRAINT pk_statistic_goalkeeper
@@ -1532,7 +1539,7 @@ PRIMARY KEY
  * TYPE : FOREIGN KEY CONSTRAINT - fp_statistic_goalkeeper TABLE
  * NAME : statistic_goalkeeper_fk_play
  *
- * DESC : TODO
+ * DESC : Le statistiche di portiere fanno riferimento ad un gioco
  ******************************************************************************/
 ALTER TABLE fp_statistic_goalkeeper
 ADD CONSTRAINT statistic_goalkeeper_fk_play
@@ -1687,7 +1694,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1798,7 +1805,7 @@ REFERENCES fp_trophy
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -1914,7 +1921,7 @@ REFERENCES fp_prize
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
@@ -2011,7 +2018,7 @@ REFERENCES fp_prize
 (
 	id
 )
-ON DELETE CASCADE
+ON DELETE NO ACTION
 ON UPDATE CASCADE;
 --------------------------------------------------------------------------------
 
