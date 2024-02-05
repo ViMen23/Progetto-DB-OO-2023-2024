@@ -10,15 +10,13 @@
 
 
 /*******************************************************************************
- * INSERT FP_COMPETITION EDITION
+ * INSERT COMPETITION EDITION
  ******************************************************************************/
 
-INSERT INTO fp_competition_edition (start_year, end_year, total_team, competition_id)
+INSERT INTO fp_competition_edition (start_year, competition_id)
 VALUES
 (
 	2022,
-	2023,
-	20,
 	get_id('@', 'fp_competition@name@Serie A')
 );
 --------------------------------------------------------------------------------

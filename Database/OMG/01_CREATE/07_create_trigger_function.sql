@@ -1062,7 +1062,7 @@ AS
 $$
 BEGIN
 
-	PERFORM create_play_from_partecipation(NEW.team_id, NEW.start_year, NEW.competition_id);
+	PERFORM create_play_from_partecipation(NEW.team_id, NEW.competition_id, NEW.start_year);
 
 
 	RETURN NULL;
@@ -1150,6 +1150,8 @@ BEGIN
 			'player_id = % , start_year = % , type = % )\n'
 			'Trigger Function: tf_bi_militancy()', NEW.team_type, NEW.team_id,
 			NEW.player_id, NEW.start_year, NEW.type;
+			
+		RETURN NULL;
 
 	END IF;
 

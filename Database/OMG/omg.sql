@@ -8544,7 +8544,8 @@ BEGIN
 			'player_id = % , start_year = % , type = % )\n'
 			'Trigger Function: tf_bi_militancy()', NEW.team_type, NEW.team_id,
 			NEW.player_id, NEW.start_year, NEW.type;
-
+			
+		RETURN NULL;
 	END IF;
 
 	RETURN NEW;
