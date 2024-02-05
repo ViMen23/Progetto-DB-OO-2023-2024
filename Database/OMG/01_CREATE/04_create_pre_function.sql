@@ -816,8 +816,7 @@ BEGIN
 			
 			-- se è un constraint che è stato gia incontrato
 			-- la query da eseguire va estesa con le nuove colonne
-			to_execute = to_execute || ' JOIN ' || row_table.table_ref;
-			to_execute = to_execute || ' ON ' || name_table || '.' || row_table.col_to_ref;
+			to_execute = to_execute || ' AND ' || name_table || '.' || row_table.col_to_ref;
 			to_execute = to_execute || ' = ' || row_table.table_ref || '.' || row_table.col_ref;
 			
 		END IF;
@@ -1038,33 +1037,20 @@ DECLARE
 
 	tmp				text;
 
-	type_comp		en_competition;
 	team_type_comp	en_team;
 
 BEGIN
 	
-	tmp = get_column('fp_competition', 'type', id_comp);
-	type_comp = CAST(tmp AS en_competition);
+	tmp = get_column('fp_competition', 'team_type', id_comp);
+	team_type_comp = CAST(tmp AS en_team);
 
-	IF ('LEAGUE' = type_comp) THEN
+		
+	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
-	
-	ELSIF ('SUPER CUP' = type_comp) THEN
+	ELSIF ('NATIONAL' = team_type_comp) THEN
 		RETURN s_year;
-		
-	ELSIF ('CUP' = type_comp) THEN
-		
-		tmp = get_column('fp_competition', 'team_type', id_comp);
-		team_type_comp = CAST(tmp AS en_team);
-
-		IF ('NATIONAL' = team_type_comp) THEN
-			RETURN s_year;
-		
-		ELSIF ('CLUB' = team_type_comp) THEN
-			RETURN s_year + 1;
-		
-		END IF;
 	END IF;
+
 
 	RETURN NULL;
 	

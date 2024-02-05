@@ -112,8 +112,11 @@ BEGIN
 
 	END IF;
 
-	RAISE NOTICE E'Error for Country %\nTrigger Function: tf_bi_country()',
-		NEW.name;
+	-- DEBUG
+	RAISE NOTICE E
+		'Trigger Function: tf_bi_country\n'
+		'Refuse insert for country: %', NEW.name;
+
 
 	RETURN NULL;
 	
@@ -188,8 +191,11 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Error for Confederation %\nTrigger Function:'
-		'tf_bi_confederation()', NEW.long_name;
+	-- DEBUG
+	RAISE NOTICE E
+		'Trigger Function: tf_bi_confederation\n'
+		'Refuse insert for confederation: %', NEW.long_name;
+
 
 	RETURN NULL;
 	
@@ -233,9 +239,12 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	RAISE NOTICE E'Confederation of type % can''t organize competition %'
-		'for team of type %\nTrigger Function: tf_bi_competition()',
-		type_country_conf, NEW.name, NEW.team_type;
+
+	-- DEBUG
+	RAISE NOTICE E
+		'Trigger Function: tf_bi_competition\n'
+		'Refuse insert for competition: %', NEW.name;
+
 
 	RETURN NULL;
 	
@@ -272,9 +281,13 @@ BEGIN
 
 	END IF;	
 
-	RAISE NOTICE E'Error for Competition Edition (competition_id = %, '
-		'start_year = %)\nTrigger Function: tf_bi_confederation()',
+
+	-- DEBUG
+	RAISE NOTICE E
+		'Trigger Function: tf_bi_competition_edition\n'
+		'Refuse insert for competition edition: %',
 		NEW.competition_id, NEW.start_year;
+
 
 	RETURN NULL;
 	
@@ -330,8 +343,13 @@ BEGIN
 
 	END IF;
 	
-	RAISE NOTICE E'Error for Team %\nTrigger Function: tf_bi_team()',
-		NEW.long_name;
+
+	-- DEBUG
+	RAISE NOTICE E
+		'Trigger Function: tf_bi_team\n'
+		'Refuse insert for competition edition: %',
+		NEW.competition_id, NEW.start_year;
+
 
 	RETURN NULL;
 	
