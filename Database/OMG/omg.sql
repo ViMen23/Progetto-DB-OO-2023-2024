@@ -41,7 +41,6 @@ CREATE SCHEMA public;
 CREATE EXTENSION hstore;
 --------------------------------------------------------------------------------
 
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -662,6 +661,147 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : get_from_condition
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_from_condition
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	
+	from_condition	text;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+			
+			-- ...e comincio col preparare la condizione del from
+			from_condition = from_condition || 'FROM ' || name_table || ' WHERE ';
+		
+		-- se si tratta del nome di una colonna
+		ELSIF (1 = (counter % 2)) THEN
+		
+			name_column = row_table.string_to_table;
+			
+			IF (NOT column_exists(name_table, name_column)) THEN
+				RETURN NULL;
+			END IF;
+			
+			type_column = get_type_column(name_table, name_column);
+			
+			-- continuo a costruire la condizione del from
+			from_condition = from_condition || name_column || ' = ';
+		
+		-- se si tratta del valore di una colonna
+		ELSIF (0 = (counter % 2)) THEN
+		
+			value_column = row_table.string_to_table;
+			
+			-- OSSERVAZIONE
+			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
+			-- del nostro database
+			-- essenzialmente i tipi di dati che gestiamo si possono
+			-- dividere in due grandi categorie
+			-- categoria "testo", che contiene chiaramente i varchar,
+			-- text, ma anche date e altro
+			-- e categoria integer, di cui fanno parte i valori numerici.
+			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
+			-- dai tipi e domini creati, Postgresql salvi nel catalogo
+			-- anche l'informazione sui tipi primitivi
+			-- pertanto se nel tipo della colonna non è presente la
+			-- sottostringa 'int' si tratterà di un valore testuale
+			-- che necessita di essere posto tra singoli apici
+			-- per formare correttamente
+			-- la query da eseguire con SQL dinamico
+			IF (NOT type_column LIKE '%int%') THEN 
+				value_column = quote_literal(value_column);
+			END IF;
+			
+			-- aggiungo per permettere la creazione di una condizione del from
+			-- che filtra su più colonne
+			from_condition = from_condition || value_column || ' AND ';
+			
+		END IF;
+		
+		counter = counter + 1;
+		
+	END LOOP;
+	
+	from_condition = trim(from_condition, ' AND ');
+	
+	from_condition = from_condition || ';';
+
+	-- a questo punto, continuando l'esempio proposto nella descrizione
+	-- avremo ottenuto la query:
+	-- 
+	-- FROM
+	-- 		nome_tabella
+	-- WHERE
+	--      nome_colonna1 = valore_colonna1
+	--      AND
+	--      nome_colonna2 = valore_colonna2
+	--      AND
+    --      ...
+	--      AND
+	--      nome_colonnaN = valore_colonnaN;
+	--
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
+	
+
+	RETURN from_condition;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : get_id
  *
  * IN      : text, text
@@ -728,18 +868,13 @@ DECLARE
 	row_table		record;
 	
 	name_column		text;
-	value_column	text;
-	type_column		text;
 	
 	to_execute		text;
+	from_condition	text;
 
 	id_to_find		integer;
 	
 BEGIN
-	
-	to_execute = '';
-
-	id_to_find = NULL;
 	
 	counter = 0;
 
@@ -768,255 +903,31 @@ BEGIN
 				RETURN NULL;
 			END IF;
 			
-			-- ...e comincio col preparare la query da eseguire
-			to_execute = to_execute || 'SELECT id ';
-			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
-		
-		-- se si tratta del nome di una colonna
-		ELSIF (1 = (counter % 2)) THEN
-		
-			name_column = row_table.string_to_table;
-			
-			IF (NOT column_exists(name_table, name_column)) THEN
-				RETURN NULL;
-			END IF;
-			
-			type_column = get_type_column(name_table, name_column);
-			
-			-- continuo a costruire la query da eseguire
-			to_execute = to_execute || name_column || ' = ';
-		
-		-- se si tratta del valore di una colonna
-		ELSIF (0 = (counter % 2)) THEN
-		
-			value_column = row_table.string_to_table;
-			
-			-- OSSERVAZIONE
-			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
-			-- del nostro database
-			-- essenzialmente i tipi di dati che gestiamo si possono
-			-- dividere in due grandi categorie
-			-- categoria "testo", che contiene chiaramente i varchar,
-			-- text, ma anche date e altro
-			-- e categoria integer, di cui fanno parte i valori numerici.
-			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
-			-- dai tipi e domini creati, Postgresql salvi nel catalogo
-			-- anche l'informazione sui tipi primitivi
-			-- pertanto se nel tipo della colonna non è presente la
-			-- sottostringa 'int' si tratterà di un valore testuale
-			-- che necessita di essere posto tra singoli apici
-			-- per formare correttamente
-			-- la query da eseguire con SQL dinamico
-			IF (NOT type_column LIKE '%int%') THEN 
-				value_column = quote_literal(value_column);
-			END IF;
-			
-			-- aggiungo per permettere la creazione di una query
-			-- che filtra su più colonne
-			to_execute = to_execute || value_column || ' AND ';
-			
 		END IF;
-		
+
 		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
 		
 	END LOOP;
-	
-	to_execute = trim(to_execute, ' AND ');
-	
-	to_execute = to_execute || ';';
 
-	-- a questo punto, continuando l'esempio proposto nella descrizione
-	-- avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		id
-	-- FROM
-	-- 		nome_tabella
-	-- WHERE
-	--      nome_colonna1 = valore_colonna1
-	--      AND
-	--      nome_colonna2 = valore_colonna2
-	--      AND
-    --      ...
-	--      AND
-	--      nome_colonnaN = valore_colonnaN;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
 	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	to_execute = '';
+	to_execute = 'SELECT id ';
+	to_execute = to_execute || from_condition;
+
+	id_to_find = NULL;
+
 	EXECUTE to_execute INTO id_to_find;
 	
 
 	RETURN id_to_find;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_column
- *
- * IN      : text, text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : Funzione che restituisce il valore della colonna di una riga
- *        di una tabella sotto forma di testo, prendendo in input il nome
- *        della tabella, il nome della colonna in questione e l'id che
- *        identifica la riga.
- *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
- *              hanno una colonna chiamata id
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_column
-(
-	IN	name_table	text,
-	IN	name_column	text,
-	IN	value_id	integer
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp				integer;
-
-	type_column		text;
-	value_column	text;
-
-	to_execute		text;
-
-	cur_to_execute	refcursor;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-	
-	IF (NOT column_exists(name_table, 'id')) THEN
-		RETURN NULL;
-	END IF;
-
-	IF (NOT column_exists(name_table, name_column)) THEN
-		RETURN NULL;
-	END IF;
-	
-	-- se i controlli hanno dato esito positivo
-	-- costruisco la query da eseguire
-	to_execute = '';
-	to_execute = to_execute || 'SELECT ' || name_column;
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-
-	-- a questo punto avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		name_column
-	-- FROM
-	-- 		name_table
-	-- WHERE
-	--      id = value_id;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
-	
-	OPEN cur_to_execute FOR EXECUTE to_execute;
-	
-	type_column = get_type_column(name_table, name_column);
-	
-	-- se la colonna è di tipo numerico
-	IF (type_column LIKE '%int%') THEN
-		FETCH cur_to_execute INTO tmp;
-		-- è necessario castarla come text 
-		value_column = CAST(tmp AS text); 
-	ELSE
-		FETCH cur_to_execute INTO value_column;
-	END IF;
-	
-	CLOSE cur_to_execute;
-
-
-	RETURN value_column;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_record
- *
- * IN      : text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : record
- *
- * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
- *        input il nome della tabella, e l'id che identifica la riga.
- *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
- *              hanno una colonna chiamata id
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_record
-(
-	IN	name_table	text,
-	IN	value_id	integer
-)
-RETURNS record
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	to_execute	text;
-	rec_table	record;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-
-	IF (NOT column_exists(name_table, 'id')) THEN
-		RETURN NULL;
-	END IF;
-	
-	-- se i controlli hanno dato esito positivo
-	-- costruisco la query da eseguire
-	to_execute = '';
-	to_execute = to_execute || 'SELECT *';
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-	
-	-- a questo punto avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		*
-	-- FROM
-	-- 		name_table
-	-- WHERE
-	--      id = value_id;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
-
-	EXECUTE to_execute INTO rec_table;
-
-
-	RETURN rec_table;
 	
 END;
 $$
@@ -1075,12 +986,12 @@ BEGIN
 
 	RETURN QUERY
 		SELECT
-			CAST(ccu.constraint_name AS text) AS constr,
-			CAST(ccu.table_name AS text) AS table_to_ref,
-			CAST(ccu.column_name AS text) AS col_to_ref,
-			CAST(kcu.table_name AS text) AS table_ref,
-			CAST(kcu.column_name AS text) AS col_ref,
-			CAST(kcu.ordinal_position AS integer) AS col_ord
+			ccu.constraint_name::text AS constr,
+			ccu.table_name::text AS table_to_ref,
+			ccu.column_name::text AS col_to_ref,
+			kcu.table_name::text AS table_ref,
+			kcu.column_name::text AS col_ref,
+			kcu.ordinal_position::integer AS col_ord
 		FROM
 			information_schema.constraint_column_usage AS ccu
 			JOIN
@@ -1303,6 +1214,8 @@ BEGIN
 			--		nome_tabella_che_referenzia1
 			--		ON
 			--			nome_tabella.colonna_referenziata = nome_tabella_che_referenzia1.colonna_che_referenzia
+			--			AND
+			--			...
 			-- ...
 			-- e così via..
 			--
@@ -1367,7 +1280,7 @@ CREATE OR REPLACE FUNCTION list_pk_columns
 )
 RETURNS TABLE
 (
-	name_column		text
+	name_column	text
 )
 RETURNS NULL ON NULL INPUT
 AS
@@ -1376,7 +1289,7 @@ BEGIN
 
 	RETURN QUERY
 		SELECT
-			CAST(column_name AS text) AS name_column  
+			column_name::text AS name_column  
 		FROM
 			information_schema.constraint_column_usage
 		WHERE
@@ -1475,6 +1388,385 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_column
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che restituisce il valore della colonna di una riga
+ *        di una tabella sotto forma di testo, prendendo in input il nome
+ *        della tabella, e le colonne ed i valori delle colonne che permettono
+ *        di identificare univocamente la riga della tabella in questione.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ *
+ *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
+ *              il valore di una colonna in modo univoco
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_column
+(
+	IN	separator		text,
+	IN	input_string	text,
+	IN	column_to_get	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	value_column	text;
+	
+	to_execute		text;
+	from_condition	text;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+			-- mi assicuro che la tabella in questione abbia la colonna che si cerca 
+			IF (NOT column_exists(name_table, column_to_get)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;	
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la colonna che si vuole
+	-- ottenere sia identificata univocamente
+	to_execute = '';
+	to_execute = 'SELECT count(*) ';
+	to_execute = to_execute || from_condition;
+	
+	-- riutilizzo la variabile counter per controllare
+	-- che la riga identificata sia una sola
+	counter = 0;
+	
+	EXECUTE to_execute INTO counter;
+	
+	-- se non ci sono righe
+	IF (0 = counter) THEN
+		RAISE NOTICE
+			E'FUNCTION get_column\n'
+			'Zero rows';
+
+		RETURN NULL;
+
+	-- se c'e' esattamente una riga
+	ELSIF (1 = counter) THEN
+	
+		value_column = NULL;
+		
+		-- preparo la query da eseguire
+		-- per ottenere il valore desiderato
+		-- riutilizzo la variabile to_execute
+		to_execute = '';
+		to_execute = 'SELECT ' || column_to_get || '::text ';
+		to_execute = to_execute || from_condition;
+		
+		EXECUTE to_execute INTO value_column;
+		
+		RETURN value_column;
+	
+	-- se ci sono piu' righe
+	ELSE
+		RAISE NOTICE
+			E'FUNCTION get_column\n'
+			'More than one row';
+
+		RETURN NULL;
+	
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_record
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : record
+ *
+ * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
+ *        input il nome della tabella, e le colonne ed i valori delle colonne
+ *        che permettono di identificare univocamente la riga della tabella.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ *
+ *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
+ *              il valore di una colonna in modo univoco
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_record
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS record
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	to_execute		text;
+	control_query	text;
+	from_condition	text;
+	
+	control_value	boolean;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la riga che si vuole
+	-- ottenere sia identificata univocamente
+	to_execute = '';
+	to_execute = 'SELECT count(*) ';
+	to_execute = to_execute || from_condition;
+	
+	-- riutilizzo la variabile counter per controllare
+	-- che la riga identificata sia una sola
+	counter = 0;
+	
+	EXECUTE to_execute INTO counter;
+	
+	-- se non ci sono righe
+	IF (0 = counter) THEN
+		RAISE NOTICE
+			E'FUNCTION get_record\n'
+			'Zero rows';
+
+		RETURN NULL;
+
+	-- se c'e' esattamente una riga
+	ELSIF (1 = counter) THEN
+	
+		-- riutilizzo la variabile row_table
+		-- per il valore di output
+		row_table = NULL;
+		
+		-- preparo la query da eseguire
+		-- per ottenere il valore desiderato
+		-- riutilizzo la variabile to_execute
+		to_execute = '';
+		to_execute = 'SELECT * ';
+		to_execute = to_execute || from_condition;
+		
+		EXECUTE to_execute INTO row_table;
+		
+		RETURN row_table;
+	
+	-- se ci sono piu' righe
+	ELSE
+		RAISE NOTICE
+			E'FUNCTION get_record\n'
+			'More than one row';
+
+		RETURN NULL;
+	
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : row_exists
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : record
+ *
+ * DESC : Funzione che valuta se una riga di una tabella esiste, prendendo in
+ *        input il nome della tabella, e le colonne ed i valori delle colonne
+ *        che permettono di identificare la riga della tabella.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION row_exists
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	to_execute		text;
+	from_condition	text;
+	
+	existence		boolean;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;	
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la riga che si vuole
+	-- valutare esista
+	to_execute = '';
+	to_execute = 'SELECT count(*) >= 1 ';
+	to_execute = to_execute || from_condition;
+	
+	existence = FALSE;
+	
+	EXECUTE to_execute INTO existence;
+
+	RETURN existence;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
  * FUNCTION IMMUTABLE
  ******************************************************************************/
 
@@ -1507,20 +1799,18 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	team_type_comp	en_team;
 
 BEGIN
 	
-	tmp = get_column('fp_competition', 'team_type', id_comp);
-	team_type_comp = CAST(tmp AS en_team);
-
+	team_type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
 		
 	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
+	
 	ELSIF ('NATIONAL' = team_type_comp) THEN
 		RETURN s_year;
+	
 	END IF;
 
 
@@ -3607,56 +3897,6 @@ PRIMARY KEY
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : world_exists
- *
- * IN      : void
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che controlla se esista gia il mondo
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION world_exists
-(
-)
-RETURNS boolean
-AS
-$$
-DECLARE
-
-	exist	boolean;
-
-BEGIN
-
-	exist = FALSE;
-				
-	SELECT
-		count(*) >= 1
-	INTO
-		exist
-	FROM
-		fp_country
-	WHERE
-		type = 'WORLD';
-
-	-- DEBUG
-	IF (exist) THEN
-		RAISE NOTICE
-			E'Function: world_exists\n'
-			'Reached maximum number of Worlds';
-	END IF;
-
-
-	RETURN exist;
-		
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
  * NAME : all_continent_exists
  *
  * IN      : void
@@ -3672,33 +3912,18 @@ CREATE OR REPLACE FUNCTION all_continent_exists
 RETURNS boolean
 AS
 $$
-DECLARE
-
-	exist	boolean;
-
 BEGIN
 
-	exist = FALSE;
+	RETURN
+	(
+		SELECT
+			count(*) >= 6
+		FROM
+			fp_country
+		WHERE
+			type = 'CONTINENT'
+	);
 
-	SELECT
-		count(*) >= 6
-	INTO
-		exist
-	FROM
-		fp_country
-	WHERE
-		type = 'CONTINENT';
-
-	-- DEBUG
-	IF (exist) THEN
-		RAISE NOTICE
-			E'Function: all_continent_exists\n'
-			'Reached maximum number of Continents';
-	END IF;
-
-
-	RETURN exist;
-	
 END;
 $$
 LANGUAGE plpgsql;
@@ -3729,64 +3954,15 @@ BEGIN
 				
 	IF ('NATION' = type_country) THEN
 		RETURN TRUE;
+	
 	ELSIF ('CONTINENT' = type_country) THEN
 		RETURN (NOT all_continent_exists());
+	
 	ELSIF ('WORLD' = type_country) THEN
-		RETURN (NOT world_exists());
+		RETURN (NOT row_exists('@', 'fp_country@type@WORLD'));
+	
 	END IF;
 	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : conf_from_country
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : Funzione che restituisce la confederazione associata al paese in input
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION conf_from_country
-(
-	IN	id_country	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	id_conf		integer;
-
-BEGIN
-
-	id_conf = NULL;
-
-	SELECT
-		id
-	INTO
-		id_conf
-	FROM
-		fp_confederation
-	WHERE
-		country_id = id_country;
-
-	-- DEBUG
-	IF (id_conf IS NULL) THEN
-		RAISE NOTICE
-			E'Function: conf_from_country\n'
-			'No confederation for country (id = %)', id_country;
-	END IF;
-
-
-	RETURN id_conf;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -3815,22 +3991,13 @@ DECLARE
 
 	rec_country	record;
 
-	id_conf		integer;
-
 BEGIN
 
-	rec_country = get_record('fp_country', id_country);
+	rec_country = get_record('@', 'fp_country@id@' || id_country::text);
 
 
 	IF (rec_country.type <> 'NATION') THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: create_national_team\n'
-			'Error. Cannot create national team.'
-			' Country (id = %) is not a nation', id_country;
-
 		RETURN;
-
 	END IF;
 
 
@@ -3850,11 +4017,6 @@ BEGIN
 		rec_country.code
 	)
 	ON CONFLICT DO NOTHING;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_national_team\n'
-		'Created national team for country (id = %)', id_country;
 
 END;
 $$
@@ -3878,7 +4040,7 @@ CREATE OR REPLACE FUNCTION delete_all_gk
 (
 	IN	id_player	integer
 )
-RETURNS integer
+RETURNS void
 AS
 $$
 BEGIN
@@ -3902,12 +4064,6 @@ BEGIN
 						FROM
 							player_play(id_player)
 					);
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_all_gk\n'
-		'Deleted attribute and statistic goalkeeper'
-		'of player (id = %)', id_player;
 
 END;
 $$
@@ -3973,12 +4129,6 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 	END LOOP;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_all_gk\n'
-		'Created attribute and statistic goalkeeper'
-		'of player (id = %)', id_player;
 
 END;
 $$
@@ -4074,34 +4224,20 @@ CREATE OR REPLACE FUNCTION min_militancy_year
 	IN	id_player	integer
 )
 RETURNS integer
+RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	min_year	integer;
-
 BEGIN
 
-	min_year = NULL;
-
-	SELECT
-		min(start_year)
-	INTO
-		min_year
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player;
-
-	-- DEBUG
-	IF (min_year IS NULL) THEN
-		RAISE NOTICE
-			E'Function: min_militancy_year\n'
-			'Player (id = %) has no militancy', id_player;
-	END IF;
-
-
-	RETURN min_year;
+	RETURN
+	(
+		SELECT
+			min(start_year)
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+	);
 
 END;
 $$
@@ -4126,34 +4262,20 @@ CREATE OR REPLACE FUNCTION max_militancy_year
 	IN	id_player	integer
 )
 RETURNS integer
+RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	max_year	integer;
-
 BEGIN
 
-	max_year = NULL;
-
-	SELECT
-		max(start_year)
-	INTO
-		max_year
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player;
-
-	-- DEBUG
-	IF (max_year IS NULL) THEN
-		RAISE NOTICE
-			E'Function: min_militancy_year\n'
-			'Player (id = %) has no militancy', id_player;
-	END IF;
-	
-
-	RETURN max_year;
+	RETURN
+	(
+		SELECT
+			max(start_year)
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+	);
 
 END;
 $$
@@ -4188,23 +4310,19 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	year_dob		integer;
 	year_retired	integer;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'dob', id_player);
-	year_dob = extract(year from CAST(tmp AS date));
+	year_dob = extract(year from get_column('@', 'fp_player@id@' || id_player::text, 'dob')::date);
 
 	s_valid = year_dob + min_age();
 
-	
-	IF (is_retired(id_player)) THEN
+	-- se il giocatore e' ritirato
+	IF (row_exists('@', 'fp_player_retired@player_id@' || id_player::text)) THEN
 
-		tmp = get_column('fp_player_retired', 'retired_date', id_player);
-		year_retired = extract(year from CAST(tmp AS date));
+		year_retired = extract(year from get_column('@', 'fp_player_retired@player_id@' || id_player::text, 'retired_date')::date);
 
 		e_valid = year_dob + year_retired - 1;
 
@@ -4213,113 +4331,6 @@ BEGIN
 
 	END IF;
 	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : is_retired
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore si sia ritirato o meno
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION is_retired
-(
-	IN	id_player	integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	retired	boolean;	
-
-BEGIN
-
-	retired = FALSE;
-
-	SELECT
-		count(*) >= 1
-	INTO
-		retired
-	FROM
-		fp_player_retired
-	WHERE
-		player_id = id_player;
-
-
-	-- DEBUG
-	IF (NOT retired) THEN
-		RAISE NOTICE
-			E'Function: is_retired\n'
-			'Player (id = %) has not retired yet', id_player;
-	END IF;
-
-
-	RETURN retired;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : is_national
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore ha mai giocato in nazionale
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION is_national
-(
-	IN	id_player	integer
-)
-RETURNS boolean
-AS
-$$
-DECLARE
-
-	have	boolean;
-
-BEGIN
-
-	have = FALSE;
-
-	SELECT
-		count(*) >= 1
-	INTO
-		have
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player
-		AND
-		team_type = 'NATIONAL'
-	LIMIT 1;
-
-
-	-- DEBUG
-	IF (NOT have) THEN
-		RAISE NOTICE
-			E'Function: is_national\n'
-			'Player (id = %) does not have any national militancy', id_player;
-	END IF;
-
-	RETURN have;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -4346,38 +4357,21 @@ RETURNS integer
 RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	id_team	integer;
-
 BEGIN
-
-	id_team = NULL;
-				
-	
-	SELECT
-		team_id
-	INTO
-		id_team
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player
-		AND
-		team_type = 'NATIONAL'
-	LIMIT
-		1;
-
-
-	-- DEBUG
-	IF (id_team IS NULL) THEN
-		RAISE NOTICE
-			E'Function: national_team\n'
-			'Player (id = %) does not have any national militancy', id_player;
-	END IF;
-
-
-	RETURN id_team;
+			
+	RETURN
+	(
+		SELECT
+			team_id
+		FROM
+			fp_militancy
+		WHERE
+			player_id = id_player
+			AND
+			team_type = 'NATIONAL'
+		LIMIT
+			1
+	);
 	
 END;
 $$
@@ -4407,93 +4401,28 @@ CREATE OR REPLACE FUNCTION is_free_militancy
 RETURNS boolean
 AS
 $$
-DECLARE
-
-	free	boolean;
-
 BEGIN
-			
-	SELECT
-		count(*) < 1
-	INTO
-		free
-	FROM
-		fp_militancy
-	WHERE
-		team_type = type_team
-		AND
-		team_id <> id_team
-		AND
-		player_id = id_player
-		AND
-		start_year = s_year;
-	
 
-	IF (NOT free) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: is_free_militancy\n'
-			'Player (id = %) does not have any militancy in %', id_player, s_year;
-	END IF;
-
-
-	RETURN free;
+	RETURN
+	(		
+		SELECT
+			count(*) < 1
+		FROM
+			fp_militancy
+		WHERE
+			team_type = type_team
+			AND
+			team_id <> id_team
+			AND
+			player_id = id_player
+			AND
+			start_year = s_year
+	);
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : has_militancy
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore ha militanze in squadre di calcio
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION has_militancy
-(
-	IN	id_player	integer
-)
-RETURNS boolean
-AS
-$$
-DECLARE
-
-	has	boolean;
-
-BEGIN
-			
-	SELECT
-		count(*) >= 1
-	INTO
-		has
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player;
-	
-
-	IF (NOT has) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: has_militancy\n'
-			'Player (id = %) does not have any militancy', id_player;
-	END IF;
-
-
-	RETURN has;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
 
 
 /*******************************************************************************
@@ -4599,7 +4528,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(CAST(role AS text) in CAST(role_player AS text));
+			0 = position(role::text in role_player::text);
 	
 END;
 $$
@@ -4643,7 +4572,7 @@ BEGIN
 			AND
 			role IS NOT NULL
 			AND
-			0 = position(CAST(role AS TEXT) in CAST(role_player AS text));
+			0 = position(role::text in role_player::text);
 	
 END;
 $$
@@ -4684,11 +4613,6 @@ BEGIN
 						FROM
 							gk_tags()
 					);
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_gk_tag\n'
-		'Deleted goalkeeper tags of player (id = %)', id_player;
 
 END;
 $$
@@ -4731,11 +4655,6 @@ BEGIN
 							not_role_prize(role_player)
 					);
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_not_role_prize\n'
-		'Deleted prize which role is not one of player (id = %)', id_player;
-	
 END;
 $$
 LANGUAGE plpgsql;
@@ -4777,11 +4696,6 @@ BEGIN
 							not_role_trophy(role_player)
 					);
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_not_role_trophy\n'
-		'Deleted trophy which role is not one of player (id = %)', id_player;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -4815,11 +4729,6 @@ BEGIN
 		player_id = id_player
 		AND
 		team_type = 'CLUB';
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_club_militancy\n'
-		'Delete all club militacy of player (id = %)', id_player;
 	
 END;
 $$
@@ -4854,12 +4763,6 @@ BEGIN
 		player_id = id_player
 		AND
 		team_type = 'NATIONAL';
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: delete_national_militancy\n'
-		'Delete all national militacy of player (id = %)', id_player;
-
 
 END;
 $$
@@ -4901,115 +4804,8 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: can_be_inside\n'
-		'% cannot be inside %', type_in_country, type_super_country;
-
-
+	
 	RETURN FALSE;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : is_nation
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un paese è una nazione
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION is_nation
-(
-	IN	id_country	integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp				text;
-
-	type_country	en_country;
-
-BEGIN
-	
-	tmp = get_column('fp_country', 'type', id_country);
-	type_country = CAST(tmp AS en_country);
-
-	IF ('NATION' = type_country) THEN
-		RETURN TRUE;
-	END IF;
-	
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: is_nation\n'
-		'Country (id =  %) is not a nation', id_country;
-		
-
-	RETURN FALSE;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : has_edition
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che dato in input l'id di una competizione calcistica valuta
- *        se essa ha edizioni nel database
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION has_edition
-(
-	IN	id_comp	integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	have	boolean;
-
-BEGIN
-	
-	have = FALSE;
-
-	SELECT
-		count(*) >= 1
-	INTO
-		have
-	FROM
-		fp_competition_edition
-	WHERE
-		competition_id = id_comp;
-
-
-	IF (NOT have) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: has_edition\n'
-			'Competition (id =  %) does not have editions', id_comp;
-	END IF;
-
-
-	RETURN have;
 	
 END;
 $$
@@ -5043,13 +4839,12 @@ DECLARE
 
 	tmp		text;
 
-	freq	integer;
-	a_year	integer;	-- un anno di inizio di un'edizione
+	freq	dm_usint;
+	a_year	smallint;	-- un anno di inizio di un'edizione
 	
 BEGIN
 	
-	tmp = get_column('fp_competition', 'frequency', id_comp);
-	freq = CAST(tmp AS integer);
+	freq = get_column('@', 'fp_competition@id@' || id_comp::text, 'frequency')::dm_usint;
 
 	-- se la frequenza della competizione calcistica è annnuale o irregolare
 	IF (freq <= 1) THEN
@@ -5078,12 +4873,6 @@ BEGIN
 
 	END IF;
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: corr_freq\n'
-		'Competition (id =  %) cannot start in year %,'
-		' bad frequency', id_comp, s_year;
-
 	
 	RETURN FALSE;
 	
@@ -5116,8 +4905,6 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	type_conf		en_country;
 
 	id_country		integer;
@@ -5127,35 +4914,27 @@ DECLARE
 BEGIN
 
 	-- prendo la confederazione di cui la squadra e' membro
-	tmp = get_column('fp_team', 'country_id', id_team);
-	id_country = CAST(tmp AS integer);					
-	
-	id_conf_team = conf_from_country(id_country);
+	id_country = get_column('@', 'fp_team@id@' || id_team::text, 'country_id')::integer;
 
+	id_conf_team = get_column('@', 'fp_confederation@country_id@' || id_country::text, 'id')::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
-	tmp = get_column('fp_confederation', 'super_id', id_conf_team);
-	id_conf_team = CAST(tmp AS integer);
+
+	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
-	tmp = get_column('fp_confederation', 'super_id', id_conf_team);
-	id_conf_team = CAST(tmp AS integer);
+
+	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
-	
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: belong_to\n'
-		'Team (id =  %) does not belong to'
-		' confederation (id = %)', id_team, id_conf;
 	
 
 	RETURN FALSE;
@@ -5197,7 +4976,7 @@ DECLARE
 
 BEGIN
 
-	rec_comp = get_record('fp_competition', id_comp);
+	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
 
 
 	IF ('LEAGUE' = rec_comp.type) THEN
@@ -5253,14 +5032,11 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	type_comp	en_competition;
 
 BEGIN
 
-	tmp = get_column('fp_competition', 'type',id_comp);
-	type_comp = CAST(tmp AS en_competition);
+	type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'type')::en_competition;
 
 
 	IF ('LEAGUE' = type_comp) THEN
@@ -5304,37 +5080,19 @@ RETURNS boolean
 RETURNS NULL ON NULL INPUT
 AS
 $$
-DECLARE
-
-	have	boolean;
-
 BEGIN
 	
-	have = FALSE;
-
-
-	SELECT
-		(count(*) < max_team_comp(id_comp))
-	INTO
-		have
-	FROM
-		fp_partecipation
-	WHERE
-		competition_id = id_comp
-		AND
-		start_year = s_year;
-
-
-	IF (NOT have) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: has_place\n'
-			'Competition (id = %) in start year (%)'
-			'does not have place\n', id_comp, s_year;
-	END IF;
-
-
-	RETURN have;
+	RETURN
+	(
+		SELECT
+			(count(*) < max_team_comp(id_comp))
+		FROM
+			fp_partecipation
+		WHERE
+			competition_id = id_comp
+			AND
+			start_year = s_year
+	);
 
 END;
 $$
@@ -5370,8 +5128,6 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	pos_player	integer;
 	role_pos	en_role;
 
@@ -5389,18 +5145,10 @@ BEGIN
 
 	LOOP
 
-		tmp = get_column('fp_position', 'role', pos_player);
-		role_pos = CAST(tmp AS en_role);
+		role_pos = get_column('@', 'fp_position@id@' || pos_player::text, 'role')::en_role;
 
-		IF (0 = position(CAST(role_pos AS text) IN CAST(role_player AS text))) THEN
-
-			-- DEBUG
-			RAISE NOTICE
-				E'Function: role_fit_positions\n'
-				'Player (id =  %) does not have role %',id_player, role_pos;
-
+		IF (0 = position(role_pos::text IN role_player::text)) THEN
 			RETURN FALSE;
-
 		END IF;
 
 	END LOOP;
@@ -5441,34 +5189,22 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	type_team		en_team;
 	type_team_comp	en_team;
 
 BEGIN
 
-	tmp = get_column('fp_team', 'type', id_team);
-	type_team = CAST(tmp AS en_team);
+	type_team = get_column('@', 'fp_team@id@' || id_team::text, 'type')::en_team;
 
-	tmp = get_column('fp_competition', 'team_type', id_comp);
-	type_team_comp = CAST(tmp AS en_team);
+	type_team_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
 
 
 	IF (type_team = type_team_comp) THEN
 		RETURN TRUE;
-	
-	ELSE
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: team_fit_comp\n'
-			'Team (id = %) is not compatible to'
-			' competition (id = %)', id_team, id_comp;
-		
-		RETURN FALSE;
-
 	END IF;
+
+
+	RETURN FALSE;
 
 END;
 $$
@@ -5507,7 +5243,7 @@ DECLARE
 
 BEGIN
 	
-	rec_comp = get_record('fp_competition', id_comp);
+	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
 
 	RETURN QUERY
 		SELECT
@@ -5560,7 +5296,7 @@ BEGIN
 	RETURN QUERY
 		SELECT
 			competition_id,
-			CAST(start_year AS smallint) 
+			start_year::smallint 
 		FROM
 			fp_competition_edition
 		WHERE
@@ -5609,13 +5345,9 @@ AS
 $$
 DECLARE
 
-	can			boolean;
-
 	rec_comp_ed	record;
 
 BEGIN
-	
-	can = FALSE;
 
 	-- per ogni edizione simile di competizioni calcistiche
 	FOR rec_comp_ed
@@ -5626,100 +5358,21 @@ BEGIN
 			similar_comp_ed(id_comp, s_year)
 	LOOP
 
-		SELECT
-			count(*) < 1
-		INTO
-			can
-		FROM
-			fp_partecipation
-		WHERE
-			team_id = id_team
-			AND
-			competition_id = rec_comp_ed.id_similar_comp
-			AND
-			start_year = rec_comp_ed.same_s_year;
-									
 		-- se la squadra di calcio partecipa ad un'edizione simile
-		IF (NOT can) THEN
-			-- DEBUG
-			RAISE NOTICE
-				E'Function: can_take_part\n'
-				'Team (id = %) cannot partecipate'
-				'to competition (id = %)'
-				' in start year (%)', id_team, id_comp, s_year;
-
-			RETURN can;
-
+		IF (row_exists('@', 'fp_partecipation@team_id@' || id_team::text || '@competition_id@' || rec_comp_ed.id_similar_comp::text || '@start_year@' || rec_comp_ed.same_s_year::text)) THEN
+			RETURN FALSE;
 		END IF;
-	
 
 	END LOOP;
 
 
-	RETURN can;
+	RETURN TRUE;
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : has_nationality
- *
- * IN      : integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore ha una certa nazionalità
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION has_nationality
-(
-	IN	id_player	integer,
-	IN	id_country	integer
-)
-RETURNS boolean
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	have	boolean;
-
-BEGIN
-	
-	have = FALSE;
-
-
-	SELECT
-		count(*) >= 1
-	INTO
-		have
-	FROM
-		fp_nationality
-	WHERE
-		player_id = id_player
-		AND
-		country_id = id_country;
-	
-
-	IF (NOT have) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: has_nationality\n'
-			'Player (id = %) has not nationatity'
-			' country (id = %)', id_player, id_country;
-	END IF;
-
-	
-	RETURN have;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -5759,13 +5412,7 @@ BEGIN
 		RETURN TRUE;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: corr_age_limit\n'
-		' % is not between % and %', year_retired_date - year_birth_date,
-		min_age(), max_age();
-
-
+	
 	RETURN FALSE;
 
 END;
@@ -5796,77 +5443,64 @@ CREATE OR REPLACE FUNCTION free_militancy
 RETURNS boolean
 AS
 $$
-DECLARE
-
-	free	boolean;
-
 BEGIN
-
-	free = FALSE;
 
 	IF ('I PART' = type_year) THEN
 	
-		SELECT
-			count(*) = 0
-		INTO
-			free
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			team_type = type_team
-			AND
-			start_year = s_year
-			AND
-			type IN ('I PART', 'FULL');
+		RETURN
+		(
+			SELECT
+				count(*) = 0
+			FROM
+				fp_militancy
+			WHERE
+				player_id = id_player
+				AND
+				team_type = type_team
+				AND
+				start_year = s_year
+				AND
+				type IN ('I PART', 'FULL')
+		);
 	
 	ELSIF ('II PART' = type_year) THEN
 	
-		SELECT
-			count(*) = 0
-		INTO
-			free
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			team_type = type_team
-			AND
-			start_year = s_year
-			AND
-			type IN ('II PART', 'FULL');
+		RETURN
+		(
+			SELECT
+				count(*) = 0
+			FROM
+				fp_militancy
+			WHERE
+				player_id = id_player
+				AND
+				team_type = type_team
+				AND
+				start_year = s_year
+				AND
+				type IN ('II PART', 'FULL')
+		);
 
 	ELSIF ('FULL' = type_year) THEN
 
-		SELECT
-			count(*) = 0
-		INTO
-			free
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			team_type = type_team
-			AND
-			start_year = s_year;
-		
+		RETURN
+		(
+			SELECT
+				count(*) = 0
+			FROM
+				fp_militancy
+			WHERE
+				player_id = id_player
+				AND
+				team_type = type_team
+				AND
+				start_year = s_year
+		);
+
 	END IF;
 
 
-	IF (NOT free) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: free_militancy\n'
-			'Player (id = %) cannot have a militancy (type = %)'
-			' starting in year % of type %',
-			id_player, type_team, s_year, type_year;
-	END IF;
-
-
-	RETURN free;
+	RETURN FALSE;
 
 END;
 $$
@@ -5904,12 +5538,6 @@ BEGIN
 		team_id = id_team
 		AND
 		start_year = s_year;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: remove_all_trophy_season\n'
-		'Deleted all trophy won by team (id = %), in year % that'
-		'were assigned to player (id = %)', id_team, s_year, id_player;
 
 END;
 $$
@@ -5977,12 +5605,6 @@ BEGIN
 		ON CONFLICT DO NOTHING;
 
 	END LOOP;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: assign_all_trophy_season\n'
-		'Assigned all trophy won by team (id = %), in year %'
-		' to player (id = %)', id_team, s_year, id_player;
 
 END;
 $$
@@ -6075,131 +5697,17 @@ BEGIN
 	LOOP
 
 		-- aggiungi alla combinazione di ruoli del giocatore
-		tmp = tmp || CAST(role_pos AS text);
+		tmp = tmp || role_pos::text;
 		tmp = tmp || '-';
 
 	END LOOP;
 
 	tmp = trim(tmp, '-');
 
-	role_player = CAST(tmp AS en_role_mix);
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: new_role\n'
-		'Created new role of a player (id = %)', id_player;
+	role_player = tmp::en_role_mix;
 
 
 	RETURN role_player;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : team_has_trophy
- *
- * IN      : integer, integer, smallint, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se una squadra di calcio ha vinto un trofeo
- *        associato ad un'edizione di una competizione calcistica
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION team_has_trophy
-(
-	IN	id_team		integer,
-	IN	id_trophy	integer,
-	IN	s_year		smallint,
-	IN	id_comp		integer
-)
-RETURNS boolean
-AS
-$$
-DECLARE
-
-	has	boolean;
-
-BEGIN
-
-	has = FALSE;
-
-	
-	SELECT
-		count(*) >= 1
-	INTO
-		has
-	FROM
-		fp_team_trophy_case
-	WHERE
-		team_id = id_team
-		AND
-		trophy_id = id_trophy
-		AND
-		start_year = s_year
-		AND
-		competition_id = id_comp;
-
-
-	IF (NOT has) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: team_has_trophy\n'
-			'Team (id = %) did not win the trophy (id = %)'
-			' of the competition edition (competition_id = % , start_year = %)',
-			id_team, id_trophy, id_comp, s_year;
-	END IF;
-
-
-	RETURN has;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_type_militancy
- *
- * IN      : integer, integer, smallint
- * INOUT   : void
- * OUT     : void
- * RETURNS : en_season
- *
- * DESC : Funzione che restituisce il tipo di milianza dato in input
- *        un calciatore, una squadra di calcio e un anno di inzio militanza
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_type_militancy
-(
-	IN	id_player	integer,
-	IN	id_team		integer,
-	IN	s_year		smallint
-)
-RETURNS en_season
-AS
-$$
-BEGIN
-
-	RETURN
-	(
-		SELECT
-			type
-		FROM
-			fp_militancy
-		WHERE
-			player_id = id_player
-			AND
-			team_id = id_team
-			AND
-			start_year = s_year
-	);
 
 END;
 $$
@@ -6226,8 +5734,6 @@ RETURNS void
 AS
 $$
 DECLARE
-
-	tmp			text;
 
 	role_player	en_role_mix;
 
@@ -6268,15 +5774,11 @@ BEGIN
 	)
 	ON CONFLICT DO NOTHING;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_attributes\n'
-		'Created attribute for player (id = %)', id_player;
 
-	tmp = get_column('fp_player', 'role', id_player);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	IF ('GK' = role_player) THEN
+
+	IF (role_player::text LIKE '%GK%') THEN
 
 		INSERT INTO
 			fp_attribute_goalkeeping
@@ -6288,11 +5790,6 @@ BEGIN
 			id_player
 		)
 		ON CONFLICT DO NOTHING;
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: create_attributes\n'
-			'Created goalkeeper attribute for player (id = %)', id_player;
 
 	END IF;
 
@@ -6361,12 +5858,6 @@ BEGIN
 
 	END LOOP;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_play_from_militancy\n'
-		'Created play from militancy (team_id = % , player_id = % ,'
-		' start_year = %)', id_team, id_player, s_year;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -6433,12 +5924,6 @@ BEGIN
 
 	END LOOP;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_play_from_partecipation\n'
-		'Created play from partecipation (team_id = % , '
-		'competition_id = % , start_year = %', id_team,id_comp, s_year;
-
 END;
 $$
 LANGUAGE plpgsql;
@@ -6464,8 +5949,6 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	id_player	integer;
 	role_player	en_role_mix;
 
@@ -6483,19 +5966,12 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 
-	tmp = get_column('fp_play', 'player_id', id_play);
-	id_player = CAST(tmp AS integer);
+	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
 
-	tmp = get_column('fp_player', 'role', id_player);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_statistics\n'
-		'Created general statistics of player (id = %) for play (id = %)',
-		id_player, id_play;
 
-	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+	IF (role_player::text LIKE '%GK%') THEN
 
 		INSERT INTO
 			fp_statistic_goalkeeper
@@ -6508,12 +5984,6 @@ BEGIN
 		)
 		ON CONFLICT DO NOTHING;
 
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: create_statistics\n'
-			'Created goalkeeper statistics of player (id = %) for play (id = %)',
-			id_player, id_play;
-		
 	END IF;
 	
 END;
@@ -6542,10 +6012,8 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	id_player	integer;
-	role_player	integer;
+	role_player	en_role_mix;
 
 BEGIN
 
@@ -6561,19 +6029,12 @@ BEGIN
 		play_id = id_play;
 
 
-	tmp = get_column('fp_play', 'player_id', id_play);
-	id_player = CAST(tmp AS integer);
+	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
 
-	tmp = get_column('fp_player', 'role', id_play);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Function: create_statistics\n'
-		'Set to zero general statistics of player (id = %)'
-		'for play (id = %)', id_player, id_play;
 
-	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+	IF (role_player::text LIKE '%GK%') THEN
 
 		UPDATE
 			fp_statistic_goalkeeper
@@ -6582,12 +6043,6 @@ BEGIN
 			penalty_saved = 0
 		WHERE
 			play_id = id_play;
-		
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: create_statistics\n'
-			'Set to zero goalkeeper statistics of player (id = %)'
-			'for play (id = %)', id_player, id_play;
 
 	END IF;
 	
@@ -7053,16 +6508,13 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'role', id_player);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	IF (0 = position('GK' in CAST(role_player AS text))) THEN
+	IF (role_player::text NOT LIKE '%GK%') THEN
 		RETURN;
 	END IF;
 
@@ -7237,21 +6689,18 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	id_player	integer;
 
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'player_id', id_play);
-	id_player = CAST(tmp AS integer);
+	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
 
-	tmp = get_column('fp_player', 'role', id_player);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	IF (0 = position('GK' in CAST(role_player AS text))) THEN
+
+	IF (role_player::text NOT LIKE '%GK%') THEN
 		RETURN;
 	END IF;
 
@@ -7323,48 +6772,31 @@ AS
 $$
 DECLARE
 	
-	tmp				text;
-
-	id_comp			integer;
-
-	s_year			smallint;
-
-	tot_team		integer;
+	rec_play		record;
 
 	match_play		integer;
 
-	id_player		integer;
 	id_pos_player	integer;
 	role_pos_player	en_role;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'competition_id', id_play);
-	id_comp = CAST(tmp AS integer);
+	rec_play = get_record('@', 'fp_play@id@' || id_play::text);
 
-	tmp = get_column('fp_play', 'start_year', id_play);
-	s_year = CAST(tmp AS integer);
+	match_play = random_between(1, max_match_comp(rec_play.competition_id));
 
 
 	UPDATE
 		fp_play
 	SET
-		match = random_between(1, max_match_comp(id_comp))
+		match = match_play
 	WHERE
 		id = id_play;
 
-
-	tmp = get_column('fp_play', 'match', id_play);
-	match_play = CAST(tmp AS integer);
 	
-	tmp = get_column('fp_play', 'player_id', id_play);
-	id_player = CAST(tmp AS integer);
+	id_pos_player = get_column('@', 'fp_player@id@' || rec_play.player_id::text, 'position_id')::integer;
 
-	tmp = get_column('fp_player', 'position_id', id_player);
-	id_pos_player = CAST(tmp AS integer);
-
-	tmp = get_column('fp_position', 'role', id_pos_player);
-	role_pos_player = CAST(tmp AS en_role);
+	role_pos_player = get_column('@', 'fp_position@id@' || id_pos_player::text, 'role')::en_role;
 
 
 	PERFORM set_random_statistic_general(id_play, match_play, role_pos_player);
@@ -7497,120 +6929,6 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
- * TYPE : FUNCTION
- * NAME : national_team_from_country
- *
- * IN      : integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : Funzione che restituisce la squadra nazionale dato un paese
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION national_team_from_country
-(
-	IN id_country	integer
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	id_team	integer;
-
-BEGIN
-
-	id_team = NULL;
-
-
-	SELECT
-		id
-	INTO
-		id_team
-	FROM
-		fp_team
-	WHERE
-		country_id = id_country
-		AND
-		type = 'NATIONAL';
-
-
-	IF (id_team IS NULL) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: national_team_from_country\n'
-			'Country (id = %) has not a national team',id_country;
-	END IF;
-
-
-	RETURN id_team;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : has_national_militancy
- *
- * IN      : integer, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : Funzione che valuta se un calciatore ha militanze
- *        per una certa squadra di calcio nazionale
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION has_national_militancy
-(
-	IN	id_player	integer,
-	IN	id_team		integer
-)
-RETURNS boolean
-AS
-$$
-DECLARE
-
-	has	boolean;
-
-BEGIN
-			
-	SELECT
-		count(*) >= 1
-	INTO
-		has
-	FROM
-		fp_militancy
-	WHERE
-		player_id = id_player
-		AND
-		team_id = id_team
-		AND
-		team_type = 'NATIONAL'
-	LIMIT 1;
-	
-
-	IF (NOT has) THEN
-		-- DEBUG
-		RAISE NOTICE
-			E'Function: has_national_militancy\n'
-			'Player (id = %) does not have any militancy'
-			'with team (id = %)', id_player, id_team;
-	END IF;
-
-
-	RETURN has;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
  * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY
@@ -7643,18 +6961,24 @@ $$
 BEGIN
 
 	IF (NOT is_referenced('@', string_for_reference('@', TG_TABLE_NAME, OLD))) THEN
+		
 		IF ('UPDATE' = TG_OP) THEN
 			RETURN NEW;
+	
 		ELSIF ('DELETE' = TG_OP) THEN
 			RETURN OLD;
+	
 		END IF;
+	
 	END IF;
 	
 	
 	IF ('UPDATE' = TG_OP) THEN
 		RETURN OLD;
+	
 	ELSIF ('DELETE' = TG_OP) THEN
 		RETURN NULL;
+	
 	END IF;
 	
 	
@@ -7680,10 +7004,13 @@ BEGIN
 
 	IF ('INSERT' = TG_OP) THEN
 		RETURN NULL;
+	
 	ELSIF ('UPDATE' = TG_OP) THEN
 		RETURN OLD;
+	
 	ELSIF ('DELETE' = TG_OP) THEN
 		RETURN NULL;
+	
 	END IF;
 	
 END;
@@ -7707,27 +7034,19 @@ AS
 $$
 DECLARE
 
-	tmp					text;
-
 	type_super_country	en_country;
 
 BEGIN
 
 	IF (place_for_country(NEW.type)) THEN
 
-		tmp = get_column('fp_country', 'type', NEW.super_id);
-		type_super_country = CAST(tmp AS en_country);
+		type_super_country = get_column('@', 'fp_country@id@' || NEW.super_id::text, 'type')::en_country;
 
 		IF (can_be_inside(NEW.type, type_super_country)) THEN
 			RETURN NEW;
 		END IF;
 
 	END IF;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_country\n'
-		'Refuse insert for country: (name = %)', NEW.name;
 
 
 	RETURN NULL;
@@ -7780,35 +7099,27 @@ AS
 $$
 DECLARE
 
-	tmp					text;
+	type_country		en_country;
 
 	id_country_super	integer;
-
-	type_country		en_country;
 	type_country_super	en_country;
 
 
 BEGIN
 
-	tmp = get_column('fp_country', 'type', NEW.country_id);
-	type_country = CAST(tmp AS en_country);
+	type_country = get_column('@', 'fp_country@id@' || NEW.country_id::text, 'type')::en_country;
 
-	tmp = get_column('fp_confederation', 'country_id', NEW.super_id);
-	id_country_super = CAST(tmp AS integer);
-	tmp = get_column('fp_country', 'type', id_country_super);
-	type_country_super = CAST(tmp AS en_country);
+
+	id_country_super = get_column('@', 'fp_confederation@id@' || NEW.super_id::text, 'country_id')::integer;
+
+	type_country_super = get_column('@', 'fp_country@id@' || id_country_super::text, 'type')::en_country;
 
 
 	IF (can_be_inside(type_country, type_country_super)) THEN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_confederation\n'
-		'Refuse insert for confederation: (long name = %)', NEW.long_name;
-
-
+	
 	RETURN NULL;
 	
 END;
@@ -7832,30 +7143,20 @@ AS
 $$
 DECLARE
 
-	tmp					text;
-
 	id_country_conf		integer;
 	type_country_conf	en_country;
 
 BEGIN
 
-	tmp = get_column('fp_confederation', 'country_id', NEW.confederation_id);
-	id_country_conf = CAST(tmp AS integer);
+	id_country_conf = get_column('@', 'fp_confederation@id@' || NEW.confederation_id::text, 'country_id')::integer;
 
-	tmp = get_column('fp_country', 'type', id_country_conf);
-	type_country_conf = CAST(tmp AS en_country);
+	type_country_conf = get_column('@', 'fp_country@id@' || id_country_conf::text, 'type')::en_country;
 
 	-- non possono esistere competizioni per squadre nazionali
 	-- organizzate da una confederazione nazionale
 	IF (type_country_conf <> 'NATION' OR NEW.team_type <> 'NATIONAL') THEN
 		RETURN NEW;
 	END IF;
-
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_competition\n'
-		'Refuse insert for competition: (name = %)', NEW.name;
 
 
 	RETURN NULL;
@@ -7881,7 +7182,8 @@ AS
 $$
 BEGIN
 
-	IF (NOT has_edition(NEW.competition_id)) THEN
+	-- se la competizione non ha edizioni
+	IF (NOT row_exists('@', 'fp_competition_edition@competition_id@' || NEW.competition_id::text)) THEN
 		RETURN NEW;
 
 	ELSE
@@ -7892,13 +7194,6 @@ BEGIN
 		END IF;
 
 	END IF;	
-
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_competition_edition\n'
-		'Refuse insert for competition edition: (comp_id = %, s_year = %)',
-		NEW.competition_id, NEW.start_year;
 
 
 	RETURN NULL;
@@ -7924,13 +7219,12 @@ AS
 $$
 DECLARE
 
-	code_country	text;
-	name_country 	text;
+	rec_country	record;
 
 BEGIN
 
 	-- se la squadra è associata ad una nazione
-	IF (is_nation(NEW.country_id)) THEN
+	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
 
 		IF ('CLUB' = NEW.type) THEN
 			RETURN NEW;
@@ -7939,10 +7233,9 @@ BEGIN
 		-- della nazione cui è associata		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
-			code_country = get_column('fp_country', 'code', NEW.country_id);
-			name_country = get_column('fp_country', 'name', NEW.country_id);
-
-			IF (NEW.short_name = code_country AND NEW.long_name = name_country) THEN
+			rec_country = get_record('@', 'fp_country@id@' || NEW.country_id::text);
+			
+			IF (NEW.short_name = rec_country.code AND NEW.long_name = rec_country.name) THEN
 				RETURN NEW;
 			END IF;
 				
@@ -7950,12 +7243,6 @@ BEGIN
 
 	END IF;
 	
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_team\n'
-		'Refuse insert for team: (long name = %)', NEW.long_name;
-
 
 	RETURN NULL;
 	
@@ -7980,16 +7267,13 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	role_pos	en_role_mix;
 
 BEGIN
 
-	IF (is_nation(NEW.country_id)) THEN
+	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
 
-		tmp = get_column('fp_position', 'role', NEW.position_id);
-		role_pos = CAST(tmp AS en_role_mix);
+		role_pos = get_column('@','fp_position@id@' || NEW.position_id::text, 'role')::en_role_mix;
 
 		IF (NEW.role = role_pos) THEN
 			RETURN NEW;
@@ -7997,12 +7281,7 @@ BEGIN
 
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_player\n'
-		'Refuse insert for player: (name = %, surname = %)',
-		NEW.name, NEW.surname;
-
+	
 	RETURN NULL;
 	
 END;
@@ -8081,15 +7360,10 @@ AS
 $$
 BEGIN
 
-	IF (is_nation(NEW.country_id)) THEN
+	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bu_player_country\n'
-		'Refuse update born country for player: (name = %, surname = %)',
-		NEW.name, NEW.surname;
 
 	RETURN OLD;
 	
@@ -8114,60 +7388,42 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	retired_date	date;
 
 	born_year		integer;
 
-	temp			boolean;
-
 BEGIN
 
-	temp = TRUE;
+	IF (row_exists('@', 'fp_player_retired@player_id@' || NEW.id::text)) THEN
 
-	IF (is_retired(NEW.id)) THEN
-
-		tmp = get_column('fp_player_retired', 'retired_date', NEW.id);
-		retired_date = CAST(tmp AS date);
+		retired_date = get_column('@', 'fp_player_retired@player_id@' || NEW.id::text, 'retired_date')::date;
 
 		IF (NOT corr_age_limit(NEW.dob, retired_date)) THEN
-			temp = FALSE;
+			RETURN OLD;
 		END IF;
 	
 	END IF;
 
-
-	IF (has_militancy(NEW.id)) THEN
+	-- se il calciatore ha una qualunque militanza
+	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.id::text)) THEN
 
 		born_year = extract(year from NEW.dob);
 
 		IF (min_militancy_year(NEW.id) - born_year < min_age()) THEN
-			temp = FALSE;
+			RETURN OLD;
 		END IF;
 
 
-		IF (NOT is_retired(NEW.id)) THEN
+		IF (NOT row_exists('@', 'fp_player_retired@player_id@' || NEW.id::text)) THEN
 
 			IF (max_militancy_year(NEW.id) - born_year > max_age()) THEN
-				temp = FALSE;
+				RETURN OLD;
 			END IF;
 
 		END IF;
 		
 	END IF;
 
-	IF (NOT temp) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bu_player_dob\n'
-			'Refuse update dob for player: (name = %, surname = %)',
-			NEW.name, NEW.surname;
-
-		RETURN OLD;
-
-	END IF;
 
 	RETURN NEW;
 		
@@ -8197,12 +7453,6 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bu_player_dob\n'
-		'Refuse update role for player: (name = %, surname = %)',
-		NEW.name, NEW.surname;
-
 
 	RETURN OLD;
 	
@@ -8228,7 +7478,6 @@ RETURNS trigger
 AS
 $$
 BEGIN
-
 
 	INSERT INTO
 		fp_nationality
@@ -8306,16 +7555,20 @@ $$
 BEGIN
 	
 	-- se il calciatore ha perso il ruolo di portiere
-	IF ((CAST(OLD.role AS text) LIKE '%GK%') AND (CAST(NEW.role AS text) NOT LIKE '%GK%')) THEN
+	IF ((OLD.role::text LIKE '%GK%') AND (NEW.role::text NOT LIKE '%GK%')) THEN
 		PERFORM delete_all_gk(NEW.id);
-	ELSIF ((CAST(OLD.role AS text) NOT LIKE '%GK%') AND (CAST(NEW.role AS text) LIKE '%GK%')) THEN
+	
+	ELSIF ((OLD.role::text NOT LIKE '%GK%') AND (NEW.role::text LIKE '%GK%')) THEN
 		PERFORM create_all_gk(NEW.id);
+	
 	END IF;
 	
 
 	PERFORM delete_not_role_trophy(NEW.id, NEW.role);
+	
 	PERFORM delete_not_role_prize(NEW.id, NEW.role);
 	
+
 	RETURN NULL;
 
 END;
@@ -8339,45 +7592,26 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	born_date		date;
 	retired_year	integer;
 
-	temp			boolean;
-
 BEGIN
 
-	temp = TRUE;
-
-	tmp = get_column('fp_player', 'dob', NEW.player_id);
-	born_date = CAST(tmp AS date);
+	born_date = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'dob')::date;
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		temp = FALSE;
+		RETURN NULL;
 	END IF;
 	
 
-	IF (has_militancy(NEW.player_id)) THEN
+	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.player_id::text)) THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
-			temp = FALSE;
+			RETURN NULL;
 		END IF;
 	
-	END IF;
-
-	IF (NOT temp) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bi_player_retired\n'
-			'Refuse insert player retired: (player id = %)', NEW.player_id;
-
-
-		RETURN NULL;
-
 	END IF;
 
 
@@ -8404,45 +7638,29 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	born_date		date;
 	retired_year	integer;
 
-	temp			boolean;
-
 BEGIN
 
-	temp = TRUE;
 
-	tmp = get_column('fp_player', 'dob', NEW.player_id);
-	born_date = CAST(tmp AS date);
+	born_date = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'dob')::date;
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
-		temp = FALSE;	
+		RETURN OLD;	
 	END IF;
 	
 
-	IF (has_militancy(NEW.player_id)) THEN
+	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.player_id::text)) THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
 		IF (max_militancy_year(NEW.player_id) >= retired_year) THEN
-			temp = FALSE;
+			RETURN OLD;
 		END IF;
 	
 	END IF;
 
-	IF (NOT temp) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bu_player_retired_date\n'
-			'Refuse update player retired date: (player id = %)', NEW.player_id;
-
-		RETURN OLD;
-
-	END IF;
 
 	RETURN NEW;
 	
@@ -8467,15 +7685,10 @@ AS
 $$
 BEGIN
 
-	IF (is_nation(NEW.country_id)) THEN
+	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_nationality\n'
-		'Refuse insert nationality: (country id = %, player id = %)',
-		NEW.country_id, NEW.player_id;
 
 	RETURN NULL;
 
@@ -8500,25 +7713,32 @@ AS
 $$
 DECLARE
 
-	tmp					text;
-
 	id_country_player	integer;
+
+	id_team				integer;
+
+	id_country_team		integer;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'country_id', OLD.player_id);
-	id_country_player = CAST(tmp AS integer);
+	id_country_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'country_id')::integer;
 
 
 	IF (OLD.country_id = id_country_player) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bd_nationality\n'
-			'Refuse delete nationality: (country id = %, player id = %)',
-			OLD.country_id, OLD.player_id;
-
 		RETURN NULL;
+	END IF;
+
+	-- se il giocatore ha militato in una nazionale
+	IF (row_exists('@', 'fp_militancy@team_type@NATIONAL@player_id@' || OLD.player_id::text)) THEN
+
+		id_team = national_team(OLD.player_id);
+
+		id_country_team = get_column('@', 'fp_team@id@' || id_team::text, 'country_id')::integer;
+
+		
+		IF (OLD.country_id = id_country_team) THEN
+			RETURN NULL;
+		END IF;
 
 	END IF;
 
@@ -8530,50 +7750,6 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : TRIGGER FUNCTION
- * NAME : tf_ad_nationality
- *
- * DESC : Funzione che dopo l'eliminazione di una nazionalità elimina
- *        la militanza nazionale associata alla nazione
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION tf_ad_nationality
-(
-)
-RETURNS trigger
-AS
-$$
-DECLARE
-
-	tmp			text;
-
-	id_country	integer;
-
-	id_team		integer;
-
-BEGIN
-
-	IF (is_national(OLD.player_id)) THEN
-
-		id_team = national_team();
-
-		tmp = get_column('fp_team', 'country_id', id_team);
-		id_country = CAST(tmp AS integer);
-
-		
-		IF (OLD.country_id = id_country) THEN
-			PERFORM delete_national_militancy(OLD.player_id);
-		END IF;
-
-	END IF;
-	
-	RETURN NULL;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -8592,14 +7768,11 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	id_conf_comp	integer;
 
 BEGIN
 
-	tmp = get_column('fp_competition', 'confederation_id', NEW.competition_id);
-	id_conf_comp = CAST(tmp AS integer);
+	id_conf_comp = get_column('@', 'fp_competition@id@' || NEW.competition_id::text, 'confederation_id')::integer;
 
 
 	IF
@@ -8620,12 +7793,6 @@ BEGIN
 		RETURN NEW;
 	END IF;
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_partecipation\n'
-		'Refuse insert partecipation: (comp id = %, s_year = %, team id = %)',
-		NEW.competition_id, NEW.start_year, NEW.team_id;
-
 
 	RETURN NULL;
 	
@@ -8676,18 +7843,12 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	start_valid	integer;
 	end_valid	integer;
 
 	id_country	integer;
 
-	temp		boolean;
-
 BEGIN
-
-	temp = TRUE;
 
 	SELECT
 		*
@@ -8698,46 +7859,38 @@ BEGIN
 		valid_year_range(NEW.player_id);
 
 	-- la militanza deve essere in un anno valido
-	IF (NEW.start_year BETWEEN start_valid AND end_valid) THEN
-
-		IF ('NATIONAL' = NEW.team_type) THEN
-
-			tmp = get_column('fp_team', 'country_id', NEW.team_id);
-			id_country = CAST(tmp AS integer);
-
-			IF (NOT has_nationality(NEW.player_id, id_country)) THEN
-				temp = FALSE;
-			END IF;
-
-			IF (is_national(NEW.player_id)) THEN
-
-				-- se è una militanza nazionale e il calciatore ha gia
-				-- militato in nazionale la squadra deve essere la stessa
-				IF (national_team(NEW.player_id) <> NEW.team_id) THEN
-					temp = FALSE;
-				END IF;
-
-			END IF;
-
-		END IF;
-
-		IF (NOT free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
-			temp = FALSE;
-		END IF;
-		
-	END IF;
-
-	IF (NOT temp) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bi_militancy\n'
-			'Refuse insert militancy: (player id = %, s_year = %, team id = %)',
-			NEW.player_id, NEW.start_year, NEW.team_id;
-			
+	IF (NEW.start_year NOT BETWEEN start_valid AND end_valid) THEN
 		RETURN NULL;
+	END IF;
+
+
+	IF ('NATIONAL' = NEW.team_type) THEN
+
+		id_country = get_column('@', 'fp_team@id@' || NEW.team_id::text, 'country_id')::integer;
+
+		-- se il calciatore non ha la nazionalita' del paese della squadra nazionale in questione
+		IF (NOT row_exists('@', 'fp_nationality@player_id@' || NEW.player_id::text || '' |'@country_id@'| id_country::text)) THEN
+			RETURN NULL;
+		END IF;
+
+		-- se il giocatore ha militato in una nazionale
+		IF (row_exists('@', 'fp_militancy@team_type@NATIONAL@player_id@' || NEW.player_id::text)) THEN
+
+			-- se è una militanza nazionale e il calciatore ha gia
+			-- militato in nazionale la squadra deve essere la stessa
+			IF (national_team(NEW.player_id) <> NEW.team_id) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;
 
 	END IF;
+
+
+	IF (NOT free_militancy(NEW.player_id, NEW.team_type, NEW.start_year, NEW.type)) THEN
+		RETURN NULL;
+	END IF;
+
 
 	RETURN NEW;
 	
@@ -8765,7 +7918,6 @@ BEGIN
 
 	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
-
 	END IF;
 
 
@@ -8863,11 +8015,6 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_play\n'
-		'Refuse insert play: (play id = %)', NEW.play_id;
-
 
 	RETURN NULL;
 	
@@ -8927,11 +8074,6 @@ BEGIN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bu_play_match\n'
-		'Refuse update play match: (play id = %)', NEW.play_id;
-
 
 	RETURN OLD;
 	
@@ -8985,32 +8127,21 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	goalkeeper	boolean;
 
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_tag', 'goalkeeper', NEW.tag_id);
-	goalkeeper = CAST(tmp AS boolean);
+	goalkeeper = get_column('@', 'fp_tag@id@' || NEW.tag_id::text, 'goalkeeper')::boolean;
 	
+
 	IF (goalkeeper) THEN
 	
-		tmp = get_column('fp_player', 'role', NEW.player_id);
-		role_player = CAST(tmp AS en_role_mix);
+		role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
 
-		IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
-
-			-- DEBUG
-			RAISE NOTICE
-				E'Trigger Function: tf_bi_player_tag\n'
-				'Refuse insert player_tag: (player id = %, tag id = %)',
-				NEW.player_id, NEW.tag_id;
-
+		IF (role_player::text NOT LIKE '%GK%') THEN
 			RETURN NULL;
-
 		END IF;
 		
 	END IF;
@@ -9040,8 +8171,6 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	role_player		en_role_mix;
 	new_role_player	en_role_mix;
 
@@ -9049,9 +8178,8 @@ BEGIN
 
 	new_role_player = new_role(NEW.player_id);
 
+	role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
 
-	tmp = get_column('fp_player', 'role', NEW.player_id);
-	role_player = CAST(tmp AS en_role_mix);
 
 	IF (role_player <> new_role_player) THEN
 		
@@ -9089,31 +8217,23 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	id_pos_player	integer;
 
 BEGIN
 
-	id_pos_player = NULL;
+	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
 
-	tmp = get_column('fp_player', 'position_id', OLD.player_id);
-	id_pos_player = CAST(tmp AS integer);
+		id_pos_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'position_id')::integer;
+	
+		IF (id_pos_player = OLD.position_id) THEN
+			RETURN NULL;
+		END IF;
 
-
-	IF ((id_pos_player IS NULL) OR (id_pos_player <> OLD.position_id)) THEN
-		RETURN OLD;
 	END IF;
-	
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bd_player_position\n'
-		'Refuse delete player_position: (player id = %, position id = %)',
-		OLD.player_id, OLD.player_id;
 
-	RETURN NULL;
-	
+	RETURN OLD;
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -9135,31 +8255,31 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	role_player		en_role_mix;
 	new_role_player	en_role_mix;
 
 BEGIN
 
-	new_role_player = new_role(OLD.player_id);
+	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+
+		role_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'role')::en_role_mix;
+
+		new_role_player = new_role(OLD.player_id);
 
 
-	tmp = get_column('fp_player', 'role', OLD.player_id);
-	role_player = CAST(tmp AS en_role_mix);
+		IF (role_player <> new_role_player) THEN
+			
+			UPDATE
+				fp_player
+			SET
+				role = new_role_player
+			WHERE
+				id = OLD.player_id;
 
-
-	IF (role_player <> new_role_player) THEN
+		END IF;
 		
-		UPDATE
-			fp_player
-		SET
-			role = new_role_player
-		WHERE
-			id = OLD.player_id;
-
 	END IF;
-	
+
 
 	RETURN NULL;
 	
@@ -9184,24 +8304,15 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_player', 'role', NEW.player_id);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
 
-	IF (CAST(role_player AS text) NOT LIKE '%GK%') THEN
 
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bi_attribute_goalkeeping\n'
-			'Refuse insert attribute_goalkeeping: (player id = %)', NEW.player_id;
-
+	IF (role_player::text NOT LIKE '%GK%') THEN
 		RETURN NULL;
-
 	END IF;
 
 
@@ -9229,29 +8340,21 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	role_player	en_role_mix;
 
 BEGIN
 
-	role_player = NULL;
+	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
 
-	tmp = get_column('fp_player', 'role', OLD.player_id);
-	role_player = CAST(tmp AS en_role_mix);
+		role_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'role')::en_role_mix;
 
-	IF ((role_player IS NOT NULL) AND (CAST(role_player AS text) LIKE '%GK%')) THEN
-
-		-- DEBUG
-		RAISE NOTICE
-			E'Trigger Function: tf_bd_attribute_goalkeeping\n'
-			'Refuse delete attribute_goalkeeping: (player id = %)', OLD.player_id;
-
-		RETURN NULL;	
+		IF (role_player::text LIKE '%GK%') THEN
+			RETURN NULL;
+		END IF;
 
 	END IF;
 
-	
+
 	RETURN OLD;
 	
 END;
@@ -9273,30 +8376,14 @@ CREATE OR REPLACE FUNCTION tf_bd_attribute_references
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tmp			text;
-
-	id_player	integer;
-
 BEGIN
 
-	id_player = NULL;
-
-	tmp = get_column('fp_player', 'id', OLD.player_id);
-	id_player = CAST(tmp AS integer);
-
-	IF (id_player IS NULL) THEN
-		RETURN OLD;	
+	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+		RETURN NULL;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bd_attribute_references\n'
-		'Refuse delete attribute: (player id = %)', OLD.player_id;
 	
-
-	RETURN NULL;
+	RETURN OLD;
 	
 END;
 $$
@@ -9319,24 +8406,52 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
-	match_play	integer;
+	match_play	dm_usint;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'match', NEW.play_id);
-	match_play = CAST(tmp AS integer);
+	match_play = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'match')::dm_usint;
+
 
 	IF (match_play > 0) THEN
-		RETURN NEW;	
+		RETURN NEW;
+	
+	ELSIF (0 = match_play) THEN
+
+		IF ('fp_statistic_general' = TG_TABLE_NAME) THEN
+
+			IF
+			(
+				0 = NEW.goal_scored
+				AND
+				0 = NEW.assist
+				AND
+				0 = NEW.yellow_card
+				AND
+				0 = NEW.red_card
+				AND
+				0 = NEW.penalty_scored
+			)
+			THEN
+				RETURN NEW;
+			END IF;
+
+		ELSIF ('fp_statistic_goalkeeper' = TG_TABLE_NAME) THEN
+
+			IF
+			(
+				0 = NEW.goal_conceded
+				AND
+				0 = NEW.penalty_saved
+			)
+			THEN
+				RETURN NEW;
+			END IF;
+
+		END IF;
+
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bu_statistic\n'
-		'Refuse update statistic: (play id = %)', NEW.play_id;
-	
 
 	RETURN OLD;
 	
@@ -9358,29 +8473,14 @@ CREATE OR REPLACE FUNCTION tf_bd_statistic_general
 RETURNS trigger
 AS
 $$
-DECLARE
-
-	tmp		text;
-
-	id_play	integer;
-
 BEGIN
 
-	id_play = NULL;
-
-	tmp = get_column('fp_play', 'id', OLD.play_id);
-	id_play = CAST(tmp AS integer);
-
-	IF (id_play IS NULL) THEN
-		RETURN OLD;	
+	IF (row_exists('@', 'fp_play@id@' || OLD.play_id::text)) THEN
+		RETURN NULL;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bd_statistic_general\n'
-		'Refuse delete statistic_general: (play id = %)', OLD.play_id;
 	
-	RETURN NULL;
+	RETURN OLD;
 	
 END;
 $$
@@ -9403,28 +8503,21 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	id_player	integer;
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'player_id', NEW.play_id);
-	id_player = CAST(tmp AS integer);
+	id_player = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'player_id')::integer;
 
-	tmp = get_column('fp_player', 'role', id_player);
-	role_player = CAST(tmp AS en_role_mix);
+	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-	IF (CAST(role_player AS text) LIKE '%GK%') THEN
+	
+	IF (role_player::text LIKE '%GK%') THEN
 		RETURN NEW;
 	END IF;
 
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_statistic_goalkeeper\n'
-		'Refuse insert statistic_goalkeeper: (play id = %)', NEW.play_id;
-
+	
 	RETURN NULL;
 	
 END;
@@ -9449,34 +8542,24 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	id_player	integer;
 	role_player	en_role_mix;
 
 BEGIN
 
-	tmp = get_column('fp_play', 'player_id', OLD.play_id);
-	id_player = CAST(tmp AS integer);
+	IF (row_exists('@', 'fp_play@id@' || OLD.play_id::text)) THEN
+		
+		id_player = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'player_id')::integer;
 
-	IF (id_player IS NOT NULL) THEN
+		role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
 
-		tmp = get_column('fp_player', 'role', id_player);
-		role_player = CAST(tmp AS en_role_mix);
-
-		IF (CAST(role_player AS text) LIKE '%GK%') THEN
-
-			-- DEBUG
-			RAISE NOTICE
-				E'Trigger Function: tf_bd_statistic_goalkeeper\n'
-				'Refuse delete statistic_goalkeeper: (play id = %)', OLD.play_id;
-	
+		IF (role_player::text LIKE '%GK%') THEN
 			RETURN NULL;
 		END IF;
-			
+
 	END IF;
 
-
+	
 	RETURN OLD;
 	
 END;
@@ -9500,25 +8583,16 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	type_trophy	en_award;
 
 BEGIN
 
-	tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
-	type_trophy = CAST(tmp AS en_award);
+	type_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'type')::en_award;
+
 
 	IF ('TEAM' = type_trophy) THEN
 		RETURN NEW;
 	END IF;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_team_trophy_case\n'
-		'Refuse insert team_trophy_case:'
-		' (team id = %, trophy id = %, s_year = %, comp id = %)',
-		NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
 
 
 	RETURN NULL;
@@ -9645,47 +8719,41 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	type_militancy	en_season;
 
 	type_trophy		en_award;
-
 	role_trophy		en_role;
 
 	role_player		en_role_mix;
 
 BEGIN
 
-	type_militancy = get_type_militancy(NEW.player_id, NEW.team_id, NEW.start_year);
+	type_militancy = get_column('@', 'fp_militancy@player_id@' || NEW.player_id::text || '@team_id@' || NEW.team_id::text || '@start_year@' || NEW.start_year::text, 'type')::en_season;
 
 
 	IF (type_militancy <> 'I PART') THEN
 
-		tmp = get_column('fp_trophy', 'type', NEW.trophy_id);
-		type_trophy = CAST(tmp AS en_award);
+		type_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'type')::en_award;
 
 		IF ('TEAM' = type_trophy) THEN
 
 			-- se si tratta di un trofeo di squadra la squadra in questione deve avere il trofeo
-			IF (team_has_trophy(NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id)) THEN
+			IF (row_exists('@', 'fp_team_trophy_case@team_id@' || NEW.team_id::text || '@trophy_id@' || NEW.trophy_id::text || '@start_year@' || NEW.start_year::text || '@competition_id@' || NEW.competition_id::text)) THEN
 				RETURN NEW;
 			END IF;
 		
 		ELSIF ('PLAYER' = type_trophy) THEN
 
-			tmp = get_column('fp_trophy', 'role', NEW.trophy_id);
-			role_trophy = CAST(tmp AS en_role);
+			role_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'role')::en_role;
 
 			IF (role_trophy IS NULL) THEN
 				RETURN NEW;
 			
 			ELSE
 
-				tmp = get_column('fp_player', 'role', NEW.player_id);
-				role_player = CAST(tmp AS en_role_mix);
+				role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
 
-				IF (position(CAST(role_trophy AS text) in CAST(role_player AS text)) > 0) THEN
+				IF (position(role_trophy::text in role_player::text) > 0) THEN
 					RETURN NEW;
 				END IF;
 
@@ -9695,14 +8763,7 @@ BEGIN
 
 	END IF;
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_player_trophy_case\n'
-		'Refuse insert player_trophy_case:'
-		' (player id = %, team id = %, trophy id = %, s_year = %, comp id = %)',
-		NEW.player_id, NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
- 
-
+	
 	RETURN NULL;
 	
 END;
@@ -9726,40 +8787,28 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	type_militancy	en_season;
 
 	type_trophy		en_award;
 
 BEGIN
 
-	tmp = get_column('fp_trophy', 'type', OLD.trophy_id);
-	
-	type_trophy = CAST(tmp AS en_award);
+	type_trophy = get_column('@', 'fp_trophy@id@' || OLD.trophy_id::text, 'type')::en_award;
 
 	IF ('TEAM' = type_trophy) THEN
 
-		type_militancy = get_type_militancy(OLD.player_id, OLD.team_id, OLD.start_year);
+		type_militancy = get_column('@', 'fp_militancy@player_id@' || OLD.player_id::text || '@team_id@' || OLD.team_id::text || '@start_year@' || OLD.start_year::text, 'type')::en_season;
 	
 		-- se il trofeo è di squadra
 		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
 		-- o se il calciatore non milita nella parte finale di stagione
 		IF
 		(
-			team_has_trophy(OLD.team_id, OLD.trophy_id, OLD.start_year, OLD.competition_id)
+			row_exists('@', 'fp_team_trophy_case@team_id@' || OLD.team_id::text || '@trophy_id@' || OLD.trophy_id::text || '@start_year@' || OLD.start_year::text || '@competition_id@' || OLD.competition_id::text)
 			AND
 			type_militancy <> 'I PART' 
 		)
 		THEN
-
-			-- DEBUG
-			RAISE NOTICE
-				E'Trigger Function: tf_bd_player_trophy_case\n'
-				'Refuse delete player_trophy_case:'
-				' (player id = %, team id = %, trophy id = %, s_year = %, comp id = %)',
-				NEW.player_id, NEW.team_id, NEW.trophy_id, NEW.start_year, NEW.competition_id;
- 
 			RETURN NULL;
 		END IF;
 	
@@ -9789,25 +8838,15 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	type_prize	en_award;
 
 BEGIN
 
-	tmp = get_column('fp_prize', 'type', NEW.prize_id);
-	type_prize = CAST(tmp AS en_award);
+	type_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'type')::en_award;
 
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
 	END IF;
-
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_team_prize_case\n'
-		'Refuse insert team_prize_case:'
-		' (team id = %, prize id = %, s_year = %, comp id = %)',
-		NEW.team_id, NEW.prize_id, NEW.start_year, NEW.competition_id;
 
 
 	RETURN NULL;
@@ -9833,8 +8872,6 @@ AS
 $$
 DECLARE
 
-	tmp			text;
-
 	type_prize	en_award;
 	role_prize	en_role;
 
@@ -9845,8 +8882,7 @@ DECLARE
 
 BEGIN
 
-	tmp = get_column('fp_prize', 'type', NEW.prize_id);
-	type_prize = CAST(tmp AS en_award);
+	type_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'type')::en_award;
 	
 	IF ('PLAYER' = type_prize) THEN
 
@@ -9862,18 +8898,16 @@ BEGIN
 		-- il premio deve essere assegnato in un anno valido
 		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
 
-			tmp = get_column('fp_prize', 'role', NEW.prize_id);
-			role_prize = CAST(tmp AS en_role);
+			role_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'role')::en_role;
 
 			IF (role_prize IS NULL) THEN		
 				RETURN NEW;
 			
 			ELSE
 
-				tmp = get_column('fp_player', 'role', NEW.player_id);
-				role_player = CAST(tmp AS en_role_mix);
+				role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
 
-				IF (position(CAST(role_prize AS text) in CAST(role_player AS text)) > 0) THEN
+				IF (position(role_prize::text in role_player::text) > 0) THEN
 					RETURN NEW;
 				END IF;
 
@@ -9883,13 +8917,6 @@ BEGIN
 	
 	END IF;
 	
-	-- DEBUG
-	RAISE NOTICE
-		E'Trigger Function: tf_bi_player_prize_case\n'
-		'Refuse insert player_prize_case:'
-		' (player id = %, team id = %, prize id = %, s_year = %, comp id = %)',
-		NEW.player_id, NEW.team_id, NEW.prize_id, NEW.start_year, NEW.competition_id;
-
 
 	RETURN NULL;
 	
@@ -10433,19 +9460,6 @@ CREATE OR REPLACE TRIGGER tg_bf_nationality
 BEFORE DELETE ON fp_nationality
 FOR EACH ROW
 EXECUTE FUNCTION tf_bd_nationality();
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : TRIGGER
- * NAME : tg_ad_nationality
- *
- * DESC : Trigger che si attiverà dopo l'eliminazione della nazionalità
- *        di un calciatore
- ******************************************************************************/
-CREATE OR REPLACE TRIGGER tg_ad_nationality
-AFTER DELETE ON fp_nationality
-FOR EACH ROW
-EXECUTE FUNCTION tf_ad_nationality();
 --------------------------------------------------------------------------------
 
 
@@ -11393,6 +10407,8 @@ BEFORE UPDATE ON fp_player_prize_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************

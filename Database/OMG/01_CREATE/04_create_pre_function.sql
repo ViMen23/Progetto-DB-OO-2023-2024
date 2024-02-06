@@ -195,6 +195,147 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : get_from_condition
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_from_condition
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	name_column		text;
+	value_column	text;
+	type_column		text;
+	
+	from_condition	text;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+			
+			-- ...e comincio col preparare la condizione del from
+			from_condition = from_condition || 'FROM ' || name_table || ' WHERE ';
+		
+		-- se si tratta del nome di una colonna
+		ELSIF (1 = (counter % 2)) THEN
+		
+			name_column = row_table.string_to_table;
+			
+			IF (NOT column_exists(name_table, name_column)) THEN
+				RETURN NULL;
+			END IF;
+			
+			type_column = get_type_column(name_table, name_column);
+			
+			-- continuo a costruire la condizione del from
+			from_condition = from_condition || name_column || ' = ';
+		
+		-- se si tratta del valore di una colonna
+		ELSIF (0 = (counter % 2)) THEN
+		
+			value_column = row_table.string_to_table;
+			
+			-- OSSERVAZIONE
+			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
+			-- del nostro database
+			-- essenzialmente i tipi di dati che gestiamo si possono
+			-- dividere in due grandi categorie
+			-- categoria "testo", che contiene chiaramente i varchar,
+			-- text, ma anche date e altro
+			-- e categoria integer, di cui fanno parte i valori numerici.
+			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
+			-- dai tipi e domini creati, Postgresql salvi nel catalogo
+			-- anche l'informazione sui tipi primitivi
+			-- pertanto se nel tipo della colonna non è presente la
+			-- sottostringa 'int' si tratterà di un valore testuale
+			-- che necessita di essere posto tra singoli apici
+			-- per formare correttamente
+			-- la query da eseguire con SQL dinamico
+			IF (NOT type_column LIKE '%int%') THEN 
+				value_column = quote_literal(value_column);
+			END IF;
+			
+			-- aggiungo per permettere la creazione di una condizione del from
+			-- che filtra su più colonne
+			from_condition = from_condition || value_column || ' AND ';
+			
+		END IF;
+		
+		counter = counter + 1;
+		
+	END LOOP;
+	
+	from_condition = trim(from_condition, ' AND ');
+	
+	from_condition = from_condition || ';';
+
+	-- a questo punto, continuando l'esempio proposto nella descrizione
+	-- avremo ottenuto la query:
+	-- 
+	-- FROM
+	-- 		nome_tabella
+	-- WHERE
+	--      nome_colonna1 = valore_colonna1
+	--      AND
+	--      nome_colonna2 = valore_colonna2
+	--      AND
+    --      ...
+	--      AND
+	--      nome_colonnaN = valore_colonnaN;
+	--
+	-- Per semplificare la visualizzazione è stato scelto di formattare
+	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
+	-- sia su una sola riga di testo
+	
+
+	RETURN from_condition;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : get_id
  *
  * IN      : text, text
@@ -261,18 +402,13 @@ DECLARE
 	row_table		record;
 	
 	name_column		text;
-	value_column	text;
-	type_column		text;
 	
 	to_execute		text;
+	from_condition	text;
 
 	id_to_find		integer;
 	
 BEGIN
-	
-	to_execute = '';
-
-	id_to_find = NULL;
 	
 	counter = 0;
 
@@ -301,255 +437,31 @@ BEGIN
 				RETURN NULL;
 			END IF;
 			
-			-- ...e comincio col preparare la query da eseguire
-			to_execute = to_execute || 'SELECT id ';
-			to_execute = to_execute || 'FROM ' || name_table || ' WHERE ';
-		
-		-- se si tratta del nome di una colonna
-		ELSIF (1 = (counter % 2)) THEN
-		
-			name_column = row_table.string_to_table;
-			
-			IF (NOT column_exists(name_table, name_column)) THEN
-				RETURN NULL;
-			END IF;
-			
-			type_column = get_type_column(name_table, name_column);
-			
-			-- continuo a costruire la query da eseguire
-			to_execute = to_execute || name_column || ' = ';
-		
-		-- se si tratta del valore di una colonna
-		ELSIF (0 = (counter % 2)) THEN
-		
-			value_column = row_table.string_to_table;
-			
-			-- OSSERVAZIONE
-			-- in questo punto abbiamo sfruttato un'ulteriore peculiarità
-			-- del nostro database
-			-- essenzialmente i tipi di dati che gestiamo si possono
-			-- dividere in due grandi categorie
-			-- categoria "testo", che contiene chiaramente i varchar,
-			-- text, ma anche date e altro
-			-- e categoria integer, di cui fanno parte i valori numerici.
-			-- Abbiamo pertanto sfruttato il fatto che, indipendentemente
-			-- dai tipi e domini creati, Postgresql salvi nel catalogo
-			-- anche l'informazione sui tipi primitivi
-			-- pertanto se nel tipo della colonna non è presente la
-			-- sottostringa 'int' si tratterà di un valore testuale
-			-- che necessita di essere posto tra singoli apici
-			-- per formare correttamente
-			-- la query da eseguire con SQL dinamico
-			IF (NOT type_column LIKE '%int%') THEN 
-				value_column = quote_literal(value_column);
-			END IF;
-			
-			-- aggiungo per permettere la creazione di una query
-			-- che filtra su più colonne
-			to_execute = to_execute || value_column || ' AND ';
-			
 		END IF;
-		
+
 		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
 		
 	END LOOP;
-	
-	to_execute = trim(to_execute, ' AND ');
-	
-	to_execute = to_execute || ';';
 
-	-- a questo punto, continuando l'esempio proposto nella descrizione
-	-- avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		id
-	-- FROM
-	-- 		nome_tabella
-	-- WHERE
-	--      nome_colonna1 = valore_colonna1
-	--      AND
-	--      nome_colonna2 = valore_colonna2
-	--      AND
-    --      ...
-	--      AND
-	--      nome_colonnaN = valore_colonnaN;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
 	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	to_execute = '';
+	to_execute = 'SELECT id ';
+	to_execute = to_execute || from_condition;
+
+	id_to_find = NULL;
+
 	EXECUTE to_execute INTO id_to_find;
 	
 
 	RETURN id_to_find;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_column
- *
- * IN      : text, text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : Funzione che restituisce il valore della colonna di una riga
- *        di una tabella sotto forma di testo, prendendo in input il nome
- *        della tabella, il nome della colonna in questione e l'id che
- *        identifica la riga.
- *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
- *              hanno una colonna chiamata id
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_column
-(
-	IN	name_table	text,
-	IN	name_column	text,
-	IN	value_id	integer
-)
-RETURNS text
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	tmp				integer;
-
-	type_column		text;
-	value_column	text;
-
-	to_execute		text;
-
-	cur_to_execute	refcursor;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-	
-	IF (NOT column_exists(name_table, 'id')) THEN
-		RETURN NULL;
-	END IF;
-
-	IF (NOT column_exists(name_table, name_column)) THEN
-		RETURN NULL;
-	END IF;
-	
-	-- se i controlli hanno dato esito positivo
-	-- costruisco la query da eseguire
-	to_execute = '';
-	to_execute = to_execute || 'SELECT ' || name_column;
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-
-	-- a questo punto avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		name_column
-	-- FROM
-	-- 		name_table
-	-- WHERE
-	--      id = value_id;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
-	
-	OPEN cur_to_execute FOR EXECUTE to_execute;
-	
-	type_column = get_type_column(name_table, name_column);
-	
-	-- se la colonna è di tipo numerico
-	IF (type_column LIKE '%int%') THEN
-		FETCH cur_to_execute INTO tmp;
-		-- è necessario castarla come text 
-		value_column = CAST(tmp AS text); 
-	ELSE
-		FETCH cur_to_execute INTO value_column;
-	END IF;
-	
-	CLOSE cur_to_execute;
-
-
-	RETURN value_column;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_record
- *
- * IN      : text, integer
- * INOUT   : void
- * OUT     : void
- * RETURNS : record
- *
- * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
- *        input il nome della tabella, e l'id che identifica la riga.
- *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: È possibile utilizzare tale funzione solo su tabelle che
- *              hanno una colonna chiamata id
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_record
-(
-	IN	name_table	text,
-	IN	value_id	integer
-)
-RETURNS record
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	to_execute	text;
-	rec_table	record;
-	
-BEGIN
-	
-	IF (NOT table_exists(name_table)) THEN
-		RETURN NULL;
-	END IF;
-
-	IF (NOT column_exists(name_table, 'id')) THEN
-		RETURN NULL;
-	END IF;
-	
-	-- se i controlli hanno dato esito positivo
-	-- costruisco la query da eseguire
-	to_execute = '';
-	to_execute = to_execute || 'SELECT *';
-	to_execute = to_execute || ' FROM ' || name_table;
-	to_execute = to_execute || ' WHERE id = ' || value_id || ';';
-	
-	-- a questo punto avremo ottenuto la query:
-	-- 
-	-- SELECT
-	-- 		*
-	-- FROM
-	-- 		name_table
-	-- WHERE
-	--      id = value_id;
-	--
-	-- Per semplificare la visualizzazione è stato scelto di formattare
-	-- la query in modo appropriato, sebbene quella ottenuta con la funzione
-	-- sia su una sola riga di testo
-
-	EXECUTE to_execute INTO rec_table;
-
-
-	RETURN rec_table;
 	
 END;
 $$
@@ -608,12 +520,12 @@ BEGIN
 
 	RETURN QUERY
 		SELECT
-			CAST(ccu.constraint_name AS text) AS constr,
-			CAST(ccu.table_name AS text) AS table_to_ref,
-			CAST(ccu.column_name AS text) AS col_to_ref,
-			CAST(kcu.table_name AS text) AS table_ref,
-			CAST(kcu.column_name AS text) AS col_ref,
-			CAST(kcu.ordinal_position AS integer) AS col_ord
+			ccu.constraint_name::text AS constr,
+			ccu.table_name::text AS table_to_ref,
+			ccu.column_name::text AS col_to_ref,
+			kcu.table_name::text AS table_ref,
+			kcu.column_name::text AS col_ref,
+			kcu.ordinal_position::integer AS col_ord
 		FROM
 			information_schema.constraint_column_usage AS ccu
 			JOIN
@@ -836,6 +748,8 @@ BEGIN
 			--		nome_tabella_che_referenzia1
 			--		ON
 			--			nome_tabella.colonna_referenziata = nome_tabella_che_referenzia1.colonna_che_referenzia
+			--			AND
+			--			...
 			-- ...
 			-- e così via..
 			--
@@ -900,7 +814,7 @@ CREATE OR REPLACE FUNCTION list_pk_columns
 )
 RETURNS TABLE
 (
-	name_column		text
+	name_column	text
 )
 RETURNS NULL ON NULL INPUT
 AS
@@ -909,7 +823,7 @@ BEGIN
 
 	RETURN QUERY
 		SELECT
-			CAST(column_name AS text) AS name_column  
+			column_name::text AS name_column  
 		FROM
 			information_schema.constraint_column_usage
 		WHERE
@@ -1008,6 +922,385 @@ LANGUAGE plpgsql;
 
 
 /*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_column
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Funzione che restituisce il valore della colonna di una riga
+ *        di una tabella sotto forma di testo, prendendo in input il nome
+ *        della tabella, e le colonne ed i valori delle colonne che permettono
+ *        di identificare univocamente la riga della tabella in questione.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ *
+ *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
+ *              il valore di una colonna in modo univoco
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_column
+(
+	IN	separator		text,
+	IN	input_string	text,
+	IN	column_to_get	text
+)
+RETURNS text
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	value_column	text;
+	
+	to_execute		text;
+	from_condition	text;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+			-- mi assicuro che la tabella in questione abbia la colonna che si cerca 
+			IF (NOT column_exists(name_table, column_to_get)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;	
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la colonna che si vuole
+	-- ottenere sia identificata univocamente
+	to_execute = '';
+	to_execute = 'SELECT count(*) ';
+	to_execute = to_execute || from_condition;
+	
+	-- riutilizzo la variabile counter per controllare
+	-- che la riga identificata sia una sola
+	counter = 0;
+	
+	EXECUTE to_execute INTO counter;
+	
+	-- se non ci sono righe
+	IF (0 = counter) THEN
+		RAISE NOTICE
+			E'FUNCTION get_column\n'
+			'Zero rows';
+
+		RETURN NULL;
+
+	-- se c'e' esattamente una riga
+	ELSIF (1 = counter) THEN
+	
+		value_column = NULL;
+		
+		-- preparo la query da eseguire
+		-- per ottenere il valore desiderato
+		-- riutilizzo la variabile to_execute
+		to_execute = '';
+		to_execute = 'SELECT ' || column_to_get || '::text ';
+		to_execute = to_execute || from_condition;
+		
+		EXECUTE to_execute INTO value_column;
+		
+		RETURN value_column;
+	
+	-- se ci sono piu' righe
+	ELSE
+		RAISE NOTICE
+			E'FUNCTION get_column\n'
+			'More than one row';
+
+		RETURN NULL;
+	
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_record
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : record
+ *
+ * DESC : Funzione che restituisce l'intera riga di una tabella, prendendo in
+ *        input il nome della tabella, e le colonne ed i valori delle colonne
+ *        che permettono di identificare univocamente la riga della tabella.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ *
+ *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
+ *              il valore di una colonna in modo univoco
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_record
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS record
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	to_execute		text;
+	control_query	text;
+	from_condition	text;
+	
+	control_value	boolean;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la riga che si vuole
+	-- ottenere sia identificata univocamente
+	to_execute = '';
+	to_execute = 'SELECT count(*) ';
+	to_execute = to_execute || from_condition;
+	
+	-- riutilizzo la variabile counter per controllare
+	-- che la riga identificata sia una sola
+	counter = 0;
+	
+	EXECUTE to_execute INTO counter;
+	
+	-- se non ci sono righe
+	IF (0 = counter) THEN
+		RAISE NOTICE
+			E'FUNCTION get_record\n'
+			'Zero rows';
+
+		RETURN NULL;
+
+	-- se c'e' esattamente una riga
+	ELSIF (1 = counter) THEN
+	
+		-- riutilizzo la variabile row_table
+		-- per il valore di output
+		row_table = NULL;
+		
+		-- preparo la query da eseguire
+		-- per ottenere il valore desiderato
+		-- riutilizzo la variabile to_execute
+		to_execute = '';
+		to_execute = 'SELECT * ';
+		to_execute = to_execute || from_condition;
+		
+		EXECUTE to_execute INTO row_table;
+		
+		RETURN row_table;
+	
+	-- se ci sono piu' righe
+	ELSE
+		RAISE NOTICE
+			E'FUNCTION get_record\n'
+			'More than one row';
+
+		RETURN NULL;
+	
+	END IF;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : row_exists
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : record
+ *
+ * DESC : Funzione che valuta se una riga di una tabella esiste, prendendo in
+ *        input il nome della tabella, e le colonne ed i valori delle colonne
+ *        che permettono di identificare la riga della tabella.
+ *        Utilizza SQL dinamico per costruire la query da eseguire.
+ *
+ *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
+ *              Vedere la documentazione della funzione get_id per maggiori
+ *              informazioni
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION row_exists
+(
+	IN	separator		text,
+	IN	input_string	text
+)
+RETURNS boolean
+RETURNS NULL ON NULL INPUT
+AS
+$$
+DECLARE
+
+	counter			integer;
+
+	name_table		text;
+	row_table		record;
+	
+	to_execute		text;
+	from_condition	text;
+	
+	existence		boolean;
+	
+BEGIN
+	
+	from_condition = '';
+	
+	counter = 0;
+
+	FOR row_table
+	IN
+		-- suddivido la stringa in input in base alla posizione del separatore
+		-- per sfruttarne la formattazione
+		SELECT
+			*
+		FROM
+			string_to_table(input_string, separator)
+
+	LOOP
+
+		-- se si tratta del nome della tabella
+		IF (0 = counter) THEN
+
+			name_table = row_table.string_to_table;
+			
+			IF (NOT table_exists(name_table)) THEN
+				RETURN NULL;
+			END IF;
+
+		END IF;	
+		
+		counter = counter + 1;
+
+		EXIT WHEN counter > 0;
+		
+	END LOOP;
+	
+	from_condition = get_from_condition(separator, input_string);
+
+	IF (from_condition IS NULL) THEN
+		RETURN NULL;
+	END IF;
+
+	-- costruisco la query di controllo
+	-- che servira' a valutare se la riga che si vuole
+	-- valutare esista
+	to_execute = '';
+	to_execute = 'SELECT count(*) >= 1 ';
+	to_execute = to_execute || from_condition;
+	
+	existence = FALSE;
+	
+	EXECUTE to_execute INTO existence;
+
+	RETURN existence;
+	
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
  * FUNCTION IMMUTABLE
  ******************************************************************************/
 
@@ -1040,20 +1333,18 @@ AS
 $$
 DECLARE
 
-	tmp				text;
-
 	team_type_comp	en_team;
 
 BEGIN
 	
-	tmp = get_column('fp_competition', 'team_type', id_comp);
-	team_type_comp = CAST(tmp AS en_team);
-
+	team_type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
 		
 	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
+	
 	ELSIF ('NATIONAL' = team_type_comp) THEN
 		RETURN s_year;
+	
 	END IF;
 
 
