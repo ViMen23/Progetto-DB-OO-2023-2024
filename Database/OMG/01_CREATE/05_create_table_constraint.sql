@@ -1462,7 +1462,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_statistic_general
 (
-	play_id			serial		NOT NULL			 ,
+	play_id			integer		NOT NULL			 ,
 	goal_scored		dm_usint 	NOT NULL	DEFAULT 0,
 	assist			dm_usint 	NOT NULL	DEFAULT 0,
 	yellow_card		dm_usint 	NOT NULL	DEFAULT 0,
@@ -1515,7 +1515,7 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_statistic_goalkeeper
 (
-	play_id			serial		NOT NULL			 ,
+	play_id			integer		NOT NULL			 ,
 	goal_conceded	dm_usint 	NOT NULL	DEFAULT 0,
 	penalty_saved	dm_usint 	NOT NULL	DEFAULT 0
 );
