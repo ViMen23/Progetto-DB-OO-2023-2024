@@ -1287,7 +1287,6 @@ VALUES
 );
 --------------------------------------------------------------------------------
 
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -2569,7 +2568,6 @@ VALUES
 );
 --------------------------------------------------------------------------------
 
-
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -2582,7 +2580,235 @@ VALUES
 
 
 /*******************************************************************************
- * INSERT COMPETITION
+ * INSERT INTERNATIONAL COMPETITION
+ ******************************************************************************/
+INSERT INTO fp_competition (type, team_type, name, frequency, confederation_id)
+VALUES
+(
+	'CUP',
+	'NATIONAL',
+	'FIFA World Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Internationale de Football Association'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'AFC Asian Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'AFC Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'AFC Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asian Football Confederation'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'Africa Cup of Nations',
+	2,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CAF Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CAF Confederation Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'CAF Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of African Football'	
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'CONCACAF Gold Cup',
+	2,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'CONCACAF Champions Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'CONMEBOL Copa América',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Libertadores de América',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Sudamericana',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'CONMEBOL Recopa Sudamericana',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'OFC Nations Cup',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Oceania Football Confederation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'OFC Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Oceania Football Confederation'
+	)
+),
+(
+	'CUP',
+	'NATIONAL',
+	'UEFA European Championship',
+	4,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Champions League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Europa League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'UEFA Conference League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Union of European Football Associations'
+	)
+);
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * INSERT NATIONAL COMPETITION
  ******************************************************************************/
 INSERT INTO fp_competition (type, team_type, name, frequency, confederation_id)
 VALUES
@@ -4195,7 +4421,7 @@ VALUES
 (
 	'LEAGUE',
 	'CLUB',
-	'Tunisian Ligue Professionnelle 2',
+	'Algerian Ligue 2',
 	1,
 	get_id
 	(
@@ -7593,228 +7819,1263 @@ VALUES
 	)
 ),
 (
-	'CUP',
-	'NATIONAL',
-	'FIFA World Cup',
-	4,
+	'LEAGUE',
+	'CLUB',
+	'Campionato Sammarinese di Calcio',
+	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Fédération Internationale de Football Association'
-	)
-),
-(
-	'CUP',
-	'NATIONAL',
-	'AFC Asian Cup',
-	4,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Asian Football Confederation'
+		'fp_confederation@long_name@Federazione Sammarinese Giuoco Calcio'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'AFC Champions League',
+	'Coppa Titano',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Asian Football Confederation'
-	)
-),
-(
-	'CUP',
-	'CLUB',
-	'AFC Cup',
-	1,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Asian Football Confederation'
-	)
-),
-(
-	'CUP',
-	'NATIONAL',
-	'Africa Cup of Nations',
-	2,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederation of African Football'
-	)
-),
-(
-	'CUP',
-	'CLUB',
-	'CAF Champions League',
-	1,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederation of African Football'
-	)
-),
-(
-	'CUP',
-	'CLUB',
-	'CAF Confederation Cup',
-	1,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederation of African Football'
+		'fp_confederation@long_name@Federazione Sammarinese Giuoco Calcio'
 	)
 ),
 (
 	'SUPER CUP',
 	'CLUB',
-	'CAF Super Cup',
+	'Super Coppa Sammarinese',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Confederation of African Football'	
+		'fp_confederation@long_name@Federazione Sammarinese Giuoco Calcio'
 	)
 ),
 (
-	'CUP',
-	'NATIONAL',
-	'CONCACAF Gold Cup',
-	2,
+	'LEAGUE',
+	'CLUB',
+	'Somali First Division',
+	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
+		'fp_confederation@long_name@Somali Football Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Somali Second Division',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Somali Football Federation'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'CONCACAF Champions Cup',
+	'Somalia Cup',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Confederation of North and Central America and Caribbean Association Football'	
-	)
-),
-(
-	'CUP',
-	'NATIONAL',
-	'CONMEBOL Copa América',
-	4,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
-	)
-),
-(
-	'CUP',
-	'CLUB',
-	'Copa Libertadores de América',
-	1,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
-	)
-),
-(
-	'CUP',
-	'CLUB',
-	'Copa Sudamericana',
-	1,
-	get_id
-	(
-		'@',
-		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+		'fp_confederation@long_name@Somali Football Federation'
 	)
 ),
 (
 	'SUPER CUP',
 	'CLUB',
-	'CONMEBOL Recopa Sudamericana',
+	'Somalia Super Cup',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Confederación Sudamericana de Fútbol'
+		'fp_confederation@long_name@Somali Football Federation'
 	)
 ),
 (
-	'CUP',
-	'NATIONAL',
-	'OFC Nations Cup',
-	4,
+	'LEAGUE',
+	'CLUB',
+	'SuperLiga',
+	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Oceania Football Confederation'
+		'fp_confederation@long_name@Football Association of Serbia'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Prva Liga Srbije',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Serbia'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Srpska Liga',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Serbia'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'OFC Champions League',
+	'Kup Srbije',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Oceania Football Confederation'
+		'fp_confederation@long_name@Football Association of Serbia'
 	)
 ),
 (
-	'CUP',
-	'NATIONAL',
-	'UEFA European Championship',
-	4,
+	'LEAGUE',
+	'CLUB',
+	'South Sudan Football Championship',
+	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Union of European Football Associations'
+		'fp_confederation@long_name@South Sudan Football Association'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'UEFA Champions League',
+	'South Sudan National Cup',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Union of European Football Associations'
+		'fp_confederation@long_name@South Sudan Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'São Tomé and Príncipe Championship',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federação Santomense de Futebol'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'UEFA Europa League',
+	'Taça Nacional de São Tomé e Principe',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Union of European Football Associations'
+		'fp_confederation@long_name@Federação Santomense de Futebol'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'São Tomé and Príncipe Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federação Santomense de Futebol'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'SVB Eerste Divisie',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Surinaamse Voetbal Bond'
 	)
 ),
 (
 	'CUP',
 	'CLUB',
-	'UEFA Conference League',
+	'Beker van Suriname',
 	1,
 	get_id
 	(
 		'@',
-		'fp_confederation@long_name@Union of European Football Associations'
+		'fp_confederation@long_name@Surinaamse Voetbal Bond'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Suriname President''s Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Surinaamse Voetbal Bond'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Fortuna Liga',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Slovenský futbalový zväz'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'2. liga',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Slovenský futbalový zväz'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Slovak Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Slovenský futbalový zväz'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Slovak Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Slovenský futbalový zväz'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'1. SNL',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Nogometna zveza Slovenije'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'2. SNL',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Nogometna zveza Slovenije'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Hervis Pokal',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Nogometna zveza Slovenije'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Allsvenskan',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Svenska Fotbollförbundet'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Superettan',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Svenska Fotbollförbundet'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Division 1',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Svenska Fotbollförbundet'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Division 2',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Svenska Fotbollförbundet'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Svenska Cupen',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Svenska Fotbollförbundet'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Premier League of Eswatini',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Eswatini Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Swazi Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Eswatini Football Association'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Swazi Charity Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Eswatini Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Seychelles First Division',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Seychelles Football Federation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Seychelles FA Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Seychelles Football Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Syrian Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Syrian Arab Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Syrian Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Syrian Arab Football Association'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Syrian Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Syrian Arab Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Chad Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Tchadienne de Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Championnat National de Premiere Division',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Togolaise de Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Thai League 1',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Thailand'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Thai League 2',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Thailand'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Thai FA Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Thailand'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Thailand Champions Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Thailand'
+	)
+
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Vysšaja Liga',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tajikistan Football Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Tajikistan First League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tajikistan Football Federation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Tajikistan Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tajikistan Football Federation'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Tajikistan Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tajikistan Football Federation'
+	)
+
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Turkmenistan Higher League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Turkmenistan'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Turkmenistan Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Turkmenistan'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Turkmenistan Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Turkmenistan'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Liga Futebol Amadora Primeira Divisão',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federação de Futebol de Timor-Leste'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Taça 12 de Novembro',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federação de Futebol de Timor-Leste'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'LFA Super Taça',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federação de Futebol de Timor-Leste'
+	)
+
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Tonga Major League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tonga Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'TT Premier Football League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Trinidad and Tobago Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Trinidad and Tobago FA Trophy',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Trinidad and Tobago Football Association'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Trinidad and Tobago Charity Shield',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Trinidad and Tobago Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Tunisian Ligue Professionnelle 1',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Tunisienne de Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Tunisian Ligue Professionnelle 2',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Tunisienne de Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Tunisian Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Tunisienne de Football'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Tunisian Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Fédération Tunisienne de Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Süper Lig',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Türkiye Futbol Federasyonu 1. Lig',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Türkiye Futbol Federasyonu 2. Lig',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Türkiye Futbol Federasyonu 3. Lig',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Turkish Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Turkish Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Türkiye Futbol Federasyonu'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Taiwan Football Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Chinese Taipei Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Tanzanian Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tanzania Football Federation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Tanzania FA Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Tanzania Football Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Uganda Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federation of Uganda Football Associations'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Ugandan Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federation of Uganda Football Associations'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Ukrainian Premier League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Ukrainian Association of Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Ukrainian First League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Ukrainian Association of Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Ukrainian Second League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Ukrainian Association of Football'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Ukrainian Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Ukrainian Association of Football'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Ukrainian Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Ukrainian Association of Football'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Primera División Profesional de Uruguay',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asociación Uruguaya de Fútbol'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Segunda División Profesional de Uruguay',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asociación Uruguaya de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Uruguay',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asociación Uruguaya de Fútbol'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Supercopa Uruguaya',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Asociación Uruguaya de Fútbol'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Major League Soccer',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@United States Soccer Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'USL Championship',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@United States Soccer Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'USL League One',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@United States Soccer Federation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Lamar Hunt U.S. Open Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@United States Soccer Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Uzbekistan Super League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Uzbekistan Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Uzbekistan Pro League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Uzbekistan Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Uzbekistan Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Uzbekistan Football Association'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Uzbekistan Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Uzbekistan Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Liga Venezolana',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federación Venezolana de Fútbol'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Liga FUTVE 2',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federación Venezolana de Fútbol'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Copa Venezuela',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Federación Venezolana de Fútbol'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Eximbank V League 1',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Vietnam Football Federation'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Vietnamese National Football Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Vietnam Football Federation'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Vietnamese Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Vietnam Football Federation'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Cymru Premier',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Wales'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Welsh Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Wales'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Samoa National League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation Samoa'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Samoa Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation Samoa'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Superliga e Futbollit të Kosovës',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Kosovo'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Liga e Parë',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Kosovo'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Kosovar Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Kosovo'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Kosovar Supercup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Federation of Kosovo'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Yemeni League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Yemen Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Yemeni President Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Yemen Football Association'
+	)
+),
+(
+	'SUPER CUP',
+	'CLUB',
+	'Yemeni Super Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Yemen Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'South African Premier Division',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@South African Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'National First Division',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@South African Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Nedbank Cup',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@South African Football Association'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Zambia Super League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Football Association of Zambia'
+	)
+),
+(
+	'LEAGUE',
+	'CLUB',
+	'Zimbabwe Premier Soccer League',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Zimbabwe Football Association'
+	)
+),
+(
+	'CUP',
+	'CLUB',
+	'Cup of Zimbabwe',
+	1,
+	get_id
+	(
+		'@',
+		'fp_confederation@long_name@Zimbabwe Football Association'
 	)
 );
 --------------------------------------------------------------------------------
-
-
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -7853,7 +9114,6 @@ VALUES
 ('FW', 'RF', 'Right Forward'),
 ('FW', 'SS', 'Second Striker');
 --------------------------------------------------------------------------------
-
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -7907,7 +9167,6 @@ VALUES
 ('TEAM', 'Targa UEFA', 'UEFA', NULL),
 ('PLAYER', 'Miglior portiere dell''anno IFFHS', 'IFFHS', 'GK');
 --------------------------------------------------------------------------------
-
 
 
 /******************************************************************************* 
@@ -8212,3 +9471,4 @@ VALUES
 	'Winds Up Opponents'
 );
 --------------------------------------------------------------------------------
+
