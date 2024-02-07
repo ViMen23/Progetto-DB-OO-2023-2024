@@ -17,7 +17,7 @@ INSERT INTO fp_competition_edition (start_year, competition_id)
 VALUES
 (
 	2022,
-	get_id('@', 'fp_competition@name@Serie A')
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer
 );
 --------------------------------------------------------------------------------
 

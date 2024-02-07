@@ -10,101 +10,75 @@
 
 
 /*******************************************************************************
- * INSERT player_position
+ * INSERT PLAYER_POSITION
  ******************************************************************************/
-
-
 INSERT INTO fp_player_position (player_id, position_id)
 VALUES
 (
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Victor James@surname@Osimhen'
 		'@dob@1998-12-29@country_id@' ||
-		get_id('@', 'fp_country@name@Nigeria')
-	),
-	get_id('@', 'fp_position@name@Centre Forward')
+		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Left Winger', 'id')::integer
 ),
 (
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Victor James@surname@Osimhen'
 		'@dob@1998-12-29@country_id@' ||
-		get_id('@', 'fp_country@name@Nigeria')
-	),
-	get_id('@', 'fp_position@name@Left Winger')
+		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Right Winger', 'id')::integer
 ),
 (
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Victor James@surname@Osimhen'
 		'@dob@1998-12-29@country_id@' ||
-		get_id('@', 'fp_country@name@Nigeria')
-	),
-	get_id('@', 'fp_position@name@Right Winger')
+		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Second Striker', 'id')::integer
 ),
 (
-	get_id
-	(
-		'@',
-		'fp_player@name@Victor James@surname@Osimhen'
-		'@dob@1998-12-29@country_id@' ||
-		get_id('@', 'fp_country@name@Nigeria')
-	),
-	get_id('@', 'fp_position@name@Second Striker')
-),
-(
-	get_id
-	(
-		'@',
-		'fp_player@name@Alex@surname@Meret'
-		'@dob@1997-03-22@country_id@' ||
-		get_id('@', 'fp_country@name@Italy')
-	),
-	get_id('@', 'fp_position@name@Goalkeeper')
-),
-(
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Sergej@surname@Milinkovic-Savic'
 		'@dob@1995-02-27@country_id@' ||
-		get_id('@', 'fp_country@name@Spain')
-	),
-	get_id('@', 'fp_position@name@Central Midfield')
+		get_column('@', 'fp_country@name@Spain', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer
 ),
 (
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Sergej@surname@Milinkovic-Savic'
 		'@dob@1995-02-27@country_id@' ||
-		get_id('@', 'fp_country@name@Spain')
-	),
-	get_id('@', 'fp_position@name@Attacking Midfield')
+		get_column('@', 'fp_country@name@Spain', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer
 ),
 (
-	get_id
+	get_column
 	(
 		'@',
 		'fp_player@name@Sergej@surname@Milinkovic-Savic'
 		'@dob@1995-02-27@country_id@' ||
-		get_id('@', 'fp_country@name@Spain')
-	),
-	get_id('@', 'fp_position@name@Defensive Midfield')
-),
-(
-	get_id
-	(
-		'@',
-		'fp_player@name@Sergej@surname@Milinkovic-Savic'
-		'@dob@1995-02-27@country_id@' ||
-		get_id('@', 'fp_country@name@Spain')
-	),
-	get_id('@', 'fp_position@name@Second Striker')
+		get_column('@', 'fp_country@name@Spain', 'id')::text,
+		'id'
+	)::integer,
+	get_column('@', 'fp_position@name@Second Striker', 'id')::integer
 );
 --------------------------------------------------------------------------------
 

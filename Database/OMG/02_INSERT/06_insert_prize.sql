@@ -20,6 +20,6 @@ VALUES
 ('PLAYER', 'FIFA Fair Play Award', 'FIFA', NULL),
 ('PLAYER', 'FIFA Puskás Award', 'FIFA', NULL),
 ('TEAM', 'Targa UEFA', 'UEFA', NULL),
-('PLAYER', 'Miglior portiere dell''anno IFFHS', 'IFFHS', 'GK');
+('PLAYER', 'Best goalkeeper of the year IFFHS', 'IFFHS', 'GK');
 --------------------------------------------------------------------------------
 

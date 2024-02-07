@@ -32,37 +32,37 @@ VALUES
 	'CONTINENT',
 	'AFR',
 	'Africa',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 ),
 (
 	'CONTINENT',
 	'ASI',
 	'Asia',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 ),
 (
 	'CONTINENT',
 	'EUR',
 	'Europe',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 ),
 (
 	'CONTINENT',
 	'NCA',
 	'North Center America',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 ),
 (
 	'CONTINENT',
 	'OCN',
 	'Oceania',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 ),
 (
 	'CONTINENT',
 	'STA',
 	'South America',
-	get_id('@', 'fp_country@name@World')
+	get_column('@', 'fp_country@name@World', 'id')::integer
 );
 --------------------------------------------------------------------------------
 
@@ -77,1213 +77,1213 @@ VALUES
 	'NATION',
 	'AFG',
 	'Afghanistan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'AGO',
 	'Angola',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ALB',
 	'Albania',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'AND',
 	'Andorra',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'ARE',
 	'United Arab Emirates',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'ARG',
 	'Argentina',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'ARM',
 	'Armenia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'ATG',
 	'Antigua and Barbuda',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'AUS',
 	'Australia',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'AUT',
 	'Austria',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'AZE',
 	'Azerbaijan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'BDI',
 	'Burundi',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'BEL',
 	'Belgium',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'BEN',
 	'Benin',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'BFA',
 	'Burkina Faso',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'BGD',
 	'Bangladesh',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'BGR',
 	'Bulgaria',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'BHR',
 	'Bahrain',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'BHS',
 	'Bahamas',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'BIH',
 	'Bosnia and Herzegovina',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'BLR',
 	'Belarus',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'BLZ',
 	'Belize',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'BOL',
 	'Bolivia',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'BRA',
 	'Brazil',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'BRB',
 	'Barbados',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'BRN',
 	'Brunei',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'BTN',
 	'Bhutan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'BWA',
 	'Botswana',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'CAF',
 	'Central African Republic',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'CAN',
 	'Canada',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'CHE',
 	'Switzerland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'CHL',
 	'Chile',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'CHN',
 	'China',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'CIV',
 	'Côte d''Ivoire',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'CMR',
 	'Cameroon',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'COD',
 	'Democratic Republic of the Congo',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'COG',
 	'Congo',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'COL',
 	'Colombia',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'COM',
 	'Comoros',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'CPV',
 	'Cabo Verde',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'CRI',
 	'Costa Rica',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'CUB',
 	'Cuba',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'CUW',
 	'Curaçao',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'CYP',
 	'Cyprus',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'CZE',
 	'Czech Republic',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'DEU',
 	'Germany',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'DJI',
 	'Djibouti',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'DMA',
 	'Dominica',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'DNK',
 	'Denmark',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'DOM',
 	'Dominican Republic',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'DZA',
 	'Algeria',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ECU',
 	'Ecuador',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'EGY',
 	'Egypt',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ENG',
 	'England',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'ERI',
 	'Eritrea',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ESP',
 	'Spain',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'EST',
 	'Estonia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'ETH',
 	'Ethiopia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'FIN',
 	'Finland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'FJI',
 	'Fiji',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'FRA',
 	'France',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'FSM',
 	'Micronesia',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'GAB',
 	'Gabon',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GEO',
 	'Georgia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'GHA',
 	'Ghana',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GIN',
 	'Guinea',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GMB',
 	'Gambia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GNB',
 	'Guinea-Bissau',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GNQ',
 	'Equatorial Guinea',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'GRC',
 	'Greece',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'GRD',
 	'Grenada',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'GTM',
 	'Guatemala',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'GUY',
 	'Guyana',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'HND',
 	'Honduras',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'HRV',
 	'Croatia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'HTI',
 	'Haiti',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'HUN',
 	'Hungary',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'IDN',
 	'Indonesia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'IND',
 	'India',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'IRL',
 	'Ireland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'IRN',
 	'Iran',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'IRQ',
 	'Iraq',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'ISL',
 	'Iceland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'ISR',
 	'Israel',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'ITA',
 	'Italy',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'JAM',
 	'Jamaica',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'JOR',
 	'Jordan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'JPN',
 	'Japan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'KAZ',
 	'Kazakhstan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'KEN',
 	'Kenya',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'KGZ',
 	'Kyrgyzstan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'KHM',
 	'Cambodia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'KIR',
 	'Kiribati',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'KNA',
 	'Saint Kitts and Nevis',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'KOR',
 	'South Korea',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'KWT',
 	'Kuwait',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'LAO',
 	'Lao People''s Democratic Republic',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'LBN',
 	'Lebanon',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'LBR',
 	'Liberia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'LBY',
 	'Libya',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'LCA',
 	'Saint Lucia',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'LIE',
 	'Liechtenstein',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'LKA',
 	'Sri Lanka',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'LSO',
 	'Lesotho',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'LTU',
 	'Lithuania',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'LUX',
 	'Luxembourg',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'LVA',
 	'Latvia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MAR',
 	'Morocco',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MCO',
 	'Monaco',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MDA',
 	'Moldova',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MDG',
 	'Madagascar',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MDV',
 	'Maldives',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'MEX',
 	'Mexico',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'MHL',
 	'Marshall Islands',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'MKD',
 	'North Macedonia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MLI',
 	'Mali',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MLT',
 	'Malta',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MMR',
 	'Myanmar',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'MNE',
 	'Montenegro',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'MNG',
 	'Mongolia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'MOZ',
 	'Mozambique',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MRT',
 	'Mauritania',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MUS',
 	'Mauritius',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MWI',
 	'Malawi',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'MYS',
 	'Malaysia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'NAM',
 	'Namibia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'NER',
 	'Niger',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'NGA',
 	'Nigeria',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'NIC',
 	'Nicaragua',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'NIR',
 	'Northern Ireland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'NIU',
 	'Niue',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),	
 (
 	'NATION',
 	'NLD',
 	'Netherlands',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'NOR',
 	'Norway',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'NPL',
 	'Nepal',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'NRU',
 	'Nauru',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'NZL',
 	'New Zealand',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'OMN',
 	'Oman',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'PAK',
 	'Pakistan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'PAN',
 	'Panama',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'PER',
 	'Peru',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'PHL',
 	'Philippines',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'PLW',
 	'Palau',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'PNG',
 	'Papua New Guinea',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'POL',
 	'Poland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'PRI',
 	'Puerto Rico',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'PRK',
 	'North Korea',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'PRT',
 	'Portugal',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'PRY',
 	'Paraguay',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'PSE',
 	'Palestine',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'QAT',
 	'Qatar',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'ROU',
 	'Romania',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'RUS',
 	'Russian Federation',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'RWA',
 	'Rwanda',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SAU',
 	'Saudi Arabia',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'SCT',
 	'Scotland',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SDN',
 	'Sudan',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SEN',
 	'Senegal',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SGP',
 	'Singapore',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'SLB',
 	'Solomon Islands',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'SLE',
 	'Sierra Leone',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SLV',
 	'El Salvador',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'SMR',
 	'San Marino',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SOM',
 	'Somalia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SRB',
 	'Serbia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SSD',
 	'South Sudan',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'STP',
 	'São Tomé and Príncipe',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SUR',
 	'Suriname',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'SVK',
 	'Slovakia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SVN',
 	'Slovenia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SWE',
 	'Sweden',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'SWZ',
 	'Eswatini',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SYC',
 	'Seychelles',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'SYR',
 	'Syria',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TCD',
 	'Chad',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'TGO',
 	'Togo',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'THA',
 	'Thailand',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TJK',
 	'Tajikistan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TKM',
 	'Turkmenistan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TLS',
 	'Timor-Leste',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TON',
 	'Tonga',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'TTO',
 	'Trinidad and Tobago',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'TUN',
 	'Tunisia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'TUR',
 	'Türkiye',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TWN',
 	'Taiwan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'TZA',
 	'Tanzania',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'UGA',
 	'Uganda',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'UKR',
 	'Ukraine',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'URY',
 	'Uruguay',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'USA',
 	'United States',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'UZB',
 	'Uzbekistan',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'VCT',
 	'Saint Vincent and the Grenadines',
-	get_id('@', 'fp_country@name@North Center America')
+	get_column('@', 'fp_country@name@North Center America', 'id')::integer
 ),
 (
 	'NATION',
 	'VEN',
 	'Venezuela',
-	get_id('@', 'fp_country@name@South America')
+	get_column('@', 'fp_country@name@South America', 'id')::integer
 ),
 (
 	'NATION',
 	'VNM',
 	'Vietnam',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'VUT',
 	'Vanuatu',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'WLS',
 	'Wales',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'WSM',
 	'Samoa',
-	get_id('@', 'fp_country@name@Oceania')
+	get_column('@', 'fp_country@name@Oceania', 'id')::integer
 ),
 (
 	'NATION',
 	'XKX',
 	'Kosovo',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'YEM',
 	'Yemen',
-	get_id('@', 'fp_country@name@Asia')
+	get_column('@', 'fp_country@name@Asia', 'id')::integer
 ),
 (
 	'NATION',
 	'YUG',
 	'Jugoslavia',
-	get_id('@', 'fp_country@name@Europe')
+	get_column('@', 'fp_country@name@Europe', 'id')::integer
 ),
 (
 	'NATION',
 	'ZAF',
 	'South Africa',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ZMB',
 	'Zambia',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 ),
 (
 	'NATION',
 	'ZWE',
 	'Zimbabwe',
-	get_id('@', 'fp_country@name@Africa')
+	get_column('@', 'fp_country@name@Africa', 'id')::integer
 );
 --------------------------------------------------------------------------------
 

@@ -10,109 +10,109 @@
 
 
 /*******************************************************************************
- * INSERT Partecipation
+ * INSERT PARTECIPATION
  ******************************************************************************/
 INSERT INTO fp_partecipation (competition_id, start_year, team_id)
 VALUES
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@SSC Napoli')
+	get_column('@', 'fp_team@long_name@SSC Napoli', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Inter')
+	get_column('@', 'fp_team@long_name@Inter', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@AC Milan')
+	get_column('@', 'fp_team@long_name@AC Milan', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Juventus FC')
+	get_column('@', 'fp_team@long_name@Juventus FC', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@AS Roma')
+	get_column('@', 'fp_team@long_name@AS Roma', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Atalanta')
+	get_column('@', 'fp_team@long_name@Atalanta', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@SS Lazio')
+	get_column('@', 'fp_team@long_name@SS Lazio', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@ACF Fiorentina')
+	get_column('@', 'fp_team@long_name@ACF Fiorentina', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@US Sassuolo')
+	get_column('@', 'fp_team@long_name@US Sassuolo', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Torino FC')
+	get_column('@', 'fp_team@long_name@Torino FC', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Udinese Calcio')
+	get_column('@', 'fp_team@long_name@Udinese Calcio', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Bologna FC')
+	get_column('@', 'fp_team@long_name@Bologna FC', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@AC Monza')
+	get_column('@', 'fp_team@long_name@AC Monza', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Empoli FC')
+	get_column('@', 'fp_team@long_name@Empoli FC', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Hellas Verona')
+	get_column('@', 'fp_team@long_name@Hellas Verona', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@US Salernitana')
+	get_column('@', 'fp_team@long_name@US Salernitana', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@Spezia Calcio')
+	get_column('@', 'fp_team@long_name@Spezia Calcio', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@US Lecce')
+	get_column('@', 'fp_team@long_name@US Lecce', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@US Cremonese')
+	get_column('@', 'fp_team@long_name@US Cremonese', 'id')::integer
 ),
 (
-	get_id('@', 'fp_competition@name@Serie A'),
+	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022,
-	get_id('@', 'fp_team@long_name@UC Sampdoria')
+	get_column('@', 'fp_team@long_name@UC Sampdoria', 'id')::integer
 );
 --------------------------------------------------------------------------------
 
