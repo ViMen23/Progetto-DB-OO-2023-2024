@@ -1,4 +1,3 @@
-\newpage
 \subsection{Analisi dei Requisiti}
 
 Nell'affrontare questo progetto abbiamo deciso, su consiglio dei Docenti, di analizzare
@@ -45,12 +44,14 @@ superfluo entrare così eccessivamente nello specifico visto il nostro scopo.
 
 Un'ulteriore costante che abbiamo ritrovato grazie alle nostre ricerche, è che,
 come già accennato, le confederazioni sono organizzate in ordine gerarchico: le confederazioni
-nazionali possono essere membro di confederazioni continentali che a loro volta possono essere
+nazionali sono membro di confederazioni continentali che a loro volta sono
 membro di confederazioni mondiali (es. la FIGC è membro della UEFA che a sua volta è membro
 della FIFA).
 Questo pattern si ripresenta per la quasi totalità delle confederazioni che abbiamo osservato,
-le uniche e rare eccezioni fanno capo a confederazioni minori isolate che quindi non sono in
-associazione con nessun'altra confederazione.
+le uniche e rare eccezioni fanno capo a confederazioni minori isolate, esterne alla FIFA,
+che quindi non sono in associazione con nessun'altra confederazione.
+Dalle ricerche effettuate abbiamo notato che a tutti gli effetti il sistema calcio fa capo
+alla FIFA e pertanto e' stato deciso, per semplicita', di escludere il calcio esterno alla FIFA.
 
 È indiscutibile che il concetto di confederazione calcistica, insieme a quello di paese,
 formano la base sulla quale si poggia tutta l'organizzazione calcistica mondiale.
@@ -109,6 +110,8 @@ confederazione.
 
 Una stagione calcistica è a tutti gli effetti l'unità di misura temporale del calcio
 e va a cavallo di due anni consecutivi (es. Stagione 2023-2024).
+Per le competizioni di squadre di tipo nazionale il concetto di stagione calcistica
+coincide col concetto di anno solare (es. Stagione 2023-2023).
 
 In un'edizione di una competizione, chiaramente, si affrontano le diverse squadre di calcio
 che vi partecipano e, al termine della competizione, in base al piazzamento raggiunto le
@@ -124,7 +127,7 @@ saranno totalmente indipendenti.
 
 Un ultimo concetto chiave di tutto il mondo del calcio, è ovviamenta la squadra di calcio.
 Una squadra di calcio chiaramente appartiene ad una nazione e fa sempre parte della
-confederazione della nazioni a cui è associata.
+confederazione della nazione a cui è associata.
 D'altra parte è immediato che una squadra di calcio possa far parte di due grandi categorie:
 \begin{itemize}
 	\item Squadra di calcio di tipo club;
@@ -199,6 +202,10 @@ Dal punto di vista astratto una statistica di gioco è un qualsiasi evento misur
 una partita e statisticamente rilevante connesso col gioco del calcio
 (numero di goal, numero di assist, \dots).
 
+Visto lo scopo del nostro progetto e' stato deciso di uniformare le statistiche definendo una
+lista di statistiche predefinite generali ed altre specifiche per i calciatori che giocano
+come portieri.
+
 Similmente a quello che accade per una squadra anche un calciatore potrà vincere dei trofei.
 Come da traccia, tali trofei potranno essere individuali o di squadra.
 Pertanto un trofeo potrà appartenere a due categorie:
@@ -221,8 +228,8 @@ Anche in questo caso, i premi potranno appartenere a due categorie:
 Con l'importante differenza che un premio di squadra non potrà essere assegnato ad un
 calciatore.
 
-Un calciatore è inoltre caratterizzato da una serie di posizioni di gioco che ne andranno a
-definire i ruoli.
+Un calciatore è inoltre caratterizzato da una posizione di gioco principale e possibilmente da una
+serie di posizioni di gioco alternative che ne andranno a definire i ruoli.
 
 Inoltre, come da traccia, ad un calciatore possono essere associati dei tag che mettono in
 risalto le specialità del calciatore.
@@ -232,3 +239,19 @@ descrizione del calciatore anche una serie di attributi che ne descrivessero in 
 le capacità sotto diversi punti di vista.
 
 Infine, un calciatore potrà ritirarsi dal gioco in una certa data.
+
+\bigskip
+\bigskip
+
+Come da traccia tale DataBase sara' accessibile mediante un applicativo da diversi utenti.
+In base al tipo di utente, e conseguentemente al suo livello di privilegio, saranno possibili
+determinate azioni sul database.
+
+Un utente semplice potra' solo visualizzare dati ed informazioni contenuti nel DataBase.
+Un utente di tipo amministratore potra' anche modificare i dati e le informazioni relative a
+squadre di calcio e calciatori (come richiesto da traccia).
+
+Pertanto e' stato scelto di rendere alcune informazioni permanenti, in modo tale da assicurare
+che la struttura portante del DataBase, che rappresenta il sistema calcio, rimanga invariata.
+
+E' chiaro che poi il responsabile del DataBase potra' invece effettuare tutte le modifiche del caso.

@@ -1,25 +1,27 @@
-\newpage
 \subsection{Progettazione Concettuale}
 
 Riassumendo l'analisi dei requisiti fatta precedentemente, si è giunti alla conclusione
 che per modellare il nostro progetto avremo bisogno di:
 \begin{itemize}
-	\item una classe Country avente un nome unico e un codice ISO 3166-1-alpha-3,
-		che si specializza in 3 sotto-classi:	
+	
+	\item una classe Country che rappresenta il concetto astratto di paese.
+		Tale classe si specializza in 3 sotto-classi:	
 		\begin{itemize}
 			\item Nation;
 			\item Continent;
 			\item World.
 		\end{itemize}
-	\item una classe Confederation avente un nome esteso unico ed un nome abbreviato,
-		che si specializza in 3 sotto-classi:	
+	
+	\item una classe Confederation che rappresenta il concetto astratto di confederazione calcistica.
+		Tale classe si specializza in 3 sotto-classi:	
 		\begin{itemize}
 			\item National Confederation;
 			\item Continent Confederation;
 			\item World Confederation.
 		\end{itemize}
-	\item una classe Competition avente un nome unico ed una frequenza, che ne indica la
-		cadenza. Tale classe si specializza in 2 sotto classi:	
+
+	\item una classe Competition che rappresenta il concetto astratto di competizione calcistica.
+		Tale classe si specializza in 2 sotto classi:	
 		\begin{itemize}
 			\item Club Competition;
 			\item National Competition.
@@ -30,42 +32,66 @@ che per modellare il nostro progetto avremo bisogno di:
 			\item Cup;
 			\item Super Cup.
 		\end{itemize}
-	\item una classe Competition Edition (debole in quanto non ha senso di esistere
-		senza la classe Competition) avente un anno di inizio dell'edizione, un anno di fine
-		e il numero di squadre che vi possono partecipare	
-	\item una classe Team avente un nome unico, che di specializza in 2 sotto-classi:
+
+	\item una classe Competition Edition che rappresenta il concetto astratto di
+		edizione di una competizione calcistica.
+	
+	\item una classe Team che rappresenta il concetto astratto di squadra di calcio.
+		Tale classe si specializza in 2 sotto-classi:
 		\begin{itemize}
 			\item Club Team;
 			\item National Team.
 		\end{itemize}	
-	\item una classe Trophy avente un nome unico e una descrizione facoltativa,
-		che di specializza in 2 sotto-classi:
+
+	\item una classe Trophy che rappresenta il concetto astratto di trofeo calcistico.
+		Tale classe si specializza in 2 sotto-classi:
 		\begin{itemize}
-			\item Player Trophy, avente un ruolo facoltativo;
+			\item Player Trophy;
 			\item Team Trophy.
 		\end{itemize}
-	\item una classe Prize avente un nome unico, una descrizione facoltativa e il nome
-		dell'ente che lo assegna, che di specializza in 2 sotto-classi:	
+
+	\item una classe Prize che rappresenta il concetto astratto di premio calcistico.
+		Tale classe si specializza in 2 sotto-classi:	
 		\begin{itemize}
-			\item Player Prize, avente un ruolo facoltativo;
+			\item Player Prize;
 			\item Team Prize.
 		\end{itemize}	
-	\item una classe Player avente un nome, cognome, data di nascita, un piede preferito
-		ed una data di ritiro facoltativa
-	\item una classe Position avente un ruolo, un codice unico e un nome unico	
-	\item una classe Tag avente un tipo, un nome unico ed una descrizione facoltativa	
-	\item una classe Attribute avente un tipo, un nome unico ed una descrizione facoltativa	
-	\item una classe Statistic avente un valore booleano che indica se si tratta di una
-		statistica riferita esclusivamente ai portieri, un nome unico ed una descrizione
-		facoltativa		
-	\item una classe User Account avente un username unico, una password ed un livello di
-		privilegio
+
+	\item una classe Player che rappresenta il concetto astratto di calciatore.
+
+	\item una classe Position che rappresenta il concetto astratto di posizione di gioco.
+
+	\item una classe Tag che rappresenta il concetto astratto di tag che si puo' assegnare
+		ad un calciatore.
+
+	\item una classe AttributeMental che rappresenta il concetto astratto di insieme di
+		attributi che descrivono le caratteristiche mentali di un calciatore.
+			
+	\item una classe AttributePhysical che rappresenta il concetto astratto di insieme di
+		attributi che descrivono le caratteristiche fisiche di un calciatore.
+	
+	\item una classe AttributeTechnical che rappresenta il concetto astratto di insieme di
+		attributi che descrivono le caratteristiche tecniche di un calciatore.
+	
+	\item una classe AttributeGoalkeeping che rappresenta il concetto astratto di insieme di
+		attributi che descrivono le caratteristiche di un portiere.
+
+	\item una classe StatisticGeneral che rappresenta il concetto astratto di insieme di
+		statistiche associabili al gioco di un calciatore.
+		
+	\item una classe StatisticGoalkeeper che rappresenta il concetto astratto di insieme di
+		statistiche associabili al gioco di un portiere.
+
+	\item una classe User Account che rappresenta il concetto astratto di utente dell'applicativo
+		connesso al DataBase.
+		
 \end{itemize}
 
-Sottolineiamo che abbiamo dato solo una descrizione sommaria delle principali classi
-implementate senza approfondire tutte le ulteriori classi associative ed associazioni
-che saranno chiaramente descritte in modo schematico nei diagrammi UML e poi affrontate
-in modo approfondito nel dizionario delle associazioni e nella documentazione interna al codice.
+Sottolineiamo che abbiamo dato solo una descrizione concettuale delle principali classi
+implementate senza dare una descrizione accurata degli attirbuti associati e senza approfondire
+tutte le ulteriori classi associative ed associazioni che saranno chiaramente descritte
+in modo schematico nei diagrammi UML e poi affrontate in modo approfondito nel dizionario
+delle associazioni e nella documentazione interna al codice.
 \newpage
 \subsection{Class Diagram non ristrutturato}
 
@@ -77,216 +103,108 @@ in modo approfondito nel dizionario delle associazioni e nella documentazione in
 %TODO: discorso sull'inserimento dell'associazione ridondante su team della confederazione di appartenenza.
 \subsubsection{Analisi delle Ridondanze}
 
-Possiamo constatare che non ci sono attributi ridondanti.
+\textbf{Classe: CompetitionEdition}
 
-Notiamo però che vista l'alta frequenza di certe operazioni, 
-che dovranno essere compiute sul database, vi è
-un impellente necessità di introdurre delle ridondanze.
+Si e' scelto di  aggiungere un attributo che rappresenti l'anno di fine di una edizione di una
+competizione calcistica per semplificare le viste sul DataBase, in quanto altrimenti sarebbe
+stato necessario andare a valutare ogni volta il tipo di squadra della competizione associata.
 
-
-Un'operazione che deve essere effettuata ogni volta che
-si voglia compiere una delle seguenti operazioni
-per un calciatore:
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono l' anno di fine di un'edizione
+di una competizione calcistica:
 \begin{itemize}
-	\item Assegnare un trofeo;
-	\item Aggiungere un valore di una statistica
-		al play;
-	\item Aggiungere un valore di un attributo;
-	\item Assegnare un tag.
+	\item Mostrare le informazioni relative al gioco di un calciatore;
+	\item Mostrare le informazioni relative all'edizione di una competizione calcistica.
 \end{itemize}
-è quella di controllare quali sono i ruoli
-che il calciatore ha giocato durante la sua carriera.
-Questo ci porta quindi ad andare a controllare ogni volta
-le sue posizioni di gioco ed estrarne i ruoli.
 
-Per agevolare quest'operazione si è deciso di introdurre
-una ridondanza nella classe Player, che appunto conservi
-l'informazione sui ruoli in cui il calciatore fino a
-quel momento ha giocato.
-Per fare ciò si è deciso di creare un tipo enum
-\textbf{enRoleMix} che contenga tutte le combinazioni
-di ruoli possibili.
+\textbf{Classe: Player}
+
+Supponendo un'alta frequenza di operazioni riguardanti i calciatori, e nello specifico in relazione
+ai ruoli dei calciatori, si e' deciso di introdurre nella classe Player un attributo ridondante
+che rappresenti l'insieme dei ruoli del calciatore stesso.
+
+L'alternativa sarebbe stata quella di andare a calcolare l'insieme dei ruoli del calciatore
+dall'associazione tra quest'ultimo e la classe Position ogni volta che sarebbe stato necessario.
+
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono il ruolo di un calciatore:
+\begin{itemize}
+	\item Assegnare o rimuovere un trofeo;
+	\item Assegnare o rimuovere un premio;
+	\item Assegnare o rimuovere un tag.
+\end{itemize}
 
 
+\textbf{Associazione: Nationality}
 
-Un'altra operazione che si suppone sia ricorrente è
-la visualizzazione delle 
-nazionalità di un giocatore.
+Sebbene l'associazione bornCountry contenga l'informazione sul paese di nascita di un calciatore
+si e' deciso di introdurre tale informazione anche nell'associazione Nationality in modo tale da
+rendere molto piu' semplice la gestione di tutte le operazioni che coinvolgono le nazionalita'
+di un calciatore ed anche le viste associate.
 
-Questa informazione si potrebbe ottenere navigando 
-entrambe le associazioni che \textbf{Player} ha con 
-\textbf{Country}: bornCountry e Nationality.
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono le nazionalita' di un calciatore:
+\begin{itemize}
+	\item Cambiare paese di nascita;
+	\item Assegnare o rimuovere militanza in una squadra di tipo nazionale.
+\end{itemize}
 
-Visto che quest'informazione è utile per un eventuale
-controllo della militanza in nazionale e,
-visto che il nostro database ha come scopo primario l'essere 
-un sistema informativo per i calciatori, si vede necessario 
-aggiungere alla relazione Nationality anche la nazione di 
-nascita del calciatore così da velocizzare l'operazione, in 
-quanto così facendo basta navigare soltanto l'associazione 
-Nationality.
+\textbf{Associazione: PlayerPosition}
+
+Sebbene l'associazione mainPosition contenga l'informazione sulla posizione di gioco principale
+di un calciatore si e' deciso di introdurre tale informazione anche nell'associazione PlayerPosition
+in modo tale da rendere molto piu' semplice la gestione di tutte le operazioni che coinvolgono le
+posizioni di gioco di un calciatore ed anche le viste associate.
+
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono le posizioni di gioco di un calciatore:
+\begin{itemize}
+	\item Cambiare la posizione principale;
+	\item Assegnare o rimuovere statistiche o attributi.
+\end{itemize}
 
 
 \newpage
 \subsubsection{Eliminazione delle Generalizzazioni}
 
-Nonostante le numerose generalizzazioni presenti nel Class 
-Diagram, tutte hanno un qualcosa in comune, ovvero sono 
-generalizzazioni disgiunte totali.
-
-A seguito di ciò dunque, come metodo per eliminarle, si 
-deciso di adottare l'accorpamento delle figlie della 
-generalizzazione nel padre, aggiungendo dove necessario un 
-attributo \textbf{type} che distinguesse le varie istanze 
-della classe padre, e facendo le dovute correzioni ad 
-eventuali attributi e/o associazioni delle classi figlie
-con le altre classi.
-
-Di seguito viene mostrato un elenco delle generalizzazioni e 
-di come sono state ristrutturate:
-
-\bigskip
-\textbf{Country}
-\bigskip
-
-Alla classe \textbf{Country} è stato aggiunto un attributo 
-\textbf{type} di tipo enum chiamato \textbf{enCountry}.
-Il tipo \textbf{enCountry} può assumere tre valori:
-\begin{itemize}
-	\item Nation;
-	\item Continental;
-	\item World.
-\end{itemize}
-
-Per quanto riguarda le associazioni:
-
-Le associazioni delle classi figlie di \textbf{Country} con 
-le classi figlie di \textbf{Confederation} sono state 
-accorpate, risultandone in un unica associazione tra 
-\textbf{Country} e \textbf{Confederation} con molteplicità 
-invariata.
-
-Per quanto riguarda le associazioni della classe figlia 
-\textbf{Nation} con \textbf{Player} e \textbf{Team}, esse 
-sono state ricollegate alla classe padre \textbf{Country} 
-mantenendo la molteplicità invariata.
-
-\bigskip
-\textbf{Confederation}
-\bigskip
-
-Alla classe \textbf{Confederation}  non è stato aggiunto un 
-attributo \textbf{type} poiché si è sfruttato l'associazione 
-1 a 1 (parziale) che le classi figlie di \textbf{Confederation}
-avevano con le classi figlie di \textbf{Country}.
-Dunque per comprendere a quale classe figlia una tupla di 
-\textbf{Confederation} corrisponde, bisogna basarsi 
-sull'attributo \textbf{type} della classe \textbf{Country}.
-
-Per quanto riguarda le associazioni:
-
-Le due associazioni che intercorrono tra le classi figlie di 
-\textbf{Confederation}, ovvero l'associazione tra 
-\textbf{NationalConfederation} e 
-\textbf{ContinentalConfederation}, e tra 
-\textbf{ContinentalConfederation} e 
-\textbf{WorldConfederation}, sono state accorpate, 
-risultandone in un'unica associazione tra la classe 
-\textbf{Confederation} e sé stessa.
-
-Le due associazioni delle classi figlie 
-\textbf{ContinentalConfederation} e 
-\textbf{WorldConfederation} con \textbf{NationalCompetition}, 
-sono state accorpate, risultandone in un'unica associazione 
-tra la classe \textbf{Confederation} e la classe 
-\textbf{Competition}, classe padre di 
-\textbf{NationalCompetition}.
-
-L'associazione della classe figlia \textbf{NationalConfederation} e
-\textbf{Team} è stata ricollegata alla classe padre mantenendo
-molteplicità invariata.
-
-\newpage
 \textbf{Competition}
-\bigskip
 
-Alla classe \textbf{Competition} sono stati aggiunti due 
-attributi: \textbf{type} di tipo enum chiamato 
-\textbf{enCompetition} e \textbf{teamType} di tipo enum 
-chiamato \textbf{enTeam}. Questo perché anche le classi 
-figlie di \textbf{Competition} erano una generalizzazione a 
-loro volta.
+Si tratta di una generalizzazione di tipo totale sovrepposta. Si e' deciso di accorpare le
+classi figlie nella classe padre e conseguentemente di aggiungere due attributi che tenessero traccia
+di tali informazioni.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
-Nota che ci si è ridotti a solo due tipi aggiunti, perché le 
-classi \textbf{NationalCompetition} e {ClubCompetition} hanno 
-le stesse classi figlie.
+\textbf{Confederation}
 
-Il tipo enum \textbf{enTeam} può assumere i seguenti valori:
-\begin{itemize}
-	\item National;
-	\item Club.
-\end{itemize}
+Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+classi figlie nella classe padre. Non e' stato aggiunto un attributo che tenesse traccia
+di tale informazione in quanto e' deducibile dal tipo di paese col quale e' in associazione.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
-Il tipo enum \textbf{enCompetition} può assumere i seguenti 
-valori:
-\begin{itemize}
-	\item Cup;
-	\item League;
-	\item Super Cup.
-\end{itemize}
-Per quanto riguarda le associazioni:
+\textbf{Country}
 
-L'associazione tra \textbf{ClubCompetition} e 
-\textbf{Confederation}, è stata ricollegata alla classe padre 
-\textbf{Competition} mantenendone però la molteplicità 
-invariata.
+Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
+di tale informazione.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
-\bigskip
-\textbf{Team}
-\bigskip
-
-Alla classe \textbf{Team} è stato aggiunto un attributo 
-\textbf{type} di tipo enum chiamato \textbf{enTeam} (lo 
-stesso di Competition).
-
-\bigskip
-\textbf{Trophy}
-\bigskip
-
-Alla classe \textbf{Trophy} è stato aggiunto un attributo 
-\textbf{type} di tipo enum chiamato \textbf{enAward} e l'attributo
-\textbf{role} della classe figlia \textbf{PlayerTrophy}.
-
-Il tipo \textbf{enAward} assume i seguenti valori:
-\begin{itemize}
-	\item Player
-	\item Team
-\end{itemize}
-Per quanto riguarda le associazioni:
-
-L'associazione tra \textbf{TeamTrophy} e 
-\textbf{Partecipation} è stata ricollegata alla classe padre 
-\textbf{Trophy} mantenendo la molteplicità invariata.
-
-
-\bigskip
 \textbf{Prize}
-\bigskip
 
-Alla classe \textbf{Prize} è stato aggiunto un attributo 
-\textbf{type} di tipo enum chiamato \textbf{enAward} (lo 
-stesso tipo di Trophy) e l'attributo
-\textbf{role} della classe figlia \textbf{PlayerPrize}.
+Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
+di tale informazione.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
-Per quanto riguarda le associazioni:
+\textbf{Team}
 
-L'associazione tra \textbf{TeamPrize} e 
-\textbf{Team} è stata ricollegata alla classe padre 
-\textbf{Prize} mantenendo la molteplicità invariata.
+Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
+di tale informazione.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
-L'associazione tra \textbf{PlayerPrize} e 
-\textbf{Player} è stata ricollegata alla classe 
-padre \textbf{Prize} mantenendo la molteplicità invariata.
+\textbf{Trophy}
+
+Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
+di tale informazione.
+Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
+
 
 \newpage
 \subsubsection{Eliminazioni Attributi Multivalore}
@@ -301,24 +219,72 @@ Nel Class Diagram non sono presenti Attributi Multivalore.
 Nel Class Diagram non sono presenti Attributi Strutturati.
 
 \bigskip
-\subsubsection{Partizionamento/Accorpamento di Entità
-		e Associazioni}
+\subsubsection{Partizionamento/Accorpamento di Entità e Associazioni}
 \bigskip
 
-L'unica accorpamento che potrebbe essere effettuato nel Class 
-Diagram è quello tra \textbf{Country} e 
-\textbf{Confederation}, poiché tra esse vi è un'associazione 
-1 a 1 (parziale).
+\textbf{Associazione: Country-Confederation}
 
-Si è arrivati però alla conclusione che c'è bisogno che le 
-due classi siano separate, perché nelle altre associazioni 
-che esse hanno con le altre classi, svolgono un ruolo 
-centrale.
+Si tratta di un'associazione 1 ad 1 con partecipazione parziale di Country.
+Abbiamo quindi 3 alternative
+\begin{itemize}
+	\item Portare Country in Confederation. Tale opzione comporterebbe una potenziale
+		perdita di dati relativi ai paesi senza confederazione calcistica;
+	\item Portare Confederation in Country. Tale opzione comporterebbe la possibilita'
+		di attributi NULL;
+	\item Lasciare invariata l'associazione.
+\end{itemize}
+
+Chiaramente e' stata scelta l'opzione numero 3.
+Sottolineamo inoltre che tale scelta e' anche forzata dal fatto che le classi Country e Confederation
+hanno associazioni diverse con altre classi del diagramma.
+
+\textbf{Associazioni identificanti}
+
+Le associazioni identificanti presenti nel diagramma sono:
+\begin{itemize}
+	\item Associazione: Player-AttributeMental;
+	\item Associazione: Player-AttributePhysical;
+	\item Associazione: Player-AttributeTechnical;
+	\item Associazione: Player-AttributeGoalkeeping (parziale);
+	\item Associazione: Play-StatisticGeneral;
+	\item Associazione: Play-StatisticGoalkeeper (parziale).
+\end{itemize}
+
+Trattandosi di associazioni identificanti sarebbe stato possibile accorpare le classi deboli
+nelle classi identificanti. Si e' scelto di mantenere le classi separate e lasciare quindi le
+associazioni sia per la presenza di associzioni identificanti parziali che potenzialmente
+avrebbero comportato la presenza di attributi NULL, sia per un una separazione delle informazioni
+a livello concettuale.
+
+\textbf{Classe: Player}
+
+L'attributo che rappresenta la data di ritiro di un calciatore chiaramente avrebbe assunto un
+valore NULL per tutti i calciatori in attivita'. Quindi indipendentemente dal quantitativo di
+calciatori memorizzati nel DataBase cio' comporterebbe una grande quantita' di attributi NULL.
+Si e' scelto pertanto di partizionare la classe Player e di creare una classe PlayerRetired
+che contenesse l'informazione sulla data di ritiro di un calciatore.
+
 
 \newpage
 \bigskip
 \subsubsection{Scelta degli Identificatori Primari}
 \bigskip
+
+Sebbene le classi del diagramma abbiano tutte chiavi candidate (semplici o composte) si e' scelto di
+inserire chiavi surrogate di tipo intero per diverse ragioni:
+\begin{itemize}
+	\item Come descritto ampiamente nella documentazione ufficiale del DBMS scelto (Postgresql)
+		una chiave di tipo intero rende le operazioni di ricerca piu'efficienti in quanto e' possibile
+		in modo automatico creare degli indici nelle tabelle;
+	\item Come descritto ampiamente nella documentazione ufficiale del DBMS scelto (Postgresql)
+		e' considerata una brutta prassi utilizzare come identificatore primario un attributo con
+		un'impronta in memoria variabile (es. varchar, text, \dots);
+	\item per rendere piu'uniforme lo schema del DataBase e rendere piu' modulare il codice associato.
+\end{itemize}
+
+Per quanto riguarda le classi deboli si e' seguita la prassi consigliata di utilizzare come
+identificatore primario l'identificatore primario della classe identificante in combinazione con
+eventuali ulteriori chiavi parziali.
 
 \newpage
 \subsection{Class Diagram ristrutturato}
