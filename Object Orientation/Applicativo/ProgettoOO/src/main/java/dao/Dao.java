@@ -1,4 +1,6 @@
 package dao;
 
-public class Dao {
+public class Dao
+{
+  //this is a dao
 }

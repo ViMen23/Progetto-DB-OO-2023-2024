@@ -1,8 +1,11 @@
 package gui;
 
+import model.Language;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.*;
@@ -15,37 +18,60 @@ public class Login
 {
   private JPanel generalPanel;
 
-  private JPanel loginPanel, registratiPanel, languagePanel;
+  private JPanel loginPanel, registratiPanel, languagePanel, totalPanel;
   GridBagConstraints gbc;
   private JLabel welcomeJLabel, userJLabel, registerJLabel, languageJLabel;
   private JTextField userJTextField;
   private JButton avantiJButton, registratiJButton, countryJButton;
 
-  final ImageIcon icon = createImageIcon("images/world.png");
+  final ImageIcon icon = createImageIcon("images/world2.png", 40, 40);
+  final ImageIcon logo = createImageIcon("images/logo2.png", 70, 70);
 
   ResourceBundle message;
   //final static Color colorBackground = Color.white;
-	final static Color myColor = new Color(50, 50, 40);
+	final static Color myColor = new Color(50, 50, 50);
   final static float genPanelFontSize = 22;
   final static float titleFontSize = 48;
 
   public Login()
   {
+
 	Locale.setDefault(new Locale("it", "IT"));
 	message = ResourceBundle.getBundle("guiBundle", Locale.getDefault());
 
 	generalPanel = new JPanel(new GridBagLayout());
 
-	//generalPanel.setBackground(colorBackground);
+	generalPanel.setBackground(myColor);
 
-	generalPanel.setMinimumSize(new Dimension(1000, 300));
+	generalPanel.setMinimumSize(new Dimension(800, 300));
 
 	Font titleFont = generalPanel.getFont().deriveFont(titleFontSize);
 
 	Border titleBorder = BorderFactory.createTitledBorder(null, message.getString("player"), TitledBorder.CENTER,
 		TitledBorder.TOP, titleFont, Color.white);
 
-	generalPanel.setBorder(titleBorder);
+	//generalPanel.setBorder(titleBorder);
+
+	JLabel logoJLabel = new JLabel(logo);
+	logoJLabel.setBackground(myColor);
+	logoJLabel.setOpaque(true);
+
+	JPanel altroPanel = new JPanel(new GridBagLayout());
+
+	gbc = new GridBagConstraints();
+	gbc.weightx = 0.5;
+	gbc.gridy = 0;
+	gbc.anchor = GridBagConstraints.CENTER;
+	gbc.insets = new Insets(70, 0, 0, 330);
+
+	altroPanel.add(logoJLabel, gbc);
+
+	gbc = new GridBagConstraints();
+	gbc.weightx = 0.5;
+	gbc.weighty = 0.5;
+	gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+
+
 
 
 	languagePanel = new JPanel(new BorderLayout());
@@ -62,7 +88,7 @@ public class Login
 	countryJButton = new JButton(icon);
 	countryJButton.setToolTipText(message.getString("setLanguage"));
 	countryJButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-	countryJButton.setPreferredSize(new Dimension(40, 40));
+	countryJButton.setPreferredSize(new Dimension(60, 60));
 
 	Font generalFont = generalPanel.getFont().deriveFont( (genPanelFontSize) );
 	countryJButton.addActionListener(new ActionListener() {
@@ -78,14 +104,30 @@ public class Login
 	  }
 	});
 	gbc = new GridBagConstraints();
-	gbc.insets = new Insets(0, 0, 0, 10);
-	gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+	//gbc.weightx = 0.5;
+	//gbc.weighty = 1.0;
+	//gbc.gridx = 0;
+	//gbc.gridy = 0;
+	gbc.anchor = GridBagConstraints.NORTHEAST;
+	//gbc.insets = new Insets(0, 0, 0, 10);
+	//gbc.gridwidth = 10;
 
-	generalPanel.add(countryJButton, gbc);
+	altroPanel.add(countryJButton, gbc);
+
+	gbc = new GridBagConstraints();
+	gbc.gridy = 0;
+	gbc.weighty = 0.5;
+	gbc.weightx = 0.5;
+	gbc.fill = GridBagConstraints.BOTH;
+	gbc.anchor = GridBagConstraints.NORTH;
+
+	altroPanel.setOpaque(false);
+
+	generalPanel.add(altroPanel, gbc);
 
 	loginPanel = new JPanel(new GridBagLayout());
-	
-	loginPanel.setBackground(myColor);
+
+	//loginPanel.setBackground(myColor);
 	
 	gbc = new GridBagConstraints();
 	gbc.gridx = 0;
@@ -98,7 +140,6 @@ public class Login
 	generalPanel.add(loginPanel, gbc);
 
 	welcomeJLabel = new JLabel(message.getString("insUsername"));
-
 	//welcomeJLabel.setBackground(colorBackground);
 
 	//welcomeJLabel.setForeground(Color.white);
@@ -112,6 +153,7 @@ public class Login
 	gbc.gridy = 0;
 	gbc.weightx = 0.5;
 	gbc.weighty = 0.5;
+	gbc.ipady = 80;
 	gbc.anchor = GridBagConstraints.WEST;
 	gbc.insets = new Insets(0, 0, 30, 0);
 
@@ -177,7 +219,7 @@ public class Login
 	gbc.anchor = GridBagConstraints.SOUTH;
 	gbc.insets = new Insets(0, 0, 200, 0);
 
-	generalPanel.add(registratiPanel, gbc);
+	//generalPanel.add(registratiPanel, gbc);
 
 	registerJLabel = new JLabel(message.getString("noAccountLabel"));
 
@@ -190,8 +232,9 @@ public class Login
 	gbc = new GridBagConstraints();
 	gbc.gridx = 0;
 	gbc.gridy = 0;
+	gbc.ipadx = 50;
 	gbc.anchor = GridBagConstraints.WEST;
-	gbc.insets = new Insets(0, 0, 30, 0);
+	gbc.insets = new Insets(0, 20, 30, 0);
 
 	registratiPanel.add(registerJLabel, gbc);
 
@@ -206,12 +249,38 @@ public class Login
 
 	registratiPanel.add(registratiJButton, gbc);
 
+
+	totalPanel = new JPanel(new GridBagLayout());
+
+	gbc = new GridBagConstraints();
+	gbc.weightx = 1;
+	gbc.weighty = 1;
+	gbc.gridy = 0;
+	gbc.anchor = GridBagConstraints.NORTH;
+	totalPanel.add(loginPanel, gbc);
+
+	gbc = new GridBagConstraints();
+	gbc.weightx = 1;
+	gbc.weighty = 1;
+	gbc.gridy = 1;
+	gbc.anchor = GridBagConstraints.SOUTH;
+
+
+	totalPanel.add(registratiPanel, gbc);
+
+	gbc = new GridBagConstraints();
+	gbc.weighty = 1.0;
+	gbc.gridy = 1;
+	gbc.anchor = GridBagConstraints.CENTER;
+	generalPanel.add(totalPanel, gbc);
+
+
   }
 
   public JPanel getRootPanel() { return generalPanel; }
 
 
-  protected ImageIcon createImageIcon(String path)
+  protected ImageIcon createImageIcon(String path, Integer width, Integer height)
   {
 	java.net.URL imgURL = ClassLoader.getSystemResource(path);
 
@@ -219,7 +288,7 @@ public class Login
 
 	  ImageIcon img1 = new ImageIcon(imgURL);
 
-	  Image img2 = img1.getImage().getScaledInstance(40,40, Image.SCALE_DEFAULT);
+	  Image img2 = img1.getImage().getScaledInstance(width,height, Image.SCALE_DEFAULT);
 	  return new ImageIcon(img2);
 	}
 	else {
@@ -227,6 +296,17 @@ public class Login
 	  return null;
 	}
 
+  }
+
+
+  public HashMap<Language, String> createHashMapLanguage()
+  {
+	HashMap<Language, String> tmp = new HashMap<Language, String>();
+
+	tmp.put(Language.inglese, "en_US");
+	tmp.put(Language.italiano, "it_IT");
+
+	return tmp;
   }
 
 }
