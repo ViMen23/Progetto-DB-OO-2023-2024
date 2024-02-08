@@ -24,8 +24,8 @@ public class Login
   final ImageIcon icon = createImageIcon("images/world.png");
 
   ResourceBundle message;
-  final static Color colorBackground= Color.white;
-
+  //final static Color colorBackground = Color.white;
+	final static Color myColor = new Color(50, 50, 40);
   final static float genPanelFontSize = 22;
   final static float titleFontSize = 48;
 
@@ -36,7 +36,7 @@ public class Login
 
 	generalPanel = new JPanel(new GridBagLayout());
 
-	generalPanel.setBackground(colorBackground);
+	//generalPanel.setBackground(colorBackground);
 
 	generalPanel.setMinimumSize(new Dimension(1000, 300));
 
@@ -85,7 +85,7 @@ public class Login
 
 	loginPanel = new JPanel(new GridBagLayout());
 	
-	loginPanel.setBackground(colorBackground);
+	loginPanel.setBackground(myColor);
 	
 	gbc = new GridBagConstraints();
 	gbc.gridx = 0;
@@ -99,9 +99,9 @@ public class Login
 
 	welcomeJLabel = new JLabel(message.getString("insUsername"));
 
-	welcomeJLabel.setBackground(colorBackground);
+	//welcomeJLabel.setBackground(colorBackground);
 
-	welcomeJLabel.setForeground(Color.white);
+	//welcomeJLabel.setForeground(Color.white);
 
 
 
@@ -148,9 +148,9 @@ public class Login
 
 	userJLabel = new JLabel(message.getString("usernameLabel"));
 
-	userJLabel.setBackground(colorBackground);
+	//userJLabel.setBackground(colorBackground);
 
-	userJLabel.setForeground(Color.white);
+	//userJLabel.setForeground(Color.white);
 
 	userJLabel.setFont(generalFont);
 
@@ -167,7 +167,7 @@ public class Login
 
 	registratiPanel = new JPanel(new GridBagLayout());
 
-	registratiPanel.setBackground(colorBackground);
+	//registratiPanel.setBackground(colorBackground);
 
 	gbc = new GridBagConstraints();
 	gbc.gridx = 0;
@@ -183,9 +183,9 @@ public class Login
 
 	registerJLabel.setFont(generalFont);
 
-	registerJLabel.setBackground(colorBackground);
+	//registerJLabel.setBackground(colorBackground);
 
-	registerJLabel.setForeground(Color.white);
+	//registerJLabel.setForeground(Color.white);
 
 	gbc = new GridBagConstraints();
 	gbc.gridx = 0;

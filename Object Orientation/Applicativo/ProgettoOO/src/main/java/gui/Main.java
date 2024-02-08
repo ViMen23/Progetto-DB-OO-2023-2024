@@ -16,21 +16,27 @@ public class Main
 
 	frame.setResizable(true);
 
-	frame.setMinimumSize(new Dimension( 1000, 900));
+	frame.setMinimumSize(new Dimension(1000, 900));
 
 
-	frame.setContentPane(new Login().getRootPanel());
+
 
 	try {
-	  UIManager.setLookAndFeel(
-		  UIManager.getCrossPlatformLookAndFeelClassName());
+	  UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");
 	}
 	catch(Exception e){
 	  return;
 	}
+
+	frame.setContentPane(new Login().getRootPanel());
+
 	frame.pack();
 	frame.setVisible(true);
+
+
+
   }
+
 
   public static void main(String[] args)
   {
