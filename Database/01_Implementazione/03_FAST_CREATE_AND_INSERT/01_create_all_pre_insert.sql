@@ -41,6 +41,7 @@ CREATE SCHEMA public;
 CREATE EXTENSION hstore;
 --------------------------------------------------------------------------------
 
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -393,6 +394,20 @@ CREATE TYPE en_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
+ * NAME : en_privilege
+ *
+ * DESC : Enum delle possibili tipologie di livello di privilegio di un utente
+ ******************************************************************************/
+CREATE TYPE en_privilege AS ENUM
+(
+	'GENERAL USER',	-- utente generico
+	'ADMIN',		-- amministratore che non puo' creare altri amministratori
+	'SUPER ADMIN'	-- amministratore che puo' creare altri amministratori
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : ENUM TYPE
  * NAME : en_role
  *
  * DESC : Enum delle possibili tipologie di ruolo di un calciatore
@@ -668,7 +683,39 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che preso in input un separatore, il nome di una tabella e
+ *        un record di una riga della tabella in input costruisce mediante
+ *        SQL dinamico la stringa che poi potrà essere data in input alle
+ *        funzioni "get_column", "get_record", "row_exists" (vedi dopo).
+ *        Prende in input un separatore ed una stringa formattata in modo
+ *        appropiato.
+ *
+ *        ES. separatore = '@'
+ *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
+ *
+ *        L'idea di fondo è quella di sfruttare la formattazione della
+ *        stringa in input per estrarre tutte le informazioni necessarie
+ *        utilizzando un contatore.
+ *        Si immagini di costruire un array di stringhe contenente in ciascuna
+ *        posizione la parte di stringa corrispondente.
+ *        Continuando a seguire l'esempio proposto:
+ *
+ *        POSITION | VALUE
+ *           0     | nome_tabella
+ *           1     | nome_colonna1
+ *           2     | valore_colonna1
+ *           3     | nome_colonna2
+ *           4     | valore_colonna2
+ *          ...    | ...
+ *         2N - 1  | nome_colonnaN
+ *           2N    | valore_colonnaN
+ *
+ *        Eccezion fatta per la posizione 0 che si riferisce al nome della
+ *        tabella, tutte le altre posizioni dispari faranno riferimento a
+ *        nomi di colonne, mentre le posizioni pari immediatamente successive
+ *        ai rispettivi valori.
+ *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
+ *        costruire la stringa desiderata.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_from_condition
 (
@@ -794,140 +841,6 @@ BEGIN
 	
 
 	RETURN from_condition;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_id
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : Funzione che restituisce l'id di una riga di una tabella, se presente.
- *        Prende in input un separatore ed una stringa formattata in modo
- *        appropiato.
- *
- *        ES. separatore = '@'
- *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
- *
- *        L'idea di fondo è quella di sfruttare la formattazione della
- *        stringa in input per estrarre tutte le informazioni necessarie
- *        utilizzando un contatore.
- *        Si immagini di costruire un array di stringhe contenente in ciascuna
- *        posizione la parte di stringa corrispondente.
- *        Continuando a seguire l'esempio proposto:
- *
- *        POSITION | VALUE
- *           0     | nome_tabella
- *           1     | nome_colonna1
- *           2     | valore_colonna1
- *           3     | nome_colonna2
- *           4     | valore_colonna2
- *          ...    | ...
- *         2N - 1  | nome_colonnaN
- *           2N    | valore_colonnaN
- *
- *        Eccezion fatta per la posizione 0 che si riferisce al nome della
- *        tabella, tutte le altre posizioni dispari faranno riferimento a
- *        nomi di colonne, mentre le posizioni pari immediatamente successive
- *        ai rispettivi valori.
- *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
- *        costruire la query desiderata.
- *        
- *        NOTA: Importante osservare che tale funzione sfrutta la buona prassi,
- *              che abbiamo osservato quando possibile e necessario,
- *              di assegnare una chiave surrogata di tipo integer alle tabelle
- *              e di denominarla id
- *
- *        NOTA: Assicurarsi che i valori in input permettano di definire
- *              in modo univoco una riga di una tabella.
- *              Non sono stati effettuati eccessivi, e dovuti, controlli
- *              sull'input in quanto si tratta di una funzione nata con lo
- *              scopo di semplificare l'inserimento dei dati nel database
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_id
-(
-	IN	separator		text,
-	IN	input_string	text
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	counter			integer;
-
-	name_table		text;
-	row_table		record;
-	
-	name_column		text;
-	
-	to_execute		text;
-	from_condition	text;
-
-	id_to_find		integer;
-	
-BEGIN
-	
-	counter = 0;
-
-	FOR row_table
-	IN
-		-- suddivido la stringa in input in base alla posizione del separatore
-		-- per sfruttarne la formattazione
-		SELECT
-			*
-		FROM
-			string_to_table(input_string, separator)
-
-	LOOP
-
-		-- se si tratta del nome della tabella
-		IF (0 = counter) THEN
-
-			name_table = row_table.string_to_table;
-			
-			IF (NOT table_exists(name_table)) THEN
-				RETURN NULL;
-			END IF;
-
-			-- mi assicuro che la tabella in questione abbia una colonna id
-			IF (NOT column_exists(name_table, 'id')) THEN
-				RETURN NULL;
-			END IF;
-			
-		END IF;
-
-		counter = counter + 1;
-
-		EXIT WHEN counter > 0;
-		
-	END LOOP;
-
-	
-	from_condition = get_from_condition(separator, input_string);
-
-	IF (from_condition IS NULL) THEN
-		RETURN NULL;
-	END IF;
-
-	to_execute = '';
-	to_execute = 'SELECT id ';
-	to_execute = to_execute || from_condition;
-
-	id_to_find = NULL;
-
-	EXECUTE to_execute INTO id_to_find;
-	
-
-	RETURN id_to_find;
 	
 END;
 $$
@@ -1402,10 +1315,6 @@ LANGUAGE plpgsql;
  *        di identificare univocamente la riga della tabella in questione.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
- *
  *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
  *              il valore di una colonna in modo univoco
  ******************************************************************************/
@@ -1543,10 +1452,6 @@ LANGUAGE plpgsql;
  *        che permettono di identificare univocamente la riga della tabella.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
- *
  *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
  *              il valore di una colonna in modo univoco
  ******************************************************************************/
@@ -1680,10 +1585,6 @@ LANGUAGE plpgsql;
  *        input il nome della tabella, e le colonne ed i valori delle colonne
  *        che permettono di identificare la riga della tabella.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION row_exists
 (
@@ -1803,7 +1704,13 @@ DECLARE
 
 BEGIN
 	
-	team_type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
+	team_type_comp = get_column
+					 (
+						'@',
+						'fp_competition'
+						'@id@' || id_comp::text,
+						'team_type'
+					 )::en_team;
 		
 	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
@@ -3857,9 +3764,9 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_user_account
 (
-	username	dm_username	NOT NULL,
-	password	dm_password	NOT NULL,
-	priviledge	dm_usint	NOT NULL  -- livello di privilegio dell'utente				
+	username	dm_username		NOT NULL,
+	password	dm_password		NOT NULL,
+	privilege	en_privilege	NOT NULL  -- livello di privilegio dell'utente				
 );
 --------------------------------------------------------------------------------
 
@@ -3993,7 +3900,12 @@ DECLARE
 
 BEGIN
 
-	rec_country = get_record('@', 'fp_country@id@' || id_country::text);
+	rec_country = get_record
+				  (
+						'@',
+						'fp_country'
+						'@id@' || id_country::text
+				  );
 
 
 	IF (rec_country.type <> 'NATION') THEN
@@ -4315,14 +4227,41 @@ DECLARE
 
 BEGIN
 
-	year_dob = extract(year from get_column('@', 'fp_player@id@' || id_player::text, 'dob')::date);
+	year_dob = extract
+			   (
+					year from get_column
+							  (
+									'@',
+									'fp_player'
+									'@id@' || id_player::text,
+									'dob'
+							  )::date
+			   );
 
 	s_valid = year_dob + min_age();
 
 	-- se il giocatore e' ritirato
-	IF (row_exists('@', 'fp_player_retired@player_id@' || id_player::text)) THEN
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player_retired'
+			'@player_id@' || id_player::text
+		)
+	)
+	THEN
 
-		year_retired = extract(year from get_column('@', 'fp_player_retired@player_id@' || id_player::text, 'retired_date')::date);
+		year_retired = extract
+					   (
+							year from get_column
+									  (
+											'@',
+											'fp_player_retired'
+											'@player_id@' || id_player::text,
+											'retired_date'
+									  )::date
+					   );
 
 		e_valid = year_dob + year_retired - 1;
 
@@ -4844,7 +4783,13 @@ DECLARE
 	
 BEGIN
 	
-	freq = get_column('@', 'fp_competition@id@' || id_comp::text, 'frequency')::dm_usint;
+	freq = get_column
+		   (
+				'@',
+				'fp_competition'
+				'@id@' || id_comp::text,
+				'frequency'
+		   )::dm_usint;
 
 	-- se la frequenza della competizione calcistica è annnuale o irregolare
 	IF (freq <= 1) THEN
@@ -4914,23 +4859,46 @@ DECLARE
 BEGIN
 
 	-- prendo la confederazione di cui la squadra e' membro
-	id_country = get_column('@', 'fp_team@id@' || id_team::text, 'country_id')::integer;
+	id_country = get_column
+				 (
+					'@',
+					'fp_team@id@' || id_team::text,
+					'country_id'
+				 )::integer;
 
-	id_conf_team = get_column('@', 'fp_confederation@country_id@' || id_country::text, 'id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@country_id@' || id_country::text,
+						'id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
 
-	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@id@' || id_conf_team::text,
+						'super_id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
 
-	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@id@' || id_conf_team::text,
+						'super_id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
@@ -4976,7 +4944,12 @@ DECLARE
 
 BEGIN
 
-	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
+	rec_comp = get_record
+			   (
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text
+			   );
 
 
 	IF ('LEAGUE' = rec_comp.type) THEN
@@ -5036,7 +5009,13 @@ DECLARE
 
 BEGIN
 
-	type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'type')::en_competition;
+	type_comp = get_column
+				(
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text,
+					'type'
+				)::en_competition;
 
 
 	IF ('LEAGUE' = type_comp) THEN
@@ -5145,7 +5124,13 @@ BEGIN
 
 	LOOP
 
-		role_pos = get_column('@', 'fp_position@id@' || pos_player::text, 'role')::en_role;
+		role_pos = get_column
+				   (
+						'@',
+						'fp_position'
+						'@id@' || pos_player::text,
+						'role'
+				   )::en_role;
 
 		IF (0 = position(role_pos::text IN role_player::text)) THEN
 			RETURN FALSE;
@@ -5194,9 +5179,21 @@ DECLARE
 
 BEGIN
 
-	type_team = get_column('@', 'fp_team@id@' || id_team::text, 'type')::en_team;
+	type_team = get_column
+				(
+					'@',
+					'fp_team'
+					'@id@' || id_team::text,
+					'type'
+				)::en_team;
 
-	type_team_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
+	type_team_comp = get_column
+					 (
+						'@',
+						'fp_competition'
+						'@id@' || id_comp::text,
+						'team_type'
+					 )::en_team;
 
 
 	IF (type_team = type_team_comp) THEN
@@ -5243,7 +5240,12 @@ DECLARE
 
 BEGIN
 	
-	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
+	rec_comp = get_record
+			   (
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text
+			   );
 
 	RETURN QUERY
 		SELECT
@@ -5359,7 +5361,20 @@ BEGIN
 	LOOP
 
 		-- se la squadra di calcio partecipa ad un'edizione simile
-		IF (row_exists('@', 'fp_partecipation@team_id@' || id_team::text || '@competition_id@' || rec_comp_ed.id_similar_comp::text || '@start_year@' || rec_comp_ed.same_s_year::text)) THEN
+		IF
+		(
+			row_exists
+			(
+				'@',
+				'fp_partecipation'
+				'@team_id@' || id_team::text
+				||
+				'@competition_id@' || rec_comp_ed.id_similar_comp::text
+				||
+				'@start_year@' || rec_comp_ed.same_s_year::text
+			)
+		)
+		THEN
 			RETURN FALSE;
 		END IF;
 
@@ -5775,7 +5790,12 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -5966,9 +5986,21 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -6029,9 +6061,21 @@ BEGIN
 		play_id = id_play;
 
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -6347,7 +6391,7 @@ AS
 $$
 BEGIN
 
-	RETURN CAST(floor(random() * (e_range - s_range + 1) + s_range) AS smallint);
+	RETURN floor(random() * (e_range - s_range + 1) + s_range)::smallint;
 	
 END;
 $$
@@ -6512,7 +6556,13 @@ DECLARE
 
 BEGIN
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 	IF (role_player::text NOT LIKE '%GK%') THEN
 		RETURN;
@@ -6695,9 +6745,21 @@ DECLARE
 
 BEGIN
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text NOT LIKE '%GK%') THEN
@@ -6781,7 +6843,12 @@ DECLARE
 
 BEGIN
 
-	rec_play = get_record('@', 'fp_play@id@' || id_play::text);
+	rec_play = get_record
+			   (
+					'@',
+					'fp_play'
+					'@id@' || id_play::text
+			   );
 
 	match_play = random_between(1, max_match_comp(rec_play.competition_id));
 
@@ -6794,9 +6861,21 @@ BEGIN
 		id = id_play;
 
 	
-	id_pos_player = get_column('@', 'fp_player@id@' || rec_play.player_id::text, 'position_id')::integer;
+	id_pos_player = get_column
+					(
+						'@',
+						'fp_player'
+						'@id@' || rec_play.player_id::text,
+						'position_id'
+					)::integer;
 
-	role_pos_player = get_column('@', 'fp_position@id@' || id_pos_player::text, 'role')::en_role;
+	role_pos_player = get_column
+					  (
+							'@',
+							'fp_position'
+							'@id@' || id_pos_player::text,
+							'role'
+					  )::en_role;
 
 
 	PERFORM set_random_statistic_general(id_play, match_play, role_pos_player);
@@ -7040,7 +7119,13 @@ BEGIN
 
 	IF (place_for_country(NEW.type)) THEN
 
-		type_super_country = get_column('@', 'fp_country@id@' || NEW.super_id::text, 'type')::en_country;
+		type_super_country = get_column
+							 (
+								'@',
+								'fp_country'
+								'@id@' || NEW.super_id::text,
+								'type'
+							 )::en_country;
 
 		IF (can_be_inside(NEW.type, type_super_country)) THEN
 			RETURN NEW;
@@ -7107,12 +7192,30 @@ DECLARE
 
 BEGIN
 
-	type_country = get_column('@', 'fp_country@id@' || NEW.country_id::text, 'type')::en_country;
+	type_country = get_column
+				   (
+						'@',
+						'fp_country'
+						'@id@' || NEW.country_id::text,
+						'type'
+				   )::en_country;
 
 
-	id_country_super = get_column('@', 'fp_confederation@id@' || NEW.super_id::text, 'country_id')::integer;
+	id_country_super = get_column
+					   (
+							'@',
+							'fp_confederation'
+							'@id@' || NEW.super_id::text,
+							'country_id'
+					   )::integer;
 
-	type_country_super = get_column('@', 'fp_country@id@' || id_country_super::text, 'type')::en_country;
+	type_country_super = get_column
+						 (
+							'@',
+							'fp_country'
+							'@id@' || id_country_super::text,
+							'type'
+						 )::en_country;
 
 
 	IF (can_be_inside(type_country, type_country_super)) THEN
@@ -7148,9 +7251,21 @@ DECLARE
 
 BEGIN
 
-	id_country_conf = get_column('@', 'fp_confederation@id@' || NEW.confederation_id::text, 'country_id')::integer;
+	id_country_conf = get_column
+					  (
+							'@',
+							'fp_confederation'
+							'@id@' || NEW.confederation_id::text,
+							'country_id'
+					  )::integer;
 
-	type_country_conf = get_column('@', 'fp_country@id@' || id_country_conf::text, 'type')::en_country;
+	type_country_conf = get_column
+						(
+							'@',
+							'fp_country'
+							'@id@' || id_country_conf::text,
+							'type'
+						)::en_country;
 
 	-- non possono esistere competizioni per squadre nazionali
 	-- organizzate da una confederazione nazionale
@@ -7183,7 +7298,16 @@ $$
 BEGIN
 
 	-- se la competizione non ha edizioni
-	IF (NOT row_exists('@', 'fp_competition_edition@competition_id@' || NEW.competition_id::text)) THEN
+	IF
+	(
+		NOT row_exists
+			(
+				'@',
+				'fp_competition_edition'
+				'@competition_id@' || NEW.competition_id::text
+			)
+	)
+	THEN
 		RETURN NEW;
 
 	ELSE
@@ -7224,7 +7348,17 @@ DECLARE
 BEGIN
 
 	-- se la squadra è associata ad una nazione
-	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_country'
+			'@type@NATION'
+			'@id@' || NEW.country_id::text
+		)
+	)
+	THEN
 
 		IF ('CLUB' = NEW.type) THEN
 			RETURN NEW;
@@ -7233,9 +7367,20 @@ BEGIN
 		-- della nazione cui è associata		
 		ELSIF ('NATIONAL' = NEW.type) THEN
 
-			rec_country = get_record('@', 'fp_country@id@' || NEW.country_id::text);
+			rec_country = get_record
+						  (
+							'@',
+							'fp_country'
+							'@id@' || NEW.country_id::text
+						  );
 			
-			IF (NEW.short_name = rec_country.code AND NEW.long_name = rec_country.name) THEN
+			IF
+			(
+				NEW.short_name = rec_country.code
+				AND
+				NEW.long_name = rec_country.name
+			)
+			THEN
 				RETURN NEW;
 			END IF;
 				
@@ -7271,9 +7416,26 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
+	-- se il paese di nascita e' una nazione
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_country'
+			'@type@NATION'
+			'@id@' || NEW.country_id::text
+		)
+	)
+	THEN
 
-		role_pos = get_column('@','fp_position@id@' || NEW.position_id::text, 'role')::en_role_mix;
+		role_pos = get_column
+				   (
+						'@',
+						'fp_position'
+						'@id@' || NEW.position_id::text,
+						'role'
+				   )::en_role_mix;
 
 		IF (NEW.role = role_pos) THEN
 			RETURN NEW;
@@ -7360,7 +7522,18 @@ AS
 $$
 BEGIN
 
-	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
+	-- se il paese di nascita e' una nazione
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_country'
+			'@type@NATION'
+			'@id@' || NEW.country_id::text
+		)
+	)
+	THEN
 		RETURN NEW;
 	END IF;
 
@@ -7394,9 +7567,25 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_player_retired@player_id@' || NEW.id::text)) THEN
+	-- se il giocatore e' ritirato
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player_retired'
+			'@player_id@' || NEW.id::text
+		)
+	)
+	THEN
 
-		retired_date = get_column('@', 'fp_player_retired@player_id@' || NEW.id::text, 'retired_date')::date;
+		retired_date = get_column
+					   (
+							'@',
+							'fp_player_retired'
+							'@player_id@' || NEW.id::text,
+							'retired_date'
+					   )::date;
 
 		IF (NOT corr_age_limit(NEW.dob, retired_date)) THEN
 			RETURN OLD;
@@ -7405,7 +7594,16 @@ BEGIN
 	END IF;
 
 	-- se il calciatore ha una qualunque militanza
-	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.id::text)) THEN
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_militancy'
+			'@player_id@' || NEW.id::text
+		)
+	)
+	THEN
 
 		born_year = extract(year from NEW.dob);
 
@@ -7413,8 +7611,17 @@ BEGIN
 			RETURN OLD;
 		END IF;
 
-
-		IF (NOT row_exists('@', 'fp_player_retired@player_id@' || NEW.id::text)) THEN
+		-- se il giocatore non e' ritirato
+		IF
+		(
+			NOT row_exists
+				(
+					'@',
+					'fp_player_retired'
+					'@player_id@' || NEW.id::text
+				)
+		)
+		THEN
 
 			IF (max_militancy_year(NEW.id) - born_year > max_age()) THEN
 				RETURN OLD;
@@ -7555,10 +7762,22 @@ $$
 BEGIN
 	
 	-- se il calciatore ha perso il ruolo di portiere
-	IF ((OLD.role::text LIKE '%GK%') AND (NEW.role::text NOT LIKE '%GK%')) THEN
+	IF
+	(
+		OLD.role::text LIKE '%GK%'
+		AND
+		NEW.role::text NOT LIKE '%GK%'
+	)
+	THEN
 		PERFORM delete_all_gk(NEW.id);
-	
-	ELSIF ((OLD.role::text NOT LIKE '%GK%') AND (NEW.role::text LIKE '%GK%')) THEN
+	-- se il calciatore ha acquisito il ruolo di portiere
+	ELSIF
+	(
+		OLD.role::text NOT LIKE '%GK%'
+		AND
+		NEW.role::text LIKE '%GK%'
+	)
+	THEN
 		PERFORM create_all_gk(NEW.id);
 	
 	END IF;
@@ -7597,14 +7816,29 @@ DECLARE
 
 BEGIN
 
-	born_date = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'dob')::date;
+	born_date = get_column
+				(
+					'@',
+					'fp_player'
+					'@id@' || NEW.player_id::text,
+					'dob'
+				)::date;
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
 		RETURN NULL;
 	END IF;
 	
-
-	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.player_id::text)) THEN
+	-- se il calciatore ha una qualsiasi militanza
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_militancy'
+			'@player_id@' || NEW.player_id::text
+		)
+	)
+	THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
@@ -7644,14 +7878,30 @@ DECLARE
 BEGIN
 
 
-	born_date = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'dob')::date;
+	born_date = get_column
+				(
+					'@',
+					'fp_player'
+					'@id@' || NEW.player_id::text,
+					'dob'
+				)::date;
 
 	IF (NOT corr_age_limit(born_date, NEW.retired_date)) THEN
 		RETURN OLD;	
 	END IF;
 	
 
-	IF (row_exists('@', 'fp_militancy@player_id@' || NEW.player_id::text)) THEN
+	-- se il calciatore ha una qualsiasi militanza
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_militancy'
+			'@player_id@' || NEW.player_id::text
+		)
+	)
+	THEN
 
 		retired_year = extract(year from NEW.retired_date);
 	
@@ -7685,7 +7935,18 @@ AS
 $$
 BEGIN
 
-	IF (row_exists('@', 'fp_country@type@NATION@id@' || NEW.country_id::text)) THEN
+	-- se il paese e' una nazione
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_country'
+			'@type@NATION'
+			'@id@' || NEW.country_id::text
+		)
+	)
+	THEN
 		RETURN NEW;
 	END IF;
 
@@ -7721,7 +7982,13 @@ DECLARE
 
 BEGIN
 
-	id_country_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'country_id')::integer;
+	id_country_player = get_column
+						(
+							'@',
+							'fp_player'
+							'@id@' || OLD.player_id::text,
+							'country_id'
+						)::integer;
 
 
 	IF (OLD.country_id = id_country_player) THEN
@@ -7729,11 +7996,27 @@ BEGIN
 	END IF;
 
 	-- se il giocatore ha militato in una nazionale
-	IF (row_exists('@', 'fp_militancy@team_type@NATIONAL@player_id@' || OLD.player_id::text)) THEN
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_militancy'
+			'@team_type@NATIONAL'
+			'@player_id@' || OLD.player_id::text
+		)
+	)
+	THEN
 
 		id_team = national_team(OLD.player_id);
 
-		id_country_team = get_column('@', 'fp_team@id@' || id_team::text, 'country_id')::integer;
+		id_country_team = get_column
+						  (
+								'@',
+								'fp_team'
+								'@id@' || id_team::text,
+								'country_id'
+						  )::integer;
 
 		
 		IF (OLD.country_id = id_country_team) THEN
@@ -7772,7 +8055,13 @@ DECLARE
 
 BEGIN
 
-	id_conf_comp = get_column('@', 'fp_competition@id@' || NEW.competition_id::text, 'confederation_id')::integer;
+	id_conf_comp = get_column
+				   (
+						'@',
+						'fp_competition'
+						'@id@' || NEW.competition_id::text,
+						'confederation_id'
+				   )::integer;
 
 
 	IF
@@ -7866,15 +8155,42 @@ BEGIN
 
 	IF ('NATIONAL' = NEW.team_type) THEN
 
-		id_country = get_column('@', 'fp_team@id@' || NEW.team_id::text, 'country_id')::integer;
+		id_country = get_column
+					 (
+						'@',
+						'fp_team'
+						'@id@' || NEW.team_id::text,
+						'country_id'
+					 )::integer;
 
 		-- se il calciatore non ha la nazionalita' del paese della squadra nazionale in questione
-		IF (NOT row_exists('@', 'fp_nationality@player_id@' || NEW.player_id::text || '' |'@country_id@'| id_country::text)) THEN
+		IF
+		(
+			NOT row_exists
+				(
+					'@',
+					'fp_nationality'
+					'@player_id@' || NEW.player_id::text
+					||
+					'@country_id@' || id_country::text
+				)
+		)
+		THEN
 			RETURN NULL;
 		END IF;
 
 		-- se il giocatore ha militato in una nazionale
-		IF (row_exists('@', 'fp_militancy@team_type@NATIONAL@player_id@' || NEW.player_id::text)) THEN
+		IF
+		(
+			row_exists
+			(
+				'@',
+				'fp_militancy'
+				'@team_type@NATIONAL'
+				'@player_id@' || NEW.player_id::text
+			)
+		)
+		THEN
 
 			-- se è una militanza nazionale e il calciatore ha gia
 			-- militato in nazionale la squadra deve essere la stessa
@@ -8133,12 +8449,24 @@ DECLARE
 
 BEGIN
 
-	goalkeeper = get_column('@', 'fp_tag@id@' || NEW.tag_id::text, 'goalkeeper')::boolean;
+	goalkeeper = get_column
+				 (
+					'@',
+					'fp_tag'
+					'@id@' || NEW.tag_id::text,
+					'goalkeeper'
+				 )::boolean;
 	
 
 	IF (goalkeeper) THEN
 	
-		role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
+		role_player = get_column
+					  (
+						'@',
+						'fp_player'
+						'@id@' || NEW.player_id::text,
+						'role'
+					  )::en_role_mix;
 
 		IF (role_player::text NOT LIKE '%GK%') THEN
 			RETURN NULL;
@@ -8178,7 +8506,13 @@ BEGIN
 
 	new_role_player = new_role(NEW.player_id);
 
-	role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || NEW.player_id::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player <> new_role_player) THEN
@@ -8221,9 +8555,25 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+	-- se la posizione fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player'
+			'@id@' || OLD.player_id::text
+		)
+	)
+	THEN
 
-		id_pos_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'position_id')::integer;
+		id_pos_player = get_column
+						(
+							'@',
+							'fp_player'
+							'@id@' || OLD.player_id::text,
+							'position_id'
+						)::integer;
 	
 		IF (id_pos_player = OLD.position_id) THEN
 			RETURN NULL;
@@ -8260,9 +8610,25 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+	-- se la posizione fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player'
+			'@id@' || OLD.player_id::text
+		)
+	)
+	THEN
 
-		role_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'role')::en_role_mix;
+		role_player = get_column
+					  (
+							'@',
+							'fp_player'
+							'@id@' || OLD.player_id::text,
+							'role'
+					  )::en_role_mix;
 
 		new_role_player = new_role(OLD.player_id);
 
@@ -8308,7 +8674,13 @@ DECLARE
 
 BEGIN
 
-	role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || NEW.player_id::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text NOT LIKE '%GK%') THEN
@@ -8344,9 +8716,24 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+	-- se la lista di attributi fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player@id@' || OLD.player_id::text
+		)
+	)
+	THEN
 
-		role_player = get_column('@', 'fp_player@id@' || OLD.player_id::text, 'role')::en_role_mix;
+		role_player = get_column
+					  (
+							'@',
+							'fp_player'
+							'@id@' || OLD.player_id::text,
+							'role'
+					  )::en_role_mix;
 
 		IF (role_player::text LIKE '%GK%') THEN
 			RETURN NULL;
@@ -8378,7 +8765,17 @@ AS
 $$
 BEGIN
 
-	IF (row_exists('@', 'fp_player@id@' || OLD.player_id::text)) THEN
+	-- se la lista di attributi fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player'
+			'@id@' || OLD.player_id::text
+		)
+	)
+	THEN
 		RETURN NULL;
 	END IF;
 
@@ -8410,7 +8807,13 @@ DECLARE
 
 BEGIN
 
-	match_play = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'match')::dm_usint;
+	match_play = get_column
+				 (
+					'@',
+					'fp_play'
+					'@id@' || NEW.play_id::text,
+					'match'
+				 )::dm_usint;
 
 
 	IF (match_play > 0) THEN
@@ -8475,7 +8878,17 @@ AS
 $$
 BEGIN
 
-	IF (row_exists('@', 'fp_play@id@' || OLD.play_id::text)) THEN
+	-- se il gioco fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_play'
+			'@id@' || OLD.play_id::text
+		)
+	)
+	THEN
 		RETURN NULL;
 	END IF;
 
@@ -8508,9 +8921,21 @@ DECLARE
 
 BEGIN
 
-	id_player = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || NEW.play_id::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 	
 	IF (role_player::text LIKE '%GK%') THEN
@@ -8547,11 +8972,33 @@ DECLARE
 
 BEGIN
 
-	IF (row_exists('@', 'fp_play@id@' || OLD.play_id::text)) THEN
+	-- se il gioco fa riferimento ad un calciatore
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_play'
+			'@id@' || OLD.play_id::text
+		)
+	)
+	THEN
 		
-		id_player = get_column('@', 'fp_play@id@' || NEW.play_id::text, 'player_id')::integer;
+		id_player = get_column
+					(
+						'@',
+						'fp_play'
+						'@id@' || NEW.play_id::text,
+						'player_id'
+					)::integer;
 
-		role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+		role_player = get_column
+					  (
+							'@',
+							'fp_player'
+							'@id@' || id_player::text,
+							'role'
+					  )::en_role_mix;
 
 		IF (role_player::text LIKE '%GK%') THEN
 			RETURN NULL;
@@ -8587,7 +9034,13 @@ DECLARE
 
 BEGIN
 
-	type_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'type')::en_award;
+	type_trophy = get_column
+				  (
+						'@',
+						'fp_trophy'
+						'@id@' || NEW.trophy_id::text,
+						'type'
+				  )::en_award;
 
 
 	IF ('TEAM' = type_trophy) THEN
@@ -8728,30 +9181,72 @@ DECLARE
 
 BEGIN
 
-	type_militancy = get_column('@', 'fp_militancy@player_id@' || NEW.player_id::text || '@team_id@' || NEW.team_id::text || '@start_year@' || NEW.start_year::text, 'type')::en_season;
+	type_militancy = get_column
+					 (
+						'@',
+						'fp_militancy'
+						'@player_id@' || NEW.player_id::text
+						||
+						'@team_id@' || NEW.team_id::text
+						||
+						'@start_year@' || NEW.start_year::text,
+						'type'
+					 )::en_season;
 
 
 	IF (type_militancy <> 'I PART') THEN
 
-		type_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'type')::en_award;
+		type_trophy = get_column
+					  (
+							'@',
+							'fp_trophy'
+							'@id@' || NEW.trophy_id::text,
+							'type'
+					  )::en_award;
 
 		IF ('TEAM' = type_trophy) THEN
 
 			-- se si tratta di un trofeo di squadra la squadra in questione deve avere il trofeo
-			IF (row_exists('@', 'fp_team_trophy_case@team_id@' || NEW.team_id::text || '@trophy_id@' || NEW.trophy_id::text || '@start_year@' || NEW.start_year::text || '@competition_id@' || NEW.competition_id::text)) THEN
+			IF 
+			(
+				row_exists
+				(
+					'@',
+					'fp_team_trophy_case'
+					'@team_id@' || NEW.team_id::text
+					||
+					'@trophy_id@' || NEW.trophy_id::text
+					||
+					'@start_year@' || NEW.start_year::text
+					||
+					'@competition_id@' || NEW.competition_id::text
+				)
+			)
+			THEN
 				RETURN NEW;
 			END IF;
 		
 		ELSIF ('PLAYER' = type_trophy) THEN
 
-			role_trophy = get_column('@', 'fp_trophy@id@' || NEW.trophy_id::text, 'role')::en_role;
+			role_trophy = get_column
+						  (
+								'@',
+								'fp_trophy'
+								'@id@' || NEW.trophy_id::text,
+								'role'
+						  )::en_role;
 
 			IF (role_trophy IS NULL) THEN
 				RETURN NEW;
 			
 			ELSE
 
-				role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
+				role_player = get_column
+							  (
+									'@',
+									'fp_player@id@' || NEW.player_id::text,
+									'role'
+							  )::en_role_mix;
 
 				IF (position(role_trophy::text in role_player::text) > 0) THEN
 					RETURN NEW;
@@ -8793,18 +9288,45 @@ DECLARE
 
 BEGIN
 
-	type_trophy = get_column('@', 'fp_trophy@id@' || OLD.trophy_id::text, 'type')::en_award;
+	type_trophy = get_column
+				  (
+						'@',
+						'fp_trophy'
+						'@id@' || OLD.trophy_id::text,
+						'type'
+				  )::en_award;
 
 	IF ('TEAM' = type_trophy) THEN
 
-		type_militancy = get_column('@', 'fp_militancy@player_id@' || OLD.player_id::text || '@team_id@' || OLD.team_id::text || '@start_year@' || OLD.start_year::text, 'type')::en_season;
+		type_militancy = get_column
+						 (
+							'@',
+							'fp_militancy'
+							'@player_id@' || OLD.player_id::text
+							||
+							'@team_id@' || OLD.team_id::text
+							||
+							'@start_year@' || OLD.start_year::text,
+							'type'
+						 )::en_season;
 	
 		-- se il trofeo è di squadra
 		-- tale trofeo sarà eliminabile solo se la squadra non ha il trofeo
 		-- o se il calciatore non milita nella parte finale di stagione
 		IF
 		(
-			row_exists('@', 'fp_team_trophy_case@team_id@' || OLD.team_id::text || '@trophy_id@' || OLD.trophy_id::text || '@start_year@' || OLD.start_year::text || '@competition_id@' || OLD.competition_id::text)
+			row_exists
+			(
+				'@',
+				'fp_team_trophy_case'
+				'@team_id@' || OLD.team_id::text
+				||
+				'@trophy_id@' || OLD.trophy_id::text
+				||
+				'@start_year@' || OLD.start_year::text
+				||
+				'@competition_id@' || OLD.competition_id::text
+			)
 			AND
 			type_militancy <> 'I PART' 
 		)
@@ -8842,7 +9364,13 @@ DECLARE
 
 BEGIN
 
-	type_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'type')::en_award;
+	type_prize = get_column
+				 (
+					'@',
+					'fp_trophy'
+					'@id@' || NEW.prize_id::text,
+					'type'
+				 )::en_award;
 
 	IF ('TEAM' = type_prize) THEN
 		RETURN NEW;
@@ -8882,7 +9410,13 @@ DECLARE
 
 BEGIN
 
-	type_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'type')::en_award;
+	type_prize = get_column
+				 (
+					'@',
+					'fp_trophy'
+					'@id@' || NEW.prize_id::text,
+					'type'
+				 )::en_award;
 	
 	IF ('PLAYER' = type_prize) THEN
 
@@ -8898,14 +9432,26 @@ BEGIN
 		-- il premio deve essere assegnato in un anno valido
 		IF (NEW.assign_year BETWEEN start_valid AND end_valid) THEN
 
-			role_prize = get_column('@', 'fp_trophy@id@' || NEW.prize_id::text, 'role')::en_role;
+			role_prize = get_column
+						 (
+							'@',
+							'fp_trophy'
+							'@id@' || NEW.prize_id::text,
+							'role'
+						 )::en_role;
 
 			IF (role_prize IS NULL) THEN		
 				RETURN NEW;
 			
 			ELSE
 
-				role_player = get_column('@', 'fp_player@id@' || NEW.player_id::text, 'role')::en_role_mix;
+				role_player = get_column
+							  (
+									'@',
+									'fp_player'
+									'@id@' || NEW.player_id::text,
+									'role'
+							  )::en_role_mix;
 
 				IF (position(role_prize::text in role_player::text) > 0) THEN
 					RETURN NEW;
@@ -10409,8 +10955,6 @@ EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
 
 
-
-
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
@@ -10517,3 +11061,6 @@ ALTER TABLE
 DISABLE TRIGGER
     tg_bi_prize_refuse;
 --------------------------------------------------------------------------------
+
+
+

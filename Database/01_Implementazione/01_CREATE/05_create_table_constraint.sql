@@ -2033,9 +2033,9 @@ ON UPDATE CASCADE;
  ******************************************************************************/
 CREATE TABLE fp_user_account
 (
-	username	dm_username	NOT NULL,
-	password	dm_password	NOT NULL,
-	priviledge	dm_usint	NOT NULL  -- livello di privilegio dell'utente				
+	username	dm_username		NOT NULL,
+	password	dm_password		NOT NULL,
+	privilege	en_privilege	NOT NULL  -- livello di privilegio dell'utente				
 );
 --------------------------------------------------------------------------------
 

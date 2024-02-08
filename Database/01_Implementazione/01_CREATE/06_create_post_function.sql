@@ -113,7 +113,12 @@ DECLARE
 
 BEGIN
 
-	rec_country = get_record('@', 'fp_country@id@' || id_country::text);
+	rec_country = get_record
+				  (
+						'@',
+						'fp_country'
+						'@id@' || id_country::text
+				  );
 
 
 	IF (rec_country.type <> 'NATION') THEN
@@ -435,14 +440,41 @@ DECLARE
 
 BEGIN
 
-	year_dob = extract(year from get_column('@', 'fp_player@id@' || id_player::text, 'dob')::date);
+	year_dob = extract
+			   (
+					year from get_column
+							  (
+									'@',
+									'fp_player'
+									'@id@' || id_player::text,
+									'dob'
+							  )::date
+			   );
 
 	s_valid = year_dob + min_age();
 
 	-- se il giocatore e' ritirato
-	IF (row_exists('@', 'fp_player_retired@player_id@' || id_player::text)) THEN
+	IF
+	(
+		row_exists
+		(
+			'@',
+			'fp_player_retired'
+			'@player_id@' || id_player::text
+		)
+	)
+	THEN
 
-		year_retired = extract(year from get_column('@', 'fp_player_retired@player_id@' || id_player::text, 'retired_date')::date);
+		year_retired = extract
+					   (
+							year from get_column
+									  (
+											'@',
+											'fp_player_retired'
+											'@player_id@' || id_player::text,
+											'retired_date'
+									  )::date
+					   );
 
 		e_valid = year_dob + year_retired - 1;
 
@@ -964,7 +996,13 @@ DECLARE
 	
 BEGIN
 	
-	freq = get_column('@', 'fp_competition@id@' || id_comp::text, 'frequency')::dm_usint;
+	freq = get_column
+		   (
+				'@',
+				'fp_competition'
+				'@id@' || id_comp::text,
+				'frequency'
+		   )::dm_usint;
 
 	-- se la frequenza della competizione calcistica è annnuale o irregolare
 	IF (freq <= 1) THEN
@@ -1034,23 +1072,46 @@ DECLARE
 BEGIN
 
 	-- prendo la confederazione di cui la squadra e' membro
-	id_country = get_column('@', 'fp_team@id@' || id_team::text, 'country_id')::integer;
+	id_country = get_column
+				 (
+					'@',
+					'fp_team@id@' || id_team::text,
+					'country_id'
+				 )::integer;
 
-	id_conf_team = get_column('@', 'fp_confederation@country_id@' || id_country::text, 'id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@country_id@' || id_country::text,
+						'id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
 
-	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@id@' || id_conf_team::text,
+						'super_id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
 	END IF;
 
 
-	id_conf_team = get_column('@', 'fp_confederation@id@' || id_conf_team::text, 'super_id')::integer;
+	id_conf_team = get_column
+				   (
+						'@',
+						'fp_confederation'
+						'@id@' || id_conf_team::text,
+						'super_id'
+				   )::integer;
 
 	IF (id_conf_team = id_conf) THEN
 		RETURN TRUE;
@@ -1096,7 +1157,12 @@ DECLARE
 
 BEGIN
 
-	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
+	rec_comp = get_record
+			   (
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text
+			   );
 
 
 	IF ('LEAGUE' = rec_comp.type) THEN
@@ -1156,7 +1222,13 @@ DECLARE
 
 BEGIN
 
-	type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'type')::en_competition;
+	type_comp = get_column
+				(
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text,
+					'type'
+				)::en_competition;
 
 
 	IF ('LEAGUE' = type_comp) THEN
@@ -1265,7 +1337,13 @@ BEGIN
 
 	LOOP
 
-		role_pos = get_column('@', 'fp_position@id@' || pos_player::text, 'role')::en_role;
+		role_pos = get_column
+				   (
+						'@',
+						'fp_position'
+						'@id@' || pos_player::text,
+						'role'
+				   )::en_role;
 
 		IF (0 = position(role_pos::text IN role_player::text)) THEN
 			RETURN FALSE;
@@ -1314,9 +1392,21 @@ DECLARE
 
 BEGIN
 
-	type_team = get_column('@', 'fp_team@id@' || id_team::text, 'type')::en_team;
+	type_team = get_column
+				(
+					'@',
+					'fp_team'
+					'@id@' || id_team::text,
+					'type'
+				)::en_team;
 
-	type_team_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
+	type_team_comp = get_column
+					 (
+						'@',
+						'fp_competition'
+						'@id@' || id_comp::text,
+						'team_type'
+					 )::en_team;
 
 
 	IF (type_team = type_team_comp) THEN
@@ -1363,7 +1453,12 @@ DECLARE
 
 BEGIN
 	
-	rec_comp = get_record('@', 'fp_competition@id@' || id_comp::text);
+	rec_comp = get_record
+			   (
+					'@',
+					'fp_competition'
+					'@id@' || id_comp::text
+			   );
 
 	RETURN QUERY
 		SELECT
@@ -1479,7 +1574,20 @@ BEGIN
 	LOOP
 
 		-- se la squadra di calcio partecipa ad un'edizione simile
-		IF (row_exists('@', 'fp_partecipation@team_id@' || id_team::text || '@competition_id@' || rec_comp_ed.id_similar_comp::text || '@start_year@' || rec_comp_ed.same_s_year::text)) THEN
+		IF
+		(
+			row_exists
+			(
+				'@',
+				'fp_partecipation'
+				'@team_id@' || id_team::text
+				||
+				'@competition_id@' || rec_comp_ed.id_similar_comp::text
+				||
+				'@start_year@' || rec_comp_ed.same_s_year::text
+			)
+		)
+		THEN
 			RETURN FALSE;
 		END IF;
 
@@ -1895,7 +2003,12 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -2086,9 +2199,21 @@ BEGIN
 	ON CONFLICT DO NOTHING;
 
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -2149,9 +2274,21 @@ BEGIN
 		play_id = id_play;
 
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text LIKE '%GK%') THEN
@@ -2467,7 +2604,7 @@ AS
 $$
 BEGIN
 
-	RETURN CAST(floor(random() * (e_range - s_range + 1) + s_range) AS smallint);
+	RETURN floor(random() * (e_range - s_range + 1) + s_range)::smallint;
 	
 END;
 $$
@@ -2632,7 +2769,13 @@ DECLARE
 
 BEGIN
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 	IF (role_player::text NOT LIKE '%GK%') THEN
 		RETURN;
@@ -2815,9 +2958,21 @@ DECLARE
 
 BEGIN
 
-	id_player = get_column('@', 'fp_play@id@' || id_play::text, 'player_id')::integer;
+	id_player = get_column
+				(
+					'@',
+					'fp_play'
+					'@id@' || id_play::text,
+					'player_id'
+				)::integer;
 
-	role_player = get_column('@', 'fp_player@id@' || id_player::text, 'role')::en_role_mix;
+	role_player = get_column
+				  (
+						'@',
+						'fp_player'
+						'@id@' || id_player::text,
+						'role'
+				  )::en_role_mix;
 
 
 	IF (role_player::text NOT LIKE '%GK%') THEN
@@ -2901,7 +3056,12 @@ DECLARE
 
 BEGIN
 
-	rec_play = get_record('@', 'fp_play@id@' || id_play::text);
+	rec_play = get_record
+			   (
+					'@',
+					'fp_play'
+					'@id@' || id_play::text
+			   );
 
 	match_play = random_between(1, max_match_comp(rec_play.competition_id));
 
@@ -2914,9 +3074,21 @@ BEGIN
 		id = id_play;
 
 	
-	id_pos_player = get_column('@', 'fp_player@id@' || rec_play.player_id::text, 'position_id')::integer;
+	id_pos_player = get_column
+					(
+						'@',
+						'fp_player'
+						'@id@' || rec_play.player_id::text,
+						'position_id'
+					)::integer;
 
-	role_pos_player = get_column('@', 'fp_position@id@' || id_pos_player::text, 'role')::en_role;
+	role_pos_player = get_column
+					  (
+							'@',
+							'fp_position'
+							'@id@' || id_pos_player::text,
+							'role'
+					  )::en_role;
 
 
 	PERFORM set_random_statistic_general(id_play, match_play, role_pos_player);

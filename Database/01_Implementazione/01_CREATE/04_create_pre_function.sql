@@ -202,7 +202,39 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Funzione che preso in input un separatore, il nome di una tabella e
+ *        un record di una riga della tabella in input costruisce mediante
+ *        SQL dinamico la stringa che poi potrà essere data in input alle
+ *        funzioni "get_column", "get_record", "row_exists" (vedi dopo).
+ *        Prende in input un separatore ed una stringa formattata in modo
+ *        appropiato.
+ *
+ *        ES. separatore = '@'
+ *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
+ *
+ *        L'idea di fondo è quella di sfruttare la formattazione della
+ *        stringa in input per estrarre tutte le informazioni necessarie
+ *        utilizzando un contatore.
+ *        Si immagini di costruire un array di stringhe contenente in ciascuna
+ *        posizione la parte di stringa corrispondente.
+ *        Continuando a seguire l'esempio proposto:
+ *
+ *        POSITION | VALUE
+ *           0     | nome_tabella
+ *           1     | nome_colonna1
+ *           2     | valore_colonna1
+ *           3     | nome_colonna2
+ *           4     | valore_colonna2
+ *          ...    | ...
+ *         2N - 1  | nome_colonnaN
+ *           2N    | valore_colonnaN
+ *
+ *        Eccezion fatta per la posizione 0 che si riferisce al nome della
+ *        tabella, tutte le altre posizioni dispari faranno riferimento a
+ *        nomi di colonne, mentre le posizioni pari immediatamente successive
+ *        ai rispettivi valori.
+ *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
+ *        costruire la stringa desiderata.
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_from_condition
 (
@@ -328,140 +360,6 @@ BEGIN
 	
 
 	RETURN from_condition;
-	
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_id
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : integer
- *
- * DESC : Funzione che restituisce l'id di una riga di una tabella, se presente.
- *        Prende in input un separatore ed una stringa formattata in modo
- *        appropiato.
- *
- *        ES. separatore = '@'
- *            stringa = 'nome_tabella@nome_colonna1@valore_colonna1@nome_colonna2@valore_colonna2@...@nome_colonnaN@valore_colonnaN'
- *
- *        L'idea di fondo è quella di sfruttare la formattazione della
- *        stringa in input per estrarre tutte le informazioni necessarie
- *        utilizzando un contatore.
- *        Si immagini di costruire un array di stringhe contenente in ciascuna
- *        posizione la parte di stringa corrispondente.
- *        Continuando a seguire l'esempio proposto:
- *
- *        POSITION | VALUE
- *           0     | nome_tabella
- *           1     | nome_colonna1
- *           2     | valore_colonna1
- *           3     | nome_colonna2
- *           4     | valore_colonna2
- *          ...    | ...
- *         2N - 1  | nome_colonnaN
- *           2N    | valore_colonnaN
- *
- *        Eccezion fatta per la posizione 0 che si riferisce al nome della
- *        tabella, tutte le altre posizioni dispari faranno riferimento a
- *        nomi di colonne, mentre le posizioni pari immediatamente successive
- *        ai rispettivi valori.
- *        Sfruttando tali osservazioni mediante SQL dinamico sarà possibile
- *        costruire la query desiderata.
- *        
- *        NOTA: Importante osservare che tale funzione sfrutta la buona prassi,
- *              che abbiamo osservato quando possibile e necessario,
- *              di assegnare una chiave surrogata di tipo integer alle tabelle
- *              e di denominarla id
- *
- *        NOTA: Assicurarsi che i valori in input permettano di definire
- *              in modo univoco una riga di una tabella.
- *              Non sono stati effettuati eccessivi, e dovuti, controlli
- *              sull'input in quanto si tratta di una funzione nata con lo
- *              scopo di semplificare l'inserimento dei dati nel database
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_id
-(
-	IN	separator		text,
-	IN	input_string	text
-)
-RETURNS integer
-RETURNS NULL ON NULL INPUT
-AS
-$$
-DECLARE
-
-	counter			integer;
-
-	name_table		text;
-	row_table		record;
-	
-	name_column		text;
-	
-	to_execute		text;
-	from_condition	text;
-
-	id_to_find		integer;
-	
-BEGIN
-	
-	counter = 0;
-
-	FOR row_table
-	IN
-		-- suddivido la stringa in input in base alla posizione del separatore
-		-- per sfruttarne la formattazione
-		SELECT
-			*
-		FROM
-			string_to_table(input_string, separator)
-
-	LOOP
-
-		-- se si tratta del nome della tabella
-		IF (0 = counter) THEN
-
-			name_table = row_table.string_to_table;
-			
-			IF (NOT table_exists(name_table)) THEN
-				RETURN NULL;
-			END IF;
-
-			-- mi assicuro che la tabella in questione abbia una colonna id
-			IF (NOT column_exists(name_table, 'id')) THEN
-				RETURN NULL;
-			END IF;
-			
-		END IF;
-
-		counter = counter + 1;
-
-		EXIT WHEN counter > 0;
-		
-	END LOOP;
-
-	
-	from_condition = get_from_condition(separator, input_string);
-
-	IF (from_condition IS NULL) THEN
-		RETURN NULL;
-	END IF;
-
-	to_execute = '';
-	to_execute = 'SELECT id ';
-	to_execute = to_execute || from_condition;
-
-	id_to_find = NULL;
-
-	EXECUTE to_execute INTO id_to_find;
-	
-
-	RETURN id_to_find;
 	
 END;
 $$
@@ -936,10 +834,6 @@ LANGUAGE plpgsql;
  *        di identificare univocamente la riga della tabella in questione.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
- *
  *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
  *              il valore di una colonna in modo univoco
  ******************************************************************************/
@@ -1077,10 +971,6 @@ LANGUAGE plpgsql;
  *        che permettono di identificare univocamente la riga della tabella.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
  *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
- *
  *        NOTA: e' necessario identificare la riga di cui si vuole estrarre
  *              il valore di una colonna in modo univoco
  ******************************************************************************/
@@ -1214,10 +1104,6 @@ LANGUAGE plpgsql;
  *        input il nome della tabella, e le colonne ed i valori delle colonne
  *        che permettono di identificare la riga della tabella.
  *        Utilizza SQL dinamico per costruire la query da eseguire.
- *
- *        NOTA: Si basa su un meccanismo analogo a quello della funzione get_id
- *              Vedere la documentazione della funzione get_id per maggiori
- *              informazioni
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION row_exists
 (
@@ -1337,7 +1223,13 @@ DECLARE
 
 BEGIN
 	
-	team_type_comp = get_column('@', 'fp_competition@id@' || id_comp::text, 'team_type')::en_team;
+	team_type_comp = get_column
+					 (
+						'@',
+						'fp_competition'
+						'@id@' || id_comp::text,
+						'team_type'
+					 )::en_team;
 		
 	IF ('CLUB' = team_type_comp) THEN
 		RETURN s_year + 1;
