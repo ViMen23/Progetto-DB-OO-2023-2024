@@ -1,6 +1,8 @@
 package gui;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import javax.swing.*;
@@ -13,16 +15,16 @@ public class Login
 {
   private JPanel generalPanel;
 
-  private JPanel loginPanel, registratiPanel;
+  private JPanel loginPanel, registratiPanel, languagePanel;
   GridBagConstraints gbc;
-  private JLabel welcomeJLabel, userJLabel, registerJLabel;
+  private JLabel welcomeJLabel, userJLabel, registerJLabel, languageJLabel;
   private JTextField userJTextField;
   private JButton avantiJButton, registratiJButton, countryJButton;
 
   final ImageIcon icon = createImageIcon("images/world.png");
 
   ResourceBundle message;
-  final static Color colorBackground = new Color(50, 0, 100);
+  final static Color colorBackground= Color.white;
 
   final static float genPanelFontSize = 22;
   final static float titleFontSize = 48;
@@ -45,9 +47,38 @@ public class Login
 
 	generalPanel.setBorder(titleBorder);
 
-	countryJButton = new JButton(icon);
 
+	languagePanel = new JPanel(new BorderLayout());
+	languagePanel.setPreferredSize(new Dimension(230, 60));
+
+	languageJLabel = new JLabel(message.getString("chooseLanguage"));
+	languagePanel.add(languageJLabel, BorderLayout.NORTH);
+
+	String[] possibleValues = { "One", "Two", "Three" };
+	JComboBox<String> optionList = new JComboBox<String>(possibleValues);
+
+	languagePanel.add(optionList, BorderLayout.SOUTH);
+
+	countryJButton = new JButton(icon);
+	countryJButton.setToolTipText(message.getString("setLanguage"));
+	countryJButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	countryJButton.setPreferredSize(new Dimension(40, 40));
+
+	Font generalFont = generalPanel.getFont().deriveFont( (genPanelFontSize) );
+	countryJButton.addActionListener(new ActionListener() {
+	  @Override
+	  public void actionPerformed(ActionEvent e) {
+
+		//Border tmp = BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(), message.getString("chooseLanguage"));
+		// optionList.setBorder(tmp);
+
+		JOptionPane.showOptionDialog(generalPanel, languagePanel,
+			message.getString("language"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null,
+			null, null );
+	  }
+	});
 	gbc = new GridBagConstraints();
+	gbc.insets = new Insets(0, 0, 0, 10);
 	gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 
 	generalPanel.add(countryJButton, gbc);
@@ -72,7 +103,7 @@ public class Login
 
 	welcomeJLabel.setForeground(Color.white);
 
-	Font generalFont = generalPanel.getFont().deriveFont( (genPanelFontSize) );
+
 
 	welcomeJLabel.setFont(generalFont);
 
@@ -87,7 +118,7 @@ public class Login
 	loginPanel.add(welcomeJLabel, gbc);
 
 	avantiJButton = new JButton(message.getString("nextButton"));
-
+	avantiJButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	avantiJButton.setFont(generalFont);
 
 	gbc = new GridBagConstraints();
@@ -165,7 +196,7 @@ public class Login
 	registratiPanel.add(registerJLabel, gbc);
 
 	registratiJButton = new JButton(message.getString("registerLabel"));
-
+	registratiJButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	registratiJButton.setFont(generalFont);
 
 	gbc = new GridBagConstraints();
@@ -180,14 +211,22 @@ public class Login
   public JPanel getRootPanel() { return generalPanel; }
 
 
-  protected ImageIcon createImageIcon(String path) {
-	java.net.URL imgURL = getClass().getResource(path);
+  protected ImageIcon createImageIcon(String path)
+  {
+	java.net.URL imgURL = ClassLoader.getSystemResource(path);
+
 	if (imgURL != null) {
-	  return new ImageIcon(imgURL);
-	} else {
+
+	  ImageIcon img1 = new ImageIcon(imgURL);
+
+	  Image img2 = img1.getImage().getScaledInstance(40,40, Image.SCALE_DEFAULT);
+	  return new ImageIcon(img2);
+	}
+	else {
 	  System.err.println("Couldn't find file: " + path);
 	  return null;
 	}
+
   }
 
 }

@@ -21,6 +21,13 @@ public class Main
 
 	frame.setContentPane(new Login().getRootPanel());
 
+	try {
+	  UIManager.setLookAndFeel(
+		  UIManager.getCrossPlatformLookAndFeelClassName());
+	}
+	catch(Exception e){
+	  return;
+	}
 	frame.pack();
 	frame.setVisible(true);
   }

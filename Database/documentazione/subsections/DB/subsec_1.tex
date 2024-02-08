@@ -61,7 +61,7 @@ che per modellare il nostro progetto avremo bisogno di:
 
 	\item una classe Position che rappresenta il concetto astratto di posizione di gioco.
 
-	\item una classe Tag che rappresenta il concetto astratto di tag che si puo' assegnare
+	\item una classe Tag che rappresenta il concetto astratto di tag che si può assegnare
 		ad un calciatore.
 
 	\item una classe AttributeMental che rappresenta il concetto astratto di insieme di
@@ -99,17 +99,16 @@ delle associazioni e nella documentazione interna al codice.
 \newpage
 
 \subsection{Ristrutturazione del Class Diagram}
-%TODO: discorso sulla dissociazione della data di ritiro
-%TODO: discorso sull'inserimento dell'associazione ridondante su team della confederazione di appartenenza.
+
 \subsubsection{Analisi delle Ridondanze}
 
 \textbf{Classe: CompetitionEdition}
 
-Si e' scelto di  aggiungere un attributo che rappresenti l'anno di fine di una edizione di una
+Si è scelto di  aggiungere un attributo che rappresenti l'anno di fine di una edizione di una
 competizione calcistica per semplificare le viste sul DataBase, in quanto altrimenti sarebbe
 stato necessario andare a valutare ogni volta il tipo di squadra della competizione associata.
 
-Esempi di alcune operazioni svolte nel DataBase che coinvolgono l' anno di fine di un'edizione
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono l'anno di fine di un'edizione
 di una competizione calcistica:
 \begin{itemize}
 	\item Mostrare le informazioni relative al gioco di un calciatore;
@@ -119,7 +118,7 @@ di una competizione calcistica:
 \textbf{Classe: Player}
 
 Supponendo un'alta frequenza di operazioni riguardanti i calciatori, e nello specifico in relazione
-ai ruoli dei calciatori, si e' deciso di introdurre nella classe Player un attributo ridondante
+ai ruoli dei calciatori, si è deciso di introdurre nella classe Player un attributo ridondante
 che rappresenti l'insieme dei ruoli del calciatore stesso.
 
 L'alternativa sarebbe stata quella di andare a calcolare l'insieme dei ruoli del calciatore
@@ -136,11 +135,11 @@ Esempi di alcune operazioni svolte nel DataBase che coinvolgono il ruolo di un c
 \textbf{Associazione: Nationality}
 
 Sebbene l'associazione bornCountry contenga l'informazione sul paese di nascita di un calciatore
-si e' deciso di introdurre tale informazione anche nell'associazione Nationality in modo tale da
-rendere molto piu' semplice la gestione di tutte le operazioni che coinvolgono le nazionalita'
+si è deciso di introdurre tale informazione anche nell'associazione Nationality in modo tale da
+rendere molto più semplice la gestione di tutte le operazioni che coinvolgono le nazionalità
 di un calciatore ed anche le viste associate.
 
-Esempi di alcune operazioni svolte nel DataBase che coinvolgono le nazionalita' di un calciatore:
+Esempi di alcune operazioni svolte nel DataBase che coinvolgono le nazionalità di un calciatore:
 \begin{itemize}
 	\item Cambiare paese di nascita;
 	\item Assegnare o rimuovere militanza in una squadra di tipo nazionale.
@@ -149,8 +148,8 @@ Esempi di alcune operazioni svolte nel DataBase che coinvolgono le nazionalita' 
 \textbf{Associazione: PlayerPosition}
 
 Sebbene l'associazione mainPosition contenga l'informazione sulla posizione di gioco principale
-di un calciatore si e' deciso di introdurre tale informazione anche nell'associazione PlayerPosition
-in modo tale da rendere molto piu' semplice la gestione di tutte le operazioni che coinvolgono le
+di un calciatore si è deciso di introdurre tale informazione anche nell'associazione PlayerPosition
+in modo tale da rendere molto più semplice la gestione di tutte le operazioni che coinvolgono le
 posizioni di gioco di un calciatore ed anche le viste associate.
 
 Esempi di alcune operazioni svolte nel DataBase che coinvolgono le posizioni di gioco di un calciatore:
@@ -165,42 +164,42 @@ Esempi di alcune operazioni svolte nel DataBase che coinvolgono le posizioni di 
 
 \textbf{Competition}
 
-Si tratta di una generalizzazione di tipo totale sovrepposta. Si e' deciso di accorpare le
+Si tratta di una generalizzazione di tipo totale sovrepposta. Si è deciso di accorpare le
 classi figlie nella classe padre e conseguentemente di aggiungere due attributi che tenessero traccia
 di tali informazioni.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
 \textbf{Confederation}
 
-Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
-classi figlie nella classe padre. Non e' stato aggiunto un attributo che tenesse traccia
-di tale informazione in quanto e' deducibile dal tipo di paese col quale e' in associazione.
+Si tratta di una generalizzazione di tipo totale disgiunta. Si è deciso di accorpare le
+classi figlie nella classe padre. Non è stato aggiunto un attributo che tenesse traccia
+di tale informazione in quanto è deducibile dal tipo di paese col quale è in associazione.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
 \textbf{Country}
 
-Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+Si tratta di una generalizzazione di tipo totale disgiunta. Si è deciso di accorpare le
 classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
 di tale informazione.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
 \textbf{Prize}
 
-Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+Si tratta di una generalizzazione di tipo totale disgiunta. Si è deciso di accorpare le
 classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
 di tale informazione.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
 \textbf{Team}
 
-Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+Si tratta di una generalizzazione di tipo totale disgiunta. Si è deciso di accorpare le
 classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
 di tale informazione.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
 
 \textbf{Trophy}
 
-Si tratta di una generalizzazione di tipo totale disgiunta. Si e' deciso di accorpare le
+Si tratta di una generalizzazione di tipo totale disgiunta. Si è deciso di accorpare le
 classi figlie nella classe padre e conseguentemente di aggiungere un attributo che tenesse traccia
 di tale informazione.
 Chiaramente sono state anche ristrutturate le eventuali relazioni che coinvolgevano le classi figlie.
@@ -229,13 +228,13 @@ Abbiamo quindi 3 alternative
 \begin{itemize}
 	\item Portare Country in Confederation. Tale opzione comporterebbe una potenziale
 		perdita di dati relativi ai paesi senza confederazione calcistica;
-	\item Portare Confederation in Country. Tale opzione comporterebbe la possibilita'
+	\item Portare Confederation in Country. Tale opzione comporterebbe la possibilità
 		di attributi NULL;
 	\item Lasciare invariata l'associazione.
 \end{itemize}
 
-Chiaramente e' stata scelta l'opzione numero 3.
-Sottolineamo inoltre che tale scelta e' anche forzata dal fatto che le classi Country e Confederation
+Chiaramente è stata scelta l'opzione numero 3.
+Sottolineamo inoltre che tale scelta è anche forzata dal fatto che le classi Country e Confederation
 hanno associazioni diverse con altre classi del diagramma.
 
 \textbf{Associazioni identificanti}
@@ -251,7 +250,7 @@ Le associazioni identificanti presenti nel diagramma sono:
 \end{itemize}
 
 Trattandosi di associazioni identificanti sarebbe stato possibile accorpare le classi deboli
-nelle classi identificanti. Si e' scelto di mantenere le classi separate e lasciare quindi le
+nelle classi identificanti. Si è scelto di mantenere le classi separate e lasciare quindi le
 associazioni sia per la presenza di associzioni identificanti parziali che potenzialmente
 avrebbero comportato la presenza di attributi NULL, sia per un una separazione delle informazioni
 a livello concettuale.
@@ -259,9 +258,9 @@ a livello concettuale.
 \textbf{Classe: Player}
 
 L'attributo che rappresenta la data di ritiro di un calciatore chiaramente avrebbe assunto un
-valore NULL per tutti i calciatori in attivita'. Quindi indipendentemente dal quantitativo di
-calciatori memorizzati nel DataBase cio' comporterebbe una grande quantita' di attributi NULL.
-Si e' scelto pertanto di partizionare la classe Player e di creare una classe PlayerRetired
+valore NULL per tutti i calciatori in attività. Quindi indipendentemente dal quantitativo di
+calciatori memorizzati nel DataBase ciò comporterebbe una grande quantità di attributi NULL.
+Si è scelto pertanto di partizionare la classe Player e di creare una classe PlayerRetired
 che contenesse l'informazione sulla data di ritiro di un calciatore.
 
 
@@ -270,19 +269,19 @@ che contenesse l'informazione sulla data di ritiro di un calciatore.
 \subsubsection{Scelta degli Identificatori Primari}
 \bigskip
 
-Sebbene le classi del diagramma abbiano tutte chiavi candidate (semplici o composte) si e' scelto di
+Sebbene le classi del diagramma abbiano tutte chiavi candidate (semplici o composte) si è scelto di
 inserire chiavi surrogate di tipo intero per diverse ragioni:
 \begin{itemize}
 	\item Come descritto ampiamente nella documentazione ufficiale del DBMS scelto (Postgresql)
-		una chiave di tipo intero rende le operazioni di ricerca piu'efficienti in quanto e' possibile
+		una chiave di tipo intero rende le operazioni di ricerca più efficienti in quanto è possibile
 		in modo automatico creare degli indici nelle tabelle;
 	\item Come descritto ampiamente nella documentazione ufficiale del DBMS scelto (Postgresql)
-		e' considerata una brutta prassi utilizzare come identificatore primario un attributo con
+		è considerata una brutta prassi utilizzare come identificatore primario un attributo con
 		un'impronta in memoria variabile (es. varchar, text, \dots);
-	\item per rendere piu'uniforme lo schema del DataBase e rendere piu' modulare il codice associato.
+	\item per rendere più uniforme lo schema del DataBase e rendere più modulare il codice associato.
 \end{itemize}
 
-Per quanto riguarda le classi deboli si e' seguita la prassi consigliata di utilizzare come
+Per quanto riguarda le classi deboli si è seguita la prassi consigliata di utilizzare come
 identificatore primario l'identificatore primario della classe identificante in combinazione con
 eventuali ulteriori chiavi parziali.
 
@@ -292,6 +291,227 @@ eventuali ulteriori chiavi parziali.
 \newpage
 
 \subsection{Dizionario}
+
+\subsection{Dizionario delle Enumerazioni}
+
+\begin{tblr}{
+	 hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth, cell{1}{1-3} = {blue!10!white}
+}
+
+	{
+		Enumerazione
+	}
+	&
+	{
+		Descrizione	
+	}
+	&
+	{
+		Litterale
+	}
+	\\
+	{
+		\textbf{enAward}
+	}
+	&
+	{
+		Rappresenta le possibili tipologie di trofeo e
+		premio calcistico.
+	}
+	&
+	{
+		\textbf{PLAYER}: Rappresenta un trofeo o premio calcistico
+			riferito ad un calciatore.\\
+		\medskip\textbf{TEAM}: Rappresenta un trofeo o premio calcistico
+			riferito ad una squadra di calcio.
+	}
+	\\
+	{
+		\textbf{enCompetition}
+	}
+	&
+	{
+		Rappresenta le possibili tipologie di competizione calcistica.
+	}
+	&
+	{
+		\textbf{CUP}: Rappresenta le competizioni calcistiche di tipo
+			torneo e coppe nazionali.\\
+		\medskip\textbf{LEAGUE}: Rappresenta le competizioni calcistiche
+			di tipo campionato.\\
+		\medskip\textbf{SUPER CUP}: Rappresenta le competizioni calcistiche
+			di tipo supercoppa.
+	}
+	\\
+	{
+		\textbf{enCountry}
+	}
+	&
+	{
+		Rappresenta le possibili tipologie di paesi.
+	}
+	&
+	{
+		\textbf{NATION}: Rappresenta i paesi di tipo nazione.\\
+		\medskip\textbf{CONTINENT}: Rappresenta i paesi di tipo continente.\\
+		\medskip\textbf{WORLD}: Rappresenta i paesi di tipo mondo.
+	}
+	\\
+	{
+		\textbf{enFoot}
+	}
+	&
+	{
+		Rappresenta le possibili tipologie di piede preferito
+		di un calciatore.
+	}
+	&
+	{
+		\textbf{EITHER}: Rappresenta che il calciatore ha come piede
+			preferito, entrambi i piedi.\\
+		\medskip\textbf{LEFT}: Rappresenta che il calciatore ha come piede
+			preferito, il piede sinistro.\\
+		\medskip\textbf{RIGHT}: Rappresenta che il calciatore ha come piede
+			preferito, il piede destro.
+	}
+	\\
+	{
+		\textbf{enPrivilege}
+	}
+	&
+	{
+		Rappresenta i privilegi di un utente dell'applicativo.
+	}
+	&
+	{
+		\textbf{GENERAL USER}: Rappresenta un utente che ha come permesso
+			soltanto quello di visualizzare le informazioni
+			della base di dati.\\
+		\medskip\textbf{ADMIN}: Rappresenta un utente che ha
+			il permesso di inserire o modificare certe informazioni
+			della base di dati.\\
+		\medskip\textbf{SUPER ADMIN}: Rappresenta un utente che ha
+			gli stessi permessi di un Admin ed inoltre ha
+			la possibilità di creare o promuovere un utente ad admin.
+		
+	}
+	\\
+	{
+		\textbf{enRole}
+	}
+	&
+	{
+		Rappresenta le possibili tipologie di ruolo di gioco
+		di un calciatore.
+	}
+	&
+	{
+		\textbf{GK}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo portiere.\\
+		\medskip\textbf{DF}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo difensore.\\
+		\medskip\textbf{MF}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo centrocampista.\\
+		\medskip\textbf{FW}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo attaccante.
+	}
+	\\
+\end{tblr}
+
+\newpage
+
+\begin{tblr}{
+	hlines = {0.9pt}, vlines = {0.9pt}, colspec = {X[l]X[l]X[l]}, column{1-2}= {110pt},
+    width = \textwidth
+}
+
+	{
+		\textbf{enRoleMix}
+	}
+	&
+	{
+		Rappresenta tutte le possibili combinazioni di ruolo di gioco
+		di un calciatore.
+	}
+	&
+	{
+		\textbf{GK}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo portiere.\\
+		\medskip\textbf{DF}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo difensore.\\
+		\medskip\textbf{MF}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo centrocampista.\\
+		\medskip\textbf{FW}: Rappresenta un calciatore che ha
+			come ruolo di gioco, il ruolo attaccante.\\
+		\medskip\textbf{GK-DF}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere e il ruolo difensore.\\
+		\medskip\textbf{GK-MF}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere e
+			il ruolo centrocampista.\\
+		\medskip\textbf{GK-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere e il ruolo attaccante.\\
+		\medskip\textbf{DF-MF}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo difensore
+			e il ruolo centrocampista.\\
+		\medskip\textbf{DF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo difensore
+			e il ruolo attaccante.\\
+		\medskip\textbf{MF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo centrocampista
+			e il ruolo attaccante.\\
+		\medskip\textbf{GK-DF-MF}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere, il ruolo difensore
+			e il ruolo centrocampista.\\
+		\medskip\textbf{GK-DF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere, il ruolo difensore
+			e il ruolo attaccante.\\
+		\medskip\textbf{GK-MF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere, il ruolo centrocampista
+			e il ruolo attaccante.\\
+		\medskip\textbf{DF-MF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo difensore, il ruolo
+			centrocampista e il ruolo attaccante.\\
+		\medskip\textbf{GK-DF-MF-FW}: Rappresenta un calciatore che ha
+			come ruoli di gioco, il ruolo portiere, il ruolo difensore,
+			il ruolo centrocampista e il ruolo attaccante.	
+	}
+	\\
+	{
+		\textbf{enSeason}
+	}
+	&
+	{
+		Rappresenta le varie tipologie di stagione per una militanza.
+	}
+	&
+	{
+		\textbf{I PART}: Rappresenta che il calciatore durante la militanza
+			ha giocato soltanto nella prima parte di stagione.\\
+		\medskip\textbf{II PART}: Rappresenta che il calciatore durante
+			la militanza ha giocato soltanto nella seconda parte
+			di stagione.\\
+		\medskip\textbf{FULL}: Rappresenta che il calciatore durante
+			la militanza ha giocato per tutta la stagione.
+	}
+	\\
+	{
+		\textbf{enTeam}
+	}
+	&
+	{
+		Rappresenta le varie tipologie di squadra di calcio.
+	}
+	&
+	{
+		\textbf{CLUB}: Rappresenta le squadre di calcio di tipo club.\\
+		\medskip\textbf{NATIONAL}: Rappresenta le squadre di calcio di
+			tipo nazionale.
+	}
+	\\
+\end{tblr}
+
+\newpage
 
 \subsubsection{Dizionario delle Classi}
 
@@ -885,7 +1105,7 @@ eventuali ulteriori chiavi parziali.
 			l'username dell'Account dell'Utente.\\
 		\medskip\textbf{password}(String):\\Rappresenta
 			la password dell'Account dell'Utente.\\
-		\medskip\textbf{priviledge}(Integer):\\Rappresenta
+		\medskip\textbf{privilege}(Integer):\\Rappresenta
 			i privilegi dell'Account dell'Utente.
 	}
 	\\
@@ -2297,7 +2517,7 @@ eventuali ulteriori chiavi parziali.
 	{
 		Dominio per gli attributi code delle classi:
 		country e position.
-		Questo dominio sfrutta l' espressione regolare
+		Questo dominio sfrutta l'espressione regolare
 		che accetta una stringa di caratteri 
 		dell'alfabeto inglese maiuscoli di 
 		lunghezza compresa tra
@@ -2342,7 +2562,7 @@ eventuali ulteriori chiavi parziali.
 	&
 	{
 		Dominio per l'attributo password di UserAccount.
-		Questo dominio sfrutta l' espressione regolare
+		Questo dominio sfrutta l'espressione regolare
 		che accetta una stringa alfanumerica
 		di lunghezza compresa tra gli otto e
 		i duecentocinquantacinque caratteri.
@@ -2362,7 +2582,7 @@ eventuali ulteriori chiavi parziali.
 	{
 		Dominio per tutti i restanti attributi
 		di tipo	String.
-		Questo dominio sfrutta l' espressione regolare
+		Questo dominio sfrutta l'espressione regolare
 		che accetta una stringa di caratteri
 		(inclusi i caratteri accentati)
 		di lunghezza compresa tra i due e
@@ -2382,7 +2602,7 @@ eventuali ulteriori chiavi parziali.
 	&
 	{
 		Dominio per l'attributo username di UserAccount.
-		Questo dominio sfrutta l' espressione regolare
+		Questo dominio sfrutta l'espressione regolare
 		che accetta una stringa di caratteri alfanumerici
 		(inclusi i caratteri accentati), punti,
 		trattini e trattini bassi,
