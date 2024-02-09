@@ -1,4 +1,6 @@
 package controller;
 
-public class Controller {
+public class Controller
+{
+  //This is a controller
 }

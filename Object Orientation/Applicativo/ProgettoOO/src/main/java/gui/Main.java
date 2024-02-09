@@ -16,10 +16,8 @@ public class Main
 
 	frame.setResizable(true);
 
-	frame.setMinimumSize(new Dimension(1000, 900));
-
-
-
+	frame.setMinimumSize(new Dimension(800, 700));
+	
 
 	try {
 	  UIManager.setLookAndFeel("com.sun.java.swing.plaf.gtk.GTKLookAndFeel");

@@ -1,4 +1,6 @@
 package implementazionePostgresDao;
 
-public class ImplementationPostgresDao {
+public class ImplementationPostgresDao
+{
+  //This is a class
 }
