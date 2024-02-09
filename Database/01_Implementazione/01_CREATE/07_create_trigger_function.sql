@@ -1306,7 +1306,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che il nuovo gioco che si vuole inserire
  *        sia valido
  *
- *        NOTA: per il numero massimo dI_PARTite per team abbiamo effettuato
+ *        NOTA: per il numero massimo di partite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
  *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
@@ -1394,9 +1394,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_play_match
  *
- * DESC : Funzione che dopo l'aggiornamento del numero dI_PARTite
+ * DESC : Funzione che dopo l'aggiornamento del numero di partite
  *        di un gioco setta le statistiche corrispondenti a zero se
- *        il numero dI_PARTite è uguale a zero
+ *        il numero di partite è uguale a zero
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_play_match
 (

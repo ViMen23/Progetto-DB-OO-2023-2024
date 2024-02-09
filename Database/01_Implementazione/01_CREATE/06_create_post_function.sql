@@ -1201,7 +1201,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce il massimo numero dI_PARTite che e' possibile
+ * DESC : Funzione che restituisce il massimo numero di partite che è possibile
  *        disputare in una competizione in base alla tipologia della stessa
  *
  *        NOTA: i valori sono per eccesso ed arbitrari ma ottenuti mediante
@@ -2041,7 +2041,7 @@ LANGUAGE plpgsql;
  * RETURNS : void
  *
  * DESC : Funzione che data una militanza di un calciatore crea i giochi
- *        per tale giocatore per ogni competizione cuI_PARTecipa la squadra
+ *        per tale giocatore per ogni competizione cui partecipa la squadra
  *        nel periodo della militanza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_play_from_militancy
