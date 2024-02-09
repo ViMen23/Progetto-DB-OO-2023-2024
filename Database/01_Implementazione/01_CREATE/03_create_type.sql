@@ -39,7 +39,7 @@ CREATE TYPE en_competition AS ENUM
 (
 	'CUP',
 	'LEAGUE',
-	'SUPER CUP'
+	'SUPER_CUP'
 );
 --------------------------------------------------------------------------------
 
@@ -82,9 +82,9 @@ CREATE TYPE en_foot AS ENUM
  ******************************************************************************/
 CREATE TYPE en_privilege AS ENUM
 (
-	'GENERAL USER',	-- utente generico
+	'GENERAL_USER',	-- utente generico
 	'ADMIN',		-- amministratore che non puo' creare altri amministratori
-	'SUPER ADMIN'	-- amministratore che puo' creare altri amministratori
+	'SUPER_ADMIN'	-- amministratore che puo' creare altri amministratori
 );
 --------------------------------------------------------------------------------
 
@@ -117,17 +117,17 @@ CREATE TYPE en_role_mix AS ENUM
 	'DF',
 	'MF',
 	'FW',
-	'GK-DF',
-	'GK-MF',
-	'GK-FW',
-	'DF-MF',
-	'DF-FW',
-	'MF-FW',
-	'GK-DF-MF',
-	'GK-DF-FW',
-	'GK-MF-FW',
-	'DF-MF-FW',
-	'GK-DF-MF-FW'
+	'GK_DF',
+	'GK_MF',
+	'GK_FW',
+	'DF_MF',
+	'DF_FW',
+	'MF_FW',
+	'GK_DF_MF',
+	'GK_DF_FW',
+	'GK_MF_FW',
+	'DF_MF_FW',
+	'GK_DF_MF_FW'
 );
 --------------------------------------------------------------------------------
 
@@ -140,8 +140,8 @@ CREATE TYPE en_role_mix AS ENUM
  ******************************************************************************/
 CREATE TYPE en_season AS ENUM
 (
-	'I PART',	-- solo prima parte di stagione
-	'II PART',	-- solo seconda parte di stagione
+	'I_PART',	-- solo prima parte di stagione
+	'II_PART',	-- solo seconda parte di stagione
 	'FULL'		-- tutta la stagione
 );
 --------------------------------------------------------------------------------

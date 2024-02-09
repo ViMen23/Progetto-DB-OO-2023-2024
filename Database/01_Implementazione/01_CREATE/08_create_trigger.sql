@@ -674,9 +674,9 @@ WHEN
 	OLD.type IS DISTINCT FROM NEW.type
 	AND
 	(
-		'I PART' = OLD.type
+		'I_PART' = OLD.type
 		OR
-		'I PART' = NEW.type
+		'I_PART' = NEW.type
 	)
 )
 EXECUTE FUNCTION tf_au_militancy();

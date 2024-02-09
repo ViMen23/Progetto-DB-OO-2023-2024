@@ -1223,7 +1223,7 @@ AS
 $$
 BEGIN
 
-	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
+	IF ('II_PART' = NEW.type OR 'FULL' = NEW.type) THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	END IF;
 
@@ -1281,11 +1281,11 @@ $$
 BEGIN
 
 	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
-	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
+	IF ('I_PART' = OLD.type AND NEW.type <> 'I_PART') THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 
 	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
-	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
+	ELSIF (OLD.type <> 'I_PART' AND 'I_PART' = NEW.type) THEN
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 		
 	END IF;
@@ -1306,7 +1306,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che il nuovo gioco che si vuole inserire
  *        sia valido
  *
- *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *        NOTA: per il numero massimo dI_PARTite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
  *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
@@ -1365,7 +1365,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che l'aggiornamento delle partite disputate
  *        riferite ad un gioco sia valido
  *
- *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *        NOTA: per il numero massimo dI_PARTite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
  *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
@@ -1394,9 +1394,9 @@ LANGUAGE plpgsql;
  * TYPE : TRIGGER FUNCTION
  * NAME : tf_au_play_match
  *
- * DESC : Funzione che dopo l'aggiornamento del numero di partite
+ * DESC : Funzione che dopo l'aggiornamento del numero dI_PARTite
  *        di un gioco setta le statistiche corrispondenti a zero se
- *        il numero di partite è uguale a zero
+ *        il numero dI_PARTite è uguale a zero
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION tf_au_play_match
 (
@@ -2078,7 +2078,7 @@ BEGIN
 			AND
 			start_year = NEW.start_year
 			AND
-			type <> 'I PART'
+			type <> 'I_PART'
 	
 	LOOP
 
@@ -2185,7 +2185,7 @@ BEGIN
 					 )::en_season;
 
 
-	IF (type_militancy <> 'I PART') THEN
+	IF (type_militancy <> 'I_PART') THEN
 
 		type_trophy = get_column
 					  (
@@ -2319,7 +2319,7 @@ BEGIN
 				'@competition_id@' || OLD.competition_id::text
 			)
 			AND
-			type_militancy <> 'I PART' 
+			type_militancy <> 'I_PART' 
 		)
 		THEN
 			RETURN NULL;

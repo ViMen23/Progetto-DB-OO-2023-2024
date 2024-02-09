@@ -1168,7 +1168,7 @@ BEGIN
 	IF ('LEAGUE' = rec_comp.type) THEN
 		RETURN 40;
 	
-	ELSIF ('SUPER CUP' = rec_comp.type) THEN
+	ELSIF ('SUPER_CUP' = rec_comp.type) THEN
 		RETURN 6;
 	
 	ELSIF ('CUP' = rec_comp.type) THEN
@@ -1201,7 +1201,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce il massimo numero di partite che e' possibile
+ * DESC : Funzione che restituisce il massimo numero dI_PARTite che e' possibile
  *        disputare in una competizione in base alla tipologia della stessa
  *
  *        NOTA: i valori sono per eccesso ed arbitrari ma ottenuti mediante
@@ -1234,7 +1234,7 @@ BEGIN
 	IF ('LEAGUE' = type_comp) THEN
 		RETURN 40;
 	
-	ELSIF ('SUPER CUP' = type_comp) THEN
+	ELSIF ('SUPER_CUP' = type_comp) THEN
 		RETURN 3;
 	
 	ELSIF ('CUP' = type_comp) THEN
@@ -1673,7 +1673,7 @@ AS
 $$
 BEGIN
 
-	IF ('I PART' = type_year) THEN
+	IF ('I_PART' = type_year) THEN
 	
 		RETURN
 		(
@@ -1688,10 +1688,10 @@ BEGIN
 				AND
 				start_year = s_year
 				AND
-				type IN ('I PART', 'FULL')
+				type IN ('I_PART', 'FULL')
 		);
 	
-	ELSIF ('II PART' = type_year) THEN
+	ELSIF ('II_PART' = type_year) THEN
 	
 		RETURN
 		(
@@ -1706,7 +1706,7 @@ BEGIN
 				AND
 				start_year = s_year
 				AND
-				type IN ('II PART', 'FULL')
+				type IN ('II_PART', 'FULL')
 		);
 
 	ELSIF ('FULL' = type_year) THEN
@@ -1926,11 +1926,11 @@ BEGIN
 
 		-- aggiungi alla combinazione di ruoli del giocatore
 		tmp = tmp || role_pos::text;
-		tmp = tmp || '-';
+		tmp = tmp || '_';
 
 	END LOOP;
 
-	tmp = trim(tmp, '-');
+	tmp = trim(tmp, '_');
 
 	role_player = tmp::en_role_mix;
 
@@ -2041,7 +2041,7 @@ LANGUAGE plpgsql;
  * RETURNS : void
  *
  * DESC : Funzione che data una militanza di un calciatore crea i giochi
- *        per tale giocatore per ogni competizione cui partecipa la squadra
+ *        per tale giocatore per ogni competizione cuI_PARTecipa la squadra
  *        nel periodo della militanza
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION create_play_from_militancy
