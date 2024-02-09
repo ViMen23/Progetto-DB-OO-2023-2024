@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * TYPE : class
  * NAME : Prize
@@ -8,10 +11,13 @@ package model;
  */
 public class Prize
 {
-	private EnAward type;
-	private EnRole role;
-	private String name;
-	private String given;	// ente che assegna il premio calcistico
+	private final EnAward type;
+	private final EnRole role;
+	private final String name;
+	private final String given;	// ente che assegna il premio calcistico
+
+	// lista dei premi calcistici
+	private static Set<Prize> prizeSet = new LinkedHashSet<Prize>();
 
 
 	public Prize(EnAward type, EnRole role, String name, String given)
@@ -20,6 +26,8 @@ public class Prize
 		this.role = role;
 		this.name = name;
 		this.given = given;
+
+		prizeSet.add(this);
 	}
 
 
@@ -41,6 +49,11 @@ public class Prize
 	public String getGiven()
 	{
 		return given;
+	}
+
+	public static Set<Prize> getPrizeSet()
+	{
+		return prizeSet;
 	}
 
 }

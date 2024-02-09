@@ -10,14 +10,14 @@ public class UserAccount
 {
 	private String username;
 	private String password;
-	private EnPrivilege privilege;
+	private final Boolean admin;
 
 
-	public UserAccount(String username, String password, EnPrivilege privilege)
+	public UserAccount(String username, String password, Boolean admin)
 	{
 		this.username = username;
 		this.password = password;
-		this.privilege = privilege;
+		this.admin = admin;
 	}
 
 
@@ -31,11 +31,10 @@ public class UserAccount
 		return password;
 	}
 
-	public EnPrivilege getPrivilege()
+	public Boolean getAdmin()
 	{
-		return privilege;
+		return admin;
 	}
-
 
 	public void setUsername(String username)
 	{
@@ -45,11 +44,6 @@ public class UserAccount
 	public void setPassword(String password)
 	{
 		this.password = password;
-	}
-
-	public void setPrivilege(EnPrivilege privilege)
-	{
-		this.privilege = privilege;
 	}
 
 }

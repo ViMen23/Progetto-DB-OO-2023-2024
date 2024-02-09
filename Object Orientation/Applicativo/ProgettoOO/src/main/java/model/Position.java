@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * TYPE : class
  * NAME : Position
@@ -8,9 +11,11 @@ package model;
  */
 public class Position
 {
-	private EnRole role;
-	private String code;
-	private String name;
+	private final EnRole role;
+	private final String code;
+	private final String name;
+
+	private static Set<Position> positionSet = new LinkedHashSet<Position>();
 
 
 	public Position(EnRole role, String code, String name)
@@ -18,6 +23,9 @@ public class Position
 		this.role = role;
 		this.code = code;
 		this.name = name;
+
+		// add to set of position
+		positionSet.add(this);
 	}
 
 
@@ -34,6 +42,11 @@ public class Position
 	public String getName()
 	{
 		return name;
+	}
+
+	public Set<Position> getPositionSet()
+	{
+		return positionSet;
 	}
 
 }

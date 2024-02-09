@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashSet;
+import java.util.Set;
+
 /**
  * TYPE : class
  * NAME : Trophy
@@ -8,16 +11,20 @@ package model;
  */
 public class Trophy
 {
-	private EnAward type;
-	private EnRole role;
-	private String name;
+	private final EnAward type;
+	private final EnRole role;
+	private final String name;
 
+	// lista dei premi calcistici
+	private static Set<Trophy> trophySet = new LinkedHashSet<Trophy>();
 
 	public Trophy(EnAward type, EnRole role, String name)
 	{
 		this.type = type;
 		this.role = role;
 		this.name = name;
+
+		trophySet.add(this);
 	}
 
 
@@ -34,6 +41,11 @@ public class Trophy
 	public String getName()
 	{
 		return name;
+	}
+
+	public static Set<Trophy> getTrophySet()
+	{
+		return trophySet;
 	}
 
 }

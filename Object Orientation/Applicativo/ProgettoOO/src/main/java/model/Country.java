@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * TYPE : class
  * NAME : Country
@@ -14,6 +17,9 @@ public class Country
 	private final String name;
 	private final Country superCountry;
 
+	// mappa delle nazioni per continente
+	private static Map<Country, Country> nationMap = new LinkedHashMap<Country, Country>();
+
 
 	public Country(EnCountry type, String code, String name, Country superCountry)
 	{
@@ -21,6 +27,11 @@ public class Country
 		this.code = code;
 		this.name = name;
 		this.superCountry = superCountry;
+
+		if (EnCountry.NATION == type)
+		{
+			nationMap.put(superCountry, this);
+		}
 	}
 
 
@@ -42,6 +53,11 @@ public class Country
 	public Country getSuperCountry()
 	{
 		return superCountry;
+	}
+
+	public static Map<Country, Country> getNationMap()
+	{
+		return nationMap;
 	}
 
 }

@@ -8,8 +8,8 @@ package model;
  */
 public class Team
 {
-	private EnTeam type;
-	private Country country;
+	private final EnTeam type;
+	private final Country country;
 	private String longName;
 	private String shortName;
 

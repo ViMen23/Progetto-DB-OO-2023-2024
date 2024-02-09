@@ -8,10 +8,10 @@ package model;
  */
 public class Confederation
 {
-	private Country country;
-	private String shortName;
-	private String longName;
-	private Confederation superConfederation;
+	private final Country country;
+	private final String shortName;
+	private final String longName;
+	private final Confederation superConfederation;
 
 
 	public Confederation(Country country, String shortName, String longName, Confederation superConfederation)
