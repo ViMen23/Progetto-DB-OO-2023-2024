@@ -1,6 +1,6 @@
 package gui;
 
-import model.Language;
+import model.EnLanguage;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -11,8 +11,6 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-import javax.swing.plaf.FontUIResource;
-import javax.swing.text.StyleContext;
 
 public class Login
 {
@@ -25,7 +23,7 @@ public class Login
   private JButton avantiJButton, registratiJButton, countryJButton;
 
   final ImageIcon icon = createImageIcon("images/world2.png", 40, 40);
-  final ImageIcon logo = createImageIcon("images/logo2.png", 70, 70);
+  final ImageIcon logo = createImageIcon("images/logo16.png", 75, 75);
 
   ResourceBundle message;
   //final static Color colorBackground = Color.white;
@@ -299,12 +297,12 @@ public class Login
   }
 
 
-  public HashMap<Language, String> createHashMapLanguage()
+  public HashMap<EnLanguage, String> createHashMapLanguage()
   {
-	HashMap<Language, String> tmp = new HashMap<Language, String>();
+	HashMap<EnLanguage, String> tmp = new HashMap<EnLanguage, String>();
 
-	tmp.put(Language.inglese, "en_US");
-	tmp.put(Language.italiano, "it_IT");
+	tmp.put(EnLanguage.INGLESE, "en_US");
+	tmp.put(EnLanguage.ITALIANO, "it_IT");
 
 	return tmp;
   }
