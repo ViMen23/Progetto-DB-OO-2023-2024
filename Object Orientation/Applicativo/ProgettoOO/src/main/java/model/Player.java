@@ -9,7 +9,8 @@ import java.util.Date;
  *
  * DESC: Classe che rappresenta il concetto astratto di calciatore
  */
-public class Player {
+public class Player
+{
 	private String name;
 	private String surname;
 	private Date dob;
@@ -21,7 +22,8 @@ public class Player {
 
 
 	public Player(String name, String surname, Date dob, Country birthCountry,
-								EnFoot foot, Position mainPosition, EnRoleMix role, Date retiredDate) {
+								EnFoot foot, Position mainPosition, EnRoleMix role, Date retiredDate)
+	{
 		this.name = name;
 		this.surname = surname;
 		this.dob = dob;
@@ -33,68 +35,84 @@ public class Player {
 	}
 
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public String getSurname() {
+	public String getSurname()
+	{
 		return surname;
 	}
 
-	public Date getDob() {
+	public Date getDob()
+	{
 		return dob;
 	}
 
-	public Country getBirthCountry() {
+	public Country getBirthCountry()
+	{
 		return birthCountry;
 	}
 
-	public EnFoot getFoot() {
+	public EnFoot getFoot()
+	{
 		return foot;
 	}
 
-	public Position getMainPosition() {
+	public Position getMainPosition()
+	{
 		return mainPosition;
 	}
 
-	public EnRoleMix getRole() {
+	public EnRoleMix getRole()
+	{
 		return role;
 	}
 
-	public Date getRetiredDate() {
+	public Date getRetiredDate()
+	{
 		return retiredDate;
 	}
 
 
-	public void setName(String name) {
+	public void setName(String name)
+	{
 		this.name = name;
 	}
 
-	public void setSurname(String surname) {
+	public void setSurname(String surname)
+	{
 		this.surname = surname;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(Date dob)
+	{
 		this.dob = dob;
 	}
 
-	public void setBirthCountry(Country birthCountry) {
+	public void setBirthCountry(Country birthCountry)
+	{
 		this.birthCountry = birthCountry;
 	}
 
-	public void setFoot(EnFoot foot) {
+	public void setFoot(EnFoot foot)
+	{
 		this.foot = foot;
 	}
 
-	public void setMainPosition(Position mainPosition) {
+	public void setMainPosition(Position mainPosition)
+	{
 		this.mainPosition = mainPosition;
 	}
 
-	public void setRole(EnRoleMix role) {
+	public void setRole(EnRoleMix role)
+	{
 		this.role = role;
 	}
 
-	public void setRetiredDate(Date retiredDate) {
+	public void setRetiredDate(Date retiredDate)
+	{
 		this.retiredDate = retiredDate;
 	}
 }
