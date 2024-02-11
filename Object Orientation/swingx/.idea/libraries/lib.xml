@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="lib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/jdnc-jxcombobox.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/forms-1.0.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/looks-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jga-0.7.2-cddl.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/jlfgr-1_0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
