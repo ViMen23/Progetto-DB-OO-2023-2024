@@ -24,12 +24,13 @@ public class Main
 	private static String windowsVista = "com.sun.java.swing.plaf.motif.WindowsVistaLookAndFeel";
 	private static String metal = "com.sun.java.swing.plaf.metal.MetalLookAndFeel";
 
-  private static void createAndShowGUI()
-  {
+	public static ResourceBundle currentLocale;
+	private static void createAndShowGUI()
+	{
 		// creazione del locale di default come italiano
 		Locale.setDefault(Locale.of("it", "IT"));
 
-		ResourceBundle currentLocale = null;
+		currentLocale = null;
 
 		try
 		{
@@ -61,7 +62,8 @@ public class Main
 			return;
 		}
 
-		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
+
+	  	//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
 
 		homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
 
@@ -74,8 +76,10 @@ public class Main
 		gbc.ipadx = 20;
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
+		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale, homeFrame), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
@@ -85,13 +89,12 @@ public class Main
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		homeFrame.add(new UserFilterPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new UserFilterPanelNew(Controller.getControllerInstance(), currentLocale), gbc);
 
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
-
-  }
+	}
 
 	public static ImageIcon createImageIcon(String imagePath, int wight, int high)
 	{
@@ -110,8 +113,7 @@ public class Main
 
 	}
 
-
-  public static void main(String[] args)
+	public static void main(String[] args)
   {
 		// Pianifica un lavoro per la creazione e la visualizzazione della GUI di questa applicazione.
 		javax.swing.SwingUtilities.invokeLater(new Runnable()
