@@ -2026,16 +2026,15 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_user_account
+ * NAME : fp_admin
  *
- * DESC : Tabella contentente informazioni sugli account utente
+ * DESC : Tabella contentente informazioni sugli amministratori
  *        che possono utilizzare l'applicativo connesso al database
  ******************************************************************************/
-CREATE TABLE fp_user_account
+CREATE TABLE fp_admin
 (
 	username	dm_username		NOT NULL,
-	password	dm_password		NOT NULL,
-	privilege	en_privilege	NOT NULL  -- livello di privilegio dell'utente				
+	password	dm_password		NOT NULL		
 );
 --------------------------------------------------------------------------------
 

@@ -76,20 +76,6 @@ CREATE TYPE en_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : en_privilege
- *
- * DESC : Enum delle possibili tipologie di livello di privilegio di un utente
- ******************************************************************************/
-CREATE TYPE en_privilege AS ENUM
-(
-	'GENERAL_USER',	-- utente generico
-	'ADMIN',		-- amministratore che non puo' creare altri amministratori
-	'SUPER_ADMIN'	-- amministratore che puo' creare altri amministratori
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
  * NAME : en_role
  *
  * DESC : Enum delle possibili tipologie di ruolo di un calciatore
