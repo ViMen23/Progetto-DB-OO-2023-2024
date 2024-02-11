@@ -340,7 +340,7 @@ eventuali ulteriori chiavi parziali.
 			torneo e coppe nazionali.\\
 		\medskip\textbf{LEAGUE}: Rappresenta le competizioni calcistiche
 			di tipo campionato.\\
-		\medskip\textbf{SUPER CUP}: Rappresenta le competizioni calcistiche
+		\medskip\textbf{SUPER\_CUP}: Rappresenta le competizioni calcistiche
 			di tipo supercoppa.
 	}
 	\\
@@ -374,27 +374,6 @@ eventuali ulteriori chiavi parziali.
 			preferito, il piede sinistro.\\
 		\medskip\textbf{RIGHT}: Rappresenta che il calciatore ha come piede
 			preferito, il piede destro.
-	}
-	\\
-	{
-		\textbf{enPrivilege}
-	}
-	&
-	{
-		Rappresenta i privilegi di un utente dell'applicativo.
-	}
-	&
-	{
-		\textbf{GENERAL USER}: Rappresenta un utente che ha come permesso
-			soltanto quello di visualizzare le informazioni
-			della base di dati.\\
-		\medskip\textbf{ADMIN}: Rappresenta un utente che ha
-			il permesso di inserire o modificare certe informazioni
-			della base di dati.\\
-		\medskip\textbf{SUPER ADMIN}: Rappresenta un utente che ha
-			gli stessi permessi di un Admin ed inoltre ha
-			la possibilità di creare o promuovere un utente ad admin.
-		
 	}
 	\\
 	{
@@ -444,35 +423,35 @@ eventuali ulteriori chiavi parziali.
 			come ruolo di gioco, il ruolo centrocampista.\\
 		\medskip\textbf{FW}: Rappresenta un calciatore che ha
 			come ruolo di gioco, il ruolo attaccante.\\
-		\medskip\textbf{GK-DF}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_DF}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere e il ruolo difensore.\\
-		\medskip\textbf{GK-MF}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_MF}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere e
 			il ruolo centrocampista.\\
-		\medskip\textbf{GK-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere e il ruolo attaccante.\\
-		\medskip\textbf{DF-MF}: Rappresenta un calciatore che ha
+		\medskip\textbf{DF\_MF}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo difensore
 			e il ruolo centrocampista.\\
-		\medskip\textbf{DF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{DF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo difensore
 			e il ruolo attaccante.\\
-		\medskip\textbf{MF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{MF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo centrocampista
 			e il ruolo attaccante.\\
-		\medskip\textbf{GK-DF-MF}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_DF\_MF}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere, il ruolo difensore
 			e il ruolo centrocampista.\\
-		\medskip\textbf{GK-DF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_DF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere, il ruolo difensore
 			e il ruolo attaccante.\\
-		\medskip\textbf{GK-MF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_MF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere, il ruolo centrocampista
 			e il ruolo attaccante.\\
-		\medskip\textbf{DF-MF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{DF\_MF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo difensore, il ruolo
 			centrocampista e il ruolo attaccante.\\
-		\medskip\textbf{GK-DF-MF-FW}: Rappresenta un calciatore che ha
+		\medskip\textbf{GK\_DF\_MF\_FW}: Rappresenta un calciatore che ha
 			come ruoli di gioco, il ruolo portiere, il ruolo difensore,
 			il ruolo centrocampista e il ruolo attaccante.	
 	}
@@ -486,9 +465,9 @@ eventuali ulteriori chiavi parziali.
 	}
 	&
 	{
-		\textbf{I PART}: Rappresenta che il calciatore durante la militanza
+		\textbf{I\_PART}: Rappresenta che il calciatore durante la militanza
 			ha giocato soltanto nella prima parte di stagione.\\
-		\medskip\textbf{II PART}: Rappresenta che il calciatore durante
+		\medskip\textbf{II\_PART}: Rappresenta che il calciatore durante
 			la militanza ha giocato soltanto nella seconda parte
 			di stagione.\\
 		\medskip\textbf{FULL}: Rappresenta che il calciatore durante
@@ -531,6 +510,21 @@ eventuali ulteriori chiavi parziali.
 	&
 	{
 		Attributo
+	}
+	\\
+	{
+		\textbf{Admin}
+	}
+	&
+	{
+		Rappresenta gli admin dell'applicativo.
+	}
+	&
+	{
+		\textbf{username}(String)[chiave naturale]:\\Rappresenta
+			l'username dell'Admin dell'applicativo.\\
+		\medskip\textbf{password}(String):\\Rappresenta
+			la password dell'Admin dell'applicativo.
 	}
 	\\
 	{
@@ -1090,23 +1084,6 @@ eventuali ulteriori chiavi parziali.
 			il ruolo a cui è associato un Trofeo.\\
 		\medskip\textbf{name}(String)[chiave naturale]:
 			\\Rappresenta il nome del Trofeo.
-	}
-	\\
-	{
-		\textbf{UserAccount}
-	}
-	&
-	{
-		Rappresenta gli utenti dell'applicativo.
-	}
-	&
-	{
-		\textbf{username}(String)[chiave naturale]:\\Rappresenta
-			l'username dell'Account dell'Utente.\\
-		\medskip\textbf{password}(String):\\Rappresenta
-			la password dell'Account dell'Utente.\\
-		\medskip\textbf{privilege}(Integer):\\Rappresenta
-			i privilegi dell'Account dell'Utente.
 	}
 	\\
 \end{tblr}

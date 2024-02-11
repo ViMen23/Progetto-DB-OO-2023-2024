@@ -22,8 +22,8 @@ public class Login
   private JTextField userJTextField;
   private JButton avantiJButton, registratiJButton, countryJButton;
 
-  final ImageIcon icon = createImageIcon("images/world2.png", 40, 40);
-  final ImageIcon logo = createImageIcon("images/logo16.png", 75, 75);
+  final ImageIcon icon = Main.createImageIcon("images/world2.png", 40, 40);
+  final ImageIcon logo = Main.createImageIcon("images/logo16.png", 75, 75);
 
   ResourceBundle message;
   //final static Color colorBackground = Color.white;
@@ -276,25 +276,6 @@ public class Login
   }
 
   public JPanel getRootPanel() { return generalPanel; }
-
-
-  protected ImageIcon createImageIcon(String path, Integer width, Integer height)
-  {
-	java.net.URL imgURL = ClassLoader.getSystemResource(path);
-
-	if (imgURL != null) {
-
-	  ImageIcon img1 = new ImageIcon(imgURL);
-
-	  Image img2 = img1.getImage().getScaledInstance(width,height, Image.SCALE_DEFAULT);
-	  return new ImageIcon(img2);
-	}
-	else {
-	  System.err.println("Couldn't find file: " + path);
-	  return null;
-	}
-
-  }
 
 
   public HashMap<EnLanguage, String> createHashMapLanguage()
