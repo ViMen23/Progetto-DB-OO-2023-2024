@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
  *
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
-public class AdminLogin
+public class AdminLoginPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
@@ -30,7 +30,7 @@ public class AdminLogin
 	final static float inputFontSize = 20;
 	final static int inputColumn = 25;
 
-	public AdminLogin(Controller controller, ResourceBundle currentLocale)
+	public AdminLoginPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 

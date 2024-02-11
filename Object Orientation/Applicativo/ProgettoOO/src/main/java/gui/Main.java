@@ -16,11 +16,13 @@ import java.util.ResourceBundle;
  */
 public class Main
 {
+	// TODO: da controllare e sistemare
 	private static String gtk = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
 	private static String motif = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-	private static String windows = "com.sun.java.swing.plaf.motif.WindowsLookAndFeel";
+	private static String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
 	private static String windowsXP = "com.sun.java.swing.plaf.motif.WindowsXPLookAndFeel";
 	private static String windowsVista = "com.sun.java.swing.plaf.motif.WindowsVistaLookAndFeel";
+	private static String metal = "com.sun.java.swing.plaf.metal.MetalLookAndFeel";
 
   private static void createAndShowGUI()
   {
@@ -42,10 +44,11 @@ public class Main
 		JFrame homeFrame = new JFrame("Progetto");
 
 		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		homeFrame.setLayout(new GridBagLayout());
 		// posiziona frame al centro dello schermo
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setResizable(true);
-		homeFrame.setMinimumSize(new Dimension(650, 650));
+		homeFrame.setMinimumSize(new Dimension(1000, 100));
 
 		try
 		{
@@ -58,7 +61,30 @@ public class Main
 			return;
 		}
 
-		homeFrame.setContentPane(new AdminLogin(Controller.getControllerInstance(), currentLocale));
+		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
+		homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
+
+		GridBagConstraints gbc;
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 3;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.insets = new Insets(0,0,10,0);
+
+		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 3;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.ipadx = 20;
+		gbc.ipady = 20;
+		gbc.insets = new Insets(0,0,10,0);
+
+		homeFrame.add(new UserFilterPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
