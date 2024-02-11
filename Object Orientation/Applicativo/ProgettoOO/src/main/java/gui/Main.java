@@ -48,7 +48,7 @@ public class Main
 		// posiziona frame al centro dello schermo
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setResizable(true);
-		homeFrame.setMinimumSize(new Dimension(1000, 100));
+		homeFrame.setMinimumSize(new Dimension(1000, 500));
 
 		try
 		{
@@ -62,6 +62,7 @@ public class Main
 		}
 
 		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
+
 		homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
 
 		GridBagConstraints gbc;
@@ -86,10 +87,28 @@ public class Main
 
 		homeFrame.add(new UserFilterPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
+
 		homeFrame.pack();
 		homeFrame.setVisible(true);
 
   }
+
+	public static ImageIcon createImageIcon(String imagePath, int wight, int high)
+	{
+		java.net.URL imageURL = ClassLoader.getSystemResource(imagePath);
+
+		if (imageURL != null)
+		{
+			ImageIcon imageIcon = new ImageIcon(imageURL);
+
+			Image image = imageIcon.getImage().getScaledInstance(wight, high, Image.SCALE_DEFAULT);
+
+			return new ImageIcon(image);
+		}
+
+		return null;
+
+	}
 
 
   public static void main(String[] args)

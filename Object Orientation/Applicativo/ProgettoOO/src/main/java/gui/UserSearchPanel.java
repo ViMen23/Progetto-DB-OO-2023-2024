@@ -34,6 +34,8 @@ public class UserSearchPanel
 	final static float inputFontSize = 20;
 	final static int inputColumn = 25;
 
+	final ImageIcon homeImageIcon = Main.createImageIcon("images/home.png", 50, 50);
+
 	public UserSearchPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
@@ -43,17 +45,16 @@ public class UserSearchPanel
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
-		// configurazione bottone logo
+		// configurazione bottone home
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		homeButton = new JButton("Home");
-		homeButton.setFont(outputFont);
+		homeButton = new JButton(homeImageIcon);
 
 		add(homeButton, gbc);
 
@@ -63,8 +64,8 @@ public class UserSearchPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
 		playerRadioButton = new JRadioButton(currentLocale.getString("player"));
@@ -77,8 +78,8 @@ public class UserSearchPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
 		teamRadioButton = new JRadioButton(currentLocale.getString("team"));
@@ -97,8 +98,8 @@ public class UserSearchPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 3;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
 		searchField = new JTextField(inputColumn);

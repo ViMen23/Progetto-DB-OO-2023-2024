@@ -23,13 +23,17 @@ public class TopPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
-	protected JButton logoButton;
-	protected JButton projectnameButton;
+	protected JLabel logoLabel;
+	protected JLabel projectnameLabel;
 	protected JButton localeButton;
 	protected JButton loginLogoutButton;
 
 	final static float outputFontSize = 22;
 	final static float inputFontSize = 20;
+
+	final ImageIcon logoImageIcon = Main.createImageIcon("images/logo16.png", 75, 75);
+	final ImageIcon localeImageIcon = Main.createImageIcon("images/world2.png", 50, 50);
+	final ImageIcon loginLogoutImageIcon = Main.createImageIcon("images/loginLogout.png", 25, 25);
 
 
 	public TopPanel(Controller controller, ResourceBundle currentLocale)
@@ -46,28 +50,27 @@ public class TopPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		logoButton = new JButton("Logo");
-		logoButton.setFont(outputFont);
+		logoLabel = new JLabel(logoImageIcon);
 
-		add(logoButton, gbc);
+		add(logoLabel, gbc);
 
-		// configurazione bottone nome progetto
+		// configurazione label nome progetto
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		projectnameButton = new JButton("Nome Progetto");
-		projectnameButton.setFont(outputFont);
+		projectnameLabel = new JLabel("UNINA Football");
+		projectnameLabel.setFont(outputFont);
 
-		add(projectnameButton, gbc);
+		add(projectnameLabel, gbc);
 
 
 		// configurazione bottone scelta locale
@@ -75,12 +78,11 @@ public class TopPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		localeButton = new JButton("Locale");
-		localeButton.setFont(outputFont);
+		localeButton = new JButton(localeImageIcon);
 
 		add(localeButton, gbc);
 
@@ -89,11 +91,11 @@ public class TopPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 3;
 		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		loginLogoutButton = new JButton("Login/Logout");
+		loginLogoutButton = new JButton("Login", loginLogoutImageIcon);
 		loginLogoutButton.setFont(outputFont);
 
 		add(loginLogoutButton, gbc);
