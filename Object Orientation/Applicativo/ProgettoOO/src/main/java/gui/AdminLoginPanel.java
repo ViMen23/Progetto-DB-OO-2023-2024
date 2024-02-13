@@ -19,12 +19,11 @@ public class AdminLoginPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
-	protected JLabel usernameLabel;
-	protected JTextField usernameField;
-	protected JLabel passwordLabel;
+	protected JLabel label;
+	protected JTextField textField;
 	protected JPasswordField passwordField;
-	protected JButton confirmButton;
-	protected JCheckBox passwordCheckBox;
+	protected JButton button;
+	protected JCheckBox checkBox;
 
 	final static float outputFontSize = 22;
 	final static float inputFontSize = 20;
@@ -48,10 +47,9 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		usernameLabel = new JLabel(currentLocale.getString("usernameLabel"), SwingConstants.CENTER);
-		usernameLabel.setFont(outputFont);
-
-		add(usernameLabel, gbc);
+		label = new JLabel(currentLocale.getString("usernameLabel"), SwingConstants.CENTER);
+		label.setFont(outputFont);
+		add(label, gbc);
 
 		// configurazione campo username input
 		gbc = new GridBagConstraints();
@@ -62,11 +60,11 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		usernameField = new JTextField(inputColumn);
-		usernameField.setFont(inputFont);
-		usernameField.addCaretListener(this);
+		textField = new JTextField(inputColumn);
+		textField.setFont(inputFont);
+		textField.addCaretListener(this);
 
-		add(usernameField, gbc);
+		add(textField, gbc);
 
 		// configurazione campo password output
 		gbc = new GridBagConstraints();
@@ -77,10 +75,10 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(10,0,10,0);
 
-		passwordLabel = new JLabel(currentLocale.getString("passwordLabel"), SwingConstants.CENTER);
-		passwordLabel.setFont(outputFont);
+		label = new JLabel(currentLocale.getString("passwordLabel"), SwingConstants.CENTER);
+		label.setFont(outputFont);
 
-		add(passwordLabel, gbc);
+		add(label, gbc);
 
 		// configurazione campo password input
 		gbc = new GridBagConstraints();
@@ -107,15 +105,15 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		confirmButton = new JButton(currentLocale.getString("loginButtonMsg"));
-		confirmButton.setFont(outputFont);
-		confirmButton.setVerticalTextPosition(AbstractButton.CENTER);
-		confirmButton.setHorizontalTextPosition(AbstractButton.CENTER);
-		confirmButton.setMnemonic(KeyEvent.VK_ENTER);
-		confirmButton.setEnabled(false);
-		confirmButton.addActionListener(this);
+		button = new JButton(currentLocale.getString("loginButtonMsg"));
+		button.setFont(outputFont);
+		button.setVerticalTextPosition(AbstractButton.CENTER);
+		button.setHorizontalTextPosition(AbstractButton.CENTER);
+		button.setMnemonic(KeyEvent.VK_ENTER);
+		button.setEnabled(false);
+		button.addActionListener(this);
 
-		add(confirmButton, gbc);
+		add(button, gbc);
 
 		// configurazione box mostra password
 		gbc = new GridBagConstraints();
@@ -127,59 +125,30 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		passwordCheckBox = new JCheckBox(currentLocale.getString("passwordCheckBoxMsg"));
-		passwordCheckBox.setFont(outputFont);
-		passwordCheckBox.setEnabled(true);
-		passwordCheckBox.addItemListener(this);
+		checkBox = new JCheckBox(currentLocale.getString("passwordCheckBoxMsg"));
+		checkBox.setFont(outputFont);
+		checkBox.setEnabled(true);
+		checkBox.addItemListener(this);
 
-		add(passwordCheckBox, gbc);
+		add(checkBox, gbc);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		// TODO: fare quello che si deve fare
-		System.out.println("we");
+
 	}
 
 	@Override
 	public void caretUpdate(CaretEvent e)
 	{
-		Matcher usernameMatcher = Regex.patternUsername.matcher(usernameField.getText());
-
-		if (usernameMatcher.find())
-		{
-			Matcher passwordMatcher = Regex.patternPassword.matcher(new String(passwordField.getPassword()));
-
-			if (passwordMatcher.find())
-			{
-				confirmButton.setEnabled(true);
-			}
-			else
-			{
-				// TODO: stampa x rossa
-				System.out.println("Password non valida");
-			}
-		}
-		else
-		{
-			// TODO: stampa x rossa
-			System.out.println("Username non valido");
-		}
 
 	}
 
 	@Override
 	public void itemStateChanged(ItemEvent e)
 	{
-		if (e.getStateChange() == ItemEvent.SELECTED)
-		{
-			passwordField.setEchoChar('\0');
-		}
-		else if (e.getStateChange() == ItemEvent.DESELECTED)
-		{
-			passwordField.setEchoChar('*');
-		}
+
 	}
 
 }

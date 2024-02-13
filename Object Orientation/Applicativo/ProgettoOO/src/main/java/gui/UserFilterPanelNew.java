@@ -24,19 +24,14 @@ public class UserFilterPanelNew
 				extends  JPanel
   				implements ActionListener, CaretListener, ItemListener
 {
-	protected JLabel seasonLabel;
-	protected JLabel countryLabel;
-	protected JLabel competitionLabel;
-	protected JLabel teamLabel;
-	protected JLabel playerLabel;
+	protected JButton button;
+
 
 	final static float outputFontSize = 22;
 	final static float inputFontSize = 20;
-	final ImageIcon seasonImageIcon = Main.createImageIcon("images/season.png", 30, 30);
-	final ImageIcon countryImageIcon = Main.createImageIcon("images/country.png", 50, 50);
-	final ImageIcon competitionImageIcon = Main.createImageIcon("images/competition.png", 50, 50);
-	final ImageIcon teamImageIcon = Main.createImageIcon("images/team.png", 50, 50);
-	final ImageIcon playerImageIcon = Main.createImageIcon("images/player.png", 50, 50);
+
+	public static Timer timer;
+
 
 	public UserFilterPanelNew(Controller controller, ResourceBundle currentLocale)
 	{
@@ -47,8 +42,10 @@ public class UserFilterPanelNew
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
+		timer = new Timer(250, this);
 
-		// configurazione label stagione
+
+		// configurazione bottone home
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -56,11 +53,11 @@ public class UserFilterPanelNew
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 
-		seasonLabel = new JLabel(currentLocale.getString("season"), seasonImageIcon, SwingConstants.CENTER);
-		seasonLabel.setFont(outputFont);
+		button = new JButton(Main.createImageIcon("images/home.png", 50, 50));
 
-		add(seasonLabel, gbc);
+		add(button, gbc);
 
 
 		// configurazione label paese
@@ -72,12 +69,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		countryLabel = new JLabel(currentLocale.getString("country"), countryImageIcon, SwingConstants.CENTER);
-		countryLabel.setFont(outputFont);
+		button = new JButton(currentLocale.getString("country"), Main.createImageIcon("images/country.png", 50, 50));
+		button.setFont(outputFont);
 
-		add(countryLabel, gbc);
+		add(button, gbc);
 
-		// configurazione label competizione
+		// configurazione label paese
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
@@ -86,12 +83,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		competitionLabel = new JLabel(currentLocale.getString("competition"), competitionImageIcon, SwingConstants.CENTER);
-		competitionLabel.setFont(outputFont);
+		button = new JButton(currentLocale.getString("confederation"), Main.createImageIcon("images/competition.png", 50, 50));
+		button.setFont(outputFont);
 
-		add(competitionLabel, gbc);
+		add(button, gbc);
 
-		// configurazione label squadra
+		// configurazione label competizione
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 3;
@@ -100,31 +97,130 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		teamLabel = new JLabel(currentLocale.getString("team"), teamImageIcon, SwingConstants.CENTER);
-		teamLabel.setFont(outputFont);
+		button = new JButton(currentLocale.getString("competition"), Main.createImageIcon("images/competition.png", 50, 50));
+		button.setFont(outputFont);
 
-		add(teamLabel, gbc);
+		add(button, gbc);
 
-		// configurazione label calciatore
+		// configurazione label squadra
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 4;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,50);
+
+		button = new JButton(currentLocale.getString("team"), Main.createImageIcon("images/team.png", 50, 50));
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione label calciatore
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 5;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		playerLabel = new JLabel(currentLocale.getString("player"), playerImageIcon, SwingConstants.CENTER);
-		playerLabel.setFont(outputFont);
+		button = new JButton(currentLocale.getString("player"), Main.createImageIcon("images/player.png", 50, 50));
+		button.setFont(outputFont);
 
-		add(playerLabel, gbc);
+		add(button, gbc);
 
+		// configurazione bottone ricerca
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 6;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+
+		button = new JButton(Main.createImageIcon("images/search.png", 50, 50));
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone contatore paesi
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton("0");
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone contatore confederazioni
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 2;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton("0");
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone contatore competizioni
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 3;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton("0");
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone contatore squadre
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 4;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton("0");
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone contatore calciatori
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 5;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton("0");
+		button.setFont(outputFont);
+
+		add(button, gbc);
 
 	}
 
 
 	@Override
-	public void actionPerformed(ActionEvent e) {
+	public void actionPerformed(ActionEvent e)
+	{
 
 	}
 

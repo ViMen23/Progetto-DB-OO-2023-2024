@@ -16,19 +16,12 @@ import java.util.ResourceBundle;
  */
 public class Main
 {
-	// TODO: da controllare e sistemare
-	private static String gtk = "com.sun.java.swing.plaf.gtk.GTKLookAndFeel";
-	private static String motif = "com.sun.java.swing.plaf.motif.MotifLookAndFeel";
-	private static String windows = "com.sun.java.swing.plaf.windows.WindowsLookAndFeel";
-	private static String windowsXP = "com.sun.java.swing.plaf.motif.WindowsXPLookAndFeel";
-	private static String windowsVista = "com.sun.java.swing.plaf.motif.WindowsVistaLookAndFeel";
-	private static String metal = "com.sun.java.swing.plaf.metal.MetalLookAndFeel";
 
 	public static ResourceBundle currentLocale;
 	private static void createAndShowGUI()
 	{
 		// creazione del locale di default come italiano
-		Locale.setDefault(Locale.of("it", "IT"));
+		Locale.setDefault(Locale.of("en", "US"));
 
 		currentLocale = null;
 
@@ -51,49 +44,74 @@ public class Main
 		homeFrame.setResizable(true);
 		homeFrame.setMinimumSize(new Dimension(1000, 500));
 
+		UIManager.put("nimbusBase", new Color(0, 50, 255));
+		UIManager.put("nimbusBlueGrey", new Color(0, 100, 255));
+		UIManager.put("control", new Color(50, 200, 255));
+
 		try
 		{
-			// setto GTK+ come look and feel prefefinito
-			UIManager.setLookAndFeel(gtk);
-		}
-		// TODO: gestire meglio le eccezioni
-		catch(Exception e)
+			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
+			{
+				if ("Nimbus".equals(info.getName()))
+				{
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e)
 		{
 			return;
 		}
 
 
-	  	//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
 
-		homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
+		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
+
+		//homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
 
 		GridBagConstraints gbc;
 
+
 		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+
+
+		homeFrame.add(new TopPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,10,0);
-		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.fill = GridBagConstraints.BOTH;
-
-		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale, homeFrame), gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		gbc.insets = new Insets(0,0,10,0);
 
 		homeFrame.add(new UserFilterPanelNew(Controller.getControllerInstance(), currentLocale), gbc);
 
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
+
+		UserFilterPanelNew.timer.start();
 	}
 
 	public static ImageIcon createImageIcon(String imagePath, int wight, int high)
