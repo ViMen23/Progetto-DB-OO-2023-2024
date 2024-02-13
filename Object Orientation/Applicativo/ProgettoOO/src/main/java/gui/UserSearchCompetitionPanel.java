@@ -14,6 +14,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * TYPE : class - gui package
@@ -49,7 +50,13 @@ public class UserSearchCompetitionPanel
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 		// intestazione ricerca per nome
-		checkBox = new JCheckBox(currentLocale.getString("searchByName"));
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") + " " + currentLocale.getString("name")
+										).toUpperCase()
+						);
+
 		checkBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -62,7 +69,15 @@ public class UserSearchCompetitionPanel
 
 		// sottolineatura divisoria
 		label = new JLabel();
-		label.setBorder(new CompoundBorder(new EmptyBorder(4, 4, 4, 4), new MatteBorder(0, 0, 1, 0, Color.BLACK)));
+		label.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(4, 4, 4, 4),
+																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
+														)
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -74,7 +89,7 @@ public class UserSearchCompetitionPanel
 		add(label, gbc);
 
 		// TODO
-		label = new JLabel(currentLocale.getString("name"), SwingConstants.LEADING);
+		label = new JLabel(StringUtils.capitalize(currentLocale.getString("name")), SwingConstants.LEADING);
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -95,7 +110,13 @@ public class UserSearchCompetitionPanel
 
 		add(textField, gbc);
 
-		checkBox = new JCheckBox(currentLocale.getString("searchByCompetitionType"));
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") + " " + currentLocale.getString("competitionType")
+										).toUpperCase()
+						);
+
 		checkBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -108,7 +129,15 @@ public class UserSearchCompetitionPanel
 
 		// sottolineatura divisoria
 		label = new JLabel();
-		label.setBorder(new CompoundBorder(new EmptyBorder(4, 4, 4, 4), new MatteBorder(0, 0, 1, 0, Color.BLACK)));
+		label.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(4, 4, 4, 4),
+																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
+														)
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -122,7 +151,7 @@ public class UserSearchCompetitionPanel
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(currentLocale.getString("league"));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("league")));
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -136,7 +165,7 @@ public class UserSearchCompetitionPanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(currentLocale.getString("cup"));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("cup")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -149,7 +178,7 @@ public class UserSearchCompetitionPanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(currentLocale.getString("supercup"));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("supercup")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -161,7 +190,13 @@ public class UserSearchCompetitionPanel
 
 		buttonGroup.add(radioButton);
 
-		checkBox = new JCheckBox(currentLocale.getString("searchByTeamType"));
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") + " " + currentLocale.getString("teamType")
+										).toUpperCase()
+						);
+
 		checkBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -174,7 +209,15 @@ public class UserSearchCompetitionPanel
 
 		// sottolineatura divisoria
 		label = new JLabel();
-		label.setBorder(new CompoundBorder(new EmptyBorder(4, 4, 4, 4), new MatteBorder(0, 0, 1, 0, Color.BLACK)));
+		label.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(4, 4, 4, 4),
+																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
+														)
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -188,7 +231,7 @@ public class UserSearchCompetitionPanel
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(currentLocale.getString("club"));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("club")));
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -202,7 +245,7 @@ public class UserSearchCompetitionPanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(currentLocale.getString("national"));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("national")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -216,7 +259,13 @@ public class UserSearchCompetitionPanel
 
 
 
-		checkBox = new JCheckBox(currentLocale.getString("searchByCountry"));
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") + " " + currentLocale.getString("country")
+										).toUpperCase()
+						);
+
 		checkBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -229,7 +278,15 @@ public class UserSearchCompetitionPanel
 
 		// sottolineatura divisoria
 		label = new JLabel();
-		label.setBorder(new CompoundBorder(new EmptyBorder(4, 4, 4, 4), new MatteBorder(0, 0, 1, 0, Color.BLACK)));
+		label.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(4, 4, 4, 4),
+																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
+														)
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -238,17 +295,62 @@ public class UserSearchCompetitionPanel
 		gbc.gridy = 10;
 		gbc.insets = new Insets(0, 0, 10, 0);
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+
 		add(label, gbc);
 
 
+		buttonGroup = new ButtonGroup();
+
 		// TODO
-		label = new JLabel(currentLocale.getString("country"), SwingConstants.LEADING);
-		label.setFont(outputFont);
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("world")));
+		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 11;
+
+		add(radioButton, gbc);
+
+		buttonGroup.add(radioButton);
+
+		// TODO
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("continent")));
+		radioButton.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 11;
+
+		add(radioButton, gbc);
+
+		buttonGroup.add(radioButton);
+
+		// TODO
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("nation")));
+		radioButton.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 2;
+		gbc.gridy = 11;
+
+		add(radioButton, gbc);
+
+		buttonGroup.add(radioButton);
+
+
+
+		// TODO
+		label = new JLabel(StringUtils.capitalize(currentLocale.getString("continent")), SwingConstants.LEADING);
+		label.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 12;
 
 		add(label, gbc);
 
@@ -259,12 +361,34 @@ public class UserSearchCompetitionPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
-		gbc.gridy = 11;
+		gbc.gridy = 12;
 
 		add(comboBox, gbc);
 
 		// TODO
-		button = new JButton(currentLocale.getString("search"));
+		label = new JLabel(StringUtils.capitalize(currentLocale.getString("nation")), SwingConstants.LEADING);
+		label.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 13;
+
+		add(label, gbc);
+
+		// TODO
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 13;
+
+		add(comboBox, gbc);
+
+		// TODO
+		button = new JButton(currentLocale.getString("search").toUpperCase());
 		button.setFont(outputFont);
 		button.setActionCommand("search");
 		button.addActionListener(this);
@@ -272,7 +396,7 @@ public class UserSearchCompetitionPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
-		gbc.gridy = 12;
+		gbc.gridy = 14;
 		gbc.insets = new Insets(20, 0, 10, 0);
 
 		add(button, gbc);

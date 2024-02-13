@@ -35,9 +35,29 @@ public class UserSearchPanel
 
 		searchTabbedPane = new JTabbedPane(JTabbedPane.TOP, JTabbedPane.WRAP_TAB_LAYOUT);
 
-		searchTabbedPane.addTab(currentLocale.getString("competition"), new UserSearchCompetitionPanel(controller, currentLocale));
-		searchTabbedPane.addTab(currentLocale.getString("team"), new UserSearchTeamPanel(controller, currentLocale));
-		searchTabbedPane.addTab(currentLocale.getString("player"), new UserSearchPlayerPanel(controller, currentLocale));
+		searchTabbedPane.addTab
+						(
+										currentLocale.getString("competition").toUpperCase(),
+										new UserSearchCompetitionPanel(controller, currentLocale)
+						);
+
+		searchTabbedPane.addTab
+						(
+										currentLocale.getString("team").toUpperCase(),
+										new UserSearchTeamPanel(controller, currentLocale)
+						);
+
+		searchTabbedPane.addTab
+						(
+										currentLocale.getString("player").toUpperCase(),
+										new UserSearchPlayerPanel(controller, currentLocale)
+						);
+
+		searchTabbedPane.addTab
+						(
+										currentLocale.getString("stepFilter").toUpperCase(),
+										new UserStepFilterPanel(controller, currentLocale));
+
 		searchTabbedPane.setFont(outputFont);
 
 

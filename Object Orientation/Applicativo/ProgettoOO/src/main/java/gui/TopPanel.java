@@ -97,7 +97,12 @@ public class TopPanel
 		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 		gbc.weightx = 1.0;
 
-		button = new JButton("Login", Main.createImageIcon("images/loginLogout.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("login").toUpperCase(),
+										Main.createImageIcon("images/loginLogout.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);

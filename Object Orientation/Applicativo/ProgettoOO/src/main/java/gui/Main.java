@@ -161,8 +161,9 @@ public class Main
 		resultFrame.add(new UserResultSearchPanel(Controller.getControllerInstance(), currentLocale,
 			"competitions", 25), gbc);
 
-		homeFrame.setVisible(false);
-		resultFrame.setVisible(true);
+
+		homeFrame.setVisible(true);
+		//resultFrame.setVisible(false);
 	}
 
 

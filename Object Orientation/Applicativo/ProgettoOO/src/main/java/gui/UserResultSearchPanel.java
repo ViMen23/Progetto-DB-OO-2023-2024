@@ -104,6 +104,7 @@ public class UserResultSearchPanel
 		//table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setRowHeight(30);
 
 		scrollPane = new JScrollPane(table);
 

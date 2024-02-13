@@ -47,9 +47,11 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		label = new JLabel(currentLocale.getString("usernameLabel"), SwingConstants.CENTER);
+		label = new JLabel(currentLocale.getString("username").toUpperCase(), SwingConstants.CENTER);
 		label.setFont(outputFont);
+
 		add(label, gbc);
+
 
 		// configurazione campo username input
 		gbc = new GridBagConstraints();
@@ -75,7 +77,7 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(10,0,10,0);
 
-		label = new JLabel(currentLocale.getString("passwordLabel"), SwingConstants.CENTER);
+		label = new JLabel(currentLocale.getString("password").toUpperCase(), SwingConstants.CENTER);
 		label.setFont(outputFont);
 
 		add(label, gbc);
@@ -105,7 +107,7 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		button = new JButton(currentLocale.getString("loginButtonMsg"));
+		button = new JButton(currentLocale.getString("next").toUpperCase());
 		button.setFont(outputFont);
 		button.setVerticalTextPosition(AbstractButton.CENTER);
 		button.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -125,7 +127,7 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		checkBox = new JCheckBox(currentLocale.getString("passwordCheckBoxMsg"));
+		checkBox = new JCheckBox((currentLocale.getString("show") + " " + currentLocale.getString("password")).toUpperCase());
 		checkBox.setFont(outputFont);
 		checkBox.setEnabled(true);
 		checkBox.addItemListener(this);

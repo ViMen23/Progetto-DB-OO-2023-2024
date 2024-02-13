@@ -69,7 +69,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		button = new JButton(currentLocale.getString("country"), Main.createImageIcon("images/country.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("countries").toUpperCase(),
+										Main.createImageIcon("images/country.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);
@@ -83,7 +88,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		button = new JButton(currentLocale.getString("confederation"), Main.createImageIcon("images/competition.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("confederations").toUpperCase(),
+										Main.createImageIcon("images/competition.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);
@@ -97,7 +107,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		button = new JButton(currentLocale.getString("competition"), Main.createImageIcon("images/competition.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("competitions").toUpperCase(),
+										Main.createImageIcon("images/competition.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);
@@ -111,7 +126,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
 
-		button = new JButton(currentLocale.getString("team"), Main.createImageIcon("images/team.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("teams").toUpperCase(),
+										Main.createImageIcon("images/team.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);
@@ -125,7 +145,12 @@ public class UserFilterPanelNew
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
 
-		button = new JButton(currentLocale.getString("player"), Main.createImageIcon("images/player.png", 50, 50));
+		button = new JButton
+						(
+										currentLocale.getString("players").toUpperCase(),
+										Main.createImageIcon("images/player.png", 50, 50)
+						);
+
 		button.setFont(outputFont);
 
 		add(button, gbc);
