@@ -146,6 +146,7 @@ public class UserSearchPlayerPanel
 		// TODO
 		radioButton = new JRadioButton(currentLocale.getString("club"));
 		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -363,6 +364,7 @@ public class UserSearchPlayerPanel
 		// TODO
 		radioButton = new JRadioButton(currentLocale.getString("right"));
 		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;

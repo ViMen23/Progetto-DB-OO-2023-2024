@@ -125,6 +125,7 @@ public class UserSearchTeamPanel
 		// TODO
 		radioButton = new JRadioButton(currentLocale.getString("club"));
 		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;

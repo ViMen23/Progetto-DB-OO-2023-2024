@@ -124,6 +124,7 @@ public class UserSearchCompetitionPanel
 		// TODO
 		radioButton = new JRadioButton(currentLocale.getString("league"));
 		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -189,6 +190,7 @@ public class UserSearchCompetitionPanel
 		// TODO
 		radioButton = new JRadioButton(currentLocale.getString("club"));
 		radioButton.setFont(outputFont);
+		radioButton.setSelected(true);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -264,6 +266,8 @@ public class UserSearchCompetitionPanel
 		// TODO
 		button = new JButton(currentLocale.getString("search"));
 		button.setFont(outputFont);
+		button.setActionCommand("search");
+		button.addActionListener(this);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -278,7 +282,10 @@ public class UserSearchCompetitionPanel
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-
+		if (e.getActionCommand() == "search"){
+			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
+			JOptionPane.showMessageDialog(null, resultPanel);
+		}
 	}
 
 	@Override

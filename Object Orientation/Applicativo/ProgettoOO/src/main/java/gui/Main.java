@@ -21,7 +21,7 @@ public class Main
 	private static void createAndShowGUI()
 	{
 		// creazione del locale di default come italiano
-		Locale.setDefault(Locale.of("en", "US"));
+		Locale.setDefault(Locale.of("it", "IT"));
 
 		currentLocale = null;
 
@@ -42,7 +42,7 @@ public class Main
 		// posiziona frame al centro dello schermo
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setResizable(true);
-		homeFrame.setMinimumSize(new Dimension(1000, 500));
+		homeFrame.setMinimumSize(new Dimension(1350, 1000));
 
 		UIManager.put("nimbusBase", new Color(0, 50, 255));
 		UIManager.put("nimbusBlueGrey", new Color(0, 100, 255));
@@ -112,7 +112,59 @@ public class Main
 		homeFrame.setVisible(true);
 
 		UserFilterPanelNew.timer.start();
+
+
+		JFrame resultFrame = new JFrame("Progetto");
+
+		resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		resultFrame.setLayout(new GridBagLayout());
+		// posiziona frame al centro dello schermo
+		resultFrame.setLocationRelativeTo(null);
+		resultFrame.setResizable(true);
+		resultFrame.setMinimumSize(new Dimension(1500, 1000));
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+
+
+		resultFrame.add(new TopPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		resultFrame.add(new UserFilterPanelNew(Controller.getControllerInstance(), currentLocale), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+
+		resultFrame.add(new UserResultSearchPanel(Controller.getControllerInstance(), currentLocale,
+			"competitions", 25), gbc);
+
+		homeFrame.setVisible(false);
+		resultFrame.setVisible(true);
 	}
+
 
 	public static ImageIcon createImageIcon(String imagePath, int wight, int high)
 	{
