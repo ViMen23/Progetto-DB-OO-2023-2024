@@ -1,5 +1,7 @@
 package gui;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
 
@@ -50,8 +52,16 @@ public class ResultSearchTableModel extends AbstractTableModel
 			this.columnNames = new String[]
 				{
 					Main.currentLocale.getString("trophy"),
-					Main.currentLocale.getString("team") + Main.currentLocale.getString("winners"),
-					Main.currentLocale.getString("player") + Main.currentLocale.getString("winners")
+					Main.currentLocale.getString("team") + " " + Main.currentLocale.getString("winners"),
+					Main.currentLocale.getString("player") + " " + Main.currentLocale.getString("winners")
+				};
+		}
+		else if(tableName.equalsIgnoreCase("partecipant"))
+		{
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(Main.currentLocale.getString("shortName")),
+					StringUtils.capitalize(Main.currentLocale.getString("longName"))
 				};
 		}
 

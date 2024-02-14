@@ -10,7 +10,7 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ResourceBundle;
 
-public class ParticipantsAndTrophyEditionPanel
+public class CompetitionEditionTrophyPanel
 				extends JPanel
 {
 	JLabel label;
@@ -18,9 +18,8 @@ public class ParticipantsAndTrophyEditionPanel
 	JScrollPane scrollPane;
 
 	final static float outputFontSize = 15;
-	final static float inputFontSize = 15;
 
-	public ParticipantsAndTrophyEditionPanel(Controller controller, ResourceBundle currentLocale)
+	public CompetitionEditionTrophyPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 
@@ -218,7 +217,7 @@ public class ParticipantsAndTrophyEditionPanel
 		table.setFont(outputFont);
 		table.getTableHeader().setFont(outputFont);
 
-		table.setPreferredScrollableViewportSize(new Dimension(300, 300));
+		table.setPreferredScrollableViewportSize(new Dimension(50, 100));
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -306,7 +305,7 @@ public class ParticipantsAndTrophyEditionPanel
 		table.setFont(outputFont);
 		table.getTableHeader().setFont(outputFont);
 
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+		table.setPreferredScrollableViewportSize(new Dimension(50, 100));
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 

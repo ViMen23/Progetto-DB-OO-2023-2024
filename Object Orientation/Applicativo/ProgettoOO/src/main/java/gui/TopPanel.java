@@ -108,6 +108,8 @@ public class TopPanel
 								currentLocale.getString("login").toUpperCase(),
 								Main.createImageIcon("images/loginLogout.png", 30, 30)
 							);
+		button.setActionCommand("login");
+		button.addActionListener(this);
 
 		button.setFont(outputFont);
 		button.setForeground(Color.white);
@@ -120,6 +122,9 @@ public class TopPanel
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		if (e.getActionCommand().equals("login")){
+			JOptionPane.showMessageDialog(null, new AdminLoginPanel(Controller.getControllerInstance(), Main.currentLocale));
+		}
 
 	}
 

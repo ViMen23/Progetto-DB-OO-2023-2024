@@ -24,6 +24,11 @@ public class Main
 		Locale.setDefault(Locale.of("it", "IT"));
 
 		currentLocale = null;
+		int fontSize = 18;
+
+		Font font = new Font(Font.SANS_SERIF, Font.PLAIN, fontSize);
+
+		System.out.println(font);
 
 		try
 		{
@@ -33,7 +38,6 @@ public class Main
 		{
 			System.out.println(e.getMessage());
 		}
-
 
 		JFrame homeFrame = new JFrame("Progetto");
 
@@ -47,6 +51,10 @@ public class Main
 		UIManager.put("nimbusBase", new Color(0, 50, 255));
 		UIManager.put("nimbusBlueGrey", new Color(50, 100, 200));
 		UIManager.put("control", new Color(200, 200, 200));
+		UIManager.put("defaultFont", font);
+
+		UIManager.put("TableHeader.textForeground", Color.white);
+		UIManager.put("Button.textForeground", Color.white);
 
 		try
 		{
@@ -168,7 +176,7 @@ public class Main
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 3;
-		gbc.ipadx = 10;
+		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
@@ -179,12 +187,24 @@ public class Main
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 4;
-		gbc.ipadx = 10;
+		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		resultFrame.add(new ParticipantsAndTrophyEditionPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new CompetitionEditionTrophyPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 5;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		resultFrame.add(new CompetitionEditionParticipantPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
 
 
 

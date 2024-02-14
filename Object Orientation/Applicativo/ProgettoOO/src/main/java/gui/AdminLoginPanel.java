@@ -25,18 +25,13 @@ public class AdminLoginPanel
 	protected JButton button;
 	protected JCheckBox checkBox;
 
-	final static float outputFontSize = 22;
-	final static float inputFontSize = 20;
-	final static int inputColumn = 25;
+	protected int inputColumn = 25;
 
 	public AdminLoginPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gbc;
-
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 		// configurazione campo username output
 		gbc = new GridBagConstraints();
@@ -48,7 +43,6 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(0,0,10,0);
 
 		label = new JLabel(currentLocale.getString("username").toUpperCase(), SwingConstants.CENTER);
-		label.setFont(outputFont);
 
 		add(label, gbc);
 
@@ -63,7 +57,6 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(0,0,10,0);
 
 		textField = new JTextField(inputColumn);
-		textField.setFont(inputFont);
 		textField.addCaretListener(this);
 
 		add(textField, gbc);
@@ -78,7 +71,6 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(10,0,10,0);
 
 		label = new JLabel(currentLocale.getString("password").toUpperCase(), SwingConstants.CENTER);
-		label.setFont(outputFont);
 
 		add(label, gbc);
 
@@ -92,7 +84,6 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(0,0,10,0);
 
 		passwordField = new JPasswordField(inputColumn);
-		passwordField.setFont(inputFont);
 		passwordField.addCaretListener(this);
 
 		add(passwordField, gbc);
@@ -108,10 +99,7 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(10,0,0,0);
 
 		button = new JButton(currentLocale.getString("next").toUpperCase());
-		button.setFont(outputFont);
-		button.setVerticalTextPosition(AbstractButton.CENTER);
-		button.setHorizontalTextPosition(AbstractButton.CENTER);
-		button.setMnemonic(KeyEvent.VK_ENTER);
+		button.setActionCommand("next");
 		button.setEnabled(false);
 		button.addActionListener(this);
 
@@ -128,8 +116,6 @@ public class AdminLoginPanel
 		gbc.insets = new Insets(10,0,0,0);
 
 		checkBox = new JCheckBox((currentLocale.getString("show") + " " + currentLocale.getString("password")).toUpperCase());
-		checkBox.setFont(outputFont);
-		checkBox.setEnabled(true);
 		checkBox.addItemListener(this);
 
 		add(checkBox, gbc);
