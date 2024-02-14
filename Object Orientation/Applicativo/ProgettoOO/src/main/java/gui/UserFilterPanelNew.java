@@ -26,9 +26,7 @@ public class UserFilterPanelNew
 {
 	protected JButton button;
 
-
-	final static float outputFontSize = 22;
-	final static float inputFontSize = 20;
+	final static float outputFontSize = 18;
 
 	public static Timer timer;
 
@@ -40,7 +38,6 @@ public class UserFilterPanelNew
 		GridBagConstraints gbc;
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 		timer = new Timer(250, this);
 
@@ -53,14 +50,17 @@ public class UserFilterPanelNew
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
+		gbc.anchor = GridBagConstraints.CENTER;
 
-		button = new JButton(Main.createImageIcon("images/home.png", 50, 50));
+		button = new JButton
+						(
+										Main.createImageIcon("images/home.png", 30, 30)
+						);
 
 		add(button, gbc);
 
 
-		// configurazione label paese
+		// configurazione bottone paesi
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
@@ -72,14 +72,15 @@ public class UserFilterPanelNew
 		button = new JButton
 						(
 										currentLocale.getString("countries").toUpperCase(),
-										Main.createImageIcon("images/country.png", 50, 50)
+										Main.createImageIcon("images/country.png", 30, 30)
 						);
 
 		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
 
 		add(button, gbc);
 
-		// configurazione label paese
+		// configurazione bottone confederazioni
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
@@ -91,33 +92,35 @@ public class UserFilterPanelNew
 		button = new JButton
 						(
 										currentLocale.getString("confederations").toUpperCase(),
-										Main.createImageIcon("images/competition.png", 50, 50)
+										Main.createImageIcon("images/competition.png", 30, 30)
 						);
 
 		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
 
 		add(button, gbc);
 
-		// configurazione label competizione
+		// configurazione bottone competizioni
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 3;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,50);
+		gbc.insets = new Insets(0,0,0,0);
 
 		button = new JButton
 						(
 										currentLocale.getString("competitions").toUpperCase(),
-										Main.createImageIcon("images/competition.png", 50, 50)
+										Main.createImageIcon("images/competition.png", 30, 30)
 						);
 
 		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
 
 		add(button, gbc);
 
-		// configurazione label squadra
+		// configurazione bottone ricerca competizioni
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 4;
@@ -125,21 +128,52 @@ public class UserFilterPanelNew
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,50);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
 
-		button = new JButton
-						(
-										currentLocale.getString("teams").toUpperCase(),
-										Main.createImageIcon("images/team.png", 50, 50)
-						);
-
+		button = new JButton(Main.createImageIcon("images/search.png", 30, 30));
 		button.setFont(outputFont);
 
 		add(button, gbc);
 
-		// configurazione label calciatore
+		// configurazione bottone squadra
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 5;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,0);
+
+		button = new JButton
+						(
+										currentLocale.getString("teams").toUpperCase(),
+										Main.createImageIcon("images/team.png", 30, 30)
+						);
+
+		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
+
+		add(button, gbc);
+
+		// configurazione bottone ricerca squadra
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 6;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,0,50);
+		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+
+		button = new JButton(Main.createImageIcon("images/search.png", 30, 30));
+		button.setFont(outputFont);
+
+		add(button, gbc);
+
+		// configurazione bottone calciatori
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 7;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
@@ -148,94 +182,25 @@ public class UserFilterPanelNew
 		button = new JButton
 						(
 										currentLocale.getString("players").toUpperCase(),
-										Main.createImageIcon("images/player.png", 50, 50)
+										Main.createImageIcon("images/player.png", 30, 30)
 						);
 
 		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
 
 		add(button, gbc);
 
-		// configurazione bottone ricerca
+		// configurazione bottone ricerca calciatore
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
-		gbc.gridx = 6;
+		gbc.gridx = 8;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+		gbc.anchor = GridBagConstraints.LINE_END;
 
-		button = new JButton(Main.createImageIcon("images/search.png", 50, 50));
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
-		// configurazione bottone contatore paesi
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-
-		button = new JButton("0");
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
-		// configurazione bottone contatore confederazioni
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 2;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-
-		button = new JButton("0");
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
-		// configurazione bottone contatore competizioni
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 3;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-
-		button = new JButton("0");
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
-		// configurazione bottone contatore squadre
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 4;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-
-		button = new JButton("0");
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
-		// configurazione bottone contatore calciatori
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 5;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-
-		button = new JButton("0");
+		button = new JButton(Main.createImageIcon("images/search.png", 30, 30));
 		button.setFont(outputFont);
 
 		add(button, gbc);

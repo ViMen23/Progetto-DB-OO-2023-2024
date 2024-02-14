@@ -53,7 +53,9 @@ public class UserSearchTeamPanel
 		checkBox = new JCheckBox
 						(
 										(
-														currentLocale.getString("searchBy") + " " + currentLocale.getString("name")
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("name")
 										).toUpperCase()
 						);
 
@@ -89,7 +91,12 @@ public class UserSearchTeamPanel
 		add(label, gbc);
 
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("longName")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("longName")),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -111,7 +118,12 @@ public class UserSearchTeamPanel
 		add(textField, gbc);
 
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("shortName")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("shortName")),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -136,7 +148,9 @@ public class UserSearchTeamPanel
 		checkBox = new JCheckBox
 						(
 										(
-														currentLocale.getString("searchBy") + " " + currentLocale.getString("teamType")
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("teamType")
 										).toUpperCase()
 						);
 
@@ -174,7 +188,11 @@ public class UserSearchTeamPanel
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("club")));
+		radioButton = new JRadioButton
+						(
+										StringUtils.capitalize(currentLocale.getString("club"))
+						);
+
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -188,7 +206,11 @@ public class UserSearchTeamPanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("national")));
+		radioButton = new JRadioButton
+						(
+										StringUtils.capitalize(currentLocale.getString("national"))
+						);
+
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -204,7 +226,11 @@ public class UserSearchTeamPanel
 		checkBox = new JCheckBox
 						(
 										(
-														currentLocale.getString("searchBy") + " " + currentLocale.getString("nation")
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("nation") +
+																		"/" +
+																		currentLocale.getString("confederation")
 										).toUpperCase()
 						);
 
@@ -239,9 +265,13 @@ public class UserSearchTeamPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		add(label, gbc);
 
-
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("continent")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("world")),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -263,7 +293,12 @@ public class UserSearchTeamPanel
 		add(comboBox, gbc);
 
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("nation")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("continent")),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -281,6 +316,33 @@ public class UserSearchTeamPanel
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 10;
+
+		add(comboBox, gbc);
+
+		// TODO
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("nation")),
+										SwingConstants.LEADING
+						);
+
+		label.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 11;
+
+		add(label, gbc);
+
+		// TODO
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 11;
 
 		add(comboBox, gbc);
 
@@ -292,7 +354,7 @@ public class UserSearchTeamPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
-		gbc.gridy = 11;
+		gbc.gridy = 12;
 		gbc.insets = new Insets(20, 0, 10, 0);
 
 		add(button, gbc);

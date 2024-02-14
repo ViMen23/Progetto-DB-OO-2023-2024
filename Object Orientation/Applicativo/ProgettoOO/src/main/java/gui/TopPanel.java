@@ -26,8 +26,7 @@ public class TopPanel
 	protected JLabel label;
 	protected JButton button;
 
-	final static float outputFontSize = 22;
-	final static float inputFontSize = 20;
+	final static float outputFontSize = 18;
 
 
 	public TopPanel(Controller controller, ResourceBundle currentLocale)
@@ -37,7 +36,6 @@ public class TopPanel
 		GridBagConstraints gbc;
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 		// configurazione bottone logo
 		gbc = new GridBagConstraints();
@@ -50,11 +48,14 @@ public class TopPanel
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.weightx = 1.0;
 
-		label = new JLabel(Main.createImageIcon("images/logo16.png", 100, 100));
+		label = new JLabel
+						(
+										Main.createImageIcon("images/foogo4.png", 75, 75)
+						);
 
 		add(label, gbc);
 
-		// configurazione label nome progetto
+		// configurazione bottone logo
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
@@ -65,10 +66,13 @@ public class TopPanel
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.weightx = 1.0;
 
-		label = new JLabel("UNINA Football");
-		label.setFont(outputFont);
+		label = new JLabel
+						(
+										Main.createImageIcon("images/foogo2.png", 350, 75)
+						);
 
 		add(label, gbc);
+
 
 
 		// configurazione bottone scelta locale
@@ -79,10 +83,13 @@ public class TopPanel
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,500,0,0);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+		gbc.anchor = GridBagConstraints.LINE_END;
 		gbc.weightx = 1.0;
 
-		button = new JButton(Main.createImageIcon("images/world2.png", 50, 50));
+		button = new JButton
+						(
+										Main.createImageIcon("images/world2.png", 30, 30)
+						);
 
 		add(button, gbc);
 
@@ -94,16 +101,17 @@ public class TopPanel
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,0,0);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_END;
+		gbc.anchor = GridBagConstraints.LINE_END;
 		gbc.weightx = 1.0;
 
 		button = new JButton
 						(
 										currentLocale.getString("login").toUpperCase(),
-										Main.createImageIcon("images/loginLogout.png", 50, 50)
+										Main.createImageIcon("images/loginLogout.png", 30, 30)
 						);
 
 		button.setFont(outputFont);
+		button.setForeground(Color.WHITE);
 
 		add(button, gbc);
 

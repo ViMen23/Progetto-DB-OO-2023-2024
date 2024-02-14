@@ -53,7 +53,10 @@ public class UserStepFilterPanel
 		label = new JLabel
 						(
 										(
-														"1. " + currentLocale.getString("choose") + " " + currentLocale.getString("teamType")
+														"1. " +
+																		currentLocale.getString("choose") +
+																		" " +
+																		currentLocale.getString("teamType")
 										).toUpperCase()
 						);
 
@@ -120,7 +123,10 @@ public class UserStepFilterPanel
 		label = new JLabel
 						(
 										(
-														"2. " + currentLocale.getString("choose") + " " + currentLocale.getString("season")
+														"2. " +
+																		currentLocale.getString("choose") +
+																		" " +
+																		currentLocale.getString("season")
 										).toUpperCase()
 						);
 		label.setFont(outputFont);
@@ -156,7 +162,12 @@ public class UserStepFilterPanel
 
 
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("season")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("season")),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -180,7 +191,12 @@ public class UserStepFilterPanel
 		label = new JLabel
 						(
 										(
-														"3. " + currentLocale.getString("choose") + " " + currentLocale.getString("country")
+														"3. " +
+																		currentLocale.getString("choose") +
+																		" " +
+																		currentLocale.getString("country") +
+																		"/" +
+																		currentLocale.getString("confederation")
 										).toUpperCase()
 						);
 
@@ -234,17 +250,39 @@ public class UserStepFilterPanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("continent")));
-		radioButton.setFont(outputFont);
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 8;
 
+		add(comboBox, gbc);
+
+		// TODO
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("continent")));
+		radioButton.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 9;
+
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
+
+		// TODO
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 1;
+		gbc.gridy = 9;
+
+		add(comboBox, gbc);
 
 		// TODO
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("nation")));
@@ -252,48 +290,13 @@ public class UserStepFilterPanel
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
-		gbc.gridx = 2;
-		gbc.gridy = 8;
+		gbc.gridx = 0;
+		gbc.gridy = 10;
 
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
 
-
-
-		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("continent")), SwingConstants.LEADING);
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 9;
-
-		add(label, gbc);
-
-		// TODO
-		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 9;
-
-		add(comboBox, gbc);
-
-		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("nation")), SwingConstants.LEADING);
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 10;
-
-		add(label, gbc);
-
 		// TODO
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(outputFont);
@@ -304,11 +307,15 @@ public class UserStepFilterPanel
 		gbc.gridy = 10;
 
 		add(comboBox, gbc);
+
 
 		label = new JLabel
 						(
 										(
-														"4. " + currentLocale.getString("choose") + " " + currentLocale.getString("competition")
+														"4. " +
+																		currentLocale.getString("choose") +
+																		" " +
+																		currentLocale.getString("competition")
 										).toUpperCase()
 						);
 

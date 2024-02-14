@@ -42,11 +42,11 @@ public class Main
 		// posiziona frame al centro dello schermo
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setResizable(true);
-		homeFrame.setMinimumSize(new Dimension(1350, 1000));
+		//homeFrame.setMinimumSize(new Dimension(1350, 1000));
 
 		UIManager.put("nimbusBase", new Color(0, 50, 255));
-		UIManager.put("nimbusBlueGrey", new Color(0, 100, 255));
-		UIManager.put("control", new Color(50, 200, 255));
+		UIManager.put("nimbusBlueGrey", new Color(50, 100, 200));
+		UIManager.put("control", new Color(200, 200, 200));
 
 		try
 		{
@@ -106,7 +106,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
