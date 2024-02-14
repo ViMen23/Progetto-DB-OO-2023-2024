@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -14,9 +15,9 @@ public class ChooseSeasonPanel
 	protected JComboBox<String> comboBox;
 
 	protected JButton button;
+	String tmp;
 
 	final static float outputFontSize = 15;
-	final static float inputFontSize = 15;
 
 
 	public ChooseSeasonPanel(Controller controller, ResourceBundle currentLocale)
@@ -28,11 +29,13 @@ public class ChooseSeasonPanel
 		GridBagConstraints gbc;
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
 		Font outputBoldFont = outputFont.deriveFont(Font.BOLD);
 
 		// filtro stagione label
-		label = new JLabel(currentLocale.getString("season"), SwingConstants.LEADING);
+
+		tmp = StringUtils.capitalize(currentLocale.getString("season"));
+
+		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
 
 		gbc = new GridBagConstraints();
@@ -40,7 +43,7 @@ public class ChooseSeasonPanel
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 0, 0, 0);
+		gbc.insets = new Insets(10, 0, 10, 0);
 
 		add(label, gbc);
 
@@ -64,14 +67,16 @@ public class ChooseSeasonPanel
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		gbc.insets = new Insets(10, 10, 10, 0);
 
 
 		add(comboBox, gbc);
 
 
 		//mostrare button
-		button = new JButton(currentLocale.getString("show"));
+		tmp = currentLocale.getString("show").toUpperCase();
+
+		button = new JButton(tmp);
 		button.setActionCommand("showSeason");
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		button.setFont(outputFont);
@@ -81,7 +86,7 @@ public class ChooseSeasonPanel
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		gbc.insets = new Insets(10, 10, 10, 0);
 
 		add(button, gbc);
 

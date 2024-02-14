@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -8,13 +9,16 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
 
 public class CompetitionEditionParticipantPanel
-				extends JPanel {
+				extends JPanel implements ActionListener {
 	JLabel label;
 	JTable table;
 	JScrollPane scrollPane;
+	JButton button;
 	String tmp;
 
 	final static float outputFontSize = 15;
@@ -66,153 +70,28 @@ public class CompetitionEditionParticipantPanel
 
 		add(label, gbc);
 
+
+		button = new JButton("Ciao");
+		button.setOpaque(true);
+		button.addActionListener(this);
+
+
+
 		//squadre table
 
 		Object data[][] = new Object[][]
 			{
 				{
 					"NAP",
-					"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+					"SSC NAPOLI",
+					"ITALIA",
+					button
 				},
 				{
 					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
-				},
-				{
-					"NAP",
-					"SSC NAPOLI"
+					"SSC NAPOLI",
+					"ITALIA",
+					button
 				}
 			};
 
@@ -221,7 +100,13 @@ public class CompetitionEditionParticipantPanel
 		table.setFont(outputFont);
 		table.getTableHeader().setFont(outputBoldFont);
 
-		table.setPreferredScrollableViewportSize(new Dimension(50, 300));
+		table.setPreferredScrollableViewportSize(new Dimension(50, 100));
+
+		table.getColumn(StringUtils.capitalize(StringUtils.capitalize(Main.currentLocale.getString("go")) + " " +
+			Main.currentLocale.getString("to"))).setCellRenderer(new TableRenderer());
+
+		table.getColumn(StringUtils.capitalize(Main.currentLocale.getString("shortName"))).setCellEditor(new TableEditor());
+
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -239,5 +124,10 @@ public class CompetitionEditionParticipantPanel
 
 		add(scrollPane, gbc);
 
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		JOptionPane.showMessageDialog(null, "Evviva");
 	}
 }

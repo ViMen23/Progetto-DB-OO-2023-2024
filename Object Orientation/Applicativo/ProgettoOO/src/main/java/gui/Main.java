@@ -55,6 +55,7 @@ public class Main
 
 		UIManager.put("TableHeader.textForeground", Color.white);
 		UIManager.put("Button.textForeground", Color.white);
+		UIManager.put("Table.background", Color.white);
 
 		try
 		{
@@ -166,8 +167,12 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
+		/*
+		resultFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
-		resultFrame.add(new InformationCompetitionPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		 */
+		resultFrame.add(new TeamInformation(Controller.getControllerInstance(), currentLocale), gbc);
+
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -180,6 +185,7 @@ public class Main
 
 		resultFrame.add(new ChooseSeasonPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -189,8 +195,9 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		resultFrame.add(new CompetitionEditionTrophyPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new TeamTrophy(Controller.getControllerInstance(), currentLocale), gbc);
 
+/*
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -203,7 +210,7 @@ public class Main
 		resultFrame.add(new CompetitionEditionParticipantPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 
-
+		*/
 
 		homeFrame.setVisible(true);
 		resultFrame.setVisible(false);

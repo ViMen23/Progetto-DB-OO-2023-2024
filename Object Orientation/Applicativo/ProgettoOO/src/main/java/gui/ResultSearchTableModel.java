@@ -52,8 +52,8 @@ public class ResultSearchTableModel extends AbstractTableModel
 			this.columnNames = new String[]
 				{
 					Main.currentLocale.getString("trophy"),
-					Main.currentLocale.getString("team") + " " + Main.currentLocale.getString("winners"),
-					Main.currentLocale.getString("player") + " " + Main.currentLocale.getString("winners")
+					Main.currentLocale.getString("player") + " " + Main.currentLocale.getString("winners"),
+					Main.currentLocale.getString("team") + " " + Main.currentLocale.getString("winners")
 				};
 		}
 		else if(tableName.equalsIgnoreCase("partecipant"))
@@ -61,7 +61,43 @@ public class ResultSearchTableModel extends AbstractTableModel
 			this.columnNames = new String[]
 				{
 					StringUtils.capitalize(Main.currentLocale.getString("shortName")),
-					StringUtils.capitalize(Main.currentLocale.getString("longName"))
+					StringUtils.capitalize(Main.currentLocale.getString("longName")),
+					StringUtils.capitalize(Main.currentLocale.getString("country")),
+					StringUtils.capitalize(Main.currentLocale.getString("go")) + " " +
+						Main.currentLocale.getString("to")
+				};
+		}
+		else if(tableName.equalsIgnoreCase("squad"))
+		{
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(Main.currentLocale.getString("name")),
+					StringUtils.capitalize(Main.currentLocale.getString("surname")),
+					StringUtils.capitalize(Main.currentLocale.getString("role")),
+					StringUtils.capitalize(Main.currentLocale.getString("mainPosition"))
+				};
+		}
+		else if(tableName.equalsIgnoreCase("trophyTeam"))
+		{
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(Main.currentLocale.getString("trophy")),
+					StringUtils.capitalize(Main.currentLocale.getString("competition")),
+				};
+		}
+		else if(tableName.equalsIgnoreCase("prizeTeam"))
+		{
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(Main.currentLocale.getString("prize")),
+
+				};
+		}
+		else if(tableName.equalsIgnoreCase("competitionParticipation"))
+		{
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(Main.currentLocale.getString("competition")),
 				};
 		}
 

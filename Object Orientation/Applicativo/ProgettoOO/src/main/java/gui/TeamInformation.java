@@ -11,33 +11,32 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ResourceBundle;
 
-public class InformationCompetitionPanel
+public class TeamInformation
 				extends JPanel
 {
 	protected JLabel label;
+	protected JButton button;
+
+	protected String tmp;
 
 
-	final static float outputFontSize = 15;
-
-	public InformationCompetitionPanel(Controller controller, ResourceBundle currentLocale)
+	public TeamInformation(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 
 		setBackground(Color.white);
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font outputBoldFont = outputFont.deriveFont(Font.BOLD);
+		Font outputBoldFont = this.getFont().deriveFont(Font.BOLD);
 
 		GridBagConstraints gbc;
 		Border labelBorder = new CompoundBorder(new EmptyBorder(4, 4, 4, 4),
 			new MatteBorder(0, 0, 1, 0, Color.BLACK));
 
 
-		//Titolo competizione label
+		//Titolo squadra
+		tmp = currentLocale.getString("team").toUpperCase()  + ": ";
 
-		String tmp = currentLocale.getString("competition").toUpperCase() + ": ";
-
-		label = new JLabel(tmp, SwingConstants.LEADING);
+		JLabel label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
 
 		gbc = new GridBagConstraints();
@@ -49,12 +48,12 @@ public class InformationCompetitionPanel
 
 		add(label, gbc);
 
-		//Titolo competizione valore label
-		tmp = "Serie A";
+		//Valore nome squadra
+
+		tmp = "SSC Napoli";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
-
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -67,7 +66,7 @@ public class InformationCompetitionPanel
 		add(label, gbc);
 
 
-		// separatore
+		//Separatore
 
 		label = new JLabel();
 		label.setBorder(labelBorder);
@@ -77,137 +76,114 @@ public class InformationCompetitionPanel
 		gbc.gridx = 0;
 		gbc.gridy = 1;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.insets = new Insets(0, 0, 0, 0);
 
 		add(label, gbc);
 
+		// acronimo
 
-		// tipo e tipo squadra label
-		tmp = StringUtils.capitalize(currentLocale.getString("competitionType")) + ": ";
+		tmp = StringUtils.capitalize(currentLocale.getString("shortName")) + ": ";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		gbc.insets = new Insets(0, 10, 0, 0);
 
 		add(label, gbc);
 
-		//tipo e tipo squadra valore label
-		tmp = "CAMPIONATO-CLUB";
+		// acrononimo valore
+
+		tmp = "NAP";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
-
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 40, 0, 0);
+		gbc.insets = new Insets(0, 40, 0, 0);
 
 		add(label, gbc);
 
+		//Tipo squadra
 
-		//frequenza label
-		tmp = StringUtils.capitalize(currentLocale.getString("frequency"))+ ": ";
+		tmp = StringUtils.capitalize(currentLocale.getString("teamType")) + ": ";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		gbc.insets = new Insets(0, 10, 0, 0);
 
 		add(label, gbc);
 
-		//frequenza valore label
-		tmp = "1";
+
+		//Tipo valore squadra
+
+		tmp = "CLUB";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
-
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 3;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 40, 0, 0);
+		gbc.insets = new Insets(0, 40, 0, 0);
 
 		add(label, gbc);
 
 
-		//paese label
-		tmp = StringUtils.capitalize(currentLocale.getString("country"))+ ": ";
+		//Tipo paese squadra
+
+		tmp = StringUtils.capitalize(currentLocale.getString("country")) + ": ";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		gbc.insets = new Insets(0, 10, 10, 0);
 
 		add(label, gbc);
 
-		//paese valore label
-		tmp = "Italia";
+		//Tipo paese squadra
+
+		tmp = "ITALIA WITH FLAG";
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
-
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
 		gbc.gridy = 4;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 40, 0, 0);
+		gbc.insets = new Insets(0, 40, 10, 0);
 
 		add(label, gbc);
 
 
-		//confederazione label
-		tmp = StringUtils.capitalize(currentLocale.getString("confederation"))+ ": ";
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 10, 0);
-
-		add(label, gbc);
-
-		//confederazione valore label
-		tmp = "Federazione giuco calcio";
-
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
+		//Bottone trofei
 
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 5;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 40, 10, 0);
 
-		add(label, gbc);
+
+
 
 
 	}
