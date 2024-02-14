@@ -106,7 +106,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
@@ -131,6 +131,7 @@ public class Main
 		gbc.ipady = 0;
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
+
 		gbc.anchor = GridBagConstraints.PAGE_START;
 
 
@@ -157,13 +158,38 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
+		/*
+		resultFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
-		resultFrame.add(new UserResultSearchPanel(Controller.getControllerInstance(), currentLocale,
-			"competitions", 25), gbc);
+		 */
+		resultFrame.add(new InformationCompetitionPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 3;
+		gbc.ipadx = 10;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		resultFrame.add(new ChooseSeasonPanel(Controller.getControllerInstance(), currentLocale), gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 4;
+		gbc.ipadx = 10;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		resultFrame.add(new ParticipantsAndTrophyEditionPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 
-		homeFrame.setVisible(true);
-		//resultFrame.setVisible(false);
+
+		homeFrame.setVisible(false);
+		resultFrame.setVisible(true);
 	}
 
 

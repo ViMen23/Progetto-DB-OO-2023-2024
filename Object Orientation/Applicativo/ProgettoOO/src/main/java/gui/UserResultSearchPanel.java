@@ -21,10 +21,7 @@ public class UserResultSearchPanel
 
 
 	public static HashMap<String, String[]> columnsTable = new HashMap<String, String[]>();
-	final static float outputFontSize = 22;
-	final static float inputFontSize = 20;
-	final static int columnNumber = 25;
-
+	final static float outputFontSize = 18;
 
 	public UserResultSearchPanel(Controller controller, ResourceBundle currentLocale, String searchTable, Integer countSearch)
 	{
@@ -33,7 +30,7 @@ public class UserResultSearchPanel
 		InitHashMap();
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
+
 		Border labelBorder = new CompoundBorder(new EmptyBorder(4, 4, 4, 4),
 			new MatteBorder(0, 0, 1, 0, Color.BLACK));
 
@@ -47,6 +44,7 @@ public class UserResultSearchPanel
 
 		label = new JLabel(tmp, SwingConstants.LEADING);
 		label.setFont(outputFont);
+		label.setBorder(labelBorder);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
@@ -58,21 +56,109 @@ public class UserResultSearchPanel
 
 		add(label, gbc);
 
-		//sottolineatura divisoria
-		label = new JLabel();
-		label.setBorder(labelBorder);
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(10, 0, 0, 0);
-
-		add(label, gbc);
 
 		Object[][] data =
 						{
+							{
+								"Serie A",
+								"FIGC",
+								"Italia"
+							},
+							{
+								"Premier League",
+								"Confederazione inglese",
+								"Inghilterra"
+							},
+							{
+								"La liga",
+								"Confederazione spagnola",
+								"Spagna"
+							},
+							{
+								"Bundesliga",
+								"Confederazione tedesca",
+								"Germania"
+							},
+							{
+								"Ligue 1",
+								"Confederazione Francese",
+								"Francia"
+							},
+							{
+								"Serie A",
+								"FIGC",
+								"Italia"
+							},
+							{
+								"Premier League",
+								"Confederazione inglese",
+								"Inghilterra"
+							},
+							{
+								"La liga",
+								"Confederazione spagnola",
+								"Spagna"
+							},
+							{
+								"Bundesliga",
+								"Confederazione tedesca",
+								"Germania"
+							},
+							{
+								"Ligue 1",
+								"Confederazione Francese",
+								"Francia"
+							},
+							{
+								"Serie A",
+								"FIGC",
+								"Italia"
+							},
+							{
+								"Premier League",
+								"Confederazione inglese",
+								"Inghilterra"
+							},
+							{
+								"La liga",
+								"Confederazione spagnola",
+								"Spagna"
+							},
+							{
+								"Bundesliga",
+								"Confederazione tedesca",
+								"Germania"
+							},
+							{
+								"Ligue 1",
+								"Confederazione Francese",
+								"Francia"
+							},
+							{
+								"Serie A",
+								"FIGC",
+								"Italia"
+							},
+							{
+								"Premier League",
+								"Confederazione inglese",
+								"Inghilterra"
+							},
+							{
+								"La liga",
+								"Confederazione spagnola",
+								"Spagna"
+							},
+							{
+								"Bundesliga",
+								"Confederazione tedesca",
+								"Germania"
+							},
+							{
+								"Ligue 1",
+								"Confederazione Francese",
+								"Francia"
+							},
 							{
 								"Serie A",
 								"FIGC",
@@ -101,10 +187,21 @@ public class UserResultSearchPanel
 						};
 
 		table = new JTable(new ResultSearchTableModel("competitions", data));
-		//table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+		//table.setRowHeight(18);
+		table.setFont(outputFont);
+		table.getTableHeader().setFont(outputFont);
+		//table.setIntercellSpacing(new Dimension(10, 10));
+		/*
+		table.setShowHorizontalLines(true);
+		table.setAutoCreateColumnsFromModel(false);
+*/
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		table.setRowHeight(30);
+		table.setAutoCreateRowSorter(true);
+		table.getRowSorter().toggleSortOrder(0);
+
 
 		scrollPane = new JScrollPane(table);
 
@@ -112,14 +209,14 @@ public class UserResultSearchPanel
 		gbc.gridwidth = 0;
 		gbc.gridx = 0;
 		gbc.gridy = 2;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.fill = GridBagConstraints.BOTH;
 		gbc.insets = new Insets(10, 0, 0, 0);
-
 
 		add(scrollPane, gbc);
 
 
-		//setBackground(Color.GREEN);
+
+		setBackground(Color.GREEN);
 
 	}
 

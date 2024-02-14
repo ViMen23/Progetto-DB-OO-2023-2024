@@ -50,7 +50,7 @@ public class TopPanel
 
 		label = new JLabel
 						(
-										Main.createImageIcon("images/foogo4.png", 75, 75)
+							Main.createImageIcon("images/foogo4.png", 75, 75)
 						);
 
 		add(label, gbc);
@@ -68,11 +68,10 @@ public class TopPanel
 
 		label = new JLabel
 						(
-										Main.createImageIcon("images/foogo2.png", 350, 75)
+							Main.createImageIcon("images/foogo2.png", 350, 75)
 						);
 
 		add(label, gbc);
-
 
 
 		// configurazione bottone scelta locale
@@ -87,9 +86,9 @@ public class TopPanel
 		gbc.weightx = 1.0;
 
 		button = new JButton
-						(
-										Main.createImageIcon("images/world2.png", 30, 30)
-						);
+							(
+								Main.createImageIcon("images/world2.png", 30, 30)
+							);
 
 		add(button, gbc);
 
@@ -105,13 +104,13 @@ public class TopPanel
 		gbc.weightx = 1.0;
 
 		button = new JButton
-						(
-										currentLocale.getString("login").toUpperCase(),
-										Main.createImageIcon("images/loginLogout.png", 30, 30)
-						);
+							(
+								currentLocale.getString("login").toUpperCase(),
+								Main.createImageIcon("images/loginLogout.png", 30, 30)
+							);
 
 		button.setFont(outputFont);
-		button.setForeground(Color.WHITE);
+		button.setForeground(Color.white);
 
 		add(button, gbc);
 
