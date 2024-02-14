@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -14,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * TYPE : class - gui package
@@ -23,11 +23,13 @@ import org.apache.commons.lang3.StringUtils;
  * DESC: TODO
  */
 
-public class SearchTeamTypePanel
+public class SearchPlayerMainPositionPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
+	protected JTextField textField;
+	protected JComboBox<String> comboBox;
 	protected JButton button;
 	protected JRadioButton radioButton;
 	protected JCheckBox checkBox;
@@ -35,35 +37,41 @@ public class SearchTeamTypePanel
 
 
 	final static float outputFontSize = 18;
+	final static float inputFontSize = 20;
 
 
-	public SearchTeamTypePanel(Controller controller, ResourceBundle currentLocale)
+
+	public SearchPlayerMainPositionPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
+		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
-		buttonGroup = new ButtonGroup();
+
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("club")));
-		radioButton.setFont(outputFont);
-		radioButton.setSelected(true);
+		label = new JLabel
+						(
+										StringUtils.capitalize(currentLocale.getString("position")),
+										SwingConstants.LEADING
+						);
+
+		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 50);
+		gbc.insets = new Insets(10, 0, 20, 30);
+		gbc.anchor = GridBagConstraints.LINE_START;
 
-		add(radioButton, gbc);
-
-		buttonGroup.add(radioButton);
+		add(label, gbc);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("national")));
-		radioButton.setFont(outputFont);
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -71,19 +79,17 @@ public class SearchTeamTypePanel
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 0, 20, 0);
 
-		add(radioButton, gbc);
 
-		buttonGroup.add(radioButton);
+		add(comboBox, gbc);
+
+
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getActionCommand() == "search"){
-			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
-			JOptionPane.showMessageDialog(null, resultPanel);
-		}
+
 	}
 
 	@Override

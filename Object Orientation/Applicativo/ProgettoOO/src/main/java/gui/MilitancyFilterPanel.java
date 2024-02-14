@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -16,16 +17,17 @@ import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 
-public class SearchTeamPanel
+public class MilitancyFilterPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JPanel panel;
 	protected JButton button;
 	protected JCheckBox checkBox;
+	protected JLabel label;
 	final static float outputFontSize = 18;
 
-	public SearchTeamPanel(Controller controller, ResourceBundle currentLocale)
+	public MilitancyFilterPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 
@@ -45,9 +47,7 @@ public class SearchTeamPanel
 		button = new JButton
 						(
 										(
-														currentLocale.getString("search") +
-																		" " +
-																		currentLocale.getString("teams")
+														currentLocale.getString("militancyFilter")
 										).toUpperCase()
 						);
 
@@ -67,22 +67,23 @@ public class SearchTeamPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.LINE_START;
 
-		checkBox = new JCheckBox
+		label = new JLabel
 						(
 										(
-														currentLocale.getString("searchBy") +
+														"1. " +
+																		currentLocale.getString("choose") +
 																		" " +
-																		currentLocale.getString("name")
+																		currentLocale.getString("teamType")
 										).toUpperCase()
 						);
 
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		label.setFont(outputFont);
+		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
 		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		panel.add(label, gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -95,7 +96,7 @@ public class SearchTeamPanel
 		add(panel,gbc);
 
 
-		// ricerca per nome competizione
+		// TODO
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -104,7 +105,7 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamNamePanel(controller, currentLocale);
+		panel = new SearchTeamTypePanel(controller, currentLocale);
 
 		panel.setBorder
 						(
@@ -118,7 +119,7 @@ public class SearchTeamPanel
 		add(panel, gbc);
 
 
-		// intestazione ricerca per tipo squadra
+		// TODO
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -128,22 +129,25 @@ public class SearchTeamPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.LINE_START;
 
-		checkBox = new JCheckBox
+		label = new JLabel
 						(
 										(
-														currentLocale.getString("searchBy") +
+														"2. " +
+																		currentLocale.getString("choose") +
 																		" " +
-																		currentLocale.getString("teamType")
+																		currentLocale.getString("nation") +
+																		"/" +
+																		currentLocale.getString("confederation")
 										).toUpperCase()
 						);
 
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		label.setFont(outputFont);
+		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
 		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		panel.add(label, gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -155,7 +159,8 @@ public class SearchTeamPanel
 
 		add(panel,gbc);
 
-		// ricerca per tipo squadra
+
+		// ricerca per eta
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -164,8 +169,7 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamTypePanel(controller, currentLocale);
-
+		panel = new SearchNationConfederationPanel(controller, currentLocale);
 
 		panel.setBorder
 						(
@@ -179,7 +183,7 @@ public class SearchTeamPanel
 		add(panel, gbc);
 
 
-		// intestazione ricerca per nazione/confederazione
+		// intestazione ricerca per nazione nascita
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -189,24 +193,23 @@ public class SearchTeamPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.LINE_START;
 
-		checkBox = new JCheckBox
+		label = new JLabel
 						(
 										(
-														currentLocale.getString("searchBy") +
+														"3. " +
+																		currentLocale.getString("choose") +
 																		" " +
-																		currentLocale.getString("nation") +
-																		"/" +
-																		currentLocale.getString("confederation")
+																		currentLocale.getString("team")
 										).toUpperCase()
 						);
 
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		label.setFont(outputFont);
+		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
 		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		panel.add(label, gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -218,7 +221,7 @@ public class SearchTeamPanel
 
 		add(panel,gbc);
 
-		// ricerca per paese/confederazione
+		// ricerca per nazione nascita
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -227,8 +230,73 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchNationConfederationPanel(controller, currentLocale);
+		panel = new ChoosePanel
+						(
+										controller,
+										currentLocale,
+										StringUtils.capitalize(currentLocale.getString("team"))
+						);
 
+
+		panel.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(0, 10, 10, 10),
+																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
+														)
+						);
+
+		add(panel, gbc);
+
+		// intestazione ricerca per ruolo
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0,20,0,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.LINE_START;
+
+		label = new JLabel
+						(
+										(
+														"4. " +
+																		currentLocale.getString("choose") +
+																		" " +
+																		currentLocale.getString("years")
+										).toUpperCase()
+						);
+
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		label.setFont(outputFont);
+		label.setForeground(Color.WHITE);
+
+		panel = new JPanel(new GridBagLayout());
+		panel.setBackground(new Color(50, 100, 200));
+		panel.add(label, gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 7;
+		gbc.insets = new Insets(0,10,0,10);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		add(panel,gbc);
+
+		// ricerca per ruolo
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 8;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		panel = new ChooseYearRangePanel(controller, currentLocale);
 
 		panel.setBorder
 						(
@@ -245,7 +313,7 @@ public class SearchTeamPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 7;
+		gbc.gridy = 9;
 		gbc.insets = new Insets(0,0,20,0);
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;

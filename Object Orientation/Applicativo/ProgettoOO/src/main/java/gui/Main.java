@@ -103,7 +103,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new UserFilterPanelNew(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new MenuBarPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -114,12 +114,12 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new UserSearchPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
 
-		UserFilterPanelNew.timer.start();
+
 
 
 		JFrame resultFrame = new JFrame("Progetto");
@@ -166,10 +166,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		/*
-		resultFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
-		 */
 		resultFrame.add(new InformationCompetitionPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		gbc = new GridBagConstraints();
@@ -208,8 +205,8 @@ public class Main
 
 
 
-		homeFrame.setVisible(false);
-		resultFrame.setVisible(true);
+		homeFrame.setVisible(true);
+		resultFrame.setVisible(false);
 	}
 
 

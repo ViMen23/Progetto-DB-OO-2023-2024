@@ -23,31 +23,30 @@ import org.apache.commons.lang3.StringUtils;
  * DESC: TODO
  */
 
-public class SearchTeamTypePanel
+public class SearchPlayerFootPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
-	protected JButton button;
 	protected JRadioButton radioButton;
 	protected JCheckBox checkBox;
 	protected ButtonGroup buttonGroup;
 
-
 	final static float outputFontSize = 18;
 
 
-	public SearchTeamTypePanel(Controller controller, ResourceBundle currentLocale)
+	public SearchPlayerFootPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 
+
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("club")));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("right")));
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -62,12 +61,26 @@ public class SearchTeamTypePanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("national")));
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("left")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 0, 20, 50);
+
+		add(radioButton, gbc);
+
+		buttonGroup.add(radioButton);
+
+		// TODO
+		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("either")));
+		radioButton.setFont(outputFont);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 0, 20, 0);
 
@@ -80,10 +93,7 @@ public class SearchTeamTypePanel
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getActionCommand() == "search"){
-			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
-			JOptionPane.showMessageDialog(null, resultPanel);
-		}
+
 	}
 
 	@Override

@@ -16,7 +16,7 @@ import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 
-public class SearchTeamPanel
+public class SearchPlayerPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
@@ -25,7 +25,7 @@ public class SearchTeamPanel
 	protected JCheckBox checkBox;
 	final static float outputFontSize = 18;
 
-	public SearchTeamPanel(Controller controller, ResourceBundle currentLocale)
+	public SearchPlayerPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 
@@ -47,7 +47,7 @@ public class SearchTeamPanel
 										(
 														currentLocale.getString("search") +
 																		" " +
-																		currentLocale.getString("teams")
+																		currentLocale.getString("players")
 										).toUpperCase()
 						);
 
@@ -95,7 +95,7 @@ public class SearchTeamPanel
 		add(panel,gbc);
 
 
-		// ricerca per nome competizione
+		// ricerca per nome calciatore
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -104,7 +104,7 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamNamePanel(controller, currentLocale);
+		panel = new SearchPlayerNamePanel(controller, currentLocale);
 
 		panel.setBorder
 						(
@@ -118,7 +118,7 @@ public class SearchTeamPanel
 		add(panel, gbc);
 
 
-		// intestazione ricerca per tipo squadra
+		// intestazione ricerca per eta
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -133,7 +133,7 @@ public class SearchTeamPanel
 										(
 														currentLocale.getString("searchBy") +
 																		" " +
-																		currentLocale.getString("teamType")
+																		currentLocale.getString("age")
 										).toUpperCase()
 						);
 
@@ -155,7 +155,8 @@ public class SearchTeamPanel
 
 		add(panel,gbc);
 
-		// ricerca per tipo squadra
+
+		// ricerca per eta
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -164,7 +165,7 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamTypePanel(controller, currentLocale);
+		panel = new SearchPlayerAgePanel(controller, currentLocale);
 
 
 		panel.setBorder
@@ -179,7 +180,7 @@ public class SearchTeamPanel
 		add(panel, gbc);
 
 
-		// intestazione ricerca per nazione/confederazione
+		// intestazione ricerca per nazione nascita
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -194,9 +195,7 @@ public class SearchTeamPanel
 										(
 														currentLocale.getString("searchBy") +
 																		" " +
-																		currentLocale.getString("nation") +
-																		"/" +
-																		currentLocale.getString("confederation")
+																		currentLocale.getString("bornNation")
 										).toUpperCase()
 						);
 
@@ -218,7 +217,7 @@ public class SearchTeamPanel
 
 		add(panel,gbc);
 
-		// ricerca per paese/confederazione
+		// ricerca per nazione nascita
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -227,7 +226,187 @@ public class SearchTeamPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchNationConfederationPanel(controller, currentLocale);
+		panel = new SearchPlayerBornNationPanel(controller, currentLocale);
+
+
+		panel.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(0, 10, 10, 10),
+																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
+														)
+						);
+
+		add(panel, gbc);
+
+		// intestazione ricerca per ruolo
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0,20,0,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.LINE_START;
+
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("role")
+										).toUpperCase()
+						);
+
+		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setFont(outputFont);
+		checkBox.setForeground(Color.WHITE);
+
+		panel = new JPanel(new GridBagLayout());
+		panel.setBackground(new Color(50, 100, 200));
+		panel.add(checkBox, gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 7;
+		gbc.insets = new Insets(0,10,0,10);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		add(panel,gbc);
+
+		// ricerca per ruolo
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 8;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		panel = new SearchPlayerRolePanel(controller, currentLocale);
+
+
+		panel.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(0, 10, 10, 10),
+																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
+														)
+						);
+
+		add(panel, gbc);
+
+		// intestazione ricerca per posizione principale
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0,20,0,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.LINE_START;
+
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("mainPosition")
+										).toUpperCase()
+						);
+
+		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setFont(outputFont);
+		checkBox.setForeground(Color.WHITE);
+
+		panel = new JPanel(new GridBagLayout());
+		panel.setBackground(new Color(50, 100, 200));
+		panel.add(checkBox, gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 9;
+		gbc.insets = new Insets(0,10,0,10);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		add(panel,gbc);
+
+		// ricerca per posizione principale
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 10;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		panel = new SearchPlayerMainPositionPanel(controller, currentLocale);
+
+
+		panel.setBorder
+						(
+										new CompoundBorder
+														(
+																		new EmptyBorder(0, 10, 10, 10),
+																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
+														)
+						);
+
+		add(panel, gbc);
+
+		// intestazione ricerca per piede preferito
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.insets = new Insets(0,20,0,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.anchor = GridBagConstraints.LINE_START;
+
+		checkBox = new JCheckBox
+						(
+										(
+														currentLocale.getString("searchBy") +
+																		" " +
+																		currentLocale.getString("preferredFoot")
+										).toUpperCase()
+						);
+
+		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setFont(outputFont);
+		checkBox.setForeground(Color.WHITE);
+
+		panel = new JPanel(new GridBagLayout());
+		panel.setBackground(new Color(50, 100, 200));
+		panel.add(checkBox, gbc);
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 11;
+		gbc.insets = new Insets(0,10,0,10);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		add(panel,gbc);
+
+		// ricerca per piede preferito
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 12;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.weightx = 1.0;
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+
+		panel = new SearchPlayerFootPanel(controller, currentLocale);
 
 
 		panel.setBorder
@@ -245,7 +424,7 @@ public class SearchTeamPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 7;
+		gbc.gridy = 13;
 		gbc.insets = new Insets(0,0,20,0);
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;

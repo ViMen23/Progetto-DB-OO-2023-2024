@@ -49,49 +49,6 @@ public class SearchCountryConfederationPanel
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
-		checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("country") +
-																		"/" +
-																		currentLocale.getString("confederation")
-										).toUpperCase()
-						);
-
-		checkBox.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(20, 0, 0, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		add(checkBox, gbc);
-
-		// sottolineatura divisoria
-		label = new JLabel();
-		label.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(4, 4, 4, 4),
-																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
-														)
-						);
-
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 10, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(label, gbc);
-
 
 		buttonGroup = new ButtonGroup();
 
@@ -103,9 +60,9 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 2;
+		gbc.gridy = 0;
 		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 0, 10, 50);
+		gbc.insets = new Insets(10, 0, 10, 50);
 
 		add(radioButton, gbc);
 
@@ -118,8 +75,8 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 10, 0);
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 0, 10, 0);
 
 		add(comboBox, gbc);
 
@@ -130,7 +87,7 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 3;
+		gbc.gridy = 1;
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.insets = new Insets(0, 0, 10, 50);
 
@@ -145,7 +102,7 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
-		gbc.gridy = 3;
+		gbc.gridy = 1;
 		gbc.insets = new Insets(0, 0, 10, 0);
 
 		add(comboBox, gbc);
@@ -157,7 +114,7 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 4;
+		gbc.gridy = 2;
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.insets = new Insets(0, 0, 20, 50);
 
@@ -172,7 +129,7 @@ public class SearchCountryConfederationPanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
-		gbc.gridy = 4;
+		gbc.gridy = 2;
 		gbc.insets = new Insets(0, 0, 20, 0);
 
 		add(comboBox, gbc);

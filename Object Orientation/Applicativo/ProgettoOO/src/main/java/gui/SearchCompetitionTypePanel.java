@@ -43,47 +43,6 @@ public class SearchCompetitionTypePanel
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 
 
-		checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("competitionType")
-										).toUpperCase()
-						);
-
-		checkBox.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(20, 0, 0, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(checkBox, gbc);
-
-		// sottolineatura divisoria
-		label = new JLabel();
-		label.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(4, 4, 4, 4),
-																		new MatteBorder(0, 0, 1, 0, Color.BLACK)
-														)
-						);
-
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 10, 0);
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		add(label, gbc);
-
 		buttonGroup = new ButtonGroup();
 
 		// TODO
@@ -94,8 +53,8 @@ public class SearchCompetitionTypePanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 20, 50);
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 0, 20, 50);
 
 		add(radioButton, gbc);
 
@@ -108,8 +67,8 @@ public class SearchCompetitionTypePanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 20, 50);
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 0, 20, 50);
 
 		add(radioButton, gbc);
 
@@ -122,8 +81,8 @@ public class SearchCompetitionTypePanel
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 20, 0);
+		gbc.gridy = 0;
+		gbc.insets = new Insets(10, 0, 20, 0);
 
 		add(radioButton, gbc);
 

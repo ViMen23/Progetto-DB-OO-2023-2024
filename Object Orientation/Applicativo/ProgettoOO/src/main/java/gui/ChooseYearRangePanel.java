@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.CompoundBorder;
@@ -14,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * TYPE : class - gui package
@@ -23,21 +23,25 @@ import org.apache.commons.lang3.StringUtils;
  * DESC: TODO
  */
 
-public class SearchTeamNamePanel
+public class ChooseYearRangePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
 	protected JTextField textField;
+	protected JComboBox<String> comboBox;
+	protected JButton button;
+	protected JRadioButton radioButton;
 	protected JCheckBox checkBox;
+	protected ButtonGroup buttonGroup;
 
 
 	final static float outputFontSize = 18;
-	final static float inputFontSize = 15;
-	final static int columnNumber = 25;
+	final static float inputFontSize = 20;
 
 
-	public SearchTeamNamePanel(Controller controller, ResourceBundle currentLocale)
+
+	public ChooseYearRangePanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
@@ -46,8 +50,19 @@ public class SearchTeamNamePanel
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 
+
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("longName")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize
+														(
+																		currentLocale.getString("from") +
+																						" " +
+																						currentLocale.getString("year")
+														),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -57,12 +72,11 @@ public class SearchTeamNamePanel
 		gbc.insets = new Insets(10, 0, 10, 30);
 		gbc.anchor = GridBagConstraints.LINE_START;
 
-
 		add(label, gbc);
 
 		// TODO
-		textField = new JTextField(columnNumber);
-		textField.setFont(inputFont);
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -70,10 +84,22 @@ public class SearchTeamNamePanel
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 0, 10, 0);
 
-		add(textField, gbc);
+
+		add(comboBox, gbc);
+
 
 		// TODO
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("shortName")), SwingConstants.LEADING);
+		label = new JLabel
+						(
+										StringUtils.capitalize
+														(
+																		currentLocale.getString("to") +
+																						" " +
+																						currentLocale.getString("year")
+														),
+										SwingConstants.LEADING
+						);
+
 		label.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -83,12 +109,11 @@ public class SearchTeamNamePanel
 		gbc.insets = new Insets(0, 0, 20, 30);
 		gbc.anchor = GridBagConstraints.LINE_START;
 
-
 		add(label, gbc);
 
 		// TODO
-		textField = new JTextField(columnNumber);
-		textField.setFont(inputFont);
+		comboBox = new JComboBox<String>();
+		comboBox.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -96,17 +121,17 @@ public class SearchTeamNamePanel
 		gbc.gridy = 1;
 		gbc.insets = new Insets(0, 0, 20, 0);
 
-		add(textField, gbc);
+
+		add(comboBox, gbc);
+
+
 
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
-		if (e.getActionCommand() == "search"){
-			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
-			JOptionPane.showMessageDialog(null, resultPanel);
-		}
+
 	}
 
 	@Override

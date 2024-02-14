@@ -37,6 +37,7 @@ public class TopPanel
 
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 
+		this.setBackground(Color.WHITE);
 		// configurazione bottone logo
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -44,40 +45,23 @@ public class TopPanel
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
+		gbc.insets = new Insets(0,30,0,0);
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.weightx = 1.0;
 
 		label = new JLabel
 						(
-							Main.createImageIcon("images/foogo4.png", 75, 75)
+							Main.createImageIcon("images/foogo3.png", 350, 75)
 						);
 
 		add(label, gbc);
 
-		// configurazione bottone logo
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.weightx = 1.0;
-
-		label = new JLabel
-						(
-							Main.createImageIcon("images/foogo2.png", 350, 75)
-						);
-
-		add(label, gbc);
 
 
 		// configurazione bottone scelta locale
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
-		gbc.gridx = 2;
+		gbc.gridx = 1;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
@@ -95,7 +79,7 @@ public class TopPanel
 		// configurazione bottone login/logout admin
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
-		gbc.gridx = 3;
+		gbc.gridx = 2;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
 		gbc.ipady = 0;
