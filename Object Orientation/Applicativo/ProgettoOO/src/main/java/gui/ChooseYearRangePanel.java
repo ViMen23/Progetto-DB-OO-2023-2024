@@ -22,12 +22,9 @@ import java.util.ResourceBundle;
  */
 public class ChooseYearRangePanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
 	protected JComboBox<String> comboBox;
-
-	protected Font font;
 
 	protected String string;
 
@@ -35,28 +32,30 @@ public class ChooseYearRangePanel
 	{
 		setLayout(new GridBagLayout());
 
-		font = (Font) UIManager.get("defaultFont");
-
 		GridBagConstraints gbc;
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Scelta anno inizio
 		 */
-		string = Main.getMessage("from");
+		string = GuiConfiguration.getMessage("from");
 		string += " ";
-		string += Main.getMessage("year");
+		string += GuiConfiguration.getMessage("year");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
-		label.setFont(font);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc = new GridBagConstraints
+						(
+										0, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,10,30),
+										0, 0
+						);
 
 		add(label, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -66,13 +65,18 @@ public class ChooseYearRangePanel
 		 * Lista anno inizio
 		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(font);
+		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 0);
+		gbc = new GridBagConstraints
+						(
+										1, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,10,0),
+										0, 0
+						);
 
 		add(comboBox, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -81,20 +85,24 @@ public class ChooseYearRangePanel
 		/*
 		 * Scelta anno fine
 		 */
-		string = Main.getMessage("to");
+		string = GuiConfiguration.getMessage("to");
 		string += " ";
-		string += Main.getMessage("year");
+		string += GuiConfiguration.getMessage("year");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
-		label.setFont(font);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 20, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc = new GridBagConstraints
+						(
+										0, 1,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(0,0,20,30),
+										0, 0
+						);
 
 		add(label, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -104,35 +112,21 @@ public class ChooseYearRangePanel
 		 * Lista anno fine
 		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(font);
+		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 20, 0);
-
+		gbc = new GridBagConstraints
+						(
+										1, 1,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(0,0,20,0),
+										0, 0
+						);
 
 		add(comboBox, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
 	}
 
 }

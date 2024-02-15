@@ -226,7 +226,7 @@ public class SearchPlayerPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchPlayerBornNationPanel(controller, currentLocale);
+		panel = new SearchPlayerBornNationPanel(controller);
 
 
 		panel.setBorder

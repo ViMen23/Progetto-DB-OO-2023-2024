@@ -98,15 +98,21 @@ public class ChooseSeasonPanel
 
 		button = new JButton(string);
 		button.setActionCommand("showSeason");
-		button.setCursor(GuiConfiguration.get);
-		button.setFont(outputFont);
+		button.setCursor(GuiConfiguration.getButtonCursor());
+		button.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 2;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 10, 0);
+
+		gbc = new GridBagConstraints
+						(
+
+										2, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,10,0),
+										0, 0
+						);
 
 		add(button, gbc);
 		/*------------------------------------------------------------------------------------------------------*/

@@ -33,36 +33,36 @@ public class CompetitionEditionFilterPanel
 	protected JCheckBox checkBox;
 	protected JLabel label;
 
-	protected Font outputFont;
-
 	protected String string;
 
 	public CompetitionEditionFilterPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
+		
 		GridBagConstraints gbc;
-
-		outputFont = (Font) UIManager.get("defaultFont");
-
+		
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Intestazione ricerca
 		 */
-		string = Main.getMessage("stepFilter");
+		string = GuiConfiguration.getMessage("stepFilter");
 		string = string.toUpperCase();
 
 		button = new JButton(string);
-		button.setFont(outputFont);
+		button.setFont(GuiConfiguration.getOutputFont());
 		button.setEnabled(false);
-		button.setForeground(Color.WHITE);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,0,20,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc = new GridBagConstraints
+						(
+
+										0, 0,
+										1, 1,
+										1.0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.HORIZONTAL, // fill
+										new Insets(0,0,20,0),
+										0, 0
+						);
 
 		add(button,gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -72,36 +72,41 @@ public class CompetitionEditionFilterPanel
 		 * Intestazione ricerca per nome
 		 */
 		string = "1. ";
-		string += Main.getMessage("choose");
+		string += GuiConfiguration.getMessage("choose");
 		string += " ";
-		string += Main.getMessage("teamType");
+		string += GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
 
 		label = new JLabel(string);
 		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc = new GridBagConstraints
+						(
+
+										0, 1,
+										1, 1,
+										1.0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.HORIZONTAL, // fill
+										new Insets(0,0,20,0),
+										0, 0
+						);
 
 		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
 		panel.add(label, gbc);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc = new GridBagConstraints
+						(
+
+										0, 1,
+										1, 1,
+										1.0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.HORIZONTAL, // fill
+										new Insets(0,0,20,0),
+										0, 0
+						);
 
 		add(panel,gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -145,14 +150,14 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"2. " +
-																		Main.getMessage("choose") +
+																		GuiConfiguration.getMessage("choose") +
 																		" " +
-																		Main.getMessage("season")
+																		GuiConfiguration.getMessage("season")
 										).toUpperCase()
 						);
 
 		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
+		label.setFont(GuiConfiguration.getOutputFont());
 		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
@@ -183,7 +188,7 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										StringUtils.capitalize(Main.getMessage("season"))
+										StringUtils.capitalize(GuiConfiguration.getMessage("season"))
 						);
 
 
@@ -214,16 +219,16 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"3. " +
-																		Main.getMessage("choose") +
+																		GuiConfiguration.getMessage("choose") +
 																		" " +
-																		Main.getMessage("country") +
+																		GuiConfiguration.getMessage("country") +
 																		"/" +
-																		Main.getMessage("confederation")
+																		GuiConfiguration.getMessage("confederation")
 										).toUpperCase()
 						);
 
 		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
+		label.setFont(GuiConfiguration.getOutputFont());
 		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
@@ -278,14 +283,14 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"4. " +
-																		Main.getMessage("choose") +
+																		GuiConfiguration.getMessage("choose") +
 																		" " +
-																		Main.getMessage("competition")
+																		GuiConfiguration.getMessage("competition")
 										).toUpperCase()
 						);
 
 		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
+		label.setFont(GuiConfiguration.getOutputFont());
 		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
@@ -315,7 +320,7 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										StringUtils.capitalize(Main.getMessage("competition"))
+										StringUtils.capitalize(GuiConfiguration.getMessage("competition"))
 						);
 
 
@@ -341,8 +346,8 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		button = new JButton(Main.getMessage("go").toUpperCase());
-		button.setFont(outputFont);
+		button = new JButton(GuiConfiguration.getMessage("go").toUpperCase());
+		button.setFont(GuiConfiguration.getOutputFont());
 
 		add(button, gbc);
 		/*------------------------------------------------------------------------------------------------------*/

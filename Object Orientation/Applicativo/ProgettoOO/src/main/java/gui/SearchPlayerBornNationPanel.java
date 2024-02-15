@@ -25,113 +25,109 @@ import java.util.ResourceBundle;
 
 public class SearchPlayerBornNationPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
-	protected JTextField textField;
 	protected JComboBox<String> comboBox;
-	protected JButton button;
-	protected JRadioButton radioButton;
-	protected JCheckBox checkBox;
-	protected ButtonGroup buttonGroup;
 
+	protected String string;
 
-	final static float outputFontSize = 18;
-	final static float inputFontSize = 20;
-
-
-
-	public SearchPlayerBornNationPanel(Controller controller, ResourceBundle currentLocale)
+	public SearchPlayerBornNationPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
+
 		GridBagConstraints gbc;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
+		string = GuiConfiguration.getMessage("continent");
+		string = StringUtils.capitalize(string);
 
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-
-		// TODO
-		label = new JLabel
+		gbc = new GridBagConstraints
 						(
-										StringUtils.capitalize(currentLocale.getString("continent")),
-										SwingConstants.LEADING
+
+										0, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,10,30),
+										0, 0
 						);
 
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
-
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 0);
-
-
-		add(comboBox, gbc);
-
-		// TODO
-		label = new JLabel
+		gbc = new GridBagConstraints
 						(
-										StringUtils.capitalize(currentLocale.getString("nation")),
-										SwingConstants.LEADING
+
+										1, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,10,0),
+										0, 0
 						);
 
-		label.setFont(outputFont);
+		add(comboBox, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 20, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
+		string = GuiConfiguration.getMessage("nation");
+		string = StringUtils.capitalize(string);
+		label.setFont(GuiConfiguration.getOutputFont());
+
+		gbc = new GridBagConstraints
+						(
+
+										0, 1,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(0,0,20,30),
+										0, 0
+						);
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 20, 0);
+		gbc = new GridBagConstraints
+						(
 
+										1, 1,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(0,0,20,0),
+										0, 0
+						);
 
 		add(comboBox, gbc);
-
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 }

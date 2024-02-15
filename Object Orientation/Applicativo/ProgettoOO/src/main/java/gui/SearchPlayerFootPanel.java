@@ -25,42 +25,54 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SearchPlayerFootPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
 	protected JRadioButton radioButton;
 	protected JCheckBox checkBox;
 	protected ButtonGroup buttonGroup;
 
-	final static float outputFontSize = 18;
-
+	protected String string;
 
 	public SearchPlayerFootPanel(Controller controller, ResourceBundle currentLocale)
 	{
 		setLayout(new GridBagLayout());
+
 		GridBagConstraints gbc;
-
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-
 
 		buttonGroup = new ButtonGroup();
 
-		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("right")));
-		radioButton.setFont(outputFont);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
+		string = GuiConfiguration.getMessage("right");
+		string = StringUtils.capitalize(string);
+
+		radioButton = new JRadioButton(string);
+		radioButton.setFont(GuiConfiguration.getOutputFont());
 		radioButton.setSelected(true);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 50);
+		gbc = new GridBagConstraints
+						(
+
+										0, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,20,50),
+										0, 0
+						);
 
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("left")));
 		radioButton.setFont(outputFont);
 
@@ -73,8 +85,12 @@ public class SearchPlayerFootPanel
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * TODO
+		 */
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("either")));
 		radioButton.setFont(outputFont);
 
@@ -87,24 +103,7 @@ public class SearchPlayerFootPanel
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
-
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
+		/*------------------------------------------------------------------------------------------------------*/
 
 	}
 
