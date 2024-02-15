@@ -2,13 +2,8 @@ package gui;
 
 import controller.Controller;
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.*;
-import java.awt.event.*;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.regex.Matcher;
+
 
 /**
  * TYPE : class - gui package
@@ -18,7 +13,6 @@ import java.util.regex.Matcher;
  */
 public class AdminLoginPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
 	protected JTextField textField;
@@ -26,18 +20,12 @@ public class AdminLoginPanel
 	protected JButton button;
 	protected JCheckBox checkBox;
 
-	protected ResourceBundle resourceBundle;
-	protected Font font;
 	protected String string;
 
-	protected int inputColumn = 25;
 
 	public AdminLoginPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
-
-		resourceBundle = Main.getCurrentLocale();
-		font = (Font) UIManager.get("defaultFont");
 
 		GridBagConstraints gbc;
 
@@ -45,19 +33,23 @@ public class AdminLoginPanel
 		/*
 		 * Campo username: stampa
 		 */
-		string = resourceBundle.getString("username");
+		string = GuiConfiguration.getMessage("username");
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.CENTER);
-		label.setFont(font);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		gbc.insets = new Insets(0,0,10,0);
+		gbc = new GridBagConstraints
+						(
+
+										0, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,0,0),
+										0, 0
+						);
 
 		add(label, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -66,17 +58,20 @@ public class AdminLoginPanel
 		/*
 		 * Campo username: input
 		 */
-		textField = new JTextField(inputColumn);
-		textField.addCaretListener(this);
-		textField.setFont(font);
+		textField = new JTextField(GuiConfiguration.getInputColumn());
+		textField.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		gbc.insets = new Insets(0,0,10,0);
+		gbc = new GridBagConstraints
+						(
+
+										0, 1,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,0,0),
+										0, 0
+						);
 
 		add(textField, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -85,19 +80,23 @@ public class AdminLoginPanel
 		/*
 		 * Campo password: stampa
 		 */
-		string = resourceBundle.getString("password");
+		string = GuiConfiguration.getMessage("password");
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.CENTER);
-		label.setFont(font);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		gbc.insets = new Insets(10,0,10,0);
+		gbc = new GridBagConstraints
+						(
+
+										0, 2,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,0,0),
+										0, 0
+						);
 
 		add(label, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -106,17 +105,11 @@ public class AdminLoginPanel
 		/*
 		 * Campo password: input
 		 */
-		passwordField = new JPasswordField(inputColumn);
-		passwordField.addCaretListener(this);
-		passwordField.setFont(font);
+		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
+		passwordField.setEchoChar('#');
+		passwordField.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 3;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.ipadx = 20;
-		gbc.ipady = 20;
-		gbc.insets = new Insets(0,0,10,0);
+		gbc.gridy = gbc.gridy + 1;
 
 		add(passwordField, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -125,23 +118,24 @@ public class AdminLoginPanel
 		/*
 		 * Bottone conferma login
 		 */
-		string = resourceBundle.getString("next");
+		string = GuiConfiguration.getMessage("next");
 		string = string.toUpperCase();
 
 		button = new JButton(string);
-		button.setFont(font);
-		button.setActionCommand("next");
+		button.setFont(GuiConfiguration.getOutputFont());
 		button.setEnabled(false);
-		button.addActionListener(this);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 2;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.LINE_END;
-		gbc.ipadx = 50;
-		gbc.ipady = 10;
-		gbc.insets = new Insets(10,0,0,0);
+		gbc = new GridBagConstraints
+						(
+
+										0, 3,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,0,0),
+										0, 0
+						);
 
 		add(button, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -150,44 +144,28 @@ public class AdminLoginPanel
 		/*
 		 * Box mostra password
 		 */
-		string = resourceBundle.getString("show");
+		string = Main.getMessage("show");
 		string += " ";
-		string += resourceBundle.getString("password");
+		string += Main.getMessage("password");
 		string = string.toUpperCase();
 
 		checkBox = new JCheckBox(string);
-		checkBox.setFont(font);
-		checkBox.addItemListener(this);
+		checkBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.ipadx = 50;
-		gbc.ipady = 10;
-		gbc.insets = new Insets(10,0,0,0);
+		gbc = new GridBagConstraints
+						(
+
+										0, 4,
+										1, 1,
+										0, 0,
+										GridBagConstraints.CENTER, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,0,0),
+										0, 0
+						);
 
 		add(checkBox, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
 	}
 
 }

@@ -33,7 +33,6 @@ public class CompetitionEditionFilterPanel
 	protected JCheckBox checkBox;
 	protected JLabel label;
 
-	protected ResourceBundle currentLocale;
 	protected Font outputFont;
 
 	protected String string;
@@ -43,14 +42,13 @@ public class CompetitionEditionFilterPanel
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
 
-		currentLocale = Main.getCurrentLocale();
 		outputFont = (Font) UIManager.get("defaultFont");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Intestazione ricerca
 		 */
-		string = currentLocale.getString("stepFilter");
+		string = Main.getMessage("stepFilter");
 		string = string.toUpperCase();
 
 		button = new JButton(string);
@@ -74,9 +72,9 @@ public class CompetitionEditionFilterPanel
 		 * Intestazione ricerca per nome
 		 */
 		string = "1. ";
-		string += currentLocale.getString("choose");
+		string += Main.getMessage("choose");
 		string += " ";
-		string += currentLocale.getString("teamType");
+		string += Main.getMessage("teamType");
 		string = string.toUpperCase();
 
 		label = new JLabel(string);
@@ -118,7 +116,7 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamTypePanel(controller, currentLocale);
+		panel = new SearchTeamTypePanel(controller);
 
 		panel.setBorder
 						(
@@ -147,9 +145,9 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"2. " +
-																		currentLocale.getString("choose") +
+																		Main.getMessage("choose") +
 																		" " +
-																		currentLocale.getString("season")
+																		Main.getMessage("season")
 										).toUpperCase()
 						);
 
@@ -185,7 +183,7 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										StringUtils.capitalize(currentLocale.getString("season"))
+										StringUtils.capitalize(Main.getMessage("season"))
 						);
 
 
@@ -216,11 +214,11 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"3. " +
-																		currentLocale.getString("choose") +
+																		Main.getMessage("choose") +
 																		" " +
-																		currentLocale.getString("country") +
+																		Main.getMessage("country") +
 																		"/" +
-																		currentLocale.getString("confederation")
+																		Main.getMessage("confederation")
 										).toUpperCase()
 						);
 
@@ -251,7 +249,7 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchCountryConfederationPanel(controller, currentLocale);
+		panel = new SearchCountryConfederationPanel(controller);
 
 
 		panel.setBorder
@@ -280,9 +278,9 @@ public class CompetitionEditionFilterPanel
 						(
 										(
 														"4. " +
-																		currentLocale.getString("choose") +
+																		Main.getMessage("choose") +
 																		" " +
-																		currentLocale.getString("competition")
+																		Main.getMessage("competition")
 										).toUpperCase()
 						);
 
@@ -317,7 +315,7 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										StringUtils.capitalize(currentLocale.getString("competition"))
+										StringUtils.capitalize(Main.getMessage("competition"))
 						);
 
 
@@ -343,7 +341,7 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		button = new JButton(currentLocale.getString("go").toUpperCase());
+		button = new JButton(Main.getMessage("go").toUpperCase());
 		button.setFont(outputFont);
 
 		add(button, gbc);

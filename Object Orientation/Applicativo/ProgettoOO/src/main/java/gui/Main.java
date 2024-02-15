@@ -17,28 +17,10 @@ import java.util.ResourceBundle;
 public class Main
 {
 
-	public static ResourceBundle currentLocale;
+
 	private static void createAndShowGUI()
 	{
-		// creazione del locale di default come italiano
-		Locale.setDefault(Locale.of("it", "IT"));
-
-
-		currentLocale = null;
-		int fontSize = 18;
-
-		Font font = new Font(Font.SANS_SERIF, Font.PLAIN, fontSize);
-
-		System.out.println(font);
-
-		try
-		{
-			currentLocale = ResourceBundle.getBundle("guiBundle", Locale.getDefault());
-		}
-		catch (MissingResourceException e)
-		{
-			System.out.println(e.getMessage());
-		}
+		GuiConfiguration.initGuiConfiguration();
 
 		JFrame homeFrame = new JFrame("Progetto");
 
@@ -49,14 +31,7 @@ public class Main
 		homeFrame.setResizable(true);
 		//homeFrame.setMinimumSize(new Dimension(1350, 1000));
 
-		UIManager.put("nimbusBase", new Color(0, 50, 255));
-		UIManager.put("nimbusBlueGrey", new Color(50, 100, 200));
-		UIManager.put("control", new Color(200, 200, 200));
-		UIManager.put("defaultFont", font);
 
-		UIManager.put("TableHeader.textForeground", Color.white);
-		UIManager.put("Button.textForeground", Color.white);
-		UIManager.put("Table.background", Color.white);
 
 		try
 		{
@@ -87,13 +62,13 @@ public class Main
 		gbc.gridx = 0;
 		gbc.gridy = 0;
 		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
+		gbc.ipady = 10;
+		gbc.insets = new Insets(0,0,0,0);
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.PAGE_START;
 
 
-		homeFrame.add(new TopPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new TopPanel(Controller.getControllerInstance()), gbc);
 
 
 		gbc = new GridBagConstraints();
@@ -105,7 +80,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new MenuBarPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new MenuBarPanel(Controller.getControllerInstance()), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -145,7 +120,7 @@ public class Main
 		gbc.anchor = GridBagConstraints.PAGE_START;
 
 
-		resultFrame.add(new TopPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new TopPanel(Controller.getControllerInstance()), gbc);
 
 
 		gbc = new GridBagConstraints();
@@ -157,7 +132,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		resultFrame.add(new UserFilterPanelNew(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new UserFilterPanelNew(Controller.getControllerInstance()), gbc);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -172,7 +147,7 @@ public class Main
 		resultFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
 
 		 */
-		resultFrame.add(new TeamInformation(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new TeamInformation(Controller.getControllerInstance()), gbc);
 
 
 		gbc = new GridBagConstraints();
@@ -196,7 +171,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		resultFrame.add(new TeamTrophy(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new TeamTrophy(Controller.getControllerInstance()), gbc);
 
 /*
 		gbc = new GridBagConstraints();
@@ -235,10 +210,12 @@ public class Main
 
 	}
 
-	public static ResourceBundle getCurrentLocale()
+	public static String getMessage(String key)
 	{
-		return ResourceBundle.getBundle("guiBundle", Locale.getDefault());
+		return ResourceBundle.getBundle("guiBundle", Locale.getDefault()).getString(key);
 	}
+
+
 
 	public static void main(String[] args)
   {

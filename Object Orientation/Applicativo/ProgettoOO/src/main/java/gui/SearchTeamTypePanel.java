@@ -37,7 +37,7 @@ public class SearchTeamTypePanel
 	final static float outputFontSize = 18;
 
 
-	public SearchTeamTypePanel(Controller controller, ResourceBundle currentLocale)
+	public SearchTeamTypePanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
@@ -47,7 +47,7 @@ public class SearchTeamTypePanel
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("club")));
+		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("club")));
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -62,7 +62,7 @@ public class SearchTeamTypePanel
 		buttonGroup.add(radioButton);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("national")));
+		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("national")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();

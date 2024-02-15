@@ -105,7 +105,7 @@ public class MilitancyFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamTypePanel(controller, currentLocale);
+		panel = new SearchTeamTypePanel(controller);
 
 		panel.setBorder
 						(

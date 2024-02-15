@@ -105,7 +105,7 @@ public class StepFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchTeamTypePanel(controller, currentLocale);
+		panel = new SearchTeamTypePanel(controller);
 
 		panel.setBorder
 						(
@@ -235,7 +235,7 @@ public class StepFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new SearchCountryConfederationPanel(controller, currentLocale);
+		panel = new SearchCountryConfederationPanel(controller);
 
 
 		panel.setBorder

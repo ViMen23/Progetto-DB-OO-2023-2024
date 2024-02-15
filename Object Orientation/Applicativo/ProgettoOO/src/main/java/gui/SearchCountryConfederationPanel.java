@@ -41,7 +41,7 @@ public class SearchCountryConfederationPanel
 	final static int columnNumber = 25;
 
 
-	public SearchCountryConfederationPanel(Controller controller, ResourceBundle currentLocale)
+	public SearchCountryConfederationPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 		GridBagConstraints gbc;
@@ -53,7 +53,7 @@ public class SearchCountryConfederationPanel
 		buttonGroup = new ButtonGroup();
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("world")));
+		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("world")));
 		radioButton.setFont(outputFont);
 		radioButton.setSelected(true);
 
@@ -81,7 +81,7 @@ public class SearchCountryConfederationPanel
 		add(comboBox, gbc);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("continent")));
+		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("continent")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();
@@ -108,7 +108,7 @@ public class SearchCountryConfederationPanel
 		add(comboBox, gbc);
 
 		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("nation")));
+		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("nation")));
 		radioButton.setFont(outputFont);
 
 		gbc = new GridBagConstraints();

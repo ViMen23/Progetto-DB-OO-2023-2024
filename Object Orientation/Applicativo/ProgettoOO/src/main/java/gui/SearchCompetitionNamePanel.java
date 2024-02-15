@@ -47,7 +47,10 @@ public class SearchCompetitionNamePanel
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Box mostra password
+		 */
 		label = new JLabel(StringUtils.capitalize(currentLocale.getString("name")), SwingConstants.LEADING);
 		label.setFont(outputFont);
 
@@ -59,8 +62,12 @@ public class SearchCompetitionNamePanel
 
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Box mostra password
+		 */
 		textField = new JTextField(columnNumber);
 		textField.setFont(inputFont);
 
@@ -71,7 +78,7 @@ public class SearchCompetitionNamePanel
 		gbc.insets = new Insets(10, 0, 20, 0);
 
 		add(textField, gbc);
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override

@@ -21,18 +21,13 @@ import java.awt.event.ItemListener;
  */
 public class ChoosePanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
 	protected JComboBox<String> comboBox;
 
-	protected Font font;
-
 	public ChoosePanel(Controller controller, String toChoose)
 	{
 		setLayout(new GridBagLayout());
-
-		font = (Font) UIManager.get("defaultFont");
 
 		GridBagConstraints gbc;
 
@@ -41,14 +36,19 @@ public class ChoosePanel
 		 * Nome campo da scegliere
 		 */
 		label = new JLabel(toChoose, SwingConstants.LEADING);
-		label.setFont(font);
+		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		gbc = new GridBagConstraints
+						(
+
+										0, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,20,30),
+										0, 0
+						);
 
 		add(label, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -58,34 +58,22 @@ public class ChoosePanel
 		 * Lista elementi da cui scegliere
 		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(font);
+		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 0);
+		gbc = new GridBagConstraints
+						(
+
+										1, 0,
+										1, 1,
+										0, 0,
+										GridBagConstraints.LINE_START, // anchor
+										GridBagConstraints.NONE, // fill
+										new Insets(10,0,20,0),
+										0, 0
+						);
 
 		add(comboBox, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
 	}
 
 }

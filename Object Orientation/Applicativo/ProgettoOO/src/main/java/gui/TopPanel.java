@@ -26,18 +26,13 @@ public class TopPanel
 	protected JLabel label;
 	protected JButton button;
 
-	final static float outputFontSize = 18;
 
-
-	public TopPanel(Controller controller, ResourceBundle currentLocale)
+	public TopPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 
 		GridBagConstraints gbc;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-
-		this.setBackground(Color.WHITE);
 		// configurazione bottone logo
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -49,9 +44,11 @@ public class TopPanel
 		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
 		gbc.weightx = 1.0;
 
-		label = new JLabel
+		label = new MyLabel
 						(
-							Main.createImageIcon("images/foogo3.png", 350, 75)
+										null,
+										GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75),
+
 						);
 
 		add(label, gbc);

@@ -27,7 +27,6 @@ public class ChooseYearRangePanel
 	protected JLabel label;
 	protected JComboBox<String> comboBox;
 
-	protected ResourceBundle resourceBundle;
 	protected Font font;
 
 	protected String string;
@@ -36,7 +35,6 @@ public class ChooseYearRangePanel
 	{
 		setLayout(new GridBagLayout());
 
-		resourceBundle = Main.getCurrentLocale();
 		font = (Font) UIManager.get("defaultFont");
 
 		GridBagConstraints gbc;
@@ -45,9 +43,9 @@ public class ChooseYearRangePanel
 		/*
 		 * Scelta anno inizio
 		 */
-		string = resourceBundle.getString("from");
+		string = Main.getMessage("from");
 		string += " ";
-		string += resourceBundle.getString("year");
+		string += Main.getMessage("year");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
@@ -83,9 +81,9 @@ public class ChooseYearRangePanel
 		/*
 		 * Scelta anno fine
 		 */
-		string = resourceBundle.getString("to");
+		string = Main.getMessage("to");
 		string += " ";
-		string += resourceBundle.getString("year");
+		string += Main.getMessage("year");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
