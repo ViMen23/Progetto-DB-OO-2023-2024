@@ -7,6 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
 
+/**
+ * TYPE : class - gui package
+ * NAME : ChooseSeasonPanel
+ *
+ * DESC: Pannello per costruire un'interfaccia con lo scopo
+ *       di far scegliere una stagione calcistica
+ */
 public class ChooseSeasonPanel
 				extends JPanel
 {
@@ -15,12 +22,14 @@ public class ChooseSeasonPanel
 	protected JComboBox<String> comboBox;
 
 	protected JButton button;
-	String tmp;
+	protected String string;
+
+	protected ResourceBundle resourceBundle;
 
 	final static float outputFontSize = 15;
 
 
-	public ChooseSeasonPanel(Controller controller, ResourceBundle currentLocale)
+	public ChooseSeasonPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 
@@ -28,14 +37,20 @@ public class ChooseSeasonPanel
 
 		GridBagConstraints gbc;
 
+		resourceBundle = Main.getCurrentLocale();
+
 		Font outputFont = this.getFont().deriveFont(outputFontSize);
 		Font outputBoldFont = outputFont.deriveFont(Font.BOLD);
 
-		// filtro stagione label
 
-		tmp = StringUtils.capitalize(currentLocale.getString("season"));
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Stampa stagione
+		 */
+		string = resourceBundle.getString("season");
+		string = StringUtils.capitalize(string);
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
+		label = new JLabel(string, SwingConstants.LEADING);
 		label.setFont(outputBoldFont);
 
 		gbc = new GridBagConstraints();
@@ -46,21 +61,24 @@ public class ChooseSeasonPanel
 		gbc.insets = new Insets(10, 0, 10, 0);
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		//stagione combo box
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Elenco stagioni
+		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setMaximumRowCount(5);
 		comboBox.setEditable(true);
 
 		comboBox.setFont(outputFont);
 
-
-		for(int i = 1; i<=25; ++i){
+		for(int i = 1; i<=25; ++i)
+		{
 			comboBox.addItem("Season " + i);
 		}
 
 		comboBox.setSelectedIndex(-1);
-
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -69,14 +87,18 @@ public class ChooseSeasonPanel
 		gbc.anchor = GridBagConstraints.LINE_START;
 		gbc.insets = new Insets(10, 10, 10, 0);
 
-
 		add(comboBox, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		//mostrare button
-		tmp = currentLocale.getString("show").toUpperCase();
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Bottone per mostrare
+		 */
+		string = resourceBundle.getString("show");
+		string = string.toUpperCase();
 
-		button = new JButton(tmp);
+		button = new JButton(string);
 		button.setActionCommand("showSeason");
 		button.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		button.setFont(outputFont);
@@ -89,6 +111,6 @@ public class ChooseSeasonPanel
 		gbc.insets = new Insets(10, 10, 10, 0);
 
 		add(button, gbc);
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 }

@@ -170,7 +170,6 @@ public class StepFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("season"))
 						);
 
@@ -300,7 +299,6 @@ public class StepFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("competition"))
 						);
 
@@ -366,7 +364,6 @@ public class StepFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("team"))
 						);
 
@@ -432,7 +429,6 @@ public class StepFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("player"))
 						);
 

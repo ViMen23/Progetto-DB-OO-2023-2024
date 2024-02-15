@@ -233,7 +233,6 @@ public class MilitancyFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("team"))
 						);
 
@@ -296,7 +295,7 @@ public class MilitancyFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		panel = new ChooseYearRangePanel(controller, currentLocale);
+		panel = new ChooseYearRangePanel(controller);
 
 		panel.setBorder
 						(

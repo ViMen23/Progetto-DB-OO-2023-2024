@@ -6,6 +6,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 
@@ -25,15 +26,31 @@ public class AdminLoginPanel
 	protected JButton button;
 	protected JCheckBox checkBox;
 
+	protected ResourceBundle resourceBundle;
+	protected Font font;
+	protected String string;
+
 	protected int inputColumn = 25;
 
-	public AdminLoginPanel(Controller controller, ResourceBundle currentLocale)
+	public AdminLoginPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 
+		resourceBundle = Main.getCurrentLocale();
+		font = (Font) UIManager.get("defaultFont");
+
 		GridBagConstraints gbc;
 
-		// configurazione campo username output
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo username: stampa
+		 */
+		string = resourceBundle.getString("username");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.CENTER);
+		label.setFont(font);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
 		gbc.gridx = 0;
@@ -42,12 +59,17 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		label = new JLabel(currentLocale.getString("username").toUpperCase(), SwingConstants.CENTER);
-
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo username: input
+		 */
+		textField = new JTextField(inputColumn);
+		textField.addCaretListener(this);
+		textField.setFont(font);
 
-		// configurazione campo username input
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
 		gbc.gridx = 0;
@@ -56,12 +78,19 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		textField = new JTextField(inputColumn);
-		textField.addCaretListener(this);
-
 		add(textField, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// configurazione campo password output
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo password: stampa
+		 */
+		string = resourceBundle.getString("password");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.CENTER);
+		label.setFont(font);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
 		gbc.gridx = 0;
@@ -70,11 +99,17 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(10,0,10,0);
 
-		label = new JLabel(currentLocale.getString("password").toUpperCase(), SwingConstants.CENTER);
-
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// configurazione campo password input
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo password: input
+		 */
+		passwordField = new JPasswordField(inputColumn);
+		passwordField.addCaretListener(this);
+		passwordField.setFont(font);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 3;
 		gbc.gridx = 0;
@@ -83,12 +118,22 @@ public class AdminLoginPanel
 		gbc.ipady = 20;
 		gbc.insets = new Insets(0,0,10,0);
 
-		passwordField = new JPasswordField(inputColumn);
-		passwordField.addCaretListener(this);
-
 		add(passwordField, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// configurazione bottone conferma login
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Bottone conferma login
+		 */
+		string = resourceBundle.getString("next");
+		string = string.toUpperCase();
+
+		button = new JButton(string);
+		button.setFont(font);
+		button.setActionCommand("next");
+		button.setEnabled(false);
+		button.addActionListener(this);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 2;
@@ -98,14 +143,22 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		button = new JButton(currentLocale.getString("next").toUpperCase());
-		button.setActionCommand("next");
-		button.setEnabled(false);
-		button.addActionListener(this);
-
 		add(button, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// configurazione box mostra password
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Box mostra password
+		 */
+		string = resourceBundle.getString("show");
+		string += " ";
+		string += resourceBundle.getString("password");
+		string = string.toUpperCase();
+
+		checkBox = new JCheckBox(string);
+		checkBox.setFont(font);
+		checkBox.addItemListener(this);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -115,10 +168,8 @@ public class AdminLoginPanel
 		gbc.ipady = 10;
 		gbc.insets = new Insets(10,0,0,0);
 
-		checkBox = new JCheckBox((currentLocale.getString("show") + " " + currentLocale.getString("password")).toUpperCase());
-		checkBox.addItemListener(this);
-
 		add(checkBox, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override

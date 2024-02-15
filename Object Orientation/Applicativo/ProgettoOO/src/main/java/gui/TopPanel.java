@@ -107,7 +107,7 @@ public class TopPanel
 	public void actionPerformed(ActionEvent e)
 	{
 		if (e.getActionCommand().equals("login")){
-			JOptionPane.showMessageDialog(null, new AdminLoginPanel(Controller.getControllerInstance(), Main.currentLocale));
+			JOptionPane.showMessageDialog(null, new AdminLoginPanel(Controller.getControllerInstance()));
 		}
 
 	}

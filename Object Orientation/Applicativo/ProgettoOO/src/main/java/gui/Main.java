@@ -23,6 +23,7 @@ public class Main
 		// creazione del locale di default come italiano
 		Locale.setDefault(Locale.of("it", "IT"));
 
+
 		currentLocale = null;
 		int fontSize = 18;
 
@@ -115,7 +116,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance()), gbc);
 
 		homeFrame.pack();
 		homeFrame.setVisible(true);
@@ -183,7 +184,7 @@ public class Main
 		gbc.insets = new Insets(0,0,10,0);
 		gbc.fill = GridBagConstraints.BOTH;
 
-		resultFrame.add(new ChooseSeasonPanel(Controller.getControllerInstance(), currentLocale), gbc);
+		resultFrame.add(new ChooseSeasonPanel(Controller.getControllerInstance()), gbc);
 
 
 		gbc = new GridBagConstraints();
@@ -232,6 +233,11 @@ public class Main
 
 		return null;
 
+	}
+
+	public static ResourceBundle getCurrentLocale()
+	{
+		return ResourceBundle.getBundle("guiBundle", Locale.getDefault());
 	}
 
 	public static void main(String[] args)

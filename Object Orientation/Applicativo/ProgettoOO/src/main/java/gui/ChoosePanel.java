@@ -1,12 +1,8 @@
 package gui;
 
 import controller.Controller;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
@@ -14,51 +10,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ResourceBundle;
+
 
 /**
  * TYPE : class - gui package
- * NAME : UserSearchCompetitionPanel
+ * NAME : ChoosePanel
  *
- * DESC: TODO
+ * DESC: Pannello per costruire un'interfaccia con nome campo da scegliere
+ * 			 e lista di elementi tra cui scegliere
  */
-
 public class ChoosePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
-	protected JTextField textField;
 	protected JComboBox<String> comboBox;
-	protected JButton button;
-	protected JRadioButton radioButton;
-	protected JCheckBox checkBox;
-	protected ButtonGroup buttonGroup;
 
+	protected Font font;
 
-	final static float outputFontSize = 18;
-	final static float inputFontSize = 20;
-
-
-
-	public ChoosePanel(Controller controller, ResourceBundle currentLocale, String toChoose)
+	public ChoosePanel(Controller controller, String toChoose)
 	{
 		setLayout(new GridBagLayout());
+
+		font = (Font) UIManager.get("defaultFont");
+
 		GridBagConstraints gbc;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
-
-
-
-		// TODO
-		label = new JLabel
-						(
-										toChoose,
-										SwingConstants.LEADING
-						);
-
-		label.setFont(outputFont);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Nome campo da scegliere
+		 */
+		label = new JLabel(toChoose, SwingConstants.LEADING);
+		label.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -68,10 +51,14 @@ public class ChoosePanel
 		gbc.anchor = GridBagConstraints.LINE_START;
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Lista elementi da cui scegliere
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -79,11 +66,8 @@ public class ChoosePanel
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 0, 20, 0);
 
-
 		add(comboBox, gbc);
-
-
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override

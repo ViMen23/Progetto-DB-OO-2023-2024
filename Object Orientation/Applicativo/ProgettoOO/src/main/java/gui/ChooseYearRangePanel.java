@@ -4,9 +4,6 @@ import controller.Controller;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
@@ -18,52 +15,43 @@ import java.util.ResourceBundle;
 
 /**
  * TYPE : class - gui package
- * NAME : UserSearchCompetitionPanel
+ * NAME : ChooseYearRangePanel
  *
- * DESC: TODO
+ * DESC: Pannello per l'interfaccia di scelta di un intervallo di tempo
+ *       compreso tra due anni
  */
-
 public class ChooseYearRangePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
 	protected JLabel label;
-	protected JTextField textField;
 	protected JComboBox<String> comboBox;
-	protected JButton button;
-	protected JRadioButton radioButton;
-	protected JCheckBox checkBox;
-	protected ButtonGroup buttonGroup;
 
+	protected ResourceBundle resourceBundle;
+	protected Font font;
 
-	final static float outputFontSize = 18;
-	final static float inputFontSize = 20;
+	protected String string;
 
-
-
-	public ChooseYearRangePanel(Controller controller, ResourceBundle currentLocale)
+	public ChooseYearRangePanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
+
+		resourceBundle = Main.getCurrentLocale();
+		font = (Font) UIManager.get("defaultFont");
+
 		GridBagConstraints gbc;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Scelta anno inizio
+		 */
+		string = resourceBundle.getString("from");
+		string += " ";
+		string += resourceBundle.getString("year");
+		string = StringUtils.capitalize(string);
 
-
-
-		// TODO
-		label = new JLabel
-						(
-										StringUtils.capitalize
-														(
-																		currentLocale.getString("from") +
-																						" " +
-																						currentLocale.getString("year")
-														),
-										SwingConstants.LEADING
-						);
-
-		label.setFont(outputFont);
+		label = new JLabel(string);
+		label.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -73,10 +61,14 @@ public class ChooseYearRangePanel
 		gbc.anchor = GridBagConstraints.LINE_START;
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Lista anno inizio
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -84,23 +76,20 @@ public class ChooseYearRangePanel
 		gbc.gridy = 0;
 		gbc.insets = new Insets(10, 0, 10, 0);
 
-
 		add(comboBox, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Scelta anno fine
+		 */
+		string = resourceBundle.getString("to");
+		string += " ";
+		string += resourceBundle.getString("year");
+		string = StringUtils.capitalize(string);
 
-		// TODO
-		label = new JLabel
-						(
-										StringUtils.capitalize
-														(
-																		currentLocale.getString("to") +
-																						" " +
-																						currentLocale.getString("year")
-														),
-										SwingConstants.LEADING
-						);
-
-		label.setFont(outputFont);
+		label = new JLabel(string);
+		label.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -110,10 +99,14 @@ public class ChooseYearRangePanel
 		gbc.anchor = GridBagConstraints.LINE_START;
 
 		add(label, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Lista anno fine
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setFont(font);
 
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
@@ -123,9 +116,7 @@ public class ChooseYearRangePanel
 
 
 		add(comboBox, gbc);
-
-
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override

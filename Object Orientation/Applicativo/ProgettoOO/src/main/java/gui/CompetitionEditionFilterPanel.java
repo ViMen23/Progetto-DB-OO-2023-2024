@@ -17,6 +17,13 @@ import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 
+/**
+ * TYPE : class - gui package
+ * NAME : ChooseYearRangePanel
+ *
+ * DESC: Pannello per l'interfaccia di scelta di un intervallo di tempo
+ *       compreso tra due anni
+ */
 public class CompetitionEditionFilterPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -25,17 +32,32 @@ public class CompetitionEditionFilterPanel
 	protected JButton button;
 	protected JCheckBox checkBox;
 	protected JLabel label;
-	final static float outputFontSize = 18;
 
-	public CompetitionEditionFilterPanel(Controller controller, ResourceBundle currentLocale)
+	protected ResourceBundle currentLocale;
+	protected Font outputFont;
+
+	protected String string;
+
+	public CompetitionEditionFilterPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
-
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-
 		GridBagConstraints gbc;
 
-		// intestazione ricerca
+		currentLocale = Main.getCurrentLocale();
+		outputFont = (Font) UIManager.get("defaultFont");
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Intestazione ricerca
+		 */
+		string = currentLocale.getString("stepFilter");
+		string = string.toUpperCase();
+
+		button = new JButton(string);
+		button.setFont(outputFont);
+		button.setEnabled(false);
+		button.setForeground(Color.WHITE);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -44,20 +66,24 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		button = new JButton
-						(
-										(
-														currentLocale.getString("stepFilter")
-										).toUpperCase()
-						);
-
-		button.setFont(outputFont);
-		button.setEnabled(false);
-		button.setForeground(Color.WHITE);
-
 		add(button,gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// intestazione ricerca per nome
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Intestazione ricerca per nome
+		 */
+		string = "1. ";
+		string += currentLocale.getString("choose");
+		string += " ";
+		string += currentLocale.getString("teamType");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+		label.setHorizontalTextPosition(SwingConstants.RIGHT);
+		label.setFont(outputFont);
+		label.setForeground(Color.WHITE);
+
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -66,20 +92,6 @@ public class CompetitionEditionFilterPanel
 		gbc.weightx = 1.0;
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.anchor = GridBagConstraints.LINE_START;
-
-		label = new JLabel
-						(
-										(
-														"1. " +
-																		currentLocale.getString("choose") +
-																		" " +
-																		currentLocale.getString("teamType")
-										).toUpperCase()
-						);
-
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
 
 		panel = new JPanel(new GridBagLayout());
 		panel.setBackground(new Color(50, 100, 200));
@@ -94,6 +106,7 @@ public class CompetitionEditionFilterPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		add(panel,gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// TODO
@@ -117,6 +130,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// TODO
@@ -156,6 +170,7 @@ public class CompetitionEditionFilterPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		add(panel,gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// ricerca per eta
@@ -170,7 +185,6 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("season"))
 						);
 
@@ -185,6 +199,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// intestazione ricerca per nazione nascita
@@ -249,6 +264,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 		// intestazione ricerca per ruolo
 		gbc = new GridBagConstraints();
@@ -287,6 +303,7 @@ public class CompetitionEditionFilterPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		add(panel,gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 		// ricerca per ruolo
 		gbc = new GridBagConstraints();
@@ -300,7 +317,6 @@ public class CompetitionEditionFilterPanel
 		panel = new ChoosePanel
 						(
 										controller,
-										currentLocale,
 										StringUtils.capitalize(currentLocale.getString("competition"))
 						);
 
@@ -315,6 +331,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// bottone avvia ricerca
@@ -330,7 +347,7 @@ public class CompetitionEditionFilterPanel
 		button.setFont(outputFont);
 
 		add(button, gbc);
-
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override
