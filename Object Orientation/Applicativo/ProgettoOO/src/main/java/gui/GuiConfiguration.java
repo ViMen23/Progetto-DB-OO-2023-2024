@@ -1,6 +1,10 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.CompoundBorder;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.Locale;
 import java.util.MissingResourceException;
@@ -29,6 +33,14 @@ public class GuiConfiguration
 
 	private static Integer comboBoxMaximumRowCount;
 
+	private static Cursor buttonCursor;
+
+	private static Border searchPanelBorder;
+
+	private static Border labelBorder;
+
+	private static Dimension frameMinimumSize;
+
 
 	/**
 	 * TYPE : static method - gui package
@@ -49,7 +61,7 @@ public class GuiConfiguration
 		// text and password field config
 		inputColumn = 25;
 
-		//font for text
+		//font per il testo
 		outputLargeFont = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
 		outputBoldLargeFont = outputLargeFont.deriveFont(Font.BOLD);
 
@@ -59,11 +71,33 @@ public class GuiConfiguration
 		outputSmallFont = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
 		outputBoldSmallFont = outputSmallFont.deriveFont(Font.BOLD);
 
-		//Table config
+		//tabella config
 		tableRowHeight = 25;
 
 		//combo box config
 		comboBoxMaximumRowCount = 5;
+
+		// bottone config
+		buttonCursor = new Cursor(Cursor.HAND_CURSOR);
+
+		//bordo per i pannelli ricerca
+		searchPanelBorder = new CompoundBorder
+								(
+									new EmptyBorder(0, 10, 10, 10),
+									new MatteBorder(0, 10, 10, 10, Color.WHITE)
+								);
+
+		//bordo label config
+		labelBorder = new CompoundBorder
+							(
+								new EmptyBorder(4, 4, 4, 4),
+								new MatteBorder(0, 0, 1, 0, Color.BLACK)
+							);
+
+
+
+		//minima size del frame
+		frameMinimumSize = new Dimension(1500, 1000);
 
 	}
 
@@ -76,19 +110,15 @@ public class GuiConfiguration
 	 */
 	public static String getMessage(String key)
 	{
-		String string = null;
-
 		try
 		{
-			string = currentResourceBundle.getString(key);
+			return currentResourceBundle.getString(key);
 		}
 		catch(Exception e)
 		{
 			System.out.println(e.getMessage());
 			return null;
 		}
-
-		return string;
 	}
 
 	/**
@@ -164,6 +194,38 @@ public class GuiConfiguration
 	 */
 	public static Integer getComboBoxMaximumRowCount() { return comboBoxMaximumRowCount; }
 
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getButtonCursor
+	 *
+	 * DESC: TODO
+	 */
+	public static Cursor getButtonCursor() { return buttonCursor; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getSearchPanelBorder
+	 *
+	 * DESC: TODO
+	 */
+	public static Border getSearchPanelBorder() { return searchPanelBorder; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getLabelBorder
+	 *
+	 * DESC: TODO
+	 */
+	public static Border getLabelBorder() { return labelBorder; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getFrameMinimumSize
+	 *
+	 * DESC: TODO
+	 */
+	public static Dimension getFrameMinimumSize() { return frameMinimumSize; }
+
 
 	/**
 	 * TYPE : static method - gui package
@@ -193,21 +255,7 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static ImageIcon createImageIcon(String imagePath)
-	{
-		java.net.URL imageURL = ClassLoader.getSystemResource(imagePath);
-
-		if (imageURL != null)
-		{
-			ImageIcon imageIcon = new ImageIcon(imageURL);
-
-			Image image = imageIcon.getImage().getScaledInstance(30, 30, Image.SCALE_DEFAULT);
-
-			return new ImageIcon(image);
-		}
-
-		return null;
-	}
+	public static ImageIcon createImageIcon(String imagePath) { return createImageIcon(imagePath, 30, 30); }
 
 
 	/**
