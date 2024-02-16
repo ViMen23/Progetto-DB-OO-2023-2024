@@ -35,30 +35,15 @@ public class Main
 		homeFrame.setMinimumSize(new Dimension(500, 500));
 		homeFrame.setMaximumSize(new Dimension(1500, 1000));
 
-		try {
-			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
-				if ("Nimbus".equals(info.getName())) {
-					UIManager.setLookAndFeel(info.getClassName());
-					break;
-				}
-			}
-		} catch (Exception e) {
-			return;
-		}
 
 
-
-<<<<<<< Updated upstream
 		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, dock center, wrap");
 		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "dock center");
-=======
-		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
-
-		//homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
 
 		GridBagConstraints gbc;
 
 
+		/*
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -94,8 +79,8 @@ public class Main
 		gbc.fill = GridBagConstraints.BOTH;
 
 		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance()), gbc);
->>>>>>> Stashed changes
 
+		*/
 		homeFrame.pack();
 
 

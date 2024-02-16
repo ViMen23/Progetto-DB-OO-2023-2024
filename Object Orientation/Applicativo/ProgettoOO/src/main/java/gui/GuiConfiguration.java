@@ -5,10 +5,10 @@ import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
+import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.FontUIResource;
 import java.awt.*;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * TYPE : class - gui package
@@ -42,6 +42,10 @@ public class GuiConfiguration
 	private static Dimension frameMinimumSize;
 
 
+	private static Color searchPanelColor;
+
+	public static ArrayList<Color> colorArrayList;
+
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : initGuiConfiguration
@@ -60,16 +64,6 @@ public class GuiConfiguration
 
 		// text and password field config
 		inputColumn = 25;
-
-		//font per il testo
-		outputLargeFont = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
-		outputBoldLargeFont = outputLargeFont.deriveFont(Font.BOLD);
-
-		outputFont = new Font(Font.SANS_SERIF, Font.PLAIN, 18);
-		outputBoldFont = outputFont.deriveFont(Font.BOLD);
-
-		outputSmallFont = new Font(Font.SANS_SERIF, Font.PLAIN, 15);
-		outputBoldSmallFont = outputSmallFont.deriveFont(Font.BOLD);
 
 		//tabella config
 		tableRowHeight = 25;
@@ -99,6 +93,140 @@ public class GuiConfiguration
 		//minima size del frame
 		frameMinimumSize = new Dimension(1500, 1000);
 
+		searchPanelColor = new Color(50, 100, 200);
+
+		initUIManager();
+
+	}
+
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : initGuiConfiguration
+	 *
+	 * DESC: TODO
+	 */
+
+	public static void initUIManager()
+	{
+		try {
+			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
+					UIManager.setLookAndFeel(info.getClassName());
+					break;
+				}
+			}
+		} catch (Exception e) {
+			System.err.println("Error nimbus not found");
+			return;
+		}
+
+
+
+		//font testo
+		Font font = new JPanel().getFont();
+
+		float size = 25;
+
+		outputLargeFont = font.deriveFont(size);
+		outputBoldLargeFont = outputLargeFont.deriveFont(Font.BOLD);
+
+		size = 18;
+
+		outputFont = font.deriveFont(size);;
+		outputBoldFont = outputFont.deriveFont(Font.BOLD);
+
+		size = 13;
+
+		outputSmallFont = font.deriveFont(size);
+		outputBoldSmallFont = outputSmallFont.deriveFont(Font.BOLD);
+
+
+		//Configurazioni generali
+		UIManager.put("nimbusBase", new Color(0, 50, 255));
+		UIManager.put("nimbusBlueGrey", new Color(150, 100, 100));
+		UIManager.put("control", new Color(200, 200, 200));
+		//UIManager.put("defaultFont", outputFont);
+
+		//Configurazioni bottone
+		UIManager.put("Button.font", outputFont);
+		//UIManager.put("Button.foreground", Color.white);
+		UIManager.put("Button.textForeground", Color.white);
+
+		//Configurazioni checkBox
+		UIManager.put("CheckBox.background", Color.green);
+		UIManager.put("CheckBox.font", outputFont);
+		UIManager.put("CheckBox.foreground", Color.white);
+
+
+		//Configurazioni comboBox
+		UIManager.put("ComboBox.background", Color.green);
+		UIManager.put("ComboBox.font", outputFont);
+		UIManager.put("ComboBox.foreground", Color.white);
+		//UIManager.put("ComboBox.isEnterSelectablePopup", true);
+
+
+		//Configurazioni label
+		UIManager.put("Label.background", Color.green);
+		UIManager.put("Label.font", outputFont);
+		UIManager.put("Label.foreground", Color.white);
+
+
+		//configurazioni menu
+		//UIManager.put("Menu.background", Color.green);
+		UIManager.put("Menu.font", outputFont);
+		//UIManager.put("Menu.foreground", Color.white);
+		//UIManager.put("Menu.menuPopupOffsetX", 0);
+		//UIManager.put("Menu.menuPopupOffsetY", 0);
+		//UIManager.put("Menu.submenuPopupOffsetX", 0);
+		//UIManager.put("Menu.submenuPopupOffsetY", 0);
+		//UIManager.put("menuText", ColorUIResource.GREEN);
+		UIManager.put("Menu[Enabled].textForeground", Color.white);
+
+
+
+		//configurazioni menuBar
+		//UIManager.put("MenuBar.background", Color.green);
+		//UIManager.put("MenuBar.font", outputFont);
+		//UIManager.put("MenuBar.foreground", Color.white);
+
+		//configurazioni menuItem
+		UIManager.put("MenuItem.font", outputSmallFont);
+		//UIManager.put("MenuItem.foreground", Color.white);
+		UIManager.put("MenuItem[Enabled].textForeground", Color.white);
+
+
+		//configurazioni panel
+		//UIManager.put("Panel.background", Color.BLACK);
+		UIManager.put("Panel.font", outputFont);
+		//UIManager.put("Panel.foreground", Color.GREEN);
+
+
+		// configurazioni text field
+		UIManager.put("TextField.font", outputFont);
+
+
+		//configurazioni field password
+		UIManager.put("PasswordField.font", outputFont);
+		UIManager.put("PasswordField.echoChar", '#');
+
+		//configurazioni popup menu
+
+		//UIManager.put("PopupMenu.background", Color.white);
+		//UIManager.put("PopupMenu.disabled", Color.white);
+		//UIManager.put("PopupMenu.disabledText", Color.white);
+		//UIManager.put("PopupMenu.foreground", Color.white);
+		//UIManager.put("PopupMenu.font", outputFont);
+
+
+		//configurazioni text
+		//UIManager.put("textForeground", Color.white);
+
+		//UIManager.put("TableHeader.textForeground", Color.white);
+
+
+		//UIManager.put("Table.background", Color.white);
+
 	}
 
 
@@ -117,7 +245,7 @@ public class GuiConfiguration
 		catch(Exception e)
 		{
 			System.out.println(e.getMessage());
-			return null;
+			return "";
 		}
 	}
 

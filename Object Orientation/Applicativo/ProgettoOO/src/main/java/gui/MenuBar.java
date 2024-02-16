@@ -5,6 +5,8 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class MenuBar
 				extends  JPanel
@@ -15,13 +17,11 @@ public class MenuBar
 	protected JMenuItem menuItem;
 
 
-
 	public MenuBar(Controller controller)
 	{
 		MigLayout migLayout;
 		String string;
 		ImageIcon imageIcon;
-		Font font;
 
 		migLayout = new MigLayout
 						(
@@ -32,10 +32,8 @@ public class MenuBar
 
 		setLayout(migLayout);
 
-		font = GuiConfiguration.getOutputFont();
 
-
-		imageIcon = GuiConfiguration.createImageIcon("images/homy.png", 30, 30);
+		imageIcon = GuiConfiguration.createImageIcon("images/homy.png");
 
 		button = new JButton(imageIcon);
 
@@ -268,19 +266,16 @@ public class MenuBar
 		menu.getPopupMenu().add(menuItem);
 
 		// bottone filtro
-		imageIcon = GuiConfiguration.createImageIcon("images/filter.png", 30, 30);
+		imageIcon = GuiConfiguration.createImageIcon("images/filter.png");
 		button = new JButton(imageIcon);
 
 		add(button);
 
 		// bottone dado
-		imageIcon = GuiConfiguration.createImageIcon("images/dice.png", 30, 30);
+		imageIcon = GuiConfiguration.createImageIcon("images/dice.png");
 		button = new JButton(imageIcon);
 
 		add(button);
-
-
-
 
 	}
 }

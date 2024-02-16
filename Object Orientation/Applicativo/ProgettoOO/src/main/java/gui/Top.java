@@ -2,12 +2,17 @@ package gui;
 
 import controller.Controller;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Top
-				extends JPanel {
+				extends JPanel
+				implements ActionListener
+{
 	protected JLabel label;
 	protected JButton button;
 
@@ -17,7 +22,6 @@ public class Top
 		MigLayout migLayout;
 		ImageIcon imageIcon;
 		String string;
-		Font font;
 
 		migLayout = new MigLayout
 						(
@@ -28,26 +32,39 @@ public class Top
 
 		setLayout(migLayout);
 
-		font = GuiConfiguration.getOutputFont();
 
 		imageIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
 
 		label = new JLabel(imageIcon);
-		label.setFont(font);
 
 		add(label);
 
-		imageIcon = GuiConfiguration.createImageIcon("images/world2.png", 30, 30);
+		imageIcon = GuiConfiguration.createImageIcon("images/world2.png");
 
 		button = new JButton(imageIcon);
+
 		add(button);
 
-		string = GuiConfiguration.getMessage("login");
-		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png", 30, 30);
+		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
+		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
 
 		button = new JButton(string, imageIcon);
-		button.setFont(font);
+		button.setName("top+login");
+		button.addActionListener(this);
 
 		add(button);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent e)
+	{
+
+		JComponent component = (JComponent) e.getSource();
+
+		if (component.getName().equalsIgnoreCase("top+login")){
+			JOptionPane.showMessageDialog(this, new AdminLoginPanel(Controller.getControllerInstance()).getRootPane(),
+				"Pagina di Accesso", JOptionPane.DEFAULT_OPTION);
+	}
+
 	}
 }
