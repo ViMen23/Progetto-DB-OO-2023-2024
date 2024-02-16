@@ -48,8 +48,53 @@ public class Main
 
 
 
+<<<<<<< Updated upstream
 		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, dock center, wrap");
 		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "dock center");
+=======
+		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
+
+		//homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
+
+		GridBagConstraints gbc;
+
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.ipadx = 0;
+		gbc.ipady = 10;
+		gbc.insets = new Insets(0,0,0,0);
+		gbc.fill = GridBagConstraints.BOTH;
+		gbc.anchor = GridBagConstraints.PAGE_START;
+
+
+		homeFrame.add(new TopPanel(Controller.getControllerInstance()), gbc);
+
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		homeFrame.add(new MenuBarPanel(Controller.getControllerInstance()));
+
+		gbc = new GridBagConstraints();
+		gbc.gridwidth = 1;
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+		gbc.ipadx = 0;
+		gbc.ipady = 0;
+		gbc.insets = new Insets(0,0,10,0);
+		gbc.fill = GridBagConstraints.BOTH;
+
+		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance()), gbc);
+>>>>>>> Stashed changes
 
 		homeFrame.pack();
 
