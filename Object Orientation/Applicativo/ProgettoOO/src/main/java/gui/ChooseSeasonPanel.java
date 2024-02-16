@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -6,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : ChooseSeasonPanel
@@ -14,6 +15,7 @@ import java.util.ResourceBundle;
  * DESC: Pannello per costruire un'interfaccia con lo scopo
  *       di far scegliere una stagione calcistica
  */
+/*
 public class ChooseSeasonPanel
 				extends JPanel
 {
@@ -31,10 +33,7 @@ public class ChooseSeasonPanel
 
 		GridBagConstraints gbc;
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Stampa stagione
-		 */
+
 		string = GuiConfiguration.getMessage("season");
 		string = StringUtils.capitalize(string);
 
@@ -54,12 +53,7 @@ public class ChooseSeasonPanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Elenco stagioni
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		comboBox.setEditable(true);
@@ -86,13 +80,7 @@ public class ChooseSeasonPanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Bottone per mostrare
-		 */
 		string = GuiConfiguration.getMessage("show");
 		string = string.toUpperCase();
 
@@ -115,6 +103,7 @@ public class ChooseSeasonPanel
 						);
 
 		add(button, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 	}
 }
+*/

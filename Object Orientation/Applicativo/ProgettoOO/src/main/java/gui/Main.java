@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
@@ -25,171 +26,39 @@ public class Main
 		JFrame homeFrame = new JFrame("Progetto");
 
 		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		homeFrame.setLayout(new GridBagLayout());
+
+		homeFrame.setLayout(new MigLayout());
+
 		// posiziona frame al centro dello schermo
 		homeFrame.setLocationRelativeTo(null);
 		homeFrame.setResizable(true);
-		//homeFrame.setMinimumSize(new Dimension(1350, 1000));
+		homeFrame.setMinimumSize(new Dimension(500, 500));
+		homeFrame.setMaximumSize(new Dimension(1500, 1000));
 
-
-
-		try
-		{
-			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels())
-			{
-				if ("Nimbus".equals(info.getName()))
-				{
+		try {
+			for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+				if ("Nimbus".equals(info.getName())) {
 					UIManager.setLookAndFeel(info.getClassName());
 					break;
 				}
 			}
-		} catch (Exception e)
-		{
+		} catch (Exception e) {
 			return;
 		}
 
 
 
-		//homeFrame.setContentPane(new AdminLoginPanel(Controller.getControllerInstance(), currentLocale));
-
-		//homeFrame.setContentPane(new TopPanel(Controller.getControllerInstance(), currentLocale));
-
-		GridBagConstraints gbc;
-
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 10;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.fill = GridBagConstraints.BOTH;
-		gbc.anchor = GridBagConstraints.PAGE_START;
-
-
-		homeFrame.add(new TopPanel(Controller.getControllerInstance()), gbc);
-
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		homeFrame.add(new MenuBarPanel(Controller.getControllerInstance()), gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance()), gbc);
+		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, dock center, wrap");
+		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "dock center");
 
 		homeFrame.pack();
-		homeFrame.setVisible(true);
 
 
 
 
-		JFrame resultFrame = new JFrame("Progetto");
-
-		resultFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		resultFrame.setLayout(new GridBagLayout());
-		// posiziona frame al centro dello schermo
-		resultFrame.setLocationRelativeTo(null);
-		resultFrame.setResizable(true);
-		resultFrame.setMinimumSize(new Dimension(1500, 1000));
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		gbc.anchor = GridBagConstraints.PAGE_START;
-
-
-		resultFrame.add(new TopPanel(Controller.getControllerInstance()), gbc);
-
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		resultFrame.add(new UserFilterPanelNew(Controller.getControllerInstance()), gbc);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		/*
-		resultFrame.add(new SearchTeamPanel(Controller.getControllerInstance(), currentLocale), gbc);
-
-		 */
-		resultFrame.add(new TeamInformation(Controller.getControllerInstance()), gbc);
-
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		resultFrame.add(new ChooseSeasonPanel(Controller.getControllerInstance()), gbc);
-
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		resultFrame.add(new TeamTrophy(Controller.getControllerInstance()), gbc);
-
-/*
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.fill = GridBagConstraints.BOTH;
-
-		resultFrame.add(new CompetitionEditionParticipantPanel(Controller.getControllerInstance(), currentLocale), gbc);
-
-
-		*/
 
 		homeFrame.setVisible(true);
-		resultFrame.setVisible(false);
+
 	}
 
 

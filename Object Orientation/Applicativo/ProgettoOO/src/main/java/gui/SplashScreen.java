@@ -1,8 +1,10 @@
+/*
 package gui;
 
 import javax.swing.*;
 import java.awt.*;
-
+*/
+/*
 public class SplashScreen
 {
   public static JWindow main = new JWindow();
@@ -29,3 +31,4 @@ public class SplashScreen
 
 
 }
+*/

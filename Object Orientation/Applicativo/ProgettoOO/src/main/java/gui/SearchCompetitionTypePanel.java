@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -15,14 +16,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-
+/*
 public class SearchCompetitionTypePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -109,3 +110,4 @@ public class SearchCompetitionTypePanel
 	}
 
 }
+*/

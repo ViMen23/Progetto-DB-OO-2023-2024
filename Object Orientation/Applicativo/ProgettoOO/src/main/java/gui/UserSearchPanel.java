@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -11,7 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-
+*/
+/*
 public class UserSearchPanel
 				extends  JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -87,3 +89,4 @@ public class UserSearchPanel
 
 	}
 }
+*/

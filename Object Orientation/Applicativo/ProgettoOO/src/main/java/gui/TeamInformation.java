@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -10,7 +11,8 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.ResourceBundle;
-
+*/
+/*
 public class TeamInformation
 				extends JPanel
 {
@@ -188,3 +190,4 @@ public class TeamInformation
 
 	}
 }
+*/

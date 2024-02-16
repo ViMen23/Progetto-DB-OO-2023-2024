@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -10,7 +11,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
+*/
+/*
 public class UserResultSearchPanel
 				extends JPanel
 {
@@ -196,6 +198,7 @@ public class UserResultSearchPanel
 		table.setShowHorizontalLines(true);
 		table.setAutoCreateColumnsFromModel(false);
 */
+/*
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -235,3 +238,4 @@ public class UserResultSearchPanel
 
 
 }
+*/

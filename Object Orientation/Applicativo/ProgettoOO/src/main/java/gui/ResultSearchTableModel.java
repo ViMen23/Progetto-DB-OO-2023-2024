@@ -1,10 +1,12 @@
+/*
 package gui;
 
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
-
+*/
+/*
 public class ResultSearchTableModel extends AbstractTableModel
 {
 
@@ -127,3 +129,4 @@ public class ResultSearchTableModel extends AbstractTableModel
 		return getValueAt(0, c).getClass();
 	}
 }
+*/

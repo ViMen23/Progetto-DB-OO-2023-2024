@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -15,14 +16,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-
+/*
 public class SearchPlayerFootPanel
 				extends JPanel
 {
@@ -41,10 +42,7 @@ public class SearchPlayerFootPanel
 
 		buttonGroup = new ButtonGroup();
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
+
 		string = GuiConfiguration.getMessage("right");
 		string = StringUtils.capitalize(string);
 
@@ -67,12 +65,7 @@ public class SearchPlayerFootPanel
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("left")));
 		radioButton.setFont(outputFont);
 
@@ -85,12 +78,7 @@ public class SearchPlayerFootPanel
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("either")));
 		radioButton.setFont(outputFont);
 
@@ -103,8 +91,9 @@ public class SearchPlayerFootPanel
 		add(radioButton, gbc);
 
 		buttonGroup.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 	}
 
 }
+*/

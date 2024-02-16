@@ -1,7 +1,9 @@
+/*
 package gui;
 
 import java.util.regex.Pattern;
-
+*/
+/*
 public class Regex
 {
 	private static final String alnum = "(?=^" +
@@ -135,3 +137,4 @@ public class Regex
 	public static final Pattern patternUsername = Pattern.compile(username);
 
 }
+*/

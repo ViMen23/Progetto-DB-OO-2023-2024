@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -15,7 +16,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-
+*/
 
 /**
  * TYPE : class - gui package
@@ -24,6 +25,7 @@ import java.util.ResourceBundle;
  * DESC: Pannello per l'interfaccia di scelta di un intervallo di tempo
  *       compreso tra due anni
  */
+/*
 public class CompetitionEditionFilterPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -41,10 +43,7 @@ public class CompetitionEditionFilterPanel
 		
 		GridBagConstraints gbc;
 		
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Intestazione ricerca
-		 */
+
 		string = GuiConfiguration.getMessage("stepFilter");
 		string = string.toUpperCase();
 
@@ -65,12 +64,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(button,gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Intestazione ricerca per nome
-		 */
 		string = "1. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -109,10 +103,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel,gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-
-		// TODO
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -133,10 +124,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-
-		// TODO
 		gbc = new GridBagConstraints();
 		gbc.gridwidth = 1;
 		gbc.gridx = 0;
@@ -173,7 +161,7 @@ public class CompetitionEditionFilterPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		add(panel,gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		// ricerca per eta
@@ -202,7 +190,6 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
 
 		// intestazione ricerca per nazione nascita
@@ -267,7 +254,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 		// intestazione ricerca per ruolo
 		gbc = new GridBagConstraints();
@@ -306,7 +293,7 @@ public class CompetitionEditionFilterPanel
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		add(panel,gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 		// ricerca per ruolo
 		gbc = new GridBagConstraints();
@@ -334,7 +321,7 @@ public class CompetitionEditionFilterPanel
 						);
 
 		add(panel, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		// bottone avvia ricerca
@@ -350,7 +337,7 @@ public class CompetitionEditionFilterPanel
 		button.setFont(GuiConfiguration.getOutputFont());
 
 		add(button, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 	}
 
 	@Override
@@ -370,3 +357,4 @@ public class CompetitionEditionFilterPanel
 
 
 }
+*/

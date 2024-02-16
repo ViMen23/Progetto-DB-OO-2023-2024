@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import model.EnLanguage;
@@ -11,7 +12,8 @@ import java.util.ResourceBundle;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
-
+*/
+/*
 public class Login
 {
   private JPanel generalPanel;
@@ -289,3 +291,4 @@ public class Login
   }
 
 }
+*/

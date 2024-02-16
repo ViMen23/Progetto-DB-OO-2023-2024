@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import javax.swing.*;
@@ -5,7 +6,8 @@ import javax.swing.plaf.basic.BasicArrowButton;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
-
+*/
+/*
 public class TableRenderer extends DefaultTableCellRenderer
 {
 
@@ -51,3 +53,4 @@ public class TableRenderer extends DefaultTableCellRenderer
 	}
 
 }
+*/

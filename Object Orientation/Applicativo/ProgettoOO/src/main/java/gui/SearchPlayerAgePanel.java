@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -6,14 +7,14 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-
+/*
 public class SearchPlayerAgePanel
 				extends JPanel
 {
@@ -29,10 +30,7 @@ public class SearchPlayerAgePanel
 		
 		GridBagConstraints gbc;
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
+
 		string = GuiConfiguration.getMessage("referenceYear");
 		string = StringUtils.capitalize(string);
 		
@@ -51,13 +49,7 @@ public class SearchPlayerAgePanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -74,12 +66,7 @@ public class SearchPlayerAgePanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		string = currentLocale.getString("age");
 		string = StringUtils.capitalize(string);
 
@@ -99,12 +86,7 @@ public class SearchPlayerAgePanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -121,12 +103,7 @@ public class SearchPlayerAgePanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -143,11 +120,11 @@ public class SearchPlayerAgePanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 
 	}
 
 }
 
 
-
+*/

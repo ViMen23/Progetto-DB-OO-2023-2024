@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -12,7 +13,8 @@ import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.ResourceBundle;
-
+*/
+/*
 public class TeamTrophy
 				extends JPanel
 {
@@ -604,3 +606,4 @@ public class TeamTrophy
 
 
 }
+*/

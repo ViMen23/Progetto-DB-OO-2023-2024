@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -12,7 +13,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ResourceBundle;
-
+*/
+/*
 public class CompetitionEditionParticipantPanel
 				extends JPanel implements ActionListener {
 	JLabel label;
@@ -131,3 +133,4 @@ public class CompetitionEditionParticipantPanel
 		JOptionPane.showMessageDialog(null, "Evviva");
 	}
 }
+*/

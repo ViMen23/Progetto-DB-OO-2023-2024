@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -15,14 +16,14 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 import org.apache.commons.lang3.StringUtils;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-
+/*
 public class SearchCompetitionNamePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -47,10 +48,7 @@ public class SearchCompetitionNamePanel
 		Font inputFont = this.getFont().deriveFont(inputFontSize);
 
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Box mostra password
-		 */
+
 		label = new JLabel(StringUtils.capitalize(currentLocale.getString("name")), SwingConstants.LEADING);
 		label.setFont(outputFont);
 
@@ -62,12 +60,7 @@ public class SearchCompetitionNamePanel
 
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Box mostra password
-		 */
 		textField = new JTextField(columnNumber);
 		textField.setFont(inputFont);
 
@@ -78,7 +71,7 @@ public class SearchCompetitionNamePanel
 		gbc.insets = new Insets(10, 0, 20, 0);
 
 		add(textField, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 	}
 
 	@Override
@@ -103,3 +96,4 @@ public class SearchCompetitionNamePanel
 	}
 
 }
+*/

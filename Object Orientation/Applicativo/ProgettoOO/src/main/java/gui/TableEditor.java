@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import javax.swing.*;
@@ -6,7 +7,8 @@ import javax.swing.table.TableCellEditor;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
+*/
+/*
 class TableEditor
 		extends DefaultCellEditor
 			implements ActionListener
@@ -63,3 +65,4 @@ class TableEditor
 		super.fireEditingStopped();
 	}
 }
+*/

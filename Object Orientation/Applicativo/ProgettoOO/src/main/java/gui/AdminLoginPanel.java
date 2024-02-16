@@ -1,16 +1,18 @@
+/*
 package gui;
 
 import controller.Controller;
 import javax.swing.*;
 import java.awt.*;
 
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : AdminLogin
  *
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
+/*
 public class AdminLoginPanel
 				extends JPanel
 {
@@ -33,6 +35,7 @@ public class AdminLoginPanel
 		/*
 		 * Campo username: stampa
 		 */
+/*
 		string = GuiConfiguration.getMessage("username");
 		string = string.toUpperCase();
 
@@ -58,6 +61,7 @@ public class AdminLoginPanel
 		/*
 		 * Campo username: input
 		 */
+/*
 		textField = new JTextField(GuiConfiguration.getInputColumn());
 		textField.setFont(GuiConfiguration.getOutputFont());
 
@@ -80,6 +84,7 @@ public class AdminLoginPanel
 		/*
 		 * Campo password: stampa
 		 */
+/*
 		string = GuiConfiguration.getMessage("password");
 		string = string.toUpperCase();
 
@@ -105,6 +110,7 @@ public class AdminLoginPanel
 		/*
 		 * Campo password: input
 		 */
+/*
 		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
 		passwordField.setEchoChar('#');
 		passwordField.setFont(GuiConfiguration.getOutputFont());
@@ -118,6 +124,7 @@ public class AdminLoginPanel
 		/*
 		 * Bottone conferma login
 		 */
+/*
 		string = GuiConfiguration.getMessage("next");
 		string = string.toUpperCase();
 
@@ -144,6 +151,7 @@ public class AdminLoginPanel
 		/*
 		 * Box mostra password
 		 */
+/*
 		string = Main.getMessage("show");
 		string += " ";
 		string += Main.getMessage("password");
@@ -166,6 +174,8 @@ public class AdminLoginPanel
 
 		add(checkBox, gbc);
 		/*------------------------------------------------------------------------------------------------------*/
+/*
 	}
 
 }
+*/

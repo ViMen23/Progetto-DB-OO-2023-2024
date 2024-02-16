@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -12,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : ChooseYearRangePanel
@@ -20,6 +21,7 @@ import java.util.ResourceBundle;
  * DESC: Pannello per l'interfaccia di scelta di un intervallo di tempo
  *       compreso tra due anni
  */
+/*
 public class ChooseYearRangePanel
 				extends JPanel
 {
@@ -34,10 +36,7 @@ public class ChooseYearRangePanel
 
 		GridBagConstraints gbc;
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Scelta anno inizio
-		 */
+
 		string = GuiConfiguration.getMessage("from");
 		string += " ";
 		string += GuiConfiguration.getMessage("year");
@@ -58,12 +57,7 @@ public class ChooseYearRangePanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Lista anno inizio
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -79,12 +73,7 @@ public class ChooseYearRangePanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Scelta anno fine
-		 */
 		string = GuiConfiguration.getMessage("to");
 		string += " ";
 		string += GuiConfiguration.getMessage("year");
@@ -105,12 +94,7 @@ public class ChooseYearRangePanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * Lista anno fine
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -126,7 +110,8 @@ public class ChooseYearRangePanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 	}
 
 }
+*/

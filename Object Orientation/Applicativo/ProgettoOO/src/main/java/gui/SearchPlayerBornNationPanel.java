@@ -1,3 +1,4 @@
+/*
 package gui;
 
 import controller.Controller;
@@ -15,14 +16,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-
+*/
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-
+/*
 public class SearchPlayerBornNationPanel
 				extends JPanel
 {
@@ -37,10 +38,7 @@ public class SearchPlayerBornNationPanel
 
 		GridBagConstraints gbc;
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
+
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
@@ -60,12 +58,7 @@ public class SearchPlayerBornNationPanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -82,12 +75,7 @@ public class SearchPlayerBornNationPanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 		label.setFont(GuiConfiguration.getOutputFont());
@@ -105,12 +93,7 @@ public class SearchPlayerBornNationPanel
 						);
 
 		add(label, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
-		/*
-		 * TODO
-		 */
 		comboBox = new JComboBox<String>();
 		comboBox.setFont(GuiConfiguration.getOutputFont());
 
@@ -127,7 +110,8 @@ public class SearchPlayerBornNationPanel
 						);
 
 		add(comboBox, gbc);
-		/*------------------------------------------------------------------------------------------------------*/
+
 	}
 
 }
+*/
