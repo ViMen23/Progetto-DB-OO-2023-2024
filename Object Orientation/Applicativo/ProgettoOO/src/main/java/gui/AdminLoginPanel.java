@@ -1,10 +1,14 @@
-
 package gui;
 
 import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import javax.swing.event.CaretEvent;
+import javax.swing.event.CaretListener;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -14,143 +18,160 @@ import java.awt.event.ItemListener;
  *
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
-
 public class AdminLoginPanel
 				extends JPanel
-				implements ItemListener
 {
-	protected JLabel label;
-	protected JTextField textField;
+	protected JLabel usernameLabel;
+	protected JTextField usernameTextField;
+	protected JLabel passwordLabel;
 	protected JPasswordField passwordField;
-	protected JButton button;
-	protected JCheckBox checkBox;
+	protected JButton okButton;
+	protected JCheckBox showPasswordCheckBox;
 
 	protected String string;
+	private Boolean username = false;
+	private Boolean password = false;
 
-	public AdminLoginPanel(Controller controller)
+	public AdminLoginPanel()
 	{
-		MigLayout migLayout;
 		String string;
+		MigLayout migLayout;
 
 		migLayout = new MigLayout
 			(
-				"debug",
-				"30:push[center]30[right]30:push",
-				"30:push[]20[]20[]20[]15[]30:push"
+				"debug, flowy",
+				"",
+				"30:push[]20[]20[]20[]20[]20[]30:push"
 			);
 
 		setLayout(migLayout);
-		setName("login");
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo username: stampa
 		 */
-
 		string = GuiConfiguration.getMessage("username");
 		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.CENTER);
-		label.setName("login+usernameLabel");
+		usernameLabel = new JLabel(string, SwingConstants.CENTER);
 
-		add(label, "spanx 2, wrap");
-		/*------------------------------------------------------------------------------------------------------*/
+		add(usernameLabel);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo username: input
 		 */
+		usernameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		textField = new JTextField(GuiConfiguration.getInputColumn());
-		textField.setName("login+usernameTextField");
+		usernameTextField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				setUsername(Regex.patternUsername.matcher(usernameTextField.getText()).find());
+				tryActiveButton();
+			}
+		});
 
-		add(textField, "spanx 2, wrap");
-		/*------------------------------------------------------------------------------------------------------*/
+		add(usernameTextField);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo password: stampa
 		 */
-
 		string = GuiConfiguration.getMessage("password");
 		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.CENTER);
-		label.setName("login+passwordLabel");
+		passwordLabel = new JLabel(string, SwingConstants.CENTER);
 
-		add(label, "spanx 2, wrap");
-		/*------------------------------------------------------------------------------------------------------*/
+		add(passwordLabel);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo password: input
 		 */
-
 		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
-		passwordField.setName("login+passwordField");
 
-		add(passwordField, "spanx 2, wrap");
-		/*------------------------------------------------------------------------------------------------------*/
+		passwordField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e) {
+				setPassword(Regex.patternPassword.matcher(new String(passwordField.getPassword())).find());
+				tryActiveButton();
+			}
+		});
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		add(passwordField);
+
+
 		/*
 		 * Box mostra password
 		 */
-
 		string = Main.getMessage("show");
 		string += " ";
 		string += Main.getMessage("password");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setName("login+showPassword");
-		checkBox.addItemListener(this);
+		showPasswordCheckBox = new JCheckBox(string);
 
-		add(checkBox);
+		showPasswordCheckBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (ItemEvent.DESELECTED == e.getStateChange()) {
+					passwordField.setEchoChar((char) UIManager.get("PasswordField.echoChar"));
+				} else if (ItemEvent.SELECTED == e.getStateChange()) {
+					passwordField.setEchoChar('\0');
+				}
+			}
+		});
 
-		/*------------------------------------------------------------------------------------------------------*/
+		add(showPasswordCheckBox);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Bottone conferma login
 		 */
-
 		string = GuiConfiguration.getMessage("next");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
-		button.setName("login+nextButton");
+		okButton = new JButton(string);
+		okButton.setEnabled(false);
 
-		add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-		JComponent component = (JComponent) e.getSource();
-
-
-		if (component.getName().equalsIgnoreCase("login+showPassword")) {
-
-			JPasswordField passwordField1;
-
-			component = Controller.getControllerInstance().getDestComp(component, "login+passwordField");
-
-			passwordField1 = (JPasswordField) component;
-
-			if (e.getStateChange() == ItemEvent.SELECTED) {
-				passwordField1.setEchoChar((char) 0);
-			} else {
-				passwordField1.setEchoChar((char) UIManager.get("PasswordField.echoChar"));
+		okButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				if (Controller.getControllerInstance().isAdmin
+												(usernameTextField.getText(), new String(passwordField.getPassword()))) {
+					System.out.println("Benvenuto");
+				} else {
+					System.out.println("Chi sei?");
+				}
 			}
+		});
 
-		}
+		add(okButton, "align trailing");
 	}
 
+
+	private Boolean getUsername()
+	{
+		return username;
+	}
+
+	private Boolean getPassword()
+	{
+		return password;
+	}
+
+	private void setUsername(Boolean value)
+	{
+		username = value;
+	}
+
+	private void setPassword(Boolean value)
+	{
+		password = value;
+	}
+
+	private void tryActiveButton()
+	{
+		okButton.setEnabled(getUsername() && getPassword());
+	}
 
 }

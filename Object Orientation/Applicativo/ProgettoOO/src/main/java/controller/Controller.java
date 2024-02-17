@@ -1,9 +1,13 @@
 package controller;
 
+import dao.RowExistsDao;
+import postgresDaoImplementation.RowExistsPostgresDaoImpl;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemEvent;
+import java.util.regex.Pattern;
 
 /**
  * TYPE : class - controller package
@@ -25,51 +29,27 @@ public class Controller {
 		return controllerInstance;
 	}
 
-	public JComponent getDestComp(JComponent component, String nameDestination)
+	public Boolean isAdmin(String username, String password)
 	{
+		String separator = "@";
 
-		Integer step = stepToCommonContainer(component.getName().split("\\+"),
-			nameDestination.split("\\+"));
-
-		Container container = getAncestor(component, step);
-
-		for (Component aComponent : container.getComponents()) {
-
-			if (aComponent.getName().equalsIgnoreCase(nameDestination)) {
-				return (JComponent) aComponent;
-			}
+		while (Pattern.compile(separator).matcher(password).find()) {
+			separator += separator;
 		}
 
-		System.err.println("Errore i due componenti non hanno contenitori in comune");
-		return null;
-	}
+		String string = "";
+		string += "fp_admin";
+		string += separator;
+		string += "username";
+		string += separator;
+		string += username;
+		string += separator;
+		string += "password";
+		string += separator;
+		string += password;
 
+		RowExistsDao reDao = new RowExistsPostgresDaoImpl();
 
-
-	public Integer stepToCommonContainer(String[] splitSource, String[] splitDestination)
-	{
-		for (int i = 0; i < splitDestination.length; ++i) {
-			if(!splitSource[i].equalsIgnoreCase(splitDestination[i])) {
-				return splitDestination.length - i;
-			}
-		}
-		System.err.println("Errore posizione di un container comune non trovata");
-		return -1;
-	}
-
-	public Container getAncestor(JComponent component, Integer step)
-	{
-		Container container = null;
-
-		for(int i= 0; i < step; ++i){
-			container = component.getParent();
-		}
-
-		if( container == null){
-			System.err.println("Errore nel prendere il container");
-		}
-
-		return container;
-
+		return reDao.rowExistsDB(separator, string);
 	}
 }

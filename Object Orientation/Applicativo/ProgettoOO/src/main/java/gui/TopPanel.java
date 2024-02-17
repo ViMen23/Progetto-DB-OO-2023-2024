@@ -1,126 +1,119 @@
-/*
 package gui;
 
 import controller.Controller;
 
+import net.miginfocom.swing.MigLayout;
+
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ResourceBundle;
-*/
-/**
- * TYPE : class - gui package
- * NAME : TopPanel
- *
- * DESC: TODO
- */
-/*
+
 public class TopPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
-	protected JLabel label;
-	protected JButton button;
+	protected JLabel logoLabel;
+	protected JButton localeButton;
+	protected JButton loginButton;
 
 
 	public TopPanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
+		ImageIcon imageIcon;
+		String string;
+		MigLayout migLayout;
 
-		GridBagConstraints gbc;
-
-		// configurazione bottone logo
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,30,0,0);
-		gbc.anchor = GridBagConstraints.FIRST_LINE_START;
-		gbc.weightx = 1.0;
-
-		label = new MyLabel
+		migLayout = new MigLayout
 						(
-										null,
-										GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75),
-
+										"debug",
+										"30[]50:push[]30[]30",
+										""
 						);
 
-		add(label, gbc);
+		setLayout(migLayout);
+		setBackground(Color.white);
 
 
+		/*
+		 * Campo logo: stampa
+		 */
+		imageIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
 
-		// configurazione bottone scelta locale
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,500,0,0);
-		gbc.anchor = GridBagConstraints.LINE_END;
-		gbc.weightx = 1.0;
+		logoLabel = new JLabel(imageIcon);
 
-		button = new JButton
-							(
-								Main.createImageIcon("images/world2.png", 30, 30)
-							);
-
-		add(button, gbc);
-
-		// configurazione bottone login/logout admin
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 2;
-		gbc.gridy = 0;
-		gbc.ipadx = 0;
-		gbc.ipady = 0;
-		gbc.insets = new Insets(0,0,0,0);
-		gbc.anchor = GridBagConstraints.LINE_END;
-		gbc.weightx = 1.0;
-
-		button = new JButton
-							(
-								currentLocale.getString("login").toUpperCase(),
-								Main.createImageIcon("images/loginLogout.png", 30, 30)
-							);
-		button.setActionCommand("login");
-		button.addActionListener(this);
-
-		button.setFont(outputFont);
-		button.setForeground(Color.white);
-
-		add(button, gbc);
+		add(logoLabel);
 
 
+		/*
+		 * Campo locale: bottone
+		 */
+		imageIcon = GuiConfiguration.createImageIcon("images/world2.png");
+
+		localeButton = new JButton(imageIcon);
+
+		localeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String string;
+				string = "";
+				string += GuiConfiguration.getMessage("choose");
+				string += " ";
+				string += GuiConfiguration.getMessage("locale");
+				string = string.toUpperCase();
+
+				JOptionPane.showOptionDialog
+								(
+												null,
+												new LocalePanel(),
+												string,
+												JOptionPane.DEFAULT_OPTION,
+												JOptionPane.PLAIN_MESSAGE,
+												null,
+												new Object[]{},
+												null
+								);
+			}
+		});
+
+		add(localeButton);
+
+
+		/*
+		 * Campo login: bottone
+		 */
+		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
+		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
+
+		loginButton = new JButton(string, imageIcon);
+
+		loginButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String string;
+				string = "";
+				string = GuiConfiguration.getMessage("adminLogin");
+				string = string.toUpperCase();
+
+				JOptionPane.showOptionDialog
+								(
+												null,
+												new AdminLoginPanel(),
+												string,
+												JOptionPane.DEFAULT_OPTION,
+												JOptionPane.PLAIN_MESSAGE,
+												null,
+												new Object[]{},
+												null
+								);
+			}
+		});
+
+
+		add(loginButton);
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		if (e.getActionCommand().equals("login")){
-			JOptionPane.showMessageDialog(null, new AdminLoginPanel(Controller.getControllerInstance()));
-		}
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
-	}
 
 }
-*/

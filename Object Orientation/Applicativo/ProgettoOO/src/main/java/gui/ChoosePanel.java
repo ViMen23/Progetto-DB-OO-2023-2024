@@ -1,4 +1,3 @@
-
 package gui;
 
 import controller.Controller;
@@ -13,7 +12,6 @@ import java.awt.*;
  * DESC: Pannello per costruire un'interfaccia con nome campo da scegliere
  * 			 e lista di elementi tra cui scegliere
  */
-
 public class ChoosePanel
 				extends JPanel
 {
@@ -33,29 +31,22 @@ public class ChoosePanel
 
 		setLayout(migLayout);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo scelta: stampa
 		 */
-
 		label = new JLabel(toChoose, SwingConstants.LEADING);
 
 		add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo scelta: comboBox
 		 */
-
 		comboBox = new JComboBox<String>();
 		comboBox.setEditable(true);
 		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		comboBox.setSelectedIndex(-1);
 
 		add(comboBox);
-		/*------------------------------------------------------------------------------------------------------*/
-
 
 	}
 

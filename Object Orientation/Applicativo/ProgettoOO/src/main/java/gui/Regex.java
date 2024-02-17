@@ -1,9 +1,14 @@
-
 package gui;
 
 import java.util.regex.Pattern;
 
-
+/**
+ * TYPE : class - gui package
+ * NAME : Regex
+ *
+ * DESC: Classe contenente le espressioni regolari per controllare
+ *       le stringhe in input ed i relativi patterns
+ */
 public class Regex
 {
 	private static final String alnum = "(?=^" +

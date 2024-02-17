@@ -6,7 +6,6 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Locale;
-import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 /**
@@ -38,7 +37,7 @@ public class Main
 
 
 
-		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, wrap");
+		homeFrame.add(new TopPanel(Controller.getControllerInstance()), "top, dock north, wrap");
 		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "wrap");
 		homeFrame.add(new SearchPlayerPanel(), "center, wrap");
 		GridBagConstraints gbc;

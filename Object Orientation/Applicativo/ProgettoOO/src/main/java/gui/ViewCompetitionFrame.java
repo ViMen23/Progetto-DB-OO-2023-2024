@@ -47,7 +47,7 @@ public class ViewCompetitionFrame
 		setLayout(migLayout);
 
 
-		top = new Top(controller);
+		top = new TopPanel(controller);
 
 		add(top, "wrap");
 
