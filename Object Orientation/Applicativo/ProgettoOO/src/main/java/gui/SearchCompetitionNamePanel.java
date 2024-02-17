@@ -1,12 +1,9 @@
-/*
+
 package gui;
 
 import controller.Controller;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
@@ -15,72 +12,75 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
+
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-*/
+
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-/*
+
 public class SearchCompetitionNamePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
+
 	protected JLabel label;
 	protected JTextField textField;
-	protected JCheckBox checkBox;
-	protected JButton button;
 
 
-	final static float outputFontSize = 18;
-	final static float inputFontSize = 15;
-	final static int columnNumber = 25;
-
-
-	public SearchCompetitionNamePanel(Controller controller, ResourceBundle currentLocale)
+	public SearchCompetitionNamePanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
-		GridBagConstraints gbc;
+		MigLayout migLayout;
+		String string;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"[]30[]",
+				"10[]20"
+			);
 
-
-
-		label = new JLabel(StringUtils.capitalize(currentLocale.getString("name")), SwingConstants.LEADING);
-		label.setFont(outputFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 30);
+		setLayout(migLayout);
 
 
-		add(label, gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo nome: stampa
+		 */
 
-		textField = new JTextField(columnNumber);
-		textField.setFont(inputFont);
+		string = GuiConfiguration.getMessage("name");
+		string = StringUtils.capitalize(string);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 0);
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		add(textField, gbc);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo nome: textfield
+		 */
+
+		textField = new JTextField(GuiConfiguration.getInputColumn());
+
+		add(textField);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e)
 	{
+		/*
 		if (e.getActionCommand() == "search"){
 			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
 			JOptionPane.showMessageDialog(null, resultPanel);
 		}
+
+		 */
 	}
 
 	@Override
@@ -96,4 +96,3 @@ public class SearchCompetitionNamePanel
 	}
 
 }
-*/

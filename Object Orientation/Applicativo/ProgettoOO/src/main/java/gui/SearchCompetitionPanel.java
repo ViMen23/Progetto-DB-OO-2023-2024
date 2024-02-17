@@ -17,6 +17,7 @@ import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
 
 */
+
 /*
 public class SearchCompetitionPanel
 				extends JPanel

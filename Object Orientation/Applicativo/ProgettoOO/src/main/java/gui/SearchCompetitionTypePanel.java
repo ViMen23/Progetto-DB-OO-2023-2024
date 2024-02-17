@@ -1,4 +1,4 @@
-/*
+
 package gui;
 
 import controller.Controller;
@@ -15,15 +15,17 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
+
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-*/
+
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-/*
+
 public class SearchCompetitionTypePanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
@@ -33,35 +35,46 @@ public class SearchCompetitionTypePanel
 	protected JCheckBox checkBox;
 	protected ButtonGroup buttonGroup;
 
-	final static float outputFontSize = 18;
 
 
-	public SearchCompetitionTypePanel(Controller controller, ResourceBundle currentLocale)
+	public SearchCompetitionTypePanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
-		GridBagConstraints gbc;
+		MigLayout migLayout;
+		String string;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
+		migLayout = new MigLayout
+			(
+				"debug",
+				"[]50",
+				"10[]20"
+			);
+
+		setLayout(migLayout);
 
 
 		buttonGroup = new ButtonGroup();
 
-		// TODO
-		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("league")));
-		radioButton.setFont(outputFont);
-		radioButton.setSelected(true);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo campionato: radioButton
+		 */
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 20, 50);
+		string = GuiConfiguration.getMessage("league");
+		string = StringUtils.capitalize(string);
 
-		add(radioButton, gbc);
+		radioButton = new JRadioButton(string);
+
+		add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
 		buttonGroup.add(radioButton);
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo coppa: radioButton
+		 */
+
+		string = 
 		radioButton = new JRadioButton(StringUtils.capitalize(currentLocale.getString("cup")));
 		radioButton.setFont(outputFont);
 
@@ -110,4 +123,3 @@ public class SearchCompetitionTypePanel
 	}
 
 }
-*/

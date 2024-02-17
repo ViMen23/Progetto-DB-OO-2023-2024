@@ -2,12 +2,10 @@
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
@@ -15,8 +13,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ResourceBundle;
-
 
 public class MilitancyFilterPanel
 				extends JPanel
@@ -26,303 +22,193 @@ public class MilitancyFilterPanel
 	protected JButton button;
 	protected JCheckBox checkBox;
 	protected JLabel label;
-	final static float outputFontSize = 18;
 
-	public MilitancyFilterPanel(Controller controller, ResourceBundle currentLocale)
+	public MilitancyFilterPanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
+		MigLayout migLayout;
+		String string;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[fill]",
+				"50[]20[]0[]10[]0[]10[]0[]10[]0[]20[]50"
+			);
 
-		GridBagConstraints gbc;
+		setLayout(migLayout);
 
-		// intestazione ricerca
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,0,20,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo intestazione ricerca: bottone
+		 */
 
-		button = new JButton
-						(
-										(
-														currentLocale.getString("militancyFilter")
-										).toUpperCase()
-						);
+		string = GuiConfiguration.getMessage("militancyFilter");
+		string = string.toUpperCase();
 
-		button.setFont(outputFont);
+		button = new JButton(string);
 		button.setEnabled(false);
-		button.setForeground(Color.WHITE);
 
-		add(button,gbc);
+		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// intestazione ricerca per nome
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta tipo team: stampa
+		 */
 
-		label = new JLabel
-						(
-										(
-														"1. " +
-																		currentLocale.getString("choose") +
-																		" " +
-																		currentLocale.getString("teamType")
-										).toUpperCase()
-						);
+		string = "  1. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
 
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(label, gbc);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(panel,gbc);
-
-
-		// TODO
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta tipo team: panel
+		 */
 
 		panel = new SearchTeamTypePanel(controller);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(panel, gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta paese: stampa
+		 */
 
+		string = "  2. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("nation");
+		string += "/";
+		string += GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
 
-		// TODO
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		label = new JLabel
-						(
-										(
-														"2. " +
-																		currentLocale.getString("choose") +
-																		" " +
-																		currentLocale.getString("nation") +
-																		"/" +
-																		currentLocale.getString("confederation")
-										).toUpperCase()
-						);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta paese: panel
+		 */
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(label, gbc);
+		panel = new SearchNationConfederationPanel(controller);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(panel,gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta squadra: stampa
+		 */
 
+		string = "  3. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
 
-		// ricerca per eta
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		panel = new SearchNationConfederationPanel(controller, currentLocale);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta squadra: panel
+		 */
 
-		add(panel, gbc);
+		string = GuiConfiguration.getMessage("team");
+		string = StringUtils.capitalize(string);
 
+		panel = new ChoosePanel(controller, string);
 
-		// intestazione ricerca per nazione nascita
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
-		label = new JLabel
-						(
-										(
-														"3. " +
-																		currentLocale.getString("choose") +
-																		" " +
-																		currentLocale.getString("team")
-										).toUpperCase()
-						);
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta anni: stampa
+		 */
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(label, gbc);
+		string = "  4. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("years");
+		string = string.toUpperCase();
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		add(panel,gbc);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// ricerca per nazione nascita
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 6;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		panel = new ChoosePanel
-						(
-										controller,
-										StringUtils.capitalize(currentLocale.getString("team"))
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta anni: panel
+		 */
+		string = GuiConfiguration.getMessage("from");
+		string += " ";
+		string += GuiConfiguration.getMessage("year");
+		string = StringUtils.capitalize(string);
 
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		panel = new ChoosePanel(controller, string);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
-		add(panel, gbc);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// intestazione ricerca per ruolo
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta anni: panel
+		 */
+		string = GuiConfiguration.getMessage("to");
+		string += " ";
+		string += GuiConfiguration.getMessage("year");
+		string = StringUtils.capitalize(string);
 
-		label = new JLabel
-						(
-										(
-														"4. " +
-																		currentLocale.getString("choose") +
-																		" " +
-																		currentLocale.getString("years")
-										).toUpperCase()
-						);
 
-		label.setHorizontalTextPosition(SwingConstants.RIGHT);
-		label.setFont(outputFont);
-		label.setForeground(Color.WHITE);
+		panel.add(new ChoosePanel(controller, string));
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(label, gbc);
+		add(panel);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 7;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(panel,gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo avvia ricerca: bottone
+		 */
 
-		// ricerca per ruolo
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 8;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
 
-		panel = new ChooseYearRangePanel(controller);
+		button = new JButton(string);
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
-
-		add(panel, gbc);
-
-		// bottone avvia ricerca
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 9;
-		gbc.insets = new Insets(0,0,20,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		button = new JButton(currentLocale.getString("search").toUpperCase());
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
+		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override
@@ -342,4 +228,3 @@ public class MilitancyFilterPanel
 
 
 }
-*/

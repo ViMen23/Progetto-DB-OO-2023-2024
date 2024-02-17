@@ -1,151 +1,124 @@
-/*
+
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ResourceBundle;
-*/
+
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-/*
+
 public class SearchNationConfederationPanel
 				extends JPanel
 				implements ActionListener, CaretListener, ItemListener
 {
+
 	protected JLabel label;
-	protected JTextField textField;
 	protected JComboBox<String> comboBox;
-	protected JButton button;
-	protected JRadioButton radioButton;
-	protected JCheckBox checkBox;
-	protected ButtonGroup buttonGroup;
 
-
-	final static float outputFontSize = 18;
-	final static float inputFontSize = 20;
-
-
-
-	public SearchNationConfederationPanel(Controller controller, ResourceBundle currentLocale)
+	public SearchNationConfederationPanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
-		GridBagConstraints gbc;
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
-		Font inputFont = this.getFont().deriveFont(inputFontSize);
+		MigLayout migLayout;
+		String string;
 
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"30[]20[]30",
+				"20[]10[]10[]20"
+			);
 
+		setLayout(migLayout);
 
-		// TODO
-		label = new JLabel
-						(
-										StringUtils.capitalize(currentLocale.getString("world")),
-										SwingConstants.LEADING
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo mondo: stampa
+		 */
 
-		label.setFont(outputFont);
+		string = GuiConfiguration.getMessage("world");
+		string = StringUtils.capitalize(string);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		add(label, gbc);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// TODO
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo mondo: comboBox
+		 */
+
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(10, 0, 10, 0);
+		add(comboBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo continente: stampa
+		 */
 
-		add(comboBox, gbc);
+		string = GuiConfiguration.getMessage("continent");
+		string = StringUtils.capitalize(string);
 
-		// TODO
-		label = new JLabel
-						(
-										StringUtils.capitalize(currentLocale.getString("continent")),
-										SwingConstants.LEADING
-						);
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		label.setFont(outputFont);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 10, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo continente: comboBox
+		 */
 
-		add(label, gbc);
-
-		// TODO
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0, 0, 10, 0);
+		add(comboBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo nazione: stampa
+		 */
 
-		add(comboBox, gbc);
+		string = GuiConfiguration.getMessage("nation");
+		string = StringUtils.capitalize(string);
 
-		// TODO
-		label = new JLabel
-						(
-										StringUtils.capitalize(currentLocale.getString("nation")),
-										SwingConstants.LEADING
-						);
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		label.setFont(outputFont);
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 20, 30);
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo nazione: comboBox
+		 */
 
-		add(label, gbc);
-
-		// TODO
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(outputFont);
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0, 0, 20, 0);
-
-
-		add(comboBox, gbc);
-
-
+		add(comboBox);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override
@@ -167,4 +140,3 @@ public class SearchNationConfederationPanel
 	}
 
 }
-*/

@@ -23,7 +23,7 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		/*
+
 		JFrame homeFrame = new JFrame("Progetto");
 
 		homeFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -40,10 +40,10 @@ public class Main
 
 		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, wrap");
 		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "wrap");
-		homeFrame.add(new InformationCompetitionPanel(Controller.getControllerInstance()), "center, wrap");
+		homeFrame.add(new MilitancyFilterPanel(Controller.getControllerInstance()), "center, wrap");
 
 		GridBagConstraints gbc;
-*/
+
 
 		/*
 		gbc = new GridBagConstraints();
@@ -83,7 +83,7 @@ public class Main
 		homeFrame.add(new CompetitionEditionFilterPanel(Controller.getControllerInstance()), gbc);
 
 		*/
-		/*
+
 		homeFrame.pack();
 
 
@@ -91,12 +91,15 @@ public class Main
 
 
 		homeFrame.setVisible(true);
-		*/
+
+		/*
 
 		JFrame frame = new ViewCompetitionFrame(Controller.getControllerInstance());
 
 		frame.pack();
 		frame.setVisible(true);
+
+		 */
 	}
 
 

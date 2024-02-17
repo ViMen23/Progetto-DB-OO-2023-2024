@@ -40,7 +40,7 @@ public class SearchCountryConfederationPanel
 			(
 				"debug, wrap 2",
 				"30[]20[]30",
-				"10[]20[]20[]10"
+				"20[]10[]10[]20"
 			);
 
 		setLayout(migLayout);
