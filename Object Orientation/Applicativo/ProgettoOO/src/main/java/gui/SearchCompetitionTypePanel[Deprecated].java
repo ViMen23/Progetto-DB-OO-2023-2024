@@ -94,7 +94,8 @@ public class SearchCompetitionTypePanel
 		/*------------------------------------------------------------------------------------------------------*/
 /*
 		buttonGroup.add(radioButton);
-		
- */
+
+
 	}
 }
+*/

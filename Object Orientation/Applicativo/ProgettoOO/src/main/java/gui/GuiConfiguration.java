@@ -155,7 +155,7 @@ public class GuiConfiguration
 		//Configurazioni checkBox
 		UIManager.put("CheckBox.background", Color.green);
 		UIManager.put("CheckBox.font", outputFont);
-		UIManager.put("CheckBox.foreground", Color.white);
+		UIManager.put("CheckBox[Enabled].textForeground", Color.white);
 
 
 		//Configurazioni comboBox

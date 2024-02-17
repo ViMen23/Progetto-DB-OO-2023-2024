@@ -20,7 +20,6 @@ public class SearchCompetitionPanel
 
 	public SearchCompetitionPanel(Controller controller)
 	{
-		setLayout(new GridBagLayout());
 
 		MigLayout migLayout;
 		String string;
@@ -28,12 +27,12 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"",
-				"[]20[]10[]10[]10[]10[]10[]10[]10[]10[]20"
+				"10[fill]10",
+				"30[]20[]0[]10[]0[]10[]0[]10[]0[]20[]30"
 			);
 
+		setLayout(migLayout);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo titolo: bottone
 		 */
@@ -46,9 +45,7 @@ public class SearchCompetitionPanel
 		button.setEnabled(false);
 
 		add(button);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per nome: checkbox
 		 */
@@ -64,21 +61,16 @@ public class SearchCompetitionPanel
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 
 		add(checkBox);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per nome: panel
 		 */
-
 
 		panel = new SearchCompetitionNamePanel(controller);
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per tipo di competizione: panel
 		 */
@@ -94,9 +86,7 @@ public class SearchCompetitionPanel
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 
 		add(checkBox);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per tipo competizione: panel
 		 */
@@ -109,14 +99,13 @@ public class SearchCompetitionPanel
 			);
 
 		panel = new JPanel(migLayout);
+
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
 		buttonGroup = new ButtonGroup();
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo campionato: radioButton
 		 */
@@ -127,11 +116,9 @@ public class SearchCompetitionPanel
 		radioButton = new JRadioButton(string);
 
 		panel.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
 
 		buttonGroup.add(radioButton);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo coppa: radioButton
 		 */
@@ -142,12 +129,9 @@ public class SearchCompetitionPanel
 		radioButton = new JRadioButton(string);
 
 		panel.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
-
 
 		buttonGroup.add(radioButton);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo supercoppa: radioButton
 		 */
@@ -158,11 +142,9 @@ public class SearchCompetitionPanel
 		radioButton = new JRadioButton(string);
 
 		panel.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
 
 		buttonGroup.add(radioButton);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per tipo squadra: checkbox
 		 */
@@ -178,9 +160,7 @@ public class SearchCompetitionPanel
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
 
 		add(checkBox);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per tipo squadra: panel
 		 */
@@ -189,9 +169,7 @@ public class SearchCompetitionPanel
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
 		 */
@@ -209,9 +187,7 @@ public class SearchCompetitionPanel
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
 
 		add(checkBox);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
 		 */
@@ -220,9 +196,7 @@ public class SearchCompetitionPanel
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
 		 * Campo avvia ricerca: button
 		 */
@@ -233,6 +207,5 @@ public class SearchCompetitionPanel
 		button = new JButton(string);
 
 		add(button);
-		/*------------------------------------------------------------------------------------------------------*/
 	}
 }

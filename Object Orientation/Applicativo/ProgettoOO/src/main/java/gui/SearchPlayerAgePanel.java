@@ -1,20 +1,21 @@
-/*
+
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ResourceBundle;
-*/
+
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-/*
+
 public class SearchPlayerAgePanel
 				extends JPanel
 {
@@ -24,107 +25,69 @@ public class SearchPlayerAgePanel
 	protected String string;
 
 
-	public SearchPlayerAgePanel(Controller controller, ResourceBundle currentLocale) 
+	public SearchPlayerAgePanel()
 	{
-		setLayout(new GridBagLayout());
-		
-		GridBagConstraints gbc;
+
+		MigLayout migLayout;
+		String string;
+
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"[]30[]",
+				"10[]20[]10"
+			);
 
 
+		setLayout(migLayout);
+
+		/*
+		 * Campo anno di riferimento: stampa
+		 */
 		string = GuiConfiguration.getMessage("referenceYear");
 		string = StringUtils.capitalize(string);
-		
+
 		label = new JLabel(string);
-		
-		gbc = new GridBagConstraints
-						(
 
-										0, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,10,30),
-										0, 0
-						);
+		add(label);
 
-		add(label, gbc);
-
+		/*
+		 * Campo anno di riferimento: comboBox
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints
-						(
+		add(comboBox);
 
-										1, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,10,0),
-										0, 0
-						);
-
-		add(comboBox, gbc);
-
-		string = currentLocale.getString("age");
+		/*
+		 * Campo eta: stampa
+		 */
+		string = GuiConfiguration.getMessage("age");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel();
-		label.setFont(GuiConfiguration.getOutputFont());
+		label = new JLabel(string);
 
-		gbc = new GridBagConstraints
-						(
+		add(label);
 
-										0, 1,
-										1, 1,
-										0, 0,
-										GridBagConstraints.LINE_START, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(0,0,20,30),
-										0, 0
-						);
-
-		add(label, gbc);
-
+		/*
+		 * Campo eta: comboBox
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
+		add(comboBox, "split 2");
 
-		gbc = new GridBagConstraints
-						(
-
-										1, 1,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(0,0,20,0),
-										0, 0
-						);
-
-		add(comboBox, gbc);
-
+		/*
+		 * Campo eta: comboBox
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints
-						(
-
-										2, 1,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(0,0,20,0),
-										0, 0
-						);
-
-		add(comboBox, gbc);
+		add(comboBox);
 
 
 	}
 
 }
-
-
-*/

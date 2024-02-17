@@ -40,8 +40,7 @@ public class Main
 
 		homeFrame.add(new Top(Controller.getControllerInstance()), "top, dock north, wrap");
 		homeFrame.add(new MenuBar(Controller.getControllerInstance()), "wrap");
-		homeFrame.add(new MilitancyFilterPanel(Controller.getControllerInstance()), "center, wrap");
-
+		homeFrame.add(new SearchPlayerPanel(), "center, wrap");
 		GridBagConstraints gbc;
 
 
@@ -90,15 +89,15 @@ public class Main
 
 
 
-		homeFrame.setVisible(false);
+		homeFrame.setVisible(true);
 
-
+		/*
 		JFrame frame = new ViewCompetitionFrame(Controller.getControllerInstance());
 
 		frame.pack();
 		frame.setVisible(true);
+*/
 
-		 
 	}
 
 

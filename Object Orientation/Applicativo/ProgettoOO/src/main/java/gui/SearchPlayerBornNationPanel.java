@@ -1,7 +1,8 @@
-/*
+
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -16,14 +17,14 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ResourceBundle;
-*/
+
 /**
  * TYPE : class - gui package
  * NAME : UserSearchCompetitionPanel
  *
  * DESC: TODO
  */
-/*
+
 public class SearchPlayerBornNationPanel
 				extends JPanel
 {
@@ -32,86 +33,63 @@ public class SearchPlayerBornNationPanel
 
 	protected String string;
 
-	public SearchPlayerBornNationPanel(Controller controller)
+	public SearchPlayerBornNationPanel()
 	{
-		setLayout(new GridBagLayout());
 
-		GridBagConstraints gbc;
+		MigLayout migLayout;
+		String string;
+
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"[]30[]",
+				"10[]20[]10"
+			);
 
 
+		setLayout(migLayout);
+
+		/*
+		 * Campo ricerca per paese di nascita continente: stampa
+		 */
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints
-						(
+		add(label);
 
-										0, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.LINE_START, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,10,30),
-										0, 0
-						);
-
-		add(label, gbc);
-
+		/*
+		 * Campo ricerca per paese di nascita continente: stampa
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints
-						(
+		add(comboBox);
 
-										1, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,10,0),
-										0, 0
-						);
 
-		add(comboBox, gbc);
-
+		/*
+		 * Campo ricerca per paese di nascita nazione: stampa
+		 */
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
-		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints
-						(
+		label = new JLabel(string, SwingConstants.LEADING);
 
-										0, 1,
-										1, 1,
-										0, 0,
-										GridBagConstraints.LINE_START, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(0,0,20,30),
-										0, 0
-						);
+		add(label);
 
-		add(label, gbc);
-
+		/*
+		 * Campo ricerca per paese di nascita nazione: stampa
+		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints
-						(
-
-										1, 1,
-										1, 1,
-										0, 0,
-										GridBagConstraints.CENTER, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(0,0,20,0),
-										0, 0
-						);
-
-		add(comboBox, gbc);
+		add(comboBox);
 
 	}
 
 }
-*/
