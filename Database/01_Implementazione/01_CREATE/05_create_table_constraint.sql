@@ -2040,12 +2040,12 @@ CREATE TABLE fp_admin
 
 /*******************************************************************************
  * TYPE : PRIMARY KEY CONSTRAINT - fp_user_account TABLE
- * NAME : pk_user_account
+ * NAME : pk_fp_admin
  *
  * DESC : Non possono esistere account utente diversi con lo stesso username
  ******************************************************************************/
-ALTER TABLE	fp_user_account
-ADD CONSTRAINT pk_user_account
+ALTER TABLE	fp_admin
+ADD CONSTRAINT pk_fp_admin
 PRIMARY KEY
 (
 	username

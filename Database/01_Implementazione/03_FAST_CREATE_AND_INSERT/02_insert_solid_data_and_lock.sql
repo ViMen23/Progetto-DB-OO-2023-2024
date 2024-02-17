@@ -2671,7 +2671,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'CAF Super Cup',
 	1,
@@ -2743,7 +2743,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'CONMEBOL Recopa Sudamericana',
 	1,
@@ -2883,7 +2883,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Superkupa e Shqipërisë',
 	1,
@@ -2931,7 +2931,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Angolan SuperCup',
 	1,
@@ -2979,7 +2979,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Andorran Supercup',
 	1,
@@ -3051,7 +3051,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'UAE Super Cup',
 	1,
@@ -3099,7 +3099,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa Argentina',
 	1,
@@ -3147,7 +3147,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Armenian Supercup',
 	1,
@@ -3267,7 +3267,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'ÖFB-Supercup',
 	1,
@@ -3315,7 +3315,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Azərbaycan Superkuboku',
 	1,
@@ -3399,7 +3399,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Belgische Supercup',
 	1,
@@ -3519,7 +3519,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Bulgarian Supercup',
 	1,
@@ -3555,7 +3555,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Bahraini Super Cup',
 	1,
@@ -3675,7 +3675,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Belarusian Super Cup',
 	1,
@@ -3771,7 +3771,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa do Brasil',
 	1,
@@ -3831,7 +3831,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Brunei Super Cup',
 	0,
@@ -3999,7 +3999,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa de Chile',
 	1,
@@ -4059,7 +4059,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	 'CLUB',
 	'Chinese FA Super Cup',
 	1,
@@ -4203,7 +4203,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Superliga BetPlay DIMAYOR',
 	1,
@@ -4395,7 +4395,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Czech Supercup',
 	1,
@@ -4467,7 +4467,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'DFL-Supercup',
 	1,
@@ -4551,7 +4551,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Danish SuperCup',
 	1,
@@ -4611,7 +4611,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Super Coupe d''Algérie de football',
 	1,
@@ -4683,7 +4683,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Egyptian Super Cup',
 	1,
@@ -4755,7 +4755,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'FA Community Shield',
 	1,
@@ -4839,7 +4839,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa de España',
 	1,
@@ -4899,7 +4899,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Estonian Supercup',
 	1,
@@ -5067,7 +5067,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Trophée des Champions',
 	1,
@@ -5151,7 +5151,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Georgian Super Cup',
 	1,
@@ -5307,7 +5307,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Cup of Friendship and Solidarity',
 	1,
@@ -5463,7 +5463,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Hrvatski nogometni superkup',
 	1,
@@ -5691,7 +5691,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Iran Super Cup',
 	1,
@@ -5739,7 +5739,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Iraqi Super Cup',
 	1,
@@ -5799,7 +5799,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Icelandic Men''s Football Super Cup',
 	1,
@@ -5859,7 +5859,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Israel Super Cup',
 	1,
@@ -5931,7 +5931,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercoppa Italiana',
 	1,
@@ -5955,7 +5955,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercoppa di Serie C',
 	1,
@@ -6015,7 +6015,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Jordan Super Cup',
 	1,
@@ -6087,7 +6087,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Japanese Super Cup',
 	1,
@@ -6135,7 +6135,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Kazakhstan Super Cup',
 	1,
@@ -6171,7 +6171,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Kenyan Super Cup',
 	1,
@@ -6219,7 +6219,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Kyrgyzstan Super Cup',
 	1,
@@ -6339,7 +6339,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Kuwait Super Cup',
 	1,
@@ -6399,7 +6399,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Lebanese Super Cup',
 	1,
@@ -6459,7 +6459,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Libyan Super Cup',
 	1,
@@ -6591,7 +6591,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Lithuanian Supercup',
 	1,
@@ -6675,7 +6675,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Latvian Supercup',
 	1,
@@ -6771,7 +6771,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Moldovan Super Cup',
 	1,
@@ -6867,7 +6867,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Campeón de Campeones MX',
 	1,
@@ -6915,7 +6915,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Macedonian Supercup',
 	0,
@@ -7300,7 +7300,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'NIFL Charity Shield',
 	1,
@@ -7372,7 +7372,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Johan Cruijff Schaal',
 	1,
@@ -7420,7 +7420,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Mesterfinalen',
 	1,
@@ -7600,7 +7600,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa Peruana',
 	1,
@@ -7720,7 +7720,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Polish Super Cup',
 	1,
@@ -7816,7 +7816,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supertaça Cândido de Oliveira',
 	1,
@@ -7864,7 +7864,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa Paraguaya',
 	1,
@@ -7924,7 +7924,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Sheikh Jassim Cup',
 	1,
@@ -7984,7 +7984,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercupa României',
 	1,
@@ -8044,7 +8044,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Russian Super Cup',
 	1,
@@ -8116,7 +8116,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Saudi Super Cup',
 	1,
@@ -8248,7 +8248,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Singapore Community Shield',
 	1,
@@ -8320,7 +8320,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Super Coppa Sammarinese',
 	1,
@@ -8368,7 +8368,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Somalia Super Cup',
 	1,
@@ -8476,7 +8476,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'São Tomé and Príncipe Super Cup',
 	1,
@@ -8512,7 +8512,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Suriname President''s Cup',
 	1,
@@ -8560,7 +8560,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Slovak Super Cup',
 	1,
@@ -8692,7 +8692,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Swazi Charity Cup',
 	1,
@@ -8752,7 +8752,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Syrian Super Cup',
 	1,
@@ -8824,7 +8824,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Thailand Champions Cup',
 	1,
@@ -8873,7 +8873,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Tajikistan Super Cup',
 	1,
@@ -8910,7 +8910,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Turkmenistan Super Cup',
 	1,
@@ -8946,7 +8946,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'LFA Super Taça',
 	1,
@@ -8995,7 +8995,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Trinidad and Tobago Charity Shield',
 	1,
@@ -9043,7 +9043,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Tunisian Super Cup',
 	1,
@@ -9115,7 +9115,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Turkish Super Cup',
 	1,
@@ -9235,7 +9235,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Ukrainian Super Cup',
 	1,
@@ -9283,7 +9283,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Supercopa Uruguaya',
 	1,
@@ -9379,7 +9379,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Uzbekistan Super Cup',
 	1,
@@ -9451,7 +9451,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Vietnamese Super Cup',
 	1,
@@ -9547,7 +9547,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Kosovar Supercup',
 	1,
@@ -9583,7 +9583,7 @@ VALUES
 	)::integer
 ),
 (
-	'SUPER CUP',
+	'SUPER_CUP',
 	'CLUB',
 	'Yemeni Super Cup',
 	1,

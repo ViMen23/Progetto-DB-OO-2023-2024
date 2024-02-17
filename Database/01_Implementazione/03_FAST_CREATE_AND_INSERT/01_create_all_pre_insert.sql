@@ -357,7 +357,7 @@ CREATE TYPE en_competition AS ENUM
 (
 	'CUP',
 	'LEAGUE',
-	'SUPER CUP'
+	'SUPER_CUP'
 );
 --------------------------------------------------------------------------------
 
@@ -394,20 +394,6 @@ CREATE TYPE en_foot AS ENUM
 
 /*******************************************************************************
  * TYPE : ENUM TYPE
- * NAME : en_privilege
- *
- * DESC : Enum delle possibili tipologie di livello di privilegio di un utente
- ******************************************************************************/
-CREATE TYPE en_privilege AS ENUM
-(
-	'GENERAL USER',	-- utente generico
-	'ADMIN',		-- amministratore che non puo' creare altri amministratori
-	'SUPER ADMIN'	-- amministratore che puo' creare altri amministratori
-);
---------------------------------------------------------------------------------
-
-/*******************************************************************************
- * TYPE : ENUM TYPE
  * NAME : en_role
  *
  * DESC : Enum delle possibili tipologie di ruolo di un calciatore
@@ -435,17 +421,17 @@ CREATE TYPE en_role_mix AS ENUM
 	'DF',
 	'MF',
 	'FW',
-	'GK-DF',
-	'GK-MF',
-	'GK-FW',
-	'DF-MF',
-	'DF-FW',
-	'MF-FW',
-	'GK-DF-MF',
-	'GK-DF-FW',
-	'GK-MF-FW',
-	'DF-MF-FW',
-	'GK-DF-MF-FW'
+	'GK_DF',
+	'GK_MF',
+	'GK_FW',
+	'DF_MF',
+	'DF_FW',
+	'MF_FW',
+	'GK_DF_MF',
+	'GK_DF_FW',
+	'GK_MF_FW',
+	'DF_MF_FW',
+	'GK_DF_MF_FW'
 );
 --------------------------------------------------------------------------------
 
@@ -458,8 +444,8 @@ CREATE TYPE en_role_mix AS ENUM
  ******************************************************************************/
 CREATE TYPE en_season AS ENUM
 (
-	'I PART',	-- solo prima parte di stagione
-	'II PART',	-- solo seconda parte di stagione
+	'I_PART',	-- solo prima parte di stagione
+	'II_PART',	-- solo seconda parte di stagione
 	'FULL'		-- tutta la stagione
 );
 --------------------------------------------------------------------------------
@@ -3757,33 +3743,31 @@ ON UPDATE CASCADE;
 
 /*******************************************************************************
  * TYPE : TABLE
- * NAME : fp_user_account
+ * NAME : fp_admin
  *
- * DESC : Tabella contentente informazioni sugli account utente
+ * DESC : Tabella contentente informazioni sugli amministratori
  *        che possono utilizzare l'applicativo connesso al database
  ******************************************************************************/
-CREATE TABLE fp_user_account
+CREATE TABLE fp_admin
 (
 	username	dm_username		NOT NULL,
-	password	dm_password		NOT NULL,
-	privilege	en_privilege	NOT NULL  -- livello di privilegio dell'utente				
+	password	dm_password		NOT NULL		
 );
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_user_account TABLE
- * NAME : pk_user_account
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_admin TABLE
+ * NAME : pk_fp_admin
  *
  * DESC : Non possono esistere account utente diversi con lo stesso username
  ******************************************************************************/
-ALTER TABLE	fp_user_account
-ADD CONSTRAINT pk_user_account
+ALTER TABLE	fp_admin
+ADD CONSTRAINT pk_fp_admin
 PRIMARY KEY
 (
 	username
 );
 --------------------------------------------------------------------------------
-
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -4955,7 +4939,7 @@ BEGIN
 	IF ('LEAGUE' = rec_comp.type) THEN
 		RETURN 40;
 	
-	ELSIF ('SUPER CUP' = rec_comp.type) THEN
+	ELSIF ('SUPER_CUP' = rec_comp.type) THEN
 		RETURN 6;
 	
 	ELSIF ('CUP' = rec_comp.type) THEN
@@ -4988,7 +4972,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : Funzione che restituisce il massimo numero di partite che e' possibile
+ * DESC : Funzione che restituisce il massimo numero di partite che è possibile
  *        disputare in una competizione in base alla tipologia della stessa
  *
  *        NOTA: i valori sono per eccesso ed arbitrari ma ottenuti mediante
@@ -5021,7 +5005,7 @@ BEGIN
 	IF ('LEAGUE' = type_comp) THEN
 		RETURN 40;
 	
-	ELSIF ('SUPER CUP' = type_comp) THEN
+	ELSIF ('SUPER_CUP' = type_comp) THEN
 		RETURN 3;
 	
 	ELSIF ('CUP' = type_comp) THEN
@@ -5460,7 +5444,7 @@ AS
 $$
 BEGIN
 
-	IF ('I PART' = type_year) THEN
+	IF ('I_PART' = type_year) THEN
 	
 		RETURN
 		(
@@ -5475,10 +5459,10 @@ BEGIN
 				AND
 				start_year = s_year
 				AND
-				type IN ('I PART', 'FULL')
+				type IN ('I_PART', 'FULL')
 		);
 	
-	ELSIF ('II PART' = type_year) THEN
+	ELSIF ('II_PART' = type_year) THEN
 	
 		RETURN
 		(
@@ -5493,7 +5477,7 @@ BEGIN
 				AND
 				start_year = s_year
 				AND
-				type IN ('II PART', 'FULL')
+				type IN ('II_PART', 'FULL')
 		);
 
 	ELSIF ('FULL' = type_year) THEN
@@ -5713,11 +5697,11 @@ BEGIN
 
 		-- aggiungi alla combinazione di ruoli del giocatore
 		tmp = tmp || role_pos::text;
-		tmp = tmp || '-';
+		tmp = tmp || '_';
 
 	END LOOP;
 
-	tmp = trim(tmp, '-');
+	tmp = trim(tmp, '_');
 
 	role_player = tmp::en_role_mix;
 
@@ -7006,7 +6990,6 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
@@ -8232,7 +8215,7 @@ AS
 $$
 BEGIN
 
-	IF ('II PART' = NEW.type OR 'FULL' = NEW.type) THEN
+	IF ('II_PART' = NEW.type OR 'FULL' = NEW.type) THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 	END IF;
 
@@ -8290,11 +8273,11 @@ $$
 BEGIN
 
 	-- se la militanza aggiornata si riferisce alla seconda parte di stagione
-	IF ('I PART' = OLD.type AND NEW.type <> 'I PART') THEN
+	IF ('I_PART' = OLD.type AND NEW.type <> 'I_PART') THEN
 		PERFORM assign_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 
 	-- se la militanza aggiornata non si riferisce alla seconda parte di stagione
-	ELSIF (OLD.type <> 'I PART' AND 'I PART' = NEW.type) THEN
+	ELSIF (OLD.type <> 'I_PART' AND 'I_PART' = NEW.type) THEN
 		PERFORM remove_all_trophy_season(NEW.player_id, NEW.team_id, NEW.start_year);
 		
 	END IF;
@@ -8374,7 +8357,7 @@ LANGUAGE plpgsql;
  * DESC : Funzione che controlla che l'aggiornamento delle partite disputate
  *        riferite ad un gioco sia valido
  *
- *        NOTA: per il numero massimo di partite per team abbiamo effettuato
+ *        NOTA: per il numero massimo dI_PARTite per team abbiamo effettuato
  *              un'approssimazione per eccesso basata su numerose osservazioni
  *              (Wikipedia, Transfermarkt, ...)
  ******************************************************************************/
@@ -9087,7 +9070,7 @@ BEGIN
 			AND
 			start_year = NEW.start_year
 			AND
-			type <> 'I PART'
+			type <> 'I_PART'
 	
 	LOOP
 
@@ -9194,7 +9177,7 @@ BEGIN
 					 )::en_season;
 
 
-	IF (type_militancy <> 'I PART') THEN
+	IF (type_militancy <> 'I_PART') THEN
 
 		type_trophy = get_column
 					  (
@@ -9328,7 +9311,7 @@ BEGIN
 				'@competition_id@' || OLD.competition_id::text
 			)
 			AND
-			type_militancy <> 'I PART' 
+			type_militancy <> 'I_PART' 
 		)
 		THEN
 			RETURN NULL;
@@ -9470,7 +9453,6 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
@@ -10148,9 +10130,9 @@ WHEN
 	OLD.type IS DISTINCT FROM NEW.type
 	AND
 	(
-		'I PART' = OLD.type
+		'I_PART' = OLD.type
 		OR
-		'I PART' = NEW.type
+		'I_PART' = NEW.type
 	)
 )
 EXECUTE FUNCTION tf_au_militancy();
@@ -11061,6 +11043,3 @@ ALTER TABLE
 DISABLE TRIGGER
     tg_bi_prize_refuse;
 --------------------------------------------------------------------------------
-
-
-
