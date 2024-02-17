@@ -31,6 +31,7 @@ public class MenuBar
 						);
 
 		setLayout(migLayout);
+		setBackground(Color.white);
 
 
 		imageIcon = GuiConfiguration.createImageIcon("images/homy.png");

@@ -44,7 +44,6 @@ public class GuiConfiguration
 
 	private static Color searchPanelColor;
 
-	public static ArrayList<Color> colorArrayList;
 
 	/**
 	 * TYPE : static method - gui package
@@ -160,16 +159,25 @@ public class GuiConfiguration
 
 
 		//Configurazioni comboBox
-		UIManager.put("ComboBox.background", Color.green);
+
+		//UIManager.put("ComboBox.background", Color.green); --VERIFY
 		UIManager.put("ComboBox.font", outputFont);
 		UIManager.put("ComboBox.foreground", Color.white);
 		//UIManager.put("ComboBox.isEnterSelectablePopup", true);
+
+
+		//Configurazioni radioButton
+		//UIManager.put("RadioButton.background", Color.green); -- VERIFY
+		UIManager.put("RadioButton.font", outputFont);
+		UIManager.put("RadioButton.foreground", Color.white);
+		UIManager.put("RadioButton[Enabled].textForeground", Color.black);
 
 
 		//Configurazioni label
 		UIManager.put("Label.background", Color.green);
 		UIManager.put("Label.font", outputFont);
 		UIManager.put("Label.foreground", Color.white);
+		UIManager.put("Label[Enabled].textForeground", Color.black);
 
 
 		//configurazioni menu
@@ -219,13 +227,17 @@ public class GuiConfiguration
 		//UIManager.put("PopupMenu.font", outputFont);
 
 
+		//configurazioni table
+		UIManager.put("Table.font", outputFont);
+		UIManager.put("Table.textForeground", Color.black);
+
+		//configurazione intestazione tabella
+		UIManager.put("TableHeader.font", outputBoldFont);
+		UIManager.put("TableHeader.textForeground", Color.white);
+
+
 		//configurazioni text
 		//UIManager.put("textForeground", Color.white);
-
-		//UIManager.put("TableHeader.textForeground", Color.white);
-
-
-		//UIManager.put("Table.background", Color.white);
 
 	}
 
@@ -353,6 +365,14 @@ public class GuiConfiguration
 	 * DESC: TODO
 	 */
 	public static Dimension getFrameMinimumSize() { return frameMinimumSize; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getSearchPanelColor
+	 *
+	 * DESC: TODO
+	 */
+	public static Color getSearchPanelColor() { return searchPanelColor; }
 
 
 	/**

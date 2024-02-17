@@ -5,12 +5,8 @@ import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-
 
 /**
  * TYPE : class - gui package
@@ -19,7 +15,9 @@ import java.awt.event.ItemListener;
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
 
-public class AdminLoginPanel implements ItemListener
+public class AdminLoginPanel
+				extends JPanel
+				implements ItemListener
 {
 	protected JLabel label;
 	protected JTextField textField;
@@ -28,15 +26,11 @@ public class AdminLoginPanel implements ItemListener
 	protected JCheckBox checkBox;
 
 	protected String string;
-	protected JPanel panel;
-
 
 	public AdminLoginPanel(Controller controller)
 	{
 		MigLayout migLayout;
 		String string;
-
-		panel = new JPanel();
 
 		migLayout = new MigLayout
 			(
@@ -45,8 +39,8 @@ public class AdminLoginPanel implements ItemListener
 				"30:push[]20[]20[]20[]15[]30:push"
 			);
 
-		panel.setLayout(migLayout);
-		panel.setName("login");
+		setLayout(migLayout);
+		setName("login");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -59,7 +53,7 @@ public class AdminLoginPanel implements ItemListener
 		label = new JLabel(string, SwingConstants.CENTER);
 		label.setName("login+usernameLabel");
 
-		panel.add(label, "spanx 2, wrap");
+		add(label, "spanx 2, wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -70,7 +64,7 @@ public class AdminLoginPanel implements ItemListener
 		textField = new JTextField(GuiConfiguration.getInputColumn());
 		textField.setName("login+usernameTextField");
 
-		panel.add(textField, "spanx 2, wrap");
+		add(textField, "spanx 2, wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -84,7 +78,7 @@ public class AdminLoginPanel implements ItemListener
 		label = new JLabel(string, SwingConstants.CENTER);
 		label.setName("login+passwordLabel");
 
-		panel.add(label, "spanx 2, wrap");
+		add(label, "spanx 2, wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -95,7 +89,7 @@ public class AdminLoginPanel implements ItemListener
 		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
 		passwordField.setName("login+passwordField");
 
-		panel.add(passwordField, "spanx 2, wrap");
+		add(passwordField, "spanx 2, wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -112,7 +106,7 @@ public class AdminLoginPanel implements ItemListener
 		checkBox.setName("login+showPassword");
 		checkBox.addItemListener(this);
 
-		panel.add(checkBox);
+		add(checkBox);
 
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -128,7 +122,7 @@ public class AdminLoginPanel implements ItemListener
 		button.setEnabled(false);
 		button.setName("login+nextButton");
 
-		panel.add(button);
+		add(button);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -137,34 +131,26 @@ public class AdminLoginPanel implements ItemListener
 	@Override
 	public void itemStateChanged(ItemEvent e)
 	{
+
 		JComponent component = (JComponent) e.getSource();
 
 
-		if (component.getName().equalsIgnoreCase("login+showPassword")){
+		if (component.getName().equalsIgnoreCase("login+showPassword")) {
 
-			JPasswordField passwordField1 = null;
+			JPasswordField passwordField1;
 
-			for(Component aComponent: component.getParent().getComponents() ) {
+			component = Controller.getControllerInstance().getDestComp(component, "login+passwordField");
 
-				if(aComponent.getName().equalsIgnoreCase("login+passwordField")){
-					passwordField1 = (JPasswordField) aComponent;
-					break;
-				}
-			}
+			passwordField1 = (JPasswordField) component;
 
-			if(e.getStateChange() == ItemEvent.SELECTED){
-				passwordField1.setEchoChar((char)0);
-			}
-			else{
-				passwordField1.setEchoChar((char)UIManager.get("PasswordField.echoChar"));
+			if (e.getStateChange() == ItemEvent.SELECTED) {
+				passwordField1.setEchoChar((char) 0);
+			} else {
+				passwordField1.setEchoChar((char) UIManager.get("PasswordField.echoChar"));
 			}
 
 		}
-
 	}
 
-	public JPanel getRootPane()
-	{
-		return this.panel;
-	}
+
 }

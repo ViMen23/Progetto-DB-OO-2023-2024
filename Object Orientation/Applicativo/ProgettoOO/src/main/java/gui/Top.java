@@ -31,19 +31,36 @@ public class Top
 						);
 
 		setLayout(migLayout);
+		setBackground(Color.white);
 
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo logo: stampa
+		 */
 
 		imageIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
 
 		label = new JLabel(imageIcon);
 
 		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo locale: bottone
+		 */
 
 		imageIcon = GuiConfiguration.createImageIcon("images/world2.png");
 
 		button = new JButton(imageIcon);
 
 		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo login: bottone
+		 */
 
 		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
 		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
@@ -53,6 +70,7 @@ public class Top
 		button.addActionListener(this);
 
 		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	@Override
@@ -62,7 +80,7 @@ public class Top
 		JComponent component = (JComponent) e.getSource();
 
 		if (component.getName().equalsIgnoreCase("top+login")){
-			JOptionPane.showMessageDialog(this, new AdminLoginPanel(Controller.getControllerInstance()).getRootPane(),
+			JOptionPane.showMessageDialog(this, new AdminLoginPanel(Controller.getControllerInstance()),
 				"Pagina di Accesso", JOptionPane.DEFAULT_OPTION);
 	}
 

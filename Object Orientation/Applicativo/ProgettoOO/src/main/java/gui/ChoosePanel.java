@@ -1,17 +1,10 @@
-/*
+
 package gui;
 
 import controller.Controller;
-
+import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-*/
 
 /**
  * TYPE : class - gui package
@@ -20,7 +13,7 @@ import java.awt.event.ItemListener;
  * DESC: Pannello per costruire un'interfaccia con nome campo da scegliere
  * 			 e lista di elementi tra cui scegliere
  */
-/*
+
 public class ChoosePanel
 				extends JPanel
 {
@@ -29,46 +22,43 @@ public class ChoosePanel
 
 	public ChoosePanel(Controller controller, String toChoose)
 	{
-		setLayout(new GridBagLayout());
+		MigLayout migLayout;
 
-		GridBagConstraints gbc;
+		migLayout = new MigLayout
+			(
+				"debug, insets 10 0 10 0, center",
+				"30[]20[]30",
+				"[center]"
+			);
 
+		setLayout(migLayout);
+		setBackground(Color.white);
+
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta: stampa
+		 */
 
 		label = new JLabel(toChoose, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputFont());
 
-		gbc = new GridBagConstraints
-						(
+		add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-										0, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.LINE_START, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,20,30),
-										0, 0
-						);
-
-		add(label, gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo scelta: comboBox
+		 */
 
 		comboBox = new JComboBox<String>();
-		comboBox.setFont(GuiConfiguration.getOutputFont());
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
 
-		gbc = new GridBagConstraints
-						(
+		add(comboBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-										1, 0,
-										1, 1,
-										0, 0,
-										GridBagConstraints.LINE_START, // anchor
-										GridBagConstraints.NONE, // fill
-										new Insets(10,0,20,0),
-										0, 0
-						);
-
-		add(comboBox, gbc);
 
 	}
 
 }
-*/
