@@ -90,16 +90,15 @@ public class Main
 
 
 
-		homeFrame.setVisible(true);
+		homeFrame.setVisible(false);
 
-		/*
 
 		JFrame frame = new ViewCompetitionFrame(Controller.getControllerInstance());
 
 		frame.pack();
 		frame.setVisible(true);
 
-		 */
+		 
 	}
 
 

@@ -1,341 +1,238 @@
-/*
 package gui;
 
 import controller.Controller;
+import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import javax.swing.event.CaretEvent;
-import javax.swing.event.CaretListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.ResourceBundle;
 
-*/
 
-/*
+
 public class SearchCompetitionPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JPanel panel;
 	protected JButton button;
 	protected JCheckBox checkBox;
-	final static float outputFontSize = 18;
+	protected ButtonGroup buttonGroup;
+	protected JRadioButton radioButton;
 
-	public SearchCompetitionPanel(Controller controller, ResourceBundle currentLocale)
+	public SearchCompetitionPanel(Controller controller)
 	{
 		setLayout(new GridBagLayout());
 
-		Font outputFont = this.getFont().deriveFont(outputFontSize);
+		MigLayout migLayout;
+		String string;
 
-		GridBagConstraints gbc;
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				"[]20[]10[]10[]10[]10[]10[]10[]10[]10[]20"
+			);
 
-		// intestazione ricerca
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,0,20,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 
-		button = new JButton
-						(
-										(
-														currentLocale.getString("search") +
-																		" " +
-																		currentLocale.getString("competitions")
-										).toUpperCase()
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo titolo: bottone
+		 */
+		string = GuiConfiguration.getMessage("search");
+		string += " ";
+		string += GuiConfiguration.getMessage("competitions");
+		string = string.toUpperCase();
 
-		button.setFont(outputFont);
+		button = new JButton(string);
 		button.setEnabled(false);
-		button.setForeground(Color.WHITE);
 
-		add(button,gbc);
+		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		// intestazione ricerca per nome
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per nome: checkbox
+		 */
 
-		 checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("name")
-										).toUpperCase()
-						);
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
 
+		checkBox = new JCheckBox(string);
+		checkBox.setOpaque(true);
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
+		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		add(checkBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(panel,gbc);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per nome: panel
+		 */
 
 
-		// ricerca per nome competizione
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		panel = new SearchCompetitionNamePanel(controller);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
-		panel = new SearchCompetitionNamePanel(controller, currentLocale);
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per tipo di competizione: panel
+		 */
 
-		add(panel, gbc);
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("competitionType");
+		string = string.toUpperCase();
 
-
-		// intestazione ricerca per tipo competizione
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
-
-		checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("competitionType")
-										).toUpperCase()
-						);
-
+		checkBox = new JCheckBox(string);
+		checkBox.setOpaque(true);
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
+		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		add(checkBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per tipo competizione: panel
+		 */
 
-		add(panel,gbc);
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"[]50[]50[]",
+				"10[]20"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
+
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		buttonGroup = new ButtonGroup();
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo campionato: radioButton
+		 */
+
+		string = GuiConfiguration.getMessage("league");
+		string = StringUtils.capitalize(string);
+
+		radioButton = new JRadioButton(string);
+
+		panel.add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		buttonGroup.add(radioButton);
+
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo coppa: radioButton
+		 */
+
+		string = GuiConfiguration.getMessage("cup");
+		string = StringUtils.capitalize(string);
+
+		radioButton = new JRadioButton(string);
+
+		panel.add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		// ricerca per tipo competizione
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		buttonGroup.add(radioButton);
 
-		panel = new SearchCompetitionTypePanel(controller, currentLocale);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo supercoppa: radioButton
+		 */
 
+		string = GuiConfiguration.getMessage("supercup");
+		string = StringUtils.capitalize(string);
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		radioButton = new JRadioButton(string);
 
-		add(panel, gbc);
+		panel.add(radioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
+		buttonGroup.add(radioButton);
 
-		// intestazione ricerca per tipo squadra
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per tipo squadra: checkbox
+		 */
 
-		checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("teamType")
-										).toUpperCase()
-						);
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
 
+		checkBox = new JCheckBox(string);
+		checkBox.setOpaque(true);
+		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		add(checkBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 5;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(panel,gbc);
-
-		// ricerca per tipo squadra
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 6;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per tipo squadra: panel
+		 */
 
 		panel = new SearchTeamTypePanel(controller);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per paese e confederazione: checkBox
+		 */
 
-		add(panel, gbc);
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("country");
+		string += "/";
+		string += GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
 
-		// intestazione ricerca per paese/confederazione
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.insets = new Insets(0,20,0,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
-
-		checkBox = new JCheckBox
-						(
-										(
-														currentLocale.getString("searchBy") +
-																		" " +
-																		currentLocale.getString("country") +
-																		"/" +
-																		currentLocale.getString("confederation")
-										).toUpperCase()
-						);
-
+		checkBox = new JCheckBox(string);
+		checkBox.setOpaque(true);
+		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
 		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
-		checkBox.setFont(outputFont);
-		checkBox.setForeground(Color.WHITE);
 
-		panel = new JPanel(new GridBagLayout());
-		panel.setBackground(new Color(50, 100, 200));
-		panel.add(checkBox, gbc);
+		add(checkBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 7;
-		gbc.insets = new Insets(0,10,0,10);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		add(panel,gbc);
-
-		// ricerca per paese/confederazione
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 8;
-		gbc.insets = new Insets(0,0,10,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo ricerca per paese e confederazione: checkBox
+		 */
 
 		panel = new SearchCountryConfederationPanel(controller);
+		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
+		add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		panel.setBorder
-						(
-										new CompoundBorder
-														(
-																		new EmptyBorder(0, 10, 10, 10),
-																		new MatteBorder(0, 10, 10, 10, Color.WHITE)
-														)
-						);
+		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+		/*
+		 * Campo avvia ricerca: button
+		 */
 
-		add(panel, gbc);
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
 
-		// bottone avvia ricerca
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 9;
-		gbc.insets = new Insets(0,0,20,0);
-		gbc.weightx = 1.0;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
+		button = new JButton(string);
 
-		button = new JButton(currentLocale.getString("search").toUpperCase());
-		button.setFont(outputFont);
-
-		add(button, gbc);
-
+		add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e) {
-
-	}
-
-
 }
-*/
