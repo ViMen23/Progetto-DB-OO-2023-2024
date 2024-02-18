@@ -1,193 +1,145 @@
-/*
 package gui;
 
-import controller.Controller;
+import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
-import java.awt.*;
-import java.util.ResourceBundle;
-*/
-/*
+
+
 public class TeamInformation
 				extends JPanel
 {
 	protected JLabel label;
-	protected JButton button;
-
-	protected String tmp;
 
 
-	public TeamInformation(Controller controller, ResourceBundle currentLocale)
+	public TeamInformation()
 	{
-		setLayout(new GridBagLayout());
 
-		setBackground(Color.white);
+		String string;
+		MigLayout migLayout;
 
-		Font outputBoldFont = this.getFont().deriveFont(Font.BOLD);
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"10[grow, fill]40[grow, fill]10",
+				"10[]0[]10[]10[]10[]10[]10"
+			);
 
-		GridBagConstraints gbc;
-		Border labelBorder = new CompoundBorder(new EmptyBorder(4, 4, 4, 4),
-			new MatteBorder(0, 0, 1, 0, Color.BLACK));
+		setLayout(migLayout);
 
+		/*
+		 * Campo titolo: stampa
+		 */
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		string += ": ";
 
-		//Titolo squadra
-		tmp = currentLocale.getString("team").toUpperCase()  + ": ";
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		JLabel label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
+		add(label);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 10, 0, 0);
+		/*
+		 * Campo valore titolo: stampa
+		 */
+		string = "SSC Napoli";
 
-		add(label, gbc);
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		//Valore nome squadra
+		add(label);
 
-		tmp = "SSC Napoli";
-
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		gbc.weightx = 1.0;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(10, 40, 0, 0);
-
-		add(label, gbc);
-
-
-		//Separatore
-
+		/*
+		 * Campo separatore titolo: stampa
+		 */
 		label = new JLabel();
-		label.setBorder(labelBorder);
+		label.setBorder(GuiConfiguration.getLabelBorder());
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 2;
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 0, 0, 0);
+		add(label, "spanx 2");
 
-		add(label, gbc);
+		/*
+		 * Campo nome abbreviato: stampa
+		 */
+		string = GuiConfiguration.getMessage("shortName");
+		string = StringUtils.capitalize(string);
+		string += ": ";
 
-		// acronimo
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		tmp = StringUtils.capitalize(currentLocale.getString("shortName")) + ": ";
+		add(label);
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
+		/*
+		 * Campo nome abbreviato: stampa
+		 */
+		string = "NAP";
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 10, 0, 0);
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		add(label, gbc);
+		add(label);
 
-		// acrononimo valore
+		/*
+		 * Campo tipo squadra: stampa
+		 */
+		string = GuiConfiguration.getMessage("teamType");
+		string = StringUtils.capitalize(string);
+		string += ": ";
 
-		tmp = "NAP";
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
+		add(label);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 2;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 40, 0, 0);
+		/*
+		 * Campo valore tipo squadra: stampa
+		 */
+		string = "CLUB";
 
-		add(label, gbc);
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		//Tipo squadra
+		add(label);
 
-		tmp = StringUtils.capitalize(currentLocale.getString("teamType")) + ": ";
+		/*
+		 * Campo paese: stampa
+		 */
+		string = GuiConfiguration.getMessage("country");
+		string = StringUtils.capitalize(string);
+		string += ": ";
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 3;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 10, 0, 0);
+		add(label);
 
-		add(label, gbc);
+		/*
+		 * Campo valore paese: stampa
+		 */
+		string = "ITALIA WITH FLAG";
 
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		//Tipo valore squadra
-
-		tmp = "CLUB";
-
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 3;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 40, 0, 0);
-
-		add(label, gbc);
+		add(label);
 
 
-		//Tipo paese squadra
+		/*
+		 * Campo confederazione: stampa
+		 */
+		string = GuiConfiguration.getMessage("confederation");
+		string = StringUtils.capitalize(string);
+		string += ": ";
 
-		tmp = StringUtils.capitalize(currentLocale.getString("country")) + ": ";
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		label = new JLabel(tmp, SwingConstants.LEADING);
+		add(label);
 
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 0;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 10, 10, 0);
+		/*
+		 * Campo valore confederazione: stampa
+		 */
+		string = "FEDERAZIONE GIUOCO CALCIO";
 
-		add(label, gbc);
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		//Tipo paese squadra
-
-		tmp = "ITALIA WITH FLAG";
-
-		label = new JLabel(tmp, SwingConstants.LEADING);
-		label.setFont(outputBoldFont);
-
-		gbc = new GridBagConstraints();
-		gbc.gridwidth = 1;
-		gbc.gridx = 1;
-		gbc.gridy = 4;
-		gbc.anchor = GridBagConstraints.LINE_START;
-		gbc.insets = new Insets(0, 40, 10, 0);
-
-		add(label, gbc);
-
-
-
-		//Bottone trofei
-
-
-
-
-
-
-
+		add(label);
 	}
 }
-*/

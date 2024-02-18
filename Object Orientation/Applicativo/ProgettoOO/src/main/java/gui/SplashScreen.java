@@ -1,16 +1,16 @@
-/*
+
 package gui;
 
 import javax.swing.*;
 import java.awt.*;
-*/
-/*
+
+
 public class SplashScreen
 {
   public static JWindow main = new JWindow();
 
   private JLabel name;
-  private final ImageIcon logo = Main.createImageIcon("images/logo16.png", 75, 75);
+  private final ImageIcon logo = GuiConfiguration.createImageIcon("images/logo16.png", 75, 75);
 
 
   public SplashScreen()
@@ -25,10 +25,4 @@ public class SplashScreen
 
 	main.setForeground(Color.blue);
   }
-
-
-
-
-
 }
-*/

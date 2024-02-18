@@ -6,11 +6,13 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import java.awt.*;
 
-public class TeamTrophy
+public class ViewTeamPanel
 				extends JPanel
 {
 
-	protected JLabel label;
+	protected JPanel informationPanel;
+	protected JPanel seasonPanel;
+	protected JPanel tablePanel;
 	protected JPanel squadPanel;
 	protected JPanel participationPanel;
 	protected JPanel awardPanel;
@@ -21,27 +23,221 @@ public class TeamTrophy
 	protected JTable trophyTable;
 	protected JTable prizeTable;
 	protected JScrollPane scrollPane;
-	protected JButton button;
+
+
+	protected JLabel label;
+	protected JComboBox<String> comboBox;
+	protected JButton showButton;
+	protected JButton goButton;
 
 	protected Color panelColor = Color.white;
 
 
-
-	public TeamTrophy()
+	public ViewTeamPanel()
 	{
-
 		String string;
 		MigLayout migLayout;
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"10[grow, fill]40[grow, fill]10",
-				"10[]10"
+				"debug, flowy",
+				"0[grow, fill]0",
+				"20[]10[]10[]10"
 			);
 
 		setLayout(migLayout);
 
+
+		/*
+		 * Campo informazioni squadra: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"10[grow, fill]40[grow, fill]10",
+				"10[]0[]10[]10[]10[]10[]10"
+			);
+
+		informationPanel = new JPanel(migLayout);
+		informationPanel.setBackground(panelColor);
+
+		add(informationPanel);
+
+		/*
+		 * Campo titolo: stampa
+		 */
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo valore titolo: stampa
+		 */
+		string = "SSC Napoli";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo separatore titolo: stampa
+		 */
+		label = new JLabel();
+		label.setBorder(GuiConfiguration.getLabelBorder());
+
+		informationPanel.add(label, "spanx 2");
+
+		/*
+		 * Campo nome abbreviato: stampa
+		 */
+		string = GuiConfiguration.getMessage("shortName");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo nome abbreviato: stampa
+		 */
+		string = "NAP";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo tipo squadra: stampa
+		 */
+		string = GuiConfiguration.getMessage("teamType");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo valore tipo squadra: stampa
+		 */
+		string = "CLUB";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo paese: stampa
+		 */
+		string = GuiConfiguration.getMessage("country");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo valore paese: stampa
+		 */
+		string = "ITALIA WITH FLAG";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+
+		/*
+		 * Campo confederazione: stampa
+		 */
+		string = GuiConfiguration.getMessage("confederation");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(label);
+
+		/*
+		 * Campo valore confederazione: stampa
+		 */
+		string = "FEDERAZIONE GIUOCO CALCIO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(label);
+
+
+		/*
+		 * Campo panello stagione: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"20:push[]30[]20[]20:push",
+				"10[]10"
+			);
+
+		seasonPanel = new JPanel(migLayout);
+		seasonPanel.setBackground(panelColor);
+
+		add(seasonPanel);
+
+		/*
+		 * Campo stagione: stampa
+		 */
+		string = GuiConfiguration.getMessage("season");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		seasonPanel.add(label);
+
+		/*
+		 * Campo stagione: comboBox
+		 */
+		comboBox = new JComboBox<String>();
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
+
+		seasonPanel.add(comboBox);
+
+		/*
+		 * Campo stagione azione mostra: bottone
+		 */
+		string = GuiConfiguration.getMessage("show");
+		string = string.toUpperCase();
+
+		showButton = new JButton(string);
+
+		seasonPanel.add(showButton);
+
+		/*
+		 * Campo tabelle squadra: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowx, fill",
+				"0[grow,fill]10[grow,fill]10",
+				"0[grow, fill]0"
+			);
+
+		tablePanel = new JPanel(migLayout);
+		tablePanel.setOpaque(false);
+
+		add(tablePanel);
 
 		/*
 		 * Campo tabella rosa: panel
@@ -49,14 +245,14 @@ public class TeamTrophy
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"[fill]",
+				"[grow, fill]",
 				"10[]0[]10[]10"
 			);
 
 		squadPanel = new JPanel(migLayout);
 		squadPanel.setBackground(panelColor);
 
-		add(squadPanel);
+		tablePanel.add(squadPanel);
 
 		/*
 		 * Campo titolo: stampa
@@ -105,14 +301,14 @@ public class TeamTrophy
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"[fill]",
+				"0[grow, fill]0",
 				"10[]0[]10[]10"
 			);
 
 		participationPanel = new JPanel(migLayout);
 		participationPanel.setBackground(panelColor);
 
-		add(participationPanel, "split 2, flowy");
+		tablePanel.add(participationPanel, "split 2, flowy");
 
 		/*
 		 * Campo titolo: stampa
@@ -146,7 +342,6 @@ public class TeamTrophy
 		participationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		participationTable.setFillsViewportHeight(true);
 		participationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
 		/*
 		 * Campo barra di scorrimento: jScrollPane
 		 */
@@ -213,7 +408,7 @@ public class TeamTrophy
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"[fill]",
+				"0[fill]0",
 				"10[]0[]10[]10"
 			);
 
@@ -265,15 +460,15 @@ public class TeamTrophy
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"[]",
-				"10[]20[]10[]10"
+				"debug, flowy, fill",
+				"0[fill]0",
+				"0[]0[]0[]0"
 			);
 
 		awardPanel = new JPanel(migLayout);
 		awardPanel.setBackground(panelColor);
 
-		add(awardPanel);
+		tablePanel.add(awardPanel);
 
 		awardPanel.add(trophyPanel);
 		awardPanel.add(prizePanel);
@@ -289,8 +484,8 @@ public class TeamTrophy
 		string += GuiConfiguration.getMessage("case");
 		string = StringUtils.capitalize(string);
 
-		button = new JButton(string);
+		goButton = new JButton(string);
 
-		awardPanel.add(button);
+		awardPanel.add(goButton, "right");
 	}
 }

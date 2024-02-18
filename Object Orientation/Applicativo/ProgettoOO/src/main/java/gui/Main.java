@@ -12,13 +12,13 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+		ViewCompetitionPanel viewCompetitionPanel = new ViewCompetitionPanel();
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
-		searchTeamPanel.setName("searchTeamPanel");
+		viewCompetitionPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(searchTeamPanel);
+		MainFrame.getMainFrameInstance().add(viewCompetitionPanel);
 		MainFrame.getMainFrameInstance().pack();
 
 	}

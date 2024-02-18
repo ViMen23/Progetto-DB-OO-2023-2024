@@ -28,7 +28,7 @@ public class SampleTable
 
 
 		/*
-		 * Campo titolo:  stampa
+		 * Campo titolo: stampa
 		 */
 		label = new JLabel(title, SwingConstants.CENTER);
 		label.setFont(GuiConfiguration.getOutputBoldFont());
@@ -37,7 +37,7 @@ public class SampleTable
 
 
 		/*
-		 * Campo separatore titolo:  bordo
+		 * Campo separatore titolo: bordo
 		 */
 		label = new JLabel();
 		label.setBorder(GuiConfiguration.getLabelBorder());
@@ -46,7 +46,7 @@ public class SampleTable
 
 
 		/*
-		 * Campo tabella:  table
+		 * Campo tabella: table
 		 */
 		table = new JTable(new TableModel(tableName));
 
@@ -55,7 +55,7 @@ public class SampleTable
 
 
 		/*
-		 * Campo barra di scorrimento:  jScrollPane
+		 * Campo barra di scorrimento: jScrollPane
 		 */
 		scrollPane = new JScrollPane(table);
 
