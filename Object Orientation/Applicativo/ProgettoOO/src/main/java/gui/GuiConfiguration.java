@@ -72,7 +72,7 @@ public class GuiConfiguration
 		//bordo per i pannelli ricerca
 		searchPanelBorder = new CompoundBorder
 								(
-									new EmptyBorder(0, 10, 10, 10),
+									new EmptyBorder(0, 0, 10, 0),
 									new MatteBorder(0, 10, 10, 10, Color.WHITE)
 								);
 
@@ -161,11 +161,13 @@ public class GuiConfiguration
 		outputBoldSmallFont = outputSmallFont.deriveFont(Font.BOLD);
 
 
+
 		//Configurazioni generali
-		UIManager.put("nimbusBase", new Color(0, 50, 255));
+		UIManager.put("nimbusBase", new Color(130, 130, 130));
 		UIManager.put("nimbusBlueGrey", new Color(50, 100, 150));
 		UIManager.put("control", new Color(200, 200, 200));
 		//UIManager.put("defaultFont", outputFont);
+
 
 		//Configurazioni bottone
 		UIManager.put("Button.font", outputFont);
@@ -175,7 +177,6 @@ public class GuiConfiguration
 		//Configurazioni checkBox
 		UIManager.put("CheckBox.background", Color.green);
 		UIManager.put("CheckBox.font", outputFont);
-		UIManager.put("CheckBox[Enabled].textForeground", Color.white);
 
 
 		//Configurazioni comboBox
@@ -221,7 +222,6 @@ public class GuiConfiguration
 		//configurazioni menuItem
 		UIManager.put("MenuItem.font", outputSmallFont);
 		//UIManager.put("MenuItem.foreground", Color.white);
-		UIManager.put("MenuItem[Enabled].textForeground", Color.white);
 
 
 		//configurazioni panel
@@ -236,7 +236,8 @@ public class GuiConfiguration
 
 		//configurazioni field password
 		UIManager.put("PasswordField.font", outputFont);
-		UIManager.put("PasswordField.echoChar", '#');
+		UIManager.put("PasswordField.echoChar", (char)'●');
+		//UIManager.put("PasswordField.echoChar", (char)'•');
 
 		//configurazioni popup menu
 

@@ -5,6 +5,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class SearchPlayerPanel
 				extends JPanel
@@ -38,7 +39,7 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy, center",
+				"debug, flowy",
 				"10[fill]10",
 				"10[]10[]0[]10[]0[]10[]0[]10[]0[]0[]0[]0[]0[]30"
 			);
@@ -69,7 +70,7 @@ public class SearchPlayerPanel
 		checkBox = new JCheckBox(string);
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
 
@@ -80,7 +81,7 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2, center",
+				"debug, wrap 2",
 				"[]30[]",
 				"10[]20[]10"
 			);
@@ -148,7 +149,7 @@ public class SearchPlayerPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2, center",
+				"debug, wrap 2",
 				"[]30[]",
 				"10[]20[]10"
 			);
