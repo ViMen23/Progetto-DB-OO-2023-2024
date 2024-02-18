@@ -99,12 +99,12 @@ public class GuiConfiguration
 		TopPanel topPanel = new TopPanel();
 		topPanel.setName("topPanel");
 
-		mainFrame.add(topPanel, "top, dock north, wrap");
+		mainFrame.add(topPanel);
 
 		MenuBarPanel menuBarPanel = new MenuBarPanel();
 		menuBarPanel.setName("menuBarPanel");
 
-		mainFrame.add(menuBarPanel,  "wrap");
+		mainFrame.add(menuBarPanel);
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);
@@ -188,10 +188,10 @@ public class GuiConfiguration
 
 
 		//Configurazioni radioButton
-		//UIManager.put("RadioButton.background", Color.green); -- VERIFY
+		UIManager.put("RadioButton.background", Color.green);
 		UIManager.put("RadioButton.font", outputFont);
 		UIManager.put("RadioButton.foreground", Color.white);
-		UIManager.put("RadioButton[Enabled].textForeground", Color.black);
+		//UIManager.put("RadioButton[Enabled].textForeground", Color.black);
 
 
 		//Configurazioni label
@@ -236,8 +236,7 @@ public class GuiConfiguration
 
 		//configurazioni field password
 		UIManager.put("PasswordField.font", outputFont);
-		UIManager.put("PasswordField.echoChar", (char)'●');
-		//UIManager.put("PasswordField.echoChar", (char)'•');
+		UIManager.put("PasswordField.echoChar", (char)'⚫');
 
 		//configurazioni popup menu
 

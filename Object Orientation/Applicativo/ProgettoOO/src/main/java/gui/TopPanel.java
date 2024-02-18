@@ -26,8 +26,8 @@ public class TopPanel
 		migLayout = new MigLayout
 						(
 										"debug",
-										"30[]50:push[]30[]30",
-										""
+										"30[]50:push[]50[]30",
+										"[]"
 						);
 
 		setLayout(migLayout);

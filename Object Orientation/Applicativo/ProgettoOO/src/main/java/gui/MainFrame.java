@@ -3,6 +3,7 @@ package gui;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class MainFrame
 				extends JFrame
@@ -12,9 +13,23 @@ public class MainFrame
 	{
 		this.setTitle("NON AVRO' ALCUN DIO AL DI FUORI DI GIOELE");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setLayout(new MigLayout());
-		this.setLocationRelativeTo(null);
-		this.setResizable(true);
+
+
+		MigLayout migLayout;
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"[][][]"
+			);
+
+
+
+		setLayout(migLayout);
+
+		setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setMinimumSize(getSize());
 	}
 
 	public static MainFrame getMainFrameInstance() {

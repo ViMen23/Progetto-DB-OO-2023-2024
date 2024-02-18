@@ -12,10 +12,13 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
-		searchPlayerPanel.setName("searchPlayerPanel");
-		MainFrame.getMainFrameInstance().add(searchPlayerPanel, "center, wrap");
+		SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
 
+		//searchPlayerPanel.setName("searchPlayerPanel");
+
+		searchTeamPanel.setName("searchTeamPanel");
+
+		MainFrame.getMainFrameInstance().add(searchTeamPanel);
 		MainFrame.getMainFrameInstance().pack();
 
 	}

@@ -1,6 +1,5 @@
 package gui;
 
-import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -40,8 +39,8 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"10[fill]10",
-				"10[]10[]0[]10[]0[]10[]0[]10[]0[]0[]0[]0[]0[]30"
+				"10:push[fill]10:push",
+				"20[]10[]0[]10[]0[]10[]0[]10[]0[]10[]0[]10[]0[]20[]20"
 			);
 
 		setLayout(migLayout);
@@ -74,7 +73,6 @@ public class SearchPlayerPanel
 
 		add(checkBox);
 
-
 		/*
 		 * Campo ricerca per nome: panel
 		 */
@@ -82,14 +80,14 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"[]30[]",
+				"20[]30:push[]20",
 				"10[]20[]10"
 			);
 
-
 		namePanel = new JPanel(migLayout);
+		namePanel.setBackground(Color.white);
 
-		namePanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		add(namePanel);
 
 		/*
 		 * Campo nome: stampa
@@ -125,9 +123,6 @@ public class SearchPlayerPanel
 
 		namePanel.add(textField);
 
-		add(namePanel);
-
-
 		/*
 		 * Campo ricerca per eta: input
 		 */
@@ -139,7 +134,7 @@ public class SearchPlayerPanel
 		checkBox = new JCheckBox(string);
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
 
@@ -150,12 +145,14 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"[]30[]",
+				"20[]30:push[]20",
 				"10[]20[]10"
 			);
 
 		agePanel = new JPanel(migLayout);
-		agePanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		agePanel.setBackground(Color.white);
+
+		add(agePanel);
 
 		/*
 		 * Campo anno di riferimento: stampa
@@ -208,9 +205,6 @@ public class SearchPlayerPanel
 
 		agePanel.add(comboBox);
 
-
-		add(agePanel);
-
 		/*
 		 * Campo ricerca per paese di nascita: checkbox
 		 */
@@ -223,7 +217,7 @@ public class SearchPlayerPanel
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
 
@@ -233,14 +227,15 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2, center",
-				"[]30[]",
+				"debug, wrap 2",
+				"20[]30:push[]20",
 				"10[]20[]10"
 			);
 
 		bornNationPanel = new JPanel(migLayout);
-		bornNationPanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		bornNationPanel.setBackground(Color.white);
 
+		add(bornNationPanel);
 
 		/*
 		 * Campo ricerca per paese di nascita continente: stampa
@@ -283,10 +278,6 @@ public class SearchPlayerPanel
 
 		bornNationPanel.add(comboBox);
 
-
-
-		add(bornNationPanel);
-
 		/*
 		 * Campo ricerca per ruolo: checkBox
 		 */
@@ -299,7 +290,7 @@ public class SearchPlayerPanel
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
 
@@ -309,14 +300,16 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"20[]50[]50[]50[]20",
+				"debug, flowx",
+				"20[]30:push[]30:push[]30:push[]20",
 				"10[]10"
 			);
 
 
 		rolePanel = new JPanel(migLayout);
-		rolePanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		rolePanel.setBackground(Color.white);
+
+		add(rolePanel);
 
 		/*
 		 * Campo ricerca per ruolo portiere: checkBox
@@ -358,9 +351,6 @@ public class SearchPlayerPanel
 
 		rolePanel.add(checkBox);
 
-
-		add(rolePanel);
-
 		/*
 		 * Campo ricerca per posizione principale: checkBox
 		 */
@@ -373,21 +363,44 @@ public class SearchPlayerPanel
 
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
-
 
 		/*
 		 * Campo ricerca per posizione principale: panel
 		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"20[]30:push[]20",
+				"10[]10"
+			);
+
+		mainPositionPanel = new JPanel(migLayout);
+		mainPositionPanel.setBackground(Color.white);
+
+		add(mainPositionPanel);
+
+		/*
+		 * Campo posizione: stampa
+		 */
 		string = GuiConfiguration.getMessage("position");
 		string = StringUtils.capitalize(string);
 
-		mainPositionPanel = new ChoosePanel(string);
-		mainPositionPanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		label = new JLabel(string, SwingConstants.LEADING);
 
-		add(mainPositionPanel);
+		mainPositionPanel.add(label);
+
+		/*
+		 * Campo posizione: comboBox
+		 */
+		comboBox = new JComboBox<String>();
+		comboBox.setEditable(true);
+		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		comboBox.setSelectedIndex(-1);
+
+		mainPositionPanel.add(comboBox);
 
 		/*
 		 * Campo ricerca per il piede preferito: checkBox
@@ -400,7 +413,7 @@ public class SearchPlayerPanel
 		checkBox = new JCheckBox(string);
 		checkBox.setOpaque(true);
 		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setHorizontalTextPosition(SwingConstants.RIGHT);
+		checkBox.setForeground(Color.white);
 
 		add(checkBox);
 
@@ -409,13 +422,15 @@ public class SearchPlayerPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"20[]50[]50[]20",
+				"debug, flowx",
+				"20[]30:push[]30:push[]20",
 				"10[]10"
 			);
 
 		preferredFootPanel = new JPanel(migLayout);
-		preferredFootPanel.setBorder(GuiConfiguration.getSearchPanelBorder());
+		preferredFootPanel.setBackground(Color.white);
+
+		add(preferredFootPanel);
 
 
 		buttonGroup = new ButtonGroup();
@@ -456,11 +471,8 @@ public class SearchPlayerPanel
 
 		buttonGroup.add(radioButton);
 
-
-		add(preferredFootPanel);
-
 		/*
-		 * Campo ricerca per entrambi i piedi preferiti: radioButton
+		 * Campo avvia ricerca: button
 		 */
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();

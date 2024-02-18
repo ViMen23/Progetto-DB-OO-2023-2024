@@ -50,6 +50,7 @@ public class MenuBarPanel
 						);
 
 		setLayout(migLayout);
+		setBackground(Color.white);
 
 
 		/*
@@ -204,7 +205,7 @@ public class MenuBarPanel
 				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
 				searchCompetitionPanel.setName("searchCompetitionPanel");
 
-				MainFrame.getMainFrameInstance().add(searchCompetitionPanel, "center, wrap");
+				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
 				MainFrame.getMainFrameInstance().pack();
 			}
 		});
@@ -252,6 +253,26 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		generalResearchTeamMenuItem = new JMenuItem(string);
+
+		generalResearchTeamMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if
+					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+				searchTeamPanel.setName("searchTeamPanel");
+
+				MainFrame.getMainFrameInstance().add(searchTeamPanel);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
 
 		teamMenu.getPopupMenu().add(generalResearchTeamMenuItem);
 
@@ -311,7 +332,7 @@ public class MenuBarPanel
 				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 				searchPlayerPanel.setName("searchPlayerPanel");
 
-				MainFrame.getMainFrameInstance().add(searchPlayerPanel, "center, wrap");
+				MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 				MainFrame.getMainFrameInstance().pack();
 			}
 		});
@@ -326,6 +347,25 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		militancyResearchPlayerMenuItem = new JMenuItem(string);
+
+		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
+				militancyFilterPanel.setName("militancyFilterPanel");
+
+				MainFrame.getMainFrameInstance().add(militancyFilterPanel);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
 
 		playerMenu.getPopupMenu().add(militancyResearchPlayerMenuItem);
 
@@ -371,6 +411,25 @@ public class MenuBarPanel
 
 		showCompetitionEditionStatisticMenuItem = new JMenuItem(string);
 
+		showCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				CompetitionEditionFilterPanel competitionEditionFilterPanel = new CompetitionEditionFilterPanel();
+				competitionEditionFilterPanel.setName("competitionEditionFilterPanel");
+
+				MainFrame.getMainFrameInstance().add(competitionEditionFilterPanel);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
+
 		statisticMenu.getPopupMenu().add(showCompetitionEditionStatisticMenuItem);
 
 
@@ -380,6 +439,25 @@ public class MenuBarPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/filter.png");
 
 		filterButton = new JButton(imageIcon);
+
+		filterButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				StepFilterPanel stepFilterPanel = new StepFilterPanel();
+				stepFilterPanel.setName("stepFilterPanel");
+
+				MainFrame.getMainFrameInstance().add(stepFilterPanel);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
 
 		add(filterButton);
 
