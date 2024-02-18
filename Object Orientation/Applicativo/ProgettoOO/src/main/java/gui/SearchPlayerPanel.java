@@ -215,7 +215,7 @@ public class SearchPlayerPanel
 		 */
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
-		string += GuiConfiguration.getMessage("borNation");
+		string += GuiConfiguration.getMessage("bornNation");
 		string = string.toUpperCase();
 
 		checkBox = new JCheckBox(string);
@@ -383,7 +383,7 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("position");
 		string = StringUtils.capitalize(string);
 
-		mainPositionPanel = new ChoosePanel(Controller.getControllerInstance(), string);
+		mainPositionPanel = new ChoosePanel(string);
 		mainPositionPanel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(mainPositionPanel);

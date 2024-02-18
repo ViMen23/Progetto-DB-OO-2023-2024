@@ -104,9 +104,9 @@ public class AdminLoginPanel
 		/*
 		 * Box mostra password
 		 */
-		string = Main.getMessage("show");
+		string = GuiConfiguration.getMessage("show");
 		string += " ";
-		string += Main.getMessage("password");
+		string += GuiConfiguration.getMessage("password");
 		string = string.toUpperCase();
 
 		showPasswordCheckBox = new JCheckBox(string);
@@ -136,8 +136,7 @@ public class AdminLoginPanel
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Controller.getControllerInstance().isAdmin
-												(usernameTextField.getText(), new String(passwordField.getPassword()))) {
+				if (Controller.getControllerInstance().isAdmin(usernameTextField.getText(), new String(passwordField.getPassword()))) {
 					System.out.println("Benvenuto");
 				} else {
 					System.out.println("Chi sei?");

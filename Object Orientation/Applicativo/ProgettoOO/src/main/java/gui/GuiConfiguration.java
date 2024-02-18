@@ -54,12 +54,8 @@ public class GuiConfiguration
 	public static void initGuiConfiguration()
 	{
 		// creazione del locale di default come italiano
-		Locale.setDefault(Locale.of("it", "IT"));
+		setLocale(Locale.of("it", "IT"));
 
-		if (!setResourceBundle(Locale.getDefault()) )
-		{
-			return;
-		}
 
 		// text and password field config
 		inputColumn = 25;
@@ -87,15 +83,40 @@ public class GuiConfiguration
 								new MatteBorder(0, 0, 1, 0, Color.BLACK)
 							);
 
-
-
 		//minima size del frame
 		frameMinimumSize = new Dimension(1500, 1000);
 
 		searchPanelColor = new Color(50, 100, 200);
 
 		initUIManager();
+		initHomeFrame();
+	}
 
+	public static void initHomeFrame()
+	{
+		JFrame mainFrame = MainFrame.getMainFrameInstance();
+
+		TopPanel topPanel = new TopPanel();
+		topPanel.setName("topPanel");
+
+		mainFrame.add(topPanel, "top, dock north, wrap");
+
+		MenuBarPanel menuBarPanel = new MenuBarPanel();
+		menuBarPanel.setName("menuBarPanel");
+
+		mainFrame.add(menuBarPanel,  "wrap");
+
+		mainFrame.pack();
+		mainFrame.setVisible(true);
+	}
+
+	public static void resetHomeFrame()
+	{
+		for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+			MainFrame.getMainFrameInstance().remove(component);
+		}
+
+		initHomeFrame();
 	}
 
 
@@ -121,7 +142,6 @@ public class GuiConfiguration
 		}
 
 
-
 		//font testo
 		Font font = new JPanel().getFont();
 
@@ -143,7 +163,7 @@ public class GuiConfiguration
 
 		//Configurazioni generali
 		UIManager.put("nimbusBase", new Color(0, 50, 255));
-		UIManager.put("nimbusBlueGrey", new Color(150, 100, 100));
+		UIManager.put("nimbusBlueGrey", new Color(50, 100, 150));
 		UIManager.put("control", new Color(200, 200, 200));
 		//UIManager.put("defaultFont", outputFont);
 
@@ -241,6 +261,12 @@ public class GuiConfiguration
 
 	}
 
+	public static void setLocale(Locale locale)
+	{
+		Locale.setDefault(locale);
+		setResourceBundle(locale);
+	}
+
 
 	/**
 	 * TYPE : static method - gui package
@@ -250,12 +276,9 @@ public class GuiConfiguration
 	 */
 	public static String getMessage(String key)
 	{
-		try
-		{
+		try {
 			return currentResourceBundle.getString(key);
-		}
-		catch(Exception e)
-		{
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 			return "";
 		}
@@ -416,16 +439,13 @@ public class GuiConfiguration
 	{
 		java.net.URL imageURL = ClassLoader.getSystemResource(imagePath);
 
-		if (imageURL != null)
-		{
+		if (imageURL != null) {
 			ImageIcon imageIcon = new ImageIcon(imageURL);
-
 			Image image = imageIcon.getImage().getScaledInstance(width, height, Image.SCALE_DEFAULT);
 
 			return new ImageIcon(image);
 		}
 
 		return null;
-
 	}
 }

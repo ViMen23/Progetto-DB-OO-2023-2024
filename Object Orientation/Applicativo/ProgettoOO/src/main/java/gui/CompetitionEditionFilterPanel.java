@@ -24,17 +24,16 @@ import java.awt.event.ItemListener;
 
 public class CompetitionEditionFilterPanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
 	protected JPanel panel;
 	protected JButton button;
 	protected JLabel label;
 
 
-	public CompetitionEditionFilterPanel(Controller controller)
+	public CompetitionEditionFilterPanel()
 	{
-		MigLayout migLayout;
 		String string;
+		MigLayout migLayout;
 
 		migLayout = new MigLayout
 			(
@@ -45,7 +44,7 @@ public class CompetitionEditionFilterPanel
 
 		setLayout(migLayout);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo titolo:  bottone
 		 */
@@ -56,15 +55,12 @@ public class CompetitionEditionFilterPanel
 		button = new JButton(string);
 		button.setEnabled(false);
 
-		add(button)
-		;
-		/*------------------------------------------------------------------------------------------------------*/
+		add(button);
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo tipo team:  stampa
 		 */
-
 		string = "  1. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -77,25 +73,21 @@ public class CompetitionEditionFilterPanel
 		label.setForeground(Color.white);
 
 		add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo tipo team:  panel
 		 */
-
-		panel = new SearchTeamTypePanel(controller);
+		panel = new SearchTeamTypePanel();
 
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo stagione:  stampa
 		 */
-
 		string = "  2. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -109,28 +101,24 @@ public class CompetitionEditionFilterPanel
 
 
 		add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo stagione:  panel
 		 */
-
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
 
-		panel = new ChoosePanel(controller, string);
+		panel = new ChoosePanel(string);
 
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo stagione:  stampa
 		 */
-
 		string = "  3. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -145,25 +133,21 @@ public class CompetitionEditionFilterPanel
 		label.setForeground(Color.white);
 
 		add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo paese:  panel
 		 */
-
-		panel = new SearchCountryConfederationPanel(controller);
+		panel = new SearchCountryConfederationPanel();
 
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo competizione:  stampa
 		 */
-
 		string = "  4. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -175,26 +159,22 @@ public class CompetitionEditionFilterPanel
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
 
-
 		add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo competizione:  panel
 		 */
-
 		string = GuiConfiguration.getMessage("competition");
 		string = StringUtils.capitalize(string);
 
-		panel = new ChoosePanel(controller, string);
+		panel = new ChoosePanel(string);
 
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo avvia ricerca:  bottone
 		 */
@@ -204,23 +184,6 @@ public class CompetitionEditionFilterPanel
 		button = new JButton(string);
 
 		add(button);
-		/*------------------------------------------------------------------------------------------------------*/
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e) {
-
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e) {
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e) {
-
-	}
-
 
 }

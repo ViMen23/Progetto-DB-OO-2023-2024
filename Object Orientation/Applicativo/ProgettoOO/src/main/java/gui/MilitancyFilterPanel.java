@@ -75,7 +75,7 @@ public class MilitancyFilterPanel
 		 * Campo scelta tipo team: panel
 		 */
 
-		panel = new SearchTeamTypePanel(controller);
+		panel = new SearchTeamTypePanel();
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
@@ -140,7 +140,7 @@ public class MilitancyFilterPanel
 		string = GuiConfiguration.getMessage("team");
 		string = StringUtils.capitalize(string);
 
-		panel = new ChoosePanel(controller, string);
+		panel = new ChoosePanel(string);
 
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
@@ -176,7 +176,7 @@ public class MilitancyFilterPanel
 		string = StringUtils.capitalize(string);
 
 
-		panel = new ChoosePanel(controller, string);
+		panel = new ChoosePanel(string);
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		/*------------------------------------------------------------------------------------------------------*/
@@ -191,7 +191,7 @@ public class MilitancyFilterPanel
 		string = StringUtils.capitalize(string);
 
 
-		panel.add(new ChoosePanel(controller, string));
+		panel.add(new ChoosePanel(string));
 
 		add(panel);
 

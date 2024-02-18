@@ -30,7 +30,7 @@ public class SearchCountryConfederationPanel
 	protected JRadioButton radioButton;
 	protected ButtonGroup buttonGroup;
 
-	public SearchCountryConfederationPanel(Controller controller)
+	public SearchCountryConfederationPanel()
 	{
 
 		MigLayout migLayout;

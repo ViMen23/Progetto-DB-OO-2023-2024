@@ -18,7 +18,7 @@ public class ChoosePanel
 	protected JLabel label;
 	protected JComboBox<String> comboBox;
 
-	public ChoosePanel(Controller controller, String toChoose)
+	public ChoosePanel(String toChoose)
 	{
 		MigLayout migLayout;
 

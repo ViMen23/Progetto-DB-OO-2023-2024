@@ -7,34 +7,25 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ViewCompetitionFrame
-				extends JFrame
+				extends JPanel
 {
 	protected JPanel top;
 	protected JPanel menuBar;
-	protected JPanel panelInformation;
-	protected JPanel panelSeason;
-	protected JPanel panelTeam;
-	protected JPanel panelPlayer;
-	protected JPanel panelPartecipation;
+	protected JPanel informationPanel;
+	protected JPanel seasonPanel;
+	protected JPanel teamPanel;
+	protected JPanel playerPanel;
+	protected JPanel partecipationPanel;
 
-	protected JButton button;
+	protected JButton showButton;
 
 
-	public ViewCompetitionFrame(Controller controller) {
-
-		super("Progetto");
-
-		MigLayout migLayout;
+	public ViewCompetitionFrame()
+	{
 		String string;
 		String title;
 		String tableName;
-
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLocationRelativeTo(null);
-		setResizable(true);
-		setMinimumSize(new Dimension(500, 500));
-		setMaximumSize(new Dimension(1500, 1000));
-
+		MigLayout migLayout;
 
 		migLayout = new MigLayout
 			(
@@ -43,21 +34,12 @@ public class ViewCompetitionFrame
 				"0[]0[]15[]15[]15[]15[]10"
 			);
 
-
 		setLayout(migLayout);
 
 
-		top = new TopPanel(controller);
+		informationPanel = new InformationCompetitionPanel();
 
-		add(top, "wrap");
-
-		menuBar = new MenuBar(controller);
-
-		add(menuBar, "wrap");
-
-		panelInformation = new InformationCompetitionPanel(controller);
-
-		add(panelInformation, "wrap");
+		add(informationPanel, "wrap");
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
 		/*
@@ -67,7 +49,7 @@ public class ViewCompetitionFrame
 		string = string.toUpperCase();
 
 
-		panelSeason = new ChoosePanel(controller, string);
+		seasonPanel = new ChoosePanel(string);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -78,11 +60,11 @@ public class ViewCompetitionFrame
 		string = GuiConfiguration.getMessage("show");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		showButton = new JButton(string);
 
-		panelSeason.add(button);
+		seasonPanel.add(showButton);
 
-		add(panelSeason, "wrap");
+		add(seasonPanel, "wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -98,9 +80,9 @@ public class ViewCompetitionFrame
 		tableName = "teamTrophy";
 
 
-		panelTeam = new SampleTable(controller, title, tableName);
+		teamPanel = new SampleTable(title, tableName);
 
-		add(panelTeam, "split 2");
+		add(teamPanel, "split 2");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -116,9 +98,9 @@ public class ViewCompetitionFrame
 		tableName = "playerTrophy";
 
 
-		panelPlayer = new SampleTable(controller, title, tableName);
+		playerPanel = new SampleTable(title, tableName);
 
-		add(panelPlayer, "wrap");
+		add(playerPanel, "wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 		//////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -135,9 +117,9 @@ public class ViewCompetitionFrame
 
 		tableName = "partecipant";
 
-		panelPartecipation = new SampleTable(controller, title, tableName);
+		partecipationPanel = new SampleTable(title, tableName);
 
-		add(panelPartecipation, "wrap");
+		add(playerPanel, "wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 	}

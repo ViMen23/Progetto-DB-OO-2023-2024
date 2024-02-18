@@ -24,18 +24,15 @@ import org.apache.commons.lang3.StringUtils;
 
 public class SearchTeamTypePanel
 				extends JPanel
-				implements ActionListener, CaretListener, ItemListener
 {
-
 	protected JRadioButton radioButton;
 	protected ButtonGroup buttonGroup;
 
 
-	public SearchTeamTypePanel(Controller controller)
+	public SearchTeamTypePanel()
 	{
-
-		MigLayout migLayout;
 		String string;
+		MigLayout migLayout;
 
 		migLayout = new MigLayout
 			(
@@ -48,11 +45,10 @@ public class SearchTeamTypePanel
 
 		buttonGroup = new ButtonGroup();
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo club: radio button
 		 */
-
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
@@ -61,14 +57,15 @@ public class SearchTeamTypePanel
 		add(radioButton);
 
 		buttonGroup.add(radioButton);
-		/*------------------------------------------------------------------------------------------------------*/
 
-		//////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 		/*
 		 * Campo nazionale:  radio button
 		 */
+		string = GuiConfiguration.getMessage("national");
+		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(StringUtils.capitalize(Main.getMessage("national")));
+		radioButton = new JRadioButton(string);
 
 		add(radioButton);
 
@@ -76,28 +73,5 @@ public class SearchTeamTypePanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		/*
-		if (e.getActionCommand() == "search"){
-			JPanel resultPanel = new UserResultSearchPanel(Controller.getControllerInstance(), Main.currentLocale, "competitions", 5);
-			JOptionPane.showMessageDialog(null, resultPanel);
-		}
-
-		 */
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-
-	}
-
-	@Override
-	public void caretUpdate(CaretEvent e)
-	{
-
-	}
 
 }

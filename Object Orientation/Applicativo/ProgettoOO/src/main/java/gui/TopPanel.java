@@ -1,7 +1,5 @@
 package gui;
 
-import controller.Controller;
-
 import net.miginfocom.swing.MigLayout;
 
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +17,7 @@ public class TopPanel
 	protected JButton localeButton;
 	protected JButton loginButton;
 
-
-	public TopPanel(Controller controller)
+	public TopPanel()
 	{
 		ImageIcon imageIcon;
 		String string;
@@ -67,7 +64,7 @@ public class TopPanel
 				JOptionPane.showOptionDialog
 								(
 												null,
-												new LocalePanel(),
+												new ChooseLocalePanel(),
 												string,
 												JOptionPane.DEFAULT_OPTION,
 												JOptionPane.PLAIN_MESSAGE,
@@ -111,9 +108,7 @@ public class TopPanel
 			}
 		});
 
-
 		add(loginButton);
 	}
-
 
 }

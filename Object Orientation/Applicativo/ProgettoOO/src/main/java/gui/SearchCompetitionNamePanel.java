@@ -32,7 +32,7 @@ public class SearchCompetitionNamePanel
 	protected JTextField textField;
 
 
-	public SearchCompetitionNamePanel(Controller controller)
+	public SearchCompetitionNamePanel()
 	{
 		MigLayout migLayout;
 		String string;

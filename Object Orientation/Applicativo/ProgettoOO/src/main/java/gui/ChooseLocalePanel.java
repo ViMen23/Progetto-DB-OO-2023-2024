@@ -4,13 +4,14 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.Locale;
 
-public class LocalePanel
+public class ChooseLocalePanel
 				extends JPanel
 {
 	protected JLabel messageLabel;
@@ -19,7 +20,7 @@ public class LocalePanel
 
 	private Locale choosedLocale;
 
-	public LocalePanel()
+	public ChooseLocalePanel()
 	{
 		String string;
 		MigLayout migLayout;
@@ -51,20 +52,22 @@ public class LocalePanel
 		 */
 		localeComboBox = new JComboBox<String>();
 
-		for (Locale locale : Locale.getAvailableLocales()) {
-			localeComboBox.addItem(StringUtils.capitalize(locale.getDisplayName()));
-		}
+		localeComboBox.addItem("Italiano");
+		localeComboBox.addItem("Inglese");
+		localeComboBox.setSelectedIndex(-1);
 
 		localeComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
 				String choice = (String) e.getItem();
 
-				for (Locale locale : Locale.getAvailableLocales()) {
-					if (choice.equalsIgnoreCase(locale.getDisplayName())) {
-						setChoosedLocale(locale);
+				switch (choice) {
+					case "Italiano":
+						setChoosedLocale(Locale.of("it", "IT"));
 						break;
-					}
+					case "Inglese":
+						setChoosedLocale(Locale.of("en", "US"));
+						break;
 				}
 			}
 		});
@@ -85,7 +88,11 @@ public class LocalePanel
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Locale.setDefault(getChoosedLocale());
+				Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+				window.dispose();
+
+				GuiConfiguration.setLocale(getChoosedLocale());
+				GuiConfiguration.resetHomeFrame();
 			}
 		});
 
@@ -101,4 +108,5 @@ public class LocalePanel
 	{
 		return choosedLocale;
 	}
+
 }

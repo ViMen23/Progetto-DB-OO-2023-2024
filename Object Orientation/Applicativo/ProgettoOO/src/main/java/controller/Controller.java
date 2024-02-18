@@ -15,13 +15,16 @@ import java.util.regex.Pattern;
  *
  * DESC: TODO
  */
-public class Controller {
+public class Controller
+{
 	private static Controller controllerInstance = null;
 
-	private Controller() {
+	private Controller()
+	{
 	}
 
-	public static Controller getControllerInstance() {
+	public static Controller getControllerInstance()
+	{
 		if (null == controllerInstance) {
 			controllerInstance = new Controller();
 		}

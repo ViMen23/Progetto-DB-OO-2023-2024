@@ -18,7 +18,7 @@ public class SearchCompetitionPanel
 	protected ButtonGroup buttonGroup;
 	protected JRadioButton radioButton;
 
-	public SearchCompetitionPanel(Controller controller)
+	public SearchCompetitionPanel()
 	{
 
 		MigLayout migLayout;
@@ -66,7 +66,7 @@ public class SearchCompetitionPanel
 		 * Campo ricerca per nome: panel
 		 */
 
-		panel = new SearchCompetitionNamePanel(controller);
+		panel = new SearchCompetitionNamePanel();
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
@@ -165,7 +165,7 @@ public class SearchCompetitionPanel
 		 * Campo ricerca per tipo squadra: panel
 		 */
 
-		panel = new SearchTeamTypePanel(controller);
+		panel = new SearchTeamTypePanel();
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
@@ -192,7 +192,7 @@ public class SearchCompetitionPanel
 		 * Campo ricerca per paese e confederazione: checkBox
 		 */
 
-		panel = new SearchCountryConfederationPanel(controller);
+		panel = new SearchCountryConfederationPanel();
 		panel.setBorder(GuiConfiguration.getSearchPanelBorder());
 
 		add(panel);
