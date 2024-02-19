@@ -1,5 +1,7 @@
 package gui;
 
+import controller.Controller;
+
 /**
  * TYPE : class - gui package
  * NAME : Main
@@ -12,15 +14,19 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		ViewAllCountry viewAllCountry = new ViewAllCountry();
+		SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
-		viewAllCountry.setName("boh");
+		searchCountryPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(viewAllCountry);
+		MainFrame.getMainFrameInstance().add(searchCountryPanel);
 		MainFrame.getMainFrameInstance().pack();
 
+		//Controller.getControllerInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
+
+		//Controller.getControllerInstance().subCountries("Asia");
+		Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
 	}
 
 

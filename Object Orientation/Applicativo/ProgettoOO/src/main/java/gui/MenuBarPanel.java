@@ -6,8 +6,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 
 public class MenuBarPanel
 				extends  JPanel
@@ -129,10 +127,10 @@ public class MenuBarPanel
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				ViewAllCountry viewAllCountry = new ViewAllCountry();
-				viewAllCountry.setName("viewAllCountry");
+				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
+				searchCountryPanel.setName("viewAllCountry");
 
-				MainFrame.getMainFrameInstance().add(viewAllCountry);
+				MainFrame.getMainFrameInstance().add(searchCountryPanel);
 				MainFrame.getMainFrameInstance().pack();
 			}
 		});

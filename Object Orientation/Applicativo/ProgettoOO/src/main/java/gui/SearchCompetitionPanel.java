@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Country;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -282,8 +283,14 @@ public class SearchCompetitionPanel
 		 * Campo mondo: comboBox
 		 */
 		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
+		comboBox.setEditable(false);
 		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+
+		for (Country country : Country.getCountryList()) {
+			comboBox.addItem(country.getName());
+		}
+
 		comboBox.setSelectedIndex(-1);
 
 		countryConfederationPanel.add(comboBox);

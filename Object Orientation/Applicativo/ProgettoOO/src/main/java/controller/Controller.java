@@ -1,12 +1,20 @@
 package controller;
 
+import dao.SearchCompetitionsDao;
+import dao.SubConfederationsDao;
+import dao.SubCountriesDao;
 import dao.RowExistsDao;
+import model.Competition;
+import model.Confederation;
+import model.Country;
+import postgresDaoImplementation.SearchCompetitionsPostgresDaoImpl;
+import postgresDaoImplementation.SubConfederationsPostgresDaoImpl;
+import postgresDaoImplementation.SubCountriesPostgresDaoImpl;
 import postgresDaoImplementation.RowExistsPostgresDaoImpl;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ItemEvent;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 /**
@@ -54,5 +62,55 @@ public class Controller
 		RowExistsDao reDao = new RowExistsPostgresDaoImpl();
 
 		return reDao.rowExistsDB(separator, string);
+	}
+
+	public void subCountries(String superCountryName)
+	{
+		Country.getCountryList().clear();
+
+		SubCountriesDao allContinent = new SubCountriesPostgresDaoImpl();
+		allContinent.subCountriesDB(superCountryName);
+
+		for (Country country : Country.getCountryList()) {
+			System.out.println
+							(
+											"PAESE: " +
+															" [" + country.getType() + " - " +
+															country.getCode() + " - " +
+															country.getSuperCountryCode() + "] " +
+															country.getName()
+							);
+		}
+
+	}
+
+	public void subConfederations(String superConfederationsName)
+	{
+		Confederation.getConfederationList().clear();
+
+		SubConfederationsDao allConfederation = new SubConfederationsPostgresDaoImpl();
+		allConfederation.subConfederationsDB(superConfederationsName);
+	}
+
+	public void searchCompetitions(String subNameCompetition,
+																 String typeCompetition, String typeTeamCompetition,
+																 String countryName)
+	{
+		Competition.getCompetitionList().clear();
+
+		SearchCompetitionsDao searchCompetitions = new SearchCompetitionsPostgresDaoImpl();
+		searchCompetitions.searchCompetitionsDB(subNameCompetition, typeCompetition, typeTeamCompetition, countryName);
+
+		for (Competition competition : Competition.getCompetitionList()) {
+			System.out.println
+							(
+											"COMPETIZIONE: " +
+															" [" + competition.getType() + " - " +
+															competition.getTeamType() + " - " +
+															competition.getConfederationShortName() + " - " +
+															competition.getCountryName() + "] " +
+															competition.getName()
+							);
+		}
 	}
 }

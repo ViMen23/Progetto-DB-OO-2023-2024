@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * TYPE : class
  * NAME : Confederation
@@ -8,25 +11,24 @@ package model;
  */
 public class Confederation
 {
-	private final Country country;
+	private static List<Confederation> confederationList = new ArrayList<Confederation>();
+
 	private final String shortName;
 	private final String longName;
-	private final Confederation superConfederation;
+	private final String countryName;
+	private final String superShortName;
 
 
-	public Confederation(Country country, String shortName, String longName, Confederation superConfederation)
+	public Confederation(String shortName, String longName, String countryName, String superShortName)
 	{
-		this.country = country;
 		this.shortName = shortName;
 		this.longName = longName;
-		this.superConfederation = superConfederation;
+		this.countryName = countryName;
+		this.superShortName = superShortName;
+
+		confederationList.add(this);
 	}
 
-
-	public Country getCountry()
-	{
-		return country;
-	}
 
 	public String getShortName()
 	{
@@ -37,10 +39,18 @@ public class Confederation
 	{
 		return longName;
 	}
-
-	public Confederation getSuperConfederation()
+	public String getCountryName()
 	{
-		return superConfederation;
+		return countryName;
+	}
+	public String getSuperShortName()
+	{
+		return superShortName;
+	}
+
+	public static List<Confederation> getConfederationList()
+	{
+		return confederationList;
 	}
 
 }

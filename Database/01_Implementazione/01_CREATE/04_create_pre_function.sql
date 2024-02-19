@@ -403,14 +403,14 @@ CREATE OR REPLACE FUNCTION all_references
 	IN	name_table	text
 )
 RETURNS TABLE
-(
-	constr			text,	-- nome del constraint
-	table_to_ref	text,	-- tabella referenziata
-	col_to_ref		text,	-- colonna della tabella referenziata
-	table_ref		text,	-- tabella che referenzia
-	col_ref			text,	-- colonna della tabella che referenzia
-	col_ord			integer	-- ordine della colonna della tabella che referenzia
-)
+		(
+			constr			text,	-- nome del constraint
+			table_to_ref	text,	-- tabella referenziata
+			col_to_ref		text,	-- colonna della tabella referenziata
+			table_ref		text,	-- tabella che referenzia
+			col_ref			text,	-- colonna della tabella che referenzia
+			col_ord			integer	-- ordine della colonna della tabella che referenzia
+		)
 RETURNS NULL ON NULL INPUT
 AS
 $$

@@ -1,6 +1,7 @@
 package model;
 
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,30 +13,26 @@ import java.util.Map;
 // TODO: per tutte le classi con oggetti immutabili considerare di convertirle in classi record
 public class Country
 {
-	private final EnCountry type;
+	private static List<Country> countryList = new ArrayList<Country>();
+
+	private final String type;
 	private final String code;
 	private final String name;
-	private final Country superCountry;
-
-	// mappa delle nazioni per continente
-	private static Map<Country, Country> nationMap = new LinkedHashMap<Country, Country>();
+	private final String superCountryCode;
 
 
-	public Country(EnCountry type, String code, String name, Country superCountry)
+	public Country(String type, String code, String name, String superCountryCode)
 	{
 		this.type = type;
 		this.code = code;
 		this.name = name;
-		this.superCountry = superCountry;
+		this.superCountryCode = superCountryCode;
 
-		if (EnCountry.NATION == type)
-		{
-			nationMap.put(superCountry, this);
-		}
+		countryList.add(this);
 	}
 
 
-	public EnCountry getType()
+	public String getType()
 	{
 		return type;
 	}
@@ -50,14 +47,14 @@ public class Country
 		return name;
 	}
 
-	public Country getSuperCountry()
+	public String getSuperCountryCode()
 	{
-		return superCountry;
+		return superCountryCode;
 	}
 
-	public static Map<Country, Country> getNationMap()
+	public static List<Country> getCountryList()
 	{
-		return nationMap;
+		return countryList;
 	}
 
 }

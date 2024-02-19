@@ -1,9 +1,6 @@
 package model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * TYPE : class
@@ -13,37 +10,36 @@ import java.util.TreeSet;
  */
 public class Competition
 {
-	private final EnCompetition type;
-	private final EnTeam teamType;
+	private final String type;
+	private final String teamType;
 	private final String name;
-	private final Integer frequency;
-	private final Confederation confederation;
-	private Set<Integer> editions; // anno di inizio delle edizioni della competizione calcistica
-
-	// mappa delle competizioni per confederazione calcistica
-	private static Map<Confederation, Competition> competitionMap = new LinkedHashMap<Confederation, Competition>();
+	private final String confederationShortName;
+	private final String countryName;
 
 
-	public Competition(EnCompetition type, EnTeam teamType, String name, Integer frequency, Confederation confederation)
+
+	private static List<Competition> competitionList = new ArrayList<Competition>();
+
+
+	public Competition(String type, String teamType, String name,
+										 String confederationShortName, String countryName)
 	{
 		this.type = type;
 		this.teamType = teamType;
 		this.name = name;
-		this.frequency = frequency;
-		this.confederation = confederation;
+		this.confederationShortName = confederationShortName;
+		this.countryName = countryName;
 
-		this.editions = new TreeSet<Integer>();
-
-		competitionMap.put(confederation, this);
+		competitionList.add(this);
 	}
 
 
-	public EnCompetition getType()
+	public String getType()
 	{
 		return type;
 	}
 
-	public EnTeam getTeamType()
+	public String getTeamType()
 	{
 		return teamType;
 	}
@@ -53,30 +49,19 @@ public class Competition
 		return name;
 	}
 
-	public Integer getFrequency()
+	public String getConfederationShortName()
 	{
-		return frequency;
+		return confederationShortName;
 	}
 
-	public Confederation getConfederation()
+	public String getCountryName()
 	{
-		return confederation;
+		return countryName;
 	}
 
-	public static Map<Confederation, Competition> getCompetitionMap()
+	public static List<Competition> getCompetitionList()
 	{
-		return competitionMap;
-	}
-
-	public Set<Integer> getEditions()
-	{
-		return editions;
-	}
-
-
-	public void addEdition(Integer startYear)
-	{
-		editions.add(startYear);
+		return competitionList;
 	}
 
 }

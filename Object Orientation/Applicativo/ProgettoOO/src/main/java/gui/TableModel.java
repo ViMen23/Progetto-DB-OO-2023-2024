@@ -1,17 +1,21 @@
 
 package gui;
 
+import model.Country;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.table.AbstractTableModel;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 
-public class TableModel extends AbstractTableModel
+public class TableModel
+				extends AbstractTableModel
 {
 
-	private String[] columnNames;
-	private Object[][] data;
+	private List<String> columnNames;
+	private List<List<String>> data;
 
 	private static HashMap<String, Object[][]> hashMap = new HashMap<>();
 	
@@ -19,107 +23,46 @@ public class TableModel extends AbstractTableModel
 	{
 		super();
 
-		initData();
+		//initData();
 
-		if (tableName.equalsIgnoreCase("competitions")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("name")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("confederation")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("country"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("teamTrophy")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("trophy")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("winner"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("playerTrophy")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("trophy")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("player") + " " + GuiConfiguration.getMessage("winner")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("team") + " " + GuiConfiguration.getMessage("winner"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("partecipant")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("shortName")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("longName")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("country"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("squad")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("name")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("surname")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("role")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("mainPosition"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("trophyTeam")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("trophy")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("competition")),
-				};
-		}
-		else if(tableName.equalsIgnoreCase("prizeTeam")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("prize")),
+		if (tableName.equalsIgnoreCase("countries")) {
+			this.columnNames = new ArrayList<String>();
 
-				};
-		}
-		else if(tableName.equalsIgnoreCase("competitionParticipation")) {
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("competition")),
-				};
-		}
-		else if(tableName.equalsIgnoreCase("countries")){
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("flag")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("name")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("code")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("type"))
-				};
-		}
-		else if(tableName.equalsIgnoreCase("confederations")){
-			this.columnNames = new String[]
-				{
-					StringUtils.capitalize(GuiConfiguration.getMessage("longName")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("shortName")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("type")),
-					StringUtils.capitalize(GuiConfiguration.getMessage("country"))
-				};
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("name")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("code")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
 		}
 
-		data = hashMap.get(tableName);
+		data = new ArrayList<List<String>>();
+		for (Country country : Country.getCountryList()) {
+			List<String> innerData = new ArrayList<String>();
+
+			innerData.add(country.getName());
+			innerData.add(country.getCode());
+			innerData.add(country.getType());
+
+			data.add(innerData);
+		}
 
 	}
 	@Override
 	public int getRowCount() {
-		return data.length;
+		return data.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return columnNames.length;
+		return columnNames.size();
 	}
 
 	public String getColumnName(int col) {
-		return columnNames[col];
+		return columnNames.get(col);
 	}
 
 	@Override
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data[rowIndex][columnIndex];
+	public Object getValueAt(int rowIndex, int columnIndex)
+	{
+		return data.get(rowIndex).get(columnIndex);
 	}
 
 	public Class getColumnClass(int c) {
