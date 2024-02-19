@@ -18,7 +18,6 @@ public class SearchCompetitionPanel
 	protected JPanel teamTypePanel;
 	protected JPanel countryConfederationPanel;
 
-
 	protected JButton button;
 	protected JCheckBox checkBox;
 	protected ButtonGroup buttonGroup;
@@ -76,7 +75,6 @@ public class SearchCompetitionPanel
 		/*
 		 * Campo ricerca per nome: panel
 		 */
-
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
@@ -135,7 +133,6 @@ public class SearchCompetitionPanel
 		competitionTypePanel = new JPanel(migLayout);
 
 		competitionTypePanel.setBackground(panelColor);
-
 		add(competitionTypePanel);
 
 		buttonGroup = new ButtonGroup();

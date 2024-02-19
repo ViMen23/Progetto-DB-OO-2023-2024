@@ -17,12 +17,28 @@ public class StepFilterPanel
 	protected JPanel teamPanel;
 	protected JPanel playerPanel;
 
-	protected JButton button;
-	protected JCheckBox checkBox;
-	protected JLabel label;
+	protected JButton fakeButton;
+	protected JButton searchButton;
+
+	protected JRadioButton clubRadioButton;
+	protected JRadioButton nationalRadioButton;
+	protected JRadioButton worldRadioButton;
+	protected JRadioButton continentRadioButton;
+	protected JRadioButton nationRadioButton;
+
+
+	protected JComboBox<String> seasonComboBox;
+	protected JComboBox<String> worldComboBox;
+	protected JComboBox<String> continentComboBox;
+	protected JComboBox<String> nationComboBox;
+	protected JComboBox<String> competitionComboBox;
+	protected JComboBox<String> teamComboBox;
+	protected JComboBox<String> playerComboBox;
+
+
 	protected ButtonGroup buttonGroup;
-	protected JRadioButton radioButton;
-	protected JComboBox<String> comboBox;
+	protected JLabel label;
+
 
 	protected Color panelColor = Color.white;
 
@@ -48,10 +64,10 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("stepFilter");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
+		fakeButton = new JButton(string);
+		fakeButton.setEnabled(false);
 
-		add(button);
+		add(fakeButton);
 
 		/*
 		 * Campo scelta tipo team: stampa
@@ -84,20 +100,15 @@ public class StepFilterPanel
 
 		add(teamTypePanel);
 
-
-		buttonGroup = new ButtonGroup();
-
 		/*
 		 * Campo club: radio button
 		 */
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		clubRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		teamTypePanel.add(clubRadioButton);
 
 		/*
 		 * Campo nazionale: radio button
@@ -105,12 +116,17 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationalRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
+		teamTypePanel.add(nationalRadioButton);
 
-		buttonGroup.add(radioButton);
+		/*
+		 * Campo gruppo bottone: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
 
+		buttonGroup.add(clubRadioButton);
+		buttonGroup.add(nationalRadioButton);
 
 		/*
 		 * Campo scelta stagione: stampa
@@ -156,12 +172,12 @@ public class StepFilterPanel
 		/*
 		 * Campo stagione: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		seasonComboBox = new JComboBox<String>();
 
-		seasonPanel.add(comboBox);
+		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		seasonComboBox.setSelectedIndex(-1);
+
+		seasonPanel.add(seasonComboBox);
 
 
 		/*
@@ -197,30 +213,25 @@ public class StepFilterPanel
 
 		add(countryPanel);
 
-
-		buttonGroup = new ButtonGroup();
-
 		/*
 		 * Campo mondo: radio button
 		 */
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		worldRadioButton = new JRadioButton(string);
 
-		countryPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		countryPanel.add(worldRadioButton);
 
 		/*
 		 * Campo mondo: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		worldComboBox = new JComboBox<String>();
 
-		countryPanel.add(comboBox);
+		worldComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		worldComboBox.setSelectedIndex(-1);
+
+		countryPanel.add(worldComboBox);
 
 		/*
 		 * Campo continente: radio button
@@ -228,21 +239,19 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		continentRadioButton = new JRadioButton(string);
 
-		countryPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		countryPanel.add(continentRadioButton);
 
 		/*
 		 * Campo continente: combo box
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		continentComboBox = new JComboBox<String>();
 
-		countryPanel.add(comboBox);
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setSelectedIndex(-1);
+
+		countryPanel.add(continentComboBox);
 
 		/*
 		 * Campo nazione: radio button
@@ -250,21 +259,28 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationRadioButton = new JRadioButton(string);
 
-		countryPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		countryPanel.add(nationRadioButton);
 
 		/*
 		 * Campo nazione: combo box
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		nationComboBox = new JComboBox<String>();
 
-		countryPanel.add(comboBox);
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		nationComboBox.setSelectedIndex(-1);
+
+		countryPanel.add(nationComboBox);
+
+		/*
+		 * Campo gruppo bottone: button group
+		 */
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(worldRadioButton);
+		buttonGroup.add(continentRadioButton);
+		buttonGroup.add(nationRadioButton);
 
 		/*
 		 * Campo scelta competizione: stampa
@@ -310,13 +326,12 @@ public class StepFilterPanel
 		/*
 		 * Campo competizione: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		competitionComboBox = new JComboBox<String>();
 
-		competitionPanel.add(comboBox);
+		competitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		competitionComboBox.setSelectedIndex(-1);
 
+		competitionPanel.add(competitionComboBox);
 
 		/*
 		 * Campo scelta squadra: stampa
@@ -362,12 +377,12 @@ public class StepFilterPanel
 		/*
 		 * Campo squadra: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		teamComboBox = new JComboBox<String>();
 
-		teamPanel.add(comboBox);
+		teamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		teamComboBox.setSelectedIndex(-1);
+
+		teamPanel.add(teamComboBox);
 
 		/*
 		 * Campo scelta calciatore: stampa
@@ -413,12 +428,12 @@ public class StepFilterPanel
 		/*
 		 * Campo calciatore: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		playerComboBox = new JComboBox<String>();
+		playerComboBox.setEditable(true);
+		playerComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		playerComboBox.setSelectedIndex(-1);
 
-		playerPanel.add(comboBox);
+		playerPanel.add(playerComboBox);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -426,8 +441,8 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("go");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		searchButton = new JButton(string);
 
-		add(button);
+		add(searchButton);
 	}
 }

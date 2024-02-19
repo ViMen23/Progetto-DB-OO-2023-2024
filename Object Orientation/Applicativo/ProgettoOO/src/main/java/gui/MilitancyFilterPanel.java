@@ -17,12 +17,22 @@ public class MilitancyFilterPanel
 	protected JPanel yearPanel;
 
 
-	protected JButton button;
-	protected JCheckBox checkBox;
+	protected JButton fakeButton;
+	protected JButton searchButton;
+
+	protected JRadioButton clubRadioButton;
+	protected JRadioButton nationalRadioButton;
+
+	protected JComboBox<String> worldComboBox;
+	protected JComboBox<String> continentComboBox;
+	protected JComboBox<String> nationComboBox;
+	protected JComboBox<String> teamComboBox;
+	protected JComboBox<String> fromYearComboBox;
+	protected JComboBox<String> toYearComboBox;
+
 	protected JLabel label;
-	protected JComboBox<String> comboBox;
 	protected ButtonGroup buttonGroup;
-	protected JRadioButton radioButton;
+
 
 	protected Color panelColor = Color.white;
 
@@ -47,10 +57,10 @@ public class MilitancyFilterPanel
 		string = GuiConfiguration.getMessage("militancyFilter");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
+		fakeButton = new JButton(string);
+		fakeButton.setEnabled(false);
 
-		add(button);
+		add(fakeButton);
 
 		/*
 		 * Campo scelta tipo team: stampa
@@ -83,20 +93,15 @@ public class MilitancyFilterPanel
 
 		add(teamTypePanel);
 
-
-		buttonGroup = new ButtonGroup();
-
 		/*
 		 * Campo club: radio button
 		 */
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		clubRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		teamTypePanel.add(clubRadioButton);
 
 		/*
 		 * Campo nazionale: radio button
@@ -104,12 +109,17 @@ public class MilitancyFilterPanel
 		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationalRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
+		teamTypePanel.add(nationalRadioButton);
 
-		buttonGroup.add(radioButton);
+		/*
+		 * Campo gruppo bottone: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
 
+		buttonGroup.add(clubRadioButton);
+		buttonGroup.add(nationalRadioButton);
 
 		/*
 		 * Campo scelta paese: stampa
@@ -157,12 +167,12 @@ public class MilitancyFilterPanel
 		/*
 		 * Campo mondo: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		worldComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		worldComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		worldComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(worldComboBox);
 
 		/*
 		 * Campo continente: stampa
@@ -177,12 +187,12 @@ public class MilitancyFilterPanel
 		/*
 		 * Campo continente: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		continentComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(continentComboBox);
 
 		/*
 		 * Campo nazione: stampa
@@ -197,12 +207,12 @@ public class MilitancyFilterPanel
 		/*
 		 * Campo nazione: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		nationComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		nationComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(nationComboBox);
 
 		/*
 		 * Campo scelta squadra: stampa
@@ -248,12 +258,12 @@ public class MilitancyFilterPanel
 		/*
 		 * Campo squadra: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		teamComboBox = new JComboBox<String>();
 
-		teamPanel.add(comboBox);
+		teamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		teamComboBox.setSelectedIndex(-1);
+
+		teamPanel.add(teamComboBox);
 
 		/*
 		 * Campo scelta anni: stampa
@@ -287,7 +297,7 @@ public class MilitancyFilterPanel
 		add(yearPanel);
 
 		/*
-		 * Campo squadra: stampa
+		 * Campo anni da: stampa
 		 */
 		string = GuiConfiguration.getMessage("from");
 		string += " ";
@@ -299,17 +309,17 @@ public class MilitancyFilterPanel
 		yearPanel.add(label);
 
 		/*
-		 * Campo squadra: comboBox
+		 * Campo anni da: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		fromYearComboBox = new JComboBox<String>();
 
-		yearPanel.add(comboBox);
+		fromYearComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		fromYearComboBox.setSelectedIndex(-1);
+
+		yearPanel.add(fromYearComboBox);
 
 		/*
-		 * Campo squadra: stampa
+		 * Campo ad anni: stampa
 		 */
 		string = GuiConfiguration.getMessage("to");
 		string += " ";
@@ -321,14 +331,14 @@ public class MilitancyFilterPanel
 		yearPanel.add(label);
 
 		/*
-		 * Campo squadra: comboBox
+		 * Campo ad anni: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		toYearComboBox = new JComboBox<String>();
 
-		yearPanel.add(comboBox);
+		toYearComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		toYearComboBox.setSelectedIndex(-1);
+
+		yearPanel.add(toYearComboBox);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -336,8 +346,8 @@ public class MilitancyFilterPanel
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		searchButton = new JButton(string);
 
-		add(button);
+		add(searchButton);
 	}
 }

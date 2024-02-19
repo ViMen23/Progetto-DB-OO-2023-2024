@@ -5,6 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.util.Vector;
 
 public class SearchPlayerPanel
 				extends JPanel
@@ -16,19 +18,37 @@ public class SearchPlayerPanel
 	protected JPanel mainPositionPanel;
 	protected JPanel preferredFootPanel;
 
-	protected JButton button;
+	protected JButton fakeButton;
+	protected JButton searchButton;
 
-	protected JCheckBox checkBox;
+	protected JCheckBox nameSearchCheckBox;
+	protected JCheckBox ageSearchCheckBox;
+	protected JCheckBox bornNationSearchCheckBox;
+	protected JCheckBox roleSearchCheckBox;
+	protected JCheckBox goalkeeperCheckBox;
+	protected JCheckBox defenderCheckBox;
+	protected JCheckBox midfielderCheckBox;
+	protected JCheckBox forwardCheckBox;
+	protected JCheckBox mainPositionSearchCheckBox;
+	protected JCheckBox preferredFootSearchCheckBox;
+
+	protected JTextField nameTextField;
+	protected JTextField surnameTextField;
+
+	protected JComboBox<String> yearReferenceComboBox;
+	protected JComboBox<String> ageOperationComboBox;
+	protected JComboBox<String> ageComboBox;
+	protected JComboBox<String> continentComboBox;
+	protected JComboBox<String> nationComboBox;
+	protected JComboBox<String> mainPositionComboBox;
+
+	protected JRadioButton rightFootRadioButton;
+	protected JRadioButton leftFootRadioButton;
+	protected JRadioButton eitherFootRadioButton;
+
 
 	protected JLabel label;
-
-	protected JTextField textField;
-
-	protected JComboBox<String> comboBox;
-
 	protected ButtonGroup buttonGroup;
-
-	protected JRadioButton radioButton;
 
 	public SearchPlayerPanel()
 	{
@@ -53,10 +73,10 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("players");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
+		fakeButton = new JButton(string);
+		fakeButton.setEnabled(false);
 
-		add(button);
+		add(fakeButton);
 
 		/*
 		 * Campo ricerca per nome: checkBox
@@ -66,12 +86,12 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		nameSearchCheckBox = new JCheckBox(string);
+		nameSearchCheckBox.setOpaque(true);
+		nameSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		nameSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(nameSearchCheckBox);
 
 		/*
 		 * Campo ricerca per nome: panel
@@ -102,9 +122,9 @@ public class SearchPlayerPanel
 		/*
 		 * Campo testo: input
 		 */
-		textField = new JTextField(GuiConfiguration.getInputColumn());
+		nameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		namePanel.add(textField);
+		namePanel.add(nameTextField);
 
 		/*
 		 * Campo cognome: stampa
@@ -119,9 +139,9 @@ public class SearchPlayerPanel
 		/*
 		 * Campo testo: input
 		 */
-		textField = new JTextField(GuiConfiguration.getInputColumn());
+		surnameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		namePanel.add(textField);
+		namePanel.add(surnameTextField);
 
 		/*
 		 * Campo ricerca per eta: input
@@ -131,13 +151,12 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("age");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		ageSearchCheckBox = new JCheckBox(string);
+		ageSearchCheckBox.setOpaque(true);
+		ageSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		ageSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
-
+		add(ageSearchCheckBox);
 
 		/*
 		 * Campo ricerca per eta: panel
@@ -167,12 +186,12 @@ public class SearchPlayerPanel
 		/*
 		 * Campo anno di riferimento: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		yearReferenceComboBox = new JComboBox<String>();
 
-		agePanel.add(comboBox);
+		yearReferenceComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		yearReferenceComboBox.setSelectedIndex(-1);
+
+		agePanel.add(yearReferenceComboBox);
 
 		/*
 		 * Campo eta: stampa
@@ -185,25 +204,25 @@ public class SearchPlayerPanel
 		agePanel.add(label);
 
 		/*
-		 * Campo eta: comboBox
+		 * Campo operazione età: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		ageOperationComboBox = new JComboBox<String>();
 
-		agePanel.add(comboBox, "split 2");
+		ageOperationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		ageOperationComboBox.setSelectedIndex(-1);
+
+		agePanel.add(ageOperationComboBox, "split 2");
 
 		/*
-		 * Campo eta: comboBox
+		 * Campo età: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		ageComboBox = new JComboBox<String>();
+
+		ageComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		ageComboBox.setSelectedIndex(-1);
 
 
-		agePanel.add(comboBox);
+		agePanel.add(ageComboBox);
 
 		/*
 		 * Campo ricerca per paese di nascita: checkbox
@@ -213,13 +232,13 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("bornNation");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
+		bornNationSearchCheckBox = new JCheckBox(string);
 
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		bornNationSearchCheckBox.setOpaque(true);
+		bornNationSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		bornNationSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(bornNationSearchCheckBox);
 
 		/*
 		 * Campo ricerca per paese di nascita: panel
@@ -250,13 +269,13 @@ public class SearchPlayerPanel
 		/*
 		 * Campo ricerca per paese di nascita continente: stampa
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		continentComboBox = new JComboBox<String>();
 
-		bornNationPanel.add(comboBox);
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setSelectedIndex(-1);
 
+
+		bornNationPanel.add(continentComboBox);
 
 		/*
 		 * Campo ricerca per paese di nascita nazione: stampa
@@ -271,12 +290,12 @@ public class SearchPlayerPanel
 		/*
 		 * Campo ricerca per paese di nascita nazione: stampa
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		nationComboBox = new JComboBox<String>();
 
-		bornNationPanel.add(comboBox);
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		nationComboBox.setSelectedIndex(-1);
+
+		bornNationPanel.add(nationComboBox);
 
 		/*
 		 * Campo ricerca per ruolo: checkBox
@@ -286,13 +305,13 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
+		roleSearchCheckBox = new JCheckBox(string);
 
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		roleSearchCheckBox.setOpaque(true);
+		roleSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		roleSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(roleSearchCheckBox);
 
 		/*
 		 * Campo ricerca per ruolo: panel
@@ -317,9 +336,9 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("goalkeeper");
 		string = StringUtils.capitalize(string);
 
-		checkBox = new JCheckBox(string);
+		goalkeeperCheckBox = new JCheckBox(string);
 
-		rolePanel.add(checkBox);
+		rolePanel.add(goalkeeperCheckBox);
 
 		/*
 		 * Campo ricerca per ruolo difensore: checkBox
@@ -327,9 +346,9 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("defender");
 		string = StringUtils.capitalize(string);
 
-		checkBox = new JCheckBox(string);
+		defenderCheckBox = new JCheckBox(string);
 
-		rolePanel.add(checkBox);
+		rolePanel.add(defenderCheckBox);
 
 		/*
 		 * Campo ricerca per ruolo centrocampista: checkBox
@@ -337,9 +356,9 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("midfield");
 		string = StringUtils.capitalize(string);
 
-		checkBox = new JCheckBox(string);
+		midfielderCheckBox = new JCheckBox(string);
 
-		rolePanel.add(checkBox);
+		rolePanel.add(midfielderCheckBox);
 
 		/*
 		 * Campo ricerca per ruolo difensore: checkBox
@@ -347,9 +366,9 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("fowarder");
 		string = StringUtils.capitalize(string);
 
-		checkBox = new JCheckBox(string);
+		forwardCheckBox = new JCheckBox(string);
 
-		rolePanel.add(checkBox);
+		rolePanel.add(forwardCheckBox);
 
 		/*
 		 * Campo ricerca per posizione principale: checkBox
@@ -359,13 +378,13 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("mainPosition");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
+		mainPositionSearchCheckBox = new JCheckBox(string);
 
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		mainPositionSearchCheckBox.setOpaque(true);
+		mainPositionSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		mainPositionSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(mainPositionSearchCheckBox);
 
 		/*
 		 * Campo ricerca per posizione principale: panel
@@ -395,12 +414,12 @@ public class SearchPlayerPanel
 		/*
 		 * Campo posizione: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		mainPositionComboBox = new JComboBox<String>();
 
-		mainPositionPanel.add(comboBox);
+		mainPositionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		mainPositionComboBox.setSelectedIndex(-1);
+
+		mainPositionPanel.add(mainPositionComboBox);
 
 		/*
 		 * Campo ricerca per il piede preferito: checkBox
@@ -410,12 +429,12 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("preferredFoot");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		preferredFootSearchCheckBox = new JCheckBox(string);
+		preferredFootSearchCheckBox.setOpaque(true);
+		preferredFootSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		preferredFootSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(preferredFootSearchCheckBox);
 
 		/*
 		 * Campo ricerca per il piede preferito: panel
@@ -441,11 +460,11 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("right");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		rightFootRadioButton = new JRadioButton(string);
 
-		preferredFootPanel.add(radioButton);
+		preferredFootPanel.add(rightFootRadioButton);
 
-		buttonGroup.add(radioButton);
+		buttonGroup.add(rightFootRadioButton);
 
 		/*
 		 * Campo ricerca per il piede preferito sinistro: radioButton
@@ -453,11 +472,11 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("left");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		leftFootRadioButton = new JRadioButton(string);
 
-		preferredFootPanel.add(radioButton);
+		preferredFootPanel.add(leftFootRadioButton);
 
-		buttonGroup.add(radioButton);
+		buttonGroup.add(leftFootRadioButton);
 
 		/*
 		 * Campo ricerca per entrambi i piedi preferiti: radioButton
@@ -465,11 +484,11 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("either");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		eitherFootRadioButton = new JRadioButton(string);
 
-		preferredFootPanel.add(radioButton);
+		preferredFootPanel.add(eitherFootRadioButton);
 
-		buttonGroup.add(radioButton);
+		buttonGroup.add(eitherFootRadioButton);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -477,9 +496,9 @@ public class SearchPlayerPanel
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		searchButton = new JButton(string);
 
-		add(button);
+		add(searchButton);
 
 	}
 }

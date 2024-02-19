@@ -15,13 +15,27 @@ public class SearchTeamPanel
 	protected JPanel countryConfederationPanel;
 
 
-	protected JButton button;
-	protected JCheckBox checkBox;
-	protected JLabel label;
-	protected JTextField textField;
+	protected JButton fakeButton;
+	protected JButton searchButton;
+
+	protected JCheckBox nameSearchCheckBox;
+	protected JCheckBox teamTypeSearchCheckBox;
+	protected JCheckBox nationConfederationSearchCheckBox;
+
+	protected JTextField longNameTextField;
+	protected JTextField shortNameTextField;
+
+	protected JRadioButton clubRadioButton;
+	protected JRadioButton nationalRadioButton;
+
+	protected JComboBox<String> worldComboBox;
+	protected JComboBox<String> continentComboBox;
+	protected JComboBox<String> nationComboBox;
+
+
 	protected ButtonGroup buttonGroup;
-	protected JRadioButton radioButton;
-	protected JComboBox<String> comboBox;
+
+	protected JLabel label;
 
 	protected Color panelColor = Color.white;
 
@@ -48,10 +62,10 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("teams");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
+		fakeButton = new JButton(string);
+		fakeButton.setEnabled(false);
 
-		add(button);
+		add(fakeButton);
 
 		/*
 		 * Campo ricerca per nome: checkBox
@@ -61,12 +75,12 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		nameSearchCheckBox = new JCheckBox(string);
+		nameSearchCheckBox.setOpaque(true);
+		nameSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		nameSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(nameSearchCheckBox);
 
 		/*
 		 * Campo ricerca per nome: panel
@@ -83,7 +97,6 @@ public class SearchTeamPanel
 
 		add(namePanel);
 
-
 		/*
 		 * Campo nome esteso: stampa
 		 */
@@ -97,9 +110,9 @@ public class SearchTeamPanel
 		/*
 		 * Campo nome esteso: textfield
 		 */
-		textField = new JTextField(GuiConfiguration.getInputColumn());
+		longNameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		namePanel.add(textField);
+		namePanel.add(longNameTextField);
 
 		/*
 		 * Campo nome abbreviato: stampa
@@ -114,9 +127,9 @@ public class SearchTeamPanel
 		/*
 		 * Campo nome abbreviato: textfield
 		 */
-		textField = new JTextField(GuiConfiguration.getInputColumn());
+		shortNameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		namePanel.add(textField);
+		namePanel.add(shortNameTextField);
 
 		/*
 		 * Campo ricerca per tipo squadra: checkbox
@@ -126,12 +139,13 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		teamTypeSearchCheckBox = new JCheckBox(string);
 
-		add(checkBox);
+		teamTypeSearchCheckBox.setOpaque(true);
+		teamTypeSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		teamTypeSearchCheckBox.setForeground(Color.white);
+
+		add(teamTypeSearchCheckBox);
 
 		/*
 		 * Campo ricerca per tipo squadra: panel
@@ -148,19 +162,15 @@ public class SearchTeamPanel
 
 		add(teamTypePanel);
 
-		buttonGroup = new ButtonGroup();
-
 		/*
 		 * Campo club: radio button
 		 */
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		clubRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		teamTypePanel.add(clubRadioButton);
 
 		/*
 		 * Campo nazionale: radio button
@@ -168,12 +178,17 @@ public class SearchTeamPanel
 		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationalRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
+		teamTypePanel.add(nationalRadioButton);
 
-		buttonGroup.add(radioButton);
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
 
+		buttonGroup.add(clubRadioButton);
+		buttonGroup.add(nationalRadioButton);
 
 		/*
 		 * Campo ricerca per nazione e confederazione: checkBox
@@ -185,13 +200,13 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
+		nationConfederationSearchCheckBox = new JCheckBox(string);
 
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		nationConfederationSearchCheckBox.setOpaque(true);
+		nationConfederationSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		nationConfederationSearchCheckBox.setForeground(Color.white);
 
-		add(checkBox);
+		add(nationConfederationSearchCheckBox);
 
 		/*
 		 * Campo ricerca per nazione e confederazione: panel
@@ -222,12 +237,12 @@ public class SearchTeamPanel
 		/*
 		 * Campo mondo: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		worldComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		worldComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		worldComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(worldComboBox);
 
 		/*
 		 * Campo continente: stampa
@@ -242,12 +257,12 @@ public class SearchTeamPanel
 		/*
 		 * Campo continente: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		continentComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(continentComboBox);
 
 		/*
 		 * Campo nazione: stampa
@@ -262,12 +277,12 @@ public class SearchTeamPanel
 		/*
 		 * Campo nazione: comboBox
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		nationComboBox = new JComboBox<String>();
 
-		countryConfederationPanel.add(comboBox);
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		nationComboBox.setSelectedIndex(-1);
+
+		countryConfederationPanel.add(nationComboBox);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -275,9 +290,9 @@ public class SearchTeamPanel
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		searchButton = new JButton(string);
 
-		add(button);
+		add(searchButton);
 
 	}
 }

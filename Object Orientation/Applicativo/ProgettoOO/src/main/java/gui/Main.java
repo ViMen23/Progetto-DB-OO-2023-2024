@@ -14,6 +14,7 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
+
 		SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
@@ -27,11 +28,15 @@ public class Main
 
 		//Controller.getControllerInstance().subCountries("Asia");
 		Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
+
+		ResultSearchPanel resultSearchPanel = new ResultSearchPanel("ciao", 15);
+		MainFrame.getMainFrameInstance().add(resultSearchPanel);
+
+		MainFrame.getMainFrameInstance().pack();
 	}
-
-
+	
 	public static void main(String[] args)
-  {
+	{
 		// Pianifica un lavoro per la creazione e la visualizzazione della GUI di questa applicazione.
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 				public void run()
@@ -39,6 +44,6 @@ public class Main
 					createAndShowGUI();
 				}
 		});
-  }
+	}
 
 }
