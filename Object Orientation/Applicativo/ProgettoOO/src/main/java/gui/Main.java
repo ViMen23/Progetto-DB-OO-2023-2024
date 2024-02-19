@@ -12,13 +12,13 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		ViewCompetitionPanel viewCompetitionPanel = new ViewCompetitionPanel();
+		ViewAllCountry viewAllCountry = new ViewAllCountry();
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
-		viewCompetitionPanel.setName("boh");
+		viewAllCountry.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(viewCompetitionPanel);
+		MainFrame.getMainFrameInstance().add(viewAllCountry);
 		MainFrame.getMainFrameInstance().pack();
 
 	}

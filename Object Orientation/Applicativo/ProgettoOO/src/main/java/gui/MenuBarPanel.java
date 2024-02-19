@@ -117,6 +117,26 @@ public class MenuBarPanel
 
 		showAllCountryMenuItem = new JMenuItem(string);
 
+		showAllCountryMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if
+					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				ViewAllCountry viewAllCountry = new ViewAllCountry();
+				viewAllCountry.setName("viewAllCountry");
+
+				MainFrame.getMainFrameInstance().add(viewAllCountry);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
+
 		countryMenu.getPopupMenu().add(showAllCountryMenuItem);
 
 		/*
@@ -147,6 +167,26 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		showAllConfederationMenuItem = new JMenuItem(string);
+
+		showAllConfederationMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
+					if
+					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+						continue;
+					}
+
+					MainFrame.getMainFrameInstance().remove(component);
+				}
+
+				ViewAllConfederation viewAllConfederation = new ViewAllConfederation();
+				viewAllConfederation.setName("viewAllConfederation");
+
+				MainFrame.getMainFrameInstance().add(viewAllConfederation);
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
 
 		confederationMenu.getPopupMenu().add(showAllConfederationMenuItem);
 

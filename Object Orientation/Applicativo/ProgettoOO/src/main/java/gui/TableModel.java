@@ -81,6 +81,24 @@ public class TableModel extends AbstractTableModel
 					StringUtils.capitalize(GuiConfiguration.getMessage("competition")),
 				};
 		}
+		else if(tableName.equalsIgnoreCase("countries")){
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(GuiConfiguration.getMessage("flag")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("name")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("code")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("type"))
+				};
+		}
+		else if(tableName.equalsIgnoreCase("confederations")){
+			this.columnNames = new String[]
+				{
+					StringUtils.capitalize(GuiConfiguration.getMessage("longName")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("shortName")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("type")),
+					StringUtils.capitalize(GuiConfiguration.getMessage("country"))
+				};
+		}
 
 		data = hashMap.get(tableName);
 
@@ -782,7 +800,281 @@ public class TableModel extends AbstractTableModel
 		hashMap.put("prizeTeam", tmp);
 
 
+		tmp = new Object[][]
+			{
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				},
+				{
+					"FLAG",
+					"ITALIA",
+					"ITA",
+					"NATION"
+				}
+			};
 
+		hashMap.put("countries", tmp);
+
+		tmp = new Object[][]
+			{
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+					"Federazione giuco calcio",
+					"FIGC",
+					"Nazionale",
+					"ITALIA"
+				},
+				{
+				"Federazione giuco calcio",
+				"FIGC",
+				"Nazionale",
+				"ITALIA"
+				}
+			};
+
+		hashMap.put("confederations", tmp);
 
 
 	}

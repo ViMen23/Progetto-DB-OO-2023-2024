@@ -20,8 +20,8 @@ public class MainFrame
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"[grow, fill]",
-				"[][][]"
+				"0[grow, fill]0",
+				"0[]0[]0[]0"
 			);
 
 
