@@ -34,6 +34,7 @@ public class TableModel
 		}
 
 		data = new ArrayList<List<String>>();
+		/*
 		for (Country country : Country.getCountryList()) {
 			List<String> innerData = new ArrayList<String>();
 
@@ -43,6 +44,8 @@ public class TableModel
 
 			data.add(innerData);
 		}
+
+		 */
 
 	}
 	@Override

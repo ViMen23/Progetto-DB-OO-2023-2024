@@ -29,6 +29,7 @@ CREATE OR REPLACE FUNCTION all_sub_countries
 )
 RETURNS TABLE
         (
+            id_sub_country      integer,
             type_sub_country    text,
             code_sub_country    text,
             name_sub_country    text,
@@ -40,6 +41,7 @@ BEGIN
 
 	RETURN QUERY
 		SELECT
+            country_1.id::integer,
             country_1.type::text,
             country_1.code::text,
             country_1.name::text,

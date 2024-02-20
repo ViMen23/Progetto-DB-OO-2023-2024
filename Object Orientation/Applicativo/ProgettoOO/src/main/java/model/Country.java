@@ -1,6 +1,7 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -15,22 +16,28 @@ public class Country
 {
 	private static List<Country> countryList = new ArrayList<Country>();
 
+
+	private final Integer ID;
 	private final String type;
 	private final String code;
 	private final String name;
 	private final String superCountryCode;
 
 
-	public Country(String type, String code, String name, String superCountryCode)
+	public Country(Integer ID, String type, String code, String name, String superCountryCode)
 	{
+		this.ID = ID;
 		this.type = type;
 		this.code = code;
 		this.name = name;
 		this.superCountryCode = superCountryCode;
-
-		countryList.add(this);
 	}
 
+
+	public Integer getID()
+	{
+		return ID;
+	}
 
 	public String getType()
 	{
@@ -52,9 +59,21 @@ public class Country
 		return superCountryCode;
 	}
 
-	public static List<Country> getCountryList()
+	public List<Country> getCountryList()
 	{
 		return countryList;
+	}
+
+
+	public void newCountry(Integer countryID, String type, String code, String name, String superCountryCode)
+	{
+		Country country = new Country(countryID, type, code, name, superCountryCode);
+		countryList.add(country);
+	}
+
+	public void newCountry(Integer countryID, String name)
+	{
+		newCountry(countryID, null, null, name, null);
 	}
 
 }

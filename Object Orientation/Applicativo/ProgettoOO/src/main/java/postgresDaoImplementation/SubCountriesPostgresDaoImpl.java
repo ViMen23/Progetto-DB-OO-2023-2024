@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 import model.Country;
 
 import java.sql.*;
+import java.util.List;
 
 public class SubCountriesPostgresDaoImpl
 				implements SubCountriesDao
@@ -20,7 +21,9 @@ public class SubCountriesPostgresDaoImpl
 	}
 
 	@Override
-	public void subCountriesDB(String superCountryName)
+	public void subCountriesDB(String superCountryName,
+														 List<Integer> countryID, List<String> countryType, List<String> countryCode,
+														 List<String> countryName, List<String> superCountryCode)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call all_sub_countries(?)}");
@@ -28,14 +31,11 @@ public class SubCountriesPostgresDaoImpl
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-
-				new Country
-								(
-												rs.getString("type_sub_country"),
-												rs.getString("code_sub_country"),
-												rs.getString("name_sub_country"),
-												rs.getString("code_super_country")
-								);
+				countryID.add(rs.getInt("id_sub_country"));
+				countryType.add(rs.getString("type_sub_country"));
+				countryCode.add(rs.getString("code_sub_country"));
+				countryName.add(rs.getString("name_sub_country"));
+				superCountryCode.add(rs.getString("code_super_country"));
 			}
 
 			rs.close();

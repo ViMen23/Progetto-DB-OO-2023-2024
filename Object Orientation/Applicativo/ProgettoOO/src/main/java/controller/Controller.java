@@ -14,7 +14,6 @@ import postgresDaoImplementation.RowExistsPostgresDaoImpl;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Pattern;
 
 /**
@@ -25,6 +24,7 @@ import java.util.regex.Pattern;
  */
 public class Controller
 {
+	private final Country ctrlCountry = new Country(0, null, null, "Control", null);
 	private static Controller controllerInstance = null;
 
 	private Controller()
@@ -59,26 +59,45 @@ public class Controller
 		string += separator;
 		string += password;
 
-		RowExistsDao reDao = new RowExistsPostgresDaoImpl();
+		RowExistsDao rowExists = new RowExistsPostgresDaoImpl();
 
-		return reDao.rowExistsDB(separator, string);
+		return rowExists.rowExistsDB(separator, string);
 	}
 
 	public void subCountries(String superCountryName)
 	{
-		Country.getCountryList().clear();
+
+		ctrlCountry.getCountryList().clear();
+
+		List<Integer> countryID = new ArrayList<Integer>();
+		List<String> countryType = new ArrayList<String>();
+		List<String> countryCode = new ArrayList<String>();
+		List<String> countryName = new ArrayList<String>();
+		List<String> superCountryCode = new ArrayList<String>();
 
 		SubCountriesDao allContinent = new SubCountriesPostgresDaoImpl();
-		allContinent.subCountriesDB(superCountryName);
+		allContinent.subCountriesDB(superCountryName, countryID, countryType, countryCode, countryName, superCountryCode);
 
-		for (Country country : Country.getCountryList()) {
+		while (!(countryName.isEmpty())) {
+			ctrlCountry.newCountry
+							(
+											countryID.removeFirst(),
+											countryType.removeFirst(),
+											countryCode.removeFirst(),
+											countryName.removeFirst(),
+											superCountryCode.removeFirst()
+							);
+		}
+
+		for (Country country : ctrlCountry.getCountryList()) {
 			System.out.println
 							(
 											"PAESE: " +
 															" [" + country.getType() + " - " +
 															country.getCode() + " - " +
 															country.getSuperCountryCode() + "] " +
-															country.getName()
+															country.getName() +
+															" [" + country.getID() + "]"
 							);
 		}
 
@@ -113,4 +132,5 @@ public class Controller
 							);
 		}
 	}
+
 }

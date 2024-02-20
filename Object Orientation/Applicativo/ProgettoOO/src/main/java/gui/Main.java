@@ -26,13 +26,13 @@ public class Main
 
 		//Controller.getControllerInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
 
-		//Controller.getControllerInstance().subCountries("Asia");
-		Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
+		Controller.getControllerInstance().subCountries("Asia");
+		//Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
 
-		ResultSearchPanel resultSearchPanel = new ResultSearchPanel("ciao", 15);
-		MainFrame.getMainFrameInstance().add(resultSearchPanel);
+		//ResultSearchPanel resultSearchPanel = new ResultSearchPanel("ciao", 15);
+		//MainFrame.getMainFrameInstance().add(resultSearchPanel);
 
-		MainFrame.getMainFrameInstance().pack();
+		//MainFrame.getMainFrameInstance().pack();
 	}
 	
 	public static void main(String[] args)

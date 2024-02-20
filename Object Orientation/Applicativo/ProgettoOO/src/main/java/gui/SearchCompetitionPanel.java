@@ -284,10 +284,6 @@ public class SearchCompetitionPanel
 		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
 
-		for (Country country : Country.getCountryList()) {
-			comboBox.addItem(country.getName());
-		}
-
 		comboBox.setSelectedIndex(-1);
 
 		countryConfederationPanel.add(comboBox);

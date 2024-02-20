@@ -114,10 +114,6 @@ public class SearchCountryPanel
 		continentComboBox.setEditable(false);
 		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		Controller.getControllerInstance().subCountries("World");
-		for (Country country : Country.getCountryList()) {
-			continentComboBox.addItem(country.getName());
-		}
 
 		continentComboBox.setSelectedIndex(-1);
 
