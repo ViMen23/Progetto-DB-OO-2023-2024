@@ -1,6 +1,9 @@
 package gui;
 
 import controller.Controller;
+import model.Country;
+
+import javax.swing.*;
 
 /**
  * TYPE : class - gui package
@@ -38,7 +41,7 @@ public class Main
 	public static void main(String[] args)
 	{
 		// Pianifica un lavoro per la creazione e la visualizzazione della GUI di questa applicazione.
-		javax.swing.SwingUtilities.invokeLater(new Runnable() {
+		SwingUtilities.invokeLater(new Runnable() {
 				public void run()
 				{
 					createAndShowGUI();

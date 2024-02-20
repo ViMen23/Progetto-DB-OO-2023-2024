@@ -30,6 +30,8 @@ public class SearchCountryPanel
 	protected JLabel searchLabel;
 	protected ButtonGroup buttonGroup;
 	protected JScrollPane scrollPane;
+
+	protected JButton titleButton;
 	protected JButton searchButton;
 
 	protected Color panelColor = Color.white;
@@ -49,38 +51,24 @@ public class SearchCountryPanel
 		setLayout(migLayout);
 
 		/*
-		 * Campo titolo: stampa
-		 */
-		string = GuiConfiguration.getMessage("countriesList");
-		string += " - ";
-		string += Controller.getControllerInstance().countCountries().toString();
-		string += " ";
-		string += GuiConfiguration.getMessage("results");
-		string = string.toUpperCase();
-
-		titleLabel = new JLabel(string, SwingConstants.LEADING);
-
-		titleLabel.setOpaque(true);
-		titleLabel.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleLabel.setForeground(Color.white);
-		titleLabel.setFont(GuiConfiguration.getOutputBoldFont());
-
-		add(titleLabel);
-
-		/*
-		 * Campo ricerca per paese che contiene: label
+		 * Campo ricerca per paese: label
 		 */
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("country");
+		string += " - ";
+		string += GuiConfiguration.getMessage("countries");
+		string += " ";
+		string += GuiConfiguration.getMessage("available");
+		string += " ";
+		string += Controller.getControllerInstance().countCountries().toString();
 		string = string.toUpperCase();
 
-		searchLabel = new JLabel(string);
-		searchLabel.setOpaque(true);
-		searchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
-		searchLabel.setForeground(Color.white);
+		titleButton = new JButton(string);
 
-		add(searchLabel);
+		titleButton.setForeground(Color.white);
+
+		add(titleButton);
 
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox

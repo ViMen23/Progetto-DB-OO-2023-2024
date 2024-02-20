@@ -124,14 +124,15 @@ public class MenuBarPanel
 						continue;
 					}
 
+					component.setVisible(false);
 					MainFrame.getMainFrameInstance().remove(component);
+
 				}
 
 				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
 				searchCountryPanel.setName("viewAllCountry");
 
 				MainFrame.getMainFrameInstance().add(searchCountryPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 
