@@ -252,7 +252,7 @@ public class ViewCompetitionPanel
 		/*
 		 * Campo tabella trofei squadra: table
 		 */
-		partecipationTable = new JTable(new TableModel("partecipant"));
+		partecipationTable = new JTable(new TableModel("partecipant", null));
 
 		partecipationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		partecipationTable.setFillsViewportHeight(true);
@@ -305,7 +305,7 @@ public class ViewCompetitionPanel
 		/*
 		 * Campo tabella trofei squadra: table
 		 */
-		teamTrophyTable = new JTable(new TableModel("teamTrophy"));
+		teamTrophyTable = new JTable(new TableModel("teamTrophy", null));
 
 		teamTrophyTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		teamTrophyTable.setFillsViewportHeight(true);
@@ -358,7 +358,7 @@ public class ViewCompetitionPanel
 		/*
 		 * Campo tabella trofei squadra: table
 		 */
-		playerTrophyTable = new JTable(new TableModel("playerTrophy"));
+		playerTrophyTable = new JTable(new TableModel("playerTrophy", null));
 
 		playerTrophyTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		playerTrophyTable.setFillsViewportHeight(true);

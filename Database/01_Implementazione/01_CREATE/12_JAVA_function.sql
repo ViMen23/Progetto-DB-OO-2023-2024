@@ -14,6 +14,39 @@
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : count_countries
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION count_countries
+(
+)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			count(*)
+		FROM
+			fp_country
+		WHERE
+			TRUE
+	);
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : all_sub_countries
  *
  * IN      : text
@@ -57,6 +90,39 @@ BEGIN
         ORDER BY
             country_1.name;
 
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : count_confederations
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION count_confederations
+(
+)
+RETURNS integer
+AS
+$$
+BEGIN
+	RETURN
+	(
+		SELECT
+			count(*)
+		FROM
+			fp_confederation
+		WHERE
+			TRUE
+	);
 END;
 $$
 LANGUAGE plpgsql;

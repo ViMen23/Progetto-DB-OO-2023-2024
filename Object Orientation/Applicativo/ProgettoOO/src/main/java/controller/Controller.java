@@ -1,19 +1,14 @@
 package controller;
 
-import dao.SearchCompetitionsDao;
-import dao.SubConfederationsDao;
-import dao.SubCountriesDao;
-import dao.RowExistsDao;
+import dao.*;
 import model.Competition;
 import model.Confederation;
 import model.Country;
-import postgresDaoImplementation.SearchCompetitionsPostgresDaoImpl;
-import postgresDaoImplementation.SubConfederationsPostgresDaoImpl;
-import postgresDaoImplementation.SubCountriesPostgresDaoImpl;
-import postgresDaoImplementation.RowExistsPostgresDaoImpl;
+import postgresDaoImplementation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 import java.util.regex.Pattern;
 
 /**
@@ -131,6 +126,48 @@ public class Controller
 															competition.getName()
 							);
 		}
+	}
+
+	public Integer countCountries()
+	{
+		CountTablesDao countTablesDao = new CountTablesPostgresDaoImpl();
+		return countTablesDao.countCountriesDB();
+	}
+
+	public Vector<String> getStringCountryComboBox(String superCountryName)
+	{
+		subCountries(superCountryName);
+		Vector<String> nameCountry = new Vector<String>();
+
+		for (Country country : ctrlCountry.getCountryList()) {
+			nameCountry.add(country.getName());
+		}
+
+		return nameCountry;
+	}
+
+	public List<List<String>> getCountryDataTable()
+	{
+		List<List<String>> data = new ArrayList<List<String>>();
+
+		for(Country country: ctrlCountry.getCountryList()){
+			List<String> tmp = new ArrayList<String>();
+
+			tmp.add(country.getName());
+			tmp.add(country.getCode());
+			tmp.add(country.getType());
+			tmp.add(country.getSuperCountryCode());
+
+			data.add(tmp);
+		}
+
+		return data;
+	}
+
+	public Integer countConfederations()
+	{
+		CountTablesDao countTablesDao = new CountTablesPostgresDaoImpl();
+		return countTablesDao.countConfederationsDB();
 	}
 
 }

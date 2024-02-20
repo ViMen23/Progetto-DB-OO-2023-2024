@@ -178,10 +178,10 @@ public class MenuBarPanel
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				ViewAllConfederation viewAllConfederation = new ViewAllConfederation();
-				viewAllConfederation.setName("viewAllConfederation");
+				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
+				searchCountryPanel.setName("searchCountryPanel");
 
-				MainFrame.getMainFrameInstance().add(viewAllConfederation);
+				MainFrame.getMainFrameInstance().add(searchCountryPanel);
 				MainFrame.getMainFrameInstance().pack();
 			}
 		});

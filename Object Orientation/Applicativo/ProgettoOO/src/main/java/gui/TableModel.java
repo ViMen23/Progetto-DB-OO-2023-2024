@@ -19,7 +19,7 @@ public class TableModel
 
 	private static HashMap<String, Object[][]> hashMap = new HashMap<>();
 	
-	public TableModel(String tableName)
+	public TableModel(String tableName, List<List<String>> data)
 	{
 		super();
 
@@ -31,25 +31,19 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("name")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("code")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("superCountryCode")));
 		}
 
-		data = new ArrayList<List<String>>();
-		/*
-		for (Country country : Country.getCountryList()) {
-			List<String> innerData = new ArrayList<String>();
-
-			innerData.add(country.getName());
-			innerData.add(country.getCode());
-			innerData.add(country.getType());
-
-			data.add(innerData);
-		}
-
-		 */
+		this.data = data;
 
 	}
 	@Override
 	public int getRowCount() {
+
+		if(data == null){
+			return 0;
+		}
+
 		return data.size();
 	}
 
@@ -65,6 +59,9 @@ public class TableModel
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex)
 	{
+		if(data == null){
+			return null;
+		}
 		return data.get(rowIndex).get(columnIndex);
 	}
 

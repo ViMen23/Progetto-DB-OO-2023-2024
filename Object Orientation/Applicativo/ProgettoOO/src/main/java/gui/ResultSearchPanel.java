@@ -52,7 +52,7 @@ public class ResultSearchPanel
 		 */
 		searchTable = "competitions";
 
-		table = new JTable(new TableModel(searchTable));
+		table = new JTable(new TableModel(searchTable, null));
 
 		table.setFillsViewportHeight(true);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

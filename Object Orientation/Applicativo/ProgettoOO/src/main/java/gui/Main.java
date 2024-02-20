@@ -26,7 +26,7 @@ public class Main
 
 		//Controller.getControllerInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
 
-		Controller.getControllerInstance().subCountries("Asia");
+		//Controller.getControllerInstance().subCountries("Asia");
 		//Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
 
 		//ResultSearchPanel resultSearchPanel = new ResultSearchPanel("ciao", 15);

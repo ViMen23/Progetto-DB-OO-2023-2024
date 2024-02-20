@@ -15,15 +15,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Vector;
 
-public class SearchCountryPanel
-				extends JPanel
+public class SearchConfederationPanel
+	extends JPanel
 {
-	protected JPanel countryPanel;
-	protected JPanel countryTablePanel;
+	protected JPanel confederationPanel;
+	protected JPanel confederationTablePanel;
+
+	protected JRadioButton worldRadioButton;
 	protected JRadioButton continentRadioButton;
 	protected JRadioButton nationRadioButton;
+
+	protected JComboBox<String> worldComboBox;
 	protected JComboBox<String> continentComboBox;
-	protected JTable countryTable;
+	protected JTable confederationTable;
 
 
 	protected JLabel titleLabel;
@@ -34,7 +38,7 @@ public class SearchCountryPanel
 
 	protected Color panelColor = Color.white;
 
-	public SearchCountryPanel()
+	public SearchConfederationPanel()
 	{
 		String string;
 		MigLayout migLayout;
@@ -51,9 +55,9 @@ public class SearchCountryPanel
 		/*
 		 * Campo titolo: stampa
 		 */
-		string = GuiConfiguration.getMessage("countriesList");
+		string = GuiConfiguration.getMessage("confederationsList");
 		string += " - ";
-		string += Controller.getControllerInstance().countCountries().toString();
+		string += Controller.getControllerInstance().countConfederations().toString();
 		string += " ";
 		string += GuiConfiguration.getMessage("results");
 		string = string.toUpperCase();
@@ -72,7 +76,7 @@ public class SearchCountryPanel
 		 */
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
-		string += GuiConfiguration.getMessage("country");
+		string += GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
 
 		searchLabel = new JLabel(string);
@@ -86,19 +90,37 @@ public class SearchCountryPanel
 		 * Campo ricerca per paese e confederazione: checkBox
 		 */
 		migLayout = new MigLayout
-						(
-										"debug, wrap 2",
-										"20[]30:push[]20",
-										"10[]20[]20[]10"
-						);
+			(
+				"debug, wrap 2",
+				"20[]30:push[]20",
+				"10[]20[]20[]10"
+			);
 
-		countryPanel = new JPanel(migLayout);
-		countryPanel.setBackground(panelColor);
+		confederationPanel = new JPanel(migLayout);
+		confederationPanel.setBackground(panelColor);
 
-		add(countryPanel);
+		add(confederationPanel);
 
-		buttonGroup = new ButtonGroup();
+		/*
+		 * Campo mondo: radio button
+		 */
+		string = GuiConfiguration.getMessage("world");
+		string = StringUtils.capitalize(string);
 
+		worldRadioButton = new JRadioButton(string);
+
+		confederationPanel.add(worldRadioButton);
+
+		/*
+		 * Campo mondo: comboBox
+		 */
+		worldComboBox = new JComboBox<String>();
+
+		worldComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		worldComboBox.setEnabled(false);
+		worldComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxx");
+
+		confederationPanel.add(worldComboBox);
 
 		/*
 		 * Campo continente: radio button
@@ -109,25 +131,22 @@ public class SearchCountryPanel
 		continentRadioButton = new JRadioButton(string);
 
 		continentRadioButton.addActionListener
-		(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if(!searchButton.isEnabled()){
-						searchButton.setEnabled(true);
-					}
-					if(continentComboBox.isEnabled()){
-						continentComboBox.setEnabled(false);
-						continentComboBox.setSelectedIndex(-1);
+			(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						if(!searchButton.isEnabled()){
+							searchButton.setEnabled(true);
+						}
+						if(continentComboBox.isEnabled()){
+							continentComboBox.setEnabled(false);
+							continentComboBox.setSelectedIndex(-1);
+						}
 					}
 				}
-			}
-		);
+			);
 
-		countryPanel.add(continentRadioButton);
-
-		buttonGroup.add(continentRadioButton);
-
+		confederationPanel.add(continentRadioButton);
 		/*
 		 * Campo continente: combo box
 		 */
@@ -137,7 +156,7 @@ public class SearchCountryPanel
 		continentComboBox.setEnabled(false);
 		continentComboBox.setPrototypeDisplayValue("xxxxxxxxxxxxxxxxxxxx");
 
-		countryPanel.add(continentComboBox);
+		confederationPanel.add(continentComboBox);
 
 		/*
 		 * Campo nazione: radio button
@@ -168,8 +187,15 @@ public class SearchCountryPanel
 			}
 		);
 
-		countryPanel.add(nationRadioButton);
+		confederationPanel.add(nationRadioButton);
 
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(worldRadioButton);
+		buttonGroup.add(continentRadioButton);
 		buttonGroup.add(nationRadioButton);
 
 
@@ -184,39 +210,39 @@ public class SearchCountryPanel
 		searchButton.setEnabled(false);
 
 		searchButton.addActionListener
-		(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
+			(
+				new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
 
-					if( continentRadioButton.isSelected() ) {
-						Controller.getControllerInstance().subCountries("World");
+						if( continentRadioButton.isSelected() ) {
+							Controller.getControllerInstance().subCountries("World");
 
-						List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
+							List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
 
-						countryTable.setModel(new TableModel("countries", data));
+							confederationTable.setModel(new TableModel("countries", data));
+						}
+						else if(nationRadioButton.isSelected()){
+							String continent = (String) continentComboBox.getSelectedItem();
+							Controller.getControllerInstance().subCountries(continent);
+
+							List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
+
+							confederationTable.setModel(new TableModel("countries", data));
+						}
+
+						confederationTable.setPreferredScrollableViewportSize(confederationTable.getPreferredSize());
+
+						confederationTable.revalidate();
 					}
-					else if(nationRadioButton.isSelected()){
-						String continent = (String) continentComboBox.getSelectedItem();
-						Controller.getControllerInstance().subCountries(continent);
-
-						List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
-
-						countryTable.setModel(new TableModel("countries", data));
-					}
-
-					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-
-					countryPanel.revalidate();
 				}
-			}
-		);
+			);
 
 		add(searchButton);
 
 
 		/*
-		 * Campo tabella paesi: panel
+		 * Campo tabella confederazioni: panel
 		 */
 		migLayout = new MigLayout
 			(
@@ -225,26 +251,26 @@ public class SearchCountryPanel
 				"10[]10"
 			);
 
-		countryTablePanel = new JPanel(migLayout);
-		countryTablePanel.setBackground(panelColor);
+		confederationTablePanel = new JPanel(migLayout);
+		confederationTablePanel.setBackground(panelColor);
 
-		add(countryTablePanel);
+		add(confederationTablePanel);
 
 		/*
-		 * Campo tabella paesi: table
+		 * Campo tabella confederazioni: table
 		 */
-		countryTable = new JTable(new TableModel("countries", null));
+		confederationTable = new JTable(new TableModel("confederations", null));
 
-		countryTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-		countryTable.setFillsViewportHeight(true);
-		countryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		confederationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		confederationTable.setPreferredScrollableViewportSize(confederationTable.getPreferredSize());
+		confederationTable.setFillsViewportHeight(true);
+		confederationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		/*
 		 * Campo barra di scorrimento: jScrollPane
 		 */
-		scrollPane = new JScrollPane(countryTable);
+		scrollPane = new JScrollPane(confederationTable);
 
-		countryTablePanel.add(scrollPane);
+		confederationTablePanel.add(scrollPane);
 	}
 }
