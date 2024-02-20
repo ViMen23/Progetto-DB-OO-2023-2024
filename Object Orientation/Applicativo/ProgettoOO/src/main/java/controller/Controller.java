@@ -134,16 +134,21 @@ public class Controller
 		return countTablesDao.countCountriesDB();
 	}
 
-	public Vector<String> getStringCountryComboBox(String superCountryName)
+	public ArrayList<ArrayList<String>> getStringCountryComboBox(String superCountryName)
 	{
 		subCountries(superCountryName);
-		Vector<String> nameCountry = new Vector<String>();
+		ArrayList<ArrayList<String>> listCountry = new ArrayList<ArrayList<String>>();
 
 		for (Country country : ctrlCountry.getCountryList()) {
-			nameCountry.add(country.getName());
+			ArrayList<String> innerCountry = new ArrayList<String>();
+
+			innerCountry.add(country.getName());
+			innerCountry.add(country.getID().toString());
+
+			listCountry.add(innerCountry);
 		}
 
-		return nameCountry;
+		return listCountry;
 	}
 
 	public List<List<String>> getCountryDataTable()
