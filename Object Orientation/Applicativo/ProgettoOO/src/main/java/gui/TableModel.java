@@ -41,6 +41,15 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
 
 		}
+		else if (tableName.equalsIgnoreCase("competitions")) {
+			this.columnNames = new ArrayList<String>();
+
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("name")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("teamType")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("confederationShortName")));
+		}
 		this.data = data;
 
 	}

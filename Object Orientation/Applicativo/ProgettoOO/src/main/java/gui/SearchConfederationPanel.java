@@ -156,9 +156,6 @@ public class SearchConfederationPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				searchButton.setEnabled(true);
-
-				continentComboBox.removeAllItems();
-				continentComboBox.setEnabled(false);
 			}
 		});
 
@@ -177,9 +174,6 @@ public class SearchConfederationPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				searchButton.setEnabled(true);
-
-				continentComboBox.removeAllItems();
-				continentComboBox.setEnabled(false);
 			}
 		});
 
@@ -193,25 +187,32 @@ public class SearchConfederationPanel
 
 		nationRadioButton = new JRadioButton(string);
 
-		nationRadioButton.addActionListener(new ActionListener() {
+		nationRadioButton.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void itemStateChanged(ItemEvent e)
 			{
-				continentComboBox.setEnabled(true);
+				if (nationRadioButton.isSelected()){
 
-				List<List<String>> nameConfederationList = Controller.getInstance().getConfederationList
-								(
-									Country.COUNTRY_TYPE.CONTINENT.toString(),
-									null,
-									false
-								);
+					continentComboBox.setEnabled(true);
 
-				for (List<String> confederationList: nameConfederationList){
-					continentComboBox.addItem(confederationList);
+					List<List<String>> nameConfederationList = Controller.getInstance().getConfederationList
+						(
+							Country.COUNTRY_TYPE.CONTINENT.toString(),
+							null,
+							false
+						);
+
+					for (List<String> confederationList: nameConfederationList){
+						continentComboBox.addItem(confederationList);
+					}
+
+					continentComboBox.setSelectedIndex(-1);
+					searchButton.setEnabled(false);
 				}
-
-				continentComboBox.setSelectedIndex(-1);
-				searchButton.setEnabled(false);
+				else {
+					continentComboBox.setEnabled(false);
+					continentComboBox.removeAllItems();
+				}
 			}
 		});
 
@@ -295,13 +296,13 @@ public class SearchConfederationPanel
 				String superConfederationID = null;
 				String confederationType;
 
-				if (worldRadioButton.isSelected()){
+				if (worldRadioButton.isSelected()) {
 					confederationType = Country.COUNTRY_TYPE.WORLD.toString();
 				}
-				else if (continentRadioButton.isSelected()){
+				else if (continentRadioButton.isSelected()) {
 					confederationType = Country.COUNTRY_TYPE.CONTINENT.toString();
 				}
-				else{
+				else {
 					confederationType = Country.COUNTRY_TYPE.NATION.toString();
 					superConfederationID = ((List<String>) continentComboBox.getSelectedItem()).getLast();
 				}

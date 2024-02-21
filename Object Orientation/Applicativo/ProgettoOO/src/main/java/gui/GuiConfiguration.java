@@ -128,6 +128,7 @@ public class GuiConfiguration
 		UIManager.put("nimbusBlueGrey", new Color(50, 100, 150));
 		UIManager.put("control", new Color(230, 230, 230));
 
+
 		//Configurazioni bottone
 		UIManager.put("Button.font", outputFont);
 		UIManager.put("Button.textForeground", Color.white);
