@@ -30,7 +30,8 @@ RETURNS integer
 AS
 $$
 BEGIN
-	RETURN
+	
+    RETURN
 	(
 		SELECT
 			count(*)
@@ -39,6 +40,7 @@ BEGIN
 		WHERE
 			TRUE
 	);
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -159,7 +161,8 @@ RETURNS integer
 AS
 $$
 BEGIN
-	RETURN
+	
+    RETURN
 	(
 		SELECT
 			count(*)
@@ -168,6 +171,41 @@ BEGIN
 		WHERE
 			TRUE
 	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : count_competitions
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION count_competitions
+(
+)
+RETURNS integer
+AS
+$$
+BEGIN
+
+	RETURN
+	(
+		SELECT
+			count(*)
+		FROM
+			fp_competition
+		WHERE
+			TRUE
+	);
+
 END;
 $$
 LANGUAGE plpgsql;
@@ -293,7 +331,7 @@ LANGUAGE plpgsql;
  * IN      : text, text, text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text)
  *
  * DESC : TODO
  ******************************************************************************/
@@ -302,14 +340,17 @@ CREATE OR REPLACE FUNCTION search_competitions
     IN  sub_name_comp   text,
     IN  type_comp       text,
     IN  type_team_comp  text,
-    IN  name_country    text
+    IN  id_country      text
 )
 RETURNS TABLE
         (
+            comp_id         text,
             comp_type       text,
             comp_type_team  text,
             comp_name       text,
+            conf_id         text,
             conf_short_name text,
+            country_id      text,
             country_name    text
         )
 AS
@@ -320,19 +361,25 @@ BEGIN
 
 	CREATE TEMPORARY TABLE output_table
     (
+        comp_id         text    NOT NULL,
         comp_type       text    NOT NULL,
         comp_type_team  text    NOT NULL,
         comp_name       text    NOT NULL,
+        conf_id         text    NOT NULL,
         conf_short_name text    NOT NULL,
+        country_id      text    NOT NULL,
         country_name    text    NOT NULL
     );
 
     INSERT INTO output_table
     SELECT
+        fp_competition.id::text,
         fp_competition.type::text,
         fp_competition.team_type::text,
         fp_competition.name::text,
+        fp_confederation.id::text,
         fp_confederation.short_name::text,
+        fp_country.id::text,
         fp_country.name::text
     FROM
         fp_competition
@@ -376,12 +423,12 @@ BEGIN
     END IF;
 
 
-    IF (name_country IS NOT NULL) THEN
+    IF (id_country IS NOT NULL) THEN
 
         DELETE FROM
             output_table
         WHERE
-            output_table.country_name <> name_country;
+            output_table.country_id <> id_country;
         
     END IF;
 

@@ -2,7 +2,7 @@ package controller;
 
 import dao.*;
 import model.Competition;
-//import model.Confederation;
+import model.Confederation;
 import model.Country;
 import postgresDaoImplementation.*;
 
@@ -19,13 +19,15 @@ import java.util.regex.Pattern;
 public class Controller
 {
 	private final Country ctrlCountry;
-	//private final Confederation ctrlConfederation;
+	private final Confederation ctrlConfederation;
+	private final Competition ctrlCompetition;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
 		this.ctrlCountry = new Country(null, null, null, null);
-		//this.ctrlConfederation = new Confederation(null, null, null, null);
+		this.ctrlConfederation = new Confederation(null, null, null, null);
+		this.ctrlCompetition = new Competition(null, null, null, null, null);
 	}
 
 	public static Controller getInstance()
@@ -61,40 +63,44 @@ public class Controller
 		return rowExists.rowExistsDB(separator, string);
 	}
 
-	public void getCountries(String type, String superCountryID)
+	public void getCountries(String countryType, String superCountryID)
 	{
-		List<String> countryID = new ArrayList<String>();
-		List<String> countryType = new ArrayList<String>();
-		List<String> countryCode = new ArrayList<String>();
-		List<String> countryName = new ArrayList<String>();
+		List<String> listCountryID = new ArrayList<String>();
+		List<String> listCountryType = new ArrayList<String>();
+		List<String> listCountryCode = new ArrayList<String>();
+		List<String> listCountryName = new ArrayList<String>();
 
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
-		countryDAO.countriesDB(type, superCountryID, countryID, countryType, countryCode, countryName);
+		countryDAO.countriesDB
+						(
+										countryType, superCountryID,
+										listCountryID, listCountryType, listCountryCode, listCountryName
+						);
 
 		ctrlCountry.getCountryMap().clear();
 
 		Country superCountry;
-		if (type.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+		if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 			superCountry = null;
 		} else {
 			superCountry = newCountry
 							(
-											countryID.removeFirst(),
-											countryType.removeFirst(),
-											countryCode.removeFirst(),
-											countryName.removeFirst(),
+											listCountryID.removeFirst(),
+											listCountryType.removeFirst(),
+											listCountryCode.removeFirst(),
+											listCountryName.removeFirst(),
 											null
 							);
 		}
 
-		while (!(countryID.isEmpty())) {
-			String ID = countryID.removeFirst();
+		while (!(listCountryID.isEmpty())) {
+			String ID = listCountryID.removeFirst();
 			Country country = newCountry
 							(
 											ID,
-											countryType.removeFirst(),
-											countryCode.removeFirst(),
-											countryName.removeFirst(),
+											listCountryType.removeFirst(),
+											listCountryCode.removeFirst(),
+											listCountryName.removeFirst(),
 											superCountry
 							);
 
@@ -104,13 +110,61 @@ public class Controller
 	}
 
 
-	/*
-	public void subConfederations(String superConfederationsName)
-	{
-		Confederation.getConfederationList().clear();
 
-		SubConfederationsDao allConfederation = new SubConfederationsPostgresDaoImpl();
-		allConfederation.subConfederationsDB(superConfederationsName);
+	public void getConfederations(String countryType, String superConfederationsID)
+	{
+		List<String> listConfederationID = new ArrayList<String>();
+		List<String> listConfederationShortName = new ArrayList<String>();
+		List<String> listConfederationLongName = new ArrayList<String>();
+		List<String> listCountryID = new ArrayList<String>();
+		List<String> listCountryName = new ArrayList<String>();
+
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		confederationDAO.confederationsDB
+						(
+										countryType, superConfederationsID,
+										listConfederationID, listConfederationShortName, listConfederationLongName,
+										listCountryID, listCountryName
+						);
+
+		ctrlCountry.getCountryMap().clear();
+
+
+		for (String ID : listCountryID) {
+			Country country = newCountry(ID, listCountryName.removeFirst());
+			ctrlCountry.getCountryMap().put(ID, country);
+		}
+
+		ctrlConfederation.getConfederationMap().clear();
+
+		Confederation superConfederation;
+		if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+			superConfederation = null;
+		} else {
+			superConfederation = newConfederation
+							(
+											listConfederationID.removeFirst(),
+											listConfederationShortName.removeFirst(),
+											listConfederationLongName.removeFirst(),
+											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
+											null
+							);
+		}
+
+		while (!(listConfederationID.isEmpty())) {
+			String ID = listConfederationID.removeFirst();
+			Confederation confederation = newConfederation
+							(
+											ID,
+											listConfederationShortName.removeFirst(),
+											listConfederationLongName.removeFirst(),
+											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
+											superConfederation
+							);
+
+			ctrlConfederation.getConfederationMap().put(ID, confederation);
+		}
+
 	}
 
 	public void searchCompetitions(String subNameCompetition,
@@ -119,7 +173,7 @@ public class Controller
 	{
 		Competition.getCompetitionList().clear();
 
-		SearchCompetitionsDao searchCompetitions = new SearchCompetitionsPostgresDaoImpl();
+		CompetitionsDAO searchCompetitions = new PostgresImplCompetitionDAO();
 		searchCompetitions.searchCompetitionsDB(subNameCompetition, typeCompetition, typeTeamCompetition, countryName);
 
 		for (Competition competition : Competition.getCompetitionList()) {
@@ -135,7 +189,6 @@ public class Controller
 		}
 	}
 
-	 */
 
 	public Integer countCountries()
 	{
@@ -146,9 +199,9 @@ public class Controller
 		return ctrlCountry.getTotalCountries();
 	}
 
-	public List<List<String>> getCountryList(String type, String superCountryID, Boolean full)
+	public List<List<String>> getCountryList(String countryType, String superCountryID, Boolean full)
 	{
-		getCountries(type, superCountryID);
+		getCountries(countryType, superCountryID);
 
 		List<List<String>> outerCountryList = new ArrayList<List<String>>();
 
@@ -172,31 +225,78 @@ public class Controller
 		return outerCountryList;
 	}
 
+	public List<List<String>> getConfederationList(String typeCountry, String superConfederationID, Boolean full)
+	{
+		getConfederations(typeCountry, superConfederationID);
+
+		List<List<String>> outerConfederationList = new ArrayList<List<String>>();
+
+		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
+			List<String> innerConfederationList = new ArrayList<String>();
+			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
+
+			innerConfederationList.add(confederation.getShortName());
+
+			if (full) {
+				innerConfederationList.add(confederation.getLongName());
+				if (typeCountry.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+					innerConfederationList.add("-");
+				} else {
+					innerConfederationList.add(confederation.getSuperConfederation().getShortName());
+				}
+				innerConfederationList.add(confederation.getCountry().getName()); // TODO: try catch?
+			}
+
+			innerConfederationList.add(key);
+
+			outerConfederationList.add(innerConfederationList);
+		}
+
+		return outerConfederationList;
+	}
 
 
 
 	public Integer countConfederations()
 	{
-		CountTablesDao countTablesDao = new CountTablesPostgresDaoImpl();
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
 
-		return countTablesDao.countConfederationsDB();
+		ctrlConfederation.setTotalConfederations(confederationDAO.countAllConfederationsDB());
+
+		return ctrlConfederation.getTotalConfederations();
 	}
 
-	public Country newCountry(String countryID, String countryType, String countryCode, String countryName,
-														Country superCountry)
+	public Country newCountry(String ID, String type, String code, String name, Country superCountry)
 	{
-		Country country = ctrlCountry.getCountryMap().get(countryID);
+		Country country = ctrlCountry.getCountryMap().get(ID);
 
 		if (null == country) {
-			country = new Country(countryType, countryCode, countryName, superCountry);
+			country = new Country(type, code, name, superCountry);
 		}
 
 		return country;
 	}
 
-	public Country newCountry(String countryID, String countryName)
+	public Country newCountry(String ID, String name)
 	{
-		return newCountry(countryID, null, null, countryName, null);
+		return newCountry(ID, null, null, name, null);
+	}
+
+	public Confederation newConfederation(String ID, String shortName, String longName,
+																	Country country, Confederation superConfederation)
+	{
+		Confederation confederation = ctrlConfederation.getConfederationMap().get(ID);
+
+		if (null == confederation) {
+			confederation = new Confederation(shortName, longName, country, superConfederation);
+		}
+
+		return confederation;
+	}
+
+	public Confederation newConfederation(String ID, String shortName)
+	{
+		return newConfederation(ID, shortName, null, null, null);
 	}
 
 }

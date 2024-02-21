@@ -13,8 +13,8 @@ public class Competition
 	private final String type;
 	private final String teamType;
 	private final String name;
-	private final String confederationShortName;
-	private final String countryName;
+	private final Confederation confederation;
+	private final Country country;
 
 
 
@@ -22,15 +22,13 @@ public class Competition
 
 
 	public Competition(String type, String teamType, String name,
-										 String confederationShortName, String countryName)
+										 Confederation confederation, Country country)
 	{
 		this.type = type;
 		this.teamType = teamType;
 		this.name = name;
-		this.confederationShortName = confederationShortName;
-		this.countryName = countryName;
-
-		competitionList.add(this);
+		this.confederation = confederation;
+		this.country = country;
 	}
 
 
@@ -49,14 +47,14 @@ public class Competition
 		return name;
 	}
 
-	public String getConfederationShortName()
+	public Confederation getConfederation()
 	{
-		return confederationShortName;
+		return confederation;
 	}
 
-	public String getCountryName()
+	public Country getCountry()
 	{
-		return countryName;
+		return country;
 	}
 
 	public static List<Competition> getCompetitionList()

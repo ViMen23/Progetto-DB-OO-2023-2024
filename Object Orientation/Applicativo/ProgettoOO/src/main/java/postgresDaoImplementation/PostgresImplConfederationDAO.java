@@ -22,29 +22,30 @@ public class PostgresImplConfederationDAO
 
 
 	@Override
-	public void confederationsDB(String type, String superConfederationID,
-															 List<String> confederationID,
-															 List<String> confederationShortName, List<String> confederationLongName,
-															 List<String> countryID, List<String> countryName)
+	public void confederationsDB(String countryType, String superConfederationID,
+															 List<String> listConfederationID,
+															 List<String> listConfederationShortName, List<String> listConfederationLongName,
+															 List<String> listCountryID, List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_confederations(?, ?)}");
-			cs.setString(1, type);
+			cs.setString(1, countryType);
 			cs.setString(2, superConfederationID);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				confederationID.add(rs.getString("conf_id"));
-				confederationID.add(rs.getString("conf_short_name"));
-				confederationID.add(rs.getString("conf_long_name"));
-				confederationID.add(rs.getString("country_id"));
-				confederationID.add(rs.getString("country_name"));
+				listConfederationID.add(rs.getString("conf_id"));
+				listConfederationShortName.add(rs.getString("conf_short_name"));
+				listConfederationLongName.add(rs.getString("conf_long_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryName.add(rs.getString("country_name"));
 			}
 
 			rs.close();
 			cs.close();
 			conn.close();
+
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}

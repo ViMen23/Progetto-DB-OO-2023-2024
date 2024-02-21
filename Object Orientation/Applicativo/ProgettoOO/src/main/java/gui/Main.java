@@ -23,6 +23,7 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
+		Controller.getInstance().getConfederationList("WORLD", "7", true);
 
 		MainFrame.getMainFrameInstance().add(searchCountryPanel);
 		MainFrame.getMainFrameInstance().pack();

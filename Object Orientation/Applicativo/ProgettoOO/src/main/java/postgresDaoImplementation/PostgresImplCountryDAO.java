@@ -21,22 +21,22 @@ public class PostgresImplCountryDAO
 
 
 	@Override
-	public void countriesDB(String type, String superCountryID,
-													List<String> countryID, List<String> countryType,
-													List<String> countryCode, List<String> countryName)
+	public void countriesDB(String countryType, String superCountryID,
+													List<String> listCountryID, List<String> listCountryType,
+													List<String> listCountryCode, List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_countries(?, ?)}");
-			cs.setString(1, type);
+			cs.setString(1, countryType);
 			cs.setString(2, superCountryID);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				countryID.add(rs.getString("country_id"));
-				countryType.add(rs.getString("country_type"));
-				countryCode.add(rs.getString("country_code"));
-				countryName.add(rs.getString("country_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryType.add(rs.getString("country_type"));
+				listCountryCode.add(rs.getString("country_code"));
+				listCountryName.add(rs.getString("country_name"));
 			}
 
 			rs.close();

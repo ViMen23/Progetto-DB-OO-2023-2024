@@ -32,6 +32,15 @@ public class Confederation
 		this.superConfederation = superConfederation;
 	}
 
+	public Integer getTotalConfederations()
+	{
+		return totalConfederations;
+	}
+
+	public void setTotalConfederations(Integer totalConfederations)
+	{
+		Confederation.totalConfederations = totalConfederations;
+	}
 
 	public String getShortName()
 	{
@@ -49,7 +58,7 @@ public class Confederation
 	{
 		return superConfederation;
 	}
-	public static Map<String, Confederation> getConfederationMap()
+	public Map<String, Confederation> getConfederationMap()
 	{
 		return CONFEDERATION_MAP;
 	}
