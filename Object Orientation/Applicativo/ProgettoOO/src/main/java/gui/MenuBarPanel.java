@@ -200,19 +200,6 @@ public class MenuBarPanel
 
 		menuBar.add(competitionMenu);
 
-
-		/*
-		 * TODO
-		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = string.toUpperCase();
-
-		showAllCompetitionMenuItem = new JMenuItem(string);
-
-		competitionMenu.getPopupMenu().add(showAllCompetitionMenuItem);
-
 		/*
 		 * TODO
 		 */
@@ -230,14 +217,13 @@ public class MenuBarPanel
 						continue;
 					}
 
+					component.setVisible(false);
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
 				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
-				searchCompetitionPanel.setName("searchCompetitionPanel");
 
 				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 
@@ -263,20 +249,6 @@ public class MenuBarPanel
 
 		menuBar.add(teamMenu);
 
-
-		/*
-		 * TODO
-		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = string.toUpperCase();
-
-		showAllTeamMenuItem = new JMenuItem(string);
-
-		teamMenu.getPopupMenu().add(showAllTeamMenuItem);
-
-
 		/*
 		 * TODO
 		 */
@@ -294,14 +266,13 @@ public class MenuBarPanel
 						continue;
 					}
 
+					component.setVisible(false);
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
 				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
-				searchTeamPanel.setName("searchTeamPanel");
 
 				MainFrame.getMainFrameInstance().add(searchTeamPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 

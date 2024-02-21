@@ -50,6 +50,14 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("confederationShortName")));
 		}
+		else if(tableName.equalsIgnoreCase("teams")){
+			this.columnNames = new ArrayList<String>();
+
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("longName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("shortName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
+		}
 		this.data = data;
 
 	}

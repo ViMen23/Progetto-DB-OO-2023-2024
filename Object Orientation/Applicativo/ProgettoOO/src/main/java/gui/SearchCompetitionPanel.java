@@ -423,7 +423,7 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				teamTypeSearchValid = true;
-				competitionTeamType = "CLUB"; //TODO
+				competitionTeamType = Team.TEAM_TYPE.CLUB.toString();
 				setEnableButton();
 			}
 		});
@@ -444,7 +444,7 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				teamTypeSearchValid = true;
-				competitionTeamType = "NATIONAL"; //TODO
+				competitionTeamType = Team.TEAM_TYPE.NATIONAL.toString();
 				setEnableButton();
 			}
 		});
@@ -737,7 +737,7 @@ public class SearchCompetitionPanel
 		/*
 		 * Campo tabella paesi: table
 		 */
-		competitionTable = new JTable(new TableModel("countries", null));
+		competitionTable = new JTable(new TableModel("competitions", null));
 
 		competitionTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
