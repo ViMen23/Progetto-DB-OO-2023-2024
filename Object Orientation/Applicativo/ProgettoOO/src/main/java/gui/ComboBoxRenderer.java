@@ -1,19 +1,39 @@
 package gui;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.util.ArrayList;
 
-public class ComboBoxRenderer
-				implements ListCellRenderer
+public class ComboBoxRenderer extends DefaultListCellRenderer
 {
+
+	public ComboBoxRenderer()
+	{
+		super();
+		setOpaque(true);
+	}
+
 	@Override
 	public Component getListCellRendererComponent(JList list, Object value,
-																								int index, boolean isSelected, boolean cellHasFocus)
+												  int index, boolean isSelected, boolean cellHasFocus)
 	{
-		Component component = new JLabel((String) ((ArrayList<?>) value).getFirst());
-		component.setName((String) ((ArrayList<?>) value).getLast());
+		if (value == null) {
+			return null;
+		}
 
-		return component;
+		setText((String) ((ArrayList<?>) value).getFirst());
+
+		if (isSelected) {
+			setBackground(UIManager.getColor("nimbusSelectionBackground"));
+			setForeground(UIManager.getColor("nimbusLightBackground"));
+
+		} else {
+			setBackground(list.getBackground());
+			setForeground(list.getForeground());
+		}
+
+		return this;
 	}
 }

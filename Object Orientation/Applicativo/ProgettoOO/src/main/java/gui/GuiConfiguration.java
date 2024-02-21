@@ -20,16 +20,13 @@ public class GuiConfiguration
 	private static final Integer tableRowHeight = 25;
 	private static final Integer comboBoxMaximumRowCount = 5;
 	private static final Cursor buttonCursor = new Cursor(Cursor.HAND_CURSOR);
-	private static final Border searchPanelBorder = new CompoundBorder
-		(
-			new EmptyBorder(0, 0, 10, 0),
-			new MatteBorder(0, 10, 10, 10, Color.WHITE)
-		);
+	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(0,10,0,0);
 	private static final Border labelBorder = new CompoundBorder
 		(
 			new EmptyBorder(4, 4, 4, 4),
 			new MatteBorder(0, 0, 1, 0, Color.BLACK)
 		);
+
 	private static final Color searchPanelColor = new Color(50, 100, 200);
 
 	private static ResourceBundle currentResourceBundle;
@@ -149,9 +146,9 @@ public class GuiConfiguration
 		UIManager.put("RadioButton.foreground", Color.white);
 
 		//Configurazioni label
-		UIManager.put("Label.background", Color.green);
+		//UIManager.put("Label.background", Color.green);
 		UIManager.put("Label.font", outputFont);
-		UIManager.put("Label.foreground", Color.white);
+		//UIManager.put("Label.foreground", Color.white);
 		UIManager.put("Label[Enabled].textForeground", Color.black);
 
 		//configurazioni menu
@@ -291,7 +288,7 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static Border getSearchPanelBorder() { return searchPanelBorder; }
+	public static Border getSearchLabelBorder() { return searchLabelBorder; }
 
 	/**
 	 * TYPE : static method - gui package

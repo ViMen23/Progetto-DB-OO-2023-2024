@@ -10,12 +10,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class SearchCountryPanel
 				extends JPanel
 {
+	protected JPanel countryTypePanel;
+	protected JPanel countrySuperPanel;
+
 	protected JPanel countryPanel;
 	protected JPanel countryTablePanel;
 	protected JRadioButton continentRadioButton;
@@ -24,8 +27,7 @@ public class SearchCountryPanel
 	protected JTable countryTable;
 
 
-	protected JLabel titleLabel;
-	protected JLabel searchLabel;
+	protected JLabel label;
 	protected ButtonGroup buttonGroup;
 	protected JScrollPane scrollPane;
 
@@ -43,7 +45,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]10[]10[]20"
+				"20[]10[]50"
 			);
 
 		setLayout(migLayout);
@@ -68,23 +70,63 @@ public class SearchCountryPanel
 
 		add(titleButton);
 
-		/*
-		 * Campo ricerca per paese e confederazione: checkBox
-		 */
+		titleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (countryPanel.isShowing()){
+					remove(countryPanel);
+				}
+				else{
+					add(countryPanel, 1);
+				}
+
+				revalidate();
+			}
+		});
+
 		migLayout = new MigLayout
-						(
-										"debug, wrap 2",
-										"20[]30:push[]20",
-										"10[]20[]20[]10"
-						);
+			(
+				"debug, flowy",
+				"10[grow, fill]10",
+				"0[]0[]10[]0[]20[]0"
+			);
 
 		countryPanel = new JPanel(migLayout);
-		countryPanel.setBackground(panelColor);
+		countryPanel.setOpaque(false);
 
 		add(countryPanel);
 
-		buttonGroup = new ButtonGroup();
+		/*
+		 * Campo ricerca per tipo di paese: stampa
+		 */
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("countryType");
+		string = string.toUpperCase();
 
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		countryPanel.add(label);
+		/*
+		 * Campo ricerca per tipo di paese: panel
+		 */
+		migLayout = new MigLayout
+						(
+										"debug, flowx",
+										"20:push[]300[]20:push",
+										"10[]10"
+						);
+
+		countryTypePanel = new JPanel(migLayout);
+		countryTypePanel.setBackground(panelColor);
+
+		countryPanel.add(countryTypePanel);
 
 		/*
 		 * Campo continente: radio button
@@ -105,28 +147,7 @@ public class SearchCountryPanel
 			}
 		});
 
-		countryPanel.add(continentRadioButton);
-
-		buttonGroup.add(continentRadioButton);
-
-		/*
-		 * Campo continente: combo box
-		 */
-		continentComboBox = new JComboBox<List<String>>();
-
-		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		continentComboBox.setEnabled(false);
-
-		continentComboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				searchButton.setEnabled(true);
-			}
-		});
-
-		countryPanel.add(continentComboBox);
-
+		countryTypePanel.add(continentRadioButton);
 
 		/*
 		 * Campo nazione: radio button
@@ -158,10 +179,68 @@ public class SearchCountryPanel
 			}
 		});
 
-		countryPanel.add(nationRadioButton);
+		countryTypePanel.add(nationRadioButton);
 
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(continentRadioButton);
 		buttonGroup.add(nationRadioButton);
 
+		/*
+		 * Campo ricerca continente che contiene la nazione: stampa
+		 */
+		string = "Scegli continente che contiene la nazione";
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.LEADING);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		countryPanel.add(label);
+
+		/*
+		 * Campo pannello: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"20:push[]20:push",
+				"10[]10"
+			);
+
+		countrySuperPanel = new JPanel(migLayout);
+		countrySuperPanel.setBackground(panelColor);
+
+		countryPanel.add(countrySuperPanel);
+
+		/*
+		 * Campo continente: combo box
+		 */
+		continentComboBox = new JComboBox<List<String>>();
+
+		continentComboBox.setRenderer(new ComboBoxRenderer());
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setEnabled(false);
+
+		List<String> aa = new ArrayList<String>();
+		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+		continentComboBox.setPrototypeDisplayValue(aa);
+
+		continentComboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				searchButton.setEnabled(true);
+			}
+		});
+
+		countrySuperPanel.add(continentComboBox);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -195,11 +274,11 @@ public class SearchCountryPanel
 
 					countryTable.setModel(new TableModel("countries", data));
 					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-					countryPanel.revalidate();
+					countryTablePanel.revalidate();
 				}
 		});
 
-		add(searchButton);
+		countryPanel.add(searchButton);
 
 
 		/*
