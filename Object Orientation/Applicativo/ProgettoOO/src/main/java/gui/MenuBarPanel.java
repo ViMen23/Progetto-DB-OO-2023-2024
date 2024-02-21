@@ -13,9 +13,9 @@ public class MenuBarPanel
 	protected JButton homeButton;
 	protected JMenuBar menuBar;
 	protected JMenu countryMenu;
-	protected JMenuItem showAllCountryMenuItem;
+	protected JMenuItem generalResearchCountryMenuItem;
 	protected JMenu confederationMenu;
-	protected JMenuItem showAllConfederationMenuItem;
+	protected JMenuItem generalResearchConfederationMenuItem;
 	protected JMenu competitionMenu;
 	protected JMenuItem showAllCompetitionMenuItem;
 	protected JMenuItem generalResearchCompetitionMenuItem;
@@ -108,14 +108,12 @@ public class MenuBarPanel
 		/*
 		 * TODO
 		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
+		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
-		showAllCountryMenuItem = new JMenuItem(string);
+		generalResearchCountryMenuItem = new JMenuItem(string);
 
-		showAllCountryMenuItem.addActionListener(new ActionListener() {
+		generalResearchCountryMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
@@ -130,13 +128,12 @@ public class MenuBarPanel
 				}
 
 				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
-				searchCountryPanel.setName("viewAllCountry");
 
 				MainFrame.getMainFrameInstance().add(searchCountryPanel);
 			}
 		});
 
-		countryMenu.getPopupMenu().add(showAllCountryMenuItem);
+		countryMenu.getPopupMenu().add(generalResearchCountryMenuItem);
 
 		/*
 		 * TODO
@@ -160,34 +157,29 @@ public class MenuBarPanel
 		/*
 		 * TODO
 		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
+		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
-		showAllConfederationMenuItem = new JMenuItem(string);
+		generalResearchConfederationMenuItem = new JMenuItem(string);
 
-		showAllConfederationMenuItem.addActionListener(new ActionListener() {
+		generalResearchConfederationMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if
-					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
+					if (component.getName().equalsIgnoreCase("topPanel") ||
+							component.getName().equalsIgnoreCase("menuBarPanel")) {
 						continue;
 					}
-
+					component.setVisible(false);
 					MainFrame.getMainFrameInstance().remove(component);
 				}
+				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
 
-				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
-				searchCountryPanel.setName("searchCountryPanel");
-
-				MainFrame.getMainFrameInstance().add(searchCountryPanel);
-				MainFrame.getMainFrameInstance().pack();
+				MainFrame.getMainFrameInstance().add(searchConfederationPanel);
 			}
 		});
 
-		confederationMenu.getPopupMenu().add(showAllConfederationMenuItem);
+		confederationMenu.getPopupMenu().add(generalResearchConfederationMenuItem);
 
 		/*
 		 * TODO

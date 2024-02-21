@@ -31,9 +31,16 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("name")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("code")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
-			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("superCountryCode")));
-		}
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("superCountryName")));
+		} else if (tableName.equalsIgnoreCase("confederations")) {
+			this.columnNames = new ArrayList<String>();
 
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("shortName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("longName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("superConfederationShortName")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
+
+		}
 		this.data = data;
 
 	}

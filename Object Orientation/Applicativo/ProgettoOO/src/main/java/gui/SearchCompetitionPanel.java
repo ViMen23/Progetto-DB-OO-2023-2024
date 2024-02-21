@@ -4,28 +4,53 @@ import controller.Controller;
 import model.Country;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
 import java.awt.*;
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchCompetitionPanel
 				extends JPanel
 {
+
+	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
+	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
+
+	protected JPanel competitionPanel;
 	protected JPanel namePanel;
 	protected JPanel competitionTypePanel;
 	protected JPanel teamTypePanel;
 	protected JPanel countryConfederationPanel;
+	protected JPanel competitionTablePanel;
 
-	protected JButton button;
-	protected JCheckBox checkBox;
+	protected JButton titleButton;
+	protected JButton searchButton;
+
+	protected JCheckBox nameSearchCheckBox;
+	protected JCheckBox competitionTypeSearchCheckBox;
+	protected JCheckBox teamTypeSearchCheckBox;
+	protected JCheckBox countrySearchCheckBox;
+
+	protected JRadioButton leagueRadioButton;
+	protected JRadioButton cupRadioButton;
+	protected JRadioButton supercupRadioButton;
+	protected JRadioButton clubRadioButton;
+	protected JRadioButton nationalRadioButton;
+	protected JRadioButton worldRadioButton;
+	protected JRadioButton continentRadioButton;
+	protected JRadioButton nationRadioButton;
+
+	protected JTextField nameTextField;
+
+	protected JComboBox<List<String>> continentComboBox;
+	protected JComboBox<List<String>> nationComboBox;
 	protected ButtonGroup buttonGroup;
-	protected JRadioButton radioButton;
 	protected JLabel label;
-	protected JTextField textField;
-	protected JComboBox<String> comboBox;
-
+	protected JTable competitionTable;
+	protected JScrollPane scrollPane;
 	protected Color panelColor = Color.white;
 
 	public SearchCompetitionPanel()
@@ -37,11 +62,13 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"10:push[fill]10:push",
-				"20[]10[]0[]10[]0[]10[]0[]10[]0[]20[]20"
+				"10[grow, fill]10",
+				"20[]20[]50[]10"
 			);
 
 		setLayout(migLayout);
+		setName("searchCompetitionPanel");
+
 
 		/*
 		 * Campo titolo: bottone
@@ -49,28 +76,68 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("search");
 		string += " ";
 		string += GuiConfiguration.getMessage("competitions");
+		string += " - ";
+		string += GuiConfiguration.getMessage("competitions");
+		string += " ";
+		string += GuiConfiguration.getMessage("available");
+		string += " ";
+		//string += Controller.getInstance().countCountries().toString(); TODO
 		string = string.toUpperCase();
 
-		button = new JButton(string);
-		button.setEnabled(false);
+		titleButton = new JButton(string);
+		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		titleButton.setIcon(maximizeIcon);
+		titleButton.setIconTextGap(40);
 
-		add(button);
+		add(titleButton);
+
+		titleButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				if (competitionPanel.isShowing()){
+					remove(competitionPanel);
+					titleButton.setIcon(minimizeIcon);
+				}
+				else{
+					add(competitionPanel, 1);
+					titleButton.setIcon(maximizeIcon);
+				}
+
+				revalidate();
+			}
+		});
+
+		/*
+		 * Campo competizione: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"0[grow, fill]0",
+				"0[]0[]10[]0[]10[]0[]10[]0[]20[]20"
+			);
+
+		competitionPanel = new JPanel(migLayout);
+		competitionPanel.setOpaque(false);
+
+		add(competitionPanel);
 
 		/*
 		 * Campo ricerca per nome: checkbox
 		 */
-
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		nameSearchCheckBox = new JCheckBox(string);
+		nameSearchCheckBox.setOpaque(true);
+		nameSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		nameSearchCheckBox.setForeground(Color.white);
+		nameSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		add(checkBox);
+		competitionPanel.add(nameSearchCheckBox);
 
 		/*
 		 * Campo ricerca per nome: panel
@@ -78,7 +145,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]20",
+				"50[]80[]20:push",
 				"10[]10"
 			);
 
@@ -86,7 +153,7 @@ public class SearchCompetitionPanel
 		namePanel = new JPanel(migLayout);
 		namePanel.setBackground(panelColor);
 
-		add(namePanel);
+		competitionPanel.add(namePanel);
 
 		/*
 		 * Campo nome: stampa
@@ -101,9 +168,9 @@ public class SearchCompetitionPanel
 		/*
 		 * Campo nome: textfield
 		 */
-		textField = new JTextField(GuiConfiguration.getInputColumn());
+		nameTextField = new JTextField(GuiConfiguration.getInputColumn());
 
-		namePanel.add(textField);
+		namePanel.add(nameTextField);
 
 		/*
 		 * Campo ricerca per tipo di competizione: panel
@@ -113,12 +180,13 @@ public class SearchCompetitionPanel
 		string += GuiConfiguration.getMessage("competitionType");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		competitionTypeSearchCheckBox = new JCheckBox(string);
+		competitionTypeSearchCheckBox.setOpaque(true);
+		competitionTypeSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		competitionTypeSearchCheckBox.setForeground(Color.white);
+		competitionTypeSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		add(checkBox);
+		competitionPanel.add(competitionTypeSearchCheckBox);
 
 		/*
 		 * Campo ricerca per tipo competizione: panel
@@ -126,16 +194,15 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]30:push[]20",
+				"50[]80[]80[]20:push",
 				"10[]10"
 			);
 
 		competitionTypePanel = new JPanel(migLayout);
 
 		competitionTypePanel.setBackground(panelColor);
-		add(competitionTypePanel);
 
-		buttonGroup = new ButtonGroup();
+		competitionPanel.add(competitionTypePanel);
 
 		/*
 		 * Campo campionato: radioButton
@@ -143,11 +210,9 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("league");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		leagueRadioButton = new JRadioButton(string);
 
-		competitionTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		competitionTypePanel.add(leagueRadioButton);
 
 		/*
 		 * Campo coppa: radioButton
@@ -155,11 +220,9 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("cup");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		cupRadioButton = new JRadioButton(string);
 
-		competitionTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		competitionTypePanel.add(cupRadioButton);
 
 		/*
 		 * Campo supercoppa: radioButton
@@ -167,11 +230,20 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("supercup");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		supercupRadioButton = new JRadioButton(string);
 
-		competitionTypePanel.add(radioButton);
+		competitionTypePanel.add(supercupRadioButton);
 
-		buttonGroup.add(radioButton);
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(leagueRadioButton);
+		buttonGroup.add(cupRadioButton);
+		buttonGroup.add(supercupRadioButton);
+
 
 		/*
 		 * Campo ricerca per tipo squadra: checkbox
@@ -181,12 +253,13 @@ public class SearchCompetitionPanel
 		string += GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		teamTypeSearchCheckBox = new JCheckBox(string);
+		teamTypeSearchCheckBox.setOpaque(true);
+		teamTypeSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		teamTypeSearchCheckBox.setForeground(Color.white);
+		teamTypeSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		add(checkBox);
+		competitionPanel.add(teamTypeSearchCheckBox);
 
 		/*
 		 * Campo ricerca per tipo squadra: panel
@@ -194,16 +267,14 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]20",
+				"50[]80[]20:push",
 				"10[]10"
 			);
 
 		teamTypePanel = new JPanel(migLayout);
 		teamTypePanel.setBackground(panelColor);
 
-		add(teamTypePanel);
-
-		buttonGroup = new ButtonGroup();
+		competitionPanel.add(teamTypePanel);
 
 		/*
 		 * Campo club: radio button
@@ -211,12 +282,9 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		clubRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
-
+		teamTypePanel.add(clubRadioButton);
 
 		/*
 		 * Campo nazionale: radio button
@@ -224,11 +292,18 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationalRadioButton = new JRadioButton(string);
 
-		teamTypePanel.add(radioButton);
+		teamTypePanel.add(nationalRadioButton);
 
-		buttonGroup.add(radioButton);
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(clubRadioButton);
+		buttonGroup.add(nationalRadioButton);
+
 
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
@@ -240,12 +315,13 @@ public class SearchCompetitionPanel
 		string += GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
 
-		checkBox = new JCheckBox(string);
-		checkBox.setOpaque(true);
-		checkBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		checkBox.setForeground(Color.white);
+		countrySearchCheckBox = new JCheckBox(string);
+		countrySearchCheckBox.setOpaque(true);
+		countrySearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
+		countrySearchCheckBox.setForeground(Color.white);
+		countrySearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		add(checkBox);
+		competitionPanel.add(countrySearchCheckBox);
 
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
@@ -253,16 +329,14 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"20[]30:push[]20",
+				"50[]80[]20:push",
 				"10[]20[]20[]10"
 			);
 
 		countryConfederationPanel = new JPanel(migLayout);
 		countryConfederationPanel.setBackground(panelColor);
 
-		add(countryConfederationPanel);
-
-		buttonGroup = new ButtonGroup();
+		competitionPanel.add(countryConfederationPanel);
 
 		/*
 		 * Campo mondo: radio button
@@ -270,23 +344,9 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		worldRadioButton = new JRadioButton(string);
 
-		countryConfederationPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
-
-		/*
-		 * Campo mondo: comboBox
-		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(false);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-
-
-		comboBox.setSelectedIndex(-1);
-
-		countryConfederationPanel.add(comboBox);
+		countryConfederationPanel.add(worldRadioButton, "wrap");
 
 		/*
 		 * Campo continente: radio button
@@ -294,22 +354,25 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		continentRadioButton = new JRadioButton(string);
 
-		countryConfederationPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		countryConfederationPanel.add(continentRadioButton);
 
 		/*
 		 * Campo continente: combo box
 		 */
+		continentComboBox = new JComboBox<List<String>>();
 
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		continentComboBox.setRenderer(new ComboBoxRenderer());
+		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		continentComboBox.setEnabled(false);
 
-		countryConfederationPanel.add(comboBox);
+		List<String> aa = new ArrayList<String>();
+		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+		continentComboBox.setPrototypeDisplayValue(aa);
+
+		countryConfederationPanel.add(continentComboBox);
 
 		/*
 		 * Campo nazione: radio button
@@ -317,21 +380,32 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 
-		radioButton = new JRadioButton(string);
+		nationRadioButton = new JRadioButton(string);
 
-		countryConfederationPanel.add(radioButton);
-
-		buttonGroup.add(radioButton);
+		countryConfederationPanel.add(nationRadioButton);
 
 		/*
 		 * Campo nazione: combo box
 		 */
-		comboBox = new JComboBox<String>();
-		comboBox.setEditable(true);
-		comboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		comboBox.setSelectedIndex(-1);
+		nationComboBox = new JComboBox<List<String>>();
 
-		countryConfederationPanel.add(comboBox);
+		nationComboBox.setRenderer(new ComboBoxRenderer());
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		nationComboBox.setEnabled(false);
+
+		nationComboBox.setPrototypeDisplayValue(aa);
+
+		countryConfederationPanel.add(nationComboBox);
+
+
+		/*
+		 * Campo gruppo bottoni: buttonGroup
+		 */
+		buttonGroup = new ButtonGroup();
+
+		buttonGroup.add(worldRadioButton);
+		buttonGroup.add(continentRadioButton);
+		buttonGroup.add(nationRadioButton);
 
 		/*
 		 * Campo avvia ricerca: button
@@ -339,8 +413,40 @@ public class SearchCompetitionPanel
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
-		button = new JButton(string);
+		searchButton = new JButton(string);
 
-		add(button);
+		competitionPanel.add(searchButton);
+
+		/*
+		 * Campo tabella competizioni: panel
+		 */
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"10[]10"
+			);
+
+		competitionTablePanel = new JPanel(migLayout);
+		competitionTablePanel.setBackground(panelColor);
+
+		add(competitionTablePanel);
+
+		/*
+		 * Campo tabella paesi: table
+		 */
+		competitionTable = new JTable(new TableModel("countries", null));
+
+		competitionTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
+		competitionTable.setFillsViewportHeight(true);
+		competitionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		/*
+		 * Campo barra di scorrimento: jScrollPane
+		 */
+		scrollPane = new JScrollPane(competitionTable);
+
+		competitionTablePanel.add(scrollPane);
 	}
 }

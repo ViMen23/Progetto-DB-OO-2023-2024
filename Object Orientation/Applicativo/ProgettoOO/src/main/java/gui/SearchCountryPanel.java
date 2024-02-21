@@ -16,6 +16,10 @@ import java.util.List;
 public class SearchCountryPanel
 				extends JPanel
 {
+
+	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
+	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
+
 	protected JPanel countryTypePanel;
 	protected JPanel countrySuperPanel;
 
@@ -45,10 +49,12 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]10[]50"
+				"20[]20[]50[]10"
 			);
 
 		setLayout(migLayout);
+
+		setName("searchCountryPanel");
 
 		/*
 		 * Campo ricerca per paese: label
@@ -65,9 +71,9 @@ public class SearchCountryPanel
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
-
-		titleButton.setForeground(Color.white);
-
+		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		titleButton.setIcon(maximizeIcon);
+		titleButton.setIconTextGap(40);
 		add(titleButton);
 
 		titleButton.addActionListener(new ActionListener() {
@@ -76,9 +82,11 @@ public class SearchCountryPanel
 
 				if (countryPanel.isShowing()){
 					remove(countryPanel);
+					titleButton.setIcon(minimizeIcon);
 				}
 				else{
 					add(countryPanel, 1);
+					titleButton.setIcon(maximizeIcon);
 				}
 
 				revalidate();
@@ -119,7 +127,7 @@ public class SearchCountryPanel
 		migLayout = new MigLayout
 						(
 										"debug, flowx",
-										"20:push[]300[]20:push",
+										"20:push[]50[]20:push",
 										"10[]10"
 						);
 
@@ -192,7 +200,7 @@ public class SearchCountryPanel
 		/*
 		 * Campo ricerca continente che contiene la nazione: stampa
 		 */
-		string = "Scegli continente che contiene la nazione";
+		string = "Scegli continente che contiene la nazione"; //TODO I18N
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
