@@ -1,8 +1,7 @@
-package postgresDaoImplementation;
+package postgresImplDAO;
 
 import dao.ConfederationDAO;
 import database.DatabaseConnection;
-import model.Confederation;
 
 import java.sql.*;
 import java.util.List;
@@ -12,7 +11,8 @@ public class PostgresImplConfederationDAO
 {
 	private Connection conn;
 
-	public PostgresImplConfederationDAO() {
+	public PostgresImplConfederationDAO()
+	{
 		try {
 			conn = DatabaseConnection.getInstance().conn;
 		} catch (SQLException e) {

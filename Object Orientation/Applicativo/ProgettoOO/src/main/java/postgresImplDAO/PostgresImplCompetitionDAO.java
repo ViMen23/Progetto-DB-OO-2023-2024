@@ -1,16 +1,17 @@
-package postgresDaoImplementation;
+package postgresImplDAO;
 
-import dao.CompetitionsDAO;
+import dao.CompetitionDAO;
 import database.DatabaseConnection;
 import java.sql.*;
 import java.util.List;
 
 public class PostgresImplCompetitionDAO
-				implements CompetitionsDAO
+				implements CompetitionDAO
 {
 	private Connection conn;
 
-	public PostgresImplCompetitionDAO() {
+	public PostgresImplCompetitionDAO()
+	{
 		try {
 			conn = DatabaseConnection.getInstance().conn;
 		} catch (SQLException e) {

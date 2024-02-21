@@ -1,4 +1,4 @@
-package postgresDaoImplementation;
+package postgresImplDAO;
 
 import dao.CountTablesDao;
 import database.DatabaseConnection;

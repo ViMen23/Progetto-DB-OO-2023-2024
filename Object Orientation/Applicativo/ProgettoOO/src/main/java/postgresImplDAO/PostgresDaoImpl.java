@@ -1,4 +1,4 @@
-package postgresDaoImplementation;
+package postgresImplDAO;
 
 public class PostgresDaoImpl
 {

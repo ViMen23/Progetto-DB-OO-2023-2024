@@ -23,7 +23,7 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
-		Controller.getInstance().getCompetitionList
+		Controller.getInstance().getTeamList
 						(
 										null,
 										null,

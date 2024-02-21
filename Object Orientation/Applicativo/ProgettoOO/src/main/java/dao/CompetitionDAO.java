@@ -2,7 +2,7 @@ package dao;
 
 import java.util.List;
 
-public interface CompetitionsDAO
+public interface CompetitionDAO
 {
 	void competitionsDB(String competitionSubName,
 											String competitionType,

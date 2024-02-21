@@ -8,8 +8,10 @@ package model;
  */
 public class Admin
 {
+	private static Admin adminConnected = null;
 	private final String username;
 	private final String password;
+
 
 
 	public Admin(String username, String password)
@@ -29,4 +31,15 @@ public class Admin
 		return password;
 	}
 
+
+
+	public Admin getAdminConnected()
+	{
+		return adminConnected;
+	}
+
+	public void setAdminConnected(Admin adminConnected)
+	{
+		Admin.adminConnected = adminConnected;
+	}
 }

@@ -1,5 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 /**
  * TYPE : class
  * NAME : Team
@@ -8,50 +11,64 @@ package model;
  */
 public class Team
 {
-	private final EnTeam type;
-	private final Country country;
-	private String longName;
+	public enum TEAM_TYPE {CLUB, NATIONAL};
+	private static final Map<String, Team> TEAM_MAP = new LinkedHashMap<String, Team>();
+	private static Integer totalTeam = 0;
+
+	private final String type;
 	private String shortName;
+	private String longName;
+	private final Country country;
 
 
-	public Team(EnTeam type, Country country, String longName, String shortName)
+	public Team(String type, String shortName, String longName, Country country)
 	{
 		this.type = type;
-		this.country = country;
-		this.longName = longName;
 		this.shortName = shortName;
+		this.longName = longName;
+		this.country = country;
 	}
 
+	public void setTotalTeam(Integer totalTeam)
+	{
+		Team.totalTeam = totalTeam;
+	}
 
-	public EnTeam getType()
+	public Integer getTotalTeam()
+	{
+		return totalTeam;
+	}
+
+	public String getType()
 	{
 		return type;
 	}
-
+	public String getShortName()
+	{
+		return shortName;
+	}
+	public String getLongName()
+	{
+		return longName;
+	}
 	public Country getCountry()
 	{
 		return country;
 	}
 
-	public String getLongName()
-	{
-		return longName;
-	}
 
-	public String getShortName()
+	public Map<String, Team> getTeamMap()
 	{
-		return shortName;
-	}
-
-
-	public void setLongName(String longName)
-	{
-		this.longName = longName;
+		return TEAM_MAP;
 	}
 
 	public void setShortName(String shortName)
 	{
 		this.shortName = shortName;
+	}
+	public void setLongName(String longName)
+	{
+		this.longName = longName;
 	}
 
 }

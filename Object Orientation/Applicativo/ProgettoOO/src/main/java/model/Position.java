@@ -1,6 +1,8 @@
 package model;
 
+import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -11,25 +13,22 @@ import java.util.Set;
  */
 public class Position
 {
-	private final EnRole role;
+	public enum ROLE_TYPE {GK, DF, MF, FW};
+	private static final Map<String, Position> POSITION_MAP = new LinkedHashMap<String, Position>();
+
+	private final String role;
 	private final String code;
 	private final String name;
 
-	private static Set<Position> positionSet = new LinkedHashSet<Position>();
-
-
-	public Position(EnRole role, String code, String name)
+	public Position(String role, String code, String name)
 	{
 		this.role = role;
 		this.code = code;
 		this.name = name;
-
-		// add to set of position
-		positionSet.add(this);
 	}
 
 
-	public EnRole getRole()
+	public String getRole()
 	{
 		return role;
 	}
@@ -44,9 +43,8 @@ public class Position
 		return name;
 	}
 
-	public Set<Position> getPositionSet()
+	public Map<String, Position> getPositionMap()
 	{
-		return positionSet;
+		return POSITION_MAP;
 	}
-
 }

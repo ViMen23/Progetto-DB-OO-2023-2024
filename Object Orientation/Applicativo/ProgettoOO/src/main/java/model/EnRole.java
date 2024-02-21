@@ -8,8 +8,8 @@ package model;
  */
 public enum EnRole
 {
-	GK,	// portiere
-	DF,	// difensore
-	MF,	// centrocampista
-	FW	// attaccante
+	GK,
+	DF,
+	MF,
+	FW
 }

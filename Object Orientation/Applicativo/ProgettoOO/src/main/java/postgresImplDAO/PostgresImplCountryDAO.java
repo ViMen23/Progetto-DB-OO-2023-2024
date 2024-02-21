@@ -1,4 +1,4 @@
-package postgresDaoImplementation;
+package postgresImplDAO;
 
 import dao.CountryDAO;
 import database.DatabaseConnection;
@@ -11,7 +11,8 @@ public class PostgresImplCountryDAO
 {
 	private Connection conn;
 
-	public PostgresImplCountryDAO() {
+	public PostgresImplCountryDAO()
+	{
 		try {
 			conn = DatabaseConnection.getInstance().conn;
 		} catch (SQLException e) {

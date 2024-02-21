@@ -2,6 +2,8 @@ package model;
 
 
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * TYPE : class
@@ -11,29 +13,42 @@ import java.util.Date;
  */
 public class Player
 {
+	public enum FOOT_TYPE {EITHER, LEFT, RIGHT};
+	private static final Map<String, Player> PLAYER_MAP = new LinkedHashMap<String, Player>();
+	private static Integer totalPlayers = 0;
+
 	private String name;
 	private String surname;
-	private Date dob;
-	private Country birthCountry;
-	private EnFoot foot;
-	private Position mainPosition;
-	private EnRoleMix role;
-	private Date retiredDate;
+	private String dob;
+	private Country country;
+	private String foot;
+	private Position position;
+	private String role;
+	private String retiredDate;
 
 
-	public Player(String name, String surname, Date dob, Country birthCountry,
-								EnFoot foot, Position mainPosition, EnRoleMix role, Date retiredDate)
+	public Player(String name, String surname, String dob, Country country,
+								String foot, Position position, String role, String retiredDate)
 	{
 		this.name = name;
 		this.surname = surname;
 		this.dob = dob;
-		this.birthCountry = birthCountry;
+		this.country = country;
 		this.foot = foot;
-		this.mainPosition = mainPosition;
+		this.position = position;
 		this.role = role;
 		this.retiredDate = retiredDate;
 	}
 
+	public Integer getTotalPlayers()
+	{
+		return totalPlayers;
+	}
+
+	public void setTotalPlayers(Integer totalPlayers)
+	{
+		Player.totalPlayers = totalPlayers;
+	}
 
 	public String getName()
 	{
@@ -45,36 +60,40 @@ public class Player
 		return surname;
 	}
 
-	public Date getDob()
+	public String getDob()
 	{
 		return dob;
 	}
 
-	public Country getBirthCountry()
+	public Country getCountry()
 	{
-		return birthCountry;
+		return country;
 	}
 
-	public EnFoot getFoot()
+	public String getFoot()
 	{
 		return foot;
 	}
 
-	public Position getMainPosition()
+	public Position getPosition()
 	{
-		return mainPosition;
+		return position;
 	}
 
-	public EnRoleMix getRole()
+	public String getRole()
 	{
 		return role;
 	}
 
-	public Date getRetiredDate()
+	public String getRetiredDate()
 	{
 		return retiredDate;
 	}
 
+	public Map<String, Player> getPlayerMap()
+	{
+		return PLAYER_MAP;
+	}
 
 	public void setName(String name)
 	{
@@ -86,32 +105,32 @@ public class Player
 		this.surname = surname;
 	}
 
-	public void setDob(Date dob)
+	public void setDob(String dob)
 	{
 		this.dob = dob;
 	}
 
-	public void setBirthCountry(Country birthCountry)
+	public void setCountry(Country country)
 	{
-		this.birthCountry = birthCountry;
+		this.country = country;
 	}
 
-	public void setFoot(EnFoot foot)
+	public void setFoot(String foot)
 	{
 		this.foot = foot;
 	}
 
-	public void setMainPosition(Position mainPosition)
+	public void setPosition(Position position)
 	{
-		this.mainPosition = mainPosition;
+		this.position = position;
 	}
 
-	public void setRole(EnRoleMix role)
+	public void setRole(String role)
 	{
 		this.role = role;
 	}
 
-	public void setRetiredDate(Date retiredDate)
+	public void setRetiredDate(String retiredDate)
 	{
 		this.retiredDate = retiredDate;
 	}
