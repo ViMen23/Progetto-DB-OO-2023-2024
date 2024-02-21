@@ -20,32 +20,37 @@ public class PostgresImplCompetitionDAO
 
 
 	@Override
-	public void competitionsDB(String subNameCompetition,
-														 String typeCompetition, String typeTeamCompetition,
-														 String countryCompetitionID,
-														 List<String> competitionID,
-														 List<String> competitionType, List<String> competitionTeamType, List<String> competitionName,
-														 List<String> confederationID, List<String> confederationShortName,
-														 List<String> countryID, List<String> countryName)
+	public void competitionsDB(String competitionSubName,
+														 String competitionType,
+														 String competitionTeamType,
+														 String competitionCountryID,
+														 List<String> listCompetitionID,
+														 List<String> listCompetitionType,
+														 List<String> listCompetitionTeamType,
+														 List<String> listCompetitionName,
+														 List<String> listConfederationID,
+														 List<String> listConfederationShortName,
+														 List<String> listCountryID,
+														 List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_competitions(?, ?, ?, ?)}");
-			cs.setString(1, subNameCompetition);
-			cs.setString(2, typeCompetition);
-			cs.setString(3, typeTeamCompetition);
-			cs.setString(4, countryCompetitionID);
+			cs.setString(1, competitionSubName);
+			cs.setString(2, competitionType);
+			cs.setString(3, competitionTeamType);
+			cs.setString(4, competitionCountryID);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				competitionID.add(rs.getString("comp_id"));
-				competitionType.add(rs.getString("comp_type"));
-				competitionTeamType.add(rs.getString("comp_type_team"));
-				competitionName.add(rs.getString("comp_name"));
-				confederationID.add(rs.getString("conf_id"));
-				confederationShortName.add(rs.getString("conf_short_name"));
-				countryID.add(rs.getString("country_id"));
-				countryName.add(rs.getString("country_name"));
+				listCompetitionID.add(rs.getString("comp_id"));
+				listCompetitionType.add(rs.getString("comp_type"));
+				listCompetitionTeamType.add(rs.getString("comp_type_team"));
+				listCompetitionName.add(rs.getString("comp_name"));
+				listConfederationID.add(rs.getString("conf_id"));
+				listConfederationShortName.add(rs.getString("conf_short_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryName.add(rs.getString("country_name"));
 			}
 
 			rs.close();

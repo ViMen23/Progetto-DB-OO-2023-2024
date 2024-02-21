@@ -27,7 +27,7 @@ public class Controller
 	{
 		this.ctrlCountry = new Country(null, null, null, null);
 		this.ctrlConfederation = new Confederation(null, null, null, null);
-		this.ctrlCompetition = new Competition(null, null, null, null, null);
+		this.ctrlCompetition = new Competition(null, null, null, null);
 	}
 
 	public static Controller getInstance()
@@ -63,7 +63,8 @@ public class Controller
 		return rowExists.rowExistsDB(separator, string);
 	}
 
-	public void getCountries(String countryType, String superCountryID)
+	public void getCountries(String countryType,
+													 String superCountryID)
 	{
 		List<String> listCountryID = new ArrayList<String>();
 		List<String> listCountryType = new ArrayList<String>();
@@ -111,7 +112,8 @@ public class Controller
 
 
 
-	public void getConfederations(String countryType, String superConfederationsID)
+	public void getConfederations(String countryType,
+																String superConfederationsID)
 	{
 		List<String> listConfederationID = new ArrayList<String>();
 		List<String> listConfederationShortName = new ArrayList<String>();
@@ -131,7 +133,12 @@ public class Controller
 
 
 		for (String ID : listCountryID) {
-			Country country = newCountry(ID, listCountryName.removeFirst());
+			Country country = newCountry
+							(
+											ID,
+											listCountryName.removeFirst()
+							);
+
 			ctrlCountry.getCountryMap().put(ID, country);
 		}
 
@@ -167,26 +174,71 @@ public class Controller
 
 	}
 
-	public void searchCompetitions(String subNameCompetition,
-																 String typeCompetition, String typeTeamCompetition,
-																 String countryName)
+	public void searchCompetitions(String competitionSubName,
+																 String competitionType,
+																 String competitionTeamType,
+																 String competitionCountryID)
 	{
-		Competition.getCompetitionList().clear();
+		List<String> listCompetitionID = new ArrayList<String>();
+		List<String> listCompetitionType = new ArrayList<String>();
+		List<String> listCompetitionTeamType = new ArrayList<String>();
+		List<String> listCompetitionName = new ArrayList<String>();
+		List<String> listConfederationID = new ArrayList<String>();
+		List<String> listConfederationShortName = new ArrayList<String>();
+		List<String> listCountryID = new ArrayList<String>();
+		List<String> listCountryName = new ArrayList<String>();
 
-		CompetitionsDAO searchCompetitions = new PostgresImplCompetitionDAO();
-		searchCompetitions.searchCompetitionsDB(subNameCompetition, typeCompetition, typeTeamCompetition, countryName);
+		CompetitionsDAO competitionsDAO = new PostgresImplCompetitionDAO();
+		competitionsDAO.competitionsDB
+						(
+										competitionSubName, competitionType, competitionTeamType, competitionCountryID,
+										listCompetitionID, listCompetitionType, listCompetitionTeamType, listCompetitionName,
+										listConfederationID, listConfederationShortName,
+										listCountryID, listCountryName
+						);
 
-		for (Competition competition : Competition.getCompetitionList()) {
-			System.out.println
+
+		ctrlCountry.getCountryMap().clear();
+
+		for (String ID : listCountryID) {
+			Country country = newCountry
 							(
-											"COMPETIZIONE: " +
-															" [" + competition.getType() + " - " +
-															competition.getTeamType() + " - " +
-															competition.getConfederationShortName() + " - " +
-															competition.getCountryName() + "] " +
-															competition.getName()
+											ID,
+											listCountryName.removeFirst()
 							);
+
+			ctrlCountry.getCountryMap().put(ID, country);
 		}
+
+		ctrlConfederation.getConfederationMap().clear();
+
+		for (String ID : listConfederationID) {
+			Confederation confederation = newConfederation
+							(
+											ID,
+											listConfederationShortName.removeFirst(),
+											ctrlCountry.getCountryMap().get(listCountryID.removeFirst())
+							);
+
+			ctrlConfederation.getConfederationMap().put(ID, confederation);
+		}
+
+		ctrlCompetition.getCompetitionMap().clear();
+
+		while (!(listCompetitionID.isEmpty())) {
+			String ID = listCompetitionID.removeFirst();
+			Competition competition = newCompetition
+							(
+											ID,
+											listCompetitionType.removeFirst(),
+											listCompetitionTeamType.removeFirst(),
+											listCompetitionName.removeFirst(),
+											ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst())
+							);
+
+			ctrlCompetition.getCompetitionMap().put(ID, competition);
+		}
+
 	}
 
 
@@ -255,6 +307,41 @@ public class Controller
 		return outerConfederationList;
 	}
 
+	public List<List<String>> getCompetitionList(String competitionSubName,
+																							 String competitionType,
+																							 String competitionTeamType,
+																							 String competitionCountryID,
+																							 Boolean full)
+	{
+		searchCompetitions(competitionSubName, competitionType, competitionTeamType, competitionCountryID);
+
+		List<List<String>> outerCompetitionList = new ArrayList<List<String>>();
+
+		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
+			List<String> innerCompetitionList = new ArrayList<String>();
+			Competition competition = ctrlCompetition.getCompetitionMap().get(key);
+
+			innerCompetitionList.add(competition.getName());
+
+			if (full) {
+				innerCompetitionList.add(competition.getType());
+				innerCompetitionList.add(competition.getTeamType());
+				innerCompetitionList.add(competition.getConfederation().getCountry().getName());
+				innerCompetitionList.add(competition.getConfederation().getShortName());
+			}
+
+			innerCompetitionList.add(key);
+
+			outerCompetitionList.add(innerCompetitionList);
+		}
+
+		for (List<String> s : outerCompetitionList) {
+			System.out.println(s);
+		}
+
+		return outerCompetitionList;
+	}
+
 
 
 	public Integer countConfederations()
@@ -264,6 +351,15 @@ public class Controller
 		ctrlConfederation.setTotalConfederations(confederationDAO.countAllConfederationsDB());
 
 		return ctrlConfederation.getTotalConfederations();
+	}
+
+	public Integer countCompetitions()
+	{
+		CompetitionsDAO competitionsDAO = new PostgresImplCompetitionDAO();
+
+		ctrlCompetition.setTotalCompetitions(competitionsDAO.countAllCompetitionsDB());
+
+		return ctrlCompetition.getTotalCompetitions();
 	}
 
 	public Country newCountry(String ID, String type, String code, String name, Country superCountry)
@@ -282,6 +378,7 @@ public class Controller
 		return newCountry(ID, null, null, name, null);
 	}
 
+
 	public Confederation newConfederation(String ID, String shortName, String longName,
 																	Country country, Confederation superConfederation)
 	{
@@ -297,6 +394,33 @@ public class Controller
 	public Confederation newConfederation(String ID, String shortName)
 	{
 		return newConfederation(ID, shortName, null, null, null);
+	}
+
+	public Confederation newConfederation(String ID, String shortName, Country country)
+	{
+		return newConfederation(ID, shortName, null, country, null);
+	}
+
+	public Competition newCompetition(String ID, String type, String teamType, String name,
+																		Confederation confederation)
+	{
+		Competition competition = ctrlCompetition.getCompetitionMap().get(ID);
+
+		if (null == competition) {
+			competition = new Competition(type, teamType, name, confederation);
+		}
+
+		return competition;
+	}
+
+	public Competition newCompetition(String ID, String name)
+	{
+		return newCompetition(ID, null, null, name, null);
+	}
+
+	public Competition newCompetition(String ID, String name, Confederation confederation)
+	{
+		return newCompetition(ID, null, null, name, confederation);
 	}
 
 }

@@ -10,27 +10,34 @@ import java.util.*;
  */
 public class Competition
 {
+	public enum COMPETITION_TYPE {CUP, LEAGUE, SUPER_CUP};
+	private static final Map<String, Competition> COMPETITION_MAP = new LinkedHashMap<String, Competition>();
+	private static Integer totalCompetitions = 0;
 	private final String type;
 	private final String teamType;
 	private final String name;
 	private final Confederation confederation;
-	private final Country country;
-
-
-
-	private static List<Competition> competitionList = new ArrayList<Competition>();
 
 
 	public Competition(String type, String teamType, String name,
-										 Confederation confederation, Country country)
+										 Confederation confederation)
 	{
 		this.type = type;
 		this.teamType = teamType;
 		this.name = name;
 		this.confederation = confederation;
-		this.country = country;
 	}
 
+
+	public Integer getTotalCompetitions()
+	{
+		return totalCompetitions;
+	}
+
+	public void setTotalCompetitions(Integer totalCompetitions)
+	{
+		Competition.totalCompetitions = totalCompetitions;
+	}
 
 	public String getType()
 	{
@@ -52,14 +59,9 @@ public class Competition
 		return confederation;
 	}
 
-	public Country getCountry()
-	{
-		return country;
-	}
 
-	public static List<Competition> getCompetitionList()
+	public Map<String, Competition> getCompetitionMap()
 	{
-		return competitionList;
+		return COMPETITION_MAP;
 	}
-
 }

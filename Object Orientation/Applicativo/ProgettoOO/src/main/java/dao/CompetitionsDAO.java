@@ -4,13 +4,18 @@ import java.util.List;
 
 public interface CompetitionsDAO
 {
-	void competitionsDB(String subNameCompetition,
-											String typeCompetition, String typeTeamCompetition,
-											String countryCompetitionID,
-											List<String> competitionID,
-											List<String> competitionType, List<String> competitionTeamType, List<String> competitionName,
-											List<String> confederationID, List<String> confederationShortName,
-											List<String> countryID, List<String> countryName);
+	void competitionsDB(String competitionSubName,
+											String competitionType,
+											String competitionTeamType,
+											String competitionCountryID,
+											List<String> listCompetitionID,
+											List<String> listCompetitionType,
+											List<String> listCompetitionTeamType,
+											List<String> listCompetitionName,
+											List<String> listConfederationID,
+											List<String> listConfederationShortName,
+											List<String> listCountryID,
+											List<String> listCountryName);
 
 	Integer countAllCompetitionsDB();
 }
