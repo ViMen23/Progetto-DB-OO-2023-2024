@@ -72,7 +72,7 @@ AS
 $$
 BEGIN
 
-    IF (id_super_country IS NULL) THEN
+    IF (('NATION' = type_country::en_country) AND (id_super_country IS NOT NULL)) THEN
 
         RETURN QUERY
             SELECT
@@ -83,11 +83,22 @@ BEGIN
             FROM
                 fp_country
             WHERE
-                fp_country.type = type_country::en_country
+                (
+                    fp_country.type = 'NATION'
+                    AND
+                    fp_country.super_id = id_super_country::integer
+                )
+                OR
+                (
+                    fp_country.type = 'CONTINENT'
+                    AND
+                    fp_country.id = id_super_country::integer
+                )
             ORDER BY
+                fp_country.type DESC,
                 fp_country.name;
 
-    ELSE
+    ELSIF ('CONTINENT' = type_country::en_country) THEN
 
         RETURN QUERY
             SELECT
@@ -98,13 +109,31 @@ BEGIN
             FROM
                 fp_country
             WHERE
-                fp_country.type = type_country::en_country
-                AND
-                fp_country.super_id = id_super_country::integer
+                fp_country.type = 'CONTINENT'
+                OR
+                fp_country.type = 'WORLD'
+            ORDER BY
+                fp_country.type DESC,
+                fp_country.name;
+
+    ELSIF ('WORLD' = type_country::en_country) THEN
+
+        RETURN QUERY
+            SELECT
+                fp_country.id::text,
+                fp_country.type::text,
+                fp_country.code::text,
+                fp_country.name::text
+            FROM
+                fp_country
+            WHERE
+                fp_country.type = 'WORLD'
             ORDER BY
                 fp_country.name;
 
     END IF;
+
+    RETURN;
 
 END;
 $$
@@ -147,50 +176,109 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : all_sub_confederations
+ * NAME : get_confederations
  *
- * IN      : text
+ * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text)
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION all_sub_confederations
+CREATE OR REPLACE FUNCTION get_confederations
 (
-    IN  long_name_super_conf text
+    IN  type_country    text,
+    IN  id_super_conf   text
 )
 RETURNS TABLE
         (
-            short_name_sub_conf     text,
-            long_name_sub_conf      text,
-            name_country_sub_conf   text,
-            short_name_super_conf   text
+            conf_id         text,
+            conf_short_name text,
+            conf_long_name  text,
+            country_id      text,
+            country_name    text
         )
 AS
 $$
 BEGIN
 
-	RETURN QUERY
-		SELECT
-            conf_1.short_name::text,
-            conf_1.long_name::text,
-            country.name::text,
-            conf_2.short_name::text
-		FROM
-			fp_confederation AS conf_1
-            JOIN
-            fp_confederation AS conf_2
-                ON
-                conf_1.super_id = conf_2.id
-            JOIN
-            fp_country AS country
-                ON
-                conf_1.country_id = country.id
-		WHERE
-			conf_2.long_name = long_name_super_conf
-        ORDER BY
-            long_name;
+    IF (('NATION' = type_country::en_country) AND (id_super_conf IS NOT NULL)) THEN
+
+        RETURN QUERY
+            SELECT
+                fp_confederation.id::text,
+                fp_confederation.short_name::text,
+                fp_confederation.long_name::text,
+                fp_country.id::text,
+                fp_country.name::text
+            FROM
+                fp_confederation
+                JOIN
+                fp_country
+                    ON
+                    fp_confederation.country_id = fp_country.id
+            WHERE
+                (
+                    fp_country.type = 'NATION'
+                    AND
+                    fp_confederation.super_id = id_super_conf::integer
+                )
+                OR
+                (
+                    fp_country.type = 'CONTINENT'
+                    AND
+                    fp_confederation.id = id_super_conf::integer
+                )
+            ORDER BY
+                fp_country.type DESC,
+                fp_confederation.short_name;
+
+    ELSIF ('CONTINENT' = type_country::en_country) THEN
+
+        RETURN QUERY
+            SELECT
+                fp_confederation.id::text,
+                fp_confederation.short_name::text,
+                fp_confederation.long_name::text,
+                fp_country.id::text,
+                fp_country.name::text
+            FROM
+                fp_confederation
+                JOIN
+                fp_country
+                    ON
+                    fp_confederation.country_id = fp_country.id
+            WHERE
+                fp_country.type = 'CONTINENT'
+                OR
+                fp_country.type = 'WORLD'
+            ORDER BY
+                fp_country.type DESC,
+                fp_confederation.short_name;
+
+    ELSIF ('WORLD' = type_country::en_country) THEN
+
+        RETURN QUERY
+            SELECT
+                fp_confederation.id::text,
+                fp_confederation.short_name::text,
+                fp_confederation.long_name::text,
+                fp_country.id::text,
+                fp_country.name::text
+            FROM
+                fp_confederation
+                JOIN
+                fp_country
+                    ON
+                    fp_confederation.country_id = fp_country.id
+            WHERE
+                fp_country.type = 'WORLD'
+            ORDER BY
+                fp_confederation.short_name;
+
+    END IF;
+
+	RETURN;
 
 END;
 $$

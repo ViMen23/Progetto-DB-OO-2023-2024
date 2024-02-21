@@ -24,7 +24,7 @@ public class Controller
 
 	private Controller()
 	{
-		this.ctrlCountry = new Country(null, null, null, null, null);
+		this.ctrlCountry = new Country(null, null, null, null);
 		//this.ctrlConfederation = new Confederation(null, null, null, null);
 	}
 
@@ -68,26 +68,37 @@ public class Controller
 		List<String> countryCode = new ArrayList<String>();
 		List<String> countryName = new ArrayList<String>();
 
-		Country superCountry = ctrlCountry.getCountryFromID(superCountryID);
-
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
-
 		countryDAO.countriesDB(type, superCountryID, countryID, countryType, countryCode, countryName);
 
+		ctrlCountry.getCountryMap().clear();
 
-		ctrlCountry.getCountryList().clear();
-
-		while (!(countryID.isEmpty())) {
-			Country country = newCountry
+		Country superCountry;
+		if (type.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+			superCountry = null;
+		} else {
+			superCountry = newCountry
 							(
 											countryID.removeFirst(),
+											countryType.removeFirst(),
+											countryCode.removeFirst(),
+											countryName.removeFirst(),
+											null
+							);
+		}
+
+		while (!(countryID.isEmpty())) {
+			String ID = countryID.removeFirst();
+			Country country = newCountry
+							(
+											ID,
 											countryType.removeFirst(),
 											countryCode.removeFirst(),
 											countryName.removeFirst(),
 											superCountry
 							);
 
-			addCountryToList(country);
+			ctrlCountry.getCountryMap().put(ID, country);
 		}
 
 	}
@@ -140,17 +151,20 @@ public class Controller
 		getCountries(type, superCountryID);
 
 		List<List<String>> outerCountryList = new ArrayList<List<String>>();
-		for (Country country : ctrlCountry.getCountryList()) {
+
+		for (String key : ctrlCountry.getCountryMap().keySet()) {
 			List<String> innerCountryList = new ArrayList<String>();
+			Country country = ctrlCountry.getCountryMap().get(key);
 
 			innerCountryList.add(country.getName());
 
 			if (full) {
 				innerCountryList.add(country.getCode());
 				innerCountryList.add(country.getType());
+				innerCountryList.add(country.getSuperCountry().getName()); // TODO: try catch?
 			}
 
-			innerCountryList.add(country.getID());
+			innerCountryList.add(key);
 
 			outerCountryList.add(innerCountryList);
 		}
@@ -171,10 +185,10 @@ public class Controller
 	public Country newCountry(String countryID, String countryType, String countryCode, String countryName,
 														Country superCountry)
 	{
-		Country country = ctrlCountry.getCountryFromID(countryID);
+		Country country = ctrlCountry.getCountryMap().get(countryID);
 
 		if (null == country) {
-			country = new Country(countryID, countryType, countryCode, countryName, superCountry);
+			country = new Country(countryType, countryCode, countryName, superCountry);
 		}
 
 		return country;
@@ -183,11 +197,6 @@ public class Controller
 	public Country newCountry(String countryID, String countryName)
 	{
 		return newCountry(countryID, null, null, countryName, null);
-	}
-
-	public void addCountryToList(Country country)
-	{
-		ctrlCountry.getCountryList().add(country);
 	}
 
 }

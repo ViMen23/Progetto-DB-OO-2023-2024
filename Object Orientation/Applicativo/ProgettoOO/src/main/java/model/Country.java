@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TYPE : class
@@ -15,20 +12,17 @@ import java.util.Map;
 public class Country
 {
 	public enum COUNTRY_TYPE {NATION, CONTINENT, WORLD};
-	private static List<Country> countryList = new ArrayList<Country>();
+	private static final Map<String, Country> COUNTRY_MAP = new LinkedHashMap<String, Country>();
 	private static Integer totalCountries = 0;
 
-
-	private final String ID;
 	private final String type;
 	private final String code;
 	private final String name;
 	private final Country superCountry;
 
 
-	public Country(String ID, String type, String code, String name, Country superCountry)
+	public Country(String type, String code, String name, Country superCountry)
 	{
-		this.ID = ID;
 		this.type = type;
 		this.code = code;
 		this.name = name;
@@ -43,11 +37,6 @@ public class Country
 	public void setTotalCountries(Integer totalCountries)
 	{
 		Country.totalCountries = totalCountries;
-	}
-
-	public String getID()
-	{
-		return ID;
 	}
 
 	public String getType()
@@ -70,21 +59,9 @@ public class Country
 		return superCountry;
 	}
 
-	public List<Country> getCountryList()
+	public Map<String, Country> getCountryMap()
 	{
-		return countryList;
+		return COUNTRY_MAP;
 	}
-
-	public Country getCountryFromID(String countryID)
-	{
-		for (Country country : countryList) {
-			if (country.getID().equalsIgnoreCase(countryID)) {
-				return country;
-			}
-		}
-
-		return null;
-	}
-
 
 }
