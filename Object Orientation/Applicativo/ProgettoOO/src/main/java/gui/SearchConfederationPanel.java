@@ -57,7 +57,7 @@
 //		 */
 //		string = GuiConfiguration.getMessage("confederationsList");
 //		string += " - ";
-//		string += Controller.getControllerInstance().countConfederations().toString();
+//		string += Controller.getInstance().countConfederations().toString();
 //		string += " ";
 //		string += GuiConfiguration.getMessage("results");
 //		string = string.toUpperCase();
@@ -179,7 +179,7 @@
 //					}
 //
 //					if(continentComboBox.getItemCount() == 0) {
-//						ArrayList<String> nameCountry = Controller.getControllerInstance().getStringCountryComboBox("World");
+//						ArrayList<String> nameCountry = Controller.getInstance().getStringCountryComboBox("World");
 //						continentComboBox.setModel(new DefaultComboBoxModel<String>(nameCountry));
 //					}
 //					continentComboBox.setSelectedIndex(0);
@@ -216,17 +216,17 @@
 //					public void actionPerformed(ActionEvent e) {
 //
 //						if( continentRadioButton.isSelected() ) {
-//							Controller.getControllerInstance().subCountries("World");
+//							Controller.getInstance().subCountries("World");
 //
-//							List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
+//							List<List<String>> data = Controller.getInstance().getCountryDataTable();
 //
 //							confederationTable.setModel(new TableModel("countries", data));
 //						}
 //						else if(nationRadioButton.isSelected()){
 //							String continent = (String) continentComboBox.getSelectedItem();
-//							Controller.getControllerInstance().subCountries(continent);
+//							Controller.getInstance().subCountries(continent);
 //
-//							List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
+//							List<List<String>> data = Controller.getInstance().getCountryDataTable();
 //
 //							confederationTable.setModel(new TableModel("countries", data));
 //						}

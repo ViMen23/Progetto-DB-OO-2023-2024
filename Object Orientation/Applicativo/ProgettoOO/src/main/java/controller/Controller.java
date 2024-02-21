@@ -2,13 +2,12 @@ package controller;
 
 import dao.*;
 import model.Competition;
-import model.Confederation;
+//import model.Confederation;
 import model.Country;
 import postgresDaoImplementation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 import java.util.regex.Pattern;
 
 /**
@@ -19,14 +18,17 @@ import java.util.regex.Pattern;
  */
 public class Controller
 {
-	private final Country ctrlCountry = new Country(0, null, null, "Control", null);
+	private final Country ctrlCountry;
+	//private final Confederation ctrlConfederation;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
+		this.ctrlCountry = new Country(null, null, null, null, null);
+		//this.ctrlConfederation = new Confederation(null, null, null, null);
 	}
 
-	public static Controller getControllerInstance()
+	public static Controller getInstance()
 	{
 		if (null == controllerInstance) {
 			controllerInstance = new Controller();
@@ -59,45 +61,39 @@ public class Controller
 		return rowExists.rowExistsDB(separator, string);
 	}
 
-	public void subCountries(String superCountryName)
+	public void getCountries(String type, String superCountryID)
 	{
-
-		ctrlCountry.getCountryList().clear();
-
-		List<Integer> countryID = new ArrayList<Integer>();
+		List<String> countryID = new ArrayList<String>();
 		List<String> countryType = new ArrayList<String>();
 		List<String> countryCode = new ArrayList<String>();
 		List<String> countryName = new ArrayList<String>();
-		List<String> superCountryCode = new ArrayList<String>();
 
-		SubCountriesDao allContinent = new SubCountriesPostgresDaoImpl();
-		allContinent.subCountriesDB(superCountryName, countryID, countryType, countryCode, countryName, superCountryCode);
+		Country superCountry = ctrlCountry.getCountryFromID(superCountryID);
 
-		while (!(countryName.isEmpty())) {
-			ctrlCountry.newCountry
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+
+		countryDAO.countriesDB(type, superCountryID, countryID, countryType, countryCode, countryName);
+
+
+		ctrlCountry.getCountryList().clear();
+
+		while (!(countryID.isEmpty())) {
+			Country country = newCountry
 							(
 											countryID.removeFirst(),
 											countryType.removeFirst(),
 											countryCode.removeFirst(),
 											countryName.removeFirst(),
-											superCountryCode.removeFirst()
+											superCountry
 							);
-		}
 
-		for (Country country : ctrlCountry.getCountryList()) {
-			System.out.println
-							(
-											"PAESE: " +
-															" [" + country.getType() + " - " +
-															country.getCode() + " - " +
-															country.getSuperCountryCode() + "] " +
-															country.getName() +
-															" [" + country.getID() + "]"
-							);
+			addCountryToList(country);
 		}
 
 	}
 
+
+	/*
 	public void subConfederations(String superConfederationsName)
 	{
 		Confederation.getConfederationList().clear();
@@ -128,51 +124,70 @@ public class Controller
 		}
 	}
 
+	 */
+
 	public Integer countCountries()
 	{
-		CountTablesDao countTablesDao = new CountTablesPostgresDaoImpl();
-		return countTablesDao.countCountriesDB();
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+
+		ctrlCountry.setTotalCountries(countryDAO.countAllCountriesDB());
+
+		return ctrlCountry.getTotalCountries();
 	}
 
-	public ArrayList<ArrayList<String>> getStringCountryComboBox(String superCountryName)
+	public List<List<String>> getCountryList(String type, String superCountryID, Boolean full)
 	{
-		subCountries(superCountryName);
-		ArrayList<ArrayList<String>> listCountry = new ArrayList<ArrayList<String>>();
+		getCountries(type, superCountryID);
 
+		List<List<String>> outerCountryList = new ArrayList<List<String>>();
 		for (Country country : ctrlCountry.getCountryList()) {
-			ArrayList<String> innerCountry = new ArrayList<String>();
+			List<String> innerCountryList = new ArrayList<String>();
 
-			innerCountry.add(country.getName());
-			innerCountry.add(country.getID().toString());
+			innerCountryList.add(country.getName());
 
-			listCountry.add(innerCountry);
+			if (full) {
+				innerCountryList.add(country.getCode());
+				innerCountryList.add(country.getType());
+			}
+
+			innerCountryList.add(country.getID());
+
+			outerCountryList.add(innerCountryList);
 		}
 
-		return listCountry;
+		return outerCountryList;
 	}
 
-	public List<List<String>> getCountryDataTable()
-	{
-		List<List<String>> data = new ArrayList<List<String>>();
 
-		for(Country country: ctrlCountry.getCountryList()){
-			List<String> tmp = new ArrayList<String>();
 
-			tmp.add(country.getName());
-			tmp.add(country.getCode());
-			tmp.add(country.getType());
-			tmp.add(country.getSuperCountryCode());
-
-			data.add(tmp);
-		}
-
-		return data;
-	}
 
 	public Integer countConfederations()
 	{
 		CountTablesDao countTablesDao = new CountTablesPostgresDaoImpl();
+
 		return countTablesDao.countConfederationsDB();
+	}
+
+	public Country newCountry(String countryID, String countryType, String countryCode, String countryName,
+														Country superCountry)
+	{
+		Country country = ctrlCountry.getCountryFromID(countryID);
+
+		if (null == country) {
+			country = new Country(countryID, countryType, countryCode, countryName, superCountry);
+		}
+
+		return country;
+	}
+
+	public Country newCountry(String countryID, String countryName)
+	{
+		return newCountry(countryID, null, null, countryName, null);
+	}
+
+	public void addCountryToList(Country country)
+	{
+		ctrlCountry.getCountryList().add(country);
 	}
 
 }

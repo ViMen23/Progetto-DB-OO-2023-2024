@@ -47,48 +47,64 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : all_sub_countries
+ * NAME : get_countries
  *
- * IN      : text
+ * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text)
+ * RETURNS : TABLE (text, text, text, text)
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION all_sub_countries
+CREATE OR REPLACE FUNCTION get_countries
 (
-    IN  name_super_country  text
+    IN  type_country        text,
+    IN  id_super_country    text
 )
 RETURNS TABLE
         (
-            id_sub_country      integer,
-            type_sub_country    text,
-            code_sub_country    text,
-            name_sub_country    text,
-            code_super_country  text
+            country_id      text,
+            country_type    text,
+            country_code    text,
+            country_name    text
         )
 AS
 $$
 BEGIN
 
-	RETURN QUERY
-		SELECT
-            country_1.id::integer,
-            country_1.type::text,
-            country_1.code::text,
-            country_1.name::text,
-            country_2.code::text
-		FROM
-			fp_country AS country_1
-            JOIN
-            fp_country AS country_2
-                ON
-                country_1.super_id = country_2.id
-		WHERE
-			country_2.name = name_super_country
-        ORDER BY
-            country_1.name;
+    IF (id_super_country IS NULL) THEN
+
+        RETURN QUERY
+            SELECT
+                fp_country.id::text,
+                fp_country.type::text,
+                fp_country.code::text,
+                fp_country.name::text
+            FROM
+                fp_country
+            WHERE
+                fp_country.type = type_country::en_country
+            ORDER BY
+                fp_country.name;
+
+    ELSE
+
+        RETURN QUERY
+            SELECT
+                fp_country.id::text,
+                fp_country.type::text,
+                fp_country.code::text,
+                fp_country.name::text
+            FROM
+                fp_country
+            WHERE
+                fp_country.type = type_country::en_country
+                AND
+                fp_country.super_id = id_super_country::integer
+            ORDER BY
+                fp_country.name;
+
+    END IF;
 
 END;
 $$

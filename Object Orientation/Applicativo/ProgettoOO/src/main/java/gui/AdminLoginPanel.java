@@ -136,7 +136,7 @@ public class AdminLoginPanel
 		okButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				if (Controller.getControllerInstance().isAdmin(usernameTextField.getText(), new String(passwordField.getPassword()))) {
+				if (Controller.getInstance().isAdmin(usernameTextField.getText(), new String(passwordField.getPassword()))) {
 					System.out.println("Benvenuto");
 				} else {
 					System.out.println("Chi sei?");

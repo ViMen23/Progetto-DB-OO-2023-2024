@@ -22,15 +22,15 @@ public class Main
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
-		searchCountryPanel.setName("boh");
+		//searchCountryPanel.setName("boh");
 
 		MainFrame.getMainFrameInstance().add(searchCountryPanel);
 		MainFrame.getMainFrameInstance().pack();
 
-		//Controller.getControllerInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
+		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
 
-		//Controller.getControllerInstance().subCountries("Asia");
-		//Controller.getControllerInstance().searchCompetitions("jik", null, null, null);
+		//Controller.getInstance().subCountries(2);
+		//Controller.getInstance().searchCompetitions("jik", null, null, null);
 
 		//ResultSearchPanel resultSearchPanel = new ResultSearchPanel("ciao", 15);
 		//MainFrame.getMainFrameInstance().add(resultSearchPanel);

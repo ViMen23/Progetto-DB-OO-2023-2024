@@ -1,6 +1,6 @@
 package dao;
 
-public interface SubConfederationsDao
+public interface ConfederationDAO
 {
 	void subConfederationsDB(String superConfederationName);
 }

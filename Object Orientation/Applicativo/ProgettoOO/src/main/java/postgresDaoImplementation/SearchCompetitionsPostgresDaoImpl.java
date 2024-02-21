@@ -3,7 +3,7 @@ package postgresDaoImplementation;
 import dao.SearchCompetitionsDao;
 import database.DatabaseConnection;
 import model.Competition;
-import model.Confederation;
+//import model.Confederation;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

@@ -14,27 +14,38 @@ import java.util.Map;
 // TODO: per tutte le classi con oggetti immutabili considerare di convertirle in classi record
 public class Country
 {
+	public enum COUNTRY_TYPE {NATION, CONTINENT, WORLD};
 	private static List<Country> countryList = new ArrayList<Country>();
+	private static Integer totalCountries = 0;
 
 
-	private final Integer ID;
+	private final String ID;
 	private final String type;
 	private final String code;
 	private final String name;
-	private final String superCountryCode;
+	private final Country superCountry;
 
 
-	public Country(Integer ID, String type, String code, String name, String superCountryCode)
+	public Country(String ID, String type, String code, String name, Country superCountry)
 	{
 		this.ID = ID;
 		this.type = type;
 		this.code = code;
 		this.name = name;
-		this.superCountryCode = superCountryCode;
+		this.superCountry = superCountry;
 	}
 
+	public Integer getTotalCountries()
+	{
+		return totalCountries;
+	}
 
-	public Integer getID()
+	public void setTotalCountries(Integer totalCountries)
+	{
+		Country.totalCountries = totalCountries;
+	}
+
+	public String getID()
 	{
 		return ID;
 	}
@@ -54,9 +65,9 @@ public class Country
 		return name;
 	}
 
-	public String getSuperCountryCode()
+	public Country getSuperCountry()
 	{
-		return superCountryCode;
+		return superCountry;
 	}
 
 	public List<Country> getCountryList()
@@ -64,16 +75,16 @@ public class Country
 		return countryList;
 	}
 
-
-	public void newCountry(Integer countryID, String type, String code, String name, String superCountryCode)
+	public Country getCountryFromID(String countryID)
 	{
-		Country country = new Country(countryID, type, code, name, superCountryCode);
-		countryList.add(country);
+		for (Country country : countryList) {
+			if (country.getID().equalsIgnoreCase(countryID)) {
+				return country;
+			}
+		}
+
+		return null;
 	}
 
-	public void newCountry(Integer countryID, String name)
-	{
-		newCountry(countryID, null, null, name, null);
-	}
 
 }

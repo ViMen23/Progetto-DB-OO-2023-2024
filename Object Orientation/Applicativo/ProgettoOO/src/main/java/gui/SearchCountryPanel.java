@@ -4,16 +4,14 @@ import controller.Controller;
 import model.Country;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.util.List;
-import java.util.Objects;
-import java.util.Vector;
+import java.util.NoSuchElementException;
 
 public class SearchCountryPanel
 				extends JPanel
@@ -22,7 +20,7 @@ public class SearchCountryPanel
 	protected JPanel countryTablePanel;
 	protected JRadioButton continentRadioButton;
 	protected JRadioButton nationRadioButton;
-	protected JComboBox<ArrayList<String>> continentComboBox;
+	protected JComboBox<List<String>> continentComboBox;
 	protected JTable countryTable;
 
 
@@ -61,7 +59,7 @@ public class SearchCountryPanel
 		string += " ";
 		string += GuiConfiguration.getMessage("available");
 		string += " ";
-		string += Controller.getControllerInstance().countCountries().toString();
+		string += Controller.getInstance().countCountries().toString();
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
@@ -96,21 +94,16 @@ public class SearchCountryPanel
 
 		continentRadioButton = new JRadioButton(string);
 
-		continentRadioButton.addActionListener
-		(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (!searchButton.isEnabled()) {
-						searchButton.setEnabled(true);
-					}
-					if (continentComboBox.isEnabled()) {
-						continentComboBox.setEnabled(false);
-						continentComboBox.setSelectedIndex(-1);
-					}
-				}
+		continentRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				searchButton.setEnabled(true);
+
+				continentComboBox.removeAllItems();
+				continentComboBox.setEnabled(false);
 			}
-		);
+		});
 
 		countryPanel.add(continentRadioButton);
 
@@ -119,14 +112,21 @@ public class SearchCountryPanel
 		/*
 		 * Campo continente: combo box
 		 */
-		continentComboBox = new JComboBox<ArrayList<String>>();
+		continentComboBox = new JComboBox<List<String>>();
 
 		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		continentComboBox.setEnabled(false);
 
-
+		continentComboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				searchButton.setEnabled(true);
+			}
+		});
 
 		countryPanel.add(continentComboBox);
+
 
 		/*
 		 * Campo nazione: radio button
@@ -136,30 +136,27 @@ public class SearchCountryPanel
 
 		nationRadioButton = new JRadioButton(string);
 
-		nationRadioButton.addActionListener
-		(
-			new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					if (!searchButton.isEnabled()) {
-						searchButton.setEnabled(true);
-					}
-					if (!continentComboBox.isEnabled()) {
-						continentComboBox.setEnabled(true);
-					}
+		nationRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				continentComboBox.setEnabled(true);
 
-					continentComboBox.setRenderer(new ComboBoxRenderer());
+				List<List<String>> nameCountryList = Controller.getInstance().getCountryList
+								(
+												Country.COUNTRY_TYPE.CONTINENT.toString(),
+												null,
+												false
+								);
 
-					if (continentComboBox.getItemCount() == 0) {
-						ArrayList<ArrayList<String>> listCountry = Controller.getControllerInstance().getStringCountryComboBox("World");
-						for (ArrayList<String> innerCountry : listCountry) {
-							continentComboBox.addItem(innerCountry);
-						}
-					}
-					continentComboBox.setSelectedIndex(0);
+				for (List<String> countryList : nameCountryList) {
+					continentComboBox.addItem(countryList);
 				}
+
+				continentComboBox.setSelectedIndex(-1);
+				searchButton.setEnabled(false);
 			}
-		);
+		});
 
 		countryPanel.add(nationRadioButton);
 
@@ -176,34 +173,31 @@ public class SearchCountryPanel
 
 		searchButton.setEnabled(false);
 
-		searchButton.addActionListener
-		(
-			new ActionListener() {
+		searchButton.addActionListener(new ActionListener() {
 				@Override
-				public void actionPerformed(ActionEvent e) {
+				public void actionPerformed(ActionEvent e)
+				{
+					String countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
+					String superCountryID = null;
 
-					if (continentRadioButton.isSelected()) {
-						Controller.getControllerInstance().subCountries("World");
 
-						List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
-
-						countryTable.setModel(new TableModel("countries", data));
-					}
-					else if (nationRadioButton.isSelected()) {
-						String continent = (String) ((ArrayList<String>) continentComboBox.getSelectedItem()).getFirst();
-						Controller.getControllerInstance().subCountries(continent);
-
-						List<List<String>> data = Controller.getControllerInstance().getCountryDataTable();
-
-						countryTable.setModel(new TableModel("countries", data));
+					if (nationRadioButton.isSelected()) {
+						countryType = Country.COUNTRY_TYPE.NATION.toString();
+						superCountryID = ((List<String>) continentComboBox.getSelectedItem()).getLast();
 					}
 
+					List<List<String>> data = Controller.getInstance().getCountryList
+									(
+													countryType,
+													superCountryID,
+													true
+									);
+
+					countryTable.setModel(new TableModel("countries", data));
 					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-
 					countryPanel.revalidate();
 				}
-			}
-		);
+		});
 
 		add(searchButton);
 
@@ -240,4 +234,5 @@ public class SearchCountryPanel
 
 		countryTablePanel.add(scrollPane);
 	}
+
 }
