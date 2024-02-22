@@ -58,6 +58,18 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("type")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("countryName")));
 		}
+		else if(tableName.equalsIgnoreCase("players")){
+			this.columnNames = new ArrayList<String>();
+
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("surname")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("name")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("dob")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("country")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("foot")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("role")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("position")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("retiredDate")));
+		}
 		this.data = data;
 
 	}

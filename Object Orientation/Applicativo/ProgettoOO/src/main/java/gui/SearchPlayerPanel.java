@@ -1033,6 +1033,17 @@ public class SearchPlayerPanel
 
 				setRolePlayer();
 
+				System.out.println(playerSubName);
+				System.out.println(playerSubSurname);
+				System.out.println(playerReferringYear);
+				System.out.println(playerMinAge);
+				System.out.println(playerMaxAge);
+				System.out.println(playerCountryID);
+				System.out.println(playerRole);
+				System.out.println(playerPositionID);
+				System.out.println(playerFoot);
+
+
 				List<List<String>> data = Controller.getInstance().getPlayerList
 					(
 						playerSubName,
@@ -1048,7 +1059,7 @@ public class SearchPlayerPanel
 					);
 
 
-				playerTable.setModel(new TableModel("teams", data));
+				playerTable.setModel(new TableModel("players", data));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
 				playerTablePanel.revalidate();
 			}
@@ -1074,7 +1085,7 @@ public class SearchPlayerPanel
 		/*
 		 * Campo tabella paesi: table
 		 */
-		playerTable = new JTable(new TableModel("teams", null));
+		playerTable = new JTable(new TableModel("players", null));
 
 		playerTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
