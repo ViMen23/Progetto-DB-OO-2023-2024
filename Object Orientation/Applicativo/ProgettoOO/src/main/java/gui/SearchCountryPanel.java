@@ -16,29 +16,23 @@ import java.util.List;
 public class SearchCountryPanel
 				extends JPanel
 {
-
 	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-
 	protected JPanel countryTypePanel;
 	protected JPanel countrySuperPanel;
-
 	protected JPanel countryPanel;
 	protected JPanel countryTablePanel;
 	protected JRadioButton continentRadioButton;
 	protected JRadioButton nationRadioButton;
 	protected JComboBox<List<String>> continentComboBox;
 	protected JTable countryTable;
-
-
 	protected JLabel label;
 	protected ButtonGroup buttonGroup;
 	protected JScrollPane scrollPane;
-
 	protected JButton titleButton;
 	protected JButton searchButton;
-
 	protected Color panelColor = Color.white;
+
 
 	public SearchCountryPanel()
 	{
@@ -74,17 +68,17 @@ public class SearchCountryPanel
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIcon(maximizeIcon);
 		titleButton.setIconTextGap(40);
+
 		add(titleButton);
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				if (countryPanel.isShowing()){
+				if (countryPanel.isShowing()) {
 					remove(countryPanel);
 					titleButton.setIcon(minimizeIcon);
-				}
-				else{
+				} else {
 					add(countryPanel, 1);
 					titleButton.setIcon(maximizeIcon);
 				}
@@ -105,6 +99,7 @@ public class SearchCountryPanel
 
 		add(countryPanel);
 
+
 		/*
 		 * Campo ricerca per tipo di paese: stampa
 		 */
@@ -121,6 +116,8 @@ public class SearchCountryPanel
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		countryPanel.add(label);
+
+
 		/*
 		 * Campo ricerca per tipo di paese: panel
 		 */
@@ -135,6 +132,7 @@ public class SearchCountryPanel
 		countryTypePanel.setBackground(panelColor);
 
 		countryPanel.add(countryTypePanel);
+
 
 		/*
 		 * Campo continente: radio button
@@ -156,6 +154,7 @@ public class SearchCountryPanel
 		});
 
 		countryTypePanel.add(continentRadioButton);
+
 
 		/*
 		 * Campo nazione: radio button
@@ -189,6 +188,7 @@ public class SearchCountryPanel
 
 		countryTypePanel.add(nationRadioButton);
 
+
 		/*
 		 * Campo gruppo bottoni: buttonGroup
 		 */
@@ -196,6 +196,7 @@ public class SearchCountryPanel
 
 		buttonGroup.add(continentRadioButton);
 		buttonGroup.add(nationRadioButton);
+
 
 		/*
 		 * Campo ricerca continente che contiene la nazione: stampa
@@ -250,6 +251,7 @@ public class SearchCountryPanel
 
 		countrySuperPanel.add(continentComboBox);
 
+
 		/*
 		 * Campo avvia ricerca: button
 		 */
@@ -282,6 +284,7 @@ public class SearchCountryPanel
 
 					countryTable.setModel(new TableModel("countries", data));
 					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
+
 					countryTablePanel.revalidate();
 				}
 		});
@@ -304,6 +307,7 @@ public class SearchCountryPanel
 
 		add(countryTablePanel);
 
+
 		/*
 		 * Campo tabella paesi: table
 		 */
@@ -313,6 +317,7 @@ public class SearchCountryPanel
 		countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 		countryTable.setFillsViewportHeight(true);
 		countryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
 
 		/*
 		 * Campo barra di scorrimento: jScrollPane

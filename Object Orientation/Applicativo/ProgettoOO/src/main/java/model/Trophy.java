@@ -1,7 +1,7 @@
 package model;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * TYPE : class
@@ -11,29 +11,28 @@ import java.util.Set;
  */
 public class Trophy
 {
-	private final EnAward type;
-	private final EnRole role;
+	public enum AWARD_TYPE {PLAYER, TEAM};
+	private static final Map<String, Trophy> TROPHY_MAP = new LinkedHashMap<String, Trophy>();
+
+	private final String type;
+	private final String role;
 	private final String name;
 
-	// lista dei premi calcistici
-	private static Set<Trophy> trophySet = new LinkedHashSet<Trophy>();
 
-	public Trophy(EnAward type, EnRole role, String name)
+	public Trophy(String type, String role, String name)
 	{
 		this.type = type;
 		this.role = role;
 		this.name = name;
-
-		trophySet.add(this);
 	}
 
 
-	public EnAward getType()
+	public String getType()
 	{
 		return type;
 	}
 
-	public EnRole getRole()
+	public String getRole()
 	{
 		return role;
 	}
@@ -43,9 +42,8 @@ public class Trophy
 		return name;
 	}
 
-	public static Set<Trophy> getTrophySet()
+	public Map<String, Trophy> getTrophyMap()
 	{
-		return trophySet;
+		return TROPHY_MAP;
 	}
-
 }

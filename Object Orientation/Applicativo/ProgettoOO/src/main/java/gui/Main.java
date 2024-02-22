@@ -23,14 +23,7 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
-		Controller.getInstance().getTeamList
-						(
-										null,
-										null,
-										"NATIONAL",
-										null,
-										true
-						);
+		Controller.getInstance().getPositionList(true);
 
 		MainFrame.getMainFrameInstance().add(searchCountryPanel);
 		MainFrame.getMainFrameInstance().pack();

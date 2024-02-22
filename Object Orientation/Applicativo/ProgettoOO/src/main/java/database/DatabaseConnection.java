@@ -24,13 +24,10 @@ public class DatabaseConnection
 	// COSTRUTTORE
 	private DatabaseConnection() throws SQLException
 	{
-		try
-		{
+		try {
 			Class.forName(driver);
 			conn = DriverManager.getConnection(url, user, password);
-		}
-		catch (ClassNotFoundException ex)
-		{
+		} catch (ClassNotFoundException ex) {
 			System.out.println("Database Connection Creation Failed : " + ex.getMessage());
 			ex.printStackTrace();
 		}
@@ -38,12 +35,9 @@ public class DatabaseConnection
 
 	public static DatabaseConnection getInstance() throws SQLException
 	{
-		if (instance == null)
-		{
+		if (instance == null) {
 			instance = new DatabaseConnection();
-		}
-		else if (instance.conn.isClosed())
-		{
+		} else if (instance.conn.isClosed()) {
 			instance = new DatabaseConnection();
 		}
 

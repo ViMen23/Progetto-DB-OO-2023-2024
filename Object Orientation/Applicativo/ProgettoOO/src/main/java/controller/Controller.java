@@ -36,6 +36,12 @@ public class Controller
 		this.ctrlPlayer = new Player(null, null, null, null, null, null, null, null);
 	}
 
+	/**
+	 * Restiruisce una istanza del controller.
+	 * Visto il design pattern scelto il controller e' unico.
+	 * Nel caso non fosse presente un'istanza ne crea una.
+	 * @return un'istanza della classe Controller
+	 */
 	public static Controller getInstance()
 	{
 		if (null == controllerInstance) {
@@ -45,6 +51,25 @@ public class Controller
 		return controllerInstance;
 	}
 
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * ADMIN
+	 *------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * Controlla che l'username e la password inseriti
+	 * appartengano ad un admin con privilegio di login nell'applicativo
+	 * confrontando i valori in input con dati contenuti del DataBase.
+	 * <p>
+	 * Controlla che sia username che password rispettino dei pattern dettati da regex.
+	 * <p>
+	 * Controlla che non ci siano altri admin connessi sulla stessa istanza dell'applicativo.
+	 * <p>
+	 * @param username	username dell'utente che prova ad accedere
+	 * @param password	password dell'utente che prova ad accedere
+	 * <p>
+	 * @return					true in caso di login positivo, false altrimenti
+	 */
 	public Boolean isAdmin(String username,
 												 String password)
 	{
@@ -72,6 +97,80 @@ public class Controller
 		return false;
 	}
 
+
+	/**
+	 * Crea una nuova istanza della classe Admin
+	 * chiamando il costruttore della classe.
+	 * Restituisce l'istanza creata.
+	 * @param username
+	 * @param password
+	 * @return un'istanza della classe Admin
+	 */
+	public Admin newAdmin(String username, String password)
+	{
+		return new Admin(username, password);
+	}
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * COUNTRY
+	 *------------------------------------------------------------------------------------------------------*/
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param code
+	 * @param name
+	 * @param superCountry
+	 * @return
+	 */
+	public Country newCountry(String ID, String type, String code, String name, Country superCountry)
+	{
+		Country country = ctrlCountry.getCountryMap().get(ID);
+
+		if (null == country) {
+			country = new Country(type, code, name, superCountry);
+		}
+
+		return country;
+	}
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @return
+	 */
+	public Country newCountry(String ID, String name)
+	{
+		return newCountry(ID, null, null, name, null);
+	}
+
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	public Integer countCountries()
+	{
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+
+		ctrlCountry.setTotalCountries(countryDAO.countAllCountriesDB());
+
+		return ctrlCountry.getTotalCountries();
+	}
+
+
+	/**
+	 * TODO
+	 * @param countryType
+	 * @param superCountryID
+	 */
 	public void getCountries(String countryType,
 													 String superCountryID)
 	{
@@ -120,7 +219,112 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param countryType
+	 * @param superCountryID
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getCountryList(String countryType, String superCountryID, Boolean full)
+	{
+		getCountries(countryType, superCountryID);
 
+		List<List<String>> outerCountryList = new ArrayList<List<String>>();
+
+		for (String key : ctrlCountry.getCountryMap().keySet()) {
+			List<String> innerCountryList = new ArrayList<String>();
+			Country country = ctrlCountry.getCountryMap().get(key);
+
+			innerCountryList.add(country.getName());
+
+			if (full) {
+				innerCountryList.add(country.getCode());
+				innerCountryList.add(country.getType());
+				innerCountryList.add(country.getSuperCountry().getName()); // TODO: try catch?
+			}
+
+			innerCountryList.add(key);
+
+			outerCountryList.add(innerCountryList);
+		}
+
+		return outerCountryList;
+	}
+
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * CONFEDERATION
+	 *------------------------------------------------------------------------------------------------------*/
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param shortName
+	 * @param longName
+	 * @param country
+	 * @param superConfederation
+	 * @return
+	 */
+	public Confederation newConfederation(String ID, String shortName, String longName,
+																				Country country, Confederation superConfederation)
+	{
+		Confederation confederation = ctrlConfederation.getConfederationMap().get(ID);
+
+		if (null == confederation) {
+			confederation = new Confederation(shortName, longName, country, superConfederation);
+		}
+
+		return confederation;
+	}
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param shortName
+	 * @return
+	 */
+	public Confederation newConfederation(String ID, String shortName)
+	{
+		return newConfederation(ID, shortName, null, null, null);
+	}
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param shortName
+	 * @param country
+	 * @return
+	 */
+	public Confederation newConfederation(String ID, String shortName, Country country)
+	{
+		return newConfederation(ID, shortName, null, country, null);
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	public Integer countConfederations()
+	{
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+
+		ctrlConfederation.setTotalConfederations(confederationDAO.countAllConfederationsDB());
+
+		return ctrlConfederation.getTotalConfederations();
+	}
+
+
+	/**
+	 * TODO
+	 * @param countryType
+	 * @param superConfederationsID
+	 */
 	public void getConfederations(String countryType,
 																String superConfederationsID)
 	{
@@ -183,6 +387,96 @@ public class Controller
 
 	}
 
+
+	/**
+	 * TODO
+	 * @param typeCountry
+	 * @param superConfederationID
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getConfederationList(String typeCountry, String superConfederationID, Boolean full)
+	{
+		getConfederations(typeCountry, superConfederationID);
+
+		List<List<String>> outerConfederationList = new ArrayList<List<String>>();
+
+		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
+			List<String> innerConfederationList = new ArrayList<String>();
+			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
+
+			innerConfederationList.add(confederation.getShortName());
+
+			if (full) {
+				innerConfederationList.add(confederation.getLongName());
+				if (typeCountry.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+					innerConfederationList.add("-");
+				} else {
+					innerConfederationList.add(confederation.getSuperConfederation().getShortName());
+				}
+				innerConfederationList.add(confederation.getCountry().getName()); // TODO: try catch?
+			}
+
+			innerConfederationList.add(key);
+
+			outerConfederationList.add(innerConfederationList);
+		}
+
+		return outerConfederationList;
+	}
+
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * COMPETITION
+	 *------------------------------------------------------------------------------------------------------*/
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param teamType
+	 * @param name
+	 * @param confederation
+	 * @return
+	 */
+	public Competition newCompetition(String ID, String type, String teamType, String name,
+																		Confederation confederation)
+	{
+		Competition competition = ctrlCompetition.getCompetitionMap().get(ID);
+
+		if (null == competition) {
+			competition = new Competition(type, teamType, name, confederation);
+		}
+
+		return competition;
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	public Integer countCompetitions()
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+
+		ctrlCompetition.setTotalCompetitions(competitionDAO.countAllCompetitionsDB());
+
+		return ctrlCompetition.getTotalCompetitions();
+	}
+
+
+	/**
+	 * TODO
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryID
+	 */
 	public void searchCompetitions(String competitionSubName,
 																 String competitionType,
 																 String competitionTeamType,
@@ -250,7 +544,100 @@ public class Controller
 
 	}
 
+	/**
+	 * TODO
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryID
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getCompetitionList(String competitionSubName,
+																							 String competitionType,
+																							 String competitionTeamType,
+																							 String competitionCountryID,
+																							 Boolean full)
+	{
+		searchCompetitions(competitionSubName, competitionType, competitionTeamType, competitionCountryID);
 
+		List<List<String>> outerCompetitionList = new ArrayList<List<String>>();
+
+		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
+			List<String> innerCompetitionList = new ArrayList<String>();
+			Competition competition = ctrlCompetition.getCompetitionMap().get(key);
+
+			innerCompetitionList.add(competition.getName());
+
+			if (full) {
+				innerCompetitionList.add(competition.getType());
+				innerCompetitionList.add(competition.getTeamType());
+				innerCompetitionList.add(competition.getConfederation().getCountry().getName());
+				innerCompetitionList.add(competition.getConfederation().getShortName());
+			}
+
+			innerCompetitionList.add(key);
+
+			outerCompetitionList.add(innerCompetitionList);
+		}
+
+		for (List<String> s : outerCompetitionList) {
+			System.out.println(s);
+		}
+
+		return outerCompetitionList;
+	}
+
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * TEAM
+	 *------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param shortName
+	 * @param longName
+	 * @param country
+	 * @return
+	 */
+	public Team newTeam(String ID, String type, String shortName, String longName, Country country)
+	{
+		Team team = ctrlTeam.getTeamMap().get(ID);
+
+		if (null == team) {
+			team = new Team(type, shortName, longName, country);
+		}
+
+		return team;
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	public Integer countTeams()
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+
+		ctrlTeam.setTotalTeam(teamDAO.countAllTeamsDB());
+
+		return ctrlTeam.getTotalTeam();
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamSubLongName
+	 * @param teamSubShortName
+	 * @param teamType
+	 * @param teamCountryID
+	 */
 	public void searchTeams(String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
@@ -301,6 +688,97 @@ public class Controller
 
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamSubLongName
+	 * @param teamSubShortName
+	 * @param teamType
+	 * @param teamCountryID
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getTeamList(String teamSubLongName,
+																				String teamSubShortName,
+																				String teamType,
+																				String teamCountryID,
+																				Boolean full)
+	{
+		searchTeams(teamSubLongName, teamSubShortName, teamType, teamCountryID);
+
+		List<List<String>> outerTeamList = new ArrayList<List<String>>();
+
+		for (String key : ctrlTeam.getTeamMap().keySet()) {
+			List<String> innerTeamList = new ArrayList<String>();
+			Team team = ctrlTeam.getTeamMap().get(key);
+
+			innerTeamList.add(team.getLongName());
+
+			if (full) {
+				innerTeamList.add(team.getShortName());
+				innerTeamList.add(team.getType());
+				innerTeamList.add(team.getCountry().getName());
+			}
+
+			innerTeamList.add(key);
+
+			outerTeamList.add(innerTeamList);
+		}
+
+		for (List<String> s : outerTeamList) {
+			System.out.println(s);
+		}
+
+		return outerTeamList;
+	}
+
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * PLAYER
+	 *------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @param surname
+	 * @param dob
+	 * @param country
+	 * @param foot
+	 * @param position
+	 * @param role
+	 * @param retiredDate
+	 * @return
+	 */
+	public Player newPlayer(String ID, String name, String surname, String dob, Country country,
+													String foot, Position position, String role,
+													String retiredDate)
+	{
+		Player player = ctrlPlayer.getPlayerMap().get(ID);
+
+		if (null == player) {
+			player = new Player(name, surname, dob, country, foot, position, role, retiredDate);
+		}
+
+		return player;
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerSubName
+	 * @param playerSubSurname
+	 * @param playerReferringYear
+	 * @param playerMinAge
+	 * @param playerMaxAge
+	 * @param playerCountryID
+	 * @param playerRole
+	 * @param playerPositionID
+	 * @param playerFoot
+	 */
 	public void searchPlayers(String playerSubName,
 														String playerSubSurname,
 														String playerReferringYear,
@@ -389,142 +867,20 @@ public class Controller
 	}
 
 
-	public Integer countCountries()
-	{
-		CountryDAO countryDAO = new PostgresImplCountryDAO();
-
-		ctrlCountry.setTotalCountries(countryDAO.countAllCountriesDB());
-
-		return ctrlCountry.getTotalCountries();
-	}
-
-	public List<List<String>> getCountryList(String countryType, String superCountryID, Boolean full)
-	{
-		getCountries(countryType, superCountryID);
-
-		List<List<String>> outerCountryList = new ArrayList<List<String>>();
-
-		for (String key : ctrlCountry.getCountryMap().keySet()) {
-			List<String> innerCountryList = new ArrayList<String>();
-			Country country = ctrlCountry.getCountryMap().get(key);
-
-			innerCountryList.add(country.getName());
-
-			if (full) {
-				innerCountryList.add(country.getCode());
-				innerCountryList.add(country.getType());
-				innerCountryList.add(country.getSuperCountry().getName()); // TODO: try catch?
-			}
-
-			innerCountryList.add(key);
-
-			outerCountryList.add(innerCountryList);
-		}
-
-		return outerCountryList;
-	}
-
-	public List<List<String>> getConfederationList(String typeCountry, String superConfederationID, Boolean full)
-	{
-		getConfederations(typeCountry, superConfederationID);
-
-		List<List<String>> outerConfederationList = new ArrayList<List<String>>();
-
-		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
-			List<String> innerConfederationList = new ArrayList<String>();
-			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
-
-			innerConfederationList.add(confederation.getShortName());
-
-			if (full) {
-				innerConfederationList.add(confederation.getLongName());
-				if (typeCountry.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-					innerConfederationList.add("-");
-				} else {
-					innerConfederationList.add(confederation.getSuperConfederation().getShortName());
-				}
-				innerConfederationList.add(confederation.getCountry().getName()); // TODO: try catch?
-			}
-
-			innerConfederationList.add(key);
-
-			outerConfederationList.add(innerConfederationList);
-		}
-
-		return outerConfederationList;
-	}
-
-	public List<List<String>> getCompetitionList(String competitionSubName,
-																							 String competitionType,
-																							 String competitionTeamType,
-																							 String competitionCountryID,
-																							 Boolean full)
-	{
-		searchCompetitions(competitionSubName, competitionType, competitionTeamType, competitionCountryID);
-
-		List<List<String>> outerCompetitionList = new ArrayList<List<String>>();
-
-		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
-			List<String> innerCompetitionList = new ArrayList<String>();
-			Competition competition = ctrlCompetition.getCompetitionMap().get(key);
-
-			innerCompetitionList.add(competition.getName());
-
-			if (full) {
-				innerCompetitionList.add(competition.getType());
-				innerCompetitionList.add(competition.getTeamType());
-				innerCompetitionList.add(competition.getConfederation().getCountry().getName());
-				innerCompetitionList.add(competition.getConfederation().getShortName());
-			}
-
-			innerCompetitionList.add(key);
-
-			outerCompetitionList.add(innerCompetitionList);
-		}
-
-		for (List<String> s : outerCompetitionList) {
-			System.out.println(s);
-		}
-
-		return outerCompetitionList;
-	}
-
-	public List<List<String>> getTeamList(String teamSubLongName,
-																				String teamSubShortName,
-																				String teamType,
-																				String teamCountryID,
-																				Boolean full)
-	{
-		searchTeams(teamSubLongName, teamSubShortName, teamType, teamCountryID);
-
-		List<List<String>> outerTeamList = new ArrayList<List<String>>();
-
-		for (String key : ctrlTeam.getTeamMap().keySet()) {
-			List<String> innerTeamList = new ArrayList<String>();
-			Team team = ctrlTeam.getTeamMap().get(key);
-
-			innerTeamList.add(team.getLongName());
-
-			if (full) {
-				innerTeamList.add(team.getShortName());
-				innerTeamList.add(team.getType());
-				innerTeamList.add(team.getCountry().getName());
-			}
-
-			innerTeamList.add(key);
-
-			outerTeamList.add(innerTeamList);
-		}
-
-		for (List<String> s : outerTeamList) {
-			System.out.println(s);
-		}
-
-		return outerTeamList;
-	}
-
-
-
+	/**
+	 * TODO
+	 * @param playerSubName
+	 * @param playerSubSurname
+	 * @param playerReferringYear
+	 * @param playerMinAge
+	 * @param playerMaxAge
+	 * @param playerCountryID
+	 * @param playerRole
+	 * @param playerPositionID
+	 * @param playerFoot
+	 * @param full
+	 * @return
+	 */
 	public List<List<String>> getPlayerList(String playerSubName,
 																					String playerSubSurname,
 																					String playerReferringYear,
@@ -575,115 +931,21 @@ public class Controller
 		return outerPlayerList;
 	}
 
+	/*------------------------------------------------------------------------------------------------------*/
 
 
-	public Integer countConfederations()
-	{
-		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+	/*--------------------------------------------------------------------------------------------------------
+	 * POSITION
+	 *------------------------------------------------------------------------------------------------------*/
 
-		ctrlConfederation.setTotalConfederations(confederationDAO.countAllConfederationsDB());
-
-		return ctrlConfederation.getTotalConfederations();
-	}
-
-	public Integer countCompetitions()
-	{
-		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-
-		ctrlCompetition.setTotalCompetitions(competitionDAO.countAllCompetitionsDB());
-
-		return ctrlCompetition.getTotalCompetitions();
-	}
-
-	public Integer countTeams()
-	{
-		TeamDAO teamDAO = new PostgresImplTeamDAO();
-
-		ctrlTeam.setTotalTeam(teamDAO.countAllTeamsDB());
-
-		return ctrlTeam.getTotalTeam();
-	}
-
-	public Country newCountry(String ID, String type, String code, String name, Country superCountry)
-	{
-		Country country = ctrlCountry.getCountryMap().get(ID);
-
-		if (null == country) {
-			country = new Country(type, code, name, superCountry);
-		}
-
-		return country;
-	}
-
-	public Country newCountry(String ID, String name)
-	{
-		return newCountry(ID, null, null, name, null);
-	}
-
-
-	public Confederation newConfederation(String ID, String shortName, String longName,
-																	Country country, Confederation superConfederation)
-	{
-		Confederation confederation = ctrlConfederation.getConfederationMap().get(ID);
-
-		if (null == confederation) {
-			confederation = new Confederation(shortName, longName, country, superConfederation);
-		}
-
-		return confederation;
-	}
-
-	public Confederation newConfederation(String ID, String shortName)
-	{
-		return newConfederation(ID, shortName, null, null, null);
-	}
-
-	public Confederation newConfederation(String ID, String shortName, Country country)
-	{
-		return newConfederation(ID, shortName, null, country, null);
-	}
-
-	public Competition newCompetition(String ID, String type, String teamType, String name,
-																		Confederation confederation)
-	{
-		Competition competition = ctrlCompetition.getCompetitionMap().get(ID);
-
-		if (null == competition) {
-			competition = new Competition(type, teamType, name, confederation);
-		}
-
-		return competition;
-	}
-
-	public Competition newCompetition(String ID, String name)
-	{
-		return newCompetition(ID, null, null, name, null);
-	}
-
-	public Competition newCompetition(String ID, String name, Confederation confederation)
-	{
-		return newCompetition(ID, null, null, name, confederation);
-	}
-
-
-	public Team newTeam(String ID, String type, String shortName, String longName, Country country)
-	{
-		Team team = ctrlTeam.getTeamMap().get(ID);
-
-		if (null == team) {
-			team = new Team(type, shortName, longName, country);
-		}
-
-		return team;
-	}
-
-	public Admin newAdmin(String username, String password)
-	{
-		Admin admin = new Admin(username, password);
-
-		return admin;
-	}
-
+	/**
+	 * TODO
+	 * @param ID
+	 * @param role
+	 * @param code
+	 * @param name
+	 * @return
+	 */
 	public Position newPosition(String ID, String role, String code, String name)
 	{
 		Position position = ctrlPosition.getPositionMap().get(ID);
@@ -695,23 +957,84 @@ public class Controller
 		return position;
 	}
 
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @return
+	 */
 	public Position newPosition(String ID, String name)
 	{
 		return newPosition(ID, null, null, name);
 	}
 
-	public Player newPlayer(String ID, String name, String surname, String dob, Country country,
-													String foot, Position position, String role,
-													String retiredDate)
+	/**
+	 * TODO
+	 */
+	public void allPositions()
 	{
-		Player player = ctrlPlayer.getPlayerMap().get(ID);
+		List<String> listPositionID = new ArrayList<String>();
+		List<String> listPositionRole = new ArrayList<String>();
+		List<String> listPositionCode = new ArrayList<String>();
+		List<String> listPositionName = new ArrayList<String>();
 
-		if (null == player) {
-			player = new Player(name, surname, dob, country, foot, position, role, retiredDate);
+		PositionDAO positionDAO = new PostgresImplPositionDAO();
+		positionDAO.positionsDB(listPositionID, listPositionRole, listPositionCode, listPositionName);
+
+		ctrlPosition.getPositionMap().clear();
+
+		while (!(listPositionID.isEmpty())) {
+			String ID = listPositionID.removeFirst();
+			Position position = newPosition
+							(
+											ID,
+											listPositionRole.removeFirst(),
+											listPositionCode.removeFirst(),
+											listPositionName.removeFirst()
+							);
+
+			ctrlPosition.getPositionMap().put(ID, position);
 		}
 
-		return player;
 	}
+
+
+
+	/**
+	 * TODO
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getPositionList(Boolean full)
+	{
+		allPositions();
+
+		List<List<String>> outerPositionList = new ArrayList<List<String>>();
+
+		for (String key : ctrlPosition.getPositionMap().keySet()) {
+			List<String> innerPositionList = new ArrayList<String>();
+			Position position = ctrlPosition.getPositionMap().get(key);
+
+			innerPositionList.add(position.getName());
+
+			if (full) {
+				innerPositionList.add(position.getRole());
+				innerPositionList.add(position.getCode());
+			}
+
+			innerPositionList.add(key);
+
+			outerPositionList.add(innerPositionList);
+		}
+
+		for (List<String> s : outerPositionList) {
+			System.out.println(s);
+		}
+
+		return outerPositionList;
+	}
+
+	/*------------------------------------------------------------------------------------------------------*/
 
 
 }

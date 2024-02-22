@@ -1,8 +1,7 @@
 package model;
 
-import javax.xml.namespace.QName;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * TYPE : class
@@ -12,12 +11,10 @@ import java.util.Set;
  */
 public class Tag
 {
+	private static final Map<String, Tag> TAG_MAP = new LinkedHashMap<String, Tag>();
 	private final Boolean goalkeeper;	// se e' un tag per un portiere o per un giocatore di movimento
 	private final Boolean positive;		// se e' un tag positivo o negativo
 	private final String name;
-
-	// lista di tag
-	private static Set<Tag> tagSet = new LinkedHashSet<Tag>();
 
 
 	public Tag(Boolean goalkeeper, Boolean positive, String name)
@@ -25,8 +22,6 @@ public class Tag
 		this.goalkeeper = goalkeeper;
 		this.positive = positive;
 		this.name = name;
-
-		tagSet.add(this);
 	}
 
 
@@ -45,9 +40,8 @@ public class Tag
 		return name;
 	}
 
-	public static Set<Tag> getTagSet()
+	public static Map<String, Tag> getTagMap()
 	{
-		return tagSet;
+		return TAG_MAP;
 	}
-
 }
