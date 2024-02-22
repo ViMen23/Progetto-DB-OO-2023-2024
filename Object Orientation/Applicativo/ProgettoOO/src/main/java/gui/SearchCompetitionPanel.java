@@ -21,7 +21,6 @@ import java.util.List;
 public class SearchCompetitionPanel
 				extends JPanel
 {
-
 	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 
@@ -63,14 +62,13 @@ public class SearchCompetitionPanel
 	protected JScrollPane scrollPane;
 	protected Color panelColor = Color.white;
 
-	protected Boolean nameSearchValid = true;
-	protected Boolean competitionTypeSearchValid = true;
-	protected Boolean teamTypeSearchValid = true;
-	protected Boolean countryTypeSearchValid = true;
-	protected Boolean anySelected = false;
+	protected Boolean nameSearchValid = false;
+	protected Boolean competitionTypeSearchValid = false;
+	protected Boolean teamTypeSearchValid = false;
+	protected Boolean countryTypeSearchValid = false;
+
 
 	protected String competitionSubName = null;
-
 	protected String competitionType = null;
 	protected String competitionTeamType = null;
 	protected String competitionCountryID = null;
@@ -91,6 +89,10 @@ public class SearchCompetitionPanel
 		setLayout(migLayout);
 		setName("searchCompetitionPanel");
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE TITOLO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo titolo: bottone
@@ -129,6 +131,12 @@ public class SearchCompetitionPanel
 				revalidate();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo competizione: panel
@@ -144,6 +152,12 @@ public class SearchCompetitionPanel
 		competitionPanel.setOpaque(false);
 
 		add(competitionPanel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECK BOX RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per nome: checkbox
@@ -163,22 +177,27 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Boolean selected = nameSearchCheckBox.isSelected();
+				if (nameSearchCheckBox.isSelected()) {
+					nameTextField.setEnabled(true);
+				} else {
+					nameSearchValid = false;
+					setEnableButton();
 
-				nameTextField.setEnabled(selected);
+					competitionSubName = null;
 
-				nameTextField.setText("");
-				competitionSubName = null;
-
-				nameSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
+					nameTextField.setEnabled(false);
+					nameTextField.setText("");
+				}
 			}
 		});
 
 		competitionPanel.add(nameSearchCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per nome: panel
@@ -215,17 +234,30 @@ public class SearchCompetitionPanel
 		nameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e) {
-				nameSearchValid = Regex.patternAlnum.matcher(nameTextField.getText()).find();
+				if (Regex.patternAlnum.matcher(nameTextField.getText()).find()) {
+					nameSearchValid = true;
+					setEnableButton();
 
-				if (nameSearchValid){
+					nameTextField.setBackground(Color.white);
+
 					competitionSubName = nameTextField.getText();
-				}
+				} else {
+					nameSearchValid = false;
+					setEnableButton();
 
-				setEnableButton();
+					competitionSubName = null;
+					nameTextField.setBackground(Color.red);
+				}
 			}
 		});
 
 		namePanel.add(nameTextField);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECK BOX RICERCA PER TIPO COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo di competizione: panel
@@ -245,24 +277,31 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				boolean selected = competitionTypeSearchCheckBox.isSelected();
+				if (competitionTypeSearchCheckBox.isSelected()) {
+					leagueRadioButton.setEnabled(true);
+					cupRadioButton.setEnabled(true);
+					supercupRadioButton.setEnabled(true);
+				} else {
+					competitionTypeSearchValid = false;
+					setEnableButton();
 
-				leagueRadioButton.setEnabled(selected);
-				cupRadioButton.setEnabled(selected);
-				supercupRadioButton.setEnabled(selected);
+					competitionType = null;
 
-				competitionTypeGroupButton.clearSelection();
-				competitionType = null;
-
-				competitionTypeSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
+					competitionTypeGroupButton.clearSelection();
+					leagueRadioButton.setEnabled(false);
+					cupRadioButton.setEnabled(false);
+					supercupRadioButton.setEnabled(false);
+				}
 			}
 		});
 
 		competitionPanel.add(competitionTypeSearchCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER TIPO COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo competizione: panel
@@ -294,9 +333,9 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				competitionTypeSearchValid = true;
-				competitionType = Competition.COMPETITION_TYPE.LEAGUE.toString();
-
 				setEnableButton();
+
+				competitionType = Competition.COMPETITION_TYPE.LEAGUE.toString();
 			}
 		});
 
@@ -316,9 +355,9 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				competitionTypeSearchValid = true;
-				competitionType = Competition.COMPETITION_TYPE.CUP.toString();
-
 				setEnableButton();
+
+				competitionType = Competition.COMPETITION_TYPE.CUP.toString();
 			}
 		});
 
@@ -340,9 +379,9 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				competitionTypeSearchValid = true;
-				competitionType = Competition.COMPETITION_TYPE.SUPER_CUP.toString();
-
 				setEnableButton();
+
+				competitionType = Competition.COMPETITION_TYPE.SUPER_CUP.toString();
 			}
 		});
 
@@ -356,7 +395,12 @@ public class SearchCompetitionPanel
 		competitionTypeGroupButton.add(leagueRadioButton);
 		competitionTypeGroupButton.add(cupRadioButton);
 		competitionTypeGroupButton.add(supercupRadioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECK BOX RICERCA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo squadra: checkbox
@@ -376,23 +420,29 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Boolean selected = teamTypeSearchCheckBox.isSelected();
+				if (teamTypeSearchCheckBox.isSelected()) {
+					clubRadioButton.setEnabled(true);
+					nationalRadioButton.setEnabled(true);
+				} else {
+					teamTypeSearchValid = false;
+					setEnableButton();
 
-				clubRadioButton.setEnabled(selected);
-				nationalRadioButton.setEnabled(selected);
+					competitionTeamType = null;
 
-				teamTypeGroupButton.clearSelection();
-				competitionTeamType = null;
-
-				teamTypeSearchValid= !selected;
-
-				setAnySelected();
-
-				setEnableButton();
+					teamTypeGroupButton.clearSelection();
+					clubRadioButton.setEnabled(false);
+					nationalRadioButton.setEnabled(false);
+				}
 			}
 		});
 
 		competitionPanel.add(teamTypeSearchCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo squadra: panel
@@ -423,8 +473,9 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				teamTypeSearchValid = true;
-				competitionTeamType = Team.TEAM_TYPE.CLUB.toString();
 				setEnableButton();
+
+				competitionTeamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
 
@@ -444,8 +495,9 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				teamTypeSearchValid = true;
-				competitionTeamType = Team.TEAM_TYPE.NATIONAL.toString();
 				setEnableButton();
+
+				competitionTeamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
 
@@ -458,7 +510,12 @@ public class SearchCompetitionPanel
 
 		teamTypeGroupButton.add(clubRadioButton);
 		teamTypeGroupButton.add(nationalRadioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECK BOX RICERCA PER PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
@@ -480,24 +537,31 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Boolean selected = countrySearchCheckBox.isSelected();
+				if (countrySearchCheckBox.isSelected()) {
+					worldRadioButton.setEnabled(true);
+					continentRadioButton.setEnabled(true);
+					nationRadioButton.setEnabled(true);
+				} else {
+					countryTypeSearchValid = false;
+					setEnableButton();
 
-				worldRadioButton.setEnabled(selected);
-				continentRadioButton.setEnabled(selected);
-				nationRadioButton.setEnabled(selected);
+					competitionCountryID = null;
 
-				countryGroupButton.clearSelection();
-				competitionCountryID = null;
-
-				countryTypeSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
+					countryGroupButton.clearSelection();
+					worldRadioButton.setEnabled(false);
+					continentRadioButton.setEnabled(false);
+					nationRadioButton.setEnabled(false);
+				}
 			}
 		});
 
 		competitionPanel.add(countrySearchCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per paese e confederazione: checkBox
@@ -528,12 +592,16 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				countryTypeSearchValid = true;
+				setEnableButton();
 
-				List<List<String>> world = Controller.getInstance().getCountryList("WORLD", null, false);
+				List<List<String>> world = Controller.getInstance().getCountryList
+								(
+												Country.COUNTRY_TYPE.WORLD.toString(),
+												null,
+												false
+								);
 
 				competitionCountryID = world.getFirst().getLast();
-
-				setEnableButton();
 			}
 		});
 
@@ -552,13 +620,15 @@ public class SearchCompetitionPanel
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					fillContinentComboBox();
-				}
-				else {
+				if (continentRadioButton.isSelected()) {
+					fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+				} else {
 					continentComboBox.setEnabled(false);
 					continentComboBox.removeAllItems();
 				}
+
+				countryTypeSearchValid = false;
+				setEnableButton();
 			}
 		});
 
@@ -579,38 +649,25 @@ public class SearchCompetitionPanel
 
 		continentComboBox.setPrototypeDisplayValue(aa);
 
-		continentComboBox.addItemListener(new ItemListener() {
+		continentComboBox.addActionListener(new ActionListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
+			public void actionPerformed(ActionEvent e)
 			{
-				if (continentRadioButton.isSelected() && continentComboBox.getSelectedIndex() != -1){
-
-					countryTypeSearchValid = true;
+				if (continentComboBox.getSelectedIndex() != -1) {
 					competitionCountryID = ((List<String>)continentComboBox.getSelectedItem()).getLast();
 
-					setEnableButton();
-				}
-				else if (nationRadioButton.isSelected() && continentComboBox.getSelectedIndex() != -1) {
-
-					nationComboBox.removeAllItems();
-
-					String superCountryID = ((List<String>)continentComboBox.getSelectedItem()).getLast();
-
-					List<List<String>> nameCountryList = Controller.getInstance().getCountryList
-						(
-							Country.COUNTRY_TYPE.NATION.toString(),
-							superCountryID,
-							false
-						);
-
-					for (List<String> countryList: nameCountryList) {
-						nationComboBox.addItem(countryList);
+					if (nationRadioButton.isSelected()) {
+						fillCountryComboBox(nationComboBox, Country.COUNTRY_TYPE.NATION.toString(), competitionCountryID);
+					} else if (continentRadioButton.isSelected()) {
+						countryTypeSearchValid = true;
+						setEnableButton();
 					}
 
-					nationComboBox.setSelectedIndex(-1);
+				} else {
+					countryTypeSearchValid = false;
+					setEnableButton();
 
-					nationComboBox.setEnabled(true);
-					searchButton.setEnabled(false);
+					competitionCountryID = null;
 				}
 			}
 		});
@@ -632,20 +689,21 @@ public class SearchCompetitionPanel
 			public void itemStateChanged(ItemEvent e)
 			{
 				if (nationRadioButton.isSelected()) {
-
-					fillContinentComboBox();
+					fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
 					nationComboBox.setEnabled(false);
-				}
-				else {
-
+				} else {
 					continentComboBox.setEnabled(false);
 					continentComboBox.removeAllItems();
 
 					nationComboBox.setEnabled(false);
 					nationComboBox.removeAllItems();
 				}
+
+				countryTypeSearchValid = false;
+				setEnableButton();
 			}
 		});
+
 		countryConfederationPanel.add(nationRadioButton);
 
 		/*
@@ -663,13 +721,15 @@ public class SearchCompetitionPanel
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				countryTypeSearchValid = true;
+				if (nationComboBox.getSelectedIndex() != -1) {
+					countryTypeSearchValid = true;
+					setEnableButton();
 
-				if (nationComboBox.getSelectedIndex() != -1 ){
-					competitionCountryID = ((List<String>)nationComboBox.getSelectedItem()).getLast();
+					competitionCountryID = ((List<String>) nationComboBox.getSelectedItem()).getLast();
+				} else {
+					countryTypeSearchValid = false;
+					setEnableButton();
 				}
-
-				setEnableButton();
 			}
 		});
 
@@ -700,7 +760,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
 				List<List<String>> data = Controller.getInstance().getCompetitionList
 					(
 						competitionSubName,
@@ -713,7 +772,6 @@ public class SearchCompetitionPanel
 				competitionTable.setModel(new TableModel("competitions", data));
 				competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
 				competitionTablePanel.revalidate();
-
 			}
 		});
 
@@ -752,44 +810,31 @@ public class SearchCompetitionPanel
 		competitionTablePanel.add(scrollPane);
 	}
 
+
 	public void setEnableButton()
 	{
-		if (nameSearchValid && competitionTypeSearchValid && teamTypeSearchValid && countryTypeSearchValid && anySelected) {
+		if (nameSearchValid || competitionTypeSearchValid || teamTypeSearchValid || countryTypeSearchValid) {
 			searchButton.setEnabled(true);
-		}
-		else {
+		} else {
 			searchButton.setEnabled(false);
 		}
 	}
 
-	public void setAnySelected()
-	{
-		if (nameSearchCheckBox.isSelected() || competitionTypeSearchCheckBox.isSelected() ||
-				teamTypeSearchCheckBox.isSelected() || countrySearchCheckBox.isSelected())
-		{
-			anySelected = true;
-		}
-		else {
-			anySelected = false;
-		}
-	}
 
-	public void fillContinentComboBox()
+	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
 	{
 		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
-			(
-				Country.COUNTRY_TYPE.CONTINENT.toString(),
-				null,
-				false
-			);
+						(
+										type,
+										superCountryID,
+										false
+						);
 
-		for (List<String> countryList: nameCountryList) {
-			continentComboBox.addItem(countryList);
+		for (List<String> countryList : nameCountryList) {
+			comboBox.addItem(countryList);
 		}
 
-		continentComboBox.setSelectedIndex(-1);
-
-		continentComboBox.setEnabled(true);
-		searchButton.setEnabled(false);
+		comboBox.setSelectedIndex(-1);
+		comboBox.setEnabled(true);
 	}
 }

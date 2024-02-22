@@ -16,22 +16,31 @@ import java.util.List;
 public class SearchCountryPanel
 				extends JPanel
 {
+	protected final Color panelColor = Color.white;
 	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	protected JPanel countryTypePanel;
-	protected JPanel countrySuperPanel;
+
+	protected JButton titleButton;
+
 	protected JPanel countryPanel;
-	protected JPanel countryTablePanel;
+
+	protected JLabel chooseCountryTypeLabel;
+	protected JPanel countryTypePanel;
+	protected ButtonGroup buttonGroup;
 	protected JRadioButton continentRadioButton;
 	protected JRadioButton nationRadioButton;
+
+	protected JLabel chooseCountrySuperLabel;
+	protected JPanel countrySuperPanel;
 	protected JComboBox<List<String>> continentComboBox;
-	protected JTable countryTable;
-	protected JLabel label;
-	protected ButtonGroup buttonGroup;
-	protected JScrollPane scrollPane;
-	protected JButton titleButton;
+
 	protected JButton searchButton;
-	protected Color panelColor = Color.white;
+
+	protected JPanel countryTablePanel;
+	protected JTable countryTable;
+	protected JScrollPane scrollPane;
+
+
 
 
 	public SearchCountryPanel()
@@ -48,7 +57,13 @@ public class SearchCountryPanel
 
 		setLayout(migLayout);
 
-		setName("searchCountryPanel");
+		setName("searchCountryPanel"); // TODO remember
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE TITOLO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per paese: label
@@ -86,6 +101,12 @@ public class SearchCountryPanel
 				revalidate();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SCELTA PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout
 			(
@@ -98,7 +119,12 @@ public class SearchCountryPanel
 		countryPanel.setOpaque(false);
 
 		add(countryPanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL PANEL RICERCA TIPO PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo di paese: stampa
@@ -108,15 +134,20 @@ public class SearchCountryPanel
 		string += GuiConfiguration.getMessage("countryType");
 		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
+		chooseCountryTypeLabel = new JLabel(string, SwingConstants.LEADING);
+		chooseCountryTypeLabel.setOpaque(true);
+		chooseCountryTypeLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		chooseCountryTypeLabel.setForeground(Color.white);
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		chooseCountryTypeLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(label);
+		countryPanel.add(chooseCountryTypeLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SCELTA PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per tipo di paese: panel
@@ -196,7 +227,12 @@ public class SearchCountryPanel
 
 		buttonGroup.add(continentRadioButton);
 		buttonGroup.add(nationRadioButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL PANEL SCELTA PAESE SUPER
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca continente che contiene la nazione: stampa
@@ -204,13 +240,19 @@ public class SearchCountryPanel
 		string = "Scegli continente che contiene la nazione"; //TODO I18N
 		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		chooseCountrySuperLabel = new JLabel(string, SwingConstants.LEADING);
+		chooseCountrySuperLabel.setOpaque(true);
+		chooseCountrySuperLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		chooseCountrySuperLabel.setForeground(Color.white);
+		chooseCountrySuperLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(label);
+		countryPanel.add(chooseCountrySuperLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SCELTA PAESE SUPER
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo pannello: panel
@@ -250,7 +292,12 @@ public class SearchCountryPanel
 		});
 
 		countrySuperPanel.add(continentComboBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE RICERCA
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo avvia ricerca: button
@@ -290,7 +337,12 @@ public class SearchCountryPanel
 		});
 
 		countryPanel.add(searchButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo tabella paesi: panel
@@ -325,6 +377,7 @@ public class SearchCountryPanel
 		scrollPane = new JScrollPane(countryTable);
 
 		countryTablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 }

@@ -1199,11 +1199,11 @@ public class SearchPlayerPanel
 	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
 	{
 		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
-			(
-				type,
-				superCountryID,
-				false
-			);
+						(
+										type,
+										superCountryID,
+										false
+						);
 
 		for (List<String> countryList: nameCountryList) {
 			comboBox.addItem(countryList);

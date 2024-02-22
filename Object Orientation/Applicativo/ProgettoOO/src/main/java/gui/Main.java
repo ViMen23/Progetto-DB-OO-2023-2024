@@ -23,7 +23,7 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
-		Controller.getInstance().getPositionList(true);
+		Controller.getInstance().getPlayerList("214", "2000", "2023", true);
 
 		MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 		MainFrame.getMainFrameInstance().pack();
