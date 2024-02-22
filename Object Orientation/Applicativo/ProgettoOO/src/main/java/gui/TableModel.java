@@ -68,8 +68,10 @@ public class TableModel
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("foot")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("role")));
 			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("position")));
-			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("retiredDate")));
+			this.columnNames.add(StringUtils.capitalize(GuiConfiguration.getMessage("position")));
+
 		}
+
 		this.data = data;
 
 	}

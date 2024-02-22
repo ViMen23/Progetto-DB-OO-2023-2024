@@ -9,8 +9,11 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.io.DataOutput;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +25,7 @@ public class SearchTeamPanel
 				extends JPanel
 {
 
+	protected final Color panelColor = Color.white;
 	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 
@@ -36,9 +40,9 @@ public class SearchTeamPanel
 	protected JButton titleButton;
 	protected JButton searchButton;
 
-	protected JCheckBox nameSearchCheckBox;
-	protected JCheckBox teamTypeSearchCheckBox;
-	protected JCheckBox nationConfederationSearchCheckBox;
+	protected JLabel nameSearchLabel;
+	protected JLabel teamTypeSearchLabel;
+	protected JLabel nationConfederationSearchLabel;
 
 	protected JTextField longNameTextField;
 	protected JTextField shortNameTextField;
@@ -55,19 +59,17 @@ public class SearchTeamPanel
 
 	protected JLabel label;
 
-	protected Color panelColor = Color.white;
+	protected Boolean longNameSearchValid = false;
+	protected Boolean shortNameSearchValid = false;
+	protected Boolean teamTypeSearchValid = false;
+	protected Boolean countryTypeSearchValid = false;
 
-	protected Boolean nameSearchValid = true;
-	protected Boolean longNameSearchValid = true;
-	protected Boolean shortNameSearchValid = true;
-	protected Boolean teamTypeSearchValid = true;
-	protected Boolean countryTypeSearchValid = true;
-	protected Boolean anySelected = false;
 
 	protected String teamSubLongName = null;
 	protected String teamSubShortName = null;
 
 	protected String teamType = null;
+
 	protected String teamCountryID = null;
 
 
@@ -87,6 +89,10 @@ public class SearchTeamPanel
 
 		setLayout(migLayout);
 		setName("searchTeamPanel");
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE TITOLO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo titolo: bottone
@@ -125,6 +131,12 @@ public class SearchTeamPanel
 				revalidate();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo competizione: panel
@@ -140,6 +152,12 @@ public class SearchTeamPanel
 		teamPanel.setOpaque(false);
 
 		add(teamPanel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per nome: checkBox
@@ -149,36 +167,19 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
-		nameSearchCheckBox = new JCheckBox(string);
-		nameSearchCheckBox.setOpaque(true);
-		nameSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		nameSearchCheckBox.setForeground(Color.white);
-		nameSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		nameSearchLabel = new JLabel(string);
+		nameSearchLabel.setOpaque(true);
+		nameSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		nameSearchLabel.setForeground(Color.white);
+		nameSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		nameSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = nameSearchCheckBox.isSelected();
+		teamPanel.add(nameSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				longNameTextField.setEnabled(selected);
-				shortNameTextField.setEnabled(selected);
 
-				longNameTextField.setText("");
-				shortNameTextField.setText("");
-
-				longNameSearchValid = false;
-				shortNameSearchValid = false;
-
-				nameSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		teamPanel.add(nameSearchCheckBox);
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per nome: panel
@@ -206,28 +207,30 @@ public class SearchTeamPanel
 		namePanel.add(label);
 
 		/*
-		 * Campo nome esteso: textfield
+		 * Campo nome esteso: textField
 		 */
 		longNameTextField = new JTextField(GuiConfiguration.getInputColumn());
-		longNameTextField.setEnabled(false);
+
 
 		longNameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
-				String string = longNameTextField.getText();
+				if (Regex.patternAlnum.matcher(longNameTextField.getText()).find()) {
 
-				longNameSearchValid = Regex.patternAlnum.matcher(string).find();
+					longNameSearchValid = true;
+					setEnableButton();
 
-				if (string.isEmpty()) {
-					teamSubLongName = null;
+					teamSubLongName = longNameTextField.getText();
+
 				}
 				else {
-					teamSubLongName = string;
-				}
 
-				setNameSearchValid();
-				setEnableButton();
+					longNameSearchValid = false;
+					setEnableButton();
+
+					teamSubLongName = null;
+				}
 			}
 		});
 
@@ -244,28 +247,29 @@ public class SearchTeamPanel
 		namePanel.add(label);
 
 		/*
-		 * Campo nome abbreviato: textfield
+		 * Campo nome abbreviato: textField
 		 */
 		shortNameTextField = new JTextField(GuiConfiguration.getInputColumn());
-		shortNameTextField.setEnabled(false);
 
 		shortNameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
-				String string = shortNameTextField.getText();
+				if (Regex.patternCode.matcher(shortNameTextField.getText()).find()) {
 
-				shortNameSearchValid = Regex.patternCode.matcher(string).find();
+					shortNameSearchValid = true;
+					setEnableButton();
 
-				if (string.isEmpty()) {
-					teamSubShortName = null;
+					teamSubShortName = shortNameTextField.getText();
+
 				}
 				else {
-					teamSubShortName = string;
-				}
 
-				setNameSearchValid();
-				setEnableButton();
+					shortNameSearchValid = false;
+					setEnableButton();
+
+					teamSubShortName = null;
+				}
 			}
 		});
 
@@ -279,34 +283,14 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
 
-		teamTypeSearchCheckBox = new JCheckBox(string);
+		teamTypeSearchLabel = new JLabel(string);
 
-		teamTypeSearchCheckBox.setOpaque(true);
-		teamTypeSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		teamTypeSearchCheckBox.setForeground(Color.white);
-		teamTypeSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		teamTypeSearchLabel.setOpaque(true);
+		teamTypeSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		teamTypeSearchLabel.setForeground(Color.white);
+		teamTypeSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		teamTypeSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = teamTypeSearchCheckBox.isSelected();
-
-				clubRadioButton.setEnabled(selected);
-				nationalRadioButton.setEnabled(selected);
-
-				buttonGroup.clearSelection();
-				teamType = null;
-
-				teamTypeSearchValid= !selected;
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		teamPanel.add(teamTypeSearchCheckBox);
+		teamPanel.add(teamTypeSearchLabel);
 
 		/*
 		 * Campo ricerca per tipo squadra: panel
@@ -330,17 +314,14 @@ public class SearchTeamPanel
 		string = StringUtils.capitalize(string);
 
 		clubRadioButton = new JRadioButton(string);
-		clubRadioButton.setEnabled(false);
-
 		clubRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
 				teamTypeSearchValid = true;
-				teamType = Team.TEAM_TYPE.CLUB.toString();
-
 				setEnableButton();
+
+				teamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
 
@@ -353,17 +334,15 @@ public class SearchTeamPanel
 		string = StringUtils.capitalize(string);
 
 		nationalRadioButton = new JRadioButton(string);
-		nationalRadioButton.setEnabled(false);
 
 		nationalRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
 				teamTypeSearchValid = true;
-				teamType = Team.TEAM_TYPE.NATIONAL.toString();
-
 				setEnableButton();
+
+				teamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
 
@@ -378,7 +357,7 @@ public class SearchTeamPanel
 		buttonGroup.add(nationalRadioButton);
 
 		/*
-		 * Campo ricerca per nazione e confederazione: checkBox
+		 * Campo ricerca per nazione e confederazione: label
 		 */
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
@@ -387,42 +366,15 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
 
-		nationConfederationSearchCheckBox = new JCheckBox(string);
+		nationConfederationSearchLabel = new JLabel(string);
 
-		nationConfederationSearchCheckBox.setOpaque(true);
-		nationConfederationSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		nationConfederationSearchCheckBox.setForeground(Color.white);
-		nationConfederationSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		nationConfederationSearchLabel.setOpaque(true);
+		nationConfederationSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		nationConfederationSearchLabel.setForeground(Color.white);
+		nationConfederationSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		nationConfederationSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = nationConfederationSearchCheckBox.isSelected();
 
-				continentComboBox.setEnabled(selected);
-
-				teamCountryID = null;
-
-				countryTypeSearchValid = !selected;
-
-				if (nationConfederationSearchCheckBox.isSelected()) {
-					fillContinentComboBox();
-				}
-				else {
-					continentComboBox.removeAllItems();
-					nationComboBox.removeAllItems();
-				}
-
-				nationComboBox.setEnabled(false);
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		teamPanel.add(nationConfederationSearchCheckBox);
+		teamPanel.add(nationConfederationSearchLabel);
 
 		/*
 		 * Campo ricerca per nazione e confederazione: panel
@@ -455,39 +407,51 @@ public class SearchTeamPanel
 		continentComboBox = new JComboBox<List<String>>();
 
 		continentComboBox.setRenderer(new ComboBoxRenderer());
-		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		continentComboBox.setEnabled(false);
 
 		List<String> aa = new ArrayList<String>();
 		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
 
 		continentComboBox.setPrototypeDisplayValue(aa);
 
-		continentComboBox.addItemListener(new ItemListener() {
+		fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+
+		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				continentComboBox.removeAllItems();
+				fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
+
+		continentComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
 			{
-				if(continentComboBox.getSelectedIndex() != -1) {
+				if (continentComboBox.getSelectedIndex() != -1) {
+					countryTypeSearchValid = false;
+					setEnableButton();
 
-					nationComboBox.removeAllItems();
-
-					String superCountryID = ((List<String>)continentComboBox.getSelectedItem()).getLast();
-
-					List<List<String>> nameCountryList = Controller.getInstance().getCountryList
-						(
-							Country.COUNTRY_TYPE.NATION.toString(),
-							superCountryID,
-							false
-						);
-
-					for (List<String> countryList: nameCountryList) {
-						nationComboBox.addItem(countryList);
-					}
-
-					nationComboBox.setSelectedIndex(-1);
+					teamCountryID = ((List<String>) continentComboBox.getSelectedItem()).getLast();
 
 					nationComboBox.setEnabled(true);
-					searchButton.setEnabled(false);
+					nationComboBox.setSelectedIndex(-1);
+				}
+				else {
+					countryTypeSearchValid = true;
+					setEnableButton();
+
+					nationComboBox.setEnabled(false);
+					teamCountryID = null;
 				}
 			}
 		});
@@ -515,17 +479,35 @@ public class SearchTeamPanel
 
 		nationComboBox.setPrototypeDisplayValue(aa);
 
-		nationComboBox.addItemListener(new ItemListener() {
+		nationComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				nationComboBox.removeAllItems();
+				fillCountryComboBox(nationComboBox, Country.COUNTRY_TYPE.NATION.toString(), teamCountryID);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
+
+		nationComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
 			{
 				countryTypeSearchValid = true;
+				setEnableButton();
 
 				if (nationComboBox.getSelectedIndex() != -1 ){
 					teamCountryID = ((List<String>)nationComboBox.getSelectedItem()).getLast();
 				}
 
-				setEnableButton();
 			}
 		});
 
@@ -599,7 +581,7 @@ public class SearchTeamPanel
 
 	public void setEnableButton()
 	{
-		if (nameSearchValid && teamTypeSearchValid && countryTypeSearchValid && anySelected) {
+		if (longNameSearchValid || shortNameSearchValid || teamTypeSearchValid || countryTypeSearchValid) {
 			searchButton.setEnabled(true);
 		}
 		else {
@@ -607,49 +589,20 @@ public class SearchTeamPanel
 		}
 	}
 
-	public void setNameSearchValid()
-	{
-		if (longNameSearchValid && shortNameSearchValid) {
-			nameSearchValid = true;
-		}
-		else if (longNameSearchValid && teamSubShortName == null) {
-			nameSearchValid = true;
-		}
-		else if (shortNameSearchValid && teamSubLongName == null) {
-			nameSearchValid = true;
-		}
-		else {
-			nameSearchValid = false;
-		}
-	}
-	public void setAnySelected()
-	{
-		if (nameSearchCheckBox.isSelected() || teamTypeSearchCheckBox.isSelected() ||
-			teamTypeSearchCheckBox.isSelected() || nationConfederationSearchCheckBox.isSelected())
-		{
-			anySelected = true;
-		}
-		else {
-			anySelected = false;
-		}
-	}
-
-	public void fillContinentComboBox()
+	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
 	{
 		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
 			(
-				Country.COUNTRY_TYPE.CONTINENT.toString(),
-				null,
+				type,
+				superCountryID,
 				false
 			);
 
 		for (List<String> countryList: nameCountryList) {
-			continentComboBox.addItem(countryList);
+			comboBox.addItem(countryList);
 		}
 
-		continentComboBox.setSelectedIndex(-1);
-
-		continentComboBox.setEnabled(true);
-		searchButton.setEnabled(false);
+		comboBox.setSelectedIndex(-1);
 	}
+
 }
