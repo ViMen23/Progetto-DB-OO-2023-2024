@@ -18,14 +18,14 @@ public class Main
 		GuiConfiguration.initGuiConfiguration();
 
 
-		SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
+		SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
 		Controller.getInstance().getPositionList(true);
 
-		MainFrame.getMainFrameInstance().add(searchCountryPanel);
+		MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 		MainFrame.getMainFrameInstance().pack();
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");

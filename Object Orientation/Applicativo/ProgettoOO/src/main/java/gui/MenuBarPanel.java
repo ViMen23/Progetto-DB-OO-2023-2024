@@ -302,19 +302,6 @@ public class MenuBarPanel
 		/*
 		 * TODO
 		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = string.toUpperCase();
-
-		showAllPlayerMenuItem = new JMenuItem(string);
-
-		playerMenu.getPopupMenu().add(showAllPlayerMenuItem);
-
-
-		/*
-		 * TODO
-		 */
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
@@ -328,14 +315,13 @@ public class MenuBarPanel
 						continue;
 					}
 
+					component.setVisible(false);
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				//SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
-				//searchPlayerPanel.setName("searchPlayerPanel");
+				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
-				//MainFrame.getMainFrameInstance().add(searchPlayerPanel);
-				MainFrame.getMainFrameInstance().pack();
+				MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 			}
 		});
 

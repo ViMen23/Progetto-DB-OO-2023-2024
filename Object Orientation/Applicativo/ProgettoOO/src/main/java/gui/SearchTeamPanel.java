@@ -458,6 +458,11 @@ public class SearchTeamPanel
 		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		continentComboBox.setEnabled(false);
 
+		List<String> aa = new ArrayList<String>();
+		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+
+		continentComboBox.setPrototypeDisplayValue(aa);
+
 		continentComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -486,11 +491,6 @@ public class SearchTeamPanel
 				}
 			}
 		});
-
-		List<String> aa = new ArrayList<String>();
-		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
-
-		continentComboBox.setPrototypeDisplayValue(aa);
 
 		countryConfederationPanel.add(continentComboBox);
 
