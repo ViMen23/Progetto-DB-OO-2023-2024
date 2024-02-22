@@ -769,6 +769,21 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @return
+	 */
+	public Integer countPlayers()
+	{
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+
+		ctrlPlayer.setTotalPlayers(playerDAO.countAllPlayersDB());
+
+		return ctrlPlayer.getTotalPlayers();
+	}
+
+
+
+	/**
+	 * TODO
 	 * @param playerSubName
 	 * @param playerSubSurname
 	 * @param playerReferringYear
