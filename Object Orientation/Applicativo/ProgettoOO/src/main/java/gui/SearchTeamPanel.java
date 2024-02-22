@@ -58,9 +58,8 @@ public class SearchTeamPanel
 	protected Color panelColor = Color.white;
 
 	protected Boolean nameSearchValid = true;
-
-	protected Boolean longNameSearchValid = null;
-	protected Boolean shortNameSearchValid = null;
+	protected Boolean longNameSearchValid = true;
+	protected Boolean shortNameSearchValid = true;
 	protected Boolean teamTypeSearchValid = true;
 	protected Boolean countryTypeSearchValid = true;
 	protected Boolean anySelected = false;
@@ -168,8 +167,8 @@ public class SearchTeamPanel
 				longNameTextField.setText("");
 				shortNameTextField.setText("");
 
-				teamSubLongName = null;
-				teamSubShortName = null;
+				longNameSearchValid = false;
+				shortNameSearchValid = false;
 
 				nameSearchValid = !selected;
 
@@ -216,7 +215,19 @@ public class SearchTeamPanel
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
+				String string = longNameTextField.getText();
 
+				longNameSearchValid = Regex.patternAlnum.matcher(string).find();
+
+				if (string.isEmpty()) {
+					teamSubLongName = null;
+				}
+				else {
+					teamSubLongName = string;
+				}
+
+				setNameSearchValid();
+				setEnableButton();
 			}
 		});
 
@@ -237,6 +248,26 @@ public class SearchTeamPanel
 		 */
 		shortNameTextField = new JTextField(GuiConfiguration.getInputColumn());
 		shortNameTextField.setEnabled(false);
+
+		shortNameTextField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e)
+			{
+				String string = shortNameTextField.getText();
+
+				shortNameSearchValid = Regex.patternCode.matcher(string).find();
+
+				if (string.isEmpty()) {
+					teamSubShortName = null;
+				}
+				else {
+					teamSubShortName = string;
+				}
+
+				setNameSearchValid();
+				setEnableButton();
+			}
+		});
 
 		namePanel.add(shortNameTextField);
 
@@ -524,7 +555,7 @@ public class SearchTeamPanel
 
 				teamTable.setModel(new TableModel("teams", data));
 				teamTable.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
-				teamTable.revalidate();
+				teamTablePanel.revalidate();
 
 			}
 		});
@@ -576,6 +607,21 @@ public class SearchTeamPanel
 		}
 	}
 
+	public void setNameSearchValid()
+	{
+		if (longNameSearchValid && shortNameSearchValid) {
+			nameSearchValid = true;
+		}
+		else if (longNameSearchValid && teamSubShortName == null) {
+			nameSearchValid = true;
+		}
+		else if (shortNameSearchValid && teamSubLongName == null) {
+			nameSearchValid = true;
+		}
+		else {
+			nameSearchValid = false;
+		}
+	}
 	public void setAnySelected()
 	{
 		if (nameSearchCheckBox.isSelected() || teamTypeSearchCheckBox.isSelected() ||
