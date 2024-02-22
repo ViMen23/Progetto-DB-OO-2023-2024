@@ -331,10 +331,10 @@ public class MenuBarPanel
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
-				searchPlayerPanel.setName("searchPlayerPanel");
+				//SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
+				//searchPlayerPanel.setName("searchPlayerPanel");
 
-				MainFrame.getMainFrameInstance().add(searchPlayerPanel);
+				//MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 				MainFrame.getMainFrameInstance().pack();
 			}
 		});

@@ -869,6 +869,91 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param militancyPlayerTeamID
+	 * @param militancyPlayerStartYear
+	 * @param militancyPlayerEndYear
+	 */
+	public void searchMilitancyPlayers(String militancyPlayerTeamID,
+																		 String militancyPlayerStartYear,
+																		 String militancyPlayerEndYear)
+	{
+		List<String> listPlayerID = new ArrayList<String>();
+		List<String> listPlayerName = new ArrayList<String>();
+		List<String> listPlayerSurname = new ArrayList<String>();
+		List<String> listPlayerDob = new ArrayList<String>();
+		List<String> listPlayerFoot = new ArrayList<String>();
+		List<String> listPlayerRole = new ArrayList<String>();
+		List<String> listPlayerRetiredDate = new ArrayList<String>();
+		List<String> listPositionID = new ArrayList<String>();
+		List<String> listPositionName = new ArrayList<String>();
+		List<String> listCountryID = new ArrayList<String>();
+		List<String> listCountryName = new ArrayList<String>();
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		playerDAO.militancyPlayersDB
+						(
+										militancyPlayerTeamID,
+										militancyPlayerStartYear, militancyPlayerEndYear,
+										listPlayerID,
+										listPlayerName, listPlayerSurname,
+										listPlayerDob,
+										listPlayerFoot,
+										listPlayerRole,
+										listPlayerRetiredDate,
+										listPositionID, listPositionName,
+										listCountryID, listCountryName
+						);
+
+		ctrlCountry.getCountryMap().clear();
+
+		for (String ID : listCountryID) {
+			Country country = newCountry
+							(
+											ID,
+											listCountryName.removeFirst()
+							);
+
+			ctrlCountry.getCountryMap().put(ID, country);
+		}
+
+
+		ctrlPosition.getPositionMap().clear();
+
+		for (String ID : listPositionID) {
+			Position position = newPosition
+							(
+											ID,
+											listPositionName.removeFirst()
+							);
+
+			ctrlPosition.getPositionMap().put(ID, position);
+		}
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		while (!(listPlayerID.isEmpty())) {
+			String ID = listPlayerID.removeFirst();
+			Player player = newPlayer
+							(
+											ID,
+											listPlayerName.removeFirst(),
+											listPlayerSurname.removeFirst(),
+											listPlayerDob.removeFirst(),
+											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
+											listPlayerFoot.removeFirst(),
+											ctrlPosition.getPositionMap().get(listPositionID.removeFirst()),
+											listPlayerRole.removeFirst(),
+											listPlayerRetiredDate.removeFirst()
+							);
+
+			ctrlPlayer.getPlayerMap().put(ID, player);
+		}
+
+	}
+
+
+	/**
+	 * TODO
 	 * @param playerSubName
 	 * @param playerSubSurname
 	 * @param playerReferringYear
@@ -899,6 +984,56 @@ public class Controller
 										playerCountryID,
 										playerRole, playerPositionID,
 										playerFoot
+						);
+
+		List<List<String>> outerPlayerList = new ArrayList<List<String>>();
+
+		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+			List<String> innerPlayerList = new ArrayList<String>();
+			Player player = ctrlPlayer.getPlayerMap().get(key);
+
+			innerPlayerList.add(player.getSurname());
+
+			if (full) {
+				innerPlayerList.add(player.getName());
+				innerPlayerList.add(player.getDob());
+				innerPlayerList.add(player.getCountry().getName());
+				innerPlayerList.add(player.getFoot());
+				innerPlayerList.add(player.getRole());
+				innerPlayerList.add(player.getPosition().getName());
+				innerPlayerList.add(player.getRetiredDate());
+			}
+
+			innerPlayerList.add(key);
+
+			outerPlayerList.add(innerPlayerList);
+		}
+
+		for (List<String> s : outerPlayerList) {
+			System.out.println(s);
+		}
+
+		return outerPlayerList;
+	}
+
+
+	/**
+	 * TODO
+	 * @param militancyPlayerTeamID
+	 * @param militancyPlayerStartYear
+	 * @param militancyPlayerEndYear
+	 * @param full
+	 * @return
+	 */
+	public List<List<String>> getPlayerList(String militancyPlayerTeamID,
+																					String militancyPlayerStartYear,
+																					String militancyPlayerEndYear,
+																					Boolean full)
+	{
+		searchMilitancyPlayers
+						(
+										militancyPlayerTeamID,
+										militancyPlayerStartYear, militancyPlayerEndYear
 						);
 
 		List<List<String>> outerPlayerList = new ArrayList<List<String>>();

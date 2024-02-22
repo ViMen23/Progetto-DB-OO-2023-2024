@@ -99,4 +99,52 @@ public class PostgresImplPlayerDAO
 
 		return count;
 	}
+
+	@Override
+	public void militancyPlayersDB(String militancyPlayerTeamID,
+																 String militancyPlayerStartYear,
+																 String militancyPlayerEndYear,
+																 List<String> listPlayerID,
+																 List<String> listPlayerName,
+																 List<String> listPlayerSurname,
+																 List<String> listPlayerDob,
+																 List<String> listPlayerFoot,
+																 List<String> listPlayerRole,
+																 List<String> listPlayerRetiredDate,
+																 List<String> listPositionID,
+																 List<String> listPositionName,
+																 List<String> listCountryID,
+																 List<String> listCountryName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_militancy_players(?, ?, ?)}");
+			cs.setString(1, militancyPlayerTeamID);
+			cs.setString(2, militancyPlayerStartYear);
+			cs.setString(3, militancyPlayerEndYear);
+
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listPlayerID.add(rs.getString("player_id"));
+				listPlayerName.add(rs.getString("player_name"));
+				listPlayerSurname.add(rs.getString("player_surname"));
+				listPlayerDob.add(rs.getString("player_dob"));
+				listPlayerFoot.add(rs.getString("player_foot"));
+				listPlayerRole.add(rs.getString("player_role"));
+				listPlayerRetiredDate.add(rs.getString("player_retired_date"));
+				listPositionID.add(rs.getString("position_id"));
+				listPositionName.add(rs.getString("position_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryName.add(rs.getString("country_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

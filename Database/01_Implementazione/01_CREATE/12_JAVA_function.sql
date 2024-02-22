@@ -870,3 +870,223 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : search_militancy_players
+ *
+ * IN      : text, text, text
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION search_militancy_players
+(
+    IN  id_team_militancy    text,
+    IN  s_year_militancy    text,
+    IN  e_year_militancy    text
+)
+RETURNS TABLE
+        (
+            player_id           text,
+            player_name         text,
+            player_surname      text,
+            player_dob          text,
+            player_foot         text,
+            player_role         text,
+            player_retired_date text,
+            position_id         text,
+            position_name       text,
+            country_id          text,
+            country_name        text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player.id::text AS player_id,
+            fp_player.name::text AS player_name,
+            fp_player.surname::text AS player_surname,
+            fp_player.dob::text AS player_dob,
+            fp_player.foot::text AS player_foot,
+            fp_player.role::text AS player_role,
+            fp_player_retired.retired_date::text AS player_retired_date,
+            fp_position.id::text AS position_id,
+            fp_position.name::text AS position_name,
+            fp_country.id::text AS country_id,
+            fp_country.name::text AS country_name
+        FROM
+            fp_player
+            JOIN
+            fp_player_retired
+                ON
+                fp_player.id = fp_player_retired.player_id
+            JOIN
+            fp_position
+                ON
+                fp_player.position_id = fp_position.id
+            JOIN
+            fp_country
+                ON
+                fp_player.country_id = fp_country.id
+            JOIN
+            fp_militancy
+                ON
+                fp_player.id = fp_militancy.player_id
+        WHERE
+            fp_militancy.team_id = id_team_militancy::integer
+            AND
+            fp_militancy.start_year BETWEEN (s_year_militancy::integer AND e_year_militancy::integer)
+        GROUP BY
+            fp_player.id
+        ORDER BY
+            fp_player.surname;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : all_total_statistics
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION all_total_statistics
+(
+    IN  type_team   text,
+    IN  role_player text
+)
+RETURNS TABLE
+        (
+            player_id       text,
+            player_role     text,
+            player_name     text,
+            player_surname  text,
+            match           text,
+            goal_scored     text,
+            assist          text,
+            yellow_card     text,
+            red_card        text,
+            penalty_scored  text,
+            goal_conceded   text,
+            penalty_saved   text
+        )
+AS
+$$
+BEGIN
+
+    DROP TABLE IF EXISTS output_table;
+
+	CREATE TEMPORARY TABLE output_table
+    (
+        player_id       text    NOT NULL,
+        player_role     text    NOT NULL,
+        player_name     text    NOT NULL,
+        player_surname  text    NOT NULL,
+        match           text    NOT NULL,
+        goal_scored     text    NOT NULL,
+        assist          text    NOT NULL,
+        yellow_card     text    NOT NULL,
+        red_card        text    NOT NULL,
+        penalty_scored  text    NOT NULL,
+        goal_conceded   text            ,
+        penalty_saved   text            ,
+        team_type       text    NOT NULL
+    );
+
+    INSERT INTO output_table
+    SELECT
+        fp_player.id::text,
+        fp_player.role::text,
+        fp_player.name::text,
+        fp_player.surname::text,
+        fp_play.match::text,
+        fp_statistic_general.goal_scored::text,
+        fp_statistic_general.assist::text,
+        fp_statistic_general.yellow_card::text,
+        fp_statistic_general.red_card::text,
+        fp_statistic_general.penalty_scored::text,
+        fp_statistic_goalkeeper.goal_conceded::text,
+        fp_statistic_goalkeeper.penalty_saved::text,
+        fp_competition.team_type::text
+    FROM
+        fp_player
+        JOIN
+        fp_play
+            ON
+            fp_player.id = fp_play.player_id
+        JOIN
+        fp_statistic_general
+            ON
+            fp_play.id = fp_statistic_general.play_id
+        JOIN
+        fp_statistic_goalkeeper
+            ON
+            fp_play.id = fp_statistic_goalkeeper.play_id
+        JOIN
+        fp_competition
+            ON
+            fp_play.competition_id = fp_competition.id;
+
+
+    IF (type_team IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.team_type <> type_team::en_team;
+
+    END IF;
+
+
+    IF (role_player IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            0 = position(lower(role_player) IN lower(output_table.player_role::text));
+
+    END IF;
+
+
+
+    RETURN QUERY
+        SELECT
+            player_id,
+            player_role,
+            player_name,
+            player_surname,
+            sum(match)::text AS match,
+            sum(goal_scored)::text AS goal_scored,
+            sum(assist)::text AS assist,
+            sum(yellow_card)::text AS yellow_card,
+            sum(red_card)::text AS red_card,
+            sum(penalty_scored)::text AS penalty_scored,
+            sum(goal_conceded)::text AS goal_conceded,
+            sum(penalty_saved)::text AS penalty_saved
+        FROM
+            output_table
+        GROUP BY
+            player_id,
+            player_role,
+            player_name,
+            player_surname
+        ORDER BY
+            player_surname;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------

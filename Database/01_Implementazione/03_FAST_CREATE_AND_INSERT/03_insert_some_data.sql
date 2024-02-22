@@ -873,7 +873,7 @@ INSERT INTO fp_militancy (start_year, type, player_id, team_id, team_type)
 VALUES
 (
 	2017,
-	'II PART',
+	'II_PART',
 	get_column
 	(
 		'@',
@@ -958,7 +958,7 @@ VALUES
 ),
 (
 	2016,
-	'I PART',
+	'I_PART',
 	get_column
 	(
 		'@',
@@ -986,7 +986,7 @@ VALUES
 ),
 (
 	2022,
-	'I PART',
+	'I_PART',
 	get_column
 	(
 		'@',
@@ -1042,7 +1042,7 @@ VALUES
 ),
 (
 	2016,
-	'I PART',
+	'I_PART',
 	get_column
 	(
 		'@',
@@ -1056,7 +1056,7 @@ VALUES
 ),
 (
 	2016,
-	'II PART',
+	'II_PART',
 	get_column
 	(
 		'@',
@@ -1084,7 +1084,7 @@ VALUES
 ),
 (
 	2022,
-	'I PART',
+	'I_PART',
 	get_column
 	(
 		'@',
@@ -1098,7 +1098,7 @@ VALUES
 ),
 (
 	2022,
-	'II PART',
+	'II_PART',
 	get_column
 	(
 		'@',
@@ -1112,7 +1112,7 @@ VALUES
 ),
 (
 	2023,
-	'I PART',
+	'I_PART',
 	get_column
 	(
 		'@',
@@ -1126,7 +1126,7 @@ VALUES
 ),
 (
 	2023,
-	'II PART',
+	'II_PART',
 	get_column
 	(
 		'@',
@@ -1336,7 +1336,7 @@ SELECT insert_militancy_from_to
 		'id'
 	)::integer,
 	CAST(2016 AS smallint),
-	CAST('II PART' AS en_season),
+	CAST('II_PART' AS en_season),
 	CAST(2020 AS smallint),
 	CAST('FULL' AS en_season)
 );
@@ -1354,7 +1354,7 @@ SELECT insert_militancy_from_to
 		'id'
 	)::integer,
 	CAST(2022 AS smallint),
-	CAST('II PART' AS en_season),
+	CAST('II_PART' AS en_season),
 	CAST(2023 AS smallint),
 	CAST('FULL' AS en_season)
 );
@@ -1444,9 +1444,9 @@ SELECT insert_militancy_from_to
 		'id'
 	)::integer,
 	CAST(2016 AS smallint),
-	CAST('II PART' AS en_season),
+	CAST('II_PART' AS en_season),
 	CAST(2018 AS smallint),
-	CAST('I PART' AS en_season)
+	CAST('I_PART' AS en_season)
 );
 
 SELECT insert_militancy_from_to
@@ -1462,7 +1462,7 @@ SELECT insert_militancy_from_to
 		'id'
 	)::integer,
 	CAST(2018 AS smallint),
-	CAST('II PART' AS en_season),
+	CAST('II_PART' AS en_season),
 	CAST(2020 AS smallint),
 	CAST('FULL' AS en_season)
 );

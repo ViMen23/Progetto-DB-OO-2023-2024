@@ -58,7 +58,7 @@ public class Regex
 																				"|" +
 																				"[\u0027\u002D\u002E\u002F\u0060]{2}" +
 																				"|" +
-																				"\u0020\u002E" +
+																				"\u0020\\u002E" +
 																			"))";
 
 	private static final String code = "(?=^[\u0041-\u005A]{2,3}$)";
@@ -110,7 +110,7 @@ public class Regex
 																					"|" +
 																					"[\u0027\u002D\u002E]{2}"  +
 																					"|" +
-																					"\u0020\u002E" +
+																					"\u0020\\u002E" +
 																				"))";
 
 	private static final String username =	"(?=^" +

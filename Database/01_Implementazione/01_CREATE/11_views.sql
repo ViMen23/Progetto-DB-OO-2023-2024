@@ -14,20 +14,21 @@
 
 /*******************************************************************************
  * TYPE : VIEW
- * NAME : vi_all_continents
+ * NAME : vi_all_positions
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_continents
+CREATE VIEW vi_all_positions
 AS
 	SELECT
-		fp_country.id::text,
-		fp_country.type::text,
-		fp_country.code::text,
-		fp_country.name::text
+		fp_position.id::text AS position_id,
+		fp_position.role::text AS position_role,
+		fp_position.code::text AS position_code,
+		fp_position.name::text AS position_name
 	FROM
-		fp_country
+		fp_position
 	WHERE
-		fp_country.type = 'CONTINENT'
+		TRUE
 	ORDER BY
-		fp_country.name;
+		fp_position.role,
+		fp_position.name
