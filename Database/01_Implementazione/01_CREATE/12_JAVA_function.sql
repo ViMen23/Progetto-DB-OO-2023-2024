@@ -743,7 +743,7 @@ BEGIN
         fp_country.name::text
     FROM
         fp_player
-        JOIN
+        LEFT OUTER JOIN
         fp_player_retired
             ON
             fp_player.id = fp_player_retired.player_id
@@ -784,7 +784,7 @@ BEGIN
             DELETE FROM
                 output_table
             WHERE
-                (extract(year from output_table.player_dob) - ref_year_player::integer) < min_age_player;
+                (ref_year_player::integer - extract(year from output_table.player_dob::date)) < min_age_player::integer;
 
         END IF;
 
@@ -793,7 +793,7 @@ BEGIN
             DELETE FROM
                 output_table
             WHERE
-                (extract(year from output_table.player_dob) - ref_year_player::integer) > max_age_player;
+                (ref_year_player::integer - extract(year from output_table.player_dob::date)) > max_age_player::integer;
         
         END IF;
 
@@ -884,7 +884,7 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION search_militancy_players
 (
-    IN  id_team_militancy    text,
+    IN  id_team_militancy   text,
     IN  s_year_militancy    text,
     IN  e_year_militancy    text
 )
@@ -907,7 +907,7 @@ $$
 BEGIN
 
     RETURN QUERY
-        SELECT
+        SELECT DISTINCT
             fp_player.id::text AS player_id,
             fp_player.name::text AS player_name,
             fp_player.surname::text AS player_surname,
@@ -921,7 +921,7 @@ BEGIN
             fp_country.name::text AS country_name
         FROM
             fp_player
-            JOIN
+            LEFT OUTER JOIN
             fp_player_retired
                 ON
                 fp_player.id = fp_player_retired.player_id
@@ -940,11 +940,9 @@ BEGIN
         WHERE
             fp_militancy.team_id = id_team_militancy::integer
             AND
-            fp_militancy.start_year BETWEEN (s_year_militancy::integer AND e_year_militancy::integer)
-        GROUP BY
-            fp_player.id
+            fp_militancy.start_year BETWEEN s_year_militancy::integer AND e_year_militancy::integer
         ORDER BY
-            fp_player.surname;
+            player_surname;
 
 END;
 $$
