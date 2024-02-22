@@ -1050,7 +1050,7 @@ public class SearchPlayerPanel
 
 				playerTable.setModel(new TableModel("teams", data));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
-				playerTable.revalidate();
+				playerTablePanel.revalidate();
 			}
 		});
 		playerPanel.add(searchButton);
