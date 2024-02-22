@@ -1066,12 +1066,11 @@ public class Controller
 				innerPlayerList.add(player.getFoot());
 				innerPlayerList.add(player.getRole());
 				innerPlayerList.add(player.getPosition().getName());
-				try {
-					innerPlayerList.add(player.getRetiredDate());
-				} catch (Exception e) {
+				if (null == player.getRetiredDate()) {
 					innerPlayerList.add("-");
+				} else {
+					innerPlayerList.add(player.getRetiredDate());
 				}
-
 			}
 
 			innerPlayerList.add(key);
