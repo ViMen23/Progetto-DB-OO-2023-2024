@@ -7,7 +7,6 @@ public interface TeamDAO
 	void teamsDB(String teamSubLongName,
 							 String teamSubShortName,
 							 String teamType,
-							 String teamCountryType,
 							 String teamContinentID,
 							 String teamNationID,
 							 List<String> listTeamID,

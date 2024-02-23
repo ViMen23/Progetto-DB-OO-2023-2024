@@ -24,7 +24,6 @@ public class PostgresImplTeamDAO
 	public void teamsDB(String teamSubLongName,
 											String teamSubShortName,
 											String teamType,
-											String teamCountryType,
 											String teamContinentID,
 											String teamNationID,
 											List<String> listTeamID,
@@ -35,13 +34,12 @@ public class PostgresImplTeamDAO
 											List<String> listCountryName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
 			cs.setString(1, teamSubLongName);
 			cs.setString(2, teamSubShortName);
 			cs.setString(3, teamType);
-			cs.setString(4, teamCountryType);
-			cs.setString(5, teamContinentID);
-			cs.setString(6, teamNationID);
+			cs.setString(4, teamContinentID);
+			cs.setString(5, teamNationID);
 
 			ResultSet rs = cs.executeQuery();
 

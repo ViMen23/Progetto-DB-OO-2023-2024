@@ -828,7 +828,6 @@ public class Controller
 	public void searchTeams(String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
-													String teamCountryType,
 													String teamContinentID,
 													String teamNationID)
 	{
@@ -845,7 +844,6 @@ public class Controller
 										teamSubLongName,
 										teamSubShortName,
 										teamType,
-										teamCountryType,
 										teamContinentID,
 										teamNationID,
 										listTeamID,
@@ -894,7 +892,6 @@ public class Controller
 	 * @param teamSubLongName
 	 * @param teamSubShortName
 	 * @param teamType
-	 * @param teamCountryType
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
@@ -903,7 +900,6 @@ public class Controller
 													String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
-													String teamCountryType,
 													String teamContinentID,
 													String teamNationID)
 	{
@@ -912,7 +908,6 @@ public class Controller
 										teamSubLongName,
 										teamSubShortName,
 										teamType,
-										teamCountryType,
 										teamContinentID,
 										teamNationID
 						);
@@ -934,7 +929,6 @@ public class Controller
 	 * @param teamSubLongName
 	 * @param teamSubShortName
 	 * @param teamType
-	 * @param teamCountryType
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
@@ -943,7 +937,6 @@ public class Controller
 													String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
-													String teamCountryType,
 													String teamContinentID,
 													String teamNationID)
 	{
@@ -952,7 +945,6 @@ public class Controller
 										teamSubLongName,
 										teamSubShortName,
 										teamType,
-										teamCountryType,
 										teamContinentID,
 										teamNationID
 						);
@@ -1069,17 +1061,17 @@ public class Controller
 														String playerPositionID,
 														String playerFoot)
 	{
-		List<String> listPlayerID = new ArrayList<String>();
-		List<String> listPlayerName = new ArrayList<String>();
-		List<String> listPlayerSurname = new ArrayList<String>();
-		List<String> listPlayerDob = new ArrayList<String>();
-		List<String> listPlayerFoot = new ArrayList<String>();
-		List<String> listPlayerRole = new ArrayList<String>();
-		List<String> listPlayerRetiredDate = new ArrayList<String>();
-		List<String> listPositionID = new ArrayList<String>();
-		List<String> listPositionName = new ArrayList<String>();
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listPlayerDob = new ArrayList<>();
+		List<String> listPlayerFoot = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+		List<String> listPlayerRetiredDate = new ArrayList<>();
+		List<String> listPositionID = new ArrayList<>();
+		List<String> listPositionName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		playerDAO.playersDB
@@ -1165,17 +1157,17 @@ public class Controller
 																		 String militancyPlayerStartYear,
 																		 String militancyPlayerEndYear)
 	{
-		List<String> listPlayerID = new ArrayList<String>();
-		List<String> listPlayerName = new ArrayList<String>();
-		List<String> listPlayerSurname = new ArrayList<String>();
-		List<String> listPlayerDob = new ArrayList<String>();
-		List<String> listPlayerFoot = new ArrayList<String>();
-		List<String> listPlayerRole = new ArrayList<String>();
-		List<String> listPlayerRetiredDate = new ArrayList<String>();
-		List<String> listPositionID = new ArrayList<String>();
-		List<String> listPositionName = new ArrayList<String>();
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listPlayerDob = new ArrayList<>();
+		List<String> listPlayerFoot = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+		List<String> listPlayerRetiredDate = new ArrayList<>();
+		List<String> listPositionID = new ArrayList<>();
+		List<String> listPositionName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		playerDAO.militancyPlayersDB
