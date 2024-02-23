@@ -4,14 +4,15 @@ import java.util.*;
 
 /**
  * TYPE : class
+ * <p>
  * NAME : Competition
- *
+ * <p>
  * DESC: Classe che rappresenta il concetto astratto di competizione calcistica
  */
 public class Competition
 {
-	public enum COMPETITION_TYPE {CUP, LEAGUE, SUPER_CUP};
-	private static final Map<String, Competition> COMPETITION_MAP = new LinkedHashMap<String, Competition>();
+	public enum COMPETITION_TYPE {CUP, LEAGUE, SUPER_CUP}
+	private static final Map<String, Competition> COMPETITION_MAP = new LinkedHashMap<>();
 	private static Integer totalCompetitions = 0;
 	private final String type;
 	private final String teamType;
@@ -19,7 +20,9 @@ public class Competition
 	private final Confederation confederation;
 
 
-	public Competition(String type, String teamType, String name,
+	public Competition(String type,
+										 String teamType,
+										 String name,
 										 Confederation confederation)
 	{
 		this.type = type;

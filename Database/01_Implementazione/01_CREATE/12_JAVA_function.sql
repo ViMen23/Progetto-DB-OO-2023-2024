@@ -964,7 +964,17 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            *
+            output_table.player_id
+            output_table.player_name
+            output_table.player_surname
+            output_table.player_dob
+            output_table.player_foot
+            output_table.player_role
+            output_table.player_retired_date
+            output_table.position_id
+            output_table.position_name
+            output_table.country_id
+            output_table.country_name
         FROM
             output_table
         WHERE

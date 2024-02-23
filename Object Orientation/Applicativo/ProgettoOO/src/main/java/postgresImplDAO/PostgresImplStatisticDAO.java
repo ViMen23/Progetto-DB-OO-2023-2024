@@ -32,10 +32,10 @@ public class PostgresImplStatisticDAO
 															 List<String> listPlayerSurname,
 															 List<String> listStatisticMatch,
 															 List<String> listStatisticGoalScored,
+															 List<String> listStatisticPenaltyScored,
 															 List<String> listStatisticAssist,
 															 List<String> listStatisticYellowCard,
 															 List<String> listStatisticRedCard,
-															 List<String> listStatisticPenaltyScored,
 															 List<String> listStatisticGoalConceded,
 															 List<String> listStatisticPenaltySaved)
 	{
@@ -54,10 +54,10 @@ public class PostgresImplStatisticDAO
 				listPlayerSurname.add(rs.getString("player_surname"));
 				listStatisticMatch.add(rs.getString("match"));
 				listStatisticGoalScored.add(rs.getString("goal_scored"));
+				listStatisticPenaltyScored.add(rs.getString("penalty_scored"));
 				listStatisticAssist.add(rs.getString("assist"));
 				listStatisticYellowCard.add(rs.getString("yellow_card"));
 				listStatisticRedCard.add(rs.getString("red_card"));
-				listStatisticPenaltyScored.add(rs.getString("penalty_scored"));
 				listStatisticGoalConceded.add(rs.getString("goal_conceded"));
 				listStatisticPenaltySaved.add(rs.getString("penalty_saved"));
 			}

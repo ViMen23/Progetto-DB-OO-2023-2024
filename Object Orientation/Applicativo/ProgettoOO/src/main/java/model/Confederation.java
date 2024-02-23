@@ -1,19 +1,18 @@
 package model;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * TYPE : class
+ * <p>
  * NAME : Confederation
- *
+ * <p>
  * DESC: Classe che rappresenta il concetto astratto di confederazione calcistica
  */
 public class Confederation
 {
-	private static final Map<String, Confederation> CONFEDERATION_MAP = new LinkedHashMap<String, Confederation>();
+	private static final Map<String, Confederation> CONFEDERATION_MAP = new LinkedHashMap<>();
 	private static Integer totalConfederations = 0;
 
 
@@ -23,8 +22,10 @@ public class Confederation
 	private final Confederation superConfederation;
 
 
-	public Confederation(String shortName, String longName,
-											 Country country, Confederation superConfederation)
+	public Confederation(String shortName,
+											 String longName,
+											 Country country,
+											 Confederation superConfederation)
 	{
 		this.shortName = shortName;
 		this.longName = longName;

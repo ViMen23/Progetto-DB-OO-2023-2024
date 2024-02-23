@@ -1,20 +1,19 @@
 package model;
 
-
-import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
  * TYPE : class
+ * <p>
  * NAME : Player
- *
+ * <p>
  * DESC: Classe che rappresenta il concetto astratto di calciatore
  */
 public class Player
 {
-	public enum FOOT_TYPE {EITHER, LEFT, RIGHT};
-	private static final Map<String, Player> PLAYER_MAP = new LinkedHashMap<String, Player>();
+	public enum FOOT_TYPE {EITHER, LEFT, RIGHT}
+	private static final Map<String, Player> PLAYER_MAP = new LinkedHashMap<>();
 	private static Integer totalPlayers = 0;
 
 	private String name;
@@ -27,8 +26,14 @@ public class Player
 	private String retiredDate;
 
 
-	public Player(String name, String surname, String dob, Country country,
-								String foot, Position position, String role, String retiredDate)
+	public Player(String name,
+								String surname,
+								String dob,
+								Country country,
+								String foot,
+								Position position,
+								String role,
+								String retiredDate)
 	{
 		this.name = name;
 		this.surname = surname;

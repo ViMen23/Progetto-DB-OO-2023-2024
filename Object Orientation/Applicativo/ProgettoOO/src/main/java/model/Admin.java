@@ -2,8 +2,9 @@ package model;
 
 /**
  * TYPE : class - model package
+ * <p>
  * NAME : Admin
- *
+ * <p>
  * DESC: Classe che rappresenta il concetto astratto di amministratore dell'applicativo
  */
 public class Admin
@@ -13,7 +14,8 @@ public class Admin
 	private final String password;
 
 
-	public Admin(String username, String password)
+	public Admin(String username,
+							 String password)
 	{
 		this.username = username;
 		this.password = password;

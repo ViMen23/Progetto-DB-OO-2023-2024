@@ -4,15 +4,15 @@ import java.util.*;
 
 /**
  * TYPE : class
+ * <p>
  * NAME : Country
- *
+ * <p>
  * DESC: Classe che rappresenta il concetto astratto di paese
  */
-// TODO: per tutte le classi con oggetti immutabili considerare di convertirle in classi record
 public class Country
 {
-	public enum COUNTRY_TYPE {NATION, CONTINENT, WORLD};
-	private static final Map<String, Country> COUNTRY_MAP = new LinkedHashMap<String, Country>();
+	public enum COUNTRY_TYPE {NATION, CONTINENT, WORLD}
+	private static final Map<String, Country> COUNTRY_MAP = new LinkedHashMap<>();
 	private static Integer totalCountries = 0;
 
 	private final String type;

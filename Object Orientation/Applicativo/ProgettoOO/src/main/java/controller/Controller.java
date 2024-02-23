@@ -1091,6 +1091,23 @@ public class Controller
 		return player;
 	}
 
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @param surname
+	 * @param role
+	 * @return
+	 */
+	private Player newPlayer(String ID,
+													 String name,
+													 String surname,
+													 String role)
+	{
+		return newPlayer(ID, name, surname, null, null, null, null, role, null);
+	}
+
 	/**
 	 * TODO
 	 * @return
@@ -1643,6 +1660,85 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * TODO
+	 * @param player
+	 * @param team
+	 * @param competition
+	 * @param competitionYear
+	 * @param match
+	 * @param goalScored
+	 * @param penaltyScored
+	 * @param assist
+	 * @param yellowCard
+	 * @param redCard
+	 * @param goalConceded
+	 * @param penaltySaved
+	 * @return
+	 */
+	private Statistic newStatistic(Player player,
+																 Team team,
+																 Competition competition,
+																 String competitionYear,
+																 String match,
+																 String goalScored,
+																 String penaltyScored,
+																 String assist,
+																 String yellowCard,
+																 String redCard,
+																 String goalConceded,
+																 String penaltySaved)
+	{
+		return new Statistic
+						(
+										player,
+										team,
+										competition,
+										competitionYear,
+										match,
+										goalScored,
+										penaltyScored,
+										assist,
+										yellowCard,
+										redCard,
+										goalConceded,
+										penaltySaved
+						);
+	}
+
+
+	private Statistic newStatistic(Player player,
+																 String match,
+																 String goalScored,
+																 String penaltyScored,
+																 String assist,
+																 String yellowCard,
+																 String redCard,
+																 String goalConceded,
+																 String penaltySaved)
+	{
+		return new Statistic
+						(
+										player,
+										null,
+										null,
+										null,
+										match,
+										goalScored,
+										penaltyScored,
+										assist,
+										yellowCard,
+										redCard,
+										goalConceded,
+										penaltySaved
+						);
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
 	private Statistic newStatistic()
 	{
 		return new Statistic
@@ -1657,7 +1753,164 @@ public class Controller
 										null,
 										null,
 										null,
+										null,
 										null
 						);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamType
+	 * @param playerRole
+	 */
+	private void fetchStatistic(String teamType,
+															String playerRole)
+	{
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listStatisticMatch = new ArrayList<>();
+		List<String> listStatisticGoalScored = new ArrayList<>();
+		List<String> listStatisticPenaltyScored = new ArrayList<>();
+		List<String> listStatisticAssist = new ArrayList<>();
+		List<String> listStatisticYellowCard = new ArrayList<>();
+		List<String> listStatisticRedCard = new ArrayList<>();
+		List<String> listStatisticGoalConceded = new ArrayList<>();
+		List<String> listStatisticPenaltySaved = new ArrayList<>();
+
+		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
+		statisticDAO.fetchStatisticDB
+						(
+										teamType,
+										playerRole,
+										listPlayerID,
+										listPlayerRole,
+										listPlayerName,
+										listPlayerSurname,
+										listStatisticMatch,
+										listStatisticGoalScored,
+										listStatisticPenaltyScored,
+										listStatisticAssist,
+										listStatisticYellowCard,
+										listStatisticRedCard,
+										listStatisticGoalConceded,
+										listStatisticPenaltySaved
+						);
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		for (String ID : listPlayerID) {
+			Player player = newPlayer
+							(
+											ID,
+											listPlayerName.removeFirst(),
+											listPlayerSurname.removeFirst(),
+											listPlayerRole.removeFirst()
+							);
+
+			ctrlPlayer.getPlayerMap().put(ID, player);
+		}
+
+
+		ctrlStatistic.getStatisticList().clear();
+
+		while (!(listPlayerID.isEmpty())) {
+			Statistic statistic = newStatistic
+							(
+											ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()),
+											listStatisticMatch.removeFirst(),
+											listStatisticGoalScored.removeFirst(),
+											listStatisticPenaltyScored.removeFirst(),
+											listStatisticAssist.removeFirst(),
+											listStatisticYellowCard.removeFirst(),
+											listStatisticRedCard.removeFirst(),
+											listStatisticGoalConceded.removeFirst(),
+											listStatisticPenaltySaved.removeFirst()
+							);
+
+			ctrlStatistic.getStatisticList().add(statistic);
+		}
+
+	}
+
+
+
+	public void setStatisticTable(Vector<String> statisticTableColumnName,
+																Vector<Vector<String>> statisticTableData,
+																String teamType,
+																String playerRole)
+	{
+		fetchStatistic
+						(
+										teamType,
+										playerRole
+						);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+
+		for (Statistic statistic : ctrlStatistic.getStatisticList()) {
+			Vector<String> statisticVector = new Vector<>();
+
+			statisticVector.add(statistic.getPlayer().getRole());
+			statisticVector.add(statistic.getPlayer().getName());
+			statisticVector.add(statistic.getPlayer().getSurname());
+			statisticVector.add(statistic.getMatch());
+			statisticVector.add(statistic.getGoalScored());
+			statisticVector.add(statistic.getPenaltyScored());
+			statisticVector.add(statistic.getAssist());
+			statisticVector.add(statistic.getYellowCard());
+			statisticVector.add(statistic.getRedCard());
+			statisticVector.add(statistic.getGoalConceded());
+			statisticVector.add(statistic.getPenaltySaved());
+
+			statisticTableData.add(statisticVector);
+		}
 	}
 }

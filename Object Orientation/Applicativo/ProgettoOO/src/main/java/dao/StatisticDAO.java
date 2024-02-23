@@ -13,10 +13,10 @@ public interface StatisticDAO
 												List<String> listPlayerSurname,
 												List<String> listStatisticMatch,
 												List<String> listStatisticGoalScored,
+												List<String> listStatisticPenaltyScored,
 												List<String> listStatisticAssist,
 												List<String> listStatisticYellowCard,
 												List<String> listStatisticRedCard,
-												List<String> listStatisticPenaltyScored,
 												List<String> listStatisticGoalConceded,
 												List<String> listStatisticPenaltySaved);
 }
