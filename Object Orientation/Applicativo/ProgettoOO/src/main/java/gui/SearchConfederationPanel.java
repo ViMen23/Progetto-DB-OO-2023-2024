@@ -41,11 +41,13 @@ public class SearchConfederationPanel
 	private final JRadioButton nationRadioButton;
 
 	private final JComboBox<String> continentComboBox;
+	private final JTable confederationTable;
+
+	private final Vector<Vector<String>> confederationTableData = new Vector<>();
+	private final Vector<String> confederationTableColumnName = new Vector<>();
 	private final Vector<String> confederationNameVector = new Vector<>();
 	private final Map<String, String> confederationNameMap = new HashMap<>();
-	private final JTable confederationTable;
-	private final Vector<String> confederationTableColumnName = new Vector<>();
-	private final Vector<Vector<String>> confederationTableData = new Vector<>();
+
 
 	private final ButtonGroup buttonGroup;
 	private final JScrollPane scrollPane;
@@ -164,8 +166,8 @@ public class SearchConfederationPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"50:push[]80[]80[]80[]20:push",
+				"debug, flowx, center",
+				"50[]80[]80[]80[]20",
 				"10[]10"
 			);
 
@@ -187,9 +189,7 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				searchButton.setEnabled(true);
 				typeCountry = Country.COUNTRY_TYPE.WORLD.toString();
-
 			}
 		});
 
@@ -208,8 +208,6 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				searchButton.setEnabled(true);
 				typeCountry = Country.COUNTRY_TYPE.CONTINENT.toString();
 			}
 		});
@@ -223,16 +221,13 @@ public class SearchConfederationPanel
 		string = StringUtils.capitalize(string);
 
 		nationRadioButton = new JRadioButton(string);
-		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-
 		nationRadioButton.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
 				if (nationRadioButton.isSelected()) {
-					searchButton.setEnabled(true);
-					continentComboBox.setEnabled(true);
 
+					continentComboBox.setEnabled(true);
 					continentComboBox.firePopupMenuWillBecomeVisible();
 
 					typeCountry = Country.COUNTRY_TYPE.NATION.toString();
@@ -240,6 +235,7 @@ public class SearchConfederationPanel
 				else {
 					continentComboBox.setEnabled(false);
 					continentComboBox.setSelectedIndex(-1);
+
 					superConfederationID = null;
 				}
 			}
@@ -266,10 +262,9 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				searchButton.setEnabled(false);
-
 				typeCountry = null;
 				superConfederationID = null;
+
 				buttonGroup.clearSelection();
 			}
 		});
@@ -321,14 +316,21 @@ public class SearchConfederationPanel
 
 		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				continentComboBox.removeAllItems();
-				fillConfederationComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				fillConfederationComboBox
+					(
+						continentComboBox,
+						confederationNameVector,
+						confederationNameMap,
+						Country.COUNTRY_TYPE.CONTINENT.toString(),
+						null
+					);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				superConfederationID = confederationNameMap.get ((String) continentComboBox.getSelectedItem());
+				superConfederationID = confederationNameMap.get( (String) continentComboBox.getSelectedItem());
 			}
 
 			@Override
@@ -436,8 +438,6 @@ public class SearchConfederationPanel
 		( (DefaultTableCellRenderer) confederationTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 
-
-
 		/*
 		 * Campo barra di scorrimento: jScrollPane
 		 */
@@ -447,20 +447,24 @@ public class SearchConfederationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillConfederationComboBox(JComboBox<String> comboBox, String type, String superConfederationID)
+	public void fillConfederationComboBox(JComboBox<String> comboBox,
+									Vector<String> vector,
+									Map<String, String> map,
+									String type,
+									String superConfederationID)
 	{
 
-		GuiConfiguration.initComboBoxVector(confederationNameVector, confederationNameMap);
+		GuiConfiguration.initComboBoxVector(vector, map);
 
 		Controller.getInstance().getConfederationList
 			(
-				confederationNameVector,
-				confederationNameMap,
+				vector,
+				map,
 				type,
 				superConfederationID
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(confederationNameVector));
+		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
 

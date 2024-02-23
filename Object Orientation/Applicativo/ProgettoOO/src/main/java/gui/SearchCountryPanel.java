@@ -63,7 +63,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]20[]20[]10[]0"
+				"20[]10[]10[]20"
 			);
 
 		setLayout(migLayout);
@@ -124,7 +124,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"0[]0[]0[]0[]0"
+				"0[]0[]10[]0[]20[]0"
 			);
 
 		countryPanel = new JPanel(migLayout);
@@ -167,8 +167,8 @@ public class SearchCountryPanel
 		 */
 		migLayout = new MigLayout
 						(
-										"debug, flowx",
-										"50:push[]80[]80[]80[]20:push",
+										"debug, flowx, center",
+										"50[]80[]80[]80[]20",
 										"10[]10"
 						);
 
@@ -188,16 +188,18 @@ public class SearchCountryPanel
 		worldRadioButton = new JRadioButton(string);
 		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
+
 		worldRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				searchButton.setEnabled(true);
 				countryType = Country.COUNTRY_TYPE.WORLD.toString();
 			}
 		});
 
 		countryTypePanel.add(worldRadioButton);
+
+
 		/*
 		 * Campo continente: radio button
 		 */
@@ -211,7 +213,6 @@ public class SearchCountryPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				searchButton.setEnabled(true);
 				countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
 			}
 		});
@@ -234,7 +235,7 @@ public class SearchCountryPanel
 			public void itemStateChanged(ItemEvent e)
 			{
 				if (nationRadioButton.isSelected()) {
-					searchButton.setEnabled(true);
+
 					continentComboBox.setEnabled(true);
 
 					continentComboBox.firePopupMenuWillBecomeVisible();
@@ -270,8 +271,6 @@ public class SearchCountryPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				searchButton.setEnabled(false);
-
 				countryType = null;
 				superCountryID = null;
 				buttonGroup.clearSelection();
@@ -312,8 +311,8 @@ public class SearchCountryPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"20:push[]20:push",
+				"debug, flowx, center",
+				"20[]20",
 				"10[]10"
 			);
 
@@ -335,7 +334,14 @@ public class SearchCountryPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+				fillCountryComboBox
+					(
+						continentComboBox,
+						countryNameVector,
+						countryNameMap,
+						Country.COUNTRY_TYPE.CONTINENT.toString(),
+						null
+					);
 			}
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
@@ -363,31 +369,12 @@ public class SearchCountryPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		searchButton.setEnabled(false);
-
 		searchButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					countryTableColumnName.clear();
-					countryTableData.clear();
-
-					Controller.getInstance().getCountryList
-									(
-													countryTableColumnName,
-													countryTableData,
-													countryType,
-													superCountryID
-									);
-
-
-					countryTable.setModel(new TableModel(countryTableData, countryTableColumnName));
-					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-
-
-					GuiConfiguration.setTitleTable(titleTable, "countries", countryTableData.size());
+					fillCountryTable(countryTableData, countryTableColumnName, countryTable, "countries");
 					countryTablePanel.revalidate();
-
 				}
 		});
 
@@ -443,11 +430,11 @@ public class SearchCountryPanel
 		countryTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 		countryTable.setFillsViewportHeight(true);
+
 		countryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		countryTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) countryTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
-
 
 
 		/*
@@ -459,20 +446,44 @@ public class SearchCountryPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillCountryComboBox(JComboBox<String> comboBox, String type, String superCountryID)
+	public void fillCountryComboBox(JComboBox<String> comboBox,
+									Vector<String> vector,
+									Map<String, String> map,
+									String type,
+									String superCountryID)
 	{
 
-		GuiConfiguration.initComboBoxVector(countryNameVector, countryNameMap);
+		GuiConfiguration.initComboBoxVector(vector, map);
 
 		Controller.getInstance().getCountryList
 			(
-							countryNameVector,
-							countryNameMap,
-							type,
-							superCountryID
+				vector,
+				map,
+				type,
+				superCountryID
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(countryNameVector));
+		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+	}
 
+	public void fillCountryTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
+	{
+		tableData.clear();
+		tableColumnName.clear();
+
+		Controller.getInstance().getCountryList
+			(
+				tableColumnName,
+				tableData,
+				countryType,
+				superCountryID
+			);
+
+
+		table.setModel(new TableModel(tableData, tableColumnName));
+		table.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
+
+
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
 	}
 }

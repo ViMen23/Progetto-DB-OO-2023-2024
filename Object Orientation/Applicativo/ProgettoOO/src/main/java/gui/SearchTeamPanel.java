@@ -11,6 +11,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.util.HashMap;
 
 import java.awt.*;
@@ -668,15 +669,6 @@ public class SearchTeamPanel
 						teamNationID
 					);
 
-				System.out.println("teamTableColumnName -> " + teamTableColumnName );
-				System.out.println("teamTableData -> " + teamTableData );
-				System.out.println("teamSubLongName -> " + teamSubLongName );
-				System.out.println("teamSubShortName -> " + teamSubShortName );
-				System.out.println("teamType -> " + teamType );
-				System.out.println("teamContinentID -> " + teamContinentID );
-				System.out.println("teamNationID -> " + teamNationID );
-
-
 				teamTable.setModel(new TableModel(teamTableData, teamTableColumnName));
 				teamTable.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
 
@@ -738,6 +730,10 @@ public class SearchTeamPanel
 		teamTable.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
 		teamTable.setFillsViewportHeight(true);
 		teamTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		teamTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) teamTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
 
 		/*
 		 * Campo barra di scorrimento: jScrollPane
