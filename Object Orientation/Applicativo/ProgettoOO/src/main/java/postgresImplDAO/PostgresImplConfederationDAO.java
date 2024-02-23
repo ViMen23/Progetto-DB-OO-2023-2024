@@ -28,7 +28,9 @@ public class PostgresImplConfederationDAO
 															 List<String> listConfederationShortName,
 															 List<String> listConfederationLongName,
 															 List<String> listCountryID,
-															 List<String> listCountryName)
+															 List<String> listCountryName,
+															 List<String> listSuperConfederationID,
+															 List<String> listSuperConfederationShortName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_confederations(?, ?)}");
@@ -43,6 +45,8 @@ public class PostgresImplConfederationDAO
 				listConfederationLongName.add(rs.getString("conf_long_name"));
 				listCountryID.add(rs.getString("country_id"));
 				listCountryName.add(rs.getString("country_name"));
+				listSuperConfederationID.add(rs.getString("super_conf_id"));
+				listSuperConfederationShortName.add(rs.getString("super_conf_short_name"));
 			}
 
 			rs.close();

@@ -9,7 +9,9 @@ public interface CountryDAO
 									 List<String> listCountryID,
 									 List<String> listCountryType,
 									 List<String> listCountryCode,
-									 List<String> listCountryName);
+									 List<String> listCountryName,
+									 List<String> listSuperCountryID,
+									 List<String> listSuperCountryName);
 
 	Integer countAllCountriesDB();
 }

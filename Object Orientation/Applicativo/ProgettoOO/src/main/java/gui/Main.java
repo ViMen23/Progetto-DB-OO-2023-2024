@@ -23,7 +23,15 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
-		Controller.getInstance().getPlayerList("214", "2000", "2023", true);
+		Controller.getInstance().getTeamList
+						(
+										null,
+										null,
+										"CLUB",
+										"CONTINENT",
+										"4",
+										true
+						);
 
 		MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 		MainFrame.getMainFrameInstance().pack();

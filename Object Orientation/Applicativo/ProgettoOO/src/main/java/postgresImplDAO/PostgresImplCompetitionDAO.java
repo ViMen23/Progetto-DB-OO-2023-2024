@@ -24,6 +24,7 @@ public class PostgresImplCompetitionDAO
 	public void competitionsDB(String competitionSubName,
 														 String competitionType,
 														 String competitionTeamType,
+														 String competitionCountryType,
 														 String competitionCountryID,
 														 List<String> listCompetitionID,
 														 List<String> listCompetitionType,
@@ -35,11 +36,12 @@ public class PostgresImplCompetitionDAO
 														 List<String> listCountryName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_competitions(?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_competitions(?, ?, ?, ?, ?)}");
 			cs.setString(1, competitionSubName);
 			cs.setString(2, competitionType);
 			cs.setString(3, competitionTeamType);
-			cs.setString(4, competitionCountryID);
+			cs.setString(4, competitionCountryType);
+			cs.setString(5, competitionCountryID);
 
 			ResultSet rs = cs.executeQuery();
 

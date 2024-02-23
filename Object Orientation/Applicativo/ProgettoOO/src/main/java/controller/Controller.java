@@ -6,7 +6,9 @@ import model.*;
 import postgresImplDAO.*;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * TYPE : class - controller package
@@ -178,29 +180,31 @@ public class Controller
 		List<String> listCountryType = new ArrayList<String>();
 		List<String> listCountryCode = new ArrayList<String>();
 		List<String> listCountryName = new ArrayList<String>();
+		List<String> listSuperCountryID = new ArrayList<String>();
+		List<String> listSuperCountryName = new ArrayList<String>();
 
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
 		countryDAO.countriesDB
 						(
 										countryType, superCountryID,
-										listCountryID, listCountryType, listCountryCode, listCountryName
+										listCountryID, listCountryType, listCountryCode, listCountryName,
+										listSuperCountryID, listSuperCountryName
 						);
 
 		ctrlCountry.getCountryMap().clear();
 
-		Country superCountry;
-		if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-			superCountry = null;
-		} else {
-			superCountry = newCountry
+		Map<String, Country> superCountryMap = new LinkedHashMap<String, Country>();
+
+		for (String ID : listSuperCountryID) {
+			Country country = newCountry
 							(
-											listCountryID.removeFirst(),
-											listCountryType.removeFirst(),
-											listCountryCode.removeFirst(),
-											listCountryName.removeFirst(),
-											null
+											ID,
+											listSuperCountryName.removeFirst()
 							);
+
+			superCountryMap.put(ID, country);
 		}
+
 
 		while (!(listCountryID.isEmpty())) {
 			String ID = listCountryID.removeFirst();
@@ -210,7 +214,7 @@ public class Controller
 											listCountryType.removeFirst(),
 											listCountryCode.removeFirst(),
 											listCountryName.removeFirst(),
-											superCountry
+											superCountryMap.get(listSuperCountryID.removeFirst())
 							);
 
 			ctrlCountry.getCountryMap().put(ID, country);
@@ -241,12 +245,20 @@ public class Controller
 			if (full) {
 				innerCountryList.add(country.getCode());
 				innerCountryList.add(country.getType());
-				innerCountryList.add(country.getSuperCountry().getName()); // TODO: try catch?
+				if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+					innerCountryList.add(" - ");
+				} else {
+					innerCountryList.add(country.getSuperCountry().getName());
+				}
 			}
 
 			innerCountryList.add(key);
 
 			outerCountryList.add(innerCountryList);
+		}
+
+		for (List<String> s : outerCountryList) {
+			System.out.println(s);
 		}
 
 		return outerCountryList;
@@ -333,17 +345,20 @@ public class Controller
 		List<String> listConfederationLongName = new ArrayList<String>();
 		List<String> listCountryID = new ArrayList<String>();
 		List<String> listCountryName = new ArrayList<String>();
+		List<String> listSuperConfederationID = new ArrayList<String>();
+		List<String> listSuperConfederationShortName = new ArrayList<String>();
 
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
 		confederationDAO.confederationsDB
 						(
 										countryType, superConfederationsID,
 										listConfederationID, listConfederationShortName, listConfederationLongName,
-										listCountryID, listCountryName
+										listCountryID, listCountryName,
+										listSuperConfederationID, listSuperConfederationShortName
 						);
 
-		ctrlCountry.getCountryMap().clear();
 
+		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
 			Country country = newCountry
@@ -355,21 +370,22 @@ public class Controller
 			ctrlCountry.getCountryMap().put(ID, country);
 		}
 
+
 		ctrlConfederation.getConfederationMap().clear();
 
-		Confederation superConfederation;
-		if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-			superConfederation = null;
-		} else {
-			superConfederation = newConfederation
+		Map<String, Confederation> superConfederationMap = new LinkedHashMap<String, Confederation>();
+
+		for (String ID : listSuperConfederationID) {
+			Confederation confederation = newConfederation
 							(
-											listConfederationID.removeFirst(),
-											listConfederationShortName.removeFirst(),
-											listConfederationLongName.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
-											null
+											ID,
+											listSuperConfederationShortName.removeFirst()
 							);
+
+			superConfederationMap.put(ID, confederation);
 		}
+
+
 
 		while (!(listConfederationID.isEmpty())) {
 			String ID = listConfederationID.removeFirst();
@@ -379,7 +395,7 @@ public class Controller
 											listConfederationShortName.removeFirst(),
 											listConfederationLongName.removeFirst(),
 											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
-											superConfederation
+											superConfederationMap.get(listSuperConfederationID.removeFirst())
 							);
 
 			ctrlConfederation.getConfederationMap().put(ID, confederation);
@@ -410,16 +426,20 @@ public class Controller
 			if (full) {
 				innerConfederationList.add(confederation.getLongName());
 				if (typeCountry.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-					innerConfederationList.add("-");
+					innerConfederationList.add(" - ");
 				} else {
 					innerConfederationList.add(confederation.getSuperConfederation().getShortName());
 				}
-				innerConfederationList.add(confederation.getCountry().getName()); // TODO: try catch?
+				innerConfederationList.add(confederation.getCountry().getName());
 			}
 
 			innerConfederationList.add(key);
 
 			outerConfederationList.add(innerConfederationList);
+		}
+
+		for (List<String> s : outerConfederationList) {
+			System.out.println(s);
 		}
 
 		return outerConfederationList;
@@ -480,6 +500,7 @@ public class Controller
 	public void searchCompetitions(String competitionSubName,
 																 String competitionType,
 																 String competitionTeamType,
+																 String competitionCountryType,
 																 String competitionCountryID)
 	{
 		List<String> listCompetitionID = new ArrayList<String>();
@@ -494,7 +515,8 @@ public class Controller
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
 		competitionDAO.competitionsDB
 						(
-										competitionSubName, competitionType, competitionTeamType, competitionCountryID,
+										competitionSubName, competitionType, competitionTeamType,
+										competitionCountryType, competitionCountryID,
 										listCompetitionID, listCompetitionType, listCompetitionTeamType, listCompetitionName,
 										listConfederationID, listConfederationShortName,
 										listCountryID, listCountryName
@@ -556,10 +578,16 @@ public class Controller
 	public List<List<String>> getCompetitionList(String competitionSubName,
 																							 String competitionType,
 																							 String competitionTeamType,
+																							 String competitionCountryType,
 																							 String competitionCountryID,
 																							 Boolean full)
 	{
-		searchCompetitions(competitionSubName, competitionType, competitionTeamType, competitionCountryID);
+		searchCompetitions
+						(
+										competitionSubName,
+										competitionType, competitionTeamType,
+										competitionCountryType,competitionCountryID
+						);
 
 		List<List<String>> outerCompetitionList = new ArrayList<List<String>>();
 
@@ -641,6 +669,7 @@ public class Controller
 	public void searchTeams(String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
+													String teamCountryType,
 													String teamCountryID)
 	{
 		List<String> listTeamID = new ArrayList<String>();
@@ -653,7 +682,7 @@ public class Controller
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.teamsDB
 						(
-										teamSubLongName, teamSubShortName, teamType, teamCountryID,
+										teamSubLongName, teamSubShortName, teamType, teamCountryType, teamCountryID,
 										listTeamID, listTeamType, listTeamShortName, listTeamLongName,
 										listCountryID, listCountryName
 						);
@@ -701,10 +730,11 @@ public class Controller
 	public List<List<String>> getTeamList(String teamSubLongName,
 																				String teamSubShortName,
 																				String teamType,
+																				String teamCountryType,
 																				String teamCountryID,
 																				Boolean full)
 	{
-		searchTeams(teamSubLongName, teamSubShortName, teamType, teamCountryID);
+		searchTeams(teamSubLongName, teamSubShortName, teamType, teamCountryType, teamCountryID);
 
 		List<List<String>> outerTeamList = new ArrayList<List<String>>();
 

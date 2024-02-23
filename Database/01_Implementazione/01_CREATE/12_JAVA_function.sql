@@ -12,6 +12,46 @@
  * JAVA FUNCTION
  ******************************************************************************/
 
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : is_admin_valid
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION is_admin_valid
+(
+    IN  username_admin  text,
+    IN  password_admin  text
+)
+RETURNS boolean
+AS
+$$
+BEGIN
+	
+    RETURN
+	(
+		SELECT
+			count(*) >= 1
+		FROM
+			fp_admin
+		WHERE
+			fp_admin.username = username_admin
+            AND
+            fp_admin.password = password_admin
+	);
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : count_countries
@@ -40,102 +80,6 @@ BEGIN
 		WHERE
 			TRUE
 	);
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_countries
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE (text, text, text, text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_countries
-(
-    IN  type_country        text,
-    IN  id_super_country    text
-)
-RETURNS TABLE
-        (
-            country_id      text,
-            country_type    text,
-            country_code    text,
-            country_name    text
-        )
-AS
-$$
-BEGIN
-
-    IF (('NATION' = type_country::en_country) AND (id_super_country IS NOT NULL)) THEN
-
-        RETURN QUERY
-            SELECT
-                fp_country.id::text,
-                fp_country.type::text,
-                fp_country.code::text,
-                fp_country.name::text
-            FROM
-                fp_country
-            WHERE
-                (
-                    fp_country.type = 'NATION'
-                    AND
-                    fp_country.super_id = id_super_country::integer
-                )
-                OR
-                (
-                    fp_country.type = 'CONTINENT'
-                    AND
-                    fp_country.id = id_super_country::integer
-                )
-            ORDER BY
-                fp_country.type DESC,
-                fp_country.name;
-
-    ELSIF ('CONTINENT' = type_country::en_country) THEN
-
-        RETURN QUERY
-            SELECT
-                fp_country.id::text,
-                fp_country.type::text,
-                fp_country.code::text,
-                fp_country.name::text
-            FROM
-                fp_country
-            WHERE
-                fp_country.type = 'CONTINENT'
-                OR
-                fp_country.type = 'WORLD'
-            ORDER BY
-                fp_country.type DESC,
-                fp_country.name;
-
-    ELSIF ('WORLD' = type_country::en_country) THEN
-
-        RETURN QUERY
-            SELECT
-                fp_country.id::text,
-                fp_country.type::text,
-                fp_country.code::text,
-                fp_country.name::text
-            FROM
-                fp_country
-            WHERE
-                fp_country.type = 'WORLD'
-            ORDER BY
-                fp_country.name;
-
-    END IF;
-
-    RETURN;
 
 END;
 $$
@@ -177,6 +121,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : count_competitions
@@ -211,6 +156,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : count_teams
@@ -244,6 +190,7 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * TYPE : FUNCTION
@@ -280,6 +227,111 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_countries
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_countries
+(
+    IN  type_country        text,
+    IN  id_super_country    text
+)
+RETURNS TABLE
+        (
+            country_id          text,
+            country_type        text,
+            country_code        text,
+            country_name        text,
+            super_country_id    text,
+            super_country_name  text
+        )
+AS
+$$
+BEGIN
+
+    DROP TABLE IF EXISTS output_table;
+
+	CREATE TEMPORARY TABLE output_table
+    (
+        country_id          text    NOT NULL,
+        country_type        text    NOT NULL,
+        country_code        text    NOT NULL,
+        country_name        text    NOT NULL,
+        super_country_id    text            ,
+        super_country_name  text
+    );
+
+    INSERT INTO
+        output_table
+    SELECT
+        inner_country.id::text,
+        inner_country.type::text,
+        inner_country.code::text,
+        inner_country.name::text,
+        super_country.id::text,
+        super_country.name::text
+    FROM
+        fp_country AS inner_country
+        LEFT OUTER JOIN
+        fp_country AS super_country
+            ON
+            inner_country.super_id = super_country.id
+    WHERE
+        TRUE;
+
+    
+    IF (type_country IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_type <> type_country;
+
+    END IF;
+
+
+    IF (id_super_country IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.super_country_id <> id_super_country;
+
+    END IF;
+
+
+    RETURN QUERY
+        SELECT
+            output_table.country_id,
+            output_table.country_type,
+            output_table.country_code,
+            output_table.country_name,
+            output_table.super_country_id,
+            output_table.super_country_name
+        FROM
+            output_table
+        WHERE
+            TRUE
+        ORDER BY
+            output_table.country_name;
+    
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
 
 
 /*******************************************************************************
@@ -289,7 +341,7 @@ LANGUAGE plpgsql;
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text)
  *
  * DESC : TODO
  ******************************************************************************/
@@ -300,93 +352,91 @@ CREATE OR REPLACE FUNCTION get_confederations
 )
 RETURNS TABLE
         (
-            conf_id         text,
-            conf_short_name text,
-            conf_long_name  text,
-            country_id      text,
-            country_name    text
+            conf_id                 text,
+            conf_short_name         text,
+            conf_long_name          text,
+            country_id              text,
+            country_name            text,
+            super_conf_id           text,
+            super_conf_short_name   text
         )
 AS
 $$
 BEGIN
 
-    IF (('NATION' = type_country::en_country) AND (id_super_conf IS NOT NULL)) THEN
+    DROP TABLE IF EXISTS output_table;
 
-        RETURN QUERY
-            SELECT
-                fp_confederation.id::text,
-                fp_confederation.short_name::text,
-                fp_confederation.long_name::text,
-                fp_country.id::text,
-                fp_country.name::text
-            FROM
-                fp_confederation
-                JOIN
-                fp_country
-                    ON
-                    fp_confederation.country_id = fp_country.id
-            WHERE
-                (
-                    fp_country.type = 'NATION'
-                    AND
-                    fp_confederation.super_id = id_super_conf::integer
-                )
-                OR
-                (
-                    fp_country.type = 'CONTINENT'
-                    AND
-                    fp_confederation.id = id_super_conf::integer
-                )
-            ORDER BY
-                fp_country.type DESC,
-                fp_confederation.short_name;
+	CREATE TEMPORARY TABLE output_table
+    (
+        conf_id                 text    NOT NULL,
+        conf_short_name         text    NOT NULL,
+        conf_long_name          text    NOT NULL,
+        country_id              text    NOT NULL,
+        country_name            text    NOT NULL,
+        country_type            text    NOT NULL,
+        super_conf_id           text            ,
+        super_conf_short_name   text
+    );
 
-    ELSIF ('CONTINENT' = type_country::en_country) THEN
+    INSERT INTO
+        output_table
+    SELECT
+        inner_confederation.id::text,
+        inner_confederation.short_name::text,
+        inner_confederation.long_name::text,
+        fp_country.id::text,
+        fp_country.name::text,
+        fp_country.type::text,
+        super_confederation.id::text,
+        super_confederation.short_name::text
+    FROM
+        fp_confederation AS inner_confederation
+        JOIN
+        fp_country
+            ON
+            inner_confederation.country_id = fp_country.id
+        LEFT OUTER JOIN
+        fp_confederation AS super_confederation
+            ON
+            inner_confederation.super_id = super_confederation.id
+    WHERE
+        TRUE;
 
-        RETURN QUERY
-            SELECT
-                fp_confederation.id::text,
-                fp_confederation.short_name::text,
-                fp_confederation.long_name::text,
-                fp_country.id::text,
-                fp_country.name::text
-            FROM
-                fp_confederation
-                JOIN
-                fp_country
-                    ON
-                    fp_confederation.country_id = fp_country.id
-            WHERE
-                fp_country.type = 'CONTINENT'
-                OR
-                fp_country.type = 'WORLD'
-            ORDER BY
-                fp_country.type DESC,
-                fp_confederation.short_name;
+    
+    IF (type_country IS NOT NULL) THEN
 
-    ELSIF ('WORLD' = type_country::en_country) THEN
-
-        RETURN QUERY
-            SELECT
-                fp_confederation.id::text,
-                fp_confederation.short_name::text,
-                fp_confederation.long_name::text,
-                fp_country.id::text,
-                fp_country.name::text
-            FROM
-                fp_confederation
-                JOIN
-                fp_country
-                    ON
-                    fp_confederation.country_id = fp_country.id
-            WHERE
-                fp_country.type = 'WORLD'
-            ORDER BY
-                fp_confederation.short_name;
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_type <> type_country;
 
     END IF;
 
-	RETURN;
+
+    IF (id_super_conf IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.super_conf_id <> id_super_conf;
+
+    END IF;
+
+
+    RETURN QUERY
+        SELECT
+            output_table.conf_id,
+            output_table.conf_short_name,
+            output_table.conf_long_name,
+            output_table.country_id,
+            output_table.country_name,
+            output_table.super_conf_id,
+            output_table.super_conf_short_name
+        FROM
+            output_table
+        ORDER BY
+            output_table.conf_long_name;
+
 
 END;
 $$
@@ -398,7 +448,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_competitions
  *
- * IN      : text, text, text, text
+ * IN      : text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text)
@@ -410,6 +460,7 @@ CREATE OR REPLACE FUNCTION search_competitions
     IN  sub_name_comp   text,
     IN  type_comp       text,
     IN  type_team_comp  text,
+    IN  type_country    text,
     IN  id_country      text
 )
 RETURNS TABLE
@@ -438,7 +489,8 @@ BEGIN
         conf_id         text    NOT NULL,
         conf_short_name text    NOT NULL,
         country_id      text    NOT NULL,
-        country_name    text    NOT NULL
+        country_name    text    NOT NULL,
+        country_type    text    NOT NULL
     );
 
     INSERT INTO output_table
@@ -450,7 +502,8 @@ BEGIN
         fp_confederation.id::text,
         fp_confederation.short_name::text,
         fp_country.id::text,
-        fp_country.name::text
+        fp_country.name::text,
+        fp_country.type::text
     FROM
         fp_competition
         JOIN
@@ -460,7 +513,9 @@ BEGIN
         JOIN
         fp_country
             ON
-            fp_confederation.country_id = fp_country.id;
+            fp_confederation.country_id = fp_country.id
+    WHERE
+		TRUE;
 
 
     IF (sub_name_comp IS NOT NULL) THEN
@@ -493,6 +548,16 @@ BEGIN
     END IF;
 
 
+    IF (type_country IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_type <> type_country;
+
+    END IF;
+
+
     IF (id_country IS NOT NULL) THEN
 
         DELETE FROM
@@ -505,9 +570,18 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            *
+            output_table.comp_id,
+            output_table.comp_type,
+            output_table.comp_type_team,
+            output_table.comp_name,
+            output_table.conf_id,
+            output_table.conf_short_name,
+            output_table.country_id,
+            output_table.country_name
         FROM
             output_table
+        WHERE
+			TRUE
         ORDER BY
             output_table.comp_name;
 
@@ -534,6 +608,7 @@ CREATE OR REPLACE FUNCTION search_teams
     IN  sub_long_name_team  text,
     IN  sub_short_name_team text,
     IN  type_team           text,
+    IN  type_country        text,
     IN  id_country          text
 )
 RETURNS TABLE
@@ -553,12 +628,14 @@ BEGIN
 
 	CREATE TEMPORARY TABLE output_table
     (
-        team_id         text    NOT NULL,
-        team_type       text    NOT NULL,
-        team_short_name text    NOT NULL,
-        team_long_name  text    NOT NULL,
-        country_id      text    NOT NULL,
-        country_name    text    NOT NULL
+        team_id             text    NOT NULL,
+        team_type           text    NOT NULL,
+        team_short_name     text    NOT NULL,
+        team_long_name      text    NOT NULL,
+        country_id          text    NOT NULL,
+        country_name        text    NOT NULL,
+        country_type        text    NOT NULL,
+        country_super_id    text    NOT NULL
     );
 
     INSERT INTO output_table
@@ -568,13 +645,17 @@ BEGIN
         fp_team.short_name::text,
         fp_team.long_name::text,
         fp_country.id::text,
-        fp_country.name::text
+        fp_country.name::text,
+        fp_country.type::text,
+        fp_country.super_id::text
     FROM
         fp_team
         JOIN
         fp_country
             ON
-            fp_team.country_id = fp_country.id;
+            fp_team.country_id = fp_country.id
+    WHERE
+		TRUE;
 
 
     IF (sub_long_name_team IS NOT NULL) THEN
@@ -607,62 +688,42 @@ BEGIN
     END IF;
 
 
-    IF (id_country IS NOT NULL) THEN
+    IF (type_country IS NOT NULL) THEN
 
-        DELETE FROM
-            output_table
-        WHERE
-            output_table.country_id <> id_country;
-        
+        IF ('CONTINENT' = type_country AND id_country IS NOT NULL) THEN
+
+            DELETE FROM
+                output_table
+            WHERE
+                output_table.country_super_id <> id_country;
+
+        ELSIF ('NATION' = type_country AND id_country IS NOT NULL) THEN
+
+            DELETE FROM
+                output_table
+            WHERE
+                output_table.country_id <> id_country;
+
+        END IF;
+
     END IF;
 
 
     RETURN QUERY
         SELECT
-            *
+            output_table.team_id,
+            output_table.team_type,
+            output_table.team_short_name,
+            output_table.team_long_name,
+            output_table.country_id,
+            output_table.country_name
         FROM
             output_table
+        WHERE
+			TRUE
         ORDER BY
             output_table.team_long_name;
 
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : is_admin_valid
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : boolean
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION is_admin_valid
-(
-    IN  username_admin  text,
-    IN  password_admin  text
-)
-RETURNS boolean
-AS
-$$
-BEGIN
-	
-    RETURN
-	(
-		SELECT
-			count(*) >= 1
-		FROM
-			fp_admin
-		WHERE
-			fp_admin.username = username_admin
-            AND
-            fp_admin.password = password_admin
-	);
 
 END;
 $$
@@ -754,7 +815,9 @@ BEGIN
         JOIN
         fp_country
             ON
-            fp_player.country_id = fp_country.id;
+            fp_player.country_id = fp_country.id
+    WHERE
+        TRUE;
 
 
     IF (sub_name_player IS NOT NULL) THEN
@@ -863,6 +926,8 @@ BEGIN
             *
         FROM
             output_table
+        WHERE
+            TRUE
         ORDER BY
             output_table.player_surname;
 
@@ -1029,14 +1094,16 @@ BEGIN
         fp_statistic_general
             ON
             fp_play.id = fp_statistic_general.play_id
-        JOIN
+        LEFT OUTER JOIN
         fp_statistic_goalkeeper
             ON
             fp_play.id = fp_statistic_goalkeeper.play_id
         JOIN
         fp_competition
             ON
-            fp_play.competition_id = fp_competition.id;
+            fp_play.competition_id = fp_competition.id
+    WHERE
+        TRUE;
 
 
     IF (type_team IS NOT NULL) THEN
@@ -1062,25 +1129,25 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            player_id,
-            player_role,
-            player_name,
-            player_surname,
-            sum(match)::text AS match,
-            sum(goal_scored)::text AS goal_scored,
-            sum(assist)::text AS assist,
-            sum(yellow_card)::text AS yellow_card,
-            sum(red_card)::text AS red_card,
-            sum(penalty_scored)::text AS penalty_scored,
-            sum(goal_conceded)::text AS goal_conceded,
-            sum(penalty_saved)::text AS penalty_saved
+            output_table.player_id AS player_id,
+            output_table.player_role AS player_role,
+            output_table.player_name AS player_name,
+            output_table.player_surname AS player_surname,
+            sum(output_table.match::integer)::text AS match,
+            sum(output_table.goal_scored::integer)::text AS goal_scored,
+            sum(output_table.assist::integer)::text AS assist,
+            sum(output_table.yellow_card::integer)::text AS yellow_card,
+            sum(output_table.red_card::integer)::text AS red_card,
+            sum(output_table.penalty_scored::integer)::text AS penalty_scored,
+            sum(output_table.goal_conceded::integer)::text AS goal_conceded,
+            sum(output_table.penalty_saved::integer)::text AS penalty_saved
         FROM
             output_table
         GROUP BY
-            player_id,
-            player_role,
-            player_name,
-            player_surname
+            output_table.player_id,
+            output_table.player_role,
+            output_table.player_name,
+            output_table.player_surname
         ORDER BY
             player_surname;
 

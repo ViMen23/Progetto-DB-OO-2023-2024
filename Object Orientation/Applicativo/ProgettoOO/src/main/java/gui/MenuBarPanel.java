@@ -221,9 +221,9 @@ public class MenuBarPanel
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
+				//SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
 
-				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
+				//MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
 			}
 		});
 
@@ -270,9 +270,9 @@ public class MenuBarPanel
 					MainFrame.getMainFrameInstance().remove(component);
 				}
 
-				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+				//SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
 
-				MainFrame.getMainFrameInstance().add(searchTeamPanel);
+				//MainFrame.getMainFrameInstance().add(searchTeamPanel);
 			}
 		});
 

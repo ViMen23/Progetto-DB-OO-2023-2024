@@ -10,7 +10,9 @@ public interface ConfederationDAO
 												List<String> listConfederationShortName,
 												List<String> listConfederationLongName,
 												List<String> listCountryID,
-												List<String> listCountryName);
+												List<String> listCountryName,
+												List<String> listSuperConfederationID,
+												List<String> listSuperConfederationShortName);
 
 	Integer countAllConfederationsDB();
 }

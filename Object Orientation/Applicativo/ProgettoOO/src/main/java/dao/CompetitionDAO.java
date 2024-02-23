@@ -7,6 +7,7 @@ public interface CompetitionDAO
 	void competitionsDB(String competitionSubName,
 											String competitionType,
 											String competitionTeamType,
+											String competitionCountryType,
 											String competitionCountryID,
 											List<String> listCompetitionID,
 											List<String> listCompetitionType,
