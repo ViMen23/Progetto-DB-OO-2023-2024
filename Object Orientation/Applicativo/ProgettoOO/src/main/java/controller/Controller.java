@@ -174,12 +174,12 @@ public class Controller
 	public void getCountries(String countryType,
 													 String superCountryID)
 	{
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryType = new ArrayList<String>();
-		List<String> listCountryCode = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
-		List<String> listSuperCountryID = new ArrayList<String>();
-		List<String> listSuperCountryName = new ArrayList<String>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryType = new ArrayList<>();
+		List<String> listCountryCode = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
+		List<String> listSuperCountryID = new ArrayList<>();
+		List<String> listSuperCountryName = new ArrayList<>();
 
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
 		countryDAO.countriesDB
@@ -191,7 +191,7 @@ public class Controller
 
 		ctrlCountry.getCountryMap().clear();
 
-		Map<String, Country> superCountryMap = new LinkedHashMap<String, Country>();
+		Map<String, Country> superCountryMap = new LinkedHashMap<>();
 
 		for (String ID : listSuperCountryID) {
 			Country country = newCountry
@@ -237,10 +237,10 @@ public class Controller
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
 
-			Country country = ctrlCountry.getCountryMap().get(key);
+			String countryName = ctrlCountry.getCountryMap().get(key).getName();
 
-			countryNameVector.add(country.getName());
-			countryNameMap.put(country.getName(), key);
+			countryNameVector.add(countryName);
+			countryNameMap.put(countryName, key);
 		}
 	}
 
@@ -286,7 +286,7 @@ public class Controller
 			countryVector.add(country.getCode());
 			countryVector.add(country.getType());
 			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-				countryVector.add(" - ");
+				countryVector.add("");
 			} else {
 				countryVector.add(country.getSuperCountry().getName());
 			}
@@ -371,13 +371,13 @@ public class Controller
 	public void getConfederations(String countryType,
 																String superConfederationsID)
 	{
-		List<String> listConfederationID = new ArrayList<String>();
-		List<String> listConfederationShortName = new ArrayList<String>();
-		List<String> listConfederationLongName = new ArrayList<String>();
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
-		List<String> listSuperConfederationID = new ArrayList<String>();
-		List<String> listSuperConfederationShortName = new ArrayList<String>();
+		List<String> listConfederationID = new ArrayList<>();
+		List<String> listConfederationShortName = new ArrayList<>();
+		List<String> listConfederationLongName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
+		List<String> listSuperConfederationID = new ArrayList<>();
+		List<String> listSuperConfederationShortName = new ArrayList<>();
 
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
 		confederationDAO.confederationsDB
@@ -404,7 +404,7 @@ public class Controller
 
 		ctrlConfederation.getConfederationMap().clear();
 
-		Map<String, Confederation> superConfederationMap = new LinkedHashMap<String, Confederation>();
+		Map<String, Confederation> superConfederationMap = new LinkedHashMap<>();
 
 		for (String ID : listSuperConfederationID) {
 			Confederation confederation = newConfederation
@@ -437,13 +437,13 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param confederationNameVector
-	 * @param confederationNameMap
+	 * @param confederationShortNameVector
+	 * @param confederationShortNameMap
 	 * @param typeCountry
 	 * @param superConfederationID
 	 */
-	public void getConfederationList(Vector<String> confederationNameVector,
-																	 Map<String, String> confederationNameMap,
+	public void getConfederationList(Vector<String> confederationShortNameVector,
+																	 Map<String, String> confederationShortNameMap,
 																	 String typeCountry,
 																	 String superConfederationID)
 	{
@@ -451,10 +451,10 @@ public class Controller
 
 		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
 
-			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
+			String confederationShortName = ctrlConfederation.getConfederationMap().get(key).getShortName();
 
-			confederationNameVector.add(confederation.getShortName());
-			confederationNameMap.put(confederation.getShortName(), key);
+			confederationShortNameVector.add(confederationShortName);
+			confederationShortNameMap.put(confederationShortName, key);
 		}
 	}
 
@@ -494,7 +494,7 @@ public class Controller
 			confederationVector.add(confederation.getCountry().getName());
 
 			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-				confederationVector.add(" - ");
+				confederationVector.add("");
 			} else {
 				confederationVector.add(confederation.getSuperConfederation().getShortName());
 			}
@@ -554,31 +554,43 @@ public class Controller
 	 * @param competitionSubName
 	 * @param competitionType
 	 * @param competitionTeamType
-	 * @param competitionCountryID
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
 	 */
 	public void searchCompetitions(String competitionSubName,
 																 String competitionType,
 																 String competitionTeamType,
 																 String competitionCountryType,
-																 String competitionCountryID)
+																 String competitionContinentID,
+																 String competitionNationID)
 	{
-		List<String> listCompetitionID = new ArrayList<String>();
-		List<String> listCompetitionType = new ArrayList<String>();
-		List<String> listCompetitionTeamType = new ArrayList<String>();
-		List<String> listCompetitionName = new ArrayList<String>();
-		List<String> listConfederationID = new ArrayList<String>();
-		List<String> listConfederationShortName = new ArrayList<String>();
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionType = new ArrayList<>();
+		List<String> listCompetitionTeamType = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+		List<String> listConfederationID = new ArrayList<>();
+		List<String> listConfederationShortName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
 
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
 		competitionDAO.competitionsDB
 						(
-										competitionSubName, competitionType, competitionTeamType,
-										competitionCountryType, competitionCountryID,
-										listCompetitionID, listCompetitionType, listCompetitionTeamType, listCompetitionName,
-										listConfederationID, listConfederationShortName,
-										listCountryID, listCountryName
+										competitionSubName,
+										competitionType,
+										competitionTeamType,
+										competitionCountryType,
+										competitionContinentID,
+										competitionNationID,
+										listCompetitionID,
+										listCompetitionType,
+										listCompetitionTeamType,
+										listCompetitionName,
+										listConfederationID,
+										listConfederationShortName,
+										listCountryID,
+										listCountryName
 						);
 
 
@@ -625,54 +637,111 @@ public class Controller
 
 	}
 
+
 	/**
 	 * TODO
+	 * @param competitionNameVector
+	 * @param competitionNameMap
 	 * @param competitionSubName
 	 * @param competitionType
 	 * @param competitionTeamType
-	 * @param competitionCountryID
-	 * @param full
-	 * @return
+	 * @param competitionCountryType
 	 */
-	public List<List<String>> getCompetitionList(String competitionSubName,
-																							 String competitionType,
-																							 String competitionTeamType,
-																							 String competitionCountryType,
-																							 String competitionCountryID,
-																							 Boolean full)
+	public void getCompetitionList(Vector<String> competitionNameVector,
+																 Map<String, String> competitionNameMap,
+																 String competitionSubName,
+																 String competitionType,
+																 String competitionTeamType,
+																 String competitionCountryType,
+																 String competitionContinentID,
+																 String competitionNationID)
 	{
 		searchCompetitions
 						(
 										competitionSubName,
-										competitionType, competitionTeamType,
-										competitionCountryType,competitionCountryID
+										competitionType,
+										competitionTeamType,
+										competitionCountryType,
+										competitionContinentID,
+										competitionNationID
 						);
 
-		List<List<String>> outerCompetitionList = new ArrayList<List<String>>();
+		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
+
+			String competitionName = ctrlCompetition.getCompetitionMap().get(key).getName();
+
+			competitionNameVector.add(competitionName);
+			competitionNameMap.put(competitionName, key);
+		}
+	}
+
+
+	/**
+	 * TODO
+	 * @param competitionTableColumnName
+	 * @param competitionTableData
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
+	 */
+	public void getCompetitionList(Vector<String> competitionTableColumnName,
+																 Vector<Vector<String>> competitionTableData,
+																 String competitionSubName,
+																 String competitionType,
+																 String competitionTeamType,
+																 String competitionCountryType,
+																 String competitionContinentID,
+																 String competitionNationID)
+	{
+		searchCompetitions
+						(
+										competitionSubName,
+										competitionType,
+										competitionTeamType,
+										competitionCountryType,
+										competitionContinentID,
+										competitionNationID
+						);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
 
 		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
-			List<String> innerCompetitionList = new ArrayList<String>();
+			Vector<String> competitionVector = new Vector<>();
+
 			Competition competition = ctrlCompetition.getCompetitionMap().get(key);
 
-			innerCompetitionList.add(competition.getName());
+			competitionVector.add(competition.getName());
+			competitionVector.add(competition.getType());
+			competitionVector.add(competition.getTeamType());
+			competitionVector.add(competition.getConfederation().getShortName());
+			competitionVector.add(competition.getConfederation().getCountry().getName());
 
-			if (full) {
-				innerCompetitionList.add(competition.getType());
-				innerCompetitionList.add(competition.getTeamType());
-				innerCompetitionList.add(competition.getConfederation().getCountry().getName());
-				innerCompetitionList.add(competition.getConfederation().getShortName());
-			}
-
-			innerCompetitionList.add(key);
-
-			outerCompetitionList.add(innerCompetitionList);
+			competitionTableData.add(competitionVector);
 		}
-
-		for (List<String> s : outerCompetitionList) {
-			System.out.println(s);
-		}
-
-		return outerCompetitionList;
 	}
 
 
@@ -731,12 +800,12 @@ public class Controller
 													String teamCountryType,
 													String teamCountryID)
 	{
-		List<String> listTeamID = new ArrayList<String>();
-		List<String> listTeamType = new ArrayList<String>();
-		List<String> listTeamShortName = new ArrayList<String>();
-		List<String> listTeamLongName = new ArrayList<String>();
-		List<String> listCountryID = new ArrayList<String>();
-		List<String> listCountryName = new ArrayList<String>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamType = new ArrayList<>();
+		List<String> listTeamShortName = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.teamsDB

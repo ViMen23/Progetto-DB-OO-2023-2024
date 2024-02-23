@@ -448,7 +448,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_competitions
  *
- * IN      : text, text, text, text, text
+ * IN      : text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text)
@@ -461,7 +461,8 @@ CREATE OR REPLACE FUNCTION search_competitions
     IN  type_comp       text,
     IN  type_team_comp  text,
     IN  type_country    text,
-    IN  id_country      text
+    IN  id_continent    text,
+    IN  id_nation       text
 )
 RETURNS TABLE
         (
@@ -486,16 +487,16 @@ BEGIN
 
 	CREATE TEMPORARY TABLE output_table
     (
-        comp_id         text    NOT NULL,
-        comp_type       text    NOT NULL,
-        comp_type_team  text    NOT NULL,
-        comp_name       text    NOT NULL,
-        conf_id         text    NOT NULL,
-        conf_short_name text    NOT NULL,
-        country_id      text    NOT NULL,
-        country_name    text    NOT NULL,
-        country_type    text    NOT NULL,
-	country_super	text
+        comp_id             text    NOT NULL,
+        comp_type           text    NOT NULL,
+        comp_type_team      text    NOT NULL,
+        comp_name           text    NOT NULL,
+        conf_id             text    NOT NULL,
+        conf_short_name     text    NOT NULL,
+        country_id          text    NOT NULL,
+        country_name        text    NOT NULL,
+        country_type        text    NOT NULL,
+	    country_super_id	text
     );
 
     INSERT INTO output_table
@@ -561,37 +562,37 @@ BEGIN
         WHERE
             output_table.country_type <> type_country;
 
-    END IF;
-
-
-    IF (id_country IS NOT NULL) THEN
-	
-		country_type = get_column
-							(
-								'@',
-								'fp_country'
-								'@id@' || id_country,
-								'type'
-							);
-
-		IF (country_type IS DISTINCT FROM type_country) THEN
-		
-			DELETE FROM
-            	output_table
-			WHERE
-				output_table.country_super <> id_country;
-				
-       ELSE
-	   
-			DELETE FROM
-            	output_table
-			WHERE
-				output_table.country_id <> id_country;
-		
-		END IF;
         
+        IF (id_continent IS NOT NULL) THEN
+
+            IF ('CONTINENT' = type_country) THEN
+
+                DELETE FROM
+                    output_table
+                WHERE
+                    output_table.country_id <> id_continent;
+
+            ELSIF ('NATION' = type_country) THEN
+
+                DELETE FROM
+                    output_table
+                WHERE
+                    output_table.country_super_id <> id_continent;
+
+                IF (id_nation IS NOT NULL) THEN
+
+                    DELETE FROM
+                        output_table
+                    WHERE
+                        output_table.country_id <> id_nation;
+
+                END IF;
+
+            END IF;
+
+        END IF;
+
     END IF;
-	
 	
 
     RETURN QUERY
