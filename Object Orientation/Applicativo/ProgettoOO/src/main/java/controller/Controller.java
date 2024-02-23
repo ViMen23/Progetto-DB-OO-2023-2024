@@ -437,44 +437,72 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param confederationNameVector
+	 * @param confederationNameMap
 	 * @param typeCountry
 	 * @param superConfederationID
-	 * @param full
-	 * @return
 	 */
-	public List<List<String>> getConfederationList(String typeCountry, String superConfederationID, Boolean full)
+	public void getConfederationList(Vector<String> confederationNameVector,
+																	 Map<String, String> confederationNameMap,
+																	 String typeCountry,
+																	 String superConfederationID)
 	{
 		getConfederations(typeCountry, superConfederationID);
 
-		List<List<String>> outerConfederationList = new ArrayList<List<String>>();
-
 		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
-			List<String> innerConfederationList = new ArrayList<String>();
+
 			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
 
-			innerConfederationList.add(confederation.getShortName());
+			confederationNameVector.add(confederation.getShortName());
+			confederationNameMap.put(confederation.getShortName(), key);
+		}
+	}
 
-			if (full) {
-				innerConfederationList.add(confederation.getLongName());
-				if (typeCountry.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-					innerConfederationList.add(" - ");
-				} else {
-					innerConfederationList.add(confederation.getSuperConfederation().getShortName());
-				}
-				innerConfederationList.add(confederation.getCountry().getName());
+
+	public void getConfederationList(Vector<String> confederationTableColumnName,
+																	 Vector<Vector<String>> confederationTableData,
+																	 String countryType,
+																	 String superConfederationID)
+	{
+		getConfederations(countryType, superConfederationID);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("superConfederation");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
+			Vector<String> confederationVector = new Vector<>();
+
+			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
+
+			confederationVector.add(confederation.getLongName());
+			confederationVector.add(confederation.getShortName());
+			confederationVector.add(confederation.getCountry().getName());
+
+			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+				confederationVector.add(" - ");
+			} else {
+				confederationVector.add(confederation.getSuperConfederation().getShortName());
 			}
 
-			innerConfederationList.add(key);
-
-			outerConfederationList.add(innerConfederationList);
+			confederationTableData.add(confederationVector);
 		}
-
-		for (List<String> s : outerConfederationList) {
-			System.out.println(s);
-		}
-
-		return outerConfederationList;
 	}
+
 
 
 	/*------------------------------------------------------------------------------------------------------*/
