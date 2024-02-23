@@ -259,14 +259,27 @@ public class Controller
 	{
 		getCountries(countryType, superCountryID);
 
-		countryTableColumnName.add(GuiConfiguration.getMessage("country"));
-		countryTableColumnName.add(GuiConfiguration.getMessage("code"));
-		countryTableColumnName.add(GuiConfiguration.getMessage("type"));
-		countryTableColumnName.add(GuiConfiguration.getMessage("superCountryName"));
+		String string;
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		countryTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		countryTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		countryTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("superCountry");
+		string = string.toUpperCase();
+		countryTableColumnName.add(string);
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
 			Vector<String> countryVector = new Vector<>();
-			
+
 			Country country = ctrlCountry.getCountryMap().get(key);
 
 			countryVector.add(country.getName());
