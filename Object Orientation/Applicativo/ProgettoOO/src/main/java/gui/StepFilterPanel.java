@@ -1,15 +1,27 @@
 package gui;
 
+import controller.Controller;
+import model.Country;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.List;
 
 
 public class StepFilterPanel
 				extends JPanel
 {
+	protected final Color panelColor = Color.white;
+
 	protected JPanel teamTypePanel;
 	protected JPanel seasonPanel;
 	protected JPanel countryPanel;
@@ -28,19 +40,19 @@ public class StepFilterPanel
 
 
 	protected JComboBox<String> seasonComboBox;
-	protected JComboBox<String> worldComboBox;
-	protected JComboBox<String> continentComboBox;
-	protected JComboBox<String> nationComboBox;
-	protected JComboBox<String> competitionComboBox;
-	protected JComboBox<String> teamComboBox;
-	protected JComboBox<String> playerComboBox;
+	protected JComboBox<List<String>> continentComboBox;
+	protected JComboBox<List<String>> nationComboBox;
+	protected JComboBox<List<String>> competitionComboBox;
+	protected JComboBox<List<String>> teamComboBox;
+	protected JComboBox<List<String>> playerComboBox;
 
 
 	protected ButtonGroup buttonGroup;
 	protected JLabel label;
 
-
-	protected Color panelColor = Color.white;
+	protected String teamType;
+	protected String countryType;
+	protected String countryID;
 
 
 	public StepFilterPanel()
@@ -52,7 +64,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"10:push[fill]10:push",
+				"10[grow, fill]10",
 				"20[]10[]0[]10[]0[]10[]0[]10[]0[]10[]0[]10[]0[]20[]20"
 			);
 
@@ -72,7 +84,7 @@ public class StepFilterPanel
 		/*
 		 * Campo scelta tipo team: stampa
 		 */
-		string = " 1. ";
+		string = "1. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("teamType");
@@ -82,6 +94,7 @@ public class StepFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		add(label);
 
@@ -91,7 +104,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]20",
+				"50:push[]80[]20:push",
 				"10[]10"
 			);
 
@@ -108,6 +121,14 @@ public class StepFilterPanel
 
 		clubRadioButton = new JRadioButton(string);
 
+		clubRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				teamType = Team.TEAM_TYPE.CLUB.toString();
+			}
+		});
+
 		teamTypePanel.add(clubRadioButton);
 
 		/*
@@ -117,6 +138,14 @@ public class StepFilterPanel
 		string = StringUtils.capitalize(string);
 
 		nationalRadioButton = new JRadioButton(string);
+
+		nationalRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				teamType = Team.TEAM_TYPE.NATIONAL.toString();
+			}
+		});
 
 		teamTypePanel.add(nationalRadioButton);
 
@@ -131,7 +160,7 @@ public class StepFilterPanel
 		/*
 		 * Campo scelta stagione: stampa
 		 */
-		string = " 2. ";
+		string = "2. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string +=  GuiConfiguration.getMessage("season");
@@ -141,6 +170,7 @@ public class StepFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		add(label);
 
@@ -150,7 +180,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]20",
+				"50:push[]80[]20:push",
 				"10[]10"
 			);
 
@@ -175,15 +205,14 @@ public class StepFilterPanel
 		seasonComboBox = new JComboBox<String>();
 
 		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		seasonComboBox.setSelectedIndex(-1);
+		seasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
 		seasonPanel.add(seasonComboBox);
-
 
 		/*
 		 * Campo scelta paese: stampa
 		 */
-		string = " 3. ";
+		string = "3. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("country");
@@ -195,6 +224,7 @@ public class StepFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		add(label);
 
@@ -204,7 +234,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"20[]30:push[]20",
+				"50:push[]80[]20:push",
 				"10[]20[]20[]10"
 			);
 
@@ -221,17 +251,23 @@ public class StepFilterPanel
 
 		worldRadioButton = new JRadioButton(string);
 
-		countryPanel.add(worldRadioButton);
+		worldRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				List<List<String>> world = Controller.getInstance().getCountryList
+											(
+												Country.COUNTRY_TYPE.WORLD.toString(),
+												null,
+												false
+											);
 
-		/*
-		 * Campo mondo: comboBox
-		 */
-		worldComboBox = new JComboBox<String>();
+				countryID = world.getFirst().getLast();
+				countryType = Country.COUNTRY_TYPE.WORLD.toString();
+			}
+		});
 
-		worldComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		worldComboBox.setSelectedIndex(-1);
-
-		countryPanel.add(worldComboBox);
+		countryPanel.add(worldRadioButton, "wrap");
 
 		/*
 		 * Campo continente: radio button
@@ -241,15 +277,58 @@ public class StepFilterPanel
 
 		continentRadioButton = new JRadioButton(string);
 
+		continentRadioButton.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				if (continentRadioButton.isSelected()) {
+
+					continentComboBox.setEnabled(true);
+					continentComboBox.firePopupMenuWillBecomeVisible();
+
+					countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
+				}
+				else {
+					continentComboBox.setEnabled(false);
+					continentComboBox.setSelectedIndex(-1);
+				}
+			}
+		});
+
 		countryPanel.add(continentRadioButton);
 
 		/*
 		 * Campo continente: combo box
 		 */
-		continentComboBox = new JComboBox<String>();
+		continentComboBox = new JComboBox<List<String>>();
+
+		continentComboBox.setRenderer(new ComboBoxRenderer());
 
 		continentComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		continentComboBox.setSelectedIndex(-1);
+		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
+
+		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				continentComboBox.removeAllItems();
+
+				fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
+			}
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				countryID = ((List<String>) continentComboBox.getSelectedItem()).getLast();
+
+				if (nationRadioButton.isSelected()) {
+
+					nationComboBox.setEnabled(true);
+					nationComboBox.firePopupMenuWillBecomeVisible();
+				}
+			}
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
 
 		countryPanel.add(continentComboBox);
 
@@ -261,15 +340,56 @@ public class StepFilterPanel
 
 		nationRadioButton = new JRadioButton(string);
 
+		nationRadioButton.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e)
+			{
+				if (nationRadioButton.isSelected()){
+					continentComboBox.setEnabled(true);
+					continentComboBox.firePopupMenuWillBecomeVisible();
+
+					countryType = Country.COUNTRY_TYPE.NATION.toString();
+				}
+				else {
+					continentComboBox.setEnabled(false);
+					nationComboBox.setEnabled(false);
+
+					continentComboBox.setSelectedIndex(-1);
+					nationComboBox.setSelectedIndex(-1);
+				}
+			}
+		});
+
 		countryPanel.add(nationRadioButton);
 
 		/*
 		 * Campo nazione: combo box
 		 */
-		nationComboBox = new JComboBox<String>();
+		nationComboBox = new JComboBox<List<String>>();
+
+		nationComboBox.setRenderer(new ComboBoxRenderer());
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		nationComboBox.setSelectedIndex(-1);
+		nationComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
+
+		nationComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				nationComboBox.removeAllItems();
+
+				fillCountryComboBox(nationComboBox, Country.COUNTRY_TYPE.NATION.toString(), countryID);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				countryID = ((List<String>) nationComboBox.getSelectedItem()).getLast();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
 
 		countryPanel.add(nationComboBox);
 
@@ -285,7 +405,7 @@ public class StepFilterPanel
 		/*
 		 * Campo scelta competizione: stampa
 		 */
-		string = " 4. ";
+		string = "4. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("competition");
@@ -295,6 +415,7 @@ public class StepFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		add(label);
 
@@ -304,7 +425,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20[]30:push[]20",
+				"50:push[]80[]20:push",
 				"10[]10"
 			);
 
@@ -326,17 +447,38 @@ public class StepFilterPanel
 		/*
 		 * Campo competizione: comboBox
 		 */
-		competitionComboBox = new JComboBox<String>();
+		competitionComboBox = new JComboBox<List<String>>();
 
+		competitionComboBox.setRenderer(new ComboBoxRenderer());
 		competitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		competitionComboBox.setSelectedIndex(-1);
+		competitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
+
+		competitionComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				competitionComboBox.removeAllItems();
+
+				fillCompetitionComboBox(competitionComboBox);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) {
+
+			}
+		});
 
 		competitionPanel.add(competitionComboBox);
 
 		/*
 		 * Campo scelta squadra: stampa
 		 */
-		string = " 5. ";
+		string = "5. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("team");
@@ -377,7 +519,9 @@ public class StepFilterPanel
 		/*
 		 * Campo squadra: comboBox
 		 */
-		teamComboBox = new JComboBox<String>();
+		teamComboBox = new JComboBox<List<String>>();
+
+		teamComboBox.setRenderer(new ComboBoxRenderer());
 
 		teamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		teamComboBox.setSelectedIndex(-1);
@@ -428,7 +572,7 @@ public class StepFilterPanel
 		/*
 		 * Campo calciatore: comboBox
 		 */
-		playerComboBox = new JComboBox<String>();
+		playerComboBox = new JComboBox<List<String>>();
 		playerComboBox.setEditable(true);
 		playerComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		playerComboBox.setSelectedIndex(-1);
@@ -444,5 +588,37 @@ public class StepFilterPanel
 		searchButton = new JButton(string);
 
 		add(searchButton);
+	}
+
+	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
+	{
+		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
+			(
+				type,
+				superCountryID,
+				false
+			);
+
+		for (List<String> countryList: nameCountryList) {
+			comboBox.addItem(countryList);
+		}
+
+	}
+
+	public void fillCompetitionComboBox(JComboBox<List<String>> comboBox)
+	{
+		List<List<String>> nameCompetitionList = Controller.getInstance().getCompetitionList
+			(
+				null,
+				null,
+				teamType,
+				countryType,
+				countryID,
+				false
+			);
+
+		for (List<String> competitionList: nameCompetitionList){
+			comboBox.addItem(competitionList);
+		}
 	}
 }

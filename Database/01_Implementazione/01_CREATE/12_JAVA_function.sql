@@ -476,6 +476,10 @@ RETURNS TABLE
         )
 AS
 $$
+DECLARE
+
+	country_type	text;
+
 BEGIN
 
     DROP TABLE IF EXISTS output_table;
@@ -490,7 +494,8 @@ BEGIN
         conf_short_name text    NOT NULL,
         country_id      text    NOT NULL,
         country_name    text    NOT NULL,
-        country_type    text    NOT NULL
+        country_type    text    NOT NULL,
+	country_super	text
     );
 
     INSERT INTO output_table
@@ -503,7 +508,8 @@ BEGIN
         fp_confederation.short_name::text,
         fp_country.id::text,
         fp_country.name::text,
-        fp_country.type::text
+        fp_country.type::text,
+		fp_country.super_id::text
     FROM
         fp_competition
         JOIN
@@ -559,14 +565,34 @@ BEGIN
 
 
     IF (id_country IS NOT NULL) THEN
+	
+		country_type = get_column
+							(
+								'@',
+								'fp_country'
+								'@id@' || id_country,
+								'type'
+							);
 
-        DELETE FROM
-            output_table
-        WHERE
-            output_table.country_id <> id_country;
+		IF (country_type IS DISTINCT FROM type_country) THEN
+		
+			DELETE FROM
+            	output_table
+			WHERE
+				output_table.country_super <> id_country;
+				
+       ELSE
+	   
+			DELETE FROM
+            	output_table
+			WHERE
+				output_table.country_id <> id_country;
+		
+		END IF;
         
     END IF;
-
+	
+	
 
     RETURN QUERY
         SELECT

@@ -1,5 +1,7 @@
 package gui;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -7,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * TYPE : class - gui package
@@ -29,6 +32,10 @@ public class GuiConfiguration
 
 	private static final Color searchPanelColor = new Color(50, 100, 200);
 
+	private static final String displayValue = "xxxxxxxxxxxxxxxxxxxx";
+	private static final List<String> comboBoxDiplayValue = new ArrayList<String>();
+	private static final List<String> listStringSelectAll = new ArrayList<>();
+
 	private static ResourceBundle currentResourceBundle;
 
 	private static Font outputFont;
@@ -49,6 +56,16 @@ public class GuiConfiguration
 	{
 		// creazione del locale di default come italiano
 		setLocale(Locale.of("it", "IT"));
+
+		comboBoxDiplayValue.add(displayValue);
+
+		String string = GuiConfiguration.getMessage("select");
+		string += " ";
+		string += GuiConfiguration.getMessage("all");
+		string = StringUtils.capitalize(string);
+
+		listStringSelectAll.add(string);
+		listStringSelectAll.add(null);
 
 		initUIManager();
 		initHomeFrame();
@@ -307,6 +324,29 @@ public class GuiConfiguration
 	 */
 	public static Color getSearchPanelColor() { return searchPanelColor; }
 
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getComboBoxDiplayValue
+	 *
+	 * DESC: TODO
+	 */
+	public static List<String> getComboBoxDiplayValue() { return comboBoxDiplayValue; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getListStringSelectAll
+	 *
+	 * DESC: TODO
+	 */
+	public static List<String> getListStringSelectAll() { return listStringSelectAll; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getDisplayValue
+	 *
+	 * DESC: TODO
+	 */
+	public static String getDisplayValue() { return displayValue; }
 
 	/**
 	 * TYPE : static method - gui package

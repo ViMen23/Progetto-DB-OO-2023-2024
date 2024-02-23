@@ -9,18 +9,26 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.Year;
-import java.util.ArrayList;
+
 import java.util.List;
 
 public class SearchPlayerPanel
 				extends JPanel
 {
+	protected final Color panelColor = Color.white;
 	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
+	protected final ImageIcon errorIcon = GuiConfiguration.createImageIcon("images/error.png");
+	protected final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
+
 
 	protected JPanel playerPanel;
 	protected JPanel namePanel;
@@ -32,21 +40,27 @@ public class SearchPlayerPanel
 	protected JPanel playerTablePanel;
 
 	protected JButton titleButton;
+	protected JButton nameResetButton;
+	protected JButton surnameResetButton;
+	protected JButton ageResetButton;
+	protected JButton bornNationResetButton;
+	protected JButton roleResetButton;
+	protected JButton positionResetButton;
+	protected JButton footResetButton;
 	protected JButton searchButton;
 
-	protected JCheckBox nameSearchCheckBox;
-	protected JCheckBox ageSearchCheckBox;
-	protected JCheckBox bornNationSearchCheckBox;
-	protected JCheckBox roleSearchCheckBox;
-	protected JCheckBox goalkeeperCheckBox;
-	protected JCheckBox defenderCheckBox;
-	protected JCheckBox midfielderCheckBox;
-	protected JCheckBox forwardCheckBox;
-	protected JCheckBox mainPositionSearchCheckBox;
-	protected JCheckBox preferredFootSearchCheckBox;
+	protected JLabel nameSearchLabel;
+	protected JLabel nameErrorLabel;
+	protected JLabel surnameErrorLabel;
+	protected JLabel ageSearchLabel;
+	protected JLabel bornNationSearchLabel;
+	protected JLabel roleSearchLabel;
+	protected JLabel mainPositionSearchLabel;
+	protected JLabel preferredFootSearchLabel;
 
 	protected JTextField nameTextField;
 	protected JTextField surnameTextField;
+
 
 	protected JComboBox<String> yearReferenceComboBox;
 	protected JComboBox<String> minimumAgeComboBox;
@@ -54,6 +68,11 @@ public class SearchPlayerPanel
 	protected JComboBox<List<String>> continentComboBox;
 	protected JComboBox<List<String>> nationComboBox;
 	protected JComboBox<List<String>> mainPositionComboBox;
+
+	protected JCheckBox goalkeeperCheckBox;
+	protected JCheckBox defenderCheckBox;
+	protected JCheckBox midfielderCheckBox;
+	protected JCheckBox forwardCheckBox;
 
 	protected JRadioButton rightFootRadioButton;
 	protected JRadioButton leftFootRadioButton;
@@ -66,23 +85,22 @@ public class SearchPlayerPanel
 	protected JTable playerTable;
 	protected JScrollPane scrollPane;
 
-	protected Color panelColor = Color.white;
-
-	protected Boolean nameSearchValid = true;
-	protected Boolean playerNameSearchValid = true;
-	protected Boolean playerSurnameSearchValid = true;
-	protected Boolean ageSearchValid = true;
-	protected Boolean bornNationSearchValid = true;
-	protected Boolean roleSearchValid = true;
-	protected Boolean mainPositionValid = true;
-	protected Boolean preferredFootSearchValid = true;
-	protected Boolean anySelected = false;
+	protected Boolean nameSearchValid = false;
+	protected Boolean surnameSearchValid = false;
+	protected Boolean ageSearchValid = false;
+	protected Boolean bornNationSearchValid = false;
+	protected Boolean roleSearchValid = false;
+	protected Boolean mainPositionValid = false;
+	protected Boolean preferredFootSearchValid = false;
 
 
 	protected String playerSubName = null;
 	protected String playerSubSurname = null;
 	protected String playerReferringYear = null;
 	protected String playerMinAge = null;
+	protected String playerContinentID = null;
+	protected String playerContinentType = null;
+	protected String playerCountryType = null;
 	protected String playerCountryID = null;
 	protected String playerMaxAge = null;
 	protected String playerRole = null;
@@ -108,6 +126,10 @@ public class SearchPlayerPanel
 		setLayout(migLayout);
 		setName("searchPlayerPanel");
 
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE TITOLO
+		 *------------------------------------------------------------------------------------------------------*/
+
 		/*
 		 * Campo titolo: bottone
 		 */
@@ -119,7 +141,7 @@ public class SearchPlayerPanel
 		string += " ";
 		string += GuiConfiguration.getMessage("available");
 		string += " ";
-		//string += Controller.getInstance().countPlayers().toString(); TODO
+		string += Controller.getInstance().countPlayers().toString();
 		string = string.toUpperCase();
 
 
@@ -146,6 +168,12 @@ public class SearchPlayerPanel
 				revalidate();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout
 			(
@@ -158,6 +186,12 @@ public class SearchPlayerPanel
 		playerPanel.setOpaque(false);
 
 		add(playerPanel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per nome: checkBox
@@ -167,50 +201,28 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
-		nameSearchCheckBox = new JCheckBox(string);
-		nameSearchCheckBox.setOpaque(true);
+		nameSearchLabel = new JLabel(string);
+		nameSearchLabel.setOpaque(true);
 
-		nameSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		nameSearchCheckBox.setForeground(Color.white);
-		nameSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		nameSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		nameSearchLabel.setForeground(Color.white);
+		nameSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		nameSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = nameSearchCheckBox.isSelected();
+		playerPanel.add(nameSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				nameTextField.setEnabled(selected);
-				surnameTextField.setEnabled(selected);
 
-				nameTextField.setText("");
-				surnameTextField.setText("");
 
-				playerNameSearchValid = false;
-				playerSurnameSearchValid = false;
-
-				nameSearchValid = !selected;
-
-				System.out.println(nameSearchValid);
-
-				setAnySelected();
-
-				setEnableButton();
-
-				System.out.println(nameSearchValid);
-
-			}
-		});
-
-		playerPanel.add(nameSearchCheckBox);
-
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
 		/*
 		 * Campo ricerca per nome: panel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"50:push[]80[]20:push",
+				"debug, wrap 4",
+				"50:push[]80[]10[]70[]20:push",
 				"10[]20[]10"
 			);
 
@@ -233,29 +245,54 @@ public class SearchPlayerPanel
 		 * Campo testo: textField
 		 */
 		nameTextField = new JTextField(GuiConfiguration.getInputColumn());
-		nameTextField.setEnabled(false);
-
 		nameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
-				String string = nameTextField.getText();
+				if (Regex.patternString.matcher(nameTextField.getText()).find()) {
+					nameSearchValid = true;
+					searchButton.setEnabled(true);
 
-				playerNameSearchValid = Regex.patternString.matcher(string).find();
+					playerSubName = nameTextField.getText();
+					nameErrorLabel.setVisible(false);
 
-				if (string.isEmpty()) {
+				} else {
+					nameSearchValid = false;
+					setEnableButton();
+
 					playerSubName = null;
+					nameErrorLabel.setVisible(true);
 				}
-				else {
-					playerSubName = string;
-				}
-				setNameSearchValid();
-
-				setEnableButton();
 			}
 		});
 
 		namePanel.add(nameTextField);
+
+		/*
+		 * Campo errore regex: label
+		 */
+		nameErrorLabel = new JLabel(errorIcon);
+
+		namePanel.add(nameErrorLabel);
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		nameResetButton = new JButton(resetIcon);
+		nameResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				nameSearchValid = false;
+				setEnableButton();
+
+				playerSubName = null;
+				nameTextField.setText(null);
+			}
+		});
+
+		namePanel.add(nameResetButton);
+
 
 		/*
 		 * Campo cognome: stampa
@@ -271,29 +308,60 @@ public class SearchPlayerPanel
 		 * Campo testo: textfield
 		 */
 		surnameTextField = new JTextField(GuiConfiguration.getInputColumn());
-		surnameTextField.setEnabled(false);
-
 		surnameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
-				String string = surnameTextField.getText();
+				if (Regex.patternString.matcher(surnameTextField.getText()).find()) {
 
-				playerSurnameSearchValid = Regex.patternString.matcher(string).find();
+					surnameSearchValid = true;
+					searchButton.setEnabled(true);
 
-				if (string.isEmpty()) {
+					playerSubSurname = surnameTextField.getText();
+					surnameErrorLabel.setVisible(false);
+
+				} else {
+					surnameSearchValid = false;
+					setEnableButton();
+
 					playerSubSurname = null;
+					surnameErrorLabel.setVisible(true);
 				}
-				else {
-					playerSubSurname = string;
-				}
-				setNameSearchValid();
-
-				setEnableButton();
 			}
 		});
 
 		namePanel.add(surnameTextField);
+
+		/*
+		 * Campo errore regex: label
+		 */
+		surnameErrorLabel = new JLabel(errorIcon);
+
+		namePanel.add(surnameErrorLabel);
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		surnameResetButton = new JButton(resetIcon);
+		surnameResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				surnameSearchValid = false;
+				setEnableButton();
+
+				playerSubSurname = null;
+				surnameTextField.setText(null);
+			}
+		});
+
+		namePanel.add(surnameResetButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER ETÀ
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per eta: checkBox
@@ -303,49 +371,27 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("age");
 		string = string.toUpperCase();
 
-		ageSearchCheckBox = new JCheckBox(string);
-		ageSearchCheckBox.setOpaque(true);
-		ageSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		ageSearchCheckBox.setForeground(Color.white);
-		ageSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		ageSearchLabel = new JLabel(string);
+		ageSearchLabel.setOpaque(true);
+		ageSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		ageSearchLabel.setForeground(Color.white);
+		ageSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		ageSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = ageSearchCheckBox.isSelected();
+		playerPanel.add(ageSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				yearReferenceComboBox.setEnabled(selected);
 
-				ageSearchValid = !selected;
-
-				if (selected) {
-					fillReferenceYearComboBox();
-				}
-				else {
-					yearReferenceComboBox.removeAllItems();
-					minimumAgeComboBox.removeAllItems();
-					maximumAgeComboBox.removeAllItems();
-
-					minimumAgeComboBox.setEnabled(false);
-					maximumAgeComboBox.setEnabled(false);
-				}
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		playerPanel.add(ageSearchCheckBox);
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER ETÀ
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per eta: panel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 4",
-				"50:push[]80[]80[]80[]20:push",
+				"debug, wrap 5",
+				"50:push[]80[]80[]80[]80[]20:push",
 				"10[]20[]10"
 			);
 
@@ -370,42 +416,61 @@ public class SearchPlayerPanel
 		yearReferenceComboBox = new JComboBox<String>();
 
 		yearReferenceComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		yearReferenceComboBox.setEnabled(false);
 
-		String tmp = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+		yearReferenceComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		yearReferenceComboBox.setPrototypeDisplayValue(tmp);
-
-		yearReferenceComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE); //Used to make the action fire only one time
-		yearReferenceComboBox.addActionListener(new ActionListener() {
+		yearReferenceComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
+				yearReferenceComboBox.removeAllItems();
+				Integer minimumYear = 1830; //TODO replace with call to db
 
-				if (yearReferenceComboBox.getSelectedIndex() != -1) {
-					playerReferringYear = (String) yearReferenceComboBox.getSelectedItem();
+				fillReferenceYearComboBox(minimumYear);
 
-					maximumAgeComboBox.removeAllItems();
-					minimumAgeComboBox.removeAllItems();
-
-					Integer minimumAge = 15; //TODO take this value from db
-					Integer maximumAge = 50; //TODO take this value from db
-
-					fillAgeComboBox(minimumAgeComboBox, minimumAge, maximumAge);
-
-					minimumAgeComboBox.setEnabled(true);
-				}
-				else {
-					minimumAgeComboBox.setEnabled(false);
-				}
-
-				ageSearchValid = false;
-
-				setEnableButton();
 			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				playerReferringYear = (String) yearReferenceComboBox.getSelectedItem();
+
+				minimumAgeComboBox.setEnabled(true);
+				minimumAgeComboBox.firePopupMenuWillBecomeVisible();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
 
 		agePanel.add(yearReferenceComboBox, "spanx 2, center");
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		ageResetButton = new JButton(resetIcon);
+		ageResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				ageSearchValid = false;
+				setEnableButton();
+
+				minimumAgeComboBox.setEnabled(false);
+				maximumAgeComboBox.setEnabled(false);
+
+				minimumAgeComboBox.setSelectedIndex(-1);
+				maximumAgeComboBox.setSelectedIndex(-1);
+				yearReferenceComboBox.setSelectedIndex(-1);
+
+				playerReferringYear = null;
+				playerMinAge = null;
+				playerMaxAge = null;
+			}
+		});
+
+		agePanel.add(ageResetButton, "spany 2, center");
+
 
 		/*
 		 * Campo età minima: stampa
@@ -425,33 +490,30 @@ public class SearchPlayerPanel
 		minimumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		minimumAgeComboBox.setEnabled(false);
 
-		minimumAgeComboBox.setPrototypeDisplayValue(tmp);
+		minimumAgeComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		minimumAgeComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-
-		minimumAgeComboBox.addActionListener(new ActionListener() {
+		minimumAgeComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				maximumAgeComboBox.removeAllItems();
+				minimumAgeComboBox.removeAllItems();
+				Integer minimumAge = 15;	//TODO REPLACE WITH A CALL TO DB
+				Integer maximumAge = 50;	//TODO REPLACE WITH A CALL TO DB
 
-				if (minimumAgeComboBox.getSelectedIndex() != -1) {
-					playerMinAge = (String) minimumAgeComboBox.getSelectedItem();
-
-					Integer maximumAge = 50; //TODO take this value from db
-
-					fillAgeComboBox(maximumAgeComboBox, Integer.valueOf(playerMinAge), maximumAge);
-
-					maximumAgeComboBox.setEnabled(true);
-				}
-				else {
-					maximumAgeComboBox.setEnabled(false);
-				}
-
-				ageSearchValid = false;
-
-				setEnableButton();
+				fillAgeComboBox(minimumAgeComboBox, minimumAge, maximumAge);
 			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				playerMinAge = (String) minimumAgeComboBox.getSelectedItem();
+
+				maximumAgeComboBox.setEnabled(true);
+				maximumAgeComboBox.firePopupMenuWillBecomeVisible();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
 
 		agePanel.add(minimumAgeComboBox);
@@ -474,28 +536,39 @@ public class SearchPlayerPanel
 		maximumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		maximumAgeComboBox.setEnabled(false);
 
-		maximumAgeComboBox.setPrototypeDisplayValue(tmp);
+		maximumAgeComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		maximumAgeComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-
-		maximumAgeComboBox.addActionListener(new ActionListener() {
+		maximumAgeComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				if (maximumAgeComboBox.getSelectedIndex() != -1 ) {
-					playerMaxAge = (String) maximumAgeComboBox.getSelectedItem();
+				maximumAgeComboBox.removeAllItems();
 
-					ageSearchValid = true;
-				}
-				else {
-					ageSearchValid = false;
-				}
+				Integer maximumAge = 50;	//TODO REPLACE WITH A CALL TO DB
 
-				setEnableButton();
+				fillAgeComboBox(maximumAgeComboBox, Integer.valueOf(playerMinAge), maximumAge);
+
+				ageSearchValid = true;
+				searchButton.setEnabled(true);
+
 			}
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				playerMaxAge = (String) maximumAgeComboBox.getSelectedItem();
+			}
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+
 		});
 
 		agePanel.add(maximumAgeComboBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per paese di nascita: checkbox
@@ -505,48 +578,29 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("bornNation");
 		string = string.toUpperCase();
 
-		bornNationSearchCheckBox = new JCheckBox(string);
+		bornNationSearchLabel = new JLabel(string);
 
-		bornNationSearchCheckBox.setOpaque(true);
-		bornNationSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		bornNationSearchCheckBox.setForeground(Color.white);
-		bornNationSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		bornNationSearchLabel.setOpaque(true);
+		bornNationSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		bornNationSearchLabel.setForeground(Color.white);
+		bornNationSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		bornNationSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = bornNationSearchCheckBox.isSelected();
+		playerPanel.add(bornNationSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				continentComboBox.setEnabled(selected);
 
-				bornNationSearchValid = !selected;
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER PAESE DI NASCITA
+		 *------------------------------------------------------------------------------------------------------*/
 
-				if (selected) {
-					fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
-				}
-				else {
-					continentComboBox.removeAllItems();
-					nationComboBox.removeAllItems();
-
-					nationComboBox.setEnabled(false);
-				}
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		playerPanel.add(bornNationSearchCheckBox);
 
 		/*
 		 * Campo ricerca per paese di nascita: panel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"50:push[]80[]20:push",
+				"debug, wrap 3",
+				"50:push[]80[]80[]20:push",
 				"10[]20[]10"
 			);
 
@@ -571,41 +625,69 @@ public class SearchPlayerPanel
 		continentComboBox = new JComboBox<List<String>>();
 
 		continentComboBox.setRenderer(new ComboBoxRenderer());
-		continentComboBox.setEnabled(false);
 
-		List<String> aa = new ArrayList<String>();
-		aa.add("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx");
+		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
 
-		continentComboBox.setPrototypeDisplayValue(aa);
-
-		continentComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-
-
-		continentComboBox.addActionListener(new ActionListener() {
+		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				nationComboBox.removeAllItems();
+				continentComboBox.removeAllItems();
+				fillCountryComboBox(continentComboBox, Country.COUNTRY_TYPE.CONTINENT.toString(), null);
 
-				if(continentComboBox.getSelectedIndex() != -1) {
+				bornNationSearchValid = true;
+				searchButton.setEnabled(true);
+			}
 
-					String superCountryID = ((List<String>)continentComboBox.getSelectedItem()).getLast();
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				playerContinentID   = ((List<String>) continentComboBox.getSelectedItem()).getLast();
+				playerContinentType = Country.COUNTRY_TYPE.CONTINENT.toString();
 
-					fillCountryComboBox(nationComboBox, Country.COUNTRY_TYPE.NATION.toString(), superCountryID);
+				playerCountryID = playerContinentID;
+				playerCountryType = playerContinentType;
 
-					nationComboBox.setEnabled(true);
+				if (playerContinentID == null) {
+					nationComboBox.setEnabled(false);
+					nationComboBox.setSelectedIndex(-1);
 				}
 				else {
-					nationComboBox.setEnabled(false);
+					nationComboBox.setEnabled(true);
+					nationComboBox.firePopupMenuWillBecomeVisible();
 				}
-
-				bornNationSearchValid = false;
-
-				setEnableButton();
 			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
 
 		bornNationPanel.add(continentComboBox);
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		bornNationResetButton = new JButton(resetIcon);
+		bornNationResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				bornNationSearchValid = false;
+				setEnableButton();
+
+				continentComboBox.setSelectedIndex(-1);
+				nationComboBox.setEnabled(false);
+				nationComboBox.setSelectedIndex(-1);
+
+				playerContinentID = null;
+				playerContinentType = null;
+				playerCountryID = null;
+				playerCountryType = null;
+			}
+		});
+
+		bornNationPanel.add(bornNationResetButton, "spany 2, center");
+
 
 		/*
 		 * Campo nazione: stampa
@@ -626,29 +708,41 @@ public class SearchPlayerPanel
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		nationComboBox.setEnabled(false);
 
-		nationComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
-		nationComboBox.setPrototypeDisplayValue(aa);
+		nationComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
 
-
-		nationComboBox.addActionListener(new ActionListener() {
+		nationComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
+				nationComboBox.removeAllItems();
+				fillCountryComboBox(nationComboBox, Country.COUNTRY_TYPE.NATION.toString(), playerCountryID);
+			}
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				String tmp = ((List<String>) nationComboBox.getSelectedItem()).getLast();
 
-				if (nationComboBox.getSelectedIndex() != -1 ){
-					playerCountryID = ((List<String>)nationComboBox.getSelectedItem()).getLast();
-
-					bornNationSearchValid = true;
+				if (tmp != null) {
+					playerCountryID = tmp;
+					playerCountryType = Country.COUNTRY_TYPE.NATION.toString();
 				}
 				else {
-					bornNationSearchValid = false;
+					playerCountryType = playerContinentType;
+					playerCountryID = playerContinentID;
 				}
-
-				setEnableButton();
 			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
 
 		bornNationPanel.add(nationComboBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER RUOLO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per ruolo: checkBox
@@ -658,40 +752,20 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
 
-		roleSearchCheckBox = new JCheckBox(string);
+		roleSearchLabel = new JLabel(string);
 
-		roleSearchCheckBox.setOpaque(true);
-		roleSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		roleSearchCheckBox.setForeground(Color.white);
-		roleSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		roleSearchLabel.setOpaque(true);
+		roleSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		roleSearchLabel.setForeground(Color.white);
+		roleSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		roleSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = roleSearchCheckBox.isSelected();
+		playerPanel.add(roleSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				goalkeeperCheckBox.setEnabled(selected);
-				goalkeeperCheckBox.setSelected(false);
 
-				defenderCheckBox.setEnabled(selected);
-				defenderCheckBox.setSelected(false);
-
-				midfielderCheckBox.setEnabled(selected);
-				midfielderCheckBox.setSelected(false);
-
-				forwardCheckBox.setEnabled(selected);
-				forwardCheckBox.setSelected(false);
-
-				roleSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		playerPanel.add(roleSearchCheckBox);
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER RUOLO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per ruolo: panel
@@ -700,7 +774,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"50:push[]80[]80[]80[]20:push",
+				"50:push[]80[]80[]80[]80[]20:push",
 				"10[]10"
 			);
 
@@ -717,15 +791,18 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		goalkeeperCheckBox = new JCheckBox(string);
-		goalkeeperCheckBox.setEnabled(false);
-
-		goalkeeperCheckBox.addActionListener(new ActionListener() {
+		goalkeeperCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void itemStateChanged(ItemEvent e)
 			{
-				setRoleSearchValid();
-
-				setEnableButton();
+				if (goalkeeperCheckBox.isSelected()) {
+					roleSearchValid = true;
+					searchButton.setEnabled(true);
+				}
+				else {
+					setRoleSearchValid();
+					setEnableButton();
+				}
 			}
 		});
 
@@ -738,18 +815,20 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		defenderCheckBox = new JCheckBox(string);
-		defenderCheckBox.setEnabled(false);
-
-		defenderCheckBox.addActionListener(new ActionListener() {
+		defenderCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void itemStateChanged(ItemEvent e)
 			{
-				setRoleSearchValid();
-
-				setEnableButton();
+				if (defenderCheckBox.isSelected()) {
+					roleSearchValid = true;
+					searchButton.setEnabled(true);
+				}
+				else {
+					setRoleSearchValid();
+					setEnableButton();
+				}
 			}
 		});
-
 
 		rolePanel.add(defenderCheckBox);
 
@@ -760,15 +839,18 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		midfielderCheckBox = new JCheckBox(string);
-		midfielderCheckBox.setEnabled(false);
-
-		midfielderCheckBox.addActionListener(new ActionListener() {
+		midfielderCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void itemStateChanged(ItemEvent e)
 			{
-				setRoleSearchValid();
-
-				setEnableButton();
+				if (midfielderCheckBox.isSelected()) {
+					roleSearchValid = true;
+					searchButton.setEnabled(true);
+				}
+				else {
+					setRoleSearchValid();
+					setEnableButton();
+				}
 			}
 		});
 
@@ -782,19 +864,48 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		forwardCheckBox = new JCheckBox(string);
-		forwardCheckBox.setEnabled(false);
-
-		forwardCheckBox.addActionListener(new ActionListener() {
+		forwardCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void actionPerformed(ActionEvent e)
+			public void itemStateChanged(ItemEvent e)
 			{
-				setRoleSearchValid();
-
-				setEnableButton();
+				if (forwardCheckBox.isSelected()) {
+					roleSearchValid = true;
+					searchButton.setEnabled(true);
+				}
+				else {
+					setRoleSearchValid();
+					setEnableButton();
+				}
 			}
 		});
 
 		rolePanel.add(forwardCheckBox);
+		/*
+		 * Campo bottone reset: button
+		 */
+		roleResetButton = new JButton(resetIcon);
+		roleResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				roleSearchValid = false;
+				setEnableButton();
+
+				goalkeeperCheckBox.setSelected(false);
+				defenderCheckBox.setSelected(false);
+				midfielderCheckBox.setSelected(false);
+				forwardCheckBox.setSelected(false);
+
+			}
+		});
+
+		rolePanel.add(roleResetButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RICERCA PER PAESE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per posizione principale: checkBox
@@ -804,37 +915,20 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("mainPosition");
 		string = string.toUpperCase();
 
-		mainPositionSearchCheckBox = new JCheckBox(string);
+		mainPositionSearchLabel = new JLabel(string);
 
-		mainPositionSearchCheckBox.setOpaque(true);
-		mainPositionSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		mainPositionSearchCheckBox.setForeground(Color.white);
-		mainPositionSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		mainPositionSearchLabel.setOpaque(true);
+		mainPositionSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		mainPositionSearchLabel.setForeground(Color.white);
+		mainPositionSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		mainPositionSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = mainPositionSearchCheckBox.isSelected();
+		playerPanel.add(mainPositionSearchLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-				mainPositionComboBox.setEnabled(selected);
 
-				mainPositionValid = !selected;
-
-				if (selected) {
-					fillPositionComboBox(mainPositionComboBox);
-				}
-				else {
-					mainPositionComboBox.removeAllItems();
-				}
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		playerPanel.add(mainPositionSearchCheckBox);
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER POSIZIONE PRINCIPALE
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per posizione principale: panel
@@ -842,7 +936,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"50:push[]80[]20:push",
+				"50:push[]80[]80[]20:push",
 				"10[]10"
 			);
 
@@ -868,28 +962,58 @@ public class SearchPlayerPanel
 
 		mainPositionComboBox.setRenderer(new ComboBoxRenderer());
 		mainPositionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		mainPositionComboBox.setEnabled(false);
 
-		mainPositionComboBox.setPrototypeDisplayValue(aa);
+		mainPositionComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
 
-		mainPositionComboBox.putClientProperty("JComboBox.isTableCellEditor", Boolean.TRUE);
+		mainPositionComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				mainPositionComboBox.removeAllItems();
 
-		mainPositionComboBox.addActionListener(new ActionListener() {
+				mainPositionValid = true;
+				searchButton.setEnabled(true);
+
+				fillPositionComboBox(mainPositionComboBox);
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+				playerPositionID = ((List<String>) mainPositionComboBox.getSelectedItem()).getLast();
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+
+		mainPositionPanel.add(mainPositionComboBox);
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		positionResetButton = new JButton(resetIcon);
+		positionResetButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (mainPositionComboBox.getSelectedIndex() != -1) {
-					mainPositionValid = true;
-					playerPositionID = ((List<String>)mainPositionComboBox.getSelectedItem()).getLast();
-				}
-				else {
-					mainPositionValid = false;
-				}
-
+				mainPositionValid = false;
 				setEnableButton();
+
+				mainPositionComboBox.setSelectedIndex(-1);
+
+				playerPositionID = null;
 			}
 		});
-		mainPositionPanel.add(mainPositionComboBox);
+
+		mainPositionPanel.add(positionResetButton);
+
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL RICERCA PER PIEDE PREFERITO
+		 *------------------------------------------------------------------------------------------------------*/
 
 		/*
 		 * Campo ricerca per il piede preferito: checkBox
@@ -899,33 +1023,14 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("preferredFoot");
 		string = string.toUpperCase();
 
-		preferredFootSearchCheckBox = new JCheckBox(string);
-		preferredFootSearchCheckBox.setOpaque(true);
-		preferredFootSearchCheckBox.setBackground(GuiConfiguration.getSearchPanelColor());
-		preferredFootSearchCheckBox.setForeground(Color.white);
-		preferredFootSearchCheckBox.setBorder(GuiConfiguration.getSearchLabelBorder());
+		preferredFootSearchLabel = new JLabel(string);
+		preferredFootSearchLabel.setOpaque(true);
+		preferredFootSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		preferredFootSearchLabel.setForeground(Color.white);
+		preferredFootSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		preferredFootSearchCheckBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Boolean selected = preferredFootSearchCheckBox.isSelected();
 
-				leftFootRadioButton.setEnabled(selected);
-				rightFootRadioButton.setEnabled(selected);
-				eitherFootRadioButton.setEnabled(selected);
-
-				preferredFootGroupButton.clearSelection();
-
-				preferredFootSearchValid = !selected;
-
-				setAnySelected();
-
-				setEnableButton();
-			}
-		});
-
-		playerPanel.add(preferredFootSearchCheckBox);
+		playerPanel.add(preferredFootSearchLabel);
 
 		/*
 		 * Campo ricerca per il piede preferito: panel
@@ -933,7 +1038,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"50:push[]80[]80[]20:push",
+				"50:push[]80[]80[]80[]20:push",
 				"10[]10"
 			);
 
@@ -949,16 +1054,14 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		rightFootRadioButton = new JRadioButton(string);
-		rightFootRadioButton.setEnabled(false);
-
 		rightFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				preferredFootSearchValid = true;
-				playerFoot = Player.FOOT_TYPE.RIGHT.toString();
+				searchButton.setEnabled(true);
 
-				setEnableButton();
+				playerFoot = Player.FOOT_TYPE.RIGHT.toString();
 			}
 		});
 
@@ -971,21 +1074,18 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		leftFootRadioButton = new JRadioButton(string);
-		leftFootRadioButton.setEnabled(false);
-
 		leftFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				preferredFootSearchValid = true;
-				playerFoot = Player.FOOT_TYPE.LEFT.toString();
+				searchButton.setEnabled(true);
 
-				setEnableButton();
+				playerFoot = Player.FOOT_TYPE.LEFT.toString();
 			}
 		});
 
 		preferredFootPanel.add(leftFootRadioButton);
-
 		/*
 		 * Campo ricerca per entrambi i piedi preferiti: radioButton
 		 */
@@ -993,19 +1093,16 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		eitherFootRadioButton = new JRadioButton(string);
-		eitherFootRadioButton.setEnabled(false);
-
 		eitherFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				preferredFootSearchValid = true;
-				playerFoot = Player.FOOT_TYPE.EITHER.toString();
+				searchButton.setEnabled(true);
 
-				setEnableButton();
+				playerFoot = Player.FOOT_TYPE.EITHER.toString();
 			}
 		});
-
 		preferredFootPanel.add(eitherFootRadioButton);
 
 		/*
@@ -1016,6 +1113,25 @@ public class SearchPlayerPanel
 		preferredFootGroupButton.add(rightFootRadioButton);
 		preferredFootGroupButton.add(leftFootRadioButton);
 		preferredFootGroupButton.add(eitherFootRadioButton);
+
+		/*
+		 * Campo bottone reset: button
+		 */
+		footResetButton = new JButton(resetIcon);
+		footResetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				preferredFootSearchValid = false;
+				setEnableButton();
+
+				playerFoot = null;
+				preferredFootGroupButton.clearSelection();
+			}
+		});
+
+		preferredFootPanel.add(footResetButton);
+
 
 		/*
 		 * Campo avvia ricerca: button
@@ -1102,8 +1218,8 @@ public class SearchPlayerPanel
 
 	public void setEnableButton()
 	{
-		if (nameSearchValid && ageSearchValid && bornNationSearchValid && roleSearchValid && mainPositionValid &&
-			preferredFootSearchValid && anySelected)
+		if (nameSearchValid || surnameSearchValid || ageSearchValid || bornNationSearchValid || roleSearchValid ||
+				mainPositionValid || preferredFootSearchValid)
 		{
 			searchButton.setEnabled(true);
 		}
@@ -1112,22 +1228,6 @@ public class SearchPlayerPanel
 		}
 	}
 
-	public void setNameSearchValid()
-	{
-		if (playerNameSearchValid && playerSurnameSearchValid) {
-			nameSearchValid = true;
-		}
-		else if (playerNameSearchValid && playerSubSurname == null) {
-			nameSearchValid = true;
-		}
-		else if (playerSurnameSearchValid && playerSubName == null) {
-			nameSearchValid = true;
-		}
-		else {
-			nameSearchValid = false;
-		}
-
-	}
 	public void setRoleSearchValid()
 	{
 		if (goalkeeperCheckBox.isSelected() || defenderCheckBox.isSelected() || midfielderCheckBox.isSelected() ||
@@ -1139,31 +1239,19 @@ public class SearchPlayerPanel
 			roleSearchValid = false;
 		}
 	}
-	public void setAnySelected()
-	{
-		if (nameSearchCheckBox.isSelected() || ageSearchCheckBox.isSelected() ||
-			bornNationSearchCheckBox.isSelected() || roleSearchCheckBox.isSelected() ||
-			mainPositionSearchCheckBox.isSelected() || preferredFootSearchCheckBox.isSelected())
-		{
-			anySelected = true;
-		}
-		else {
-			anySelected = false;
-		}
-	}
 
 	public void setRolePlayer()
 	{
 		String string = "";
 
-		if (roleSearchCheckBox.isSelected()){
+		if (roleSearchValid) {
 
-			if (goalkeeperCheckBox.isSelected()){
+			if (goalkeeperCheckBox.isSelected()) {
 				string += "GK";
 			}
 
-			if (defenderCheckBox.isSelected()){
-				if (string.isEmpty()){
+			if (defenderCheckBox.isSelected()) {
+				if (string.isEmpty()) {
 					string += "DF";
 				}
 				else {
@@ -1171,8 +1259,8 @@ public class SearchPlayerPanel
 				}
 			}
 
-			if (midfielderCheckBox.isSelected()){
-				if (string.isEmpty()){
+			if (midfielderCheckBox.isSelected()) {
+				if (string.isEmpty()) {
 					string += "MF";
 				}
 				else {
@@ -1180,8 +1268,8 @@ public class SearchPlayerPanel
 				}
 			}
 
-			if (forwardCheckBox.isSelected()){
-				if (string.isEmpty()){
+			if (forwardCheckBox.isSelected()) {
+				if (string.isEmpty()) {
 					string += "FW";
 				}
 				else {
@@ -1198,30 +1286,29 @@ public class SearchPlayerPanel
 
 	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
 	{
+		comboBox.addItem(GuiConfiguration.getListStringSelectAll());
+
 		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
-						(
-										type,
-										superCountryID,
-										false
-						);
+			(
+				type,
+				superCountryID,
+				false
+			);
 
 		for (List<String> countryList: nameCountryList) {
 			comboBox.addItem(countryList);
 		}
 
-		comboBox.setSelectedIndex(-1);
 	}
 
-	public void fillReferenceYearComboBox()
+	public void fillReferenceYearComboBox(Integer minimumYear)
 	{
 		Integer maximumYear = Year.now().getValue();
-		Integer minimumYear = 1830; //TODO replace with call to db
 
 		for( Integer i = maximumYear; i >= minimumYear; --i){
 			yearReferenceComboBox.addItem(i.toString());
 		}
 
-		yearReferenceComboBox.setSelectedIndex(-1);
 	}
 
 	public void fillAgeComboBox(JComboBox<String> comboBox, Integer minimumAge, Integer maximumAge)
@@ -1231,7 +1318,6 @@ public class SearchPlayerPanel
 			comboBox.addItem(i.toString());
 		}
 
-		comboBox.setSelectedIndex(-1);
 	}
 
 	public void fillPositionComboBox(JComboBox<List<String>> comboBox)
@@ -1242,6 +1328,5 @@ public class SearchPlayerPanel
 			comboBox.addItem(positionList);
 		}
 
-		comboBox.setSelectedIndex(-1);
 	}
 }

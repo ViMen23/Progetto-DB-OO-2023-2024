@@ -17,13 +17,10 @@ public class MenuBarPanel
 	protected JMenu confederationMenu;
 	protected JMenuItem generalResearchConfederationMenuItem;
 	protected JMenu competitionMenu;
-	protected JMenuItem showAllCompetitionMenuItem;
 	protected JMenuItem generalResearchCompetitionMenuItem;
 	protected JMenu teamMenu;
-	protected JMenuItem showAllTeamMenuItem;
 	protected JMenuItem generalResearchTeamMenuItem;
 	protected JMenu playerMenu;
-	protected JMenuItem showAllPlayerMenuItem;
 	protected JMenuItem generalResearchPlayerMenuItem;
 	protected JMenuItem militancyResearchPlayerMenuItem;
 	protected JMenu statisticMenu;
@@ -115,17 +112,14 @@ public class MenuBarPanel
 
 		generalResearchCountryMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if
-					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
 
-					component.setVisible(false);
-					MainFrame.getMainFrameInstance().remove(component);
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				}
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
 
 				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
 
@@ -164,15 +158,14 @@ public class MenuBarPanel
 
 		generalResearchConfederationMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if (component.getName().equalsIgnoreCase("topPanel") ||
-							component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
-					component.setVisible(false);
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
+
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
+
 				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
 
 				MainFrame.getMainFrameInstance().add(searchConfederationPanel);
@@ -210,20 +203,17 @@ public class MenuBarPanel
 
 		generalResearchCompetitionMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if
-					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					component.setVisible(false);
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
 
-				//SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
+				MainFrame.getMainFrameInstance().remove(component);
 
-				//MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
+				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
+
+				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
 			}
 		});
 
@@ -259,20 +249,17 @@ public class MenuBarPanel
 
 		generalResearchTeamMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if
-					(component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					component.setVisible(false);
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
 
-				//SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+				MainFrame.getMainFrameInstance().remove(component);
 
-				//MainFrame.getMainFrameInstance().add(searchTeamPanel);
+				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+
+				MainFrame.getMainFrameInstance().add(searchTeamPanel);
 			}
 		});
 
@@ -309,15 +296,13 @@ public class MenuBarPanel
 
 		generalResearchPlayerMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					component.setVisible(false);
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
 
 				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
@@ -338,20 +323,17 @@ public class MenuBarPanel
 
 		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
 
 				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
-				militancyFilterPanel.setName("militancyFilterPanel");
 
 				MainFrame.getMainFrameInstance().add(militancyFilterPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 
@@ -401,20 +383,17 @@ public class MenuBarPanel
 
 		showCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
 
 				CompetitionEditionFilterPanel competitionEditionFilterPanel = new CompetitionEditionFilterPanel();
-				competitionEditionFilterPanel.setName("competitionEditionFilterPanel");
 
 				MainFrame.getMainFrameInstance().add(competitionEditionFilterPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 
@@ -430,20 +409,17 @@ public class MenuBarPanel
 
 		filterButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				for (Component component : MainFrame.getMainFrameInstance().getContentPane().getComponents()) {
-					if (component.getName().equalsIgnoreCase("topPanel") || component.getName().equalsIgnoreCase("menuBarPanel")) {
-						continue;
-					}
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-					MainFrame.getMainFrameInstance().remove(component);
-				}
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
 
 				StepFilterPanel stepFilterPanel = new StepFilterPanel();
-				stepFilterPanel.setName("stepFilterPanel");
 
 				MainFrame.getMainFrameInstance().add(stepFilterPanel);
-				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 
