@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
@@ -194,6 +195,39 @@ public class GuiConfiguration
 		UIManager.put("TableHeader.font", outputBoldFont);
 		UIManager.put("TableHeader.textForeground", Color.white);
 
+	}
+
+
+	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap)
+	{
+		dataVector.clear();
+
+		String string = GuiConfiguration.getMessage("select");
+		string += " ";
+		string += GuiConfiguration.getMessage("all");
+		string = StringUtils.capitalize(string);
+
+		dataVector.add(string);
+
+		hashMap.clear();
+
+		hashMap.put(string, null);
+	}
+
+	public static void setTitleTable(JLabel label,String tableName, int countRows)
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage("results");
+		string += " ";
+		string += GuiConfiguration.getMessage(tableName);
+		string += " - ";
+		string += countRows;
+		string += " ";
+		string += GuiConfiguration.getMessage("results");
+		string = string.toUpperCase();
+
+		label.setText(string);
 	}
 
 	public static void setLocale(Locale locale)

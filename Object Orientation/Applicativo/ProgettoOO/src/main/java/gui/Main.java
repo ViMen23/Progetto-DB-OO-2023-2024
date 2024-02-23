@@ -23,18 +23,8 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
-		Controller.getInstance().getTeamList
-						(
-										null,
-										null,
-										"CLUB",
-										"CONTINENT",
-										"4",
-										true
-						);
 
-
-		MainFrame.getMainFrameInstance().add(new SearchCountryPanel());
+		MainFrame.getMainFrameInstance().add(new SearchTeamPanel());
 		MainFrame.getMainFrameInstance().pack();
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");

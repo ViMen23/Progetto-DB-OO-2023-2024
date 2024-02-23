@@ -7,7 +7,7 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,41 +18,41 @@ import java.util.*;
 public class SearchCountryPanel
 				extends JPanel
 {
-	protected final Color panelColor = Color.white;
-	protected final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	protected final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	protected final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
+	private final Color panelColor = Color.white;
+	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
+	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
+	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
-	protected JButton titleButton;
-	protected JButton resetButton;
-	protected JButton searchButton;
+	private final JButton titleButton;
+	private final JButton resetButton;
+	private final JButton searchButton;
 
-	protected JPanel countryPanel;
-	protected JPanel countryTypePanel;
-	protected JPanel countrySuperPanel;
-	protected JPanel countryTablePanel;
+	private final JPanel countryPanel;
+	private final JPanel countryTypePanel;
+	private final JPanel countrySuperPanel;
+	private final JPanel countryTablePanel;
 
-	protected JLabel chooseCountryTypeLabel;
-	protected JLabel chooseCountrySuperLabel;
-	protected JLabel titleTable;
+	private final JLabel chooseCountryTypeLabel;
+	private final JLabel chooseCountrySuperLabel;
+	private final JLabel titleTable;
 
-	protected ButtonGroup buttonGroup;
+	private final ButtonGroup buttonGroup;
 
-	protected JRadioButton worldRadioButton;
-	protected JRadioButton continentRadioButton;
-	protected JRadioButton nationRadioButton;
+	private final JRadioButton worldRadioButton;
+	private final JRadioButton continentRadioButton;
+	private final JRadioButton nationRadioButton;
 
-	protected JComboBox<String> continentComboBox;
-	protected final Vector<String> countryNameVector = new Vector<>();
-	protected final Map<String, String> countryNameMap = new HashMap<>();
+	private final JComboBox<String> continentComboBox;
+	private final Vector<String> countryNameVector = new Vector<>();
+	private final Map<String, String> countryNameMap = new HashMap<>();
 
-	protected JTable countryTable;
-	protected final Vector<String> countryTableColumnName = new Vector<>();
-	protected final Vector<Vector<String>> countryTableData = new Vector<>();
-	protected JScrollPane scrollPane;
+	private final JTable countryTable;
+	private final Vector<String> countryTableColumnName = new Vector<>();
+	private final Vector<Vector<String>> countryTableData = new Vector<>();
+	private final JScrollPane scrollPane;
 
-	protected String countryType = null;
-	protected String superCountryID = null;
+	private String countryType = null;
+	private String superCountryID = null;
 
 	public SearchCountryPanel()
 	{
@@ -87,9 +87,11 @@ public class SearchCountryPanel
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
+
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIcon(maximizeIcon);
 		titleButton.setIconTextGap(40);
+		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		add(titleButton);
 
@@ -145,6 +147,7 @@ public class SearchCountryPanel
 		string = string.toUpperCase();
 
 		chooseCountryTypeLabel = new JLabel(string, SwingConstants.LEADING);
+
 		chooseCountryTypeLabel.setOpaque(true);
 		chooseCountryTypeLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		chooseCountryTypeLabel.setForeground(Color.white);
@@ -170,6 +173,7 @@ public class SearchCountryPanel
 						);
 
 		countryTypePanel = new JPanel(migLayout);
+
 		countryTypePanel.setBackground(panelColor);
 
 		countryPanel.add(countryTypePanel);
@@ -182,6 +186,7 @@ public class SearchCountryPanel
 		string = StringUtils.capitalize(string);
 
 		worldRadioButton = new JRadioButton(string);
+		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		worldRadioButton.addActionListener(new ActionListener() {
 			@Override
@@ -200,6 +205,7 @@ public class SearchCountryPanel
 		string = StringUtils.capitalize(string);
 
 		continentRadioButton = new JRadioButton(string);
+		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		continentRadioButton.addActionListener(new ActionListener() {
 			@Override
@@ -220,6 +226,8 @@ public class SearchCountryPanel
 		string = StringUtils.capitalize(string);
 
 		nationRadioButton = new JRadioButton(string);
+
+		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		nationRadioButton.addItemListener(new ItemListener() {
 			@Override
@@ -256,6 +264,7 @@ public class SearchCountryPanel
 		 * Campo bottone reset: button
 		 */
 		resetButton = new JButton(resetIcon);
+		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		resetButton.addActionListener(new ActionListener() {
 			@Override
@@ -284,6 +293,7 @@ public class SearchCountryPanel
 		string = string.toUpperCase();
 
 		chooseCountrySuperLabel = new JLabel(string, SwingConstants.LEADING);
+
 		chooseCountrySuperLabel.setOpaque(true);
 		chooseCountrySuperLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		chooseCountrySuperLabel.setForeground(Color.white);
@@ -351,6 +361,7 @@ public class SearchCountryPanel
 		string = string.toUpperCase();
 
 		searchButton = new JButton(string);
+		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		searchButton.setEnabled(false);
 
@@ -358,8 +369,6 @@ public class SearchCountryPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					String string;
-
 					countryTableColumnName.clear();
 					countryTableData.clear();
 
@@ -371,21 +380,14 @@ public class SearchCountryPanel
 													superCountryID
 									);
 
-					string = GuiConfiguration.getMessage("results");
-					string += " ";
-					string += GuiConfiguration.getMessage("countries");
-					string += " - ";
-					string += countryTableData.size();
-					string += " ";
-					string += GuiConfiguration.getMessage("results");
-					string = string.toUpperCase();
-
-					titleTable.setText(string);
 
 					countryTable.setModel(new TableModel(countryTableData, countryTableColumnName));
 					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
+
+					GuiConfiguration.setTitleTable(titleTable, "countries", countryTableData.size());
 					countryTablePanel.revalidate();
+
 				}
 		});
 
@@ -442,6 +444,10 @@ public class SearchCountryPanel
 		countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 		countryTable.setFillsViewportHeight(true);
 		countryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		countryTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) countryTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+
 
 
 		/*
@@ -456,7 +462,7 @@ public class SearchCountryPanel
 	public void fillCountryComboBox(JComboBox<String> comboBox, String type, String superCountryID)
 	{
 
-		initCountry(countryNameVector, countryNameMap);
+		GuiConfiguration.initComboBoxVector(countryNameVector, countryNameMap);
 
 		Controller.getInstance().getCountryList
 			(
@@ -468,21 +474,5 @@ public class SearchCountryPanel
 
 		comboBox.setModel(new DefaultComboBoxModel<>(countryNameVector));
 
-	}
-
-	public void initCountry(Vector<String> dataVector, Map<String, String> hashMap)
-	{
-		dataVector.clear();
-
-		String string = GuiConfiguration.getMessage("select");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = StringUtils.capitalize(string);
-
-		dataVector.add(string);
-
-		hashMap.clear();
-
-		hashMap.put(string, null);
 	}
 }

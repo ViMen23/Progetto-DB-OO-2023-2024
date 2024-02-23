@@ -65,9 +65,9 @@
 //	protected JComboBox<String> yearReferenceComboBox;
 //	protected JComboBox<String> minimumAgeComboBox;
 //	protected JComboBox<String> maximumAgeComboBox;
-//	protected JComboBox<List<String>> continentComboBox;
-//	protected JComboBox<List<String>> nationComboBox;
-//	protected JComboBox<List<String>> mainPositionComboBox;
+//	protected JComboBox<String> continentComboBox;
+//	protected JComboBox<String> nationComboBox;
+//	protected JComboBox<String> mainPositionComboBox;
 //
 //	protected JCheckBox goalkeeperCheckBox;
 //	protected JCheckBox defenderCheckBox;
@@ -149,6 +149,7 @@
 //		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 //		titleButton.setIcon(maximizeIcon);
 //		titleButton.setIconTextGap(40);
+//		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 //
 //		add(titleButton);
 //
@@ -279,6 +280,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		nameResetButton = new JButton(resetIcon);
+//		nameResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		nameResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -343,6 +345,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		surnameResetButton = new JButton(resetIcon);
+//		surnameResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		surnameResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -449,6 +452,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		ageResetButton = new JButton(resetIcon);
+//		ageResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		ageResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -624,7 +628,6 @@
 //		 */
 //		continentComboBox = new JComboBox<List<String>>();
 //
-//		continentComboBox.setRenderer(new ComboBoxRenderer());
 //
 //		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
 //
@@ -668,6 +671,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		bornNationResetButton = new JButton(resetIcon);
+//		bornNationResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		bornNationResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -704,7 +708,6 @@
 //		 */
 //		nationComboBox = new JComboBox<List<String>>();
 //
-//		nationComboBox.setRenderer(new ComboBoxRenderer());
 //		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 //		nationComboBox.setEnabled(false);
 //
@@ -884,6 +887,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		roleResetButton = new JButton(resetIcon);
+//		roleResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		roleResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -960,7 +964,6 @@
 //		 */
 //		mainPositionComboBox = new JComboBox<List<String>>();
 //
-//		mainPositionComboBox.setRenderer(new ComboBoxRenderer());
 //		mainPositionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 //
 //		mainPositionComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
@@ -993,6 +996,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		positionResetButton = new JButton(resetIcon);
+//		positionResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		positionResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -1054,6 +1058,7 @@
 //		string = StringUtils.capitalize(string);
 //
 //		rightFootRadioButton = new JRadioButton(string);
+//		rightFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 //		rightFootRadioButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -1074,6 +1079,7 @@
 //		string = StringUtils.capitalize(string);
 //
 //		leftFootRadioButton = new JRadioButton(string);
+//		leftFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 //		leftFootRadioButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -1093,6 +1099,7 @@
 //		string = StringUtils.capitalize(string);
 //
 //		eitherFootRadioButton = new JRadioButton(string);
+//		eitherFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 //		eitherFootRadioButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -1118,6 +1125,7 @@
 //		 * Campo bottone reset: button
 //		 */
 //		footResetButton = new JButton(resetIcon);
+//		footResetButton.setCursor(GuiConfiguration.getButtonCursor());
 //		footResetButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
@@ -1141,6 +1149,7 @@
 //
 //		searchButton = new JButton(string);
 //		searchButton.setEnabled(false);
+//		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 //
 //		searchButton.addActionListener(new ActionListener() {
 //			@Override
@@ -1175,7 +1184,7 @@
 //					);
 //
 //
-//				playerTable.setModel(new TableModel("players", data));
+//				//playerTable.setModel(new TableModel("players", data));
 //				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
 //				playerTablePanel.revalidate();
 //			}
@@ -1201,7 +1210,7 @@
 //		/*
 //		 * Campo tabella paesi: table
 //		 */
-//		playerTable = new JTable(new TableModel("players", null));
+//		playerTable = new JTable();
 //
 //		playerTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 //		playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
@@ -1288,6 +1297,7 @@
 //	{
 //		comboBox.addItem(GuiConfiguration.getListStringSelectAll());
 //
+//		/*
 //		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
 //			(
 //				type,
@@ -1295,10 +1305,15 @@
 //				false
 //			);
 //
+//		 */
+//
+//		/*
 //		for (List<String> countryList: nameCountryList) {
 //			comboBox.addItem(countryList);
 //		}
 //
+//
+//		 */
 //	}
 //
 //	public void fillReferenceYearComboBox(Integer minimumYear)
