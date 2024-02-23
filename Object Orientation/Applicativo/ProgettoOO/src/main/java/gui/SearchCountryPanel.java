@@ -34,6 +34,7 @@ public class SearchCountryPanel
 
 	protected JLabel chooseCountryTypeLabel;
 	protected JLabel chooseCountrySuperLabel;
+	protected JLabel titleTable;
 
 	protected ButtonGroup buttonGroup;
 
@@ -49,7 +50,6 @@ public class SearchCountryPanel
 	protected String countryType = null;
 	protected String superCountryID = null;
 
-
 	public SearchCountryPanel()
 	{
 		String string;
@@ -59,7 +59,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]20[]50[]10"
+				"20[]20[]20[]10[]0"
 			);
 
 		setLayout(migLayout);
@@ -118,7 +118,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"0[]0[]10[]0[]20[]0"
+				"0[]0[]0[]0[]0"
 			);
 
 		countryPanel = new JPanel(migLayout);
@@ -356,12 +356,27 @@ public class SearchCountryPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
+					String string;
+
 					List<List<String>> data = Controller.getInstance().getCountryList
 									(
 													countryType,
 													superCountryID,
 													true
 									);
+
+
+
+					string = GuiConfiguration.getMessage("results");
+					string += " ";
+					string += GuiConfiguration.getMessage("countries");
+					string += " - ";
+					string += data.size();
+					string += " ";
+					string += GuiConfiguration.getMessage("results");
+					string = string.toUpperCase();
+
+					titleTable.setText(string);
 
 					countryTable.setModel(new TableModel("countries", data));
 					countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
@@ -392,6 +407,26 @@ public class SearchCountryPanel
 		countryTablePanel.setBackground(panelColor);
 
 		add(countryTablePanel);
+
+		/*
+		 * Campo titolo tabella paesi: label
+		 */
+		string = GuiConfiguration.getMessage("no");
+		string += " ";
+		string += GuiConfiguration.getMessage("research");
+		string += " ";
+		string += GuiConfiguration.getMessage("performed");
+		string = string.toUpperCase();
+
+		titleTable = new JLabel(string);
+
+		titleTable.setOpaque(true);
+		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTable.setForeground(Color.white);
+
+		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		countryTablePanel.add(titleTable);
 
 
 		/*
@@ -430,5 +465,4 @@ public class SearchCountryPanel
 		}
 
 	}
-
 }
