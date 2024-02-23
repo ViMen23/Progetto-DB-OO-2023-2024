@@ -291,7 +291,7 @@ public class Controller
 			countryVector.add(country.getCode());
 			countryVector.add(country.getType());
 
-			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				countryVector.add("");
 			} else {
 				countryVector.add(country.getSuperCountry().getName());
