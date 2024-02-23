@@ -5,10 +5,7 @@ import gui.Regex;
 import model.*;
 import postgresImplDAO.*;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TYPE : class - controller package
@@ -225,12 +222,60 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param countryNameVector
+	 * @param countryNameMap
 	 * @param countryType
 	 * @param superCountryID
-	 * @param full
-	 * @return
 	 */
-	public List<List<String>> getCountryList(String countryType, String superCountryID, Boolean full)
+	public void getCountryList(Vector<String> countryNameVector,
+														 Map<String, String> countryNameMap,
+														 String countryType,
+														 String superCountryID)
+	{
+		getCountries(countryType, superCountryID);
+
+		List<List<String>> outerCountryList = new ArrayList<List<String>>();
+
+		for (String key : ctrlCountry.getCountryMap().keySet()) {
+			List<String> innerCountryList = new ArrayList<String>();
+			Country country = ctrlCountry.getCountryMap().get(key);
+
+			innerCountryList.add(country.getName());
+
+			if (full) {
+				innerCountryList.add(country.getCode());
+				innerCountryList.add(country.getType());
+				if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+					innerCountryList.add(" - ");
+				} else {
+					innerCountryList.add(country.getSuperCountry().getName());
+				}
+			}
+
+			innerCountryList.add(key);
+
+			outerCountryList.add(innerCountryList);
+		}
+
+		for (List<String> s : outerCountryList) {
+			System.out.println(s);
+		}
+
+		return outerCountryList;
+	}
+
+
+	/**
+	 * TODO
+	 * @param countryTableColumnName
+	 * @param countryTableData
+	 * @param countryType
+	 * @param superCountryID
+	 */
+	public void getCountryList(Vector<String> countryTableColumnName,
+														 Vector<Vector<String>> countryTableData,
+														 String countryType,
+														 String superCountryID)
 	{
 		getCountries(countryType, superCountryID);
 

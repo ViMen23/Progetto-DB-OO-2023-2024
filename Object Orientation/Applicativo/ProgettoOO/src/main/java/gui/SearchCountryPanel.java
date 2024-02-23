@@ -12,7 +12,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
 
 public class SearchCountryPanel
@@ -42,9 +42,13 @@ public class SearchCountryPanel
 	protected JRadioButton continentRadioButton;
 	protected JRadioButton nationRadioButton;
 
-	protected JComboBox<List<String>> continentComboBox;
+	protected JComboBox<String> continentComboBox;
+	protected final Vector<String> countryNameVector = new Vector<>();
+	protected final Map<String, String> countryNameMap = new HashMap<>();
 
 	protected JTable countryTable;
+	protected final Vector<String> countryTableColumnName = new Vector<>();
+	protected final Vector<Vector<String>> countryTableData = new Vector<>();
 	protected JScrollPane scrollPane;
 
 	protected String countryType = null;
@@ -311,12 +315,12 @@ public class SearchCountryPanel
 		/*
 		 * Campo continente: combo box
 		 */
-		continentComboBox = new JComboBox<List<String>>();
+		continentComboBox = new JComboBox<String>();
 
-		continentComboBox.setRenderer(new ComboBoxRenderer());
+
 		continentComboBox.setEnabled(false);
 
-		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getComboBoxDiplayValue());
+		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
 		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
@@ -358,11 +362,12 @@ public class SearchCountryPanel
 				{
 					String string;
 
-					List<List<String>> data = Controller.getInstance().getCountryList
+					Controller.getInstance().getCountryList
 									(
+													countryTableColumnName,
+													countryTableData,
 													countryType,
-													superCountryID,
-													true
+													superCountryID
 									);
 
 
@@ -449,20 +454,34 @@ public class SearchCountryPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillCountryComboBox(JComboBox<List<String>> comboBox, String type, String superCountryID)
+	public void fillCountryComboBox(JComboBox<String> comboBox, String type, String superCountryID)
 	{
-		comboBox.addItem(GuiConfiguration.getListStringSelectAll());
+		//comboBox.addItem(GuiConfiguration.getListStringSelectAll());
+		countryNameVector.clear();
 
-		List<List<String>> nameCountryList = Controller.getInstance().getCountryList
+		String string = GuiConfiguration.getMessage("select");
+		string += " ";
+		string += GuiConfiguration.getMessage("all");
+		string = StringUtils.capitalize(string);
+
+		countryNameVector.add(string);
+
+
+		countryNameMap.clear();
+
+		countryNameMap.put(string, null);
+
+
+
+		Controller.getInstance().getCountryList
 			(
-				type,
-				superCountryID,
-				false
+							countryNameVector,
+							countryNameMap,
+							type,
+							superCountryID
 			);
 
-		for (List<String> countryList: nameCountryList) {
-			comboBox.addItem(countryList);
-		}
+		comboBox.setModel(new DefaultComboBoxModel<>(countryNameVector));
 
 	}
 }
