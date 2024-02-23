@@ -19,27 +19,27 @@ public class PostgresImplPlayerDAO
 		}
 	}
 	@Override
-	public void playersDB(String playerSubName,
-												String playerSubSurname,
-												String playerReferringYear,
-												String playerMinAge,
-												String playerMaxAge,
-												String playerContinentID,
-												String playerNationID,
-												String playerRole,
-												String playerPositionID,
-												String playerFoot,
-												List<String> listPlayerID,
-												List<String> listPlayerName,
-												List<String> listPlayerSurname,
-												List<String> listPlayerDob,
-												List<String> listPlayerFoot,
-												List<String> listPlayerRole,
-												List<String> listPlayerRetiredDate,
-												List<String> listPositionID,
-												List<String> listPositionName,
-												List<String> listCountryID,
-												List<String> listCountryName)
+	public void fetchPlayerDB(String playerSubName,
+														String playerSubSurname,
+														String playerReferringYear,
+														String playerMinAge,
+														String playerMaxAge,
+														String playerContinentID,
+														String playerNationID,
+														String playerRole,
+														String playerPositionID,
+														String playerFoot,
+														List<String> listPlayerID,
+														List<String> listPlayerName,
+														List<String> listPlayerSurname,
+														List<String> listPlayerDob,
+														List<String> listPlayerFoot,
+														List<String> listPlayerRole,
+														List<String> listPlayerRetiredDate,
+														List<String> listPositionID,
+														List<String> listPositionName,
+														List<String> listCountryID,
+														List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_players(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
@@ -80,7 +80,7 @@ public class PostgresImplPlayerDAO
 	}
 
 	@Override
-	public Integer countAllPlayersDB()
+	public Integer countPlayerDB()
 	{
 		Integer count = 0;
 
@@ -103,20 +103,20 @@ public class PostgresImplPlayerDAO
 	}
 
 	@Override
-	public void militancyPlayersDB(String militancyPlayerTeamID,
-																 String militancyPlayerStartYear,
-																 String militancyPlayerEndYear,
-																 List<String> listPlayerID,
-																 List<String> listPlayerName,
-																 List<String> listPlayerSurname,
-																 List<String> listPlayerDob,
-																 List<String> listPlayerFoot,
-																 List<String> listPlayerRole,
-																 List<String> listPlayerRetiredDate,
-																 List<String> listPositionID,
-																 List<String> listPositionName,
-																 List<String> listCountryID,
-																 List<String> listCountryName)
+	public void fetchPlayerDB(String militancyPlayerTeamID,
+														String militancyPlayerStartYear,
+														String militancyPlayerEndYear,
+														List<String> listPlayerID,
+														List<String> listPlayerName,
+														List<String> listPlayerSurname,
+														List<String> listPlayerDob,
+														List<String> listPlayerFoot,
+														List<String> listPlayerRole,
+														List<String> listPlayerRetiredDate,
+														List<String> listPositionID,
+														List<String> listPositionName,
+														List<String> listCountryID,
+														List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_militancy_players(?, ?, ?)}");

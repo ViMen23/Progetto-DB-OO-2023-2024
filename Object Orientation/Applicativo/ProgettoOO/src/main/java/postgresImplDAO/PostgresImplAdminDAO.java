@@ -21,8 +21,8 @@ public class PostgresImplAdminDAO
 
 
 	@Override
-	public Boolean adminDB(String username,
-												 String password)
+	public Boolean isAdminDB(String username,
+													 String password)
 	{
 		Boolean valid = false;
 

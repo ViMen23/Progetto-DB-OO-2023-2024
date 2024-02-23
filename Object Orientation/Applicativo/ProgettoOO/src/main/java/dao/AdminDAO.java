@@ -2,5 +2,5 @@ package dao;
 
 public interface AdminDAO
 {
-	Boolean adminDB(String username, String password);
+	Boolean isAdminDB(String username, String password);
 }

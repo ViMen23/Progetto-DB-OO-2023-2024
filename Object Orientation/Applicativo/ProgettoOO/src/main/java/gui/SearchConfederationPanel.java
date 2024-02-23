@@ -364,7 +364,7 @@ public class SearchConfederationPanel
 				confederationTableColumnName.clear();
 				confederationTableData.clear();
 
-				Controller.getInstance().getConfederationList
+				Controller.getInstance().setConfederationTable
 								(
 									confederationTableColumnName,
 									confederationTableData,
@@ -456,7 +456,7 @@ public class SearchConfederationPanel
 
 		GuiConfiguration.initComboBoxVector(vector, map);
 
-		Controller.getInstance().getConfederationList
+		Controller.getInstance().setConfederationComboBox
 			(
 				vector,
 				map,

@@ -21,20 +21,20 @@ public class PostgresImplCompetitionDAO
 
 
 	@Override
-	public void competitionsDB(String competitionSubName,
-														 String competitionType,
-														 String competitionTeamType,
-														 String competitionCountryType,
-														 String competitionContinentID,
-														 String competitionNationID,
-														 List<String> listCompetitionID,
-														 List<String> listCompetitionType,
-														 List<String> listCompetitionTeamType,
-														 List<String> listCompetitionName,
-														 List<String> listConfederationID,
-														 List<String> listConfederationShortName,
-														 List<String> listCountryID,
-														 List<String> listCountryName)
+	public void fetchCompetitionDB(String competitionSubName,
+																 String competitionType,
+																 String competitionTeamType,
+																 String competitionCountryType,
+																 String competitionContinentID,
+																 String competitionNationID,
+																 List<String> listCompetitionID,
+																 List<String> listCompetitionType,
+																 List<String> listCompetitionTeamType,
+																 List<String> listCompetitionName,
+																 List<String> listConfederationID,
+																 List<String> listConfederationShortName,
+																 List<String> listCountryID,
+																 List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_competitions(?, ?, ?, ?, ?, ?)}");
@@ -68,7 +68,7 @@ public class PostgresImplCompetitionDAO
 	}
 
 	@Override
-	public Integer countAllCompetitionsDB()
+	public Integer countCompetitionDB()
 	{
 		Integer count = 0;
 

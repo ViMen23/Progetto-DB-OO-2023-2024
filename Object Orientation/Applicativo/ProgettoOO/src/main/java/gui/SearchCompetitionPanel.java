@@ -18,7 +18,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -818,7 +817,7 @@ public class SearchCompetitionPanel
 				competitionTableColumnName.clear();
 				competitionTableData.clear();
 
-				Controller.getInstance().getCompetitionList
+				Controller.getInstance().setCompetitionTable
 					(
 						competitionTableColumnName,
 						competitionTableData,
@@ -926,7 +925,7 @@ public class SearchCompetitionPanel
 
 		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap);
 
-		Controller.getInstance().getCountryList
+		Controller.getInstance().setCountryComboBox
 			(
 				competitionVector,
 				competitionMap,

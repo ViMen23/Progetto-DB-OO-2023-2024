@@ -22,10 +22,10 @@ public class PostgresImplPositionDAO
 		}
 	}
 	@Override
-	public void positionsDB(List<String> listPositionID,
-													List<String> listPositionRole,
-													List<String> listPositionCode,
-													List<String> listPositionName)
+	public void fetchPositionDB(List<String> listPositionID,
+															List<String> listPositionRole,
+															List<String> listPositionCode,
+															List<String> listPositionName)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_positions");

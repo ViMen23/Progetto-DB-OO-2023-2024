@@ -21,17 +21,17 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void teamsDB(String teamSubLongName,
-											String teamSubShortName,
-											String teamType,
-											String teamContinentID,
-											String teamNationID,
-											List<String> listTeamID,
-											List<String> listTeamType,
-											List<String> listTeamShortName,
-											List<String> listTeamLongName,
-											List<String> listCountryID,
-											List<String> listCountryName)
+	public void fetchTeamDB(String teamSubLongName,
+													String teamSubShortName,
+													String teamType,
+													String teamContinentID,
+													String teamNationID,
+													List<String> listTeamID,
+													List<String> listTeamType,
+													List<String> listTeamShortName,
+													List<String> listTeamLongName,
+													List<String> listCountryID,
+													List<String> listCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
@@ -62,7 +62,7 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public Integer countAllTeamsDB()
+	public Integer countTeamDB()
 	{
 		Integer count = 0;
 

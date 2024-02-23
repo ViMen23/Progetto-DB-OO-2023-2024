@@ -22,16 +22,16 @@ public class PostgresImplConfederationDAO
 
 
 	@Override
-	public void confederationsDB(String countryType,
-															 String superConfederationID,
-															 List<String> listConfederationID,
-															 List<String> listConfederationShortName,
-															 List<String> listConfederationLongName,
-															 List<String> listCountryID,
-															 List<String> listCountryName,
-															 List<String> listCountryType,
-															 List<String> listSuperConfederationID,
-															 List<String> listSuperConfederationShortName)
+	public void fetchConfederationDB(String countryType,
+																	 String superConfederationID,
+																	 List<String> listConfederationID,
+																	 List<String> listConfederationShortName,
+																	 List<String> listConfederationLongName,
+																	 List<String> listCountryID,
+																	 List<String> listCountryName,
+																	 List<String> listCountryType,
+																	 List<String> listSuperConfederationID,
+																	 List<String> listSuperConfederationShortName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_confederations(?, ?)}");
@@ -61,7 +61,7 @@ public class PostgresImplConfederationDAO
 	}
 
 	@Override
-	public Integer countAllConfederationsDB()
+	public Integer countConfederationDB()
 	{
 		Integer count = 0;
 

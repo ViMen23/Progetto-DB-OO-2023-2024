@@ -455,7 +455,7 @@ public class SearchCountryPanel
 
 		GuiConfiguration.initComboBoxVector(vector, map);
 
-		Controller.getInstance().getCountryList
+		Controller.getInstance().setCountryComboBox
 			(
 				vector,
 				map,
@@ -471,7 +471,7 @@ public class SearchCountryPanel
 		tableData.clear();
 		tableColumnName.clear();
 
-		Controller.getInstance().getCountryList
+		Controller.getInstance().setCountryTable
 			(
 				tableColumnName,
 				tableData,

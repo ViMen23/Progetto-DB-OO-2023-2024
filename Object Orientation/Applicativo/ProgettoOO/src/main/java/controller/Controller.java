@@ -23,17 +23,19 @@ public class Controller
 	private final Team ctrlTeam;
 	private final Position ctrlPosition;
 	private final Player ctrlPlayer;
+	private final Statistic ctrlStatistic;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
-		this.ctrlAdmin = new Admin(null, null);
-		this.ctrlCountry = new Country(null, null, null, null);
-		this.ctrlConfederation = new Confederation(null, null, null, null);
-		this.ctrlCompetition = new Competition(null, null, null, null);
-		this.ctrlTeam = new Team(null, null, null, null);
-		this.ctrlPosition = new Position(null, null, null);
-		this.ctrlPlayer = new Player(null, null, null, null, null, null, null, null);
+		this.ctrlAdmin = newAdmin();
+		this.ctrlCountry = newCountry();
+		this.ctrlConfederation = newConfederation();
+		this.ctrlCompetition = newCompetition();
+		this.ctrlTeam = newTeam();
+		this.ctrlPosition = newPosition();
+		this.ctrlPlayer = newPlayer();
+		this.ctrlStatistic = newStatistic();
 	}
 
 	/**
@@ -88,7 +90,7 @@ public class Controller
 		Admin admin = newAdmin(username, password);
 
 		AdminDAO adminDAO = new PostgresImplAdminDAO();
-		if (adminDAO.adminDB(admin.getUsername(), admin.getPassword())) {
+		if (adminDAO.isAdminDB(admin.getUsername(), admin.getPassword())) {
 			ctrlAdmin.setAdminConnected(admin);
 			System.out.println("Connesso");
 			return true;
@@ -106,9 +108,18 @@ public class Controller
 	 * @param password
 	 * @return un'istanza della classe Admin
 	 */
-	public Admin newAdmin(String username, String password)
+	private Admin newAdmin(String username, String password)
 	{
 		return new Admin(username, password);
+	}
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	private Admin newAdmin()
+	{
+		return new Admin(null, null);
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
@@ -128,7 +139,7 @@ public class Controller
 	 * @param superCountry
 	 * @return
 	 */
-	public Country newCountry(String ID, String type, String code, String name, Country superCountry)
+	private Country newCountry(String ID, String type, String code, String name, Country superCountry)
 	{
 		Country country = ctrlCountry.getCountryMap().get(ID);
 
@@ -145,7 +156,7 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	public Country newCountry(String ID,
+	private Country newCountry(String ID,
 														String name)
 	{
 		return newCountry(ID, null, null, name, null);
@@ -159,7 +170,7 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	public Country newCountry(String ID,
+	private Country newCountry(String ID,
 														String type,
 														String name)
 	{
@@ -167,6 +178,14 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @return
+	 */
+	private Country newCountry()
+	{
+		return new Country(null, null, null, null);
+	}
 
 	/**
 	 * TODO
@@ -176,7 +195,7 @@ public class Controller
 	{
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
 
-		ctrlCountry.setTotalCountries(countryDAO.countAllCountriesDB());
+		ctrlCountry.setTotalCountries(countryDAO.countCountryDB());
 
 		return ctrlCountry.getTotalCountries();
 	}
@@ -187,8 +206,8 @@ public class Controller
 	 * @param countryType
 	 * @param superCountryID
 	 */
-	public void getCountries(String countryType,
-													 String superCountryID)
+	private void fetchCountry(String countryType,
+														String superCountryID)
 	{
 		List<String> listCountryID = new ArrayList<>();
 		List<String> listCountryType = new ArrayList<>();
@@ -198,7 +217,7 @@ public class Controller
 		List<String> listSuperCountryName = new ArrayList<>();
 
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
-		countryDAO.countriesDB
+		countryDAO.fetchCountryDB
 						(
 										countryType,
 										superCountryID,
@@ -249,12 +268,12 @@ public class Controller
 	 * @param countryType
 	 * @param superCountryID
 	 */
-	public void getCountryList(Vector<String> countryNameVector,
-														 Map<String, String> countryNameMap,
-														 String countryType,
-														 String superCountryID)
+	public void setCountryComboBox(Vector<String> countryNameVector,
+																 Map<String, String> countryNameMap,
+																 String countryType,
+																 String superCountryID)
 	{
-		getCountries(countryType, superCountryID);
+		fetchCountry(countryType, superCountryID);
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
 
@@ -273,12 +292,12 @@ public class Controller
 	 * @param countryType
 	 * @param superCountryID
 	 */
-	public void getCountryList(Vector<String> countryTableColumnName,
-														 Vector<Vector<String>> countryTableData,
-														 String countryType,
-														 String superCountryID)
+	public void setCountryTable(Vector<String> countryTableColumnName,
+															Vector<Vector<String>> countryTableData,
+															String countryType,
+															String superCountryID)
 	{
-		getCountries(countryType, superCountryID);
+		fetchCountry(countryType, superCountryID);
 
 		String string;
 
@@ -335,7 +354,7 @@ public class Controller
 	 * @param superConfederation
 	 * @return
 	 */
-	public Confederation newConfederation(String ID,
+	private Confederation newConfederation(String ID,
 																				String shortName,
 																				String longName,
 																				Country country,
@@ -356,7 +375,7 @@ public class Controller
 	 * @param shortName
 	 * @return
 	 */
-	public Confederation newConfederation(String ID,
+	private Confederation newConfederation(String ID,
 																				String shortName)
 	{
 		return newConfederation
@@ -376,7 +395,7 @@ public class Controller
 	 * @param country
 	 * @return
 	 */
-	public Confederation newConfederation(String ID,
+	private Confederation newConfederation(String ID,
 																				String shortName,
 																				Country country)
 	{
@@ -395,11 +414,21 @@ public class Controller
 	 * TODO
 	 * @return
 	 */
+	private Confederation newConfederation()
+	{
+		return new Confederation(null, null, null, null);
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
 	public Integer countConfederations()
 	{
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
 
-		ctrlConfederation.setTotalConfederations(confederationDAO.countAllConfederationsDB());
+		ctrlConfederation.setTotalConfederations(confederationDAO.countConfederationDB());
 
 		return ctrlConfederation.getTotalConfederations();
 	}
@@ -410,8 +439,8 @@ public class Controller
 	 * @param countryType
 	 * @param superConfederationsID
 	 */
-	public void getConfederations(String countryType,
-																String superConfederationsID)
+	private void fetchConfederation(String countryType,
+																	String superConfederationsID)
 	{
 		List<String> listConfederationID = new ArrayList<>();
 		List<String> listConfederationShortName = new ArrayList<>();
@@ -423,7 +452,7 @@ public class Controller
 		List<String> listSuperConfederationShortName = new ArrayList<>();
 
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
-		confederationDAO.confederationsDB
+		confederationDAO.fetchConfederationDB
 						(
 										countryType,
 										superConfederationsID,
@@ -492,12 +521,12 @@ public class Controller
 	 * @param typeCountry
 	 * @param superConfederationID
 	 */
-	public void getConfederationList(Vector<String> confederationShortNameVector,
-																	 Map<String, String> confederationShortNameMap,
-																	 String typeCountry,
-																	 String superConfederationID)
+	public void setConfederationComboBox(Vector<String> confederationShortNameVector,
+																			 Map<String, String> confederationShortNameMap,
+																			 String typeCountry,
+																			 String superConfederationID)
 	{
-		getConfederations(typeCountry, superConfederationID);
+		fetchConfederation(typeCountry, superConfederationID);
 
 		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
 
@@ -509,12 +538,12 @@ public class Controller
 	}
 
 
-	public void getConfederationList(Vector<String> confederationTableColumnName,
-																	 Vector<Vector<String>> confederationTableData,
-																	 String countryType,
-																	 String superConfederationID)
+	public void setConfederationTable(Vector<String> confederationTableColumnName,
+																		Vector<Vector<String>> confederationTableData,
+																		String countryType,
+																		String superConfederationID)
 	{
-		getConfederations(countryType, superConfederationID);
+		fetchConfederation(countryType, superConfederationID);
 
 		String string;
 
@@ -574,7 +603,7 @@ public class Controller
 	 * @param confederation
 	 * @return
 	 */
-	public Competition newCompetition(String ID,
+	private Competition newCompetition(String ID,
 																		String type,
 																		String teamType,
 																		String name,
@@ -590,6 +619,12 @@ public class Controller
 	}
 
 
+	private Competition newCompetition()
+	{
+		return new Competition(null, null, null, null);
+	}
+
+
 	/**
 	 * TODO
 	 * @return
@@ -598,7 +633,7 @@ public class Controller
 	{
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
 
-		ctrlCompetition.setTotalCompetitions(competitionDAO.countAllCompetitionsDB());
+		ctrlCompetition.setTotalCompetitions(competitionDAO.countCompetitionDB());
 
 		return ctrlCompetition.getTotalCompetitions();
 	}
@@ -613,12 +648,12 @@ public class Controller
 	 * @param competitionContinentID
 	 * @param competitionNationID
 	 */
-	public void searchCompetitions(String competitionSubName,
-																 String competitionType,
-																 String competitionTeamType,
-																 String competitionCountryType,
-																 String competitionContinentID,
-																 String competitionNationID)
+	private void fetchCompetition(String competitionSubName,
+																String competitionType,
+																String competitionTeamType,
+																String competitionCountryType,
+																String competitionContinentID,
+																String competitionNationID)
 	{
 		List<String> listCompetitionID = new ArrayList<>();
 		List<String> listCompetitionType = new ArrayList<>();
@@ -630,7 +665,7 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-		competitionDAO.competitionsDB
+		competitionDAO.fetchCompetitionDB
 						(
 										competitionSubName,
 										competitionType,
@@ -702,16 +737,16 @@ public class Controller
 	 * @param competitionTeamType
 	 * @param competitionCountryType
 	 */
-	public void getCompetitionList(Vector<String> competitionNameVector,
-																 Map<String, String> competitionNameMap,
-																 String competitionSubName,
-																 String competitionType,
-																 String competitionTeamType,
-																 String competitionCountryType,
-																 String competitionContinentID,
-																 String competitionNationID)
+	public void setCompetitionComboBox(Vector<String> competitionNameVector,
+																		 Map<String, String> competitionNameMap,
+																		 String competitionSubName,
+																		 String competitionType,
+																		 String competitionTeamType,
+																		 String competitionCountryType,
+																		 String competitionContinentID,
+																		 String competitionNationID)
 	{
-		searchCompetitions
+		fetchCompetition
 						(
 										competitionSubName,
 										competitionType,
@@ -742,16 +777,16 @@ public class Controller
 	 * @param competitionContinentID
 	 * @param competitionNationID
 	 */
-	public void getCompetitionList(Vector<String> competitionTableColumnName,
-																 Vector<Vector<String>> competitionTableData,
-																 String competitionSubName,
-																 String competitionType,
-																 String competitionTeamType,
-																 String competitionCountryType,
-																 String competitionContinentID,
-																 String competitionNationID)
+	public void setCompetitionTable(Vector<String> competitionTableColumnName,
+																	Vector<Vector<String>> competitionTableData,
+																	String competitionSubName,
+																	String competitionType,
+																	String competitionTeamType,
+																	String competitionCountryType,
+																	String competitionContinentID,
+																	String competitionNationID)
 	{
-		searchCompetitions
+		fetchCompetition
 						(
 										competitionSubName,
 										competitionType,
@@ -814,7 +849,7 @@ public class Controller
 	 * @param country
 	 * @return
 	 */
-	public Team newTeam(String ID, String type, String shortName, String longName, Country country)
+	private Team newTeam(String ID, String type, String shortName, String longName, Country country)
 	{
 		Team team = ctrlTeam.getTeamMap().get(ID);
 
@@ -830,11 +865,22 @@ public class Controller
 	 * TODO
 	 * @return
 	 */
+	private Team newTeam()
+	{
+		return new Team(null, null, null, null);
+	}
+
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
 	public Integer countTeams()
 	{
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 
-		ctrlTeam.setTotalTeam(teamDAO.countAllTeamsDB());
+		ctrlTeam.setTotalTeam(teamDAO.countTeamDB());
 
 		return ctrlTeam.getTotalTeam();
 	}
@@ -848,11 +894,11 @@ public class Controller
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
-	public void searchTeams(String teamSubLongName,
-													String teamSubShortName,
-													String teamType,
-													String teamContinentID,
-													String teamNationID)
+	private void fetchTeam(String teamSubLongName,
+												 String teamSubShortName,
+												 String teamType,
+												 String teamContinentID,
+												 String teamNationID)
 	{
 		List<String> listTeamID = new ArrayList<>();
 		List<String> listTeamType = new ArrayList<>();
@@ -862,7 +908,7 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
-		teamDAO.teamsDB
+		teamDAO.fetchTeamDB
 						(
 										teamSubLongName,
 										teamSubShortName,
@@ -918,15 +964,15 @@ public class Controller
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
-	public void getTeamList(Vector<String> teamLongNameVector,
-													Map<String, String> teamLongNameMap,
-													String teamSubLongName,
-													String teamSubShortName,
-													String teamType,
-													String teamContinentID,
-													String teamNationID)
+	public void setTeamComboBox(Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap,
+															String teamSubLongName,
+															String teamSubShortName,
+															String teamType,
+															String teamContinentID,
+															String teamNationID)
 	{
-		searchTeams
+		fetchTeam
 						(
 										teamSubLongName,
 										teamSubShortName,
@@ -955,15 +1001,15 @@ public class Controller
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
-	public void getTeamList(Vector<String> teamTableColumnName,
-													Vector<Vector<String>> teamTableData,
-													String teamSubLongName,
-													String teamSubShortName,
-													String teamType,
-													String teamContinentID,
-													String teamNationID)
+	public void setTeamTable(Vector<String> teamTableColumnName,
+													 Vector<Vector<String>> teamTableData,
+													 String teamSubLongName,
+													 String teamSubShortName,
+													 String teamType,
+													 String teamContinentID,
+													 String teamNationID)
 	{
-		searchTeams
+		fetchTeam
 						(
 										teamSubLongName,
 										teamSubShortName,
@@ -1026,7 +1072,7 @@ public class Controller
 	 * @param retiredDate
 	 * @return
 	 */
-	public Player newPlayer(String ID,
+	private Player newPlayer(String ID,
 													String name,
 													String surname,
 													String dob,
@@ -1045,6 +1091,14 @@ public class Controller
 		return player;
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
+	private Player newPlayer()
+	{
+		return new Player(null, null, null, null, null, null, null, null);
+	}
 
 	/**
 	 * TODO
@@ -1054,7 +1108,7 @@ public class Controller
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 
-		ctrlPlayer.setTotalPlayers(playerDAO.countAllPlayersDB());
+		ctrlPlayer.setTotalPlayers(playerDAO.countPlayerDB());
 
 		return ctrlPlayer.getTotalPlayers();
 	}
@@ -1073,16 +1127,16 @@ public class Controller
 	 * @param playerPositionID
 	 * @param playerFoot
 	 */
-	public void searchPlayers(String playerSubName,
-														String playerSubSurname,
-														String playerReferringYear,
-														String playerMinAge,
-														String playerMaxAge,
-														String playerContinentID,
-														String playerNationID,
-														String playerRole,
-														String playerPositionID,
-														String playerFoot)
+	private void fetchPlayer(String playerSubName,
+													 String playerSubSurname,
+													 String playerReferringYear,
+													 String playerMinAge,
+													 String playerMaxAge,
+													 String playerContinentID,
+													 String playerNationID,
+													 String playerRole,
+													 String playerPositionID,
+													 String playerFoot)
 	{
 		List<String> listPlayerID = new ArrayList<>();
 		List<String> listPlayerName = new ArrayList<>();
@@ -1097,7 +1151,7 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.playersDB
+		playerDAO.fetchPlayerDB
 						(
 										playerSubName,
 										playerSubSurname,
@@ -1176,9 +1230,9 @@ public class Controller
 	 * @param militancyPlayerStartYear
 	 * @param militancyPlayerEndYear
 	 */
-	public void searchMilitancyPlayers(String militancyPlayerTeamID,
-																		 String militancyPlayerStartYear,
-																		 String militancyPlayerEndYear)
+	private void fetchPlayer(String militancyPlayerTeamID,
+													 String militancyPlayerStartYear,
+													 String militancyPlayerEndYear)
 	{
 		List<String> listPlayerID = new ArrayList<>();
 		List<String> listPlayerName = new ArrayList<>();
@@ -1193,7 +1247,7 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.militancyPlayersDB
+		playerDAO.fetchPlayerDB
 						(
 										militancyPlayerTeamID,
 										militancyPlayerStartYear,
@@ -1274,20 +1328,20 @@ public class Controller
 	 * @param playerPositionID
 	 * @param playerFoot
 	 */
-	public void getPlayerList(Vector<String> playerInfoVector,
-														Map<String, String> playerInfoMap,
-														String playerSubName,
-														String playerSubSurname,
-														String playerReferringYear,
-														String playerMinAge,
-														String playerMaxAge,
-														String playerContinentID,
-														String playerNationID,
-														String playerRole,
-														String playerPositionID,
-														String playerFoot)
+	public void setPlayerComboBox(Vector<String> playerInfoVector,
+																Map<String, String> playerInfoMap,
+																String playerSubName,
+																String playerSubSurname,
+																String playerReferringYear,
+																String playerMinAge,
+																String playerMaxAge,
+																String playerContinentID,
+																String playerNationID,
+																String playerRole,
+																String playerPositionID,
+																String playerFoot)
 	{
-		searchPlayers
+		fetchPlayer
 						(
 										playerSubName,
 										playerSubSurname,
@@ -1314,20 +1368,20 @@ public class Controller
 	}
 
 
-	public void getPlayerList(Vector<String> playerTableColumnName,
-														Vector<Vector<String>> playerTableData,
-														String playerSubName,
-														String playerSubSurname,
-														String playerReferringYear,
-														String playerMinAge,
-														String playerMaxAge,
-														String playerContinentID,
-														String playerNationID,
-														String playerRole,
-														String playerPositionID,
-														String playerFoot)
+	public void setPlayerTable(Vector<String> playerTableColumnName,
+														 Vector<Vector<String>> playerTableData,
+														 String playerSubName,
+														 String playerSubSurname,
+														 String playerReferringYear,
+														 String playerMinAge,
+														 String playerMaxAge,
+														 String playerContinentID,
+														 String playerNationID,
+														 String playerRole,
+														 String playerPositionID,
+														 String playerFoot)
 	{
-		searchPlayers
+		fetchPlayer
 						(
 										playerSubName,
 										playerSubSurname,
@@ -1409,13 +1463,13 @@ public class Controller
 	 * @param militancyPlayerStartYear
 	 * @param militancyPlayerEndYear
 	 */
-	public void getPlayerList(Vector<String> playerTableColumnName,
-														Vector<Vector<String>> playerTableData,
-														String militancyPlayerTeamID,
-														String militancyPlayerStartYear,
-														String militancyPlayerEndYear)
+	public void setPlayerTable(Vector<String> playerTableColumnName,
+														 Vector<Vector<String>> playerTableData,
+														 String militancyPlayerTeamID,
+														 String militancyPlayerStartYear,
+														 String militancyPlayerEndYear)
 	{
-		searchMilitancyPlayers
+		fetchPlayer
 						(
 										militancyPlayerTeamID,
 										militancyPlayerStartYear,
@@ -1495,7 +1549,7 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	public Position newPosition(String ID, String role, String code, String name)
+	private Position newPosition(String ID, String role, String code, String name)
 	{
 		Position position = ctrlPosition.getPositionMap().get(ID);
 
@@ -1512,15 +1566,24 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	public Position newPosition(String ID, String name)
+	private Position newPosition(String ID, String name)
 	{
 		return newPosition(ID, null, null, name);
 	}
 
 	/**
 	 * TODO
+	 * @return
 	 */
-	public void allPositions()
+	private Position newPosition()
+	{
+		return new Position(null, null, null);
+	}
+
+	/**
+	 * TODO
+	 */
+	private void fetchPosition()
 	{
 		List<String> listPositionID = new ArrayList<>();
 		List<String> listPositionRole = new ArrayList<>();
@@ -1528,7 +1591,7 @@ public class Controller
 		List<String> listPositionName = new ArrayList<>();
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.positionsDB
+		positionDAO.fetchPositionDB
 						(
 										listPositionID,
 										listPositionRole,
@@ -1559,10 +1622,10 @@ public class Controller
 	 * @param positionNameVector
 	 * @param positionNameMap
 	 */
-	public void getPositionList(Vector<String> positionNameVector,
-															Map<String, String> positionNameMap)
+	public void setPositionComboBox(Vector<String> positionNameVector,
+																	Map<String, String> positionNameMap)
 	{
-		allPositions();
+		fetchPosition();
 
 		for (String key : ctrlPosition.getPositionMap().keySet()) {
 
@@ -1575,4 +1638,26 @@ public class Controller
 	/*------------------------------------------------------------------------------------------------------*/
 
 
+	/*--------------------------------------------------------------------------------------------------------
+	 * STATISTIC
+	 *------------------------------------------------------------------------------------------------------*/
+
+
+	private Statistic newStatistic()
+	{
+		return new Statistic
+						(
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null
+						);
+	}
 }

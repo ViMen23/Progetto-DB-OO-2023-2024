@@ -22,14 +22,14 @@ public class PostgresImplCountryDAO
 
 
 	@Override
-	public void countriesDB(String countryType,
-													String superCountryID,
-													List<String> listCountryID,
-													List<String> listCountryType,
-													List<String> listCountryCode,
-													List<String> listCountryName,
-													List<String> listSuperCountryID,
-													List<String> listSuperCountryName)
+	public void fetchCountryDB(String countryType,
+														 String superCountryID,
+														 List<String> listCountryID,
+														 List<String> listCountryType,
+														 List<String> listCountryCode,
+														 List<String> listCountryName,
+														 List<String> listSuperCountryID,
+														 List<String> listSuperCountryName)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_countries(?, ?)}");
@@ -57,7 +57,7 @@ public class PostgresImplCountryDAO
 	}
 
 	@Override
-	public Integer countAllCountriesDB()
+	public Integer countCountryDB()
 	{
 		Integer count = 0;
 

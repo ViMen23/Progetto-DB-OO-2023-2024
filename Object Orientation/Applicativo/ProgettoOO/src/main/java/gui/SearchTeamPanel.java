@@ -658,7 +658,7 @@ public class SearchTeamPanel
 				teamTableData.clear();
 
 
-				Controller.getInstance().getTeamList
+				Controller.getInstance().setTeamTable
 					(
 						teamTableColumnName,
 						teamTableData,
@@ -762,7 +762,7 @@ public class SearchTeamPanel
 
 		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap);
 
-		Controller.getInstance().getCountryList
+		Controller.getInstance().setCountryComboBox
 			(
 				competitionVector,
 				competitionMap,

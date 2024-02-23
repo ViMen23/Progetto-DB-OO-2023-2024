@@ -24,20 +24,20 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void statisticsDB(String teamType,
-													 String playerRole,
-													 List<String> listPlayerID,
-													 List<String> listPlayerRole,
-													 List<String> listPlayerName,
-													 List<String> listPlayerSurname,
-													 List<String> listStatisticMatch,
-													 List<String> listStatisticGoalScored,
-													 List<String> listStatisticAssist,
-													 List<String> listStatisticYellowCard,
-													 List<String> listStatisticRedCard,
-													 List<String> listStatisticPenaltyScored,
-													 List<String> listStatisticGoalConceded,
-													 List<String> listStatisticPenaltySaved)
+	public void fetchStatisticDB(String teamType,
+															 String playerRole,
+															 List<String> listPlayerID,
+															 List<String> listPlayerRole,
+															 List<String> listPlayerName,
+															 List<String> listPlayerSurname,
+															 List<String> listStatisticMatch,
+															 List<String> listStatisticGoalScored,
+															 List<String> listStatisticAssist,
+															 List<String> listStatisticYellowCard,
+															 List<String> listStatisticRedCard,
+															 List<String> listStatisticPenaltyScored,
+															 List<String> listStatisticGoalConceded,
+															 List<String> listStatisticPenaltySaved)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call all_total_statistics(?, ?)}");
@@ -52,14 +52,14 @@ public class PostgresImplStatisticDAO
 				listPlayerRole.add(rs.getString("player_role"));
 				listPlayerName.add(rs.getString("player_name"));
 				listPlayerSurname.add(rs.getString("player_surname"));
-				listStatisticMatch.add(rs.getString(""));
-				listStatisticGoalScored.add(rs.getString(""));
-				listStatisticAssist.add(rs.getString(""));
-				listStatisticYellowCard.add(rs.getString(""));
-				listStatisticRedCard.add(rs.getString(""));
-				listStatisticPenaltyScored.add(rs.getString(""));
-				listStatisticGoalConceded.add(rs.getString(""));
-				listStatisticPenaltySaved.add(rs.getString(""));
+				listStatisticMatch.add(rs.getString("match"));
+				listStatisticGoalScored.add(rs.getString("goal_scored"));
+				listStatisticAssist.add(rs.getString("assist"));
+				listStatisticYellowCard.add(rs.getString("yellow_card"));
+				listStatisticRedCard.add(rs.getString("red_card"));
+				listStatisticPenaltyScored.add(rs.getString("penalty_scored"));
+				listStatisticGoalConceded.add(rs.getString("goal_conceded"));
+				listStatisticPenaltySaved.add(rs.getString("penalty_saved"));
 			}
 
 			rs.close();

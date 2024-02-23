@@ -4,8 +4,8 @@ import java.util.List;
 
 public interface PositionDAO
 {
-	void positionsDB(List<String> listPositionID,
-									 List<String> listPositionRole,
-									 List<String> listPositionCode,
-									 List<String> listPositionName);
+	void fetchPositionDB(List<String> listPositionID,
+											 List<String> listPositionRole,
+											 List<String> listPositionCode,
+											 List<String> listPositionName);
 }
