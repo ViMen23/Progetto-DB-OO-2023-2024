@@ -166,9 +166,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				//SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
+				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
 
-				//MainFrame.getMainFrameInstance().add(searchConfederationPanel);
+				MainFrame.getMainFrameInstance().add(searchConfederationPanel);
 			}
 		});
 
@@ -211,9 +211,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				//SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
+				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
 
-				//MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
+				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
 			}
 		});
 
@@ -257,9 +257,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				//SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
+				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
 
-				//MainFrame.getMainFrameInstance().add(searchTeamPanel);
+				MainFrame.getMainFrameInstance().add(searchTeamPanel);
 			}
 		});
 
@@ -304,9 +304,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				//SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
+				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
-				//MainFrame.getMainFrameInstance().add(searchPlayerPanel);
+				MainFrame.getMainFrameInstance().add(searchPlayerPanel);
 			}
 		});
 
@@ -417,9 +417,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-	//			StepFilterPanel stepFilterPanel = new StepFilterPanel();
+				StepFilterPanel stepFilterPanel = new StepFilterPanel();
 
-				//ffffMainFrame.getMainFrameInstance().add(stepFilterPanel);
+				MainFrame.getMainFrameInstance().add(stepFilterPanel);
 			}
 		});
 

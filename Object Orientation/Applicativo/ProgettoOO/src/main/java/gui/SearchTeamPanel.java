@@ -77,18 +77,11 @@ public class SearchTeamPanel
 
 	private JLabel label;
 
-	private Boolean longNameSearchValid = false;
-	private Boolean shortNameSearchValid = false;
-	private Boolean teamTypeSearchValid = false;
-	private Boolean countryTypeSearchValid = false;
-
-
 	private String teamSubLongName = null;
 	private String teamSubShortName = null;
 	private String teamType = null;
 	private String teamNationID = null;
 	private String teamContinentID = null;
-
 
 
 	public SearchTeamPanel()
@@ -106,7 +99,6 @@ public class SearchTeamPanel
 			);
 
 		setLayout(migLayout);
-		setName("searchTeamPanel");
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE TITOLO
@@ -137,7 +129,8 @@ public class SearchTeamPanel
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 
 				if (teamPanel.isShowing()){
 					remove(teamPanel);
@@ -165,7 +158,7 @@ public class SearchTeamPanel
 			(
 				"debug, flowy",
 				"0[grow, fill]0",
-				"0[]0[]10[]0[]10[]0[]20[]20"
+				"0[]0[]10[]0[]10[]0[]20[]0"
 			);
 
 		teamPanel = new JPanel(migLayout);
@@ -206,8 +199,8 @@ public class SearchTeamPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 4",
-				"50:push[]80[]10[]70[]20:push",
+				"debug, wrap 4, center",
+				"50[]80[]10[]70[]20",
 				"10[]20[]10"
 			);
 
@@ -236,15 +229,10 @@ public class SearchTeamPanel
 			{
 				if (Regex.patternAlnum.matcher(longNameTextField.getText()).find()) {
 
-					longNameSearchValid = true;
-					searchButton.setEnabled(true);
-
 					teamSubLongName = longNameTextField.getText();
 					longNameErrorLabel.setVisible(false);
 				}
 				else {
-					longNameSearchValid = false;
-					setEnableButton();
 
 					teamSubLongName = null;
 					longNameErrorLabel.setVisible(true);
@@ -270,9 +258,6 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				longNameSearchValid = false;
-				setEnableButton();
-
 				teamSubLongName = null;
 				longNameTextField.setText(null);
 			}
@@ -301,16 +286,10 @@ public class SearchTeamPanel
 			{
 				if (Regex.patternCode.matcher(shortNameTextField.getText()).find()) {
 
-					shortNameSearchValid = true;
-					searchButton.setEnabled(true);
-
 					teamSubShortName = shortNameTextField.getText();
 					shortNameErrorLabel.setVisible(false);
 				}
 				else {
-
-					shortNameSearchValid = false;
-					setEnableButton();
 
 					teamSubShortName = null;
 					shortNameErrorLabel.setVisible(true);
@@ -336,9 +315,6 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				shortNameSearchValid = false;
-				setEnableButton();
-
 				teamSubShortName = null;
 				shortNameTextField.setText(null);
 			}
@@ -381,8 +357,8 @@ public class SearchTeamPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"50:push[]80[]80[]20:push",
+				"debug, flowx, center",
+				"50[]80[]80[]20",
 				"10[]10"
 			);
 
@@ -403,9 +379,6 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				teamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
@@ -425,9 +398,6 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				teamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
@@ -452,9 +422,6 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = false;
-				setEnableButton();
-
 				teamType = null;
 				buttonGroup.clearSelection();
 			}
@@ -498,8 +465,8 @@ public class SearchTeamPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 3",
-				"50:push[]80[]80[]20:push",
+				"debug, wrap 3, center",
+				"50[]80[]80[]20",
 				"10[]20[]10"
 			);
 
@@ -537,9 +504,6 @@ public class SearchTeamPanel
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
 						null
 					);
-
-				countryTypeSearchValid = true;
-				searchButton.setEnabled(true);
 			}
 
 			@Override
@@ -547,18 +511,19 @@ public class SearchTeamPanel
 			{
 				teamContinentID   = teamContinentMap.get((String) continentComboBox.getSelectedItem());
 
-				if (teamContinentID == null) {
-					nationComboBox.setEnabled(false);
-					nationComboBox.setSelectedIndex(-1);
-					teamNationID = null;
-				}
-				else {
+				teamNationID = null;
+
+				if (teamContinentID != null) {
+
 					nationComboBox.setEnabled(true);
-					teamNationID = null;
 					nationComboBox.firePopupMenuWillBecomeVisible();
 				}
-			}
+				else {
 
+					nationComboBox.setEnabled(false);
+					nationComboBox.setSelectedIndex(-1);
+				}
+			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
@@ -574,15 +539,12 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryTypeSearchValid = false;
-				setEnableButton();
-
 				continentComboBox.setSelectedIndex(-1);
 				nationComboBox.setEnabled(false);
 				nationComboBox.setSelectedIndex(-1);
 
-				teamNationID = null;
 				teamContinentID = null;
+				teamNationID = null;
 			}
 		});
 
@@ -602,7 +564,7 @@ public class SearchTeamPanel
 		/*
 		 * Campo nazione: comboBox
 		 */
-		nationComboBox = new JComboBox<String>();
+		nationComboBox = new JComboBox<>();
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		nationComboBox.setEnabled(false);
@@ -647,32 +609,13 @@ public class SearchTeamPanel
 		string = string.toUpperCase();
 
 		searchButton = new JButton(string);
-		searchButton.setEnabled(false);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTableColumnName.clear();
-				teamTableData.clear();
-
-
-				Controller.getInstance().setTeamTable
-					(
-						teamTableColumnName,
-						teamTableData,
-						teamSubLongName,
-						teamSubShortName,
-						teamType,
-						teamContinentID,
-						teamNationID
-					);
-
-				teamTable.setModel(new TableModel(teamTableData, teamTableColumnName));
-				teamTable.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
-
-				GuiConfiguration.setTitleTable(titleTable, "teams", teamTableData.size());
+				fillTeamTable(teamTableData, teamTableColumnName, teamTable, "teams");
 
 				teamTablePanel.revalidate();
 			}
@@ -743,33 +686,49 @@ public class SearchTeamPanel
 		teamTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 	}
-
-	public void setEnableButton()
-	{
-		if (longNameSearchValid || shortNameSearchValid || teamTypeSearchValid || countryTypeSearchValid) {
-			searchButton.setEnabled(true);
-		}
-		else {
-			searchButton.setEnabled(false);
-		}
-	}
 	public void fillCountryComboBox(JComboBox<String> comboBox,
-									Vector<String> competitionVector,
-									Map<String, String> competitionMap,
+									Vector<String> vector,
+									Map<String, String> map,
 									String type,
 									String superCountryID)
 	{
-
-		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap);
+		GuiConfiguration.initComboBoxVector(vector, map);
 
 		Controller.getInstance().setCountryComboBox
 			(
-				competitionVector,
-				competitionMap,
+				vector,
+				map,
 				type,
 				superCountryID
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(competitionVector));
+		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+	}
+
+	public void fillTeamTable(Vector<Vector<String>> tableData,
+							  Vector<String> tableColumnName,
+							  JTable table,
+							  String tableName)
+	{
+		tableColumnName.clear();
+		tableData.clear();
+
+
+		Controller.getInstance().setTeamTable
+			(
+				teamTableColumnName,
+				tableData,
+				teamSubLongName,
+				teamSubShortName,
+				teamType,
+				teamContinentID,
+				teamNationID
+			);
+
+		table.setModel(new TableModel(tableData, tableColumnName));
+		table.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
+
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+
 	}
 }

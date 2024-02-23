@@ -69,13 +69,11 @@ public class SearchCompetitionPanel
 	private final ButtonGroup countryGroupButton;
 
 	private final JComboBox<String> continentComboBox;
-
-	private final Vector<String> competitionContinentVector = new Vector<>();
-	private final Map<String, String> competitionContinentMap = new HashMap<>();
-
 	private final JComboBox<String> nationComboBox;
 
+	private final Vector<String> competitionContinentVector = new Vector<>();
 	private final Vector<String> competitionNationVector = new Vector<>();
+	private final Map<String, String> competitionContinentMap = new HashMap<>();
 	private final Map<String, String> competitionNationMap = new HashMap<>();
 
 
@@ -85,12 +83,6 @@ public class SearchCompetitionPanel
 	private final Vector<Vector<String>> competitionTableData = new Vector<>();
 
 	private final JScrollPane scrollPane;
-
-	private Boolean nameSearchValid = false;
-	private Boolean competitionTypeSearchValid = false;
-	private Boolean teamTypeSearchValid = false;
-	private Boolean countryTypeSearchValid = false;
-
 
 	private String competitionSubName = null;
 	private String competitionType = null;
@@ -113,8 +105,6 @@ public class SearchCompetitionPanel
 			);
 
 		setLayout(migLayout);
-		setName("searchCompetitionPanel");
-
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE TITOLO
@@ -144,7 +134,8 @@ public class SearchCompetitionPanel
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 
 				if (competitionPanel.isShowing()){
 					remove(competitionPanel);
@@ -213,8 +204,8 @@ public class SearchCompetitionPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"50:push[]80[]10[]70[]20:push",
+				"debug, flowx, center",
+				"50[]80[]10[]70[]20",
 				"10[]10"
 			);
 
@@ -244,14 +235,10 @@ public class SearchCompetitionPanel
 			public void caretUpdate(CaretEvent e)
 			{
 				if (Regex.patternAlnum.matcher(nameTextField.getText()).find()) {
-					nameSearchValid = true;
-					searchButton.setEnabled(true);
 
 					competitionSubName = nameTextField.getText();
 					errorLabel.setVisible(false);
 				} else {
-					nameSearchValid = false;
-					setEnableButton();
 
 					competitionSubName = null;
 					errorLabel.setVisible(true);
@@ -277,9 +264,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				nameSearchValid = false;
-				setEnableButton();
-
 				competitionSubName = null;
 				nameTextField.setText(null);
 			}
@@ -320,8 +304,8 @@ public class SearchCompetitionPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"50:push[]80[]80[]80[]20:push",
+				"debug, flowx, center",
+				"50[]80[]80[]80[]20",
 				"10[]10"
 			);
 
@@ -343,9 +327,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				competitionTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionType = Competition.COMPETITION_TYPE.LEAGUE.toString();
 			}
 		});
@@ -364,9 +345,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				competitionTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionType = Competition.COMPETITION_TYPE.CUP.toString();
 			}
 		});
@@ -385,9 +363,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				competitionTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionType = Competition.COMPETITION_TYPE.SUPER_CUP.toString();
 			}
 		});
@@ -413,9 +388,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				competitionTypeSearchValid = false;
-				setEnableButton();
-
 				competitionType = null;
 				competitionTypeGroupButton.clearSelection();
 			}
@@ -478,9 +450,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionTeamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
@@ -499,9 +468,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionTeamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
@@ -526,9 +492,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				teamTypeSearchValid = false;
-				setEnableButton();
-
 				competitionTeamType = null;
 				teamTypeGroupButton.clearSelection();
 			}
@@ -572,8 +535,8 @@ public class SearchCompetitionPanel
 		 */
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"50:push[]80[]20:push",
+				"debug, wrap 2, center",
+				"50[]80[]20",
 				"10[]20[]20[]10"
 			);
 
@@ -594,9 +557,6 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryTypeSearchValid = true;
-				searchButton.setEnabled(true);
-
 				competitionCountryType = Country.COUNTRY_TYPE.WORLD.toString();
 			}
 		});
@@ -612,12 +572,9 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryTypeSearchValid = false;
-				setEnableButton();
-
 				competitionCountryType = null;
-				competitionNationID = null;
 				competitionContinentID = null;
+				competitionNationID = null;
 
 				countryGroupButton.clearSelection();
 			}
@@ -639,9 +596,6 @@ public class SearchCompetitionPanel
 			{
 				if (continentRadioButton.isSelected()) {
 
-					countryTypeSearchValid = true;
-					searchButton.setEnabled(true);
-
 					continentComboBox.setEnabled(true);
 
 					continentComboBox.firePopupMenuWillBecomeVisible();
@@ -651,7 +605,7 @@ public class SearchCompetitionPanel
 				} else {
 					continentComboBox.setEnabled(false);
 					continentComboBox.setSelectedIndex(-1);
-					competitionNationID = null;
+					competitionContinentID = null;
 				}
 			}
 		});
@@ -662,7 +616,7 @@ public class SearchCompetitionPanel
 		/*
 		 * Campo continente: combo box
 		 */
-		continentComboBox = new JComboBox<String>();
+		continentComboBox = new JComboBox<>();
 		continentComboBox.setEnabled(false);
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
@@ -688,17 +642,17 @@ public class SearchCompetitionPanel
 
 				if (nationRadioButton.isSelected()) {
 
+					competitionNationID = null;
+
 					if (competitionContinentID == null) { //È STATO SELEZIONATO MOSTRA TUTTO
 
 						nationComboBox.setEnabled(false);
 						nationComboBox.setSelectedIndex(-1);
-						competitionNationID = null;
 					}
 					else {
-
 						nationComboBox.setEnabled(true);
 						nationComboBox.firePopupMenuWillBecomeVisible();
-						competitionNationID = null;
+
 					}
 				}
 			}
@@ -722,9 +676,6 @@ public class SearchCompetitionPanel
 			public void itemStateChanged(ItemEvent e)
 			{
 				if (nationRadioButton.isSelected()){
-
-					countryTypeSearchValid = true;
-					searchButton.setEnabled(true);
 
 					continentComboBox.setEnabled(true);
 
@@ -750,7 +701,7 @@ public class SearchCompetitionPanel
 		/*
 		 * Campo nazione: combo box
 		 */
-		nationComboBox = new JComboBox<String>();
+		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
@@ -808,31 +759,17 @@ public class SearchCompetitionPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		searchButton.setEnabled(false);
-
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				competitionTableColumnName.clear();
-				competitionTableData.clear();
-
-				Controller.getInstance().setCompetitionTable
+				fillCompetitionTable
 					(
-						competitionTableColumnName,
 						competitionTableData,
-						competitionSubName,
-						competitionType,
-						competitionTeamType,
-						competitionCountryType,
-						competitionContinentID,
-						competitionNationID
+						competitionTableColumnName,
+						competitionTable,
+						"competitions"
 					);
-
-				competitionTable.setModel(new TableModel(competitionTableData, competitionTableColumnName));
-				competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
-
-				GuiConfiguration.setTitleTable(titleTable, "competitions", competitionTableData.size());
 
 				competitionTablePanel.revalidate();
 			}
@@ -906,33 +843,49 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-
-	public void setEnableButton()
-	{
-		if (nameSearchValid || competitionTypeSearchValid || teamTypeSearchValid || countryTypeSearchValid) {
-			searchButton.setEnabled(true);
-		} else {
-			searchButton.setEnabled(false);
-		}
-	}
-
 	public void fillCountryComboBox(JComboBox<String> comboBox,
-									Vector<String> competitionVector,
-									Map<String, String> competitionMap,
+									Vector<String> vector,
+									Map<String, String> map,
 									String type,
 									String superCountryID)
 	{
 
-		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap);
+		GuiConfiguration.initComboBoxVector(vector, map);
 
 		Controller.getInstance().setCountryComboBox
 			(
-				competitionVector,
-				competitionMap,
+				vector,
+				map,
 				type,
 				superCountryID
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(competitionVector));
+		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+	}
+
+	public void fillCompetitionTable(Vector<Vector<String>> tableData,
+									 Vector<String> tableColumnName,
+									 JTable table,
+									 String tableName)
+	{
+		tableData.clear();
+		tableColumnName.clear();
+
+		Controller.getInstance().setCompetitionTable
+			(
+				tableColumnName,
+				tableData,
+				competitionSubName,
+				competitionType,
+				competitionTeamType,
+				competitionCountryType,
+				competitionContinentID,
+				competitionNationID
+			);
+
+		table.setModel(new TableModel(tableData, tableColumnName));
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
 	}
 }

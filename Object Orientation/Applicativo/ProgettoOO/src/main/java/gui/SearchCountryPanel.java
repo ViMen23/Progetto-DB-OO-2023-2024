@@ -63,7 +63,7 @@ public class SearchCountryPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]10[]10[]20"
+				"20[]20[]50[]10"
 			);
 
 		setLayout(migLayout);
@@ -97,7 +97,8 @@ public class SearchCountryPanel
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 
 				if (countryPanel.isShowing()) {
 					remove(countryPanel);
@@ -374,6 +375,7 @@ public class SearchCountryPanel
 				public void actionPerformed(ActionEvent e)
 				{
 					fillCountryTable(countryTableData, countryTableColumnName, countryTable, "countries");
+
 					countryTablePanel.revalidate();
 				}
 		});

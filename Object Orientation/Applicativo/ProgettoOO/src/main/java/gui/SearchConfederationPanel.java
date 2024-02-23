@@ -64,7 +64,7 @@ public class SearchConfederationPanel
 			(
 				"debug, flowy",
 				"10[grow, fill]10",
-				"20[]10[]10[]20"
+				"20[]20[]50[]10"
 			);
 
 		setLayout(migLayout);
@@ -97,7 +97,8 @@ public class SearchConfederationPanel
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 
 				if (confederationPanel.isShowing()){
 					remove(confederationPanel);
@@ -124,7 +125,7 @@ public class SearchConfederationPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
-				"10[grow, fill]10",
+				"0[grow, fill]0",
 				"0[]0[]10[]0[]20[]0"
 			);
 
@@ -355,27 +356,17 @@ public class SearchConfederationPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		searchButton.setEnabled(false);
-
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				confederationTableColumnName.clear();
-				confederationTableData.clear();
-
-				Controller.getInstance().setConfederationTable
-								(
-									confederationTableColumnName,
-									confederationTableData,
-									typeCountry,
-									superConfederationID
-								);
-
-				confederationTable.setModel(new TableModel(confederationTableData, confederationTableColumnName));
-				confederationTable.setPreferredScrollableViewportSize(confederationTable.getPreferredSize());
-
-				GuiConfiguration.setTitleTable(titleTable, "confederations", confederationTableData.size());
+				fillConfederationTable
+					(
+						confederationTableData,
+						confederationTableColumnName,
+						confederationTable,
+						"confederations"
+					);
 
 				confederationTablePanel.revalidate();
 			}
@@ -467,5 +458,24 @@ public class SearchConfederationPanel
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
+
+	public void fillConfederationTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
+	{
+		tableColumnName.clear();
+		tableData.clear();
+
+		Controller.getInstance().setConfederationTable
+			(
+				tableColumnName,
+				tableData,
+				typeCountry,
+				superConfederationID
+			);
+
+		table.setModel(new TableModel(tableData, tableColumnName));
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+	}
 
 }
