@@ -1,6 +1,7 @@
 package controller;
 
 import dao.*;
+import gui.GuiConfiguration;
 import gui.Regex;
 import model.*;
 import postgresImplDAO.*;
@@ -234,34 +235,13 @@ public class Controller
 	{
 		getCountries(countryType, superCountryID);
 
-		List<List<String>> outerCountryList = new ArrayList<List<String>>();
-
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
-			List<String> innerCountryList = new ArrayList<String>();
+
 			Country country = ctrlCountry.getCountryMap().get(key);
 
-			innerCountryList.add(country.getName());
-
-			if (full) {
-				innerCountryList.add(country.getCode());
-				innerCountryList.add(country.getType());
-				if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-					innerCountryList.add(" - ");
-				} else {
-					innerCountryList.add(country.getSuperCountry().getName());
-				}
-			}
-
-			innerCountryList.add(key);
-
-			outerCountryList.add(innerCountryList);
+			countryNameVector.add(country.getName());
+			countryNameMap.put(country.getName(), key);
 		}
-
-		for (List<String> s : outerCountryList) {
-			System.out.println(s);
-		}
-
-		return outerCountryList;
 	}
 
 
@@ -279,34 +259,27 @@ public class Controller
 	{
 		getCountries(countryType, superCountryID);
 
-		List<List<String>> outerCountryList = new ArrayList<List<String>>();
+		countryTableColumnName.add(GuiConfiguration.getMessage("country"));
+		countryTableColumnName.add(GuiConfiguration.getMessage("code"));
+		countryTableColumnName.add(GuiConfiguration.getMessage("type"));
+		countryTableColumnName.add(GuiConfiguration.getMessage("superCountryName"));
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
-			List<String> innerCountryList = new ArrayList<String>();
+			Vector<String> countryVector = new Vector<>();
+			
 			Country country = ctrlCountry.getCountryMap().get(key);
 
-			innerCountryList.add(country.getName());
-
-			if (full) {
-				innerCountryList.add(country.getCode());
-				innerCountryList.add(country.getType());
-				if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-					innerCountryList.add(" - ");
-				} else {
-					innerCountryList.add(country.getSuperCountry().getName());
-				}
+			countryVector.add(country.getName());
+			countryVector.add(country.getCode());
+			countryVector.add(country.getType());
+			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+				countryVector.add(" - ");
+			} else {
+				countryVector.add(country.getSuperCountry().getName());
 			}
 
-			innerCountryList.add(key);
-
-			outerCountryList.add(innerCountryList);
+			countryTableData.add(countryVector);
 		}
-
-		for (List<String> s : outerCountryList) {
-			System.out.println(s);
-		}
-
-		return outerCountryList;
 	}
 
 
