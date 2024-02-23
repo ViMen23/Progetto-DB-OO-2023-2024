@@ -29,6 +29,7 @@ public class PostgresImplConfederationDAO
 															 List<String> listConfederationLongName,
 															 List<String> listCountryID,
 															 List<String> listCountryName,
+															 List<String> listCountryType,
 															 List<String> listSuperConfederationID,
 															 List<String> listSuperConfederationShortName)
 	{
@@ -45,6 +46,7 @@ public class PostgresImplConfederationDAO
 				listConfederationLongName.add(rs.getString("conf_long_name"));
 				listCountryID.add(rs.getString("country_id"));
 				listCountryName.add(rs.getString("country_name"));
+				listCountryType.add(rs.getString("country_type"));
 				listSuperConfederationID.add(rs.getString("super_conf_id"));
 				listSuperConfederationShortName.add(rs.getString("super_conf_short_name"));
 			}

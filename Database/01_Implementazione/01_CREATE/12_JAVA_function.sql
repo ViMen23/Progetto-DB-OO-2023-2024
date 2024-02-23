@@ -357,6 +357,7 @@ RETURNS TABLE
             conf_long_name          text,
             country_id              text,
             country_name            text,
+            country_type            text,
             super_conf_id           text,
             super_conf_short_name   text
         )
@@ -430,6 +431,7 @@ BEGIN
             output_table.conf_long_name,
             output_table.country_id,
             output_table.country_name,
+            output_table.country_type,
             output_table.super_conf_id,
             output_table.super_conf_short_name
         FROM

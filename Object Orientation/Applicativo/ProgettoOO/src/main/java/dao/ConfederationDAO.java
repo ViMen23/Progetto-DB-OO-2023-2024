@@ -11,6 +11,7 @@ public interface ConfederationDAO
 												List<String> listConfederationLongName,
 												List<String> listCountryID,
 												List<String> listCountryName,
+												List<String> listCountryType,
 												List<String> listSuperConfederationID,
 												List<String> listSuperConfederationShortName);
 

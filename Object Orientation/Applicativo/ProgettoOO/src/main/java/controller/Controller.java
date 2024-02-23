@@ -145,9 +145,25 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	public Country newCountry(String ID, String name)
+	public Country newCountry(String ID,
+														String name)
 	{
 		return newCountry(ID, null, null, name, null);
+	}
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param name
+	 * @return
+	 */
+	public Country newCountry(String ID,
+														String type,
+														String name)
+	{
+		return newCountry(ID, type, null, name, null);
 	}
 
 
@@ -402,6 +418,7 @@ public class Controller
 		List<String> listConfederationLongName = new ArrayList<>();
 		List<String> listCountryID = new ArrayList<>();
 		List<String> listCountryName = new ArrayList<>();
+		List<String> listCountryType = new ArrayList<>();
 		List<String> listSuperConfederationID = new ArrayList<>();
 		List<String> listSuperConfederationShortName = new ArrayList<>();
 
@@ -415,6 +432,7 @@ public class Controller
 										listConfederationLongName,
 										listCountryID,
 										listCountryName,
+										listCountryType,
 										listSuperConfederationID,
 										listSuperConfederationShortName
 						);
@@ -426,7 +444,8 @@ public class Controller
 			Country country = newCountry
 							(
 											ID,
-											listCountryName.removeFirst()
+											listCountryName.removeFirst(),
+											listCountryType.removeFirst()
 							);
 
 			ctrlCountry.getCountryMap().put(ID, country);
@@ -507,6 +526,10 @@ public class Controller
 		string = string.toUpperCase();
 		confederationTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
 		confederationTableColumnName.add(string);
@@ -522,9 +545,10 @@ public class Controller
 
 			confederationVector.add(confederation.getLongName());
 			confederationVector.add(confederation.getShortName());
+			confederationVector.add(confederation.getCountry().getType());
 			confederationVector.add(confederation.getCountry().getName());
 
-			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+			if (confederation.getCountry().getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				confederationVector.add("");
 			} else {
 				confederationVector.add(confederation.getSuperConfederation().getShortName());
@@ -817,11 +841,10 @@ public class Controller
 
 
 	/**
-	 * TODO
+	 *
 	 * @param teamSubLongName
 	 * @param teamSubShortName
 	 * @param teamType
-	 * @param teamCountryType
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
