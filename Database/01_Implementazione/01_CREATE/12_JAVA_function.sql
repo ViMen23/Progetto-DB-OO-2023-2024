@@ -623,7 +623,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_teams
  *
- * IN      : text, text, text, text
+ * IN      : text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text)
@@ -635,8 +635,8 @@ CREATE OR REPLACE FUNCTION search_teams
     IN  sub_long_name_team  text,
     IN  sub_short_name_team text,
     IN  type_team           text,
-    IN  type_country        text,
-    IN  id_country          text
+    IN  id_continent        text,
+    IN  id_nation           text
 )
 RETURNS TABLE
         (
@@ -715,23 +715,22 @@ BEGIN
     END IF;
 
 
-    IF (type_country IS NOT NULL) THEN
+    IF (id_continent IS NOT NULL) THEN
 
-        IF ('CONTINENT' = type_country AND id_country IS NOT NULL) THEN
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_super_id <> id_continent;
 
-            DELETE FROM
-                output_table
-            WHERE
-                output_table.country_super_id <> id_country;
+    END IF;
 
-        ELSIF ('NATION' = type_country AND id_country IS NOT NULL) THEN
 
-            DELETE FROM
-                output_table
-            WHERE
-                output_table.country_id <> id_country;
+    IF (id_nation IS NOT NULL) THEN
 
-        END IF;
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_id <> id_nation;
 
     END IF;
 
@@ -762,7 +761,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_players
  *
- * IN      : text, text, text, text, text, text, text, text, text
+ * IN      : text, text, text, text, text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
@@ -776,7 +775,8 @@ CREATE OR REPLACE FUNCTION search_players
     IN  ref_year_player     text,
     IN  min_age_player      text,
     IN  max_age_player      text,
-    IN  id_country          text,
+    IN  id_continent        text,
+    IN  id_nation           text,
     IN  role_player         text,
     IN  id_pos              text,
     IN  foot_player         text
@@ -813,7 +813,8 @@ BEGIN
         position_id         text    NOT NULL,
         position_name       text    NOT NULL,
         country_id          text    NOT NULL,
-        country_name        text    NOT NULL
+        country_name        text    NOT NULL,
+        country_super_id    text    NOT NULL
     );
 
     INSERT INTO output_table
@@ -828,7 +829,8 @@ BEGIN
         fp_position.id::text,
         fp_position.name::text,
         fp_country.id::text,
-        fp_country.name::text
+        fp_country.name::text,
+        fp_country.super_id::text
     FROM
         fp_player
         LEFT OUTER JOIN
@@ -890,13 +892,23 @@ BEGIN
     END IF;
 
 
-    IF (id_country IS NOT NULL) THEN
+    IF (id_continent IS NOT NULL) THEN
 
         DELETE FROM
             output_table
         WHERE
-            output_table.country_id <> id_country;
-        
+            output_table.country_super_id <> id_continent;
+
+    END IF;
+
+
+    IF (id_nation IS NOT NULL) THEN
+
+        DELETE FROM
+            output_table
+        WHERE
+            output_table.country_id <> id_nation;
+
     END IF;
 
 

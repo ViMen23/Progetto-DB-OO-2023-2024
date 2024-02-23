@@ -184,9 +184,14 @@ public class Controller
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
 		countryDAO.countriesDB
 						(
-										countryType, superCountryID,
-										listCountryID, listCountryType, listCountryCode, listCountryName,
-										listSuperCountryID, listSuperCountryName
+										countryType,
+										superCountryID,
+										listCountryID,
+										listCountryType,
+										listCountryCode,
+										listCountryName,
+										listSuperCountryID,
+										listSuperCountryName
 						);
 
 		ctrlCountry.getCountryMap().clear();
@@ -285,6 +290,7 @@ public class Controller
 			countryVector.add(country.getName());
 			countryVector.add(country.getCode());
 			countryVector.add(country.getType());
+
 			if (countryType.equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				countryVector.add("");
 			} else {
@@ -313,8 +319,11 @@ public class Controller
 	 * @param superConfederation
 	 * @return
 	 */
-	public Confederation newConfederation(String ID, String shortName, String longName,
-																				Country country, Confederation superConfederation)
+	public Confederation newConfederation(String ID,
+																				String shortName,
+																				String longName,
+																				Country country,
+																				Confederation superConfederation)
 	{
 		Confederation confederation = ctrlConfederation.getConfederationMap().get(ID);
 
@@ -331,9 +340,17 @@ public class Controller
 	 * @param shortName
 	 * @return
 	 */
-	public Confederation newConfederation(String ID, String shortName)
+	public Confederation newConfederation(String ID,
+																				String shortName)
 	{
-		return newConfederation(ID, shortName, null, null, null);
+		return newConfederation
+						(
+										ID,
+										shortName,
+										null,
+										null,
+										null
+						);
 	}
 
 	/**
@@ -343,9 +360,18 @@ public class Controller
 	 * @param country
 	 * @return
 	 */
-	public Confederation newConfederation(String ID, String shortName, Country country)
+	public Confederation newConfederation(String ID,
+																				String shortName,
+																				Country country)
 	{
-		return newConfederation(ID, shortName, null, country, null);
+		return newConfederation
+						(
+										ID,
+										shortName,
+										null,
+										country,
+										null
+						);
 	}
 
 
@@ -382,10 +408,15 @@ public class Controller
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
 		confederationDAO.confederationsDB
 						(
-										countryType, superConfederationsID,
-										listConfederationID, listConfederationShortName, listConfederationLongName,
-										listCountryID, listCountryName,
-										listSuperConfederationID, listSuperConfederationShortName
+										countryType,
+										superConfederationsID,
+										listConfederationID,
+										listConfederationShortName,
+										listConfederationLongName,
+										listCountryID,
+										listCountryName,
+										listSuperConfederationID,
+										listSuperConfederationShortName
 						);
 
 
@@ -502,9 +533,6 @@ public class Controller
 			confederationTableData.add(confederationVector);
 		}
 	}
-
-
-
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -522,7 +550,10 @@ public class Controller
 	 * @param confederation
 	 * @return
 	 */
-	public Competition newCompetition(String ID, String type, String teamType, String name,
+	public Competition newCompetition(String ID,
+																		String type,
+																		String teamType,
+																		String name,
 																		Confederation confederation)
 	{
 		Competition competition = ctrlCompetition.getCompetitionMap().get(ID);
@@ -743,8 +774,6 @@ public class Controller
 			competitionTableData.add(competitionVector);
 		}
 	}
-
-
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -792,13 +821,16 @@ public class Controller
 	 * @param teamSubLongName
 	 * @param teamSubShortName
 	 * @param teamType
-	 * @param teamCountryID
+	 * @param teamCountryType
+	 * @param teamContinentID
+	 * @param teamNationID
 	 */
 	public void searchTeams(String teamSubLongName,
 													String teamSubShortName,
 													String teamType,
 													String teamCountryType,
-													String teamCountryID)
+													String teamContinentID,
+													String teamNationID)
 	{
 		List<String> listTeamID = new ArrayList<>();
 		List<String> listTeamType = new ArrayList<>();
@@ -810,9 +842,18 @@ public class Controller
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.teamsDB
 						(
-										teamSubLongName, teamSubShortName, teamType, teamCountryType, teamCountryID,
-										listTeamID, listTeamType, listTeamShortName, listTeamLongName,
-										listCountryID, listCountryName
+										teamSubLongName,
+										teamSubShortName,
+										teamType,
+										teamCountryType,
+										teamContinentID,
+										teamNationID,
+										listTeamID,
+										listTeamType,
+										listTeamShortName,
+										listTeamLongName,
+										listCountryID,
+										listCountryName
 						);
 
 		ctrlCountry.getCountryMap().clear();
@@ -848,46 +889,105 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param teamLongNameVector
+	 * @param teamLongNameMap
 	 * @param teamSubLongName
 	 * @param teamSubShortName
 	 * @param teamType
-	 * @param teamCountryID
-	 * @param full
-	 * @return
+	 * @param teamCountryType
+	 * @param teamContinentID
+	 * @param teamNationID
 	 */
-	public List<List<String>> getTeamList(String teamSubLongName,
-																				String teamSubShortName,
-																				String teamType,
-																				String teamCountryType,
-																				String teamCountryID,
-																				Boolean full)
+	public void getTeamList(Vector<String> teamLongNameVector,
+													Map<String, String> teamLongNameMap,
+													String teamSubLongName,
+													String teamSubShortName,
+													String teamType,
+													String teamCountryType,
+													String teamContinentID,
+													String teamNationID)
 	{
-		searchTeams(teamSubLongName, teamSubShortName, teamType, teamCountryType, teamCountryID);
-
-		List<List<String>> outerTeamList = new ArrayList<List<String>>();
+		searchTeams
+						(
+										teamSubLongName,
+										teamSubShortName,
+										teamType,
+										teamCountryType,
+										teamContinentID,
+										teamNationID
+						);
 
 		for (String key : ctrlTeam.getTeamMap().keySet()) {
-			List<String> innerTeamList = new ArrayList<String>();
+
+			String teamLongName = ctrlTeam.getTeamMap().get(key).getLongName();
+
+			teamLongNameVector.add(teamLongName);
+			teamLongNameMap.put(teamLongName, key);
+		}
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamTableColumnName
+	 * @param teamTableData
+	 * @param teamSubLongName
+	 * @param teamSubShortName
+	 * @param teamType
+	 * @param teamCountryType
+	 * @param teamContinentID
+	 * @param teamNationID
+	 */
+	public void getTeamList(Vector<String> teamTableColumnName,
+													Vector<Vector<String>> teamTableData,
+													String teamSubLongName,
+													String teamSubShortName,
+													String teamType,
+													String teamCountryType,
+													String teamContinentID,
+													String teamNationID)
+	{
+		searchTeams
+						(
+										teamSubLongName,
+										teamSubShortName,
+										teamType,
+										teamCountryType,
+										teamContinentID,
+										teamNationID
+						);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+
+		for (String key : ctrlTeam.getTeamMap().keySet()) {
+			Vector<String> teamVector = new Vector<>();
+
 			Team team = ctrlTeam.getTeamMap().get(key);
 
-			innerTeamList.add(team.getLongName());
+			teamVector.add(team.getLongName());
+			teamVector.add(team.getShortName());
+			teamVector.add(team.getType());
+			teamVector.add(team.getCountry().getName());
 
-			if (full) {
-				innerTeamList.add(team.getShortName());
-				innerTeamList.add(team.getType());
-				innerTeamList.add(team.getCountry().getName());
-			}
-
-			innerTeamList.add(key);
-
-			outerTeamList.add(innerTeamList);
+			teamTableData.add(teamVector);
 		}
-
-		for (List<String> s : outerTeamList) {
-			System.out.println(s);
-		}
-
-		return outerTeamList;
 	}
 
 
@@ -911,8 +1011,14 @@ public class Controller
 	 * @param retiredDate
 	 * @return
 	 */
-	public Player newPlayer(String ID, String name, String surname, String dob, Country country,
-													String foot, Position position, String role,
+	public Player newPlayer(String ID,
+													String name,
+													String surname,
+													String dob,
+													Country country,
+													String foot,
+													Position position,
+													String role,
 													String retiredDate)
 	{
 		Player player = ctrlPlayer.getPlayerMap().get(ID);
@@ -939,7 +1045,6 @@ public class Controller
 	}
 
 
-
 	/**
 	 * TODO
 	 * @param playerSubName
@@ -947,7 +1052,8 @@ public class Controller
 	 * @param playerReferringYear
 	 * @param playerMinAge
 	 * @param playerMaxAge
-	 * @param playerCountryID
+	 * @param playerContinentID
+	 * @param playerNationID
 	 * @param playerRole
 	 * @param playerPositionID
 	 * @param playerFoot
@@ -957,7 +1063,8 @@ public class Controller
 														String playerReferringYear,
 														String playerMinAge,
 														String playerMaxAge,
-														String playerCountryID,
+														String playerContinentID,
+														String playerNationID,
 														String playerRole,
 														String playerPositionID,
 														String playerFoot)
@@ -977,19 +1084,27 @@ public class Controller
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		playerDAO.playersDB
 						(
-										playerSubName, playerSubSurname,
-										playerReferringYear, playerMinAge, playerMaxAge,
-										playerCountryID,
-										playerRole, playerPositionID,
+										playerSubName,
+										playerSubSurname,
+										playerReferringYear,
+										playerMinAge,
+										playerMaxAge,
+										playerContinentID,
+										playerNationID,
+										playerRole,
+										playerPositionID,
 										playerFoot,
 										listPlayerID,
-										listPlayerName, listPlayerSurname,
+										listPlayerName,
+										listPlayerSurname,
 										listPlayerDob,
 										listPlayerFoot,
 										listPlayerRole,
 										listPlayerRetiredDate,
-										listPositionID, listPositionName,
-										listCountryID, listCountryName
+										listPositionID,
+										listPositionName,
+										listCountryID,
+										listCountryName
 						);
 
 		ctrlCountry.getCountryMap().clear();
@@ -1066,15 +1181,19 @@ public class Controller
 		playerDAO.militancyPlayersDB
 						(
 										militancyPlayerTeamID,
-										militancyPlayerStartYear, militancyPlayerEndYear,
+										militancyPlayerStartYear,
+										militancyPlayerEndYear,
 										listPlayerID,
-										listPlayerName, listPlayerSurname,
+										listPlayerName,
+										listPlayerSurname,
 										listPlayerDob,
 										listPlayerFoot,
 										listPlayerRole,
 										listPlayerRetiredDate,
-										listPositionID, listPositionName,
-										listCountryID, listCountryName
+										listPositionID,
+										listPositionName,
+										listCountryID,
+										listCountryName
 						);
 
 		ctrlCountry.getCountryMap().clear();
@@ -1127,124 +1246,223 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param playerInfoVector
+	 * @param playerInfoMap
 	 * @param playerSubName
 	 * @param playerSubSurname
 	 * @param playerReferringYear
 	 * @param playerMinAge
 	 * @param playerMaxAge
-	 * @param playerCountryID
+	 * @param playerContinentID
+	 * @param playerNationID
 	 * @param playerRole
 	 * @param playerPositionID
 	 * @param playerFoot
-	 * @param full
-	 * @return
 	 */
-	public List<List<String>> getPlayerList(String playerSubName,
-																					String playerSubSurname,
-																					String playerReferringYear,
-																					String playerMinAge,
-																					String playerMaxAge,
-																					String playerCountryID,
-																					String playerRole,
-																					String playerPositionID,
-																					String playerFoot,
-																					Boolean full)
+	public void getPlayerList(Vector<String> playerInfoVector,
+														Map<String, String> playerInfoMap,
+														String playerSubName,
+														String playerSubSurname,
+														String playerReferringYear,
+														String playerMinAge,
+														String playerMaxAge,
+														String playerContinentID,
+														String playerNationID,
+														String playerRole,
+														String playerPositionID,
+														String playerFoot)
 	{
 		searchPlayers
 						(
-										playerSubName, playerSubSurname,
-										playerReferringYear, playerMinAge, playerMaxAge,
-										playerCountryID,
-										playerRole, playerPositionID,
+										playerSubName,
+										playerSubSurname,
+										playerReferringYear,
+										playerMinAge,
+										playerMaxAge,
+										playerContinentID,
+										playerNationID,
+										playerRole,
+										playerPositionID,
 										playerFoot
 						);
 
-		List<List<String>> outerPlayerList = new ArrayList<List<String>>();
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
-			List<String> innerPlayerList = new ArrayList<String>();
+
+			String playerInfo = ctrlPlayer.getPlayerMap().get(key).getName();
+			playerInfo += " ";
+			playerInfo += ctrlPlayer.getPlayerMap().get(key).getSurname();
+
+			playerInfoVector.add(playerInfo);
+			playerInfoMap.put(playerInfo, key);
+		}
+	}
+
+
+	public void getPlayerList(Vector<String> playerTableColumnName,
+														Vector<Vector<String>> playerTableData,
+														String playerSubName,
+														String playerSubSurname,
+														String playerReferringYear,
+														String playerMinAge,
+														String playerMaxAge,
+														String playerContinentID,
+														String playerNationID,
+														String playerRole,
+														String playerPositionID,
+														String playerFoot)
+	{
+		searchPlayers
+						(
+										playerSubName,
+										playerSubSurname,
+										playerReferringYear,
+										playerMinAge,
+										playerMaxAge,
+										playerContinentID,
+										playerNationID,
+										playerRole,
+										playerPositionID,
+										playerFoot
+						);
+
+
+		String string;
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("dob");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("foot");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("position");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+
+		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+			Vector<String> playerVector = new Vector<>();
+
 			Player player = ctrlPlayer.getPlayerMap().get(key);
 
-			innerPlayerList.add(player.getSurname());
+			playerVector.add(player.getSurname());
+			playerVector.add(player.getName());
+			playerVector.add(player.getDob());
+			playerVector.add(player.getCountry().getName());
+			playerVector.add(player.getFoot());
+			playerVector.add(player.getRole());
+			playerVector.add(player.getPosition().getName());
 
-			if (full) {
-				innerPlayerList.add(player.getName());
-				innerPlayerList.add(player.getDob());
-				innerPlayerList.add(player.getCountry().getName());
-				innerPlayerList.add(player.getFoot());
-				innerPlayerList.add(player.getRole());
-				innerPlayerList.add(player.getPosition().getName());
-				if (null == player.getRetiredDate()) {
-					innerPlayerList.add("-");
-				} else {
-					innerPlayerList.add(player.getRetiredDate());
-				}
+			if (null == player.getRetiredDate()) {
+				playerVector.add("");
+			} else {
+				playerVector.add(player.getRetiredDate());
 			}
 
-			innerPlayerList.add(key);
-
-			outerPlayerList.add(innerPlayerList);
+			playerTableData.add(playerVector);
 		}
-
-		for (List<String> s : outerPlayerList) {
-			System.out.println(s);
-		}
-
-		return outerPlayerList;
 	}
 
 
 	/**
 	 * TODO
+	 * @param playerTableColumnName
+	 * @param playerTableData
 	 * @param militancyPlayerTeamID
 	 * @param militancyPlayerStartYear
 	 * @param militancyPlayerEndYear
-	 * @param full
-	 * @return
 	 */
-	public List<List<String>> getPlayerList(String militancyPlayerTeamID,
-																					String militancyPlayerStartYear,
-																					String militancyPlayerEndYear,
-																					Boolean full)
+	public void getPlayerList(Vector<String> playerTableColumnName,
+														Vector<Vector<String>> playerTableData,
+														String militancyPlayerTeamID,
+														String militancyPlayerStartYear,
+														String militancyPlayerEndYear)
 	{
 		searchMilitancyPlayers
 						(
 										militancyPlayerTeamID,
-										militancyPlayerStartYear, militancyPlayerEndYear
+										militancyPlayerStartYear,
+										militancyPlayerEndYear
 						);
 
-		List<List<String>> outerPlayerList = new ArrayList<List<String>>();
+		String string;
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("dob");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("foot");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("position");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
-			List<String> innerPlayerList = new ArrayList<String>();
+			Vector<String> playerVector = new Vector<>();
+
 			Player player = ctrlPlayer.getPlayerMap().get(key);
 
-			innerPlayerList.add(player.getSurname());
+			playerVector.add(player.getSurname());
+			playerVector.add(player.getName());
+			playerVector.add(player.getDob());
+			playerVector.add(player.getCountry().getName());
+			playerVector.add(player.getFoot());
+			playerVector.add(player.getRole());
+			playerVector.add(player.getPosition().getName());
 
-			if (full) {
-				innerPlayerList.add(player.getName());
-				innerPlayerList.add(player.getDob());
-				innerPlayerList.add(player.getCountry().getName());
-				innerPlayerList.add(player.getFoot());
-				innerPlayerList.add(player.getRole());
-				innerPlayerList.add(player.getPosition().getName());
-				if (null == player.getRetiredDate()) {
-					innerPlayerList.add("-");
-				} else {
-					innerPlayerList.add(player.getRetiredDate());
-				}
+			if (null == player.getRetiredDate()) {
+				playerVector.add("");
+			} else {
+				playerVector.add(player.getRetiredDate());
 			}
 
-			innerPlayerList.add(key);
-
-			outerPlayerList.add(innerPlayerList);
+			playerTableData.add(playerVector);
 		}
-
-		for (List<String> s : outerPlayerList) {
-			System.out.println(s);
-		}
-
-		return outerPlayerList;
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
@@ -1289,13 +1507,19 @@ public class Controller
 	 */
 	public void allPositions()
 	{
-		List<String> listPositionID = new ArrayList<String>();
-		List<String> listPositionRole = new ArrayList<String>();
-		List<String> listPositionCode = new ArrayList<String>();
-		List<String> listPositionName = new ArrayList<String>();
+		List<String> listPositionID = new ArrayList<>();
+		List<String> listPositionRole = new ArrayList<>();
+		List<String> listPositionCode = new ArrayList<>();
+		List<String> listPositionName = new ArrayList<>();
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.positionsDB(listPositionID, listPositionRole, listPositionCode, listPositionName);
+		positionDAO.positionsDB
+						(
+										listPositionID,
+										listPositionRole,
+										listPositionCode,
+										listPositionName
+						);
 
 		ctrlPosition.getPositionMap().clear();
 
@@ -1315,41 +1539,24 @@ public class Controller
 	}
 
 
-
 	/**
 	 * TODO
-	 * @param full
-	 * @return
+	 * @param positionNameVector
+	 * @param positionNameMap
 	 */
-	public List<List<String>> getPositionList(Boolean full)
+	public void getPositionList(Vector<String> positionNameVector,
+															Map<String, String> positionNameMap)
 	{
 		allPositions();
 
-		List<List<String>> outerPositionList = new ArrayList<List<String>>();
-
 		for (String key : ctrlPosition.getPositionMap().keySet()) {
-			List<String> innerPositionList = new ArrayList<String>();
-			Position position = ctrlPosition.getPositionMap().get(key);
 
-			innerPositionList.add(position.getName());
+			String positionName = ctrlPosition.getPositionMap().get(key).getName();
 
-			if (full) {
-				innerPositionList.add(position.getRole());
-				innerPositionList.add(position.getCode());
-			}
-
-			innerPositionList.add(key);
-
-			outerPositionList.add(innerPositionList);
+			positionNameVector.add(positionName);
+			positionNameMap.put(positionName, key);
 		}
-
-		for (List<String> s : outerPositionList) {
-			System.out.println(s);
-		}
-
-		return outerPositionList;
 	}
-
 	/*------------------------------------------------------------------------------------------------------*/
 
 

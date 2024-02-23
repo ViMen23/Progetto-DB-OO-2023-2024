@@ -24,7 +24,8 @@ public class PostgresImplPlayerDAO
 												String playerReferringYear,
 												String playerMinAge,
 												String playerMaxAge,
-												String playerCountryID,
+												String playerContinentID,
+												String playerNationID,
 												String playerRole,
 												String playerPositionID,
 												String playerFoot,
@@ -41,16 +42,17 @@ public class PostgresImplPlayerDAO
 												List<String> listCountryName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_players(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_players(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
 			cs.setString(1, playerSubName);
 			cs.setString(2, playerSubSurname);
 			cs.setString(3, playerReferringYear);
 			cs.setString(4, playerMinAge);
 			cs.setString(5, playerMaxAge);
-			cs.setString(6, playerCountryID);
-			cs.setString(7, playerRole);
-			cs.setString(8, playerPositionID);
-			cs.setString(9, playerFoot);
+			cs.setString(6, playerContinentID);
+			cs.setString(7, playerNationID);
+			cs.setString(8, playerRole);
+			cs.setString(9, playerPositionID);
+			cs.setString(10, playerFoot);
 
 			ResultSet rs = cs.executeQuery();
 
