@@ -692,7 +692,7 @@ public class SearchTeamPanel
 									String type,
 									String superCountryID)
 	{
-		GuiConfiguration.initComboBoxVector(vector, map);
+		GuiConfiguration.initComboBoxVector(vector, map, true);
 
 		Controller.getInstance().setCountryComboBox
 			(

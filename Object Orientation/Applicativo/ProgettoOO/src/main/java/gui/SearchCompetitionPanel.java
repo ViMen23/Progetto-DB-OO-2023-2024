@@ -850,7 +850,7 @@ public class SearchCompetitionPanel
 									String superCountryID)
 	{
 
-		GuiConfiguration.initComboBoxVector(vector, map);
+		GuiConfiguration.initComboBoxVector(vector, map, true);
 
 		Controller.getInstance().setCountryComboBox
 			(

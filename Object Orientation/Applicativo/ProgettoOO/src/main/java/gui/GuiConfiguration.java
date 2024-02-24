@@ -198,20 +198,22 @@ public class GuiConfiguration
 	}
 
 
-	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap)
+	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap, Boolean selectAll)
 	{
+		String string;
+
 		dataVector.clear();
-
-		String string = GuiConfiguration.getMessage("select");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = StringUtils.capitalize(string);
-
-		dataVector.add(string);
-
 		hashMap.clear();
 
-		hashMap.put(string, null);
+		if (selectAll) {
+			string = GuiConfiguration.getMessage("select");
+			string += " ";
+			string += GuiConfiguration.getMessage("all");
+			string = StringUtils.capitalize(string);
+
+			dataVector.add(string);
+			hashMap.put(string, null);
+		}
 	}
 
 	public static void setTitleTable(JLabel label,String tableName, int countRows)

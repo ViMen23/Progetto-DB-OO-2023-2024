@@ -1157,7 +1157,7 @@ public class SearchPlayerPanel
 									String superCountryID)
 	{
 
-		GuiConfiguration.initComboBoxVector(vector, map);
+		GuiConfiguration.initComboBoxVector(vector, map, true);
 
 		Controller.getInstance().setCountryComboBox
 			(
@@ -1194,7 +1194,7 @@ public class SearchPlayerPanel
 									 Map<String, String> map)
 	{
 
-		GuiConfiguration.initComboBoxVector(vector, map);
+		GuiConfiguration.initComboBoxVector(vector, map, true);
 
 		Controller.getInstance().setPositionComboBox
 			(

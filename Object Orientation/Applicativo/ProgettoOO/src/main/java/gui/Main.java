@@ -24,7 +24,7 @@ public class Main
 
 		//searchCountryPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(new SearchTeamPanel());
+		MainFrame.getMainFrameInstance().add(new MilitancyFilterPanel());
 		MainFrame.getMainFrameInstance().pack();
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");

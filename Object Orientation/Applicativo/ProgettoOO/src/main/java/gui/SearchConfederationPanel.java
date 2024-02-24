@@ -445,7 +445,7 @@ public class SearchConfederationPanel
 									String superConfederationID)
 	{
 
-		GuiConfiguration.initComboBoxVector(vector, map);
+		GuiConfiguration.initComboBoxVector(vector, map, true);
 
 		Controller.getInstance().setConfederationComboBox
 			(
