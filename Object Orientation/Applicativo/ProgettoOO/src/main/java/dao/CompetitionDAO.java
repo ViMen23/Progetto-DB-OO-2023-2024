@@ -23,4 +23,5 @@ public interface CompetitionDAO
 
 	void fetchCompetitionEditionDB(String competitionID,
 																 List<String> listCompetitionEdition);
+
 }

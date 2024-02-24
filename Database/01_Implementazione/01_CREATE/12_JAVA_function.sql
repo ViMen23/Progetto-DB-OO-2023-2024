@@ -682,7 +682,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION filter_competitions
+CREATE OR REPLACE FUNCTION filter_competition_edition
 (
     IN  id_comp text
 )
@@ -709,6 +709,7 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 
 
@@ -869,7 +870,10 @@ CREATE OR REPLACE FUNCTION filter_teams
 RETURNS TABLE
         (
             team_id         text,
-            team_long_name  text
+            team_long_name  text,
+            team_short_name text,
+            country_id      text,
+            country_name    text
         )
 AS
 $$
@@ -878,13 +882,20 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_team.id::text AS team_id,
-            fp_team.long_name::text AS team_long_name
+            fp_team.long_name::text AS team_long_name,
+            fp_team.short_name::text AS team_short_name,
+            fp_country.id::text AS country_id,
+            fp_country.name::text AS country_name
         FROM
             fp_partecipation
             JOIN
             fp_team
                 ON
                 fp_partecipation.team_id = fp_team.id
+            JOIN
+            fp_country
+                ON
+                fp_team.country_id = fp_country.id
         WHERE
             fp_partecipation.start_year = s_year::integer
             AND

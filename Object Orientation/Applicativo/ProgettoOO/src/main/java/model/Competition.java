@@ -21,10 +21,8 @@ public class Competition
 	private final Confederation confederation;
 
 
-	private List<String> editionList;
-	private String edition; // edizione della competizione che si sta mostrando
-	private List<Team> editionTeamList;
-	private List<AssignedTrophy> editionAssignedTrophyList;
+	private final List<String> editionList;
+	private final List<Team> editionTeamList;
 
 
 	public Competition(String type,
@@ -39,7 +37,6 @@ public class Competition
 
 		this.editionList = new ArrayList<>();
 		this.editionTeamList = new ArrayList<>();
-		this.editionAssignedTrophyList = new ArrayList<>();
 	}
 
 
@@ -80,16 +77,6 @@ public class Competition
 	}
 
 
-	public void setEdition(String edition)
-	{
-		this.edition = edition;
-	}
-
-	public String getEdition()
-	{
-		return edition;
-	}
-
 	public List<String> getEditionList()
 	{
 		return editionList;
@@ -98,10 +85,5 @@ public class Competition
 	public List<Team> getEditionTeamList()
 	{
 		return editionTeamList;
-	}
-
-	public List<AssignedTrophy> getEditionAssignedTrophyList()
-	{
-		return editionAssignedTrophyList;
 	}
 }
