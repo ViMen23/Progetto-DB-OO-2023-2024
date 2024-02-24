@@ -473,8 +473,8 @@ public class Controller
 			Country country = newCountry
 							(
 											ID,
-											listCountryName.removeFirst(),
-											listCountryType.removeFirst()
+											listCountryType.removeFirst(),
+											listCountryName.removeFirst()
 							);
 
 			ctrlCountry.getCountryMap().put(ID, country);

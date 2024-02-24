@@ -331,9 +331,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
+				//MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
 
-				MainFrame.getMainFrameInstance().add(militancyFilterPanel);
+				//MainFrame.getMainFrameInstance().add(militancyFilterPanel);
 			}
 		});
 

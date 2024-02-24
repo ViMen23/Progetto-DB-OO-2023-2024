@@ -479,10 +479,6 @@ RETURNS TABLE
         )
 AS
 $$
-DECLARE
-
-	country_type	text;
-
 BEGIN
 
     DROP TABLE IF EXISTS output_table;
@@ -623,6 +619,63 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : filter_competitions
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION filter_competitions
+(
+    IN  type_team   text,
+    IN  s_year      text,
+    IN  id_country  text
+)
+RETURNS TABLE
+        (
+            comp_id         text,
+            comp_name       text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name
+        FROM
+            fp_competition_edition
+            JOIN
+            fp_competition
+                ON
+                fp_competition_edition.competition_id = fp_competition.id
+            JOIN
+            fp_confederation
+                ON
+                fp_competition.confederation_id = fp_confederation.id
+        WHERE
+            fp_competition_edition.start_year = s_year::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+            AND
+            fp_confederation.country_id = id_country::integer
+        ORDER BY
+            fp_competition.name;
+
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : search_teams
  *
  * IN      : text, text, text, text, text
@@ -752,6 +805,55 @@ BEGIN
         ORDER BY
             output_table.team_long_name;
 
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : filter_teams
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION filter_teams
+(
+    IN  s_year  text,
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            team_id         text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_team.id::text AS team_id,
+            fp_team.long_name::text AS team_long_name
+        FROM
+            fp_partecipation
+            JOIN
+            fp_team
+                ON
+                fp_partecipation.team_id = fp_team.id
+        WHERE
+            fp_partecipation.start_year = s_year::integer
+            AND
+            fp_partecipation.competition_id = id_comp::integer
+        ORDER BY
+            fp_team.long_name;
+        
 
 END;
 $$
@@ -990,6 +1092,60 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : filter_players
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION filter_players
+(
+    IN  s_year  text,
+    IN  id_team text
+)
+RETURNS TABLE
+        (
+            player_id       text,
+            player_name     text,
+            player_surname  text,
+            player_role     text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player.id::text AS player_id,
+            fp_player.name::text AS player_name,
+            fp_player.surname::text AS player_surname,
+            fp_player.role::text AS player_role
+        FROM
+            fp_militancy
+            JOIN
+            fp_player
+                ON
+                fp_militancy.player_id = fp_player.id
+        WHERE
+            fp_militancy.start_year = s_year::integer
+            AND
+            fp_militancy.team_id = id_team::integer
+        ORDER BY
+            fp_player.role,
+            fp_player.surname;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : search_militancy_players
  *
  * IN      : text, text, text
@@ -1090,10 +1246,10 @@ RETURNS TABLE
             player_surname  text,
             match           text,
             goal_scored     text,
+            penalty_scored  text,
             assist          text,
             yellow_card     text,
             red_card        text,
-            penalty_scored  text,
             goal_conceded   text,
             penalty_saved   text
         )
@@ -1111,10 +1267,10 @@ BEGIN
         player_surname  text    NOT NULL,
         match           text    NOT NULL,
         goal_scored     text    NOT NULL,
+        penalty_scored  text    NOT NULL,
         assist          text    NOT NULL,
         yellow_card     text    NOT NULL,
         red_card        text    NOT NULL,
-        penalty_scored  text    NOT NULL,
         goal_conceded   text            ,
         penalty_saved   text            ,
         team_type       text    NOT NULL
@@ -1128,10 +1284,10 @@ BEGIN
         fp_player.surname::text,
         fp_play.match::text,
         fp_statistic_general.goal_scored::text,
+        fp_statistic_general.penalty_scored::text,
         fp_statistic_general.assist::text,
         fp_statistic_general.yellow_card::text,
         fp_statistic_general.red_card::text,
-        fp_statistic_general.penalty_scored::text,
         fp_statistic_goalkeeper.goal_conceded::text,
         fp_statistic_goalkeeper.penalty_saved::text,
         fp_competition.team_type::text
@@ -1202,6 +1358,453 @@ BEGIN
         ORDER BY
             player_surname;
 
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : competition_edition_statistics
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_edition_statistics
+(
+    IN  s_year  text,
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            country_id                  text,
+            country_code                text,
+            confederation_id            text,
+            confederation_short_name    text,
+            competition_id              text,
+            competition_start_year      text,
+            competition_name            text,
+            competition_team_type       text,
+            team_id                     text,
+            team_long_name              text,
+            player_id                   text,
+            player_role                 text,
+            player_name                 text,
+            player_surname              text,
+            match                       text,
+            goal_scored                 text,
+            penalty_scored              text,
+            assist                      text,
+            yellow_card                 text,
+            red_card                    text,
+            goal_conceded               text,
+            penalty_saved               text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_country.id::text AS country_id,
+            fp_country.code::text AS country_code,
+            fp_confederation.id::text AS confederation_id,
+            fp_confederation.short_name::text AS confederation_short_name,
+            fp_competition.id::text AS competition_id,
+            fp_play.start_year::text AS competition_start_year,
+            fp_competition.name::text AS competition_name,
+            fp_competition.team_type::text AS competition_team_type,
+            fp_team.id::text AS team_id,
+            fp_team.long_name::text AS team_long_name,
+            fp_player.id::text AS player_id,
+            fp_player.role::text AS player_role,
+            fp_player.name::text AS player_name,
+            fp_player.surname::text AS player_surname,
+            fp_play.match::text AS match,
+            fp_statistic_general.goal_scored::text AS goal_scored,
+            fp_statistic_general.penalty_scored AS penalty_scored,
+            fp_statistic_general.assist AS assist,
+            fp_statistic_general.yellow_card AS yellow_card,
+            fp_statistic_general.red_card AS red_card,
+            fp_statistic_goalkeeper.goal_conceded AS goal_conceded,
+            fp_statistic_goalkeeper.penalty_saved AS penalty_saved
+        FROM
+            fp_country
+            JOIN
+            fp_confederation
+                ON
+                fp_country.id = fp_confederation.country_id
+            JOIN
+            fp_competition
+                ON
+                fp_confederation.id = fp_competition.confederation_id
+            JOIN
+            fp_play
+                ON
+                fp_competition.id = fp_play.competition_id
+            JOIN
+            fp_team
+                ON
+                fp_play.team_id = fp_team.id
+            JOIN
+            fp_player
+                ON
+                fp_play.player_id = fp_player.id
+            JOIN
+            fp_statistic_general
+                ON
+                fp_play.id = fp_statistic_general.play_id
+            LEFT OUTER JOIN
+            fp_statistic_goalkeeper
+                ON
+                fp_play.id = fp_statistic_goalkeeper.play_id
+        WHERE
+            fp_play.start_year = s_year::integer
+            AND
+            fp_play.competition_id = id_comp::integer
+        ORDER BY
+            fp_player.surname;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_nationality
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_nationality
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            country_id      text,
+            country_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_country.id::text AS country_id,
+            fp_country.name::text AS country_name
+        FROM
+            fp_nationality
+            JOIN
+            fp_country
+                ON
+                fp_nationality.country_id = fp_country.id
+        WHERE
+            fp_nationality.player_id = id_player::integer
+        ORDER BY
+            fp_country.name;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_position
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_position
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            position_id     text,
+            position_code   text,
+            position_role   text,
+            position_name   text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_position.id::text AS position_id,
+            fp_position.role::text AS position_role,
+            fp_position.code::text AS position_code,
+            fp_position.name::text AS position_name
+        FROM
+            fp_player_position
+            JOIN
+            fp_position
+                ON
+                fp_player_position.position_id = fp_position.id
+        WHERE
+            fp_position.player_id = id_player::integer
+        ORDER BY
+            fp_position.role,
+            fp_position.name;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_goalkeeping
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_goalkeeping
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            aerial_reach			text,
+            command_of_area			text,
+            communication			text,
+            eccentricity			text,
+            first_touch_gk			text,
+            handling				text,
+            kicking					text,
+            one_on_ones				text,
+            passing_gk				text,
+            punching_tencency		text,
+            reflexes				text,
+            rushing_out_tendency	text,
+            throwing				text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_attribute_goalkeeping.aerial_reach::text,
+            fp_attribute_goalkeeping.command_of_area::text,
+            fp_attribute_goalkeeping.communication::text,
+            fp_attribute_goalkeeping.eccentricity::text,
+            fp_attribute_goalkeeping.first_touch_gk::text,
+            fp_attribute_goalkeeping.handling::text,
+            fp_attribute_goalkeeping.kicking::text,
+            fp_attribute_goalkeeping.one_on_ones::text,
+            fp_attribute_goalkeeping.passing_gk::text,
+            fp_attribute_goalkeeping.punching_tencency::text,
+            fp_attribute_goalkeeping.reflexes::text,
+            fp_attribute_goalkeeping.rushing_out_tendency::text,
+            fp_attribute_goalkeeping.throwing::text
+        FROM
+            fp_attribute_goalkeeping
+        WHERE
+            fp_attribute_goalkeeping.player_id = id_player::integer;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_mental
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_mental
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            aggression		text,
+            anticipation	text,
+            bravery			text,
+            composure		text,
+            concentration	text,
+            decision		text,
+            determination	text,
+            flair			text,
+            leadership		text,
+            off_the_ball	text,
+            positioning		text,
+            teamwork		text,
+            vision			text,
+            work_rate		text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_attribute_mental.aggression::text,
+            fp_attribute_mental.anticipation::text,
+            fp_attribute_mental.bravery::text,
+            fp_attribute_mental.composure::text,
+            fp_attribute_mental.concentration::text,
+            fp_attribute_mental.decision::text,
+            fp_attribute_mental.determination::text,
+            fp_attribute_mental.flair::text,
+            fp_attribute_mental.leadership::text,
+            fp_attribute_mental.off_the_ball::text,
+            fp_attribute_mental.positioning::text,
+            fp_attribute_mental.teamwork::text,
+            fp_attribute_mental.vision::text,
+            fp_attribute_mental.work_rate::text
+        FROM
+            fp_attribute_mental
+        WHERE
+            fp_attribute_mental.player_id = id_player::integer;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_physical
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_physical
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            acceleration	text,
+            agility			text,
+            balance			text,
+            jumping_reach	text,
+            natural_fitness	text,
+            pace			text,
+            stamina			text,
+            strenght		text
+        )
+AS
+$$
+BEGIN
+
+            
+    RETURN QUERY
+        SELECT
+            fp_attribute_physical.acceleration::text,
+            fp_attribute_physical.agility::text,
+            fp_attribute_physical.balance::text,
+            fp_attribute_physical.jumping_reach::text,
+            fp_attribute_physical.natural_fitness::text,
+            fp_attribute_physical.pace::text,
+            fp_attribute_physical.stamina::text,
+            fp_attribute_physical.strenght::text
+        FROM
+            fp_attribute_physical
+        WHERE
+            fp_attribute_physical.player_id = id_player::integer;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_attribute_technical
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_attribute_technical
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            corners				text,
+            crossing			text,
+            dribbling			text,
+            finishing			text,
+            first_touch			text,
+            free_kick_taking	text,
+            heading				text,
+            long_shots			text,
+            long_throws			text,
+            marking				text,
+            passing				text,
+            penality_taking		text,
+            tackling			text,
+            technique			text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_attribute_technical.corners::text,
+            fp_attribute_technical.crossing::text,
+            fp_attribute_technical.dribbling::text,
+            fp_attribute_technical.finishing::text,
+            fp_attribute_technical.first_touch::text,
+            fp_attribute_technical.free_kick_taking::text,
+            fp_attribute_technical.heading::text,
+            fp_attribute_technical.long_shots::text,
+            fp_attribute_technical.long_throws::text,
+            fp_attribute_technical.marking::text,
+            fp_attribute_technical.passing::text,
+            fp_attribute_technical.penality_taking::text,
+            fp_attribute_technical.tackling::text,
+            fp_attribute_technical.technique::text  
+        FROM
+            fp_attribute_technical
+        WHERE
+            fp_attribute_technical.player_id = id_player::integer;
+        
 END;
 $$
 LANGUAGE plpgsql;
