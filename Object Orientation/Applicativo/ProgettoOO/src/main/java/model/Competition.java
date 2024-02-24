@@ -14,10 +14,17 @@ public class Competition
 	public enum COMPETITION_TYPE {CUP, LEAGUE, SUPER_CUP}
 	private static final Map<String, Competition> COMPETITION_MAP = new LinkedHashMap<>();
 	private static Integer totalCompetitions = 0;
+
 	private final String type;
 	private final String teamType;
 	private final String name;
 	private final Confederation confederation;
+
+
+	private List<String> editionList;
+	private String edition; // edizione della competizione che si sta mostrando
+	private List<Team> editionTeamList;
+	private List<AssignedTrophy> editionAssignedTrophyList;
 
 
 	public Competition(String type,
@@ -29,6 +36,10 @@ public class Competition
 		this.teamType = teamType;
 		this.name = name;
 		this.confederation = confederation;
+
+		this.editionList = new ArrayList<>();
+		this.editionTeamList = new ArrayList<>();
+		this.editionAssignedTrophyList = new ArrayList<>();
 	}
 
 
@@ -66,5 +77,31 @@ public class Competition
 	public Map<String, Competition> getCompetitionMap()
 	{
 		return COMPETITION_MAP;
+	}
+
+
+	public void setEdition(String edition)
+	{
+		this.edition = edition;
+	}
+
+	public String getEdition()
+	{
+		return edition;
+	}
+
+	public List<String> getEditionList()
+	{
+		return editionList;
+	}
+
+	public List<Team> getEditionTeamList()
+	{
+		return editionTeamList;
+	}
+
+	public List<AssignedTrophy> getEditionAssignedTrophyList()
+	{
+		return editionAssignedTrophyList;
 	}
 }

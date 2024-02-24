@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,6 +27,8 @@ public class Player
 	private String role;
 	private String retiredDate;
 
+	private List<Statistic> statisticList;
+
 
 	public Player(String name,
 								String surname,
@@ -43,6 +47,8 @@ public class Player
 		this.position = position;
 		this.role = role;
 		this.retiredDate = retiredDate;
+
+		this.statisticList = new ArrayList<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -138,5 +144,10 @@ public class Player
 	public void setRetiredDate(String retiredDate)
 	{
 		this.retiredDate = retiredDate;
+	}
+
+	public List<Statistic> getStatisticList()
+	{
+		return statisticList;
 	}
 }

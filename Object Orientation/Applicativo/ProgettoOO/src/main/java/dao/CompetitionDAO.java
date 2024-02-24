@@ -20,4 +20,7 @@ public interface CompetitionDAO
 													List<String> listCountryName);
 
 	Integer countCompetitionDB();
+
+	void fetchCompetitionEditionDB(String competitionID,
+																 List<String> listCompetitionEdition);
 }

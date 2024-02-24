@@ -621,7 +621,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : filter_competitions
  *
- * IN      : text, text, text
+ * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text)
@@ -631,7 +631,6 @@ LANGUAGE plpgsql;
 CREATE OR REPLACE FUNCTION filter_competitions
 (
     IN  type_team   text,
-    IN  s_year      text,
     IN  id_country  text
 )
 RETURNS TABLE
@@ -658,13 +657,52 @@ BEGIN
                 ON
                 fp_competition.confederation_id = fp_confederation.id
         WHERE
-            fp_competition_edition.start_year = s_year::integer
-            AND
             fp_competition.team_type = type_team::en_team
             AND
             fp_confederation.country_id = id_country::integer
         ORDER BY
             fp_competition.name;
+
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : filter_competition_edition
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION filter_competitions
+(
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition_edition.start_year::text
+        FROM
+            fp_competition_edition
+        WHERE
+            fp_competition_edition.competition_id = id_comp::text
+        ORDER BY
+            fp_competition_edition.start_year DESC;
 
 
 END;
@@ -1177,6 +1215,20 @@ RETURNS TABLE
 AS
 $$
 BEGIN
+
+    IF (s_year_militancy IS NULL) THEN
+
+        s_year_militancy = '1810';
+    
+    END IF;
+
+
+    IF (e_year_militancy IS NULL) THEN
+
+        e_year_militancy = extract(year from current_date())::text;
+    
+    END IF;
+
 
     RETURN QUERY
         SELECT DISTINCT

@@ -89,4 +89,27 @@ public class PostgresImplCompetitionDAO
 
 		return count;
 	}
+
+	@Override
+	public void fetchCompetitionEditionDB(String competitionID,
+																				List<String> listCompetitionEdition)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call filter_competition_edition(?)}");
+			cs.setString(1, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listCompetitionEdition.add(rs.getString("start_year"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

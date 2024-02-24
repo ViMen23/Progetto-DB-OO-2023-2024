@@ -12,9 +12,6 @@ import java.util.List;
  */
 public class Statistic
 {
-	private static final List<Statistic> STATISTIC_LIST = new ArrayList<>();
-
-	private final Player player;
 	private final Team team;
 	private final Competition competition;
 	private final String competitionYear;
@@ -27,8 +24,7 @@ public class Statistic
 	private final String goalConceded;
 	private final String penaltySaved;
 
-	public Statistic(Player player,
-									 Team team,
+	public Statistic(Team team,
 									 Competition competition,
 									 String competitionYear,
 									 String match,
@@ -40,7 +36,6 @@ public class Statistic
 									 String goalConceded,
 									 String penaltySaved)
 	{
-		this.player = player;
 		this.team = team;
 		this.competition = competition;
 		this.competitionYear = competitionYear;
@@ -54,10 +49,6 @@ public class Statistic
 		this.penaltySaved = penaltySaved;
 	}
 
-	public Player getPlayer()
-	{
-		return player;
-	}
 
 	public Team getTeam()
 	{
@@ -114,8 +105,4 @@ public class Statistic
 		return penaltySaved;
 	}
 
-	public List<Statistic> getStatisticList()
-	{
-		return STATISTIC_LIST;
-	}
 }

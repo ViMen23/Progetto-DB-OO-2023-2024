@@ -496,7 +496,6 @@ public class Controller
 		}
 
 
-
 		while (!(listConfederationID.isEmpty())) {
 			String ID = listConfederationID.removeFirst();
 			Confederation confederation = newConfederation
@@ -728,6 +727,26 @@ public class Controller
 	}
 
 
+	private void fetchCompetitionEdition(String competitionID)
+	{
+		List<String> listCompetitionEdition = new ArrayList<>();
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionEditionDB
+						(
+										competitionID,
+										listCompetitionEdition
+						);
+
+
+		List<String> competitionEditionList = ctrlCompetition.getCompetitionMap().get(competitionID).getEditionList();
+
+		competitionEditionList.clear();
+
+		competitionEditionList.addAll(listCompetitionEdition);
+	}
+
+
 	/**
 	 * TODO
 	 * @param competitionNameVector
@@ -763,6 +782,14 @@ public class Controller
 			competitionNameVector.add(competitionName);
 			competitionNameMap.put(competitionName, key);
 		}
+	}
+
+	public void setCompetitionEditionComboBox(Vector<String> competitionEditionVector,
+																						String competitionID)
+	{
+		fetchCompetitionEdition(competitionID);
+
+		competitionEditionVector.addAll(ctrlCompetition.getCompetitionMap().get(competitionID).getEditionList());
 	}
 
 
@@ -1662,7 +1689,6 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param player
 	 * @param team
 	 * @param competition
 	 * @param competitionYear
@@ -1676,8 +1702,7 @@ public class Controller
 	 * @param penaltySaved
 	 * @return
 	 */
-	private Statistic newStatistic(Player player,
-																 Team team,
+	private Statistic newStatistic(Team team,
 																 Competition competition,
 																 String competitionYear,
 																 String match,
@@ -1691,7 +1716,6 @@ public class Controller
 	{
 		return new Statistic
 						(
-										player,
 										team,
 										competition,
 										competitionYear,
@@ -1707,8 +1731,19 @@ public class Controller
 	}
 
 
-	private Statistic newStatistic(Player player,
-																 String match,
+	/**
+	 * TODO
+	 * @param match
+	 * @param goalScored
+	 * @param penaltyScored
+	 * @param assist
+	 * @param yellowCard
+	 * @param redCard
+	 * @param goalConceded
+	 * @param penaltySaved
+	 * @return
+	 */
+	private Statistic newStatistic(String match,
 																 String goalScored,
 																 String penaltyScored,
 																 String assist,
@@ -1719,7 +1754,6 @@ public class Controller
 	{
 		return new Statistic
 						(
-										player,
 										null,
 										null,
 										null,
@@ -1743,7 +1777,6 @@ public class Controller
 	{
 		return new Statistic
 						(
-										null,
 										null,
 										null,
 										null,
@@ -1814,12 +1847,9 @@ public class Controller
 		}
 
 
-		ctrlStatistic.getStatisticList().clear();
-
 		while (!(listPlayerID.isEmpty())) {
 			Statistic statistic = newStatistic
 							(
-											ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()),
 											listStatisticMatch.removeFirst(),
 											listStatisticGoalScored.removeFirst(),
 											listStatisticPenaltyScored.removeFirst(),
@@ -1830,7 +1860,7 @@ public class Controller
 											listStatisticPenaltySaved.removeFirst()
 							);
 
-			ctrlStatistic.getStatisticList().add(statistic);
+			ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()).getStatisticList().add(statistic);
 		}
 
 	}
@@ -1895,20 +1925,22 @@ public class Controller
 		statisticTableColumnName.add(string);
 
 
-		for (Statistic statistic : ctrlStatistic.getStatisticList()) {
+		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
 			Vector<String> statisticVector = new Vector<>();
 
-			statisticVector.add(statistic.getPlayer().getRole());
-			statisticVector.add(statistic.getPlayer().getName());
-			statisticVector.add(statistic.getPlayer().getSurname());
-			statisticVector.add(statistic.getMatch());
-			statisticVector.add(statistic.getGoalScored());
-			statisticVector.add(statistic.getPenaltyScored());
-			statisticVector.add(statistic.getAssist());
-			statisticVector.add(statistic.getYellowCard());
-			statisticVector.add(statistic.getRedCard());
-			statisticVector.add(statistic.getGoalConceded());
-			statisticVector.add(statistic.getPenaltySaved());
+			Player player = ctrlPlayer.getPlayerMap().get(key);
+
+			statisticVector.add(player.getRole());
+			statisticVector.add(player.getName());
+			statisticVector.add(player.getSurname());
+			statisticVector.add(player.getStatisticList().getFirst().getMatch());
+			statisticVector.add(player.getStatisticList().getFirst().getGoalScored());
+			statisticVector.add(player.getStatisticList().getFirst().getPenaltyScored());
+			statisticVector.add(player.getStatisticList().getFirst().getAssist());
+			statisticVector.add(player.getStatisticList().getFirst().getYellowCard());
+			statisticVector.add(player.getStatisticList().getFirst().getRedCard());
+			statisticVector.add(player.getStatisticList().getFirst().getGoalConceded());
+			statisticVector.add(player.getStatisticList().getFirst().getPenaltySaved());
 
 			statisticTableData.add(statisticVector);
 		}
