@@ -83,4 +83,39 @@ public class PostgresImplTeamDAO
 
 		return count;
 	}
+
+	@Override
+	public void fetchTeamDB(String startYear,
+									  	 String competitionID,
+										 List<String> listTeamID,
+										 List<String> listTeamType,
+										 List<String> listTeamLongName,
+										 List<String> listTeamShortName,
+										 List<String> listCountryID,
+										 List<String> listCountryName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call filter_teams(?, ?)}");
+			cs.setString(1, startYear);
+			cs.setString(2, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listTeamID.add(rs.getString("team_id"));
+				listTeamType.add(rs.getString("team_type"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+				listTeamShortName.add(rs.getString("team_short_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryName.add(rs.getString("country_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

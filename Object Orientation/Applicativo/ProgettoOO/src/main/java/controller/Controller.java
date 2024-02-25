@@ -980,7 +980,61 @@ public class Controller
 
 	}
 
+	/**
+	 * TODO
+	 * @param startYear
+	 * @param competitionID
+	 */
+	private void fetchTeam(String startYear, String competitionID)
+	{
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamType = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listTeamShortName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
 
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamDB
+			(
+				startYear,
+				competitionID,
+				listTeamID,
+				listTeamType,
+				listTeamLongName,
+				listTeamShortName,
+				listCountryID,
+				listCountryName
+			);
+
+		ctrlCountry.getCountryMap().clear();
+
+		for (String ID : listCountryID) {
+			Country country = newCountry
+				(
+					ID,
+					listCountryName.removeFirst()
+				);
+
+			ctrlCountry.getCountryMap().put(ID, country);
+		}
+
+		ctrlTeam.getTeamMap().clear();
+
+		while (!(listTeamID.isEmpty())) {
+			String ID = listTeamID.removeFirst();
+			Team team = newTeam
+				(
+					ID,
+					listTeamType.removeFirst(),
+					listTeamShortName.removeFirst(),
+					listTeamLongName.removeFirst(),
+					ctrlCountry.getCountryMap().get(listCountryID.removeFirst())
+				);
+
+			ctrlTeam.getTeamMap().put(ID, team);
+		}
+	}
 	/**
 	 * TODO
 	 * @param teamLongNameVector
@@ -1078,7 +1132,32 @@ public class Controller
 		}
 	}
 
+	/**
+	 * TODO
+	 * @param teamLongNameVector
+	 * @param teamLongNameMap
+	 * @param start_year
+	 * @param competitionID
+	 */
+	public void setTeamComboBox(Vector<String> teamLongNameVector,
+											 Map<String, String> teamLongNameMap,
+											 String start_year,
+											 String competitionID)
+	{
+		fetchTeam
+			(
+				start_year,
+				competitionID
+			);
 
+		for (String key : ctrlTeam.getTeamMap().keySet()) {
+
+			String teamLongName = ctrlTeam.getTeamMap().get(key).getLongName();
+
+			teamLongNameVector.add(teamLongName);
+			teamLongNameMap.put(teamLongName, key);
+		}
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1356,6 +1435,46 @@ public class Controller
 
 	}
 
+	/**
+	 * TODO
+	 * @param startYear
+	 * @param teamID
+	 */
+	private void fetchPlayer(String startYear,
+							 String teamID)
+	{
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		playerDAO.fetchPlayerDB
+			(
+				startYear,
+				teamID,
+				listPlayerID,
+				listPlayerName,
+				listPlayerSurname,
+				listPlayerRole
+			);
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		while (!(listPlayerID.isEmpty())) {
+			String ID = listPlayerID.removeFirst();
+			Player player = newPlayer
+				(
+					ID,
+					listPlayerName.removeFirst(),
+					listPlayerSurname.removeFirst(),
+					listPlayerRole.removeFirst()
+				);
+
+			ctrlPlayer.getPlayerMap().put(ID, player);
+		}
+
+	}
 
 	/**
 	 * TODO
@@ -1411,6 +1530,28 @@ public class Controller
 		}
 	}
 
+	public void setPlayerComboBox(Vector<String> playerInfoVector,
+								  Map<String, String> playerInfoMap,
+								  String startYear,
+								  String teamID)
+	{
+		fetchPlayer
+			(
+				startYear,
+				teamID
+			);
+
+
+		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+
+			String playerInfo = ctrlPlayer.getPlayerMap().get(key).getName();
+			playerInfo += " ";
+			playerInfo += ctrlPlayer.getPlayerMap().get(key).getSurname();
+
+			playerInfoVector.add(playerInfo);
+			playerInfoMap.put(playerInfo, key);
+		}
+	}
 
 	public void setPlayerTable(Vector<String> playerTableColumnName,
 														 Vector<Vector<String>> playerTableData,
@@ -1577,7 +1718,6 @@ public class Controller
 			playerTableData.add(playerVector);
 		}
 	}
-
 	/*------------------------------------------------------------------------------------------------------*/
 
 

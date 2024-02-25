@@ -42,4 +42,11 @@ public interface PlayerDAO
 										 List<String> listPositionName,
 										 List<String> listCountryID,
 										 List<String> listCountryName);
+
+	void fetchPlayerDB(String startYear,
+							String teamID,
+							List<String> listPlayerID,
+							List<String> listPlayerName,
+							List<String> listPlayerSurname,
+							List<String> listPlayerRole);
 }

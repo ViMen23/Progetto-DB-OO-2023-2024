@@ -700,7 +700,7 @@ BEGIN
         FROM
             fp_competition_edition
         WHERE
-            fp_competition_edition.competition_id = id_comp::text
+            fp_competition_edition.competition_id = id_comp::integer
         ORDER BY
             fp_competition_edition.start_year DESC;
 
@@ -870,6 +870,7 @@ CREATE OR REPLACE FUNCTION filter_teams
 RETURNS TABLE
         (
             team_id         text,
+            team_type       text,
             team_long_name  text,
             team_short_name text,
             country_id      text,
@@ -882,6 +883,7 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_team.id::text AS team_id,
+            fp_team.type::text AS team_type,
             fp_team.long_name::text AS team_long_name,
             fp_team.short_name::text AS team_short_name,
             fp_country.id::text AS country_id,
