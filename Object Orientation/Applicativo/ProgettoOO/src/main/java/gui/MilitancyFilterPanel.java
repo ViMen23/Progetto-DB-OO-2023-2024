@@ -164,7 +164,7 @@ public class MilitancyFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * BOTTONE DI RESET PER YEAR PANEL
+		 * BOTTONE DI RESET PER MILITANCY PANEL
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -186,11 +186,11 @@ public class MilitancyFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				militancyTeamType = null;
-				teamTypeButtonGroup.clearSelection();
+				continentComboBox.setSelectedIndex(-1);
 
-				continentComboBox.setEnabled(false);
-				resetFromTeamType();
+				militancyContinentID = null;
+
+				resetFromContinent();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -219,189 +219,12 @@ public class MilitancyFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "1. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-		
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		militancyPanel.add(label, "sgx panel_first_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL INFO
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "INFO";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		militancyPanel.add(label, "sgx panel_second_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowx, center",
-				"30[20%, center]80[20%, center]30",
-				"10[]10"
-			);
-
-		teamTypePanel = new JPanel(migLayout);
-		teamTypePanel.setBackground(panelColor);
-
-		militancyPanel.add(teamTypePanel, "sgx panel_first_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO SQUADRA CLUB
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("club");
-		string = StringUtils.capitalize(string);
-
-		clubRadioButton = new JRadioButton(string);
-		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		teamTypePanel.add(clubRadioButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		clubRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				militancyTeamType = Team.TEAM_TYPE.CLUB.toString();
-
-				if (militancyTeamType != null){
-					resetFromTeamType();
-				}
-				continentComboBox.setEnabled(true);
-			}
-		});
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("national");
-		string = StringUtils.capitalize(string);
-
-		nationalRadioButton = new JRadioButton(string);
-		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		teamTypePanel.add(nationalRadioButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		nationalRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				militancyTeamType = Team.TEAM_TYPE.NATIONAL.toString();
-
-				if (militancyTeamType != null){
-					resetFromTeamType();
-				}
-				continentComboBox.setEnabled(true);
-			}
-		});
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTONGROUP PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		teamTypeButtonGroup = new ButtonGroup();
-
-		teamTypeButtonGroup.add(clubRadioButton);
-		teamTypeButtonGroup.add(nationalRadioButton);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL INFO FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowy",
-				"",
-				""
-			);
-
-		infoPanel = new JPanel(migLayout);
-		infoPanel.setBackground(panelColor);
-
-		militancyPanel.add(infoPanel, "sgx panel_second_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL FILTRA PER PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "2. ";
+		string = "1. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("nation");
@@ -435,6 +258,7 @@ public class MilitancyFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		militancyPanel.add(label, "sgx panel_second_column");
@@ -485,8 +309,6 @@ public class MilitancyFilterPanel
 
 
 		continentComboBox = new JComboBox<>();
-
-		continentComboBox.setEnabled(false);
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
@@ -590,11 +412,12 @@ public class MilitancyFilterPanel
 			{
 				militancyNationID = militancyNationMap.get((String) nationComboBox.getSelectedItem());
 
-				if (teamComboBox.isEnabled()) {
+				if (clubRadioButton.isEnabled() || nationalRadioButton.isEnabled()) {
 					resetFromNation();
 				}
 
-				teamComboBox.setEnabled(true);
+				clubRadioButton.setEnabled(true);
+				nationalRadioButton.setEnabled(true);
 			}
 
 			@Override
@@ -615,6 +438,184 @@ public class MilitancyFilterPanel
 				"debug, flowy",
 				"[]",
 				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		militancyPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "2. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		militancyPanel.add(label, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		militancyPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx, center",
+				"30[20%, center]80[20%, center]30",
+				"10[]10"
+			);
+
+		teamTypePanel = new JPanel(migLayout);
+		teamTypePanel.setBackground(panelColor);
+
+		militancyPanel.add(teamTypePanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA CLUB
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("club");
+		string = StringUtils.capitalize(string);
+
+		clubRadioButton = new JRadioButton(string);
+		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(clubRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		clubRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				militancyTeamType = Team.TEAM_TYPE.CLUB.toString();
+
+				if (militancyTeamType != null){
+					resetFromTeamType();
+				}
+
+				teamComboBox.setEnabled(true);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("national");
+		string = StringUtils.capitalize(string);
+
+		nationalRadioButton = new JRadioButton(string);
+		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(nationalRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		nationalRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				militancyTeamType = Team.TEAM_TYPE.NATIONAL.toString();
+
+				if (militancyTeamType != null){
+					resetFromTeamType();
+				}
+				teamComboBox.setEnabled(true);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		teamTypeButtonGroup = new ButtonGroup();
+
+		teamTypeButtonGroup.add(clubRadioButton);
+		teamTypeButtonGroup.add(nationalRadioButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
 			);
 
 		infoPanel = new JPanel(migLayout);
@@ -661,6 +662,7 @@ public class MilitancyFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		militancyPanel.add(label, "sgx panel_second_column");
@@ -690,7 +692,7 @@ public class MilitancyFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TEAM
+		 * LABEL SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -756,8 +758,10 @@ public class MilitancyFilterPanel
 
 				searchButton.setEnabled(true);
 
-				fromYearComboBox.setEnabled(true);
-				toYearComboBox.setEnabled(true);
+				if (militancyTeam != null) {
+					fromYearComboBox.setEnabled(true);
+					toYearComboBox.setEnabled(true);
+				}
 			}
 
 			@Override
@@ -825,6 +829,7 @@ public class MilitancyFilterPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		militancyPanel.add(label, "sgx panel_second_column");
@@ -1145,15 +1150,6 @@ public class MilitancyFilterPanel
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
-	public void resetFromTeamType()
-	{
-		continentComboBox.setEnabled(false);
-		continentComboBox.setSelectedIndex(-1);
-
-		militancyContinentID = null;
-
-		resetFromContinent();
-	}
 
 	public void resetFromContinent()
 	{
@@ -1165,8 +1161,18 @@ public class MilitancyFilterPanel
 		resetFromNation();
 
 	}
-
 	public void resetFromNation()
+	{
+		clubRadioButton.setEnabled(false);
+		nationalRadioButton.setEnabled(false);
+
+		teamTypeButtonGroup.clearSelection();
+
+		militancyTeamType = null;
+
+		resetFromTeamType();
+	}
+	public void resetFromTeamType()
 	{
 		teamComboBox.setEnabled(false);
 		teamComboBox.setSelectedIndex(-1);
