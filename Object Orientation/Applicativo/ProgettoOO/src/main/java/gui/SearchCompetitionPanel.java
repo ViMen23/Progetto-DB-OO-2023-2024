@@ -28,10 +28,10 @@ public class SearchCompetitionPanel
 	private final Color panelColor = Color.white;
 	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon errorIcon = GuiConfiguration.createImageIcon("images/error.png");
 	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
 
+	private final JPanel titlePanel;
 	private final JPanel competitionPanel;
 	private final JPanel namePanel;
 	private final JPanel competitionTypePanel;
@@ -40,18 +40,14 @@ public class SearchCompetitionPanel
 	private final JPanel competitionTablePanel;
 
 	private final JButton titleButton;
-	private final JButton nameFieldResetButton;
-	private final JButton competitionTypeResetButton;
-	private final JButton teamTypeResetButton;
-	private final JButton countryResetButton;
+	private final JButton resetButton;
 	private final JButton searchButton;
 
 	private final JLabel nameSearchLabel;
-	private final JLabel errorLabel;
 	private final JLabel competitionTypeLabel;
 	private final JLabel teamTypeSearchLabel;
 	private final JLabel countrySearchLabel;
-	private final JLabel titleTable;
+	private final JLabel titleTableLabel;
 
 	private final JRadioButton leagueRadioButton;
 	private final JRadioButton cupRadioButton;
@@ -77,12 +73,15 @@ public class SearchCompetitionPanel
 	private final Map<String, String> competitionNationMap = new HashMap<>();
 
 
-	private final JLabel label;
 	private final JTable competitionTable;
 	private final Vector<String> competitionTableColumnName = new Vector<>();
 	private final Vector<Vector<String>> competitionTableData = new Vector<>();
 
 	private final JScrollPane scrollPane;
+
+	private JPanel infoPanel;
+	private JLabel label;
+
 
 	private String competitionSubName = null;
 	private String competitionType = null;
@@ -99,20 +98,44 @@ public class SearchCompetitionPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"10[grow, fill]10",
-				"20[]20[]50[]10"
+				"debug, flowy, fill",
+				"0[]0",
+				"10[]10[]0[]10"
 			);
 
 		setLayout(migLayout);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TITOLO GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"0[]110[]0",
+				"10[]10"
+			);
+
+		titlePanel = new JPanel(migLayout);
+		titlePanel.setOpaque(true);
+		titlePanel.setBackground(panelColor);
+
+		add(titlePanel, "sgx general, dock north");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE TITOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo titolo: bottone
-		 */
+
+
 		string = GuiConfiguration.getMessage("search");
 		string += " ";
 		string += GuiConfiguration.getMessage("competitions");
@@ -125,12 +148,21 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
+
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIcon(maximizeIcon);
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		add(titleButton);
+		titlePanel.add(titleButton, "width 80%");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
@@ -142,7 +174,7 @@ public class SearchCompetitionPanel
 					titleButton.setIcon(minimizeIcon);
 				}
 				else{
-					add(competitionPanel, 1);
+					add(competitionPanel, "dock center, sgx general");
 					titleButton.setIcon(maximizeIcon);
 				}
 
@@ -152,160 +184,266 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE DI RESET PER COUNTRY PANEL
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton = new JButton(resetIcon);
+		resetButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titlePanel.add(resetButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				nameTextField.setText(null);
+				competitionSubName = null;
+
+				competitionTypeGroupButton.clearSelection();
+				competitionType = null;
+
+
+				teamTypeGroupButton.clearSelection();
+				competitionTeamType = null;
+
+				countryGroupButton.clearSelection();
+				competitionCountryType = null;
+
+				continentComboBox.setEnabled(false);
+				continentComboBox.setSelectedIndex(-1);
+				competitionContinentID = null;
+
+				nationComboBox.setEnabled(false);
+				nationComboBox.setSelectedIndex(-1);
+				competitionNationID = null;
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA GENERALE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo competizione: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"0[grow, fill]0",
-				"0[]0[]10[]0[]10[]0[]10[]0[]20[]0"
+				"debug, wrap 2",
+				"10[60%, fill]50[35%, fill]10",
+				"0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0"
 			);
 
 		competitionPanel = new JPanel(migLayout);
 		competitionPanel.setOpaque(false);
 
-		add(competitionPanel);
+		add(competitionPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER NOME
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per nome: label
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
 		nameSearchLabel = new JLabel(string);
+
 		nameSearchLabel.setOpaque(true);
 		nameSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		nameSearchLabel.setForeground(Color.white);
+
 		nameSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		competitionPanel.add(nameSearchLabel);
+		competitionPanel.add(nameSearchLabel, "sgx panel_first_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		competitionPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER NOME
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per nome: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"50[]80[]10[]70[]20",
+				"debug, flowx",
+				"5%[20%]10%[40%]20%",
 				"10[]10"
 			);
-
 
 		namePanel = new JPanel(migLayout);
 		namePanel.setBackground(panelColor);
 
-		competitionPanel.add(namePanel);
+		competitionPanel.add(namePanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo nome: label
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL NOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("name");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		namePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo nome: textField
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TEXTFIELD NOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nameTextField = new JTextField(GuiConfiguration.getInputColumn());
+
+		namePanel.add(nameTextField);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		nameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
 				if (Regex.patternAlnum.matcher(nameTextField.getText()).find()) {
-
 					competitionSubName = nameTextField.getText();
-					errorLabel.setVisible(false);
 				} else {
-
 					competitionSubName = null;
-					errorLabel.setVisible(true);
 				}
 			}
 		});
-
-		namePanel.add(nameTextField);
-
-		/*
-		 * Campo errore regex: label
-		 */
-		errorLabel = new JLabel(errorIcon);
-
-		namePanel.add(errorLabel);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		nameFieldResetButton = new JButton(resetIcon);
-		nameFieldResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		nameFieldResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				competitionSubName = null;
-				nameTextField.setText(null);
-			}
-		});
-
-		namePanel.add(nameFieldResetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		competitionPanel.add(infoPanel, "sg panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER TIPO COMPETIZIONE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo di competizione: panel
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("competitionType");
 		string = string.toUpperCase();
 
 		competitionTypeLabel = new JLabel(string);
+
 		competitionTypeLabel.setOpaque(true);
 		competitionTypeLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		competitionTypeLabel.setForeground(Color.white);
+
 		competitionTypeLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		competitionPanel.add(competitionTypeLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		competitionPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER TIPO COMPETIZIONE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo competizione: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"50[]80[]80[]80[]20",
+				"30[20%, center]80[20%, center]80[20%, center]30",
 				"10[]10"
 			);
 
@@ -313,16 +451,33 @@ public class SearchCompetitionPanel
 
 		competitionTypePanel.setBackground(panelColor);
 
-		competitionPanel.add(competitionTypePanel);
+		competitionPanel.add(competitionTypePanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo campionato: radioButton
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO COMPETIZIONE CAMPIONATO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("league");
 		string = StringUtils.capitalize(string);
 
 		leagueRadioButton = new JRadioButton(string);
 		leagueRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		competitionTypePanel.add(leagueRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		leagueRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -330,17 +485,31 @@ public class SearchCompetitionPanel
 				competitionType = Competition.COMPETITION_TYPE.LEAGUE.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		competitionTypePanel.add(leagueRadioButton);
 
-		/*
-		 * Campo coppa: radioButton
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO COMPETIZIONE COPPA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("cup");
 		string = StringUtils.capitalize(string);
 
 		cupRadioButton = new JRadioButton(string);
 		cupRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+		competitionTypePanel.add(cupRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		cupRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -348,17 +517,32 @@ public class SearchCompetitionPanel
 				competitionType = Competition.COMPETITION_TYPE.CUP.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		competitionTypePanel.add(cupRadioButton);
 
-		/*
-		 * Campo supercoppa: radioButton
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO COMPETIZIONE SUPERCOPPA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("supercup");
 		string = StringUtils.capitalize(string);
 
 		supercupRadioButton = new JRadioButton(string);
 		supercupRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		competitionTypePanel.add(supercupRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		supercupRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -366,44 +550,50 @@ public class SearchCompetitionPanel
 				competitionType = Competition.COMPETITION_TYPE.SUPER_CUP.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		competitionTypePanel.add(supercupRadioButton);
 
-		/*
-		 * Campo gruppo bottoni: buttonGroup
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER TIPO COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		competitionTypeGroupButton = new ButtonGroup();
 
 		competitionTypeGroupButton.add(leagueRadioButton);
 		competitionTypeGroupButton.add(cupRadioButton);
 		competitionTypeGroupButton.add(supercupRadioButton);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		competitionTypeResetButton = new JButton(resetIcon);
-		competitionTypeResetButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		competitionTypeResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				competitionType = null;
-				competitionTypeGroupButton.clearSelection();
-			}
-		});
-
-		competitionTypePanel.add(competitionTypeResetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		competitionPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo squadra: checkbox
-		 */
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("teamType");
@@ -419,17 +609,38 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		competitionPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo squadra: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"50:push[]80[]80[]20:push",
+				"debug, flowx, center",
+				"30[20%, center]80[20%, center]30",
 				"10[]10"
 			);
 
@@ -437,15 +648,32 @@ public class SearchCompetitionPanel
 		teamTypePanel.setBackground(panelColor);
 
 		competitionPanel.add(teamTypePanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo club: radio button
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA CLUB
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
 		clubRadioButton = new JRadioButton(string);
 		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(clubRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		clubRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -453,17 +681,32 @@ public class SearchCompetitionPanel
 				competitionTeamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		teamTypePanel.add(clubRadioButton);
 
-		/*
-		 * Campo nazionale: radio button
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
 		nationalRadioButton = new JRadioButton(string);
 		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(nationalRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nationalRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -471,43 +714,51 @@ public class SearchCompetitionPanel
 				competitionTeamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		teamTypePanel.add(nationalRadioButton);
 
-		/*
-		 * Campo gruppo bottoni: buttonGroup
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		teamTypeGroupButton = new ButtonGroup();
 
 		teamTypeGroupButton.add(clubRadioButton);
 		teamTypeGroupButton.add(nationalRadioButton);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		teamTypeResetButton = new JButton(resetIcon);
-		teamTypeResetButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		teamTypeResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				competitionTeamType = null;
-				teamTypeGroupButton.clearSelection();
-			}
-		});
-
-		teamTypePanel.add(teamTypeResetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		competitionPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per paese e confederazione: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("country");
@@ -520,39 +771,77 @@ public class SearchCompetitionPanel
 		countrySearchLabel.setOpaque(true);
 		countrySearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		countrySearchLabel.setForeground(Color.white);
+
 		countrySearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		competitionPanel.add(countrySearchLabel);
+		competitionPanel.add(countrySearchLabel, "sgx panel_first_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		competitionPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per paese e confederazione: checkBox
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2, center",
-				"50[]80[]20",
+				"debug, wrap 2",
+				"5%[20%]10%[40%]20%",
 				"10[]20[]20[]10"
 			);
 
 		countryConfederationPanel = new JPanel(migLayout);
 		countryConfederationPanel.setBackground(panelColor);
 
-		competitionPanel.add(countryConfederationPanel);
+		competitionPanel.add(countryConfederationPanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo mondo: radio button
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE MONDO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
 
 		worldRadioButton = new JRadioButton(string);
 		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryConfederationPanel.add(worldRadioButton, "wrap");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		worldRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -560,36 +849,32 @@ public class SearchCompetitionPanel
 				competitionCountryType = Country.COUNTRY_TYPE.WORLD.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(worldRadioButton);
 
-		/*
-		 * Campo bottone reset: button
-		 */
-		countryResetButton = new JButton(resetIcon);
-		countryResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		countryResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				competitionCountryType = null;
-				competitionContinentID = null;
-				competitionNationID = null;
 
-				countryGroupButton.clearSelection();
-			}
-		});
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE CONTINENTE
+		 *------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(countryResetButton);
 
-		/*
-		 * Campo continente: radio button
-		 */
+
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
 		continentRadioButton = new JRadioButton(string);
 		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryConfederationPanel.add(continentRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentRadioButton.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -609,28 +894,43 @@ public class SearchCompetitionPanel
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(continentRadioButton);
 
 
-		/*
-		 * Campo continente: combo box
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX TIPO PAESE CONTINENTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentComboBox = new JComboBox<>();
 		continentComboBox.setEnabled(false);
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		countryConfederationPanel.add(continentComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCountryComboBox
+				GuiConfiguration.fillCountryComboBox
 					(
 						continentComboBox,
 						competitionContinentVector,
 						competitionContinentMap,
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						null
+						null,
+						true
 					);
 			}
 
@@ -642,35 +942,47 @@ public class SearchCompetitionPanel
 
 				if (nationRadioButton.isSelected()) {
 
-					competitionNationID = null;
-
-					if (competitionContinentID == null) { //È STATO SELEZIONATO MOSTRA TUTTO
-
-						nationComboBox.setEnabled(false);
-						nationComboBox.setSelectedIndex(-1);
+					if (competitionContinentID != null) { //NON È STATO SELEZIONATO MOSTRA TUTTO
+						nationComboBox.setEnabled(true);
 					}
 					else {
-						nationComboBox.setEnabled(true);
-						nationComboBox.firePopupMenuWillBecomeVisible();
-
+						nationComboBox.setEnabled(false);
 					}
+
+					nationComboBox.setSelectedIndex(-1);
+					competitionNationID = null;
 				}
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(continentComboBox);
 
-		/*
-		 * Campo nazione: radio button
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE NAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 
 		nationRadioButton = new JRadioButton(string);
 		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryConfederationPanel.add(nationRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nationRadioButton.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -695,12 +1007,16 @@ public class SearchCompetitionPanel
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(nationRadioButton);
 
-		/*
-		 * Campo nazione: combo box
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX TIPO PAESE NAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
 
@@ -708,18 +1024,29 @@ public class SearchCompetitionPanel
 
 		nationComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
+		countryConfederationPanel.add(nationComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nationComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
 
-				fillCountryComboBox
+				GuiConfiguration.fillCountryComboBox
 					(
 						nationComboBox,
 						competitionNationVector,
 						competitionNationMap,
 						Country.COUNTRY_TYPE.NATION.toString(),
-						competitionContinentID
+						competitionContinentID,
+						true
 					);
 			}
 			@Override
@@ -732,12 +1059,16 @@ public class SearchCompetitionPanel
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryConfederationPanel.add(nationComboBox);
 
-		/*
-		 * Campo gruppo bottoni: buttonGroup
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP TIPO PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		countryGroupButton = new ButtonGroup();
 
 		countryGroupButton.add(worldRadioButton);
@@ -746,18 +1077,49 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		competitionPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE RICERCA
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo avvia ricerca: button
-		 */
+
+
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		competitionPanel.add(searchButton, "sgx panel_first_column");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		searchButton.addActionListener(new ActionListener() {
 			@Override
@@ -774,18 +1136,16 @@ public class SearchCompetitionPanel
 				competitionTablePanel.revalidate();
 			}
 		});
-
-		competitionPanel.add(searchButton);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA
+		 * PANEL TABELLA COMPETIZIONI
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo tabella competizioni: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
@@ -796,11 +1156,17 @@ public class SearchCompetitionPanel
 		competitionTablePanel = new JPanel(migLayout);
 		competitionTablePanel.setBackground(panelColor);
 
-		add(competitionTablePanel);
+		add(competitionTablePanel, "dock south, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo titolo tabella paesi: label
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("no");
 		string += " ";
 		string += GuiConfiguration.getMessage("research");
@@ -808,19 +1174,25 @@ public class SearchCompetitionPanel
 		string += GuiConfiguration.getMessage("performed");
 		string = string.toUpperCase();
 
-		titleTable = new JLabel(string);
+		titleTableLabel = new JLabel(string);
 
-		titleTable.setOpaque(true);
-		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleTable.setForeground(Color.white);
+		titleTableLabel.setOpaque(true);
+		titleTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTableLabel.setForeground(Color.white);
 
-		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		competitionTablePanel.add(titleTable);
+		competitionTablePanel.add(titleTableLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo tabella paesi: table
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DELLE COMPETIZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		competitionTable = new JTable();
 
 		competitionTable.setRowHeight(GuiConfiguration.getTableRowHeight());
@@ -828,39 +1200,23 @@ public class SearchCompetitionPanel
 		competitionTable.setFillsViewportHeight(true);
 
 		competitionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
 		competitionTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) competitionTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo barra di scorrimento: jScrollPane
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		scrollPane = new JScrollPane(competitionTable);
 
 		competitionTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
-	}
-
-	public void fillCountryComboBox(JComboBox<String> comboBox,
-									Vector<String> vector,
-									Map<String, String> map,
-									String type,
-									String superCountryID)
-	{
-
-		GuiConfiguration.initComboBoxVector(vector, map, true);
-
-		Controller.getInstance().setCountryComboBox
-			(
-				vector,
-				map,
-				type,
-				superCountryID
-			);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
 	public void fillCompetitionTable(Vector<Vector<String>> tableData,
@@ -886,6 +1242,6 @@ public class SearchCompetitionPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
 	}
 }

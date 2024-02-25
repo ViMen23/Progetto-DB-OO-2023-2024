@@ -4,6 +4,7 @@ import controller.Controller;
 import model.Country;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * TYPE : class - gui package
@@ -24,7 +25,9 @@ public class Main
 
 		//searchCountryPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(new MilitancyFilterPanel());
+		MainFrame.getMainFrameInstance().add(new MilitancyFilterPanel(), "sgx frame");
+		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 1000));
+
 		MainFrame.getMainFrameInstance().pack();
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");

@@ -11,6 +11,7 @@ import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,10 +28,10 @@ public class SearchPlayerPanel
 	private final Color panelColor = Color.white;
 	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon errorIcon = GuiConfiguration.createImageIcon("images/error.png");
 	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
 
+	private final JPanel titlePanel;
 	private final JPanel playerPanel;
 	private final JPanel namePanel;
 	private final JPanel agePanel;
@@ -41,24 +42,16 @@ public class SearchPlayerPanel
 	private final JPanel playerTablePanel;
 
 	private final JButton titleButton;
-	private final JButton nameResetButton;
-	private final JButton surnameResetButton;
-	private final JButton ageResetButton;
-	private final JButton bornNationResetButton;
-	private final JButton roleResetButton;
-	private final JButton positionResetButton;
-	private final JButton footResetButton;
+	private final JButton resetButton;
 	private final JButton searchButton;
 
 	private final JLabel nameSearchLabel;
-	private final JLabel nameErrorLabel;
-	private final JLabel surnameErrorLabel;
 	private final JLabel ageSearchLabel;
 	private final JLabel bornNationSearchLabel;
 	private final JLabel roleSearchLabel;
 	private final JLabel mainPositionSearchLabel;
 	private final JLabel preferredFootSearchLabel;
-	private final JLabel titleTable;
+	private final JLabel titleTableLabel;
 
 	private final JTextField nameTextField;
 	private final JTextField surnameTextField;
@@ -88,8 +81,6 @@ public class SearchPlayerPanel
 	private final JRadioButton leftFootRadioButton;
 	private final JRadioButton eitherFootRadioButton;
 
-
-	private JLabel label;
 	private final ButtonGroup preferredFootGroupButton;
 
 	private final JTable playerTable;
@@ -98,13 +89,16 @@ public class SearchPlayerPanel
 
 	private final JScrollPane scrollPane;
 
+	private JLabel label;
+	private JPanel infoPanel;
+
 	private String playerSubName = null;
 	private String playerSubSurname = null;
 	private String playerReferringYear = null;
 	private String playerMinAge = null;
+	private String playerMaxAge = null;
 	private String playerContinentID = null;
 	private String playerNationID = null;
-	private String playerMaxAge = null;
 	private String playerRole = null;
 	private String playerPositionID = null;
 	private String playerFoot = null;
@@ -120,20 +114,44 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"10[grow, fill]10",
-				"20[]20[]50[]10"
+				"debug, flowy, fill",
+				"0[]0",
+				"10[]10[]0[]10"
 			);
 
 		setLayout(migLayout);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TITOLO GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"0[]110[]0",
+				"10[]10"
+			);
+
+		titlePanel = new JPanel(migLayout);
+		titlePanel.setOpaque(true);
+		titlePanel.setBackground(panelColor);
+
+		add(titlePanel, "sgx general, dock north");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE TITOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo titolo: bottone
-		 */
+
+
 		string = GuiConfiguration.getMessage("search");
 		string += " ";
 		string += GuiConfiguration.getMessage("players");
@@ -147,12 +165,21 @@ public class SearchPlayerPanel
 
 
 		titleButton = new JButton(string);
+
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIcon(maximizeIcon);
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		add(titleButton);
+		titlePanel.add(titleButton, "width 80%");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
@@ -164,7 +191,7 @@ public class SearchPlayerPanel
 					titleButton.setIcon(minimizeIcon);
 				}
 				else {
-					add(playerPanel, 1);
+					add(playerPanel,"dock center, sgx general");
 					titleButton.setIcon(maximizeIcon);
 				}
 
@@ -174,44 +201,132 @@ public class SearchPlayerPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE DI RESET PER TEAM PANEL
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton = new JButton(resetIcon);
+		resetButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titlePanel.add(resetButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				nameTextField.setText(null);
+				playerSubName = null;
+
+				surnameTextField.setText(null);
+				playerSubSurname = null;
+
+				yearReferenceComboBox.setSelectedIndex(-1);
+				playerReferringYear = null;
+
+				minimumAgeComboBox.setEnabled(false);
+				minimumAgeComboBox.setSelectedIndex(-1);
+				playerMinAge = null;
+
+				maximumAgeComboBox.setEnabled(false);
+				maximumAgeComboBox.setSelectedIndex(-1);
+				playerMaxAge = null;
+
+				continentComboBox.setSelectedIndex(-1);
+				playerContinentID = null;
+
+				nationComboBox.setEnabled(false);
+				nationComboBox.setSelectedIndex(-1);
+				playerNationID = null;
+
+				goalkeeperCheckBox.setSelected(false);
+				defenderCheckBox.setSelected(false);
+				midfielderCheckBox.setSelected(false);
+				forwardCheckBox.setSelected(false);
+
+				playerRole = null;
+
+				mainPositionComboBox.setSelectedIndex(-1);
+				playerPositionID = null;
+
+				preferredFootGroupButton.clearSelection();
+				playerFoot = null;
+
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA GENERALE
 		 *------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"0[grow, fill]0",
-				"0[]0[]10[]0[]10[]0[]10[]0[]10[]0[]10[]0[]20[]0"
+				"debug, wrap 2",
+				"10[60%, fill]50[35%, fill]10",
+				"0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0"
 			);
 
 		playerPanel = new JPanel(migLayout);
 		playerPanel.setOpaque(false);
 
-		add(playerPanel);
+		add(playerPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER NOME
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per nome: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
 
 		nameSearchLabel = new JLabel(string);
-		nameSearchLabel.setOpaque(true);
 
+		nameSearchLabel.setOpaque(true);
 		nameSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		nameSearchLabel.setForeground(Color.white);
+
 		nameSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		playerPanel.add(nameSearchLabel);
+		playerPanel.add(nameSearchLabel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -219,13 +334,13 @@ public class SearchPlayerPanel
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER NOME
 		 *------------------------------------------------------------------------------------------------------*/
-		/*
-		 * Campo ricerca per nome: panel
-		 */
+
+
+
 		migLayout = new MigLayout
 			(
-				"debug, wrap 4, center",
-				"50[]80[]10[]70[]20",
+				"debug, wrap 2",
+				"5%[20%]10%[40%]20%",
 				"10[]20[]10"
 			);
 
@@ -233,184 +348,235 @@ public class SearchPlayerPanel
 		namePanel.setBackground(panelColor);
 
 		playerPanel.add(namePanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo nome: stampa
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL NOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("name");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		namePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo testo: textField
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TEXTFIELD NOME ESTESO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nameTextField = new JTextField(GuiConfiguration.getInputColumn());
+
+		namePanel.add(nameTextField);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		nameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
 				if (Regex.patternString.matcher(nameTextField.getText()).find()) {
-
 					playerSubName = nameTextField.getText();
-					nameErrorLabel.setVisible(false);
-
 				} else {
-
 					playerSubName = null;
-					nameErrorLabel.setVisible(true);
 				}
 			}
 		});
-
-		namePanel.add(nameTextField);
-
-		/*
-		 * Campo errore regex: label
-		 */
-		nameErrorLabel = new JLabel(errorIcon);
-
-		namePanel.add(nameErrorLabel);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		nameResetButton = new JButton(resetIcon);
-		nameResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		nameResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				playerSubName = null;
-				nameTextField.setText(null);
-			}
-		});
-
-		namePanel.add(nameResetButton);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo cognome: label
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL COGNOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("surname");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		namePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo testo: textField
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TEXTFIELD COGNOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		surnameTextField = new JTextField(GuiConfiguration.getInputColumn());
+
+		namePanel.add(surnameTextField);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		surnameTextField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
 			{
 				if (Regex.patternString.matcher(surnameTextField.getText()).find()) {
-
 					playerSubSurname = surnameTextField.getText();
-					surnameErrorLabel.setVisible(false);
-
 				} else {
-
 					playerSubSurname = null;
-					surnameErrorLabel.setVisible(true);
 				}
 			}
 		});
-
-		namePanel.add(surnameTextField);
-
-		/*
-		 * Campo errore regex: label
-		 */
-		surnameErrorLabel = new JLabel(errorIcon);
-
-		namePanel.add(surnameErrorLabel);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		surnameResetButton = new JButton(resetIcon);
-		surnameResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		surnameResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				playerSubSurname = null;
-				surnameTextField.setText(null);
-			}
-		});
-
-		namePanel.add(surnameResetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER NOME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sg panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER ETÀ
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per eta: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("age");
 		string = string.toUpperCase();
 
 		ageSearchLabel = new JLabel(string);
+
 		ageSearchLabel.setOpaque(true);
 		ageSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		ageSearchLabel.setForeground(Color.white);
+
 		ageSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		playerPanel.add(ageSearchLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER ETÀ
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per eta: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, wrap 5, center",
-				"50[]80[]80[]80[]80[]20",
-				"10[]20[]10"
+				"debug, wrap 2",
+				"5%[20%]10%[40%]20%",
+				"10[]20[]20[]10"
 			);
 
 		agePanel = new JPanel(migLayout);
 		agePanel.setBackground(panelColor);
 
 		playerPanel.add(agePanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo anno di riferimento: stampa
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL ANNO DI RIFERIMENTO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("referenceYear");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
 
-		agePanel.add(label, "spanx 2, center");
+		agePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo anno di riferimento: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL ANNO DI RIFERIMENTO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		yearReferenceComboBox = new JComboBox<>();
 
 		yearReferenceComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
 		yearReferenceComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		fillReferenceYearComboBox(1830);
+		GuiConfiguration.fillYearComboBox(yearReferenceComboBox, GuiConfiguration.getMinYear());
 		yearReferenceComboBox.setSelectedIndex(-1);
+
+		agePanel.add(yearReferenceComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		yearReferenceComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
@@ -420,64 +586,59 @@ public class SearchPlayerPanel
 			{
 				playerReferringYear = (String) yearReferenceComboBox.getSelectedItem();
 
-				minimumAgeComboBox.setEnabled(true);
-				minimumAgeComboBox.firePopupMenuWillBecomeVisible();
+				if (playerReferringYear != null) {
+					minimumAgeComboBox.setEnabled(true);
+				}
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-
-		agePanel.add(yearReferenceComboBox, "spanx 2, center");
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		ageResetButton = new JButton(resetIcon);
-		ageResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		ageResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-
-				minimumAgeComboBox.setEnabled(false);
-				maximumAgeComboBox.setEnabled(false);
-
-				minimumAgeComboBox.setSelectedIndex(-1);
-				maximumAgeComboBox.setSelectedIndex(-1);
-				yearReferenceComboBox.setSelectedIndex(-1);
-
-				playerReferringYear = null;
-				playerMinAge = null;
-				playerMaxAge = null;
-			}
-		});
-
-		agePanel.add(ageResetButton, "spany 2, center");
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo età minima: stampa
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL ETÀ MINIMA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("minimumAge");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
 
 		agePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo età minima: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX ETÀ MINIMA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		minimumAgeComboBox = new JComboBox<>();
+		minimumAgeComboBox.setEnabled(false);
 
 		minimumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
-		minimumAgeComboBox.setEnabled(false);
 
 		minimumAgeComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		fillAgeComboBox(minimumAgeComboBox, 15, 50);
+		fillAgeComboBox(minimumAgeComboBox, GuiConfiguration.getMinAge(), GuiConfiguration.getMaxAge());
 		minimumAgeComboBox.setSelectedIndex(-1);
+
+		agePanel.add(minimumAgeComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		minimumAgeComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
@@ -488,35 +649,58 @@ public class SearchPlayerPanel
 			{
 				playerMinAge = (String) minimumAgeComboBox.getSelectedItem();
 
-				maximumAgeComboBox.setEnabled(true);
-				maximumAgeComboBox.firePopupMenuWillBecomeVisible();
+				if (playerMinAge != null) {
+					maximumAgeComboBox.setEnabled(true);
+					maximumAgeComboBox.setSelectedIndex(-1);
+					playerMaxAge = null;
+				}
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		agePanel.add(minimumAgeComboBox);
 
-		/*
-		 * Campo età massima: stampa
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL ETÀ MASSIMA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("maximumAge");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string);
 
 		agePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo età massima: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL ETÀ MASSIMA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		maximumAgeComboBox = new JComboBox<>();
-
-		maximumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		maximumAgeComboBox.setEnabled(false);
 
+		maximumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
 		maximumAgeComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		agePanel.add(maximumAgeComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		maximumAgeComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
@@ -524,9 +708,7 @@ public class SearchPlayerPanel
 			{
 				maximumAgeComboBox.removeAllItems();
 
-				fillAgeComboBox(maximumAgeComboBox, Integer.valueOf(playerMinAge), 50);
-
-				maximumAgeComboBox.setSelectedIndex(-1);
+				fillAgeComboBox(maximumAgeComboBox, Integer.valueOf(playerMinAge), GuiConfiguration.getMaxAge());
 			}
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
@@ -537,18 +719,37 @@ public class SearchPlayerPanel
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 
 		});
-
-		agePanel.add(maximumAgeComboBox);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per paese di nascita: checkbox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("bornNation");
@@ -559,10 +760,32 @@ public class SearchPlayerPanel
 		bornNationSearchLabel.setOpaque(true);
 		bornNationSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		bornNationSearchLabel.setForeground(Color.white);
+
 		bornNationSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		playerPanel.add(bornNationSearchLabel);
+		playerPanel.add(bornNationSearchLabel, "sgx panel_first_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
@@ -570,13 +793,11 @@ public class SearchPlayerPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo ricerca per paese di nascita: panel
-		 */
+
 		migLayout = new MigLayout
 			(
-				"debug, wrap 3, center",
-				"50[]80[]80[]20",
+				"debug, wrap 2",
+				"5%[20%]10%[40%]20%",
 				"10[]20[]10"
 			);
 
@@ -584,36 +805,58 @@ public class SearchPlayerPanel
 		bornNationPanel.setBackground(panelColor);
 
 		playerPanel.add(bornNationPanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo continente: stampa
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TIPO PAESE CONTINENTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		bornNationPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo continente: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX TIPO PAESE CONTINENTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentComboBox = new JComboBox<>();
 
-
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		bornNationPanel.add(continentComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCountryComboBox
+				GuiConfiguration.fillCountryComboBox
 					(
 						continentComboBox,
 						playerContinentVector,
 						playerContinentMap,
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						null
+						null,
+						true
 					);
 			}
 			@Override
@@ -622,75 +865,73 @@ public class SearchPlayerPanel
 				playerContinentID   = playerContinentMap.get((String) continentComboBox.getSelectedItem());
 
 				if (playerContinentID != null) {
-
 					nationComboBox.setEnabled(true);
-					nationComboBox.firePopupMenuWillBecomeVisible();
 				}
 				else {
 					nationComboBox.setEnabled(false);
-					nationComboBox.setSelectedIndex(-1);
 				}
+
+				nationComboBox.setSelectedIndex(-1);
+				playerNationID = null;
 			}
 
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-
-		bornNationPanel.add(continentComboBox);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		bornNationResetButton = new JButton(resetIcon);
-		bornNationResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		bornNationResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-
-				continentComboBox.setSelectedIndex(-1);
-				nationComboBox.setEnabled(false);
-				nationComboBox.setSelectedIndex(-1);
-
-				playerContinentID = null;
-				playerNationID = null;
-			}
-		});
-
-		bornNationPanel.add(bornNationResetButton, "spany 2, center");
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo nazione: stampa
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TIPO PAESE NAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		bornNationPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo nazione: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX TIPO PAESE NAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 		nationComboBox = new JComboBox<>();
-
-		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 		nationComboBox.setEnabled(false);
 
+		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
 		nationComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		bornNationPanel.add(nationComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		nationComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCountryComboBox
+				GuiConfiguration.fillCountryComboBox
 					(
 						nationComboBox,
 						playerNationVector,
 						playerNationMap,
 						Country.COUNTRY_TYPE.NATION.toString(),
-						playerContinentID
+						playerContinentID,
+						true
 					);
 			}
 			@Override
@@ -702,18 +943,37 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-
-		bornNationPanel.add(nationComboBox);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER RUOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per ruolo: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("role");
@@ -724,24 +984,44 @@ public class SearchPlayerPanel
 		roleSearchLabel.setOpaque(true);
 		roleSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		roleSearchLabel.setForeground(Color.white);
+
 		roleSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		playerPanel.add(roleSearchLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER RUOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per ruolo: panel
-		 */
+
 
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"50[]80[]80[]80[]80[]20",
+				"30[20%, center]80[20%, center]80[20%, center]80[20%, center]30",
 				"10[]10"
 			);
 
@@ -750,20 +1030,32 @@ public class SearchPlayerPanel
 		rolePanel.setBackground(panelColor);
 
 		playerPanel.add(rolePanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per ruolo portiere: checkBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO PORTIERE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("goalkeeper");
 		string = StringUtils.capitalize(string);
 
 		goalkeeperCheckBox = new JCheckBox(string);
 
 		rolePanel.add(goalkeeperCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per ruolo difensore: checkBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO DIFENSORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("defender");
 		string = StringUtils.capitalize(string);
 
@@ -771,19 +1063,32 @@ public class SearchPlayerPanel
 
 		rolePanel.add(defenderCheckBox);
 
-		/*
-		 * Campo ricerca per ruolo centrocampista: checkBox
-		 */
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO CENTROCAMPISTA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("midfield");
 		string = StringUtils.capitalize(string);
 
 		midfielderCheckBox = new JCheckBox(string);
 
 		rolePanel.add(midfielderCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per ruolo difensore: checkBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO ATTACCANTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("fowarder");
 		string = StringUtils.capitalize(string);
 
@@ -791,33 +1096,35 @@ public class SearchPlayerPanel
 
 		rolePanel.add(forwardCheckBox);
 
-		/*
-		 * Campo bottone reset: button
-		 */
-		roleResetButton = new JButton(resetIcon);
-		roleResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		roleResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				goalkeeperCheckBox.setSelected(false);
-				defenderCheckBox.setSelected(false);
-				midfielderCheckBox.setSelected(false);
-				forwardCheckBox.setSelected(false);
-			}
-		});
 
-		rolePanel.add(roleResetButton);
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER RUOLO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER POSIZIONE PRINCIPALE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per posizione principale: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("mainPosition");
@@ -828,23 +1135,44 @@ public class SearchPlayerPanel
 		mainPositionSearchLabel.setOpaque(true);
 		mainPositionSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		mainPositionSearchLabel.setForeground(Color.white);
+
 		mainPositionSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		playerPanel.add(mainPositionSearchLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER POSIZIONE PRINCIPALE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per posizione principale: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"50[]80[]80[]20",
+				"debug, flowx",
+				"5%[20%]10%[40%]20%",
 				"10[]10"
 			);
 
@@ -852,25 +1180,47 @@ public class SearchPlayerPanel
 		mainPositionPanel.setBackground(panelColor);
 
 		playerPanel.add(mainPositionPanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo posizione: stampa
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL POSIZIONE PRINCIPALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("position");
 		string = StringUtils.capitalize(string);
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
 		mainPositionPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo posizione: comboBox
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX POSIZIONE PRINCIPALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		mainPositionComboBox = new JComboBox<>();
 
 		mainPositionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
 		mainPositionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		mainPositionPanel.add(mainPositionComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		mainPositionComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
@@ -887,63 +1237,85 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-
-		mainPositionPanel.add(mainPositionComboBox);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		positionResetButton = new JButton(resetIcon);
-		positionResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		positionResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				mainPositionComboBox.setSelectedIndex(-1);
-
-				playerPositionID = null;
-			}
-		});
-
-		mainPositionPanel.add(positionResetButton);
-
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER POSIZIONE PRINCIPALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL RICERCA PER PIEDE PREFERITO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per il piede preferito: checkBox
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("preferredFoot");
 		string = string.toUpperCase();
 
 		preferredFootSearchLabel = new JLabel(string);
+
 		preferredFootSearchLabel.setOpaque(true);
 		preferredFootSearchLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		preferredFootSearchLabel.setForeground(Color.white);
+
 		preferredFootSearchLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		playerPanel.add(preferredFootSearchLabel);
-
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		playerPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL RICERCA PER PIEDE PREFERITO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per il piede preferito: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"50[]80[]80[]80[]20",
+				"30[20%, center]80[20%, center]80[20%, center]30",
 				"10[]10"
 			);
 
@@ -951,15 +1323,32 @@ public class SearchPlayerPanel
 		preferredFootPanel.setBackground(panelColor);
 
 		playerPanel.add(preferredFootPanel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per il piede preferito destro: radioButton
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON PIEDE PREFERITO DESTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("right");
 		string = StringUtils.capitalize(string);
 
 		rightFootRadioButton = new JRadioButton(string);
 		rightFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		preferredFootPanel.add(rightFootRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		rightFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -967,17 +1356,32 @@ public class SearchPlayerPanel
 				playerFoot = Player.FOOT_TYPE.RIGHT.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		preferredFootPanel.add(rightFootRadioButton);
 
-		/*
-		 * Campo ricerca per il piede preferito sinistro: radioButton
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON PIEDE PREFERITO SINISTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("left");
 		string = StringUtils.capitalize(string);
 
 		leftFootRadioButton = new JRadioButton(string);
 		leftFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		preferredFootPanel.add(leftFootRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		leftFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -985,16 +1389,32 @@ public class SearchPlayerPanel
 				playerFoot = Player.FOOT_TYPE.LEFT.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		preferredFootPanel.add(leftFootRadioButton);
-		/*
-		 * Campo ricerca per entrambi i piedi preferiti: radioButton
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON PIEDE PREFERITO ENTRAMBI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("either");
 		string = StringUtils.capitalize(string);
 
 		eitherFootRadioButton = new JRadioButton(string);
 		eitherFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		preferredFootPanel.add(eitherFootRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		eitherFootRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -1002,34 +1422,44 @@ public class SearchPlayerPanel
 				playerFoot = Player.FOOT_TYPE.EITHER.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		preferredFootPanel.add(eitherFootRadioButton);
 
-		/*
-		 * Campo gruppo bottoni: buttonGroup
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER PIEDE PREFERITO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		preferredFootGroupButton = new ButtonGroup();
 
 		preferredFootGroupButton.add(rightFootRadioButton);
 		preferredFootGroupButton.add(leftFootRadioButton);
 		preferredFootGroupButton.add(eitherFootRadioButton);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		footResetButton = new JButton(resetIcon);
-		footResetButton.setCursor(GuiConfiguration.getButtonCursor());
-		footResetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				playerFoot = null;
-				preferredFootGroupButton.clearSelection();
-			}
-		});
-
-		preferredFootPanel.add(footResetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER TIPO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		playerPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
@@ -1037,35 +1467,44 @@ public class SearchPlayerPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo avvia ricerca: button
-		 */
+
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
+		playerPanel.add(searchButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		searchButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
 				setRolePlayer();
 
 				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players");
 
-				System.out.println(playerRole);
-
 				playerTablePanel.revalidate();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		playerPanel.add(searchButton);
 
-		/*
-		 * Campo tabella competizioni: panel
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TABELLA CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
@@ -1076,11 +1515,17 @@ public class SearchPlayerPanel
 		playerTablePanel = new JPanel(migLayout);
 		playerTablePanel.setBackground(panelColor);
 
-		add(playerTablePanel);
+		add(playerTablePanel, "dock south, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo titolo tabella paesi: label
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("no");
 		string += " ";
 		string += GuiConfiguration.getMessage("research");
@@ -1088,33 +1533,49 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("performed");
 		string = string.toUpperCase();
 
-		titleTable = new JLabel(string);
+		titleTableLabel = new JLabel(string);
 
-		titleTable.setOpaque(true);
-		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleTable.setForeground(Color.white);
+		titleTableLabel.setOpaque(true);
+		titleTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTableLabel.setForeground(Color.white);
 
-		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		playerTablePanel.add(titleTable);
+		playerTablePanel.add(titleTableLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo tabella paesi: table
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		playerTable = new JTable();
 
 		playerTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
 		playerTable.setFillsViewportHeight(true);
-		playerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		/*
-		 * Campo barra di scorrimento: jScrollPane
-		 */
+		playerTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		playerTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) playerTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		scrollPane = new JScrollPane(playerTable);
 
 		playerTablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	public void setRolePlayer()
@@ -1122,7 +1583,7 @@ public class SearchPlayerPanel
 		String string = "";
 
 		if (goalkeeperCheckBox.isSelected()) {
-			string += "GK";
+			string += "_GK";
 		}
 
 		if (defenderCheckBox.isSelected()) {
@@ -1140,45 +1601,11 @@ public class SearchPlayerPanel
 		if (string.isEmpty()){
 			playerRole = null;
 		}
-		else if (!goalkeeperCheckBox.isSelected()){
+		else {
 			playerRole = string.substring(1);
 		}
-		else {
-			playerRole = string;
-		}
-
-
 	}
 
-	public void fillCountryComboBox(JComboBox<String> comboBox,
-									Vector<String> vector,
-									Map<String, String> map,
-									String type,
-									String superCountryID)
-	{
-
-		GuiConfiguration.initComboBoxVector(vector, map, true);
-
-		Controller.getInstance().setCountryComboBox
-			(
-				vector,
-				map,
-				type,
-				superCountryID
-			);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
-	}
-
-	public void fillReferenceYearComboBox(Integer minimumYear)
-	{
-		Integer maximumYear = Year.now().getValue();
-
-		for( Integer i = maximumYear; i >= minimumYear; --i){
-			yearReferenceComboBox.addItem(i.toString());
-		}
-
-	}
 
 	public void fillAgeComboBox(JComboBox<String> comboBox, Integer minimumAge, Integer maximumAge)
 	{
@@ -1231,6 +1658,6 @@ public class SearchPlayerPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
 	}
 }

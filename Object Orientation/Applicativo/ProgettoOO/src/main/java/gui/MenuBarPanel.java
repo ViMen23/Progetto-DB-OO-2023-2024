@@ -40,7 +40,7 @@ public class MenuBarPanel
 		migLayout = new MigLayout
 						(
 										"debug",
-										"30[]50:push[]50:push[]30[]30",
+										"2%[]5%[]5%[]3%[]2%",
 										""
 						);
 
@@ -123,7 +123,7 @@ public class MenuBarPanel
 
 				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
 
-				MainFrame.getMainFrameInstance().add(searchCountryPanel);
+				MainFrame.getMainFrameInstance().add(searchCountryPanel, "sgx frame");
 			}
 		});
 
@@ -168,7 +168,7 @@ public class MenuBarPanel
 
 				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
 
-				MainFrame.getMainFrameInstance().add(searchConfederationPanel);
+				MainFrame.getMainFrameInstance().add(searchConfederationPanel, "sgx frame");
 			}
 		});
 
@@ -213,7 +213,7 @@ public class MenuBarPanel
 
 				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
 
-				MainFrame.getMainFrameInstance().add(searchCompetitionPanel);
+				MainFrame.getMainFrameInstance().add(searchCompetitionPanel,"sgx frame");
 			}
 		});
 
@@ -259,7 +259,7 @@ public class MenuBarPanel
 
 				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
 
-				MainFrame.getMainFrameInstance().add(searchTeamPanel);
+				MainFrame.getMainFrameInstance().add(searchTeamPanel,"sgx frame");
 			}
 		});
 
@@ -306,7 +306,7 @@ public class MenuBarPanel
 
 				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
-				MainFrame.getMainFrameInstance().add(searchPlayerPanel);
+				MainFrame.getMainFrameInstance().add(searchPlayerPanel,"sgx frame");
 			}
 		});
 
@@ -331,9 +331,9 @@ public class MenuBarPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				//MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
+				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
 
-				//MainFrame.getMainFrameInstance().add(militancyFilterPanel);
+				MainFrame.getMainFrameInstance().add(militancyFilterPanel,"sgx frame");
 			}
 		});
 
@@ -393,7 +393,7 @@ public class MenuBarPanel
 
 				CompetitionEditionFilterPanel competitionEditionFilterPanel = new CompetitionEditionFilterPanel();
 
-				MainFrame.getMainFrameInstance().add(competitionEditionFilterPanel);
+				MainFrame.getMainFrameInstance().add(competitionEditionFilterPanel,"sgx frame");
 			}
 		});
 
@@ -419,7 +419,7 @@ public class MenuBarPanel
 
 				StepFilterPanel stepFilterPanel = new StepFilterPanel();
 
-				MainFrame.getMainFrameInstance().add(stepFilterPanel);
+				MainFrame.getMainFrameInstance().add(stepFilterPanel,"sgx frame");
 			}
 		});
 

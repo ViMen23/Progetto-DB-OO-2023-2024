@@ -19,17 +19,16 @@ public class MainFrame
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"0[grow, fill]0",
-				"0[]0[]0[]0"
+				"debug, flowy, center",
+				"0[]0",
+				"0[]0[]10[]0"
 			);
 
 
 
 		setLayout(migLayout);
 
-		setExtendedState(JFrame.MAXIMIZED_BOTH);
-		setMinimumSize(getSize());
+		setExtendedState(JFrame.MAXIMIZED_VERT);
 	}
 
 	public static MainFrame getMainFrameInstance() {

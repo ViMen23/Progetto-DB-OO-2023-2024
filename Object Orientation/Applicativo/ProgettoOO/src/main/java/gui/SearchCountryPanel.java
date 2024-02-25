@@ -27,6 +27,7 @@ public class SearchCountryPanel
 	private final JButton resetButton;
 	private final JButton searchButton;
 
+	private final JPanel titlePanel;
 	private final JPanel countryPanel;
 	private final JPanel countryTypePanel;
 	private final JPanel countrySuperPanel;
@@ -51,6 +52,8 @@ public class SearchCountryPanel
 	private final Vector<Vector<String>> countryTableData = new Vector<>();
 	private final JScrollPane scrollPane;
 
+	private JPanel infoPanel;
+	private JLabel label;
 	private String countryType = null;
 	private String superCountryID = null;
 
@@ -61,20 +64,44 @@ public class SearchCountryPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"10[grow, fill]10",
-				"20[]20[]50[]10"
+				"debug, flowy, fill",
+				"0[]0",
+				"10[]10[]0[]10"
 			);
 
 		setLayout(migLayout);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TITOLO GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"0[]110[]0",
+				"10[]10"
+			);
+
+		titlePanel = new JPanel(migLayout);
+		titlePanel.setOpaque(true);
+		titlePanel.setBackground(panelColor);
+
+		add(titlePanel, "sgx general, dock north");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE TITOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per paese: label
-		 */
+
+
 		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
 		string += GuiConfiguration.getMessage("country");
@@ -93,7 +120,15 @@ public class SearchCountryPanel
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		add(titleButton);
+		titlePanel.add(titleButton, "width 80%");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
@@ -104,7 +139,7 @@ public class SearchCountryPanel
 					remove(countryPanel);
 					titleButton.setIcon(minimizeIcon);
 				} else {
-					add(countryPanel, 1);
+					add(countryPanel, "dock center, sgx general");
 					titleButton.setIcon(maximizeIcon);
 				}
 
@@ -114,34 +149,66 @@ public class SearchCountryPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE DI RESET PER COUNTRY PANEL
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton = new JButton(resetIcon);
+		resetButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titlePanel.add(resetButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				countryType = null;
+				superCountryID = null;
+				buttonGroup.clearSelection();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL SCELTA PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca paese: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"10[grow, fill]10",
-				"0[]0[]10[]0[]20[]0"
+				"debug, wrap 2",
+				"10[60%, fill]50[35%, fill]10",
+				"0[]0[fill]10[]0[fill]20[]0"
 			);
 
 		countryPanel = new JPanel(migLayout);
 		countryPanel.setOpaque(false);
 
-		add(countryPanel);
+		add(countryPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL PANEL RICERCA TIPO PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo di paese: stampa
-		 */
+
+
 		string = GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("countryType");
@@ -155,39 +222,73 @@ public class SearchCountryPanel
 
 		chooseCountryTypeLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(chooseCountryTypeLabel);
+		countryPanel.add(chooseCountryTypeLabel, "sgx panel_first_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		countryPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL SCELTA PAESE
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca per tipo di paese: panel
-		 */
+
+
 		migLayout = new MigLayout
-						(
-										"debug, flowx, center",
-										"50[]80[]80[]80[]20",
-										"10[]10"
-						);
+			(
+				"debug, flowx, center",
+				"30[20%, center]80[20%, center]80[20%, center]30",
+				"10[]10"
+			);
 
 		countryTypePanel = new JPanel(migLayout);
 
 		countryTypePanel.setBackground(panelColor);
 
-		countryPanel.add(countryTypePanel);
+		countryPanel.add(countryTypePanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo continente: radio button
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE MONDO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
 
 		worldRadioButton = new JRadioButton(string);
 		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryTypePanel.add(worldRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
 
 
 		worldRadioButton.addActionListener(new ActionListener() {
@@ -197,18 +298,31 @@ public class SearchCountryPanel
 				countryType = Country.COUNTRY_TYPE.WORLD.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryTypePanel.add(worldRadioButton);
 
 
-		/*
-		 * Campo continente: radio button
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE CONTINENTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("continent");
 		string = StringUtils.capitalize(string);
 
 		continentRadioButton = new JRadioButton(string);
 		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryTypePanel.add(continentRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		continentRadioButton.addActionListener(new ActionListener() {
 			@Override
@@ -217,19 +331,32 @@ public class SearchCountryPanel
 				countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryTypePanel.add(continentRadioButton);
 
 
-		/*
-		 * Campo nazione: radio button
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO PAESE NAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("nation");
 		string = StringUtils.capitalize(string);
 
 		nationRadioButton = new JRadioButton(string);
 
 		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryTypePanel.add(nationRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		nationRadioButton.addItemListener(new ItemListener() {
 			@Override
@@ -250,45 +377,52 @@ public class SearchCountryPanel
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryTypePanel.add(nationRadioButton);
 
-		/*
-		 * Campo gruppo bottoni: buttonGroup
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER TIPO PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		buttonGroup = new ButtonGroup();
 
 		buttonGroup.add(worldRadioButton);
 		buttonGroup.add(continentRadioButton);
 		buttonGroup.add(nationRadioButton);
-
-		/*
-		 * Campo bottone reset: button
-		 */
-		resetButton = new JButton(resetIcon);
-		resetButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		resetButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				countryType = null;
-				superCountryID = null;
-				buttonGroup.clearSelection();
-			}
-		});
-
-		countryTypePanel.add(resetButton);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		countryPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL PANEL SCELTA PAESE SUPER
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo ricerca continente che contiene la nazione: stampa
-		 */
+
+
 		string = "Scegli continente che contiene la nazione"; //TODO I18N
 		string = string.toUpperCase();
 
@@ -297,19 +431,41 @@ public class SearchCountryPanel
 		chooseCountrySuperLabel.setOpaque(true);
 		chooseCountrySuperLabel.setBackground(GuiConfiguration.getSearchPanelColor());
 		chooseCountrySuperLabel.setForeground(Color.white);
+
 		chooseCountrySuperLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(chooseCountrySuperLabel);
+		countryPanel.add(chooseCountrySuperLabel, "sgx panel_first_column");
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		countryPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * PANEL SCELTA PAESE SUPER
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo pannello: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
@@ -320,28 +476,45 @@ public class SearchCountryPanel
 		countrySuperPanel = new JPanel(migLayout);
 		countrySuperPanel.setBackground(panelColor);
 
-		countryPanel.add(countrySuperPanel);
+		countryPanel.add(countrySuperPanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo continente: combo box
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX DEI PAESI SUPER DELLE NAZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentComboBox = new JComboBox<>();
 
 		continentComboBox.setEnabled(false);
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
+		countrySuperPanel.add(continentComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCountryComboBox
+				GuiConfiguration.fillCountryComboBox
 					(
 						continentComboBox,
 						countryNameVector,
 						countryNameMap,
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						null
+						null,
+						true
 					);
 			}
 			@Override
@@ -352,23 +525,52 @@ public class SearchCountryPanel
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-
-		countrySuperPanel.add(continentComboBox);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO DEI PAESI SUPER DELLE NAZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[]",
+				"[]"
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		countryPanel.add(infoPanel, "sg panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 		/*--------------------------------------------------------------------------------------------------------
 		 * BOTTONE RICERCA
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo avvia ricerca: button
-		 */
+
+
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
 
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		countryPanel.add(searchButton, "sgx panel_first_column");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		searchButton.addActionListener(new ActionListener() {
 				@Override
@@ -379,18 +581,16 @@ public class SearchCountryPanel
 					countryTablePanel.revalidate();
 				}
 		});
-
-		countryPanel.add(searchButton);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA
+		 * PANEL TABELLA PAESI
 		 *------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo tabella paesi: panel
-		 */
+
+
 		migLayout = new MigLayout
 			(
 				"debug, flowy",
@@ -401,11 +601,17 @@ public class SearchCountryPanel
 		countryTablePanel = new JPanel(migLayout);
 		countryTablePanel.setBackground(panelColor);
 
-		add(countryTablePanel);
+		add(countryTablePanel, "dock south, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * Campo titolo tabella paesi: label
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("no");
 		string += " ";
 		string += GuiConfiguration.getMessage("research");
@@ -422,11 +628,16 @@ public class SearchCountryPanel
 		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
 
 		countryTablePanel.add(titleTable);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo tabella paesi: table
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DEI PAESI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		countryTable = new JTable();
 
 		countryTable.setRowHeight(GuiConfiguration.getTableRowHeight());
@@ -437,36 +648,22 @@ public class SearchCountryPanel
 		countryTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) countryTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo barra di scorrimento: jScrollPane
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI PAESI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		scrollPane = new JScrollPane(countryTable);
 
 		countryTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillCountryComboBox(JComboBox<String> comboBox,
-									Vector<String> vector,
-									Map<String, String> map,
-									String type,
-									String superCountryID)
-	{
-
-		GuiConfiguration.initComboBoxVector(vector, map, true);
-
-		Controller.getInstance().setCountryComboBox
-			(
-				vector,
-				map,
-				type,
-				superCountryID
-			);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
-	}
 
 	public void fillCountryTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
 	{

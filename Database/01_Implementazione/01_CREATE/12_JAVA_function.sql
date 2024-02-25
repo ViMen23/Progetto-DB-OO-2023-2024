@@ -1236,7 +1236,7 @@ BEGIN
 
     IF (e_year_militancy IS NULL) THEN
 
-        e_year_militancy = extract(year from current_date())::text;
+        e_year_militancy = extract(year from current_date)::text;
     
     END IF;
 

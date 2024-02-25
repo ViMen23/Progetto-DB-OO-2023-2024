@@ -9,6 +9,7 @@ import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.MatteBorder;
 import java.awt.*;
+import java.time.Year;
 import java.util.*;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class GuiConfiguration
 	private static final Integer tableRowHeight = 25;
 	private static final Integer comboBoxMaximumRowCount = 5;
 	private static final Cursor buttonCursor = new Cursor(Cursor.HAND_CURSOR);
-	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(0,10,0,0);
+	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(2,10,2,0);
 	private static final Border labelBorder = new CompoundBorder
 		(
 			new EmptyBorder(4, 4, 4, 4),
@@ -36,6 +37,9 @@ public class GuiConfiguration
 	private static final String displayValue = "xxxxxxxxxxxxxxxxxxxx";
 	private static final List<String> comboBoxDiplayValue = new ArrayList<String>();
 	private static final List<String> listStringSelectAll = new ArrayList<>();
+	private static final Integer minYear = 1810;
+	private static final Integer minAge = 15;
+	private static final Integer maxAge = 50;
 
 	private static ResourceBundle currentResourceBundle;
 
@@ -77,14 +81,12 @@ public class GuiConfiguration
 		JFrame mainFrame = MainFrame.getMainFrameInstance();
 
 		TopPanel topPanel = new TopPanel();
-		topPanel.setName("topPanel");
 
-		mainFrame.add(topPanel);
+		mainFrame.add(topPanel, "sgx frame");
 
 		MenuBarPanel menuBarPanel = new MenuBarPanel();
-		menuBarPanel.setName("menuBarPanel");
 
-		mainFrame.add(menuBarPanel);
+		mainFrame.add(menuBarPanel, "sgx frame");
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);
@@ -386,6 +388,31 @@ public class GuiConfiguration
 
 	/**
 	 * TYPE : static method - gui package
+	 * NAME : getMinYear
+	 *
+	 * DESC: TODO
+	 */
+	public static Integer getMinYear() { return minYear; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getMinAge
+	 *
+	 * DESC: TODO
+	 */
+	public static Integer getMinAge() { return minAge; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getMaxAge
+	 *
+	 * DESC: TODO
+	 */
+	public static Integer getMaxAge() { return maxAge; }
+
+
+	/**
+	 * TYPE : static method - gui package
 	 * NAME : setResourceBundle
 	 *
 	 * DESC: TODO
@@ -433,4 +460,50 @@ public class GuiConfiguration
 
 		return null;
 	}
+
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : fillCountryComboBox
+	 *
+	 * DESC: TODO
+	 */
+	public static void fillCountryComboBox(JComboBox<String> comboBox,
+											Vector<String> vector,
+											Map<String, String> map,
+											String type,
+											String superCountryID,
+										   	Boolean selectAll)
+	{
+
+		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
+
+		Controller.getInstance().setCountryComboBox
+			(
+				vector,
+				map,
+				type,
+				superCountryID
+			);
+
+		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+	}
+
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : fillYearComboBox
+	 *
+	 * DESC: TODO
+	 */
+	public static void fillYearComboBox(JComboBox<String> comboBox, Integer minimumYear)
+	{
+		Integer maximumYear = Year.now().getValue();
+
+		for( Integer i = maximumYear; i >= minimumYear; --i){
+			comboBox.addItem(i.toString());
+		}
+
+	}
+
 }
