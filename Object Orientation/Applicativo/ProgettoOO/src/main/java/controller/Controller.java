@@ -890,6 +890,18 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param ID
+	 * @param longName
+	 * @return
+	 */
+	private Team newTeam(String ID, String longName)
+	{
+		return newTeam(ID, null, null, longName, null);
+	}
+
+
+	/**
+	 * TODO
 	 * @return
 	 */
 	private Team newTeam()
@@ -982,42 +994,24 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param startYear
+	 * @param competitionStartYear
 	 * @param competitionID
 	 */
-	private void fetchTeam(String startYear, String competitionID)
+	private void fetchTeam(String competitionStartYear,
+												 String competitionID)
 	{
 		List<String> listTeamID = new ArrayList<>();
-		List<String> listTeamType = new ArrayList<>();
 		List<String> listTeamLongName = new ArrayList<>();
-		List<String> listTeamShortName = new ArrayList<>();
-		List<String> listCountryID = new ArrayList<>();
-		List<String> listCountryName = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.fetchTeamDB
 			(
-				startYear,
-				competitionID,
-				listTeamID,
-				listTeamType,
-				listTeamLongName,
-				listTeamShortName,
-				listCountryID,
-				listCountryName
+							competitionStartYear,
+							competitionID,
+							listTeamID,
+							listTeamLongName
 			);
 
-		ctrlCountry.getCountryMap().clear();
-
-		for (String ID : listCountryID) {
-			Country country = newCountry
-				(
-					ID,
-					listCountryName.removeFirst()
-				);
-
-			ctrlCountry.getCountryMap().put(ID, country);
-		}
 
 		ctrlTeam.getTeamMap().clear();
 
@@ -1025,11 +1019,8 @@ public class Controller
 			String ID = listTeamID.removeFirst();
 			Team team = newTeam
 				(
-					ID,
-					listTeamType.removeFirst(),
-					listTeamShortName.removeFirst(),
-					listTeamLongName.removeFirst(),
-					ctrlCountry.getCountryMap().get(listCountryID.removeFirst())
+								ID,
+								listTeamLongName.removeFirst()
 				);
 
 			ctrlTeam.getTeamMap().put(ID, team);
@@ -1136,19 +1127,15 @@ public class Controller
 	 * TODO
 	 * @param teamLongNameVector
 	 * @param teamLongNameMap
-	 * @param start_year
+	 * @param competitionStartYear
 	 * @param competitionID
 	 */
 	public void setTeamComboBox(Vector<String> teamLongNameVector,
-											 Map<String, String> teamLongNameMap,
-											 String start_year,
-											 String competitionID)
+															Map<String, String> teamLongNameMap,
+															String competitionStartYear,
+															String competitionID)
 	{
-		fetchTeam
-			(
-				start_year,
-				competitionID
-			);
+		fetchTeam(competitionStartYear, competitionID);
 
 		for (String key : ctrlTeam.getTeamMap().keySet()) {
 

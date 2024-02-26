@@ -18,12 +18,8 @@ public interface TeamDAO
 
 	Integer countTeamDB();
 
-	void fetchTeamDB(String startYear,
-								  String competitionID,
-								  List<String> listTeamID,
-								  List<String> listTeamType,
- 								  List<String> listTeamLongName,
-								  List<String> listTeamShortName,
-								  List<String> listCountryID,
-								  List<String> listCountryName);
+	void fetchTeamDB(String competitionStartYear,
+									 String competitionID,
+									 List<String> listTeamID,
+									 List<String> listTeamLongName);
 }
