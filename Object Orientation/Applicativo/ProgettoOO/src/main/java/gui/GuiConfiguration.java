@@ -464,4 +464,37 @@ public class GuiConfiguration
 
 	}
 
+
+	public static void setRolePlayer(JCheckBox goalkeeperCheckBox,
+									 JCheckBox defenderCheckBox,
+									 JCheckBox midfielderCheckBox,
+									 JCheckBox forwardCheckBox,
+									 String playerRole)
+	{
+		String string = "";
+
+		if (goalkeeperCheckBox.isSelected()) {
+			string += "_GK";
+		}
+
+		if (defenderCheckBox.isSelected()) {
+			string += "_DF";
+		}
+
+		if (midfielderCheckBox.isSelected()) {
+			string += "_MF";
+		}
+
+		if (forwardCheckBox.isSelected()) {
+			string += "_FW";
+		}
+
+		if (string.isEmpty()){
+			playerRole = null;
+		}
+		else {
+			playerRole = string.substring(1);
+		}
+	}
+
 }

@@ -24,8 +24,6 @@ public class StepFilterPanel
 				extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
 	private final JPanel titlePanel;
@@ -141,39 +139,13 @@ public class StepFilterPanel
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
+		titleButton.setEnabled(false);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(titleButton, "width 80%");
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		titleButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-
-				if (stepFilterPanel.isShowing()) {
-					remove(stepFilterPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else {
-					add(stepFilterPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
-			}
-		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -201,7 +173,13 @@ public class StepFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryTypeButtonGroup.clearSelection();
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
+
+				MainFrame.getMainFrameInstance().remove(component);
+
+				StepFilterPanel stepFilterPanel = new StepFilterPanel();
+
+				MainFrame.getMainFrameInstance().add(stepFilterPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -228,12 +206,194 @@ public class StepFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL FILTRA PER PAESE
+		 * LABEL FILTRA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
 		string = "1. ";
+		string += GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		stepFilterPanel.add(label, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INFO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "INFO";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		stepFilterPanel.add(label, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx, center",
+				"5%[15%]10%[15%]5%",
+				"10[]10"
+			);
+
+		teamTypePanel = new JPanel(migLayout);
+		teamTypePanel.setBackground(panelColor);
+
+		stepFilterPanel.add(teamTypePanel, "sgx panel_first_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA CLUB
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("club");
+		string = StringUtils.capitalize(string);
+
+		clubRadioButton = new JRadioButton(string);
+		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(clubRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		clubRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (teamType != null) {
+					resetFromTeamType();
+				}
+
+				teamType = Team.TEAM_TYPE.CLUB.toString();
+
+				worldRadioButton.setEnabled(true);
+				continentRadioButton.setEnabled(true);
+				nationRadioButton.setEnabled(true);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("national");
+		string = StringUtils.capitalize(string);
+
+		nationalRadioButton = new JRadioButton(string);
+		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		teamTypePanel.add(nationalRadioButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		nationalRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				if (teamType != null) {
+					resetFromTeamType();
+				}
+
+				teamType = Team.TEAM_TYPE.NATIONAL.toString();
+
+				worldRadioButton.setEnabled(true);
+				continentRadioButton.setEnabled(true);
+				nationRadioButton.setEnabled(true);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTONGROUP PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+		teamTypeButtonGroup = new ButtonGroup();
+
+		teamTypeButtonGroup.add(clubRadioButton);
+		teamTypeButtonGroup.add(nationalRadioButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO FILTRA PER TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"",
+				""
+			);
+
+		infoPanel = new JPanel(migLayout);
+		infoPanel.setBackground(panelColor);
+
+		stepFilterPanel.add(infoPanel, "sgx panel_second_column");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL FILTRA PER PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "2. ";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
 		string += GuiConfiguration.getMessage("country");
@@ -284,7 +444,7 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]20[]10"
 			);
 
@@ -306,6 +466,7 @@ public class StepFilterPanel
 		string = StringUtils.capitalize(string);
 
 		worldRadioButton = new JRadioButton(string);
+		worldRadioButton.setEnabled(false);
 
 		countryPanel.add(worldRadioButton, "wrap");
 
@@ -324,8 +485,7 @@ public class StepFilterPanel
 				if (worldRadioButton.isSelected()) {
 					countryType = Country.COUNTRY_TYPE.WORLD.toString();
 
-					clubRadioButton.setEnabled(true);
-					nationalRadioButton.setEnabled(true);
+					competitionComboBox.setEnabled(true);
 				}
 				else {
 					resetFromCountry();
@@ -346,6 +506,7 @@ public class StepFilterPanel
 		string = StringUtils.capitalize(string);
 
 		continentRadioButton = new JRadioButton(string);
+		continentRadioButton.setEnabled(false);
 
 		countryPanel.add(continentRadioButton);
 
@@ -428,10 +589,7 @@ public class StepFilterPanel
 				continentID = continentMap.get((String) continentComboBox.getSelectedItem());
 
 				if (continentRadioButton.isSelected()) {
-
-					clubRadioButton.setEnabled(true);
-
-					nationalRadioButton.setEnabled(true);
+					competitionComboBox.setEnabled(true);
 				}
 				else if (nationRadioButton.isSelected()) {
 
@@ -460,6 +618,7 @@ public class StepFilterPanel
 
 		nationRadioButton = new JRadioButton(string);
 		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+		nationRadioButton.setEnabled(false);
 
 		countryPanel.add(nationRadioButton);
 
@@ -545,9 +704,7 @@ public class StepFilterPanel
 
 				nationID = nationMap.get((String) nationComboBox.getSelectedItem());
 
-				clubRadioButton.setEnabled(true);
-
-				nationalRadioButton.setEnabled(true);
+				competitionComboBox.setEnabled(true);
 			}
 
 			@Override
@@ -568,186 +725,6 @@ public class StepFilterPanel
 		countryTypeButtonGroup.add(worldRadioButton);
 		countryTypeButtonGroup.add(continentRadioButton);
 		countryTypeButtonGroup.add(nationRadioButton);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL INFO FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowy",
-				"",
-				""
-			);
-
-		infoPanel = new JPanel(migLayout);
-		infoPanel.setBackground(panelColor);
-
-		stepFilterPanel.add(infoPanel, "sgx panel_second_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "2. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		stepFilterPanel.add(label, "sgx panel_first_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL INFO
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "INFO";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		stepFilterPanel.add(label, "sgx panel_second_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL FILTRA PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowx, center",
-				"30[20%, center]80[20%, center]30",
-				"10[]10"
-			);
-
-		teamTypePanel = new JPanel(migLayout);
-		teamTypePanel.setBackground(panelColor);
-
-		stepFilterPanel.add(teamTypePanel, "sgx panel_first_column");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO SQUADRA CLUB
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("club");
-		string = StringUtils.capitalize(string);
-
-		clubRadioButton = new JRadioButton(string);
-		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-		clubRadioButton.setEnabled(false);
-
-		teamTypePanel.add(clubRadioButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		clubRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (teamType != null) {
-					resetFromTeamType();
-				}
-
-				teamType = Team.TEAM_TYPE.CLUB.toString();
-
-				competitionComboBox.setEnabled(true);
-			}
-		});
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("national");
-		string = StringUtils.capitalize(string);
-
-		nationalRadioButton = new JRadioButton(string);
-		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-		nationalRadioButton.setEnabled(false);
-
-		teamTypePanel.add(nationalRadioButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		nationalRadioButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				if (teamType != null) {
-					resetFromTeamType();
-				}
-
-				teamType = Team.TEAM_TYPE.NATIONAL.toString();
-
-				competitionComboBox.setEnabled(true);
-			}
-		});
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTONGROUP PER TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-		teamTypeButtonGroup = new ButtonGroup();
-
-		teamTypeButtonGroup.add(clubRadioButton);
-		teamTypeButtonGroup.add(nationalRadioButton);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -831,8 +808,8 @@ public class StepFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"5%[20%]10%[40%]20%",
-				"10[]10"
+				"5%[20%]10:push[40%]5%",
+				"10[][]10"
 			);
 
 		competitionPanel = new JPanel(migLayout);
@@ -912,8 +889,6 @@ public class StepFilterPanel
 
 
 				if (competitionID != null) {
-					bookmark = competitionID;
-					searchButton.setEnabled(true);
 					seasonComboBox.setEnabled(true);
 				}
 			}
@@ -1000,9 +975,9 @@ public class StepFilterPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
-				"10[]20[]10"
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[]10"
 			);
 
 		seasonPanel = new JPanel(migLayout);
@@ -1030,7 +1005,7 @@ public class StepFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * COMBOBOX TEAM
+		 * COMBOBOX STAGIONE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -1056,6 +1031,10 @@ public class StepFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
+				if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+					seasonComboBox.removeAllItems();
+				}
+
 				fillSeasonComboBox
 					(
 						seasonComboBox,
@@ -1073,7 +1052,12 @@ public class StepFilterPanel
 					resetFromSeason();
 				}
 
-				seasonStartYear = seasonMap.get((String) seasonComboBox.getSelectedItem());
+				if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+					seasonStartYear = seasonMap.get((String) seasonComboBox.getSelectedItem());
+				}
+				else {
+					seasonStartYear = (String) seasonComboBox.getSelectedItem();
+				}
 
 				if (seasonStartYear != null) {
 					teamComboBox.setEnabled(true);
@@ -1109,7 +1093,7 @@ public class StepFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL FILTRA PER ANNI
+		 * LABEL FILTRA PER SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -1155,16 +1139,16 @@ public class StepFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL FILTRA PER ANNI
+		 * PANEL FILTRA PER SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
-				"10[]20[]10"
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[][]10"
 			);
 
 		teamPanel = new JPanel(migLayout);
@@ -1192,7 +1176,7 @@ public class StepFilterPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * COMBOBOX DA ANNO
+		 * COMBOBOX SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -1233,6 +1217,7 @@ public class StepFilterPanel
 				if (teamID != null) {
 					bookmark = teamID;
 
+					searchButton.setEnabled(true);
 					playerComboBox.setEnabled(true);
 				}
 			}
@@ -1319,9 +1304,9 @@ public class StepFilterPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
-				"10[]20[]10"
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[][]10"
 			);
 
 		playerPanel = new JPanel(migLayout);
@@ -1485,33 +1470,31 @@ public class StepFilterPanel
 								   Boolean selectAll)
 	{
 		String season;
-		Integer step;
 
 		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
 
 		Controller.getInstance().setCompetitionEditionComboBox(vector, competitionID);
 
+
 		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			step = 1;
+			for (String string : vector) {
+
+				Integer year = Integer.valueOf(string);
+
+				season = year.toString();
+				season += " - ";
+
+				year = (++year)%100;
+
+				season += year.toString();
+
+				comboBox.addItem(season);
+
+				map.put(season, string);
+			}
 		}
 		else {
-			step = 0;
-		}
-
-		for (String string: vector) {
-
-			Integer year = Integer.valueOf(string);
-
-			season = year.toString();
-			season += " - ";
-
-			year = year + step;
-
-			season += year.toString();
-
-			comboBox.addItem(season);
-
-			map.put(season, string);
+			comboBox.setModel(new DefaultComboBoxModel<>(vector));
 		}
 	}
 	public void fillTeamComboBox(JComboBox<String> comboBox,
@@ -1541,18 +1524,21 @@ public class StepFilterPanel
 
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
-	public void resetFromCountry()
-	{
-		clubRadioButton.setEnabled(false);
-		nationalRadioButton.setEnabled(false)
-		;
-		teamTypeButtonGroup.clearSelection();
 
-		teamType = null;
-
-		resetFromTeamType();
-	}
 	public void resetFromTeamType()
+	{
+		worldRadioButton.setEnabled(false);
+		continentRadioButton.setEnabled(false);
+		nationRadioButton.setEnabled(false);
+
+		countryTypeButtonGroup.clearSelection();
+
+		countryType = null;
+
+		resetFromCountry();
+	}
+
+	public void resetFromCountry()
 	{
 		competitionComboBox.setEnabled(false);
 
@@ -1564,7 +1550,6 @@ public class StepFilterPanel
 	}
 	public void resetFromCompetition()
 	{
-		searchButton.setEnabled(false);
 		seasonComboBox.setEnabled(false);
 
 		seasonComboBox.setSelectedIndex(-1);
@@ -1572,8 +1557,6 @@ public class StepFilterPanel
 		seasonStartYear = null;
 
 		resetFromSeason();
-
-		bookmark = null;
 	}
 
 	public void resetFromSeason()
@@ -1589,6 +1572,7 @@ public class StepFilterPanel
 
 	public void resetFromTeam()
 	{
+		searchButton.setEnabled(false);
 		playerComboBox.setEnabled(false);
 
 		playerComboBox.setSelectedIndex(-1);
@@ -1596,8 +1580,6 @@ public class StepFilterPanel
 		playerID = null;
 
 		resetFromPlayer();
-
-		bookmark = competitionID;
 	}
 
 	public void resetFromPlayer()

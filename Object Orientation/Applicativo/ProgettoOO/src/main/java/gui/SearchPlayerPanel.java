@@ -227,43 +227,13 @@ public class SearchPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				nameTextField.setText(null);
-				playerSubName = null;
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				surnameTextField.setText(null);
-				playerSubSurname = null;
+				MainFrame.getMainFrameInstance().remove(component);
 
-				yearReferenceComboBox.setSelectedIndex(-1);
-				playerReferringYear = null;
+				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
-				minimumAgeComboBox.setEnabled(false);
-				minimumAgeComboBox.setSelectedIndex(-1);
-				playerMinAge = null;
-
-				maximumAgeComboBox.setEnabled(false);
-				maximumAgeComboBox.setSelectedIndex(-1);
-				playerMaxAge = null;
-
-				continentComboBox.setSelectedIndex(-1);
-				playerContinentID = null;
-
-				nationComboBox.setEnabled(false);
-				nationComboBox.setSelectedIndex(-1);
-				playerNationID = null;
-
-				goalkeeperCheckBox.setSelected(false);
-				defenderCheckBox.setSelected(false);
-				midfielderCheckBox.setSelected(false);
-				forwardCheckBox.setSelected(false);
-
-				playerRole = null;
-
-				mainPositionComboBox.setSelectedIndex(-1);
-				playerPositionID = null;
-
-				preferredFootGroupButton.clearSelection();
-				playerFoot = null;
-
+				MainFrame.getMainFrameInstance().add(searchPlayerPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -354,7 +324,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]10"
 			);
 
@@ -539,7 +509,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]20[]10"
 			);
 
@@ -814,7 +784,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]10"
 			);
 
@@ -1039,8 +1009,8 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"30[20%, center]80[20%, center]80[20%, center]80[20%, center]30",
+				"debug, flowx",
+				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
 				"10[]10"
 			);
 
@@ -1194,9 +1164,9 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"5%[20%]10%[40%]20%",
-				"10[]10"
+				"debug, wrap 2",
+				"5%[20%]10:push[40%]5%",
+				"10[]20[]10"
 			);
 
 		mainPositionPanel = new JPanel(migLayout);
@@ -1338,8 +1308,8 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"30[20%, center]80[20%, center]80[20%, center]30",
+				"debug, flowx",
+				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
 				"10[]10"
 			);
 
@@ -1363,7 +1333,7 @@ public class SearchPlayerPanel
 		rightFootRadioButton = new JRadioButton(string);
 		rightFootRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		preferredFootPanel.add(rightFootRadioButton);
+		preferredFootPanel.add(rightFootRadioButton, "skip 1");
 
 
 
@@ -1498,7 +1468,7 @@ public class SearchPlayerPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		playerPanel.add(searchButton);
+		playerPanel.add(searchButton, "span 2");
 
 
 
@@ -1516,8 +1486,7 @@ public class SearchPlayerPanel
 
 				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players");
 
-				playerTablePanel.revalidate();
-				playerPanel.revalidate();
+				revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1602,7 +1571,6 @@ public class SearchPlayerPanel
 		playerTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 	}
-
 	public void setRolePlayer()
 	{
 		String string = "";
@@ -1612,11 +1580,11 @@ public class SearchPlayerPanel
 		}
 
 		if (defenderCheckBox.isSelected()) {
-				string += "_DF";
+			string += "_DF";
 		}
 
 		if (midfielderCheckBox.isSelected()) {
-				string += "_MF";
+			string += "_MF";
 		}
 
 		if (forwardCheckBox.isSelected()) {
@@ -1630,8 +1598,6 @@ public class SearchPlayerPanel
 			playerRole = string.substring(1);
 		}
 	}
-
-
 	public void fillAgeComboBox(JComboBox<String> comboBox, Integer minimumAge, Integer maximumAge)
 	{
 
@@ -1657,9 +1623,9 @@ public class SearchPlayerPanel
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 	public void fillPlayerTable(Vector<Vector<String>> tableData,
-									 Vector<String> tableColumnName,
-									 JTable table,
-									 String tableName)
+								Vector<String> tableColumnName,
+								JTable table,
+								String tableName)
 	{
 		tableData.clear();
 		tableColumnName.clear();

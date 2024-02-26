@@ -175,11 +175,13 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				typeCountry = null;
-				superConfederationID = null;
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				buttonGroup.clearSelection();
-				//TODO CHECK
+				MainFrame.getMainFrameInstance().remove(component);
+
+				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
+
+				MainFrame.getMainFrameInstance().add(searchConfederationPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -261,7 +263,7 @@ public class SearchConfederationPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"30[20%, center]80[20%, center]80[20%, center]30",
+				"12.5%[15%]15%[15%]15%[15%]12.5%",
 				"10[]10"
 			);
 
@@ -472,8 +474,8 @@ public class SearchConfederationPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"20[]20",
+				"debug, flowx",
+				"10:push[40%]5%",
 				"10[]10"
 			);
 
@@ -567,7 +569,7 @@ public class SearchConfederationPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		confederationPanel.add(searchButton, "sgx panel_first_column");
+		confederationPanel.add(searchButton, "span 2");
 
 
 

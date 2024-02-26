@@ -186,11 +186,13 @@ public class MilitancyFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				continentComboBox.setSelectedIndex(-1);
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				militancyContinentID = null;
+				MainFrame.getMainFrameInstance().remove(component);
 
-				resetFromContinent();
+				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
+
+				MainFrame.getMainFrameInstance().add(militancyFilterPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -274,7 +276,7 @@ public class MilitancyFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]10"
 			);
 
@@ -502,7 +504,7 @@ public class MilitancyFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"30[20%, center]80[20%, center]30",
+				"5%[15%]10%[15%]5%",
 				"10[]10"
 			);
 
@@ -679,7 +681,7 @@ public class MilitancyFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]10"
 			);
 
@@ -846,7 +848,7 @@ public class MilitancyFilterPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]10"
 			);
 
@@ -1017,7 +1019,7 @@ public class MilitancyFilterPanel
 
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		militancyPanel.add(searchButton, "sgx panel_first_column");
+		militancyPanel.add(searchButton, "span 2");
 
 
 

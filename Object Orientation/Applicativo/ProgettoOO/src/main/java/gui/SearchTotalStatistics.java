@@ -1,66 +1,68 @@
 package gui;
 
 import controller.Controller;
-import model.Country;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
-import javax.swing.event.PopupMenuEvent;
-import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Vector;
 
-public class SearchCountryPanel
+public class SearchTotalStatistics
 				extends JPanel
 {
+
 	private final Color panelColor = Color.white;
 	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
+	private final JPanel titlePanel;
+	private final JPanel totalStatisticsPanel;
+	private final JPanel teamTypePanel;
+	private final JPanel rolePanel;
+	private final JPanel totalStatisticsTablePanel;
+
 	private final JButton titleButton;
 	private final JButton resetButton;
 	private final JButton searchButton;
 
-	private final JPanel titlePanel;
-	private final JPanel countryPanel;
-	private final JPanel countryTypePanel;
-	private final JPanel countrySuperPanel;
-	private final JPanel countryTablePanel;
+	private final JRadioButton clubRadioButton;
+	private final JRadioButton nationalRadioButton;
 
-	private final JLabel chooseCountryTypeLabel;
-	private final JLabel chooseCountrySuperLabel;
-	private final JLabel titleTable;
+	private final JCheckBox goalkeeperCheckBox;
+	private final JCheckBox defenderCheckBox;
+	private final JCheckBox midfielderCheckBox;
+	private final JCheckBox forwardCheckBox;
 
-	private final ButtonGroup buttonGroup;
+	private final ButtonGroup teamTypeGroupButton;
 
-	private final JRadioButton worldRadioButton;
-	private final JRadioButton continentRadioButton;
-	private final JRadioButton nationRadioButton;
+	private final JLabel titleTableLabel;
 
-	private final JComboBox<String> continentComboBox;
-	private final Vector<String> countryNameVector = new Vector<>();
-	private final Map<String, String> countryNameMap = new HashMap<>();
-
-	private final JTable countryTable;
-	private final Vector<String> countryTableColumnName = new Vector<>();
-	private final Vector<Vector<String>> countryTableData = new Vector<>();
+	private final JTable totalStatisticsTable;
 	private final JScrollPane scrollPane;
+
+	private final Vector<String> totalStatisticsTableColumnName = new Vector<>();
+	private final Vector<Vector<String>> totalStatisticsTableData = new Vector<>();
+
+
 
 	private JPanel infoPanel;
 	private JLabel label;
-	private String countryType = null;
-	private String superCountryID = null;
 
-	public SearchCountryPanel()
+	private String teamType = null;
+	private String playerRole = null;
+
+	public SearchTotalStatistics()
 	{
-		String string;
 		MigLayout migLayout;
+		String string;
 
 		migLayout = new MigLayout
 			(
@@ -102,15 +104,9 @@ public class SearchCountryPanel
 
 
 
-		string = GuiConfiguration.getMessage("searchBy");
+		string = GuiConfiguration.getMessage("search");
 		string += " ";
-		string += GuiConfiguration.getMessage("country");
-		string += " - ";
-		string += GuiConfiguration.getMessage("countries");
-		string += " ";
-		string += GuiConfiguration.getMessage("available");
-		string += " ";
-		string += Controller.getInstance().countCountries().toString();
+		string += GuiConfiguration.getMessage("totalPlayerStatistics");
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
@@ -135,11 +131,12 @@ public class SearchCountryPanel
 			public void actionPerformed(ActionEvent e)
 			{
 
-				if (countryPanel.isShowing()) {
-					remove(countryPanel);
+				if (totalStatisticsPanel.isShowing()){
+					remove(totalStatisticsPanel);
 					titleButton.setIcon(minimizeIcon);
-				} else {
-					add(countryPanel, "dock center, sgx general");
+				}
+				else{
+					add(totalStatisticsPanel, "dock center, sgx general");
 					titleButton.setIcon(maximizeIcon);
 				}
 
@@ -177,9 +174,9 @@ public class SearchCountryPanel
 
 				MainFrame.getMainFrameInstance().remove(component);
 
-				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
+				SearchTotalStatistics searchTotalStatistics = new SearchTotalStatistics();
 
-				MainFrame.getMainFrameInstance().add(searchCountryPanel, "sgx frame");
+				MainFrame.getMainFrameInstance().add(searchTotalStatistics, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -187,7 +184,7 @@ public class SearchCountryPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL SCELTA PAESE
+		 * PANEL RICERCA GENERALE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -199,34 +196,32 @@ public class SearchCountryPanel
 				"0[]0[fill]10[]0[fill]20[]0"
 			);
 
-		countryPanel = new JPanel(migLayout);
-		countryPanel.setOpaque(false);
+		totalStatisticsPanel = new JPanel(migLayout);
+		totalStatisticsPanel.setOpaque(false);
 
-		add(countryPanel, "dock center, sgx general");
+		add(totalStatisticsPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PANEL RICERCA TIPO PAESE
+		 * LABEL RICERCA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
-
-
-		string = GuiConfiguration.getMessage("choose");
+		string = GuiConfiguration.getMessage("searchBy");
 		string += " ";
-		string += GuiConfiguration.getMessage("countryType");
+		string += GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
 
-		chooseCountryTypeLabel = new JLabel(string, SwingConstants.LEADING);
+		label = new JLabel(string);
 
-		chooseCountryTypeLabel.setOpaque(true);
-		chooseCountryTypeLabel.setBackground(GuiConfiguration.getSearchPanelColor());
-		chooseCountryTypeLabel.setForeground(Color.white);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		chooseCountryTypeLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(chooseCountryTypeLabel, "sgx panel_first_column");
+		totalStatisticsPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -244,48 +239,48 @@ public class SearchCountryPanel
 		label.setOpaque(true);
 		label.setBackground(GuiConfiguration.getSearchPanelColor());
 		label.setForeground(Color.white);
+
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(label, "sgx panel_second_column");
+		totalStatisticsPanel.add(label, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL SCELTA PAESE
+		 * PANEL RICERCA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, center",
-				"12.5%[15%]15%[15%]15%[15%]12.5%",
+				"debug, flowx",
+				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
 				"10[]10"
 			);
 
-		countryTypePanel = new JPanel(migLayout);
+		teamTypePanel = new JPanel(migLayout);
+		teamTypePanel.setBackground(panelColor);
 
-		countryTypePanel.setBackground(panelColor);
-
-		countryPanel.add(countryTypePanel, "sgx panel_first_column");
+		totalStatisticsPanel.add(teamTypePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO PAESE MONDO
+		 * RADIOBUTTON TIPO SQUADRA CLUB
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("world");
+		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 
-		worldRadioButton = new JRadioButton(string);
-		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+		clubRadioButton = new JRadioButton(string);
+		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		countryTypePanel.add(worldRadioButton);
+		teamTypePanel.add(clubRadioButton, "skip 1");
 
 
 
@@ -295,11 +290,11 @@ public class SearchCountryPanel
 
 
 
-		worldRadioButton.addActionListener(new ActionListener() {
+		clubRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryType = Country.COUNTRY_TYPE.WORLD.toString();
+				teamType = Team.TEAM_TYPE.CLUB.toString();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -307,18 +302,18 @@ public class SearchCountryPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO PAESE CONTINENTE
+		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("continent");
+		string = GuiConfiguration.getMessage("national");
 		string = StringUtils.capitalize(string);
 
-		continentRadioButton = new JRadioButton(string);
-		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+		nationalRadioButton = new JRadioButton(string);
+		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		countryTypePanel.add(continentRadioButton);
+		teamTypePanel.add(nationalRadioButton);
 
 
 
@@ -328,11 +323,11 @@ public class SearchCountryPanel
 
 
 
-		continentRadioButton.addActionListener(new ActionListener() {
+		nationalRadioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
+				teamType = Team.TEAM_TYPE.NATIONAL.toString();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -340,68 +335,21 @@ public class SearchCountryPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * RADIOBUTTON TIPO PAESE NAZIONE
+		 * BUTTONGROUP PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("nation");
-		string = StringUtils.capitalize(string);
+		teamTypeGroupButton = new ButtonGroup();
 
-		nationRadioButton = new JRadioButton(string);
-
-		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
-
-		countryTypePanel.add(nationRadioButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		nationRadioButton.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e)
-			{
-				if (nationRadioButton.isSelected()) {
-
-					continentComboBox.setEnabled(true);
-
-					continentComboBox.firePopupMenuWillBecomeVisible();
-
-					countryType = Country.COUNTRY_TYPE.NATION.toString();
-				}
-				else {
-					continentComboBox.setEnabled(false);
-					continentComboBox.setSelectedIndex(-1);
-					superCountryID = null;
-				}
-			}
-		});
+		teamTypeGroupButton.add(clubRadioButton);
+		teamTypeGroupButton.add(nationalRadioButton);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTONGROUP PER TIPO PAESE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		buttonGroup = new ButtonGroup();
-
-		buttonGroup.add(worldRadioButton);
-		buttonGroup.add(continentRadioButton);
-		buttonGroup.add(nationRadioButton);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL INFO FILTRA PER TIPO SQUADRA
+		 * PANEL INFO RICERCA PER TIPO SQUADRA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -416,29 +364,31 @@ public class SearchCountryPanel
 		infoPanel = new JPanel(migLayout);
 		infoPanel.setBackground(panelColor);
 
-		countryPanel.add(infoPanel, "sgx panel_second_column");
+		totalStatisticsPanel.add(infoPanel, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PANEL SCELTA PAESE SUPER
+		 * LABEL RICERCA PER RUOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "Scegli continente che contiene la nazione"; //TODO I18N
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
 
-		chooseCountrySuperLabel = new JLabel(string, SwingConstants.LEADING);
+		label = new JLabel(string);
 
-		chooseCountrySuperLabel.setOpaque(true);
-		chooseCountrySuperLabel.setBackground(GuiConfiguration.getSearchPanelColor());
-		chooseCountrySuperLabel.setForeground(Color.white);
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
 
-		chooseCountrySuperLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(chooseCountrySuperLabel, "sgx panel_first_column");
+		totalStatisticsPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -459,13 +409,13 @@ public class SearchCountryPanel
 
 		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryPanel.add(label, "sgx panel_second_column");
+		totalStatisticsPanel.add(label, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL SCELTA PAESE SUPER
+		 * PANEL RICERCA PER RUOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -473,68 +423,89 @@ public class SearchCountryPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"10:push[40%]5%",
+				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
 				"10[]10"
 			);
 
-		countrySuperPanel = new JPanel(migLayout);
-		countrySuperPanel.setBackground(panelColor);
 
-		countryPanel.add(countrySuperPanel, "sgx panel_first_column");
+		rolePanel = new JPanel(migLayout);
+		rolePanel.setBackground(panelColor);
+
+		totalStatisticsPanel.add(rolePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * COMBOBOX DEI PAESI SUPER DELLE NAZIONI
+		 * CHECKBOX RUOLO PORTIERE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		continentComboBox = new JComboBox<>();
-		continentComboBox.setEnabled(false);
-		continentComboBox.setCursor(GuiConfiguration.getButtonCursor());
+		string = GuiConfiguration.getMessage("goalkeeper");
+		string = StringUtils.capitalize(string);
 
-		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		goalkeeperCheckBox = new JCheckBox(string);
+		goalkeeperCheckBox.setCursor(GuiConfiguration.getButtonCursor());
 
-		countrySuperPanel.add(continentComboBox);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
-			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
-			{
-				GuiConfiguration.fillCountryComboBox
-					(
-						continentComboBox,
-						countryNameVector,
-						countryNameMap,
-						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						null,
-						true
-					);
-			}
-			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
-			{
-				superCountryID = countryNameMap.get( (String) continentComboBox.getSelectedItem());
-			}
-			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) { }
-		});
+		rolePanel.add(goalkeeperCheckBox);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL INFO DEI PAESI SUPER DELLE NAZIONI
+		 * CHECKBOX RUOLO DIFENSORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("defender");
+		string = StringUtils.capitalize(string);
+
+		defenderCheckBox = new JCheckBox(string);
+		defenderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
+
+		rolePanel.add(defenderCheckBox);
+
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO CENTROCAMPISTA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("midfield");
+		string = StringUtils.capitalize(string);
+
+		midfielderCheckBox = new JCheckBox(string);
+		midfielderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
+
+		rolePanel.add(midfielderCheckBox);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX RUOLO ATTACCANTE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("fowarder");
+		string = StringUtils.capitalize(string);
+
+		forwardCheckBox = new JCheckBox(string);
+		forwardCheckBox.setCursor(GuiConfiguration.getButtonCursor());
+
+		rolePanel.add(forwardCheckBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL INFO RICERCA PER RUOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -549,7 +520,7 @@ public class SearchCountryPanel
 		infoPanel = new JPanel(migLayout);
 		infoPanel.setBackground(panelColor);
 
-		countryPanel.add(infoPanel, "sg panel_second_column");
+		totalStatisticsPanel.add(infoPanel, "sgx panel_second_column");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -566,7 +537,7 @@ public class SearchCountryPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		countryPanel.add(searchButton, "span 2");
+		totalStatisticsPanel.add(searchButton, "span 2");
 
 
 
@@ -577,20 +548,29 @@ public class SearchCountryPanel
 
 
 		searchButton.addActionListener(new ActionListener() {
-				@Override
-				public void actionPerformed(ActionEvent e)
-				{
-					fillCountryTable(countryTableData, countryTableColumnName, countryTable, "countries");
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
 
-					countryTablePanel.revalidate();
-				}
+				setRolePlayer();
+
+				fillTotalStatisticsTable
+					(
+						totalStatisticsTableData,
+						totalStatisticsTableColumnName,
+						totalStatisticsTable,
+						"totalPlayerStatistics"
+					);
+
+				totalStatisticsPanel.revalidate();
+			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA PAESI
+		 * PANEL TABELLA STATISTICHE TOTALI DI UN CALCIATORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -602,10 +582,10 @@ public class SearchCountryPanel
 				"10[]10"
 			);
 
-		countryTablePanel = new JPanel(migLayout);
-		countryTablePanel.setBackground(panelColor);
+		totalStatisticsTablePanel = new JPanel(migLayout);
+		totalStatisticsTablePanel.setBackground(panelColor);
 
-		add(countryTablePanel, "dock south, sgx general");
+		add(totalStatisticsTablePanel, "dock south, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -623,70 +603,97 @@ public class SearchCountryPanel
 		string += GuiConfiguration.getMessage("performed");
 		string = string.toUpperCase();
 
-		titleTable = new JLabel(string);
+		titleTableLabel = new JLabel(string);
 
-		titleTable.setOpaque(true);
-		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleTable.setForeground(Color.white);
+		titleTableLabel.setOpaque(true);
+		titleTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTableLabel.setForeground(Color.white);
 
-		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryTablePanel.add(titleTable);
+		totalStatisticsTablePanel.add(titleTableLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * TABLE TABELLA DEI PAESI
+		 * TABLE TABELLA DELLE STATISTICHE TOTALI DI UN CALCIATORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		countryTable = new JTable();
+		totalStatisticsTable = new JTable();
 
-		countryTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-		countryTable.setFillsViewportHeight(true);
+		totalStatisticsTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		totalStatisticsTable.setPreferredScrollableViewportSize(totalStatisticsTable.getPreferredSize());
+		totalStatisticsTable.setFillsViewportHeight(true);
 
-		countryTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		countryTable.setAutoCreateRowSorter(true);
-		( (DefaultTableCellRenderer) countryTable.getTableHeader().getDefaultRenderer()
+		totalStatisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		totalStatisticsTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) totalStatisticsTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * SCROLLPANE SCROLL PER LA TABELLA DEI PAESI
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		scrollPane = new JScrollPane(countryTable);
+		scrollPane = new JScrollPane(totalStatisticsTable);
 
-		countryTablePanel.add(scrollPane);
+		totalStatisticsTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
+	public void setRolePlayer()
+	{
+		String string = "";
 
-	public void fillCountryTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
+		if (goalkeeperCheckBox.isSelected()) {
+			string += "_GK";
+		}
+
+		if (defenderCheckBox.isSelected()) {
+			string += "_DF";
+		}
+
+		if (midfielderCheckBox.isSelected()) {
+			string += "_MF";
+		}
+
+		if (forwardCheckBox.isSelected()) {
+			string += "_FW";
+		}
+
+		if (string.isEmpty()){
+			playerRole = null;
+		}
+		else {
+			playerRole = string.substring(1);
+		}
+	}
+	public void fillTotalStatisticsTable(Vector<Vector<String>> tableData,
+										 Vector<String> tableColumnName,
+										 JTable table,
+										 String tableName)
 	{
 		tableData.clear();
 		tableColumnName.clear();
 
-		Controller.getInstance().setCountryTable
+		Controller.getInstance().setStatisticTable
 			(
 				tableColumnName,
 				tableData,
-				countryType,
-				superCountryID
+				teamType,
+				playerRole
 			);
 
-
 		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
 	}
 }

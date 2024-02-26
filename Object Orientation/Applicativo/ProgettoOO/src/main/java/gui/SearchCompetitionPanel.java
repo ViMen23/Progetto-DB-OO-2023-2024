@@ -208,26 +208,13 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				nameTextField.setText(null);
-				competitionSubName = null;
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				competitionTypeGroupButton.clearSelection();
-				competitionType = null;
+				MainFrame.getMainFrameInstance().remove(component);
 
+				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
 
-				teamTypeGroupButton.clearSelection();
-				competitionTeamType = null;
-
-				countryGroupButton.clearSelection();
-				competitionCountryType = null;
-
-				continentComboBox.setEnabled(false);
-				continentComboBox.setSelectedIndex(-1);
-				competitionContinentID = null;
-
-				nationComboBox.setEnabled(false);
-				nationComboBox.setSelectedIndex(-1);
-				competitionNationID = null;
+				MainFrame.getMainFrameInstance().add(searchCompetitionPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -308,7 +295,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]10"
 			);
 
@@ -443,7 +430,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"30[20%, center]80[20%, center]80[20%, center]30",
+				"12.5%[15%]15%[15%]15%[15%]12.5%",
 				"10[]10"
 			);
 
@@ -640,7 +627,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"30[20%, center]80[20%, center]30",
+				"12.5%[15%]15%[15%]15%[15%]12.5%",
 				"10[]10"
 			);
 
@@ -664,7 +651,7 @@ public class SearchCompetitionPanel
 		clubRadioButton = new JRadioButton(string);
 		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		teamTypePanel.add(clubRadioButton);
+		teamTypePanel.add(clubRadioButton, "skip 1");
 
 
 
@@ -808,7 +795,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]20[]10"
 			);
 
@@ -1113,7 +1100,7 @@ public class SearchCompetitionPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		competitionPanel.add(searchButton, "sgx panel_first_column");
+		competitionPanel.add(searchButton, "span 2");
 
 
 
@@ -1224,8 +1211,7 @@ public class SearchCompetitionPanel
 	public void fillCompetitionTable(Vector<Vector<String>> tableData,
 									 Vector<String> tableColumnName,
 									 JTable table,
-									 String tableName)
-	{
+									 String tableName) {
 		tableData.clear();
 		tableColumnName.clear();
 

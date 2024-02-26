@@ -196,21 +196,13 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				longNameTextField.setText(null);
-				teamSubLongName = null;
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
-				shortNameTextField.setText(null);
-				teamSubShortName = null;
+				MainFrame.getMainFrameInstance().remove(component);
 
-				buttonGroup.clearSelection();
-				teamType = null;
+				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
 
-				continentComboBox.setSelectedIndex(-1);
-				teamContinentID = null;
-
-				nationComboBox.setEnabled(false);
-				nationComboBox.setSelectedIndex(-1);
-				teamNationID = null;
+				MainFrame.getMainFrameInstance().add(searchTeamPanel, "sgx frame");
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -291,7 +283,7 @@ public class SearchTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]10"
 			);
 
@@ -478,7 +470,7 @@ public class SearchTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx, center",
-				"30[20%, center]80[20%, center]30",
+				"12.5%[15%]15%[15%]15%[15%]12.5%",
 				"10[]10"
 			);
 
@@ -502,7 +494,7 @@ public class SearchTeamPanel
 		clubRadioButton = new JRadioButton(string);
 		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		teamTypePanel.add(clubRadioButton);
+		teamTypePanel.add(clubRadioButton, "skip 1");
 
 
 
@@ -646,7 +638,7 @@ public class SearchTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"5%[20%]10%[40%]20%",
+				"5%[20%]10:push[40%]5%",
 				"10[]20[]20[]10"
 			);
 
@@ -835,7 +827,7 @@ public class SearchTeamPanel
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		teamPanel.add(searchButton, "sgx panel_first_column");
+		teamPanel.add(searchButton, "span 2");
 
 
 

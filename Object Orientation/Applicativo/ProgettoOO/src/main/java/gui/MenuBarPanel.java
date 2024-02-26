@@ -369,6 +369,22 @@ public class MenuBarPanel
 
 		showTotalStatisticMenuItem = new JMenuItem(string);
 
+		showTotalStatisticMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
+
+				component.setVisible(false);
+
+				MainFrame.getMainFrameInstance().remove(component);
+
+				SearchTotalStatistics searchTotalStatistics = new SearchTotalStatistics();
+
+				MainFrame.getMainFrameInstance().add(searchTotalStatistics,"sgx frame");
+			}
+		});
+
 		statisticMenu.getPopupMenu().add(showTotalStatisticMenuItem);
 
 		/*

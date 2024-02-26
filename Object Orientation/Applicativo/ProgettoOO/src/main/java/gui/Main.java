@@ -28,7 +28,7 @@ public class Main
 		JScrollPane scrollPane = new JScrollPane(new SearchPlayerPanel());
 
 		MainFrame.getMainFrameInstance().add(new SearchPlayerPanel(), "sgx frame");
-		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 1000));
+		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
 		MainFrame.getMainFrameInstance().pack();
 
