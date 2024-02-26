@@ -2776,6 +2776,10 @@ public class Controller
 		return newAssignedPrize(prize, null, null, null);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	private AssignedPrize newAssignedPrize()
 	{
 		return new AssignedPrize(null, null, null, null);
