@@ -1704,7 +1704,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : TODO TODO
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION competition_edition_statistics
 (
@@ -1742,12 +1742,12 @@ BEGIN
             fp_player.surname::text AS player_surname,
             fp_play.match::text AS match,
             fp_statistic_general.goal_scored::text AS goal_scored,
-            fp_statistic_general.penalty_scored AS penalty_scored,
-            fp_statistic_general.assist AS assist,
-            fp_statistic_general.yellow_card AS yellow_card,
-            fp_statistic_general.red_card AS red_card,
-            fp_statistic_goalkeeper.goal_conceded AS goal_conceded,
-            fp_statistic_goalkeeper.penalty_saved AS penalty_saved
+            fp_statistic_general.penalty_scored::text AS penalty_scored,
+            fp_statistic_general.assist::text AS assist,
+            fp_statistic_general.yellow_card::text AS yellow_card,
+            fp_statistic_general.red_card::text AS red_card,
+            fp_statistic_goalkeeper.goal_conceded::text AS goal_conceded,
+            fp_statistic_goalkeeper.penalty_saved::text AS penalty_saved
         FROM
             fp_play
             JOIN
