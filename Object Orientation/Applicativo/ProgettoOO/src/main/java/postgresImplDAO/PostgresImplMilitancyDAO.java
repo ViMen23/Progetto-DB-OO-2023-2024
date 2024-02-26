@@ -52,5 +52,4 @@ public class PostgresImplMilitancyDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
-	}
 }
