@@ -2778,7 +2778,7 @@ public class Controller
 
 	private AssignedPrize newAssignedPrize()
 	{
-		return newAssignedPrize(null, null, null, null);
+		return new AssignedPrize(null, null, null, null);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 }
