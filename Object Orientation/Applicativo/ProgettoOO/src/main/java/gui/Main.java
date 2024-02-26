@@ -27,7 +27,7 @@ public class Main
 		//searchCountryPanel.setName("boh");
 		JScrollPane scrollPane = new JScrollPane(new SearchPlayerPanel());
 
-		MainFrame.getMainFrameInstance().add(scrollPane, "sgx frame");
+		MainFrame.getMainFrameInstance().add(new SearchPlayerPanel(), "sgx frame");
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 1000));
 
 		MainFrame.getMainFrameInstance().pack();

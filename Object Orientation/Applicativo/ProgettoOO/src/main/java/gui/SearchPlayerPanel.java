@@ -88,7 +88,7 @@ public class SearchPlayerPanel
 	private final Vector<Vector<String>> playerTableData = new Vector<>();
 
 
-	private JScrollPane playerScrollPane;
+	private final JScrollPane playerScrollPane;
 	private final JScrollPane scrollPane;
 
 	private JLabel label;
@@ -283,8 +283,6 @@ public class SearchPlayerPanel
 
 		playerPanel = new JPanel(migLayout);
 		playerPanel.setOpaque(false);
-
-		add(playerPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -295,10 +293,10 @@ public class SearchPlayerPanel
 
 
 
-		//playerScrollPane = new JScrollPane(playerPanel);
-		//playerScrollPane.setPreferredSize(playerPanel.getMaximumSize());
+		playerScrollPane = new JScrollPane(playerPanel);
+		playerScrollPane.setPreferredSize(playerPanel.getMaximumSize());
 
-		//add(playerScrollPane, "dock center, sgx general");
+		add(playerPanel, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
