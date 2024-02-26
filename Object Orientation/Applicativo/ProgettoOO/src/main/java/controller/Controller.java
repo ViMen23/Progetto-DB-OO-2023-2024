@@ -1257,8 +1257,7 @@ public class Controller
 													 String foot,
 													 Position position,
 													 String role,
-													 String retiredDate,
-													 Team team)
+													 String retiredDate)
 	{
 		Player player = ctrlPlayer.getPlayerMap().get(ID);
 
@@ -1272,8 +1271,7 @@ public class Controller
 											foot,
 											position,
 											role,
-											retiredDate,
-											team
+											retiredDate
 							);
 		}
 
@@ -1281,38 +1279,7 @@ public class Controller
 	}
 
 
-	/**
-	 * TODO
-	 * @param ID
-	 * @param name
-	 * @param surname
-	 * @param role
-	 * @return
-	 */
-	private Player newPlayer(String ID,
-													 String name,
-													 String surname,
-													 String dob,
-													 Country country,
-													 String foot,
-													 Position position,
-													 String role,
-													 String retiredDate)
-	{
-		return newPlayer
-						(
-										ID,
-										name,
-										surname,
-										dob,
-										country,
-										foot,
-										position,
-										role,
-										retiredDate,
-										null
-						);
-	}
+
 
 
 
@@ -1339,7 +1306,6 @@ public class Controller
 										null,
 										null,
 										role,
-										null,
 										null
 						);
 	}
@@ -1348,26 +1314,7 @@ public class Controller
 
 
 
-	private Player newPlayer(String ID,
-													 String name,
-													 String surname,
-													 String role,
-													 Team team)
-	{
-		return newPlayer
-						(
-										ID,
-										name,
-										surname,
-										null,
-										null,
-										null,
-										null,
-										role,
-										null,
-										team
-						);
-	}
+
 
 	/**
 	 * TODO
@@ -1377,7 +1324,6 @@ public class Controller
 	{
 		return new Player
 						(
-										null,
 										null,
 										null,
 										null,
@@ -2039,6 +1985,33 @@ public class Controller
 						);
 	}
 
+	private Statistic newStatistic(Team team,
+																 String match,
+																 String goalScored,
+																 String penaltyScored,
+																 String assist,
+																 String yellowCard,
+																 String redCard,
+																 String goalConceded,
+																 String penaltySaved)
+	{
+		return new Statistic
+						(
+										team,
+										null,
+										null,
+										match,
+										goalScored,
+										penaltyScored,
+										assist,
+										yellowCard,
+										redCard,
+										goalConceded,
+										penaltySaved
+						);
+	}
+
+
 
 	/**
 	 * TODO
@@ -2234,8 +2207,7 @@ public class Controller
 											playerID,
 											listPlayerName.removeFirst(),
 											listPlayerSurname.removeFirst(),
-											listPlayerRole.removeFirst(),
-											ctrlTeam.getTeamMap().get(listTeamID.removeFirst())
+											listPlayerRole.removeFirst()
 							);
 
 			ctrlPlayer.getPlayerMap().put(playerID, player);
@@ -2245,6 +2217,7 @@ public class Controller
 		while (!(listPlayerID.isEmpty())) {
 			Statistic statistic = newStatistic
 							(
+											ctrlTeam.getTeamMap().get(listTeamID.removeFirst()),
 											listStatisticMatch.removeFirst(),
 											listStatisticGoalScored.removeFirst(),
 											listStatisticPenaltyScored.removeFirst(),
@@ -2409,7 +2382,7 @@ public class Controller
 
 			Player player = ctrlPlayer.getPlayerMap().get(key);
 
-			statisticVector.add(player.getTeam().getLongName());
+			statisticVector.add(player.getStatisticList().getFirst().getTeam().getLongName());
 			statisticVector.add(player.getRole());
 			statisticVector.add(player.getName());
 			statisticVector.add(player.getSurname());

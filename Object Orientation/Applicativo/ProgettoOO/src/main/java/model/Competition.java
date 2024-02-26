@@ -22,7 +22,7 @@ public class Competition
 
 
 	private final List<String> editionList;
-	private final List<Team> editionTeamList;
+	private final Map<String, Team> editionTeamMap;
 
 
 	public Competition(String type,
@@ -36,7 +36,7 @@ public class Competition
 		this.confederation = confederation;
 
 		this.editionList = new ArrayList<>();
-		this.editionTeamList = new ArrayList<>();
+		this.editionTeamMap = new LinkedHashMap<>();
 	}
 
 
@@ -82,8 +82,8 @@ public class Competition
 		return editionList;
 	}
 
-	public List<Team> getEditionTeamList()
+	public Map<String, Team> getEditionTeamMap()
 	{
-		return editionTeamList;
+		return editionTeamMap;
 	}
 }

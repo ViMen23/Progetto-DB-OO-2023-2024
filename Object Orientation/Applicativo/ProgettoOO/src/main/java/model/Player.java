@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TYPE : class
@@ -26,7 +23,10 @@ public class Player
 	private Position position;
 	private String role;
 	private String retiredDate;
-	private final Team team; // squadra corrente
+
+
+	private final Set<Position> positionList;
+	private final Set<Country> countryList;
 
 	private List<Statistic> statisticList;
 
@@ -38,8 +38,7 @@ public class Player
 								String foot,
 								Position position,
 								String role,
-								String retiredDate,
-								Team team)
+								String retiredDate)
 	{
 		this.name = name;
 		this.surname = surname;
@@ -49,9 +48,10 @@ public class Player
 		this.position = position;
 		this.role = role;
 		this.retiredDate = retiredDate;
-		this.team = team;
 
 		this.statisticList = new ArrayList<>();
+		this.positionList = new HashSet<>();
+		this.countryList = new HashSet<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -104,10 +104,6 @@ public class Player
 		return retiredDate;
 	}
 
-	public Team getTeam()
-	{
-		return team;
-	}
 
 	public Map<String, Player> getPlayerMap()
 	{
