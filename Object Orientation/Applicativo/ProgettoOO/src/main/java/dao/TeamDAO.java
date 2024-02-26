@@ -22,4 +22,13 @@ public interface TeamDAO
 									 String competitionID,
 									 List<String> listTeamID,
 									 List<String> listTeamLongName);
+
+	void fetchTeamDB(String teamID,
+									 String teamType,
+									 String teamShortName,
+									 String teamLongName,
+									 String countryID,
+									 String countryName,
+									 String confederationID,
+									 String confederationShortName);
 }

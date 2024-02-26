@@ -1053,7 +1053,7 @@ BEGIN
             fp_trophy.id::text AS trophy_id,
             fp_trophy.name::text AS trophy_name,
             fp_competition.id::text AS comp_id,
-            fp_competition.name::text AS comp_name,
+            fp_competition.name::text AS comp_name
         FROM
             fp_team_trophy_case
             JOIN
@@ -1702,7 +1702,7 @@ LANGUAGE plpgsql;
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
  * DESC : TODO
  ******************************************************************************/
@@ -1713,14 +1713,6 @@ CREATE OR REPLACE FUNCTION competition_edition_statistics
 )
 RETURNS TABLE
         (
-            country_id                  text,
-            country_code                text,
-            confederation_id            text,
-            confederation_short_name    text,
-            competition_id              text,
-            competition_start_year      text,
-            competition_name            text,
-            competition_team_type       text,
             team_id                     text,
             team_long_name              text,
             player_id                   text,
@@ -1742,14 +1734,6 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            fp_country.id::text AS country_id,
-            fp_country.code::text AS country_code,
-            fp_confederation.id::text AS confederation_id,
-            fp_confederation.short_name::text AS confederation_short_name,
-            fp_competition.id::text AS competition_id,
-            fp_play.start_year::text AS competition_start_year,
-            fp_competition.name::text AS competition_name,
-            fp_competition.team_type::text AS competition_team_type,
             fp_team.id::text AS team_id,
             fp_team.long_name::text AS team_long_name,
             fp_player.id::text AS player_id,
@@ -1765,19 +1749,7 @@ BEGIN
             fp_statistic_goalkeeper.goal_conceded AS goal_conceded,
             fp_statistic_goalkeeper.penalty_saved AS penalty_saved
         FROM
-            fp_country
-            JOIN
-            fp_confederation
-                ON
-                fp_country.id = fp_confederation.country_id
-            JOIN
-            fp_competition
-                ON
-                fp_confederation.id = fp_competition.confederation_id
-            JOIN
             fp_play
-                ON
-                fp_competition.id = fp_play.competition_id
             JOIN
             fp_team
                 ON

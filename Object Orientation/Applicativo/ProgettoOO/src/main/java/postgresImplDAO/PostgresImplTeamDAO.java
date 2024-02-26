@@ -110,4 +110,40 @@ public class PostgresImplTeamDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchTeamDB(String teamID,
+													String teamType,
+													String teamShortName,
+													String teamLongName,
+													String countryID,
+													String countryName,
+													String confederationID,
+													String confederationShortName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				teamID = rs.getString("team_id");
+				teamType = rs.getString("team_type");
+				teamShortName = rs.getString("team_short_name");
+				teamLongName = rs.getString("team_long_name");
+				countryID = rs.getString("country_id");
+				countryName = rs.getString("country_name");
+				confederationID = rs.getString("conf_id");
+				confederationShortName = rs.getString("conf_short_name");
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

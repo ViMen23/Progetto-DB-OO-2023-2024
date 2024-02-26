@@ -26,6 +26,7 @@ public class Player
 	private Position position;
 	private String role;
 	private String retiredDate;
+	private final Team team; // squadra corrente
 
 	private List<Statistic> statisticList;
 
@@ -37,7 +38,8 @@ public class Player
 								String foot,
 								Position position,
 								String role,
-								String retiredDate)
+								String retiredDate,
+								Team team)
 	{
 		this.name = name;
 		this.surname = surname;
@@ -47,6 +49,7 @@ public class Player
 		this.position = position;
 		this.role = role;
 		this.retiredDate = retiredDate;
+		this.team = team;
 
 		this.statisticList = new ArrayList<>();
 	}
@@ -99,6 +102,11 @@ public class Player
 	public String getRetiredDate()
 	{
 		return retiredDate;
+	}
+
+	public Team getTeam()
+	{
+		return team;
 	}
 
 	public Map<String, Player> getPlayerMap()

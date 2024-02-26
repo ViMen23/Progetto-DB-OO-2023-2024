@@ -24,6 +24,10 @@ public class Controller
 	private final Position ctrlPosition;
 	private final Player ctrlPlayer;
 	private final Statistic ctrlStatistic;
+	private final Trophy ctrlTrophy;
+	private final AssignedTrophy ctrlAssignedTrophy;
+	private final Prize ctrlPrize;
+	private final AssignedPrize ctrlAssignedPrize;
 	private static Controller controllerInstance = null;
 
 	private Controller()
@@ -36,6 +40,10 @@ public class Controller
 		this.ctrlPosition = newPosition();
 		this.ctrlPlayer = newPlayer();
 		this.ctrlStatistic = newStatistic();
+		this.ctrlTrophy = newTrophy();
+		this.ctrlAssignedTrophy = newAssignedTrophy();
+		this.ctrlPrize = newPrize();
+		this.ctrlAssignedPrize = newAssignedPrize();
 	}
 
 	/**
@@ -618,6 +626,40 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param name
+	 * @param confederation
+	 * @return
+	 */
+	private Competition newCompetition(String ID,
+																		 String type,
+																		 String name,
+																		 Confederation confederation)
+	{
+		return newCompetition(ID, type, null, name, confederation);
+	}
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @return
+	 */
+	private Competition newCompetition(String ID,
+																		 String name)
+	{
+		return newCompetition(ID, null, null, name, null);
+	}
+
+
+	/**
+	 * TODO
+	 * @return
+	 */
 	private Competition newCompetition()
 	{
 		return new Competition(null, null, null, null);
@@ -1026,6 +1068,48 @@ public class Controller
 			ctrlTeam.getTeamMap().put(ID, team);
 		}
 	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 */
+	private void fetchTeam(String teamID)
+	{
+		String teamType = null;
+		String teamShortName = null;
+		String teamLongName = null;
+		String countryID = null;
+		String countryName = null;
+		String confederationID = null;
+		String confederationShortName = null;
+
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamDB
+						(
+										teamID,
+										teamType,
+										teamShortName,
+										teamLongName,
+										countryID,
+										countryName,
+										confederationID,
+										confederationShortName
+						);
+
+		ctrlCountry.getCountryMap().clear();
+		Country country = newCountry(countryID, countryName);
+
+		ctrlConfederation.getConfederationMap().clear();
+		Confederation confederation = newConfederation(confederationID, confederationShortName, country);
+
+		ctrlTeam.getTeamMap().clear();
+		Team team = newTeam(teamID, teamType, teamShortName, teamLongName, country);
+
+		ctrlTeam.getTeamMap().put(teamID, team);
+	}
+
+
 	/**
 	 * TODO
 	 * @param teamLongNameVector
@@ -1166,19 +1250,31 @@ public class Controller
 	 * @return
 	 */
 	private Player newPlayer(String ID,
-													String name,
-													String surname,
-													String dob,
-													Country country,
-													String foot,
-													Position position,
-													String role,
-													String retiredDate)
+													 String name,
+													 String surname,
+													 String dob,
+													 Country country,
+													 String foot,
+													 Position position,
+													 String role,
+													 String retiredDate,
+													 Team team)
 	{
 		Player player = ctrlPlayer.getPlayerMap().get(ID);
 
 		if (null == player) {
-			player = new Player(name, surname, dob, country, foot, position, role, retiredDate);
+			player = new Player
+							(
+											name,
+											surname,
+											dob,
+											country,
+											foot,
+											position,
+											role,
+											retiredDate,
+											team
+							);
 		}
 
 		return player;
@@ -1196,9 +1292,81 @@ public class Controller
 	private Player newPlayer(String ID,
 													 String name,
 													 String surname,
+													 String dob,
+													 Country country,
+													 String foot,
+													 Position position,
+													 String role,
+													 String retiredDate)
+	{
+		return newPlayer
+						(
+										ID,
+										name,
+										surname,
+										dob,
+										country,
+										foot,
+										position,
+										role,
+										retiredDate,
+										null
+						);
+	}
+
+
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param name
+	 * @param surname
+	 * @param role
+	 * @return
+	 */
+	private Player newPlayer(String ID,
+													 String name,
+													 String surname,
 													 String role)
 	{
-		return newPlayer(ID, name, surname, null, null, null, null, role, null);
+		return newPlayer
+						(
+										ID,
+										name,
+										surname,
+										null,
+										null,
+										null,
+										null,
+										role,
+										null,
+										null
+						);
+	}
+
+
+
+
+
+	private Player newPlayer(String ID,
+													 String name,
+													 String surname,
+													 String role,
+													 Team team)
+	{
+		return newPlayer
+						(
+										ID,
+										name,
+										surname,
+										null,
+										null,
+										null,
+										null,
+										role,
+										null,
+										team
+						);
 	}
 
 	/**
@@ -1207,7 +1375,18 @@ public class Controller
 	 */
 	private Player newPlayer()
 	{
-		return new Player(null, null, null, null, null, null, null, null);
+		return new Player
+						(
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null,
+										null
+						);
 	}
 
 	/**
@@ -1720,7 +1899,10 @@ public class Controller
 	 * @param name
 	 * @return
 	 */
-	private Position newPosition(String ID, String role, String code, String name)
+	private Position newPosition(String ID,
+															 String role,
+															 String code,
+															 String name)
 	{
 		Position position = ctrlPosition.getPositionMap().get(ID);
 
@@ -1924,8 +2106,8 @@ public class Controller
 	 * @param teamType
 	 * @param playerRole
 	 */
-	private void fetchStatistic(String teamType,
-															String playerRole)
+	private void fetchStatisticTotal(String teamType,
+																	String playerRole)
 	{
 		List<String> listPlayerID = new ArrayList<>();
 		List<String> listPlayerRole = new ArrayList<>();
@@ -1993,13 +2175,99 @@ public class Controller
 	}
 
 
+	private void fetchStatisticCompetitionEdition(String competitionStartYear,
+																								String competitionID)
+	{
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listStatisticMatch = new ArrayList<>();
+		List<String> listStatisticGoalScored = new ArrayList<>();
+		List<String> listStatisticPenaltyScored = new ArrayList<>();
+		List<String> listStatisticAssist = new ArrayList<>();
+		List<String> listStatisticYellowCard = new ArrayList<>();
+		List<String> listStatisticRedCard = new ArrayList<>();
+		List<String> listStatisticGoalConceded = new ArrayList<>();
+		List<String> listStatisticPenaltySaved = new ArrayList<>();
+
+		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
+		statisticDAO.fetchStatisticDB
+						(
+										competitionStartYear,
+										competitionID,
+										listTeamID,
+										listTeamLongName,
+										listPlayerID,
+										listPlayerRole,
+										listPlayerName,
+										listPlayerSurname,
+										listStatisticMatch,
+										listStatisticGoalScored,
+										listStatisticPenaltyScored,
+										listStatisticAssist,
+										listStatisticYellowCard,
+										listStatisticRedCard,
+										listStatisticGoalConceded,
+										listStatisticPenaltySaved
+						);
+
+		ctrlTeam.getTeamMap().clear();
+
+		for (String teamID : listTeamID) {
+			Team team = newTeam
+							(
+											teamID,
+											listTeamLongName.removeFirst()
+							);
+
+			ctrlTeam.getTeamMap().put(teamID, team);
+		}
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		for (String playerID : listPlayerID) {
+			Player player = newPlayer
+							(
+											playerID,
+											listPlayerName.removeFirst(),
+											listPlayerSurname.removeFirst(),
+											listPlayerRole.removeFirst(),
+											ctrlTeam.getTeamMap().get(listTeamID.removeFirst())
+							);
+
+			ctrlPlayer.getPlayerMap().put(playerID, player);
+		}
+
+
+		while (!(listPlayerID.isEmpty())) {
+			Statistic statistic = newStatistic
+							(
+											listStatisticMatch.removeFirst(),
+											listStatisticGoalScored.removeFirst(),
+											listStatisticPenaltyScored.removeFirst(),
+											listStatisticAssist.removeFirst(),
+											listStatisticYellowCard.removeFirst(),
+											listStatisticRedCard.removeFirst(),
+											listStatisticGoalConceded.removeFirst(),
+											listStatisticPenaltySaved.removeFirst()
+							);
+
+			ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()).getStatisticList().add(statistic);
+		}
+
+	}
+
+
 
 	public void setStatisticTable(Vector<String> statisticTableColumnName,
 																Vector<Vector<String>> statisticTableData,
 																String teamType,
 																String playerRole)
 	{
-		fetchStatistic
+		fetchStatisticTotal
 						(
 										teamType,
 										playerRole
@@ -2072,4 +2340,445 @@ public class Controller
 			statisticTableData.add(statisticVector);
 		}
 	}
+
+
+	public void setStatisticCompetitionEditionTable(Vector<String> statisticTableColumnName,
+																									Vector<Vector<String>> statisticTableData,
+																									String competitionStartYear,
+																									String competitionID)
+	{
+		fetchStatisticCompetitionEdition
+						(
+										competitionStartYear,
+										competitionID
+						);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+
+		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+			Vector<String> statisticVector = new Vector<>();
+
+			Player player = ctrlPlayer.getPlayerMap().get(key);
+
+			statisticVector.add(player.getTeam().getLongName());
+			statisticVector.add(player.getRole());
+			statisticVector.add(player.getName());
+			statisticVector.add(player.getSurname());
+			statisticVector.add(player.getStatisticList().getFirst().getMatch());
+			statisticVector.add(player.getStatisticList().getFirst().getGoalScored());
+			statisticVector.add(player.getStatisticList().getFirst().getPenaltyScored());
+			statisticVector.add(player.getStatisticList().getFirst().getAssist());
+			statisticVector.add(player.getStatisticList().getFirst().getYellowCard());
+			statisticVector.add(player.getStatisticList().getFirst().getRedCard());
+			statisticVector.add(player.getStatisticList().getFirst().getGoalConceded());
+			statisticVector.add(player.getStatisticList().getFirst().getPenaltySaved());
+
+			statisticTableData.add(statisticVector);
+		}
+	}
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * PARTECIPATION
+	 *------------------------------------------------------------------------------------------------------*/
+
+	private void fetchPartecipation(String teamID,
+																	String competitionStartYear)
+	{
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionType = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+		List<String> listConfederationID = new ArrayList<>();
+		List<String> listConfederationShortName = new ArrayList<>();
+
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipationDB
+						(
+										teamID,
+										competitionStartYear,
+										listCompetitionID,
+										listCompetitionType,
+										listCompetitionName,
+										listConfederationID,
+										listConfederationShortName
+						);
+
+		ctrlConfederation.getConfederationMap().clear();
+
+		for (String confederationID : listConfederationID) {
+			Confederation confederation = newConfederation
+							(
+											confederationID,
+											listConfederationShortName.removeFirst()
+							);
+
+			ctrlConfederation.getConfederationMap().put(confederationID, confederation);
+		}
+
+
+		ctrlCompetition.getEditionList().clear();
+
+		while (!(listCompetitionID.isEmpty())) {
+			String competitionID = listCompetitionID.removeFirst();
+			Competition competition = newCompetition
+							(
+											competitionID,
+											listCompetitionType.removeFirst(),
+											listCompetitionName.removeFirst(),
+											ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst())
+							);
+
+			ctrlCompetition.getCompetitionMap().put(competitionID, competition);
+		}
+	}
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * MILITANCY
+	 *------------------------------------------------------------------------------------------------------*/
+	private void fetchMilitancy(String teamID,
+															String competitionStartYear)
+	{
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB
+						(
+										teamID,
+										competitionStartYear,
+										listPlayerID,
+										listPlayerName,
+										listPlayerSurname,
+										listPlayerRole
+						);
+
+
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		while (!(listPlayerID.isEmpty())) {
+			String playerID = listPlayerID.removeFirst();
+			Player player = newPlayer
+							(
+											playerID,
+											listPlayerName.removeFirst(),
+											listPlayerSurname.removeFirst(),
+											listPlayerRole.removeFirst()
+							);
+
+			ctrlPlayer.getPlayerMap().put(playerID, player);
+		}
+	}
+
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * TROPHY
+	 *------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param role
+	 * @param name
+	 * @return
+	 */
+	private Trophy newTrophy(String ID,
+													 String type,
+													 String role,
+													 String name)
+	{
+		Trophy trophy = ctrlTrophy.getTrophyMap().get(ID);
+
+		if (null == trophy) {
+			trophy = new Trophy(type, role, name);
+		}
+
+		return trophy;
+	}
+
+	private Trophy newTrophy(String ID,
+													 String name)
+	{
+		return newTrophy(ID, null, null, name);
+	}
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	private Trophy newTrophy()
+	{
+		return new Trophy(null, null, null);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionStartYear
+	 */
+	private void fetchTrophy(String teamID,
+													 String competitionStartYear)
+	{
+		List<String> listTrophyID = new ArrayList<>();
+		List<String> listTrophyName = new ArrayList<>();
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTrophyDB
+						(
+										teamID,
+										competitionStartYear,
+										listTrophyID,
+										listTrophyName,
+										listCompetitionID,
+										listCompetitionName
+						);
+
+		ctrlCompetition.getCompetitionMap().clear();
+
+		for (String competitionID : listCompetitionID) {
+			Competition competition = newCompetition
+							(
+											competitionID,
+											listCompetitionName.removeFirst()
+							);
+
+			ctrlCompetition.getCompetitionMap().put(competitionID, competition);
+		}
+
+		ctrlTrophy.getTrophyMap().clear();
+		ctrlAssignedTrophy.getAssignedTrophyList().clear();
+
+		while (!(listTrophyID.isEmpty())) {
+			String trophyID = listTrophyID.removeFirst();
+
+			Trophy trophy = newTrophy
+							(
+											trophyID,
+											listTrophyName.removeFirst()
+							);
+
+			ctrlTrophy.getTrophyMap().put(trophyID, trophy);
+
+			AssignedTrophy assignedTrophy = newAssignedTrophy
+							(
+											trophy,
+											ctrlCompetition.getCompetitionMap().get(listCompetitionID.removeFirst())
+							);
+
+			ctrlAssignedTrophy.getAssignedTrophyList().add(assignedTrophy);
+		}
+
+	}
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * PRIZE
+	 *------------------------------------------------------------------------------------------------------*/
+
+	/**
+	 * TODO
+	 * @param ID
+	 * @param type
+	 * @param role
+	 * @param name
+	 * @param given
+	 * @return
+	 */
+	private Prize newPrize(String ID,
+												 String type,
+												 String role,
+												 String name,
+												 String given)
+	{
+		Prize prize = ctrlPrize.getPrizeMap().get(ID);
+
+		if (null == prize) {
+			prize = new Prize(type, role, name, given);
+		}
+
+		return prize;
+	}
+
+
+
+	private Prize newPrize(String ID,
+												 String name,
+												 String given)
+	{
+		return newPrize(ID, null, null, name, given);
+	}
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	private Prize newPrize()
+	{
+		return new Prize(null, null, null, null);
+	}
+
+
+	private void fetchPrize(String teamID,
+													String startYear)
+	{
+		List<String> listPrizeID = new ArrayList<>();
+		List<String> listPrizeName = new ArrayList<>();
+		List<String> listPrizeGiven = new ArrayList<>();
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchPrizeDB
+						(
+										teamID,
+										startYear,
+										listPrizeID,
+										listPrizeName,
+										listPrizeGiven
+						);
+
+
+		ctrlPrize.getPrizeMap().clear();
+		ctrlAssignedPrize.getAssignedPrizeList().clear();
+
+		while (!(listPrizeID.isEmpty())) {
+			String prizeID = listPrizeID.removeFirst();
+
+			Prize prize = newPrize
+							(
+											prizeID,
+											listPrizeName.removeFirst(),
+											listPrizeGiven.removeFirst()
+							);
+
+			ctrlPrize.getPrizeMap().put(prizeID, prize);
+
+			AssignedPrize assignedPrize = newAssignedPrize
+							(
+											prize
+							);
+
+			ctrlAssignedPrize.getAssignedPrizeList().add(assignedPrize);
+		}
+
+	}
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * ASSIGNED TROPHY
+	 *------------------------------------------------------------------------------------------------------*/
+
+
+	private AssignedTrophy newAssignedTrophy(Trophy trophy,
+																					 Competition competition,
+																					 String year,
+																					 Team team,
+																					 Player player)
+	{
+		AssignedTrophy assignedTrophy = new AssignedTrophy(trophy, competition, year, team, player);
+		ctrlAssignedTrophy.getAssignedTrophyList().add(assignedTrophy);
+
+		return assignedTrophy;
+	}
+
+	private AssignedTrophy newAssignedTrophy(Trophy trophy,
+																					 Competition competition)
+	{
+		return newAssignedTrophy(trophy, competition, null, null, null);
+	}
+
+	private AssignedTrophy newAssignedTrophy()
+	{
+		return new AssignedTrophy(null, null, null, null, null);
+	}
+	/*------------------------------------------------------------------------------------------------------*/
+
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * ASSIGNED PRIZE
+	 *------------------------------------------------------------------------------------------------------*/
+
+	private AssignedPrize newAssignedPrize(Prize prize,
+																				 String year,
+																				 Team team,
+																				 Player player)
+	{
+		AssignedPrize assignedPrize = new AssignedPrize(prize, year, team, player);
+		ctrlAssignedPrize.getAssignedPrizeList().add(assignedPrize);
+
+		return assignedPrize;
+	}
+
+
+	private AssignedPrize newAssignedPrize(Prize prize)
+	{
+		return newAssignedPrize(prize, null, null, null);
+	}
+
+	private AssignedPrize newAssignedPrize()
+	{
+		return newAssignedPrize(null, null, null, null);
+	}
+	/*------------------------------------------------------------------------------------------------------*/
 }

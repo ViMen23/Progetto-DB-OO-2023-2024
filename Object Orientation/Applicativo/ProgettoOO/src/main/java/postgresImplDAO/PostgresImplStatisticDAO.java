@@ -70,4 +70,56 @@ public class PostgresImplStatisticDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchStatisticDB(String competitionStartYear,
+															 String competitionID,
+															 List<String> listTeamID,
+															 List<String> listTeamLongName,
+															 List<String> listPlayerID,
+															 List<String> listPlayerRole,
+															 List<String> listPlayerName,
+															 List<String> listPlayerSurname,
+															 List<String> listStatisticMatch,
+															 List<String> listStatisticGoalScored,
+															 List<String> listStatisticPenaltyScored,
+															 List<String> listStatisticAssist,
+															 List<String> listStatisticYellowCard,
+															 List<String> listStatisticRedCard,
+															 List<String> listStatisticGoalConceded,
+															 List<String> listStatisticPenaltySaved)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call competition_edition_statistics(?, ?)}");
+			cs.setString(1, competitionStartYear);
+			cs.setString(2, competitionID);
+
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listTeamID.add(rs.getString("team_id"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+				listPlayerID.add(rs.getString("player_id"));
+				listPlayerRole.add(rs.getString("player_role"));
+				listPlayerName.add(rs.getString("player_name"));
+				listPlayerSurname.add(rs.getString("player_surname"));
+				listStatisticMatch.add(rs.getString("match"));
+				listStatisticGoalScored.add(rs.getString("goal_scored"));
+				listStatisticPenaltyScored.add(rs.getString("penalty_scored"));
+				listStatisticAssist.add(rs.getString("assist"));
+				listStatisticYellowCard.add(rs.getString("yellow_card"));
+				listStatisticRedCard.add(rs.getString("red_card"));
+				listStatisticGoalConceded.add(rs.getString("goal_conceded"));
+				listStatisticPenaltySaved.add(rs.getString("penalty_saved"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

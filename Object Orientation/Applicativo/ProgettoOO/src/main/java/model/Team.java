@@ -1,6 +1,8 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -15,6 +17,7 @@ public class Team
 	public enum TEAM_TYPE {CLUB, NATIONAL}
 	private static final Map<String, Team> TEAM_MAP = new LinkedHashMap<>();
 	private static Integer totalTeam = 0;
+
 
 	private final String type;
 	private String shortName;
@@ -32,6 +35,7 @@ public class Team
 		this.longName = longName;
 		this.country = country;
 	}
+
 
 	public void setTotalTeam(Integer totalTeam)
 	{
@@ -77,5 +81,4 @@ public class Team
 	{
 		this.longName = longName;
 	}
-
 }

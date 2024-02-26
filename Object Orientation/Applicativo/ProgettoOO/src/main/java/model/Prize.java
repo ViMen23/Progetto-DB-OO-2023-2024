@@ -52,7 +52,7 @@ public class Prize
 		return given;
 	}
 
-	public static Map<String, Prize> getPrizeMap()
+	public Map<String, Prize> getPrizeMap()
 	{
 		return PRIZE_MAP;
 	}
