@@ -87,6 +87,8 @@ public class SearchPlayerPanel
 	private final Vector<String> playerTableColumnName = new Vector<>();
 	private final Vector<Vector<String>> playerTableData = new Vector<>();
 
+
+	private JScrollPane playerScrollPane;
 	private final JScrollPane scrollPane;
 
 	private JLabel label;
@@ -283,6 +285,20 @@ public class SearchPlayerPanel
 		playerPanel.setOpaque(false);
 
 		add(playerPanel, "dock center, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		//playerScrollPane = new JScrollPane(playerPanel);
+		//playerScrollPane.setPreferredSize(playerPanel.getMaximumSize());
+
+		//add(playerScrollPane, "dock center, sgx general");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -560,6 +576,7 @@ public class SearchPlayerPanel
 
 
 		yearReferenceComboBox = new JComboBox<>();
+		yearReferenceComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		yearReferenceComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -622,6 +639,7 @@ public class SearchPlayerPanel
 
 		minimumAgeComboBox = new JComboBox<>();
 		minimumAgeComboBox.setEnabled(false);
+		minimumAgeComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		minimumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -687,6 +705,7 @@ public class SearchPlayerPanel
 
 		maximumAgeComboBox = new JComboBox<>();
 		maximumAgeComboBox.setEnabled(false);
+		maximumAgeComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		maximumAgeComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -832,6 +851,7 @@ public class SearchPlayerPanel
 
 
 		continentComboBox = new JComboBox<>();
+		continentComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
@@ -905,6 +925,7 @@ public class SearchPlayerPanel
 
 		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
+		nationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -1044,6 +1065,7 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		goalkeeperCheckBox = new JCheckBox(string);
+		goalkeeperCheckBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		rolePanel.add(goalkeeperCheckBox);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1060,6 +1082,7 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		defenderCheckBox = new JCheckBox(string);
+		defenderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		rolePanel.add(defenderCheckBox);
 
@@ -1077,6 +1100,7 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		midfielderCheckBox = new JCheckBox(string);
+		midfielderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		rolePanel.add(midfielderCheckBox);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1093,6 +1117,7 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		forwardCheckBox = new JCheckBox(string);
+		forwardCheckBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		rolePanel.add(forwardCheckBox);
 
@@ -1207,6 +1232,7 @@ public class SearchPlayerPanel
 
 
 		mainPositionComboBox = new JComboBox<>();
+		mainPositionComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		mainPositionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -1493,6 +1519,7 @@ public class SearchPlayerPanel
 				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players");
 
 				playerTablePanel.revalidate();
+				playerPanel.revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

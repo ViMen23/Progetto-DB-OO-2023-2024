@@ -4,6 +4,7 @@ import controller.Controller;
 import model.Country;
 
 import javax.swing.*;
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
 import java.awt.*;
 
 /**
@@ -24,11 +25,13 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
+		JScrollPane scrollPane = new JScrollPane(new SearchPlayerPanel());
 
-		MainFrame.getMainFrameInstance().add(new MilitancyFilterPanel(), "sgx frame");
+		MainFrame.getMainFrameInstance().add(scrollPane, "sgx frame");
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 1000));
 
 		MainFrame.getMainFrameInstance().pack();
+
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");
 

@@ -4466,5 +4466,4 @@ VALUES
 	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
 	'MF'
 );
-
 --------------------------------------------------------------------------------

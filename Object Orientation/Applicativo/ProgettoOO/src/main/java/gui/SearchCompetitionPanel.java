@@ -906,6 +906,7 @@ public class SearchCompetitionPanel
 
 		continentComboBox = new JComboBox<>();
 		continentComboBox.setEnabled(false);
+		continentComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
@@ -1019,6 +1020,7 @@ public class SearchCompetitionPanel
 
 		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
+		nationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 

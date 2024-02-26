@@ -681,6 +681,7 @@ public class SearchTeamPanel
 
 
 		continentComboBox = new JComboBox<>();
+		continentComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
@@ -758,6 +759,7 @@ public class SearchTeamPanel
 
 		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
+		nationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 

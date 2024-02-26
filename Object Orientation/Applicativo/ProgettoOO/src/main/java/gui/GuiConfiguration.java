@@ -26,17 +26,9 @@ public class GuiConfiguration
 	private static final Integer comboBoxMaximumRowCount = 5;
 	private static final Cursor buttonCursor = new Cursor(Cursor.HAND_CURSOR);
 	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(2,10,2,0);
-	private static final Border labelBorder = new CompoundBorder
-		(
-			new EmptyBorder(4, 4, 4, 4),
-			new MatteBorder(0, 0, 1, 0, Color.BLACK)
-		);
-
 	private static final Color searchPanelColor = new Color(50, 100, 200);
 
-	private static final String displayValue = "xxxxxxxxxxxxxxxxxxxx";
-	private static final List<String> comboBoxDiplayValue = new ArrayList<String>();
-	private static final List<String> listStringSelectAll = new ArrayList<>();
+	private static final String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 	private static final Integer minYear = 1810;
 	private static final Integer minAge = 15;
 	private static final Integer maxAge = 50;
@@ -61,16 +53,6 @@ public class GuiConfiguration
 	{
 		// creazione del locale di default come italiano
 		setLocale(Locale.of("it", "IT"));
-
-		comboBoxDiplayValue.add(displayValue);
-
-		String string = GuiConfiguration.getMessage("select");
-		string += " ";
-		string += GuiConfiguration.getMessage("all");
-		string = StringUtils.capitalize(string);
-
-		listStringSelectAll.add(string);
-		listStringSelectAll.add(null);
 
 		initUIManager();
 		initHomeFrame();
@@ -122,6 +104,7 @@ public class GuiConfiguration
 			System.err.println("Error nimbus not found");
 			return;
 		}
+
 
 
 		//font testo
@@ -196,7 +179,6 @@ public class GuiConfiguration
 		//configurazione intestazione tabella
 		UIManager.put("TableHeader.font", outputBoldFont);
 		UIManager.put("TableHeader.textForeground", Color.white);
-
 	}
 
 
@@ -348,35 +330,11 @@ public class GuiConfiguration
 
 	/**
 	 * TYPE : static method - gui package
-	 * NAME : getLabelBorder
-	 *
-	 * DESC: TODO
-	 */
-	public static Border getLabelBorder() { return labelBorder; }
-
-	/**
-	 * TYPE : static method - gui package
 	 * NAME : getSearchPanelColor
 	 *
 	 * DESC: TODO
 	 */
 	public static Color getSearchPanelColor() { return searchPanelColor; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getComboBoxDiplayValue
-	 *
-	 * DESC: TODO
-	 */
-	public static List<String> getComboBoxDiplayValue() { return comboBoxDiplayValue; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getListStringSelectAll
-	 *
-	 * DESC: TODO
-	 */
-	public static List<String> getListStringSelectAll() { return listStringSelectAll; }
 
 	/**
 	 * TYPE : static method - gui package

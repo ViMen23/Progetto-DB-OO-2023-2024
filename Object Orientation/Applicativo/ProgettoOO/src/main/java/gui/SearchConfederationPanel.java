@@ -41,7 +41,7 @@ public class SearchConfederationPanel
 	private final JRadioButton continentRadioButton;
 	private final JRadioButton nationRadioButton;
 
-	private final JComboBox<String> continentComboBox;
+	private final JComboBox<String> continentConfederationComboBox;
 	private final JTable confederationTable;
 
 	private final Vector<Vector<String>> confederationTableData = new Vector<>();
@@ -368,14 +368,14 @@ public class SearchConfederationPanel
 			{
 				if (nationRadioButton.isSelected()) {
 
-					continentComboBox.setEnabled(true);
-					continentComboBox.firePopupMenuWillBecomeVisible();
+					continentConfederationComboBox.setEnabled(true);
+					continentConfederationComboBox.firePopupMenuWillBecomeVisible();
 
 					typeCountry = Country.COUNTRY_TYPE.NATION.toString();
 				}
 				else {
-					continentComboBox.setEnabled(false);
-					continentComboBox.setSelectedIndex(-1);
+					continentConfederationComboBox.setEnabled(false);
+					continentConfederationComboBox.setSelectedIndex(-1);
 
 					superConfederationID = null;
 				}
@@ -491,13 +491,13 @@ public class SearchConfederationPanel
 
 
 
-		continentComboBox = new JComboBox<>();
+		continentConfederationComboBox = new JComboBox<>();
+		continentConfederationComboBox.setEnabled(false);
+		continentConfederationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
-		continentComboBox.setEnabled(false);
+		continentConfederationComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
-
-		confederationSuperPanel.add(continentComboBox);
+		confederationSuperPanel.add(continentConfederationComboBox);
 
 
 
@@ -507,13 +507,13 @@ public class SearchConfederationPanel
 
 
 
-		continentComboBox.addPopupMenuListener(new PopupMenuListener() {
+		continentConfederationComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
 				fillConfederationComboBox
 					(
-						continentComboBox,
+						continentConfederationComboBox,
 						confederationNameVector,
 						confederationNameMap,
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -523,7 +523,7 @@ public class SearchConfederationPanel
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				superConfederationID = confederationNameMap.get( (String) continentComboBox.getSelectedItem());
+				superConfederationID = confederationNameMap.get( (String) continentConfederationComboBox.getSelectedItem());
 			}
 
 			@Override

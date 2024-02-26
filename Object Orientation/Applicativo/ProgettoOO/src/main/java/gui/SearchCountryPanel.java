@@ -488,8 +488,8 @@ public class SearchCountryPanel
 
 
 		continentComboBox = new JComboBox<>();
-
 		continentComboBox.setEnabled(false);
+		continentComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		continentComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
