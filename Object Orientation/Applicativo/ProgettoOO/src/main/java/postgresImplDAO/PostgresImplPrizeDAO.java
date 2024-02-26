@@ -50,5 +50,4 @@ public class PostgresImplPrizeDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
-	}
 }
