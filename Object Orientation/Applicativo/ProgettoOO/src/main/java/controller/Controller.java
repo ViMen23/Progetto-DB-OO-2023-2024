@@ -1974,7 +1974,7 @@ public class Controller
 			Vector<String> attributePhysicalVector = new Vector<>();
 
 			attributePhysicalVector.add(key);
-			attributePhysicalVector.add(player.getAttributeGoalkeepingMap().get(key));
+			attributePhysicalVector.add(player.getAttributePhysicalMap().get(key));
 
 			playerAttributePhysicalTableData.add(attributePhysicalVector);
 		}

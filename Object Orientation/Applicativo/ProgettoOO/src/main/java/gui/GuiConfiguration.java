@@ -533,4 +533,25 @@ public class GuiConfiguration
 		}
 	}
 
+	public static void fillTable(JTable table, Vector<Vector<String>> tableData, Vector<String> tableColumnName)
+	{
+		table.setModel(new TableModel(tableData, tableColumnName));
+
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	}
+
+	public static void switchPanel(Container container, JPanel panelToAdd, Integer index)
+	{
+		Component component = container.getComponent(index);
+
+		component.setVisible(false);
+
+		container.remove(component);
+
+		container.add(panelToAdd);
+
+		panelToAdd.setVisible(true);
+	}
+
+
 }

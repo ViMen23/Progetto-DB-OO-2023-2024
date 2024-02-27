@@ -27,7 +27,7 @@ public class PostgresImplTagDAO
 												 List<String> listTagName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call get_tag_player(?)}");
 			cs.setString(1, playerID);
 
 			ResultSet rs = cs.executeQuery();
