@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class PostgresImplTeamDAO
 				implements TeamDAO
@@ -113,13 +114,7 @@ public class PostgresImplTeamDAO
 
 	@Override
 	public void fetchTeamDB(String teamID,
-													String teamType,
-													String teamShortName,
-													String teamLongName,
-													String countryID,
-													String countryName,
-													String confederationID,
-													String confederationShortName)
+													Map<String, String> mapTeamInfo)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
@@ -128,14 +123,14 @@ public class PostgresImplTeamDAO
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				teamID = rs.getString("team_id");
-				teamType = rs.getString("team_type");
-				teamShortName = rs.getString("team_short_name");
-				teamLongName = rs.getString("team_long_name");
-				countryID = rs.getString("country_id");
-				countryName = rs.getString("country_name");
-				confederationID = rs.getString("conf_id");
-				confederationShortName = rs.getString("conf_short_name");
+				mapTeamInfo.put("teamID", rs.getString("team_id"));
+				mapTeamInfo.put("teamType", rs.getString("team_type"));
+				mapTeamInfo.put("teamShortName", rs.getString("team_short_name"));
+				mapTeamInfo.put("teamLongName", rs.getString("team_long_name"));
+				mapTeamInfo.put("countryID", rs.getString("country_id"));
+				mapTeamInfo.put("countryName", rs.getString("country_name"));
+				mapTeamInfo.put("confederationID", rs.getString("conf_id"));
+				mapTeamInfo.put("confederationShortName", rs.getString("conf_short_name"));
 			}
 
 			rs.close();

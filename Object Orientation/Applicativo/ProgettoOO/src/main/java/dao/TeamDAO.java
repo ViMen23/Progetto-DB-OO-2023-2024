@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 
 public interface TeamDAO
 {
@@ -24,11 +25,5 @@ public interface TeamDAO
 									 List<String> listTeamLongName);
 
 	void fetchTeamDB(String teamID,
-									 String teamType,
-									 String teamShortName,
-									 String teamLongName,
-									 String countryID,
-									 String countryName,
-									 String confederationID,
-									 String confederationShortName);
+									 Map<String, String> mapTeamInfo);
 }

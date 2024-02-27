@@ -912,34 +912,33 @@ public class Controller
 	 */
 	private void fetchTeam(String teamID)
 	{
-		String teamType = null;
-		String teamShortName = null;
-		String teamLongName = null;
-		String countryID = null;
-		String countryName = null;
-		String confederationID = null;
-		String confederationShortName = null;
+		Map<String, String> mapTeamInfo = new LinkedHashMap<>();
+
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.fetchTeamDB
 						(
 										teamID,
-										teamType,
-										teamShortName,
-										teamLongName,
-										countryID,
-										countryName,
-										confederationID,
-										confederationShortName
+										mapTeamInfo
 						);
 
+		if (!(teamID.equalsIgnoreCase(mapTeamInfo.get("teamID")))) {
+			System.out.println("ERRORE");
+			return;
+		}
+
 		ctrlCountry.getCountryMap().clear();
+		String countryName = mapTeamInfo.get("countryName");
 		Country country = newCountry(null, null, countryName, null);
 
 		ctrlConfederation.getConfederationMap().clear();
+		String confederationShortName = mapTeamInfo.get("confederationShortName");
 		Confederation confederation = newConfederation(confederationShortName, null, country, null);
 
 		ctrlTeam.getTeamMap().clear();
+		String teamType = mapTeamInfo.get("teamType");
+		String teamShortName = mapTeamInfo.get("teamShortName");
+		String teamLongName = mapTeamInfo.get("teamLongName");
 		Team team = newTeam(teamType, teamShortName, teamLongName, country, confederation);
 
 		ctrlTeam.getTeamMap().put(teamID, team);
