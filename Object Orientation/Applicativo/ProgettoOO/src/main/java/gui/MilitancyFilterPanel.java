@@ -13,6 +13,7 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -926,7 +927,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				GuiConfiguration.fillYearComboBox(fromYearComboBox, GuiConfiguration.getMinYear());
+				GuiConfiguration.fillYearComboBox(fromYearComboBox, GuiConfiguration.getMinYear(), Year.now().getValue());
 			}
 
 			@Override
@@ -991,7 +992,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				GuiConfiguration.fillYearComboBox(toYearComboBox, Integer.valueOf(militancyFromYear));
+				GuiConfiguration.fillYearComboBox(toYearComboBox, Integer.valueOf(militancyFromYear), Year.now().getValue());
 			}
 
 			@Override

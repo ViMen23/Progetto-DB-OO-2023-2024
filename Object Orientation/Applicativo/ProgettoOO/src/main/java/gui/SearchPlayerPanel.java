@@ -550,7 +550,7 @@ public class SearchPlayerPanel
 
 		yearReferenceComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		GuiConfiguration.fillYearComboBox(yearReferenceComboBox, GuiConfiguration.getMinYear());
+		GuiConfiguration.fillYearComboBox(yearReferenceComboBox, GuiConfiguration.getMinYear(), Year.now().getValue());
 		yearReferenceComboBox.setSelectedIndex(-1);
 
 		agePanel.add(yearReferenceComboBox);

@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,7 +8,10 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
@@ -15,7 +19,11 @@ public class ViewTeamPanel
 				extends JPanel
 {
 
+	private final String teamType;
+	private final String teamID;
 	private final Color panelColor = Color.white;
+
+
 
 	private final JPanel informationPanel;
 	private final JPanel seasonPanel;
@@ -34,15 +42,14 @@ public class ViewTeamPanel
 
 	private final JButton showButton;
 
+	private final JLabel titleSquadTable;
+	private final JLabel titleParticipantTable;
+	private final JLabel titleTrophyTable;
+	private final JLabel titlePrizeTable;
+
 	private final Map<String, String> seasonMap = new HashMap<>();
 
-
-	private JScrollPane scrollPane;
-	private JLabel label;
-
-	private String teamType;
-
-	private final Map<String, String> generalInformationTeam = new HashMap<>();
+	private final Map<String, String> generalInformationTeam = new LinkedHashMap<>();
 	private final Vector<String> teamSquadTableColumnName = new Vector<>();
 	private final Vector<String> teamParticipationTableColumnName = new Vector<>();
 	private final Vector<String> teamTrophyTableColumnName = new Vector<>();
@@ -54,16 +61,26 @@ public class ViewTeamPanel
 	private final Vector<Vector<String>> teamPrizeTableData = new Vector<>();
 
 
-	public ViewTeamPanel()
+	private String startYear;
+
+	private JScrollPane scrollPane;
+	private JLabel label;
+
+
+
+	public ViewTeamPanel(String teamID, String teamType)
 	{
+
+		this.teamID = teamID;
+		this.teamType = teamType;
 
 		MigLayout migLayout;
 		String string;
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy, fill",
-				"0[fill]10",
+				"debug, flowy",
+				"0[grow, fill]10",
 				"0[]20[]20[]10"
 			);
 
@@ -79,7 +96,7 @@ public class ViewTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"10[grow, fill]40[grow, fill]10",
+				"10[40%, fill]40[50%, fill]10",
 				"10[]10[]10[]10[]10[]10[]10[]10"
 			);
 
@@ -87,196 +104,6 @@ public class ViewTeamPanel
 		informationPanel.setBackground(panelColor);
 
 		add(informationPanel);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TITOLO
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("teamInformation");
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		informationPanel.add(label, "span 2");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL INTESTAZIONE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		string += ": ";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL INTESTAZIONE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "SSC Napoli"; //TODO REPLACE WITH CALL TO DB
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL NOME ABBREVIATO
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("shortName");
-		string = StringUtils.capitalize(string);
-		string += ": ";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL NOME ABBREVIATO VALORE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "NAP"; //TODO REPLACE WITH CALL TO DB
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TIPO SQUADRA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("teamType");
-		string = StringUtils.capitalize(string);
-		string += ": ";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TIPO SQUADRA VALORE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "CLUB";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PAESE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("country");
-		string = StringUtils.capitalize(string);
-		string += ": ";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PAESE VALORE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "ITALIA WITH FLAG";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL CONFEDERAZIONE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("confederation");
-		string = StringUtils.capitalize(string);
-		string += ": ";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		informationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL CONFEDERAZIONE VALORE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "FEDERAZIONE GIUOCO CALCIO";
-
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -289,8 +116,8 @@ public class ViewTeamPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx",
-				"20:push[]30[]20[]20:push",
+				"debug, flowx, center",
+				"20[]30[]20[]20",
 				"10[]10"
 			);
 
@@ -328,21 +155,13 @@ public class ViewTeamPanel
 
 		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		GuiConfiguration.fillSeasonComboBox(seasonComboBox, GuiConfiguration.getMinYear(), teamType, seasonMap);
+		GuiConfiguration.fillSeasonComboBox(seasonComboBox, GuiConfiguration.getMinYear(), this.teamType, seasonMap);
+
+		startYear = seasonMap.get((String) seasonComboBox.getSelectedItem());
 
 		seasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
 		seasonPanel.add(seasonComboBox);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -359,6 +178,26 @@ public class ViewTeamPanel
 		showButton = new JButton(string);
 
 		seasonPanel.add(showButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		showButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				startYear = seasonMap.get((String) seasonComboBox.getSelectedItem());
+
+				fillTeamView();
+
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -372,7 +211,7 @@ public class ViewTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, wrap 2",
-				"0[60%, fill]3%[37%, fill]0",
+				"0[60%, fill]3%[36%, fill]0",
 				"0[]20[]10"
 
 			);
@@ -400,7 +239,7 @@ public class ViewTeamPanel
 		squadPanel = new JPanel(migLayout);
 		squadPanel.setBackground(panelColor);
 
-		tablePanel.add(squadPanel, "spany");
+		tablePanel.add(squadPanel, "spany, top");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -411,25 +250,20 @@ public class ViewTeamPanel
 
 
 
-		string = GuiConfiguration.getMessage("squad");
-		string += " ";
-		string += "SCC Napoli "; //TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		titleSquadTable = new JLabel();
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
+		titleSquadTable.setOpaque(true);
+		titleSquadTable.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleSquadTable.setForeground(Color.white);
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleSquadTable.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		label.setFont(GuiConfiguration.getOutputBoldFont());
+		titleSquadTable.setFont(GuiConfiguration.getOutputBoldFont());
 
-		squadPanel.add(label);
+		setTitleTable(titleSquadTable, "squad");
+
+		squadPanel.add(titleSquadTable);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -492,26 +326,19 @@ public class ViewTeamPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
+		titleParticipantTable = new JLabel();
 
-		string = GuiConfiguration.getMessage("participations");
-		string += " ";
-		string += "SCC Napoli "; //TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
+		titleParticipantTable.setOpaque(true);
+		titleParticipantTable.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleParticipantTable.setForeground(Color.white);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		titleParticipantTable.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
+		titleParticipantTable.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		setTitleTable(titleParticipantTable, "participations");
 
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		participationPanel.add(label);
+		participationPanel.add(titleParticipantTable);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -566,7 +393,7 @@ public class ViewTeamPanel
 		awardPanel.setBackground(panelColor);
 
 
-		tablePanel.add(awardPanel, "skip 1");
+		tablePanel.add(awardPanel, "skip 1, top");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -577,25 +404,19 @@ public class ViewTeamPanel
 
 
 
-		string = GuiConfiguration.getMessage("trophies");
-		string += " ";
-		string += "SCC Napoli ";//TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
+		titleTrophyTable = new JLabel();
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		titleTrophyTable.setOpaque(true);
+		titleTrophyTable.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTrophyTable.setForeground(Color.white);
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
+		titleTrophyTable.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTrophyTable.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label.setFont(GuiConfiguration.getOutputBoldFont());
+		setTitleTable(titleTrophyTable, "trophies");
 
-		awardPanel.add(label);
+		awardPanel.add(titleTrophyTable);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -639,25 +460,19 @@ public class ViewTeamPanel
 
 
 
-		string = GuiConfiguration.getMessage("prizes");
-		string += " ";
-		string += "SCC Napoli ";//TODO replace with given value
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
+		titlePrizeTable = new JLabel(string, SwingConstants.LEADING);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		titlePrizeTable.setOpaque(true);
+		titlePrizeTable.setBackground(GuiConfiguration.getSearchPanelColor());
+		titlePrizeTable.setForeground(Color.white);
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
+		titlePrizeTable.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titlePrizeTable.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label.setFont(GuiConfiguration.getOutputBoldFont());
+		setTitleTable(titlePrizeTable, "prizes");
 
-		awardPanel.add(label);
+		awardPanel.add(titlePrizeTable);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -692,5 +507,148 @@ public class ViewTeamPanel
 
 		awardPanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
+
+		fillTeamView();
+
+	}
+
+
+	public void getDataTeamView(String teamID,
+							 String startYear,
+							 Map<String, String> generalInformationTeam,
+							 Vector<String> teamSquadTableColumnName,
+							 Vector<Vector<String>> teamSquadTableData,
+							 Vector<String> teamParticipationTableColumnName,
+							 Vector<Vector<String>> teamParticipationTableData,
+							 Vector<String> teamTrophyTableColumnName,
+							 Vector<Vector<String>> teamTrophyTableData,
+							 Vector<String> teamPrizeTableColumnName,
+							 Vector<Vector<String>> teamPrizeTableData)
+	{
+
+		generalInformationTeam.clear();
+		teamSquadTableColumnName.clear();
+		teamSquadTableData.clear();
+		teamParticipationTableColumnName.clear();
+		teamParticipationTableData.clear();
+		teamTrophyTableColumnName.clear();
+		teamTrophyTableData.clear();
+		teamPrizeTableColumnName.clear();
+		teamPrizeTableData.clear();
+
+		Controller.getInstance().setTeamView
+			(
+				generalInformationTeam,
+				teamSquadTableColumnName,
+				teamSquadTableData,
+				teamParticipationTableColumnName,
+				teamParticipationTableData,
+				teamTrophyTableColumnName,
+				teamTrophyTableData,
+				teamPrizeTableColumnName,
+				teamPrizeTableData,
+				teamID,
+				startYear
+			);
+	}
+
+	public void fillTeamView()
+	{
+		getDataTeamView
+			(
+				teamID,
+				startYear,
+				generalInformationTeam,
+				teamSquadTableColumnName,
+				teamSquadTableData,
+				teamParticipationTableColumnName,
+				teamParticipationTableData,
+				teamTrophyTableColumnName,
+				teamTrophyTableData,
+				teamPrizeTableColumnName,
+				teamPrizeTableData
+			);
+
+		fillTable(squadTable, teamSquadTableData, teamSquadTableColumnName);
+
+		setTitleTable(titleSquadTable, "squad");
+
+		fillTable(participationTable, teamParticipationTableData, teamParticipationTableColumnName);
+
+		setTitleTable(titleParticipantTable, "participants");
+
+		fillTable(trophyTable, teamTrophyTableData, teamTrophyTableColumnName);
+
+		setTitleTable(titleTrophyTable, "trophies");
+
+		fillTable(prizeTable, teamPrizeTableData, teamPrizeTableColumnName);
+		setTitleTable(titlePrizeTable, "prizes");
+
+		createGeneralInfoPanel();
+
+	}
+
+	public void fillTable(JTable table, Vector<Vector<String>> tableData, Vector<String> tableColumnName)
+	{
+		table.setModel(new TableModel(tableData, tableColumnName));
+
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	}
+
+	public void setTitleTable(JLabel label, String tableName)
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage(tableName);
+		string += " ";
+		string += generalInformationTeam.get("SQUADRA");
+		string += " ";
+		string += GuiConfiguration.getMessage("season");
+		string += " ";
+		string += seasonComboBox.getSelectedItem();
+		string = string.toUpperCase();
+
+		label.setText(string);
+	}
+
+
+	public JLabel createTitleGeneralInfo()
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage("teamInformation");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		return label;
+	}
+
+	public void createGeneralInfoPanel()
+	{
+		informationPanel.removeAll();
+
+		informationPanel.add(createTitleGeneralInfo(), "span 2");
+
+		for (String key: generalInformationTeam.keySet()){
+
+			label = new JLabel(key);
+
+			System.out.println(key + " - " + generalInformationTeam.get(key));
+
+			informationPanel.add(label);
+
+			label = new JLabel(generalInformationTeam.get(key));
+
+			label.setFont(GuiConfiguration.getOutputBoldFont());
+
+			informationPanel.add(label);
+		}
 	}
 }

@@ -459,9 +459,8 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static void fillYearComboBox(JComboBox<String> comboBox, Integer minimumYear)
+	public static void fillYearComboBox(JComboBox<String> comboBox, Integer minimumYear, Integer maximumYear)
 	{
-		Integer maximumYear = Year.now().getValue();
 
 		for( Integer i = maximumYear; i >= minimumYear; --i){
 			comboBox.addItem(i.toString());
@@ -485,21 +484,25 @@ public class GuiConfiguration
 		}
 
 
-		for (Integer i = maximumYear; i >= minimumYear; --i)
-		{
-			string = i + " - " + (i + 1)%100;
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			fillYearComboBox(comboBox, minimumYear, maximumYear);
+		}
+		else {
+			for (Integer i = maximumYear; i >= minimumYear; --i) {
+				string = i + " - " + (i + 1) % 100;
 
-			comboBox.addItem(string);
-			seasonMap.put(string, i.toString());
+				comboBox.addItem(string);
+				seasonMap.put(string, i.toString());
+			}
 		}
 	}
 
 	public static void fillSeasonComboBox(JComboBox<String> comboBox,
-								   Vector<String> vector,
-								   Map<String, String> map,
-								   String teamType,
-								   String competitionID,
-								   Boolean selectAll)
+										  Vector<String> vector,
+										  Map<String, String> map,
+										  String teamType,
+										  String competitionID,
+										  Boolean selectAll)
 	{
 		String season;
 
