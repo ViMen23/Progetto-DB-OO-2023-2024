@@ -2079,7 +2079,7 @@ public class Controller
 
 			String season = keyPart[0];
 			season += "/";
-			season += ((Integer) (Integer.valueOf(season) + Integer.valueOf(1))).toString();
+			season += ((Integer) (Integer.parseInt(keyPart[0]) + 1)).toString();
 
 			clubCareerVector.add(season);
 
