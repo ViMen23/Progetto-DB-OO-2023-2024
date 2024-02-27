@@ -24,11 +24,17 @@ public class Player
 	private String role;
 	private String retiredDate;
 
+	private Map<String, String> attributeGoalkeepingMap;
+	private Map<String, String> attributeMentalMap;
+	private Map<String, String> attributePhysicalMap;
+	private Map<String, String> attributeTechnicalMap;
+
+	private Set<Tag> tagSet;
 
 	private final Set<Position> positionSet;
 	private final Set<Country> countrySet;
 
-	private List<Statistic> statisticList;
+	private final List<Statistic> statisticList;
 
 
 	public Player(String name,
@@ -52,6 +58,13 @@ public class Player
 		this.statisticList = new ArrayList<>();
 		this.positionSet = new LinkedHashSet<>();
 		this.countrySet = new LinkedHashSet<>();
+
+		this.attributeGoalkeepingMap = new LinkedHashMap<>();
+		this.attributeMentalMap = new LinkedHashMap<>();
+		this.attributePhysicalMap = new LinkedHashMap<>();
+		this.attributeTechnicalMap = new LinkedHashMap<>();
+
+		this.tagSet = new LinkedHashSet<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -163,5 +176,50 @@ public class Player
 	public Set<Country> getCountrySet()
 	{
 		return countrySet;
+	}
+
+	public Map<String, String> getAttributeGoalkeepingMap()
+	{
+		return attributeGoalkeepingMap;
+	}
+
+	public void setAttributeGoalkeepingMap(Map<String, String> attributeGoalkeepingMap)
+	{
+		this.attributeGoalkeepingMap = attributeGoalkeepingMap;
+	}
+
+	public Map<String, String> getAttributeMentalMap()
+	{
+		return attributeMentalMap;
+	}
+
+	public void setAttributeMentalMap(Map<String, String> attributeMentalMap)
+	{
+		this.attributeMentalMap = attributeMentalMap;
+	}
+
+	public Map<String, String> getAttributePhysicalMap()
+	{
+		return attributePhysicalMap;
+	}
+
+	public void setAttributePhysicalMap(Map<String, String> attributePhysicalMap)
+	{
+		this.attributePhysicalMap = attributePhysicalMap;
+	}
+
+	public Map<String, String> getAttributeTechnicalMap()
+	{
+		return attributeTechnicalMap;
+	}
+
+	public void setAttributeTechnicalMap(Map<String, String> attributeTechnicalMap)
+	{
+		this.attributeTechnicalMap = attributeTechnicalMap;
+	}
+
+	public Set<Tag> getTagSet()
+	{
+		return tagSet;
 	}
 }

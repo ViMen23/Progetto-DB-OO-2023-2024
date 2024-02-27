@@ -1223,7 +1223,7 @@ CREATE TABLE fp_attribute_goalkeeping
 	kicking					dm_attribute	NOT NULL	DEFAULT 0,
 	one_on_ones				dm_attribute	NOT NULL	DEFAULT 0,
 	passing_gk				dm_attribute	NOT NULL	DEFAULT 0,
-	punching_tencency		dm_attribute	NOT NULL	DEFAULT 0,
+	punching_tendency		dm_attribute	NOT NULL	DEFAULT 0,
 	reflexes				dm_attribute	NOT NULL	DEFAULT 0,
 	rushing_out_tendency	dm_attribute	NOT NULL	DEFAULT 0,
 	throwing				dm_attribute	NOT NULL	DEFAULT 0

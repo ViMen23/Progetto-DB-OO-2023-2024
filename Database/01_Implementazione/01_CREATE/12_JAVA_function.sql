@@ -1558,17 +1558,13 @@ BEGIN
             fp_position.code::text AS position_code,
             fp_position.name::text AS position_name
         FROM
-            fp_player
-            JOIN
             fp_player_position
-                ON
-                fp_player.id = fp_player_position.player_id
             JOIN
             fp_position
                 ON
                 fp_player_position.position_id = fp_position.id
         WHERE
-            fp_player.id = id_player::integer
+            fp_player_position.player_id = id_player::integer
         ORDER BY
             fp_position.role,
             fp_position.name;
@@ -1607,17 +1603,13 @@ BEGIN
         SELECT
             fp_country.name::text AS country_name
         FROM
-            fp_player
-            JOIN
             fp_nationality
-                ON
-                fp_player.id = fp_nationality.player_id
             JOIN
             fp_country
                 ON
                 fp_nationality.country_id = fp_country.id
         WHERE
-            fp_player.id = id_player::integer
+            fp_nationality.player_id = id_player::integer
         ORDER BY
             fp_country.name;
         
@@ -2067,7 +2059,7 @@ RETURNS TABLE
             kicking					text,
             one_on_ones				text,
             passing_gk				text,
-            punching_tencency		text,
+            punching_tendency		text,
             reflexes				text,
             rushing_out_tendency	text,
             throwing				text
@@ -2087,7 +2079,7 @@ BEGIN
             fp_attribute_goalkeeping.kicking::text,
             fp_attribute_goalkeeping.one_on_ones::text,
             fp_attribute_goalkeeping.passing_gk::text,
-            fp_attribute_goalkeeping.punching_tencency::text,
+            fp_attribute_goalkeeping.punching_tendency::text,
             fp_attribute_goalkeeping.reflexes::text,
             fp_attribute_goalkeeping.rushing_out_tendency::text,
             fp_attribute_goalkeeping.throwing::text
@@ -2279,3 +2271,48 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_tag_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_tag_player
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            tag_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_tag.name::text AS tag_name
+        FROM
+            fp_player_tag
+            JOIN
+            fp_tag
+                ON
+                fp_player_tag.tag_id = fp_tag.id
+        WHERE
+            fp_player_tag.player_id = id_player::integer
+        ORDER BY
+            fp_tag.name;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+

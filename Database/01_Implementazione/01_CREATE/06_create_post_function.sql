@@ -2794,7 +2794,7 @@ BEGIN
 		kicking = random_between(0, 10),
 		one_on_ones = random_between(0, 10),
 		passing_gk = random_between(0, 10),
-		punching_tencency = random_between(0, 10),
+		punching_tendency = random_between(0, 10),
 		reflexes = random_between(0, 10),
 		rushing_out_tendency = random_between(0, 10),
 		throwing = random_between(0, 10)
