@@ -2316,3 +2316,101 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_club_career_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_club_career_player
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            militancy_year  text,
+            militancy_type  text,
+            team_long_name  text,
+            country_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_militancy.start_year::text AS militancy_year,
+            fp_militancy.type::text AS militancy_type,
+            fp_team.long_name::text AS team_long_name,
+            fp_country.name::text AS country_name
+        FROM
+            fp_militancy
+            JOIN
+            fp_team
+                ON
+                fp_militancy.team_id = fp_team.id
+            JOIN
+            fp_country
+                ON
+                fp_team.country_id = fp_country.id
+        WHERE
+            fp_militancy.player_id = id_player::integer
+        ORDER BY
+            fp_militancy.start_year DESC,
+            fp_militancy.type DESC;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_national_career_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_national_career_player
+(
+    IN  id_player text
+)
+RETURNS TABLE
+        (
+            militancy_year  text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_militancy.start_year::text AS militancy_year,
+            fp_team.long_name::text AS team_long_name
+        FROM
+            fp_militancy
+            JOIN
+            fp_team
+                ON
+                fp_militancy.team_id = fp_team.id
+        WHERE
+            fp_militancy.player_id = id_player::integer
+        ORDER BY
+            fp_militancy.start_year DESC;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+

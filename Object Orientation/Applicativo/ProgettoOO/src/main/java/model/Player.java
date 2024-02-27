@@ -34,6 +34,9 @@ public class Player
 	private final Set<Position> positionSet;
 	private final Set<Country> countrySet;
 
+	private final Map<String, Team> nationalCareer;
+	private final Map<String, Team> clubCareer;
+
 	private final List<Statistic> statisticList;
 
 
@@ -65,6 +68,9 @@ public class Player
 		this.attributeTechnicalMap = new LinkedHashMap<>();
 
 		this.tagSet = new LinkedHashSet<>();
+
+		this.nationalCareer = new LinkedHashMap<>();
+		this.clubCareer = new LinkedHashMap<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -221,5 +227,15 @@ public class Player
 	public Set<Tag> getTagSet()
 	{
 		return tagSet;
+	}
+
+	public Map<String, Team> getNationalCareer()
+	{
+		return nationalCareer;
+	}
+
+	public Map<String, Team> getClubCareer()
+	{
+		return clubCareer;
 	}
 }

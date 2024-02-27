@@ -52,4 +52,64 @@ public class PostgresImplMilitancyDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchMilitancyDB(String playerID,
+															 List<String> listMilitancyYear,
+															 List<String> listMilitancyType,
+															 List<String> listTeamID,
+															 List<String> listTeamLongName,
+															 List<String> listCountryID,
+															 List<String> listCountryName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_club_career_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listMilitancyYear.add(rs.getString("militancy_year"));
+				listMilitancyType.add(rs.getString("militancy_type"));
+				listTeamID.add(rs.getString("team_id"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+				listCountryID.add(rs.getString("country_id"));
+				listCountryName.add(rs.getString("country_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchMilitancyDB(String playerID,
+															 List<String> listMilitancyYear,
+															 List<String> listTeamID,
+															 List<String> listTeamLongName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_national_career_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listMilitancyYear.add(rs.getString("militancy_year"));
+				listTeamID.add(rs.getString("team_id"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

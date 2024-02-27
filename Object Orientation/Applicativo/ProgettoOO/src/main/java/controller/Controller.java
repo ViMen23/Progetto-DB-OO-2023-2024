@@ -1875,6 +1875,131 @@ public class Controller
 			playerNationalityTableData.add(countryVector);
 		}
 	}
+
+
+	public void setPlayerDetailedView(Map<String, String> infoPlayerMap,
+																		Vector<String> playerAttributeGoalkeepingTableColumnName,
+																		Vector<Vector<String>> playerAttributeGoalkeepingTableData,
+																		Vector<String> playerAttributeMentalTableColumnName,
+																		Vector<Vector<String>> playerAttributeMentalTableData,
+																		Vector<String> playerAttributePhysicalTableColumnName,
+																		Vector<Vector<String>> playerAttributePhysicalTableData,
+																		Vector<String> playerAttributeTechnicalTableColumnName,
+																		Vector<Vector<String>> playerAttributeTechnicalTableData,
+																		Vector<String> playerTagTableColumnName,
+																		Vector<Vector<String>> playerTagTableData,
+																		String playerID)
+	{
+		fetchPlayer(playerID);
+		fetchAttribute(playerID);
+		fetchTag(playerID);
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+
+		String string;
+
+		// informazioni calciatori
+		string = GuiConfiguration.getMessage("player");
+		string = string.toUpperCase();
+		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
+
+		string = GuiConfiguration.getMessage("dob");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getDob());
+
+		string = GuiConfiguration.getMessage("bornCountry");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getCountry().getName());
+
+		string = GuiConfiguration.getMessage("preferredFoot");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getFoot());
+
+		string = GuiConfiguration.getMessage("mainPosition");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getPosition().getName());
+
+		string = GuiConfiguration.getMessage("role");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getRole());
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = StringUtils.capitalize(string);
+		if (null == player.getRetiredDate()) {
+			infoPlayerMap.put(string, "");
+		} else {
+			infoPlayerMap.put(string, player.getRetiredDate());
+		}
+
+
+		// tabelle attributi
+		string = GuiConfiguration.getMessage("attribute");
+		string = string.toUpperCase();
+		playerAttributeGoalkeepingTableColumnName.add(string);
+		playerAttributeMentalTableColumnName.add(string);
+		playerAttributePhysicalTableColumnName.add(string);
+		playerAttributeTechnicalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("value");
+		string = string.toUpperCase();
+		playerAttributeGoalkeepingTableColumnName.add(string);
+		playerAttributeMentalTableColumnName.add(string);
+		playerAttributePhysicalTableColumnName.add(string);
+		playerAttributeTechnicalTableColumnName.add(string);
+
+
+		for (String key : player.getAttributeGoalkeepingMap().keySet()) {
+			Vector<String> attributeGoalkeepingVector = new Vector<>();
+
+			attributeGoalkeepingVector.add(key);
+			attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
+
+			playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
+		}
+
+		for (String key : player.getAttributeMentalMap().keySet()) {
+			Vector<String> attributeMentalVector = new Vector<>();
+
+			attributeMentalVector.add(key);
+			attributeMentalVector.add(player.getAttributeMentalMap().get(key));
+
+			playerAttributeMentalTableData.add(attributeMentalVector);
+		}
+
+		for (String key : player.getAttributePhysicalMap().keySet()) {
+			Vector<String> attributePhysicalVector = new Vector<>();
+
+			attributePhysicalVector.add(key);
+			attributePhysicalVector.add(player.getAttributeGoalkeepingMap().get(key));
+
+			playerAttributePhysicalTableData.add(attributePhysicalVector);
+		}
+
+		for (String key : player.getAttributeTechnicalMap().keySet()) {
+			Vector<String> attributeTechnicalVector = new Vector<>();
+
+			attributeTechnicalVector.add(key);
+			attributeTechnicalVector.add(player.getAttributeTechnicalMap().get(key));
+
+			playerAttributeTechnicalTableData.add(attributeTechnicalVector);
+		}
+
+
+
+
+		// tabella tag
+		string = GuiConfiguration.getMessage("tag");
+		string = string.toUpperCase();
+		playerTagTableColumnName.add(string);
+
+		for (Tag tag : player.getTagSet()) {
+			Vector<String> tagVector = new Vector<>();
+
+			tagVector.add(tag.getName());
+
+			playerTagTableData.add(tagVector);
+		}
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -2450,6 +2575,114 @@ public class Controller
 
 			Player player = newPlayer(name, surname, null, null, null, null, role, null);
 			ctrlTeam.getTeamMap().get(teamID).getPlayerMap().put(ID, player);
+		}
+	}
+
+
+	private void fetchClubMilitancy(String playerID)
+	{
+		List<String> listMilitancyYear = new ArrayList<>();
+		List<String> listMilitancyType = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB
+						(
+										playerID,
+										listMilitancyYear,
+										listMilitancyType,
+										listTeamID,
+										listTeamLongName,
+										listCountryID,
+										listCountryName
+						);
+
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+		player.getClubCareer().clear();
+
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		while (!(listMilitancyYear.isEmpty())) {
+
+			String countryID = listCountryID.removeFirst();
+			String countryName = listCountryName.removeFirst();
+
+			if (null == countryMap.get(countryID)) {
+				Country country = newCountry(null, null, countryName, null);
+				countryMap.put(countryID, country);
+			}
+
+			String teamID = listTeamID.removeFirst();
+			String teamLongName = listTeamLongName.removeFirst();
+
+			if (null == teamMap.get(teamID)) {
+				Team team = newTeam
+								(
+												null,
+												null,
+												teamLongName,
+												countryMap.get(countryID),
+												null
+								);
+
+				teamMap.put(teamID, team);
+			}
+
+			String militancyYear = listMilitancyYear.removeFirst();
+			String militancyType = listMilitancyType.removeFirst();
+
+			String key = militancyYear;
+			key += "_";
+			key += militancyType;
+
+			player.getNationalCareer().put(key, teamMap.get(teamID));
+		}
+	}
+
+
+	private void fetchNationalMilitancy(String playerID)
+	{
+		List<String> listMilitancyYear = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB
+						(
+										playerID,
+										listMilitancyYear,
+										listTeamID,
+										listTeamLongName
+						);
+
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+		player.getNationalCareer().clear();
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		while (!(listMilitancyYear.isEmpty())) {
+
+			String ID = listTeamID.removeFirst();
+			String longName = listTeamLongName.removeFirst();
+
+			if (null == teamMap.get(ID)) {
+				Team team = newTeam(null, null, longName, null, null);
+				teamMap.put(ID, team);
+			}
+
+			String year = listMilitancyYear.removeFirst();
+
+			player.getNationalCareer().put(year, teamMap.get(ID));
 		}
 	}
 
