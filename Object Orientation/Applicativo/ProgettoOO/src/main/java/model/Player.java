@@ -25,8 +25,8 @@ public class Player
 	private String retiredDate;
 
 
-	private final Set<Position> positionList;
-	private final Set<Country> countryList;
+	private final Set<Position> positionSet;
+	private final Set<Country> countrySet;
 
 	private List<Statistic> statisticList;
 
@@ -50,8 +50,8 @@ public class Player
 		this.retiredDate = retiredDate;
 
 		this.statisticList = new ArrayList<>();
-		this.positionList = new HashSet<>();
-		this.countryList = new HashSet<>();
+		this.positionSet = new LinkedHashSet<>();
+		this.countrySet = new LinkedHashSet<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -153,5 +153,15 @@ public class Player
 	public List<Statistic> getStatisticList()
 	{
 		return statisticList;
+	}
+
+	public Set<Position> getPositionSet()
+	{
+		return positionSet;
+	}
+
+	public Set<Country> getCountrySet()
+	{
+		return countrySet;
 	}
 }

@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
 
 public class PostgresImplPlayerDAO
 				implements PlayerDAO
@@ -171,6 +172,37 @@ public class PostgresImplPlayerDAO
 				listPlayerName.add(rs.getString("player_name"));
 				listPlayerSurname.add(rs.getString("player_surname"));
 				listPlayerRole.add(rs.getString("player_role"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayerDB(String playerID,
+														Map<String, String> mapPlayerInfo)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call info_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				mapPlayerInfo.put("playerID", rs.getString("player_id"));
+				mapPlayerInfo.put("playerName", rs.getString("player_name"));
+				mapPlayerInfo.put("playerSurname", rs.getString("player_surname"));
+				mapPlayerInfo.put("playerDob", rs.getString("player_dob"));
+				mapPlayerInfo.put("countryName", rs.getString("country_name"));
+				mapPlayerInfo.put("playerFoot", rs.getString("player_foot"));
+				mapPlayerInfo.put("positionName", rs.getString("position_name"));
+				mapPlayerInfo.put("playerRole", rs.getString("player_role"));
+				mapPlayerInfo.put("playerRetiredDate", rs.getString("player_retired_date"));
 			}
 
 			rs.close();

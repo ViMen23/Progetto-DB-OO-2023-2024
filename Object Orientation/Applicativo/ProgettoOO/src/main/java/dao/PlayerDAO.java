@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PlayerDAO
 {
@@ -49,4 +50,7 @@ public interface PlayerDAO
 							List<String> listPlayerName,
 							List<String> listPlayerSurname,
 							List<String> listPlayerRole);
+
+	void fetchPlayerDB(String playerID,
+										 Map<String, String> mapPlayerInfo);
 }

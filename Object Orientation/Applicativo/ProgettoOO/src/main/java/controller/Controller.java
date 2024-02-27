@@ -927,19 +927,34 @@ public class Controller
 			return;
 		}
 
-		ctrlCountry.getCountryMap().clear();
-		String countryName = mapTeamInfo.get("countryName");
-		Country country = newCountry(null, null, countryName, null);
 
-		ctrlConfederation.getConfederationMap().clear();
-		String confederationShortName = mapTeamInfo.get("confederationShortName");
-		Confederation confederation = newConfederation(confederationShortName, null, country, null);
+		Country country = newCountry
+						(
+										null,
+										null,
+										mapTeamInfo.get("countryName"),
+										null
+						);
+
+
+		Confederation confederation = newConfederation
+						(
+										mapTeamInfo.get("confederationShortName"),
+										null,
+										country,
+										null
+						);
 
 		ctrlTeam.getTeamMap().clear();
-		String teamType = mapTeamInfo.get("teamType");
-		String teamShortName = mapTeamInfo.get("teamShortName");
-		String teamLongName = mapTeamInfo.get("teamLongName");
-		Team team = newTeam(teamType, teamShortName, teamLongName, country, confederation);
+
+		Team team = newTeam
+						(
+										mapTeamInfo.get("teamType"),
+										mapTeamInfo.get("teamShortName"),
+										mapTeamInfo.get("teamLongName"),
+										country,
+										confederation
+						);
 
 		ctrlTeam.getTeamMap().put(teamID, team);
 	}
@@ -1444,7 +1459,7 @@ public class Controller
 	 * @param teamID
 	 */
 	private void fetchPlayer(String startYear,
-							 String teamID)
+													 String teamID)
 	{
 		List<String> listPlayerID = new ArrayList<>();
 		List<String> listPlayerName = new ArrayList<>();
@@ -1475,6 +1490,55 @@ public class Controller
 			}
 		}
 	}
+
+
+	private void fetchPlayer(String playerID)
+	{
+		Map<String, String> mapPlayerInfo = new LinkedHashMap<>();
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		playerDAO.fetchPlayerDB(playerID, mapPlayerInfo);
+
+
+		if (!(playerID.equalsIgnoreCase(mapPlayerInfo.get("playerID")))) {
+			System.out.println("ERRORE");
+			return;
+		}
+
+
+		Country country = newCountry
+						(
+										null,
+										null,
+										mapPlayerInfo.get("countryName"),
+										null
+						);
+
+
+		Position position = newPosition
+						(
+										null,
+										null,
+										mapPlayerInfo.get("positionName")
+						);
+
+		ctrlPlayer.getPlayerMap().clear();
+
+		Player player = newPlayer
+						(
+										mapPlayerInfo.get("playerName"),
+										mapPlayerInfo.get("playerSurname"),
+										mapPlayerInfo.get("playerDob"),
+										country,
+										mapPlayerInfo.get("playerFoot"),
+										position,
+										mapPlayerInfo.get("playerRole"),
+										mapPlayerInfo.get("playerRetiredDate")
+						);
+
+		ctrlPlayer.getPlayerMap().put(playerID, player);
+	}
+
 
 	/**
 	 * TODO
@@ -1779,6 +1843,34 @@ public class Controller
 				Position position = newPosition(role, code, name);
 				ctrlPosition.getPositionMap().put(ID, position);
 			}
+		}
+	}
+
+
+	private void fetchPosition(String playerID)
+	{
+		List<String> listPositionRole = new ArrayList<>();
+		List<String> listPositionCode = new ArrayList<>();
+		List<String> listPositionName = new ArrayList<>();
+
+		PositionDAO positionDAO = new PostgresImplPositionDAO();
+		positionDAO.fetchPositionDB
+						(
+										playerID,
+										listPositionRole,
+										listPositionCode,
+										listPositionName
+						);
+
+		ctrlPlayer.getPlayerMap().get(playerID).getPositionSet().clear();
+
+		while (!(listPositionName.isEmpty())) {
+			String role = listPositionRole.removeFirst();
+			String code = listPositionCode.removeFirst();
+			String name = listPositionName.removeFirst();
+
+			Position position = newPosition(role, code, name);
+			ctrlPlayer.getPlayerMap().get(playerID).getPositionSet().add(position);
 		}
 	}
 
@@ -2217,17 +2309,16 @@ public class Controller
 		}
 
 
-		ctrlCompetition.getCompetitionMap().clear();
+		ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().clear();
 
 		while (!(listCompetitionID.isEmpty())) {
 			String ID = listCompetitionID.removeFirst();
 			String type = listCompetitionType.removeFirst();
 			String name = listCompetitionName.removeFirst();
 			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
-			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
-				Competition competition = newCompetition(type, null, name, confederation);
-				ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().add(competition);
-			}
+
+			Competition competition = newCompetition(type, null, name, confederation);
+			ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().add(competition);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2256,18 +2347,16 @@ public class Controller
 						);
 
 
-
-		ctrlPlayer.getPlayerMap().clear();
+		ctrlTeam.getTeamMap().get(teamID).getPlayerMap().clear();
 
 		while (!(listPlayerID.isEmpty())) {
 			String ID = listPlayerID.removeFirst();
 			String name = listPlayerName.removeFirst();
 			String surname = listPlayerSurname.removeFirst();
 			String role = listPlayerRole.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, null, null, null, null, role, null);
-				ctrlTeam.getTeamMap().get(teamID).getPlayerMap().put(ID, player);
-			}
+
+			Player player = newPlayer(name, surname, null, null, null, null, role, null);
+			ctrlTeam.getTeamMap().get(teamID).getPlayerMap().put(ID, player);
 		}
 	}
 
@@ -2342,6 +2431,8 @@ public class Controller
 		}
 
 
+		ctrlTeam.getTeamMap().get(teamID).getTrophySet().clear();
+
 		for (String ID : listTrophyID) {
 			String name = listTrophyName.removeFirst();
 			Competition competition = ctrlCompetition.getCompetitionMap().get(listCompetitionID.removeFirst());
@@ -2405,6 +2496,8 @@ public class Controller
 						);
 
 
+		ctrlTeam.getTeamMap().get(teamID).getPrizeSet().clear();
+
 		for (String ID : listPrizeID) {
 			String name = listPrizeName.removeFirst();
 			String given = listPrizeGiven.removeFirst();
@@ -2417,4 +2510,24 @@ public class Controller
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
+
+	/*--------------------------------------------------------------------------------------------------------
+	 * NATIONALITY
+	 *------------------------------------------------------------------------------------------------------*/
+
+	private void fetchNationality(String playerID)
+	{
+		List<String> listCountryName = new ArrayList<>();
+
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		nationalityDAO.fetchNationalityDB(playerID, listCountryName);
+
+		ctrlPlayer.getPlayerMap().get(playerID).getCountrySet().clear();
+		while (!(listCountryName.isEmpty())) {
+			String name = listCountryName.removeFirst();
+			Country country = newCountry(null, null, name, null);
+			ctrlPlayer.getPlayerMap().get(playerID).getCountrySet().add(country);
+		}
+	}
+	/*------------------------------------------------------------------------------------------------------*/
 }

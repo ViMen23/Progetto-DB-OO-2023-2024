@@ -8,4 +8,9 @@ public interface PositionDAO
 											 List<String> listPositionRole,
 											 List<String> listPositionCode,
 											 List<String> listPositionName);
+
+	void fetchPositionDB(String playerID,
+											 List<String> listPositionRole,
+											 List<String> listPositionCode,
+											 List<String> listPositionName);
 }

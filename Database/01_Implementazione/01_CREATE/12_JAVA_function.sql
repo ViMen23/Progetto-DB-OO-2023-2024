@@ -1463,6 +1463,173 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : info_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION info_player
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            player_id           text,
+            player_name         text,
+            player_surname      text,
+            player_dob          text,
+            country_name        text,
+            player_foot         text,
+            position_name       text,
+            player_role         text,
+            player_retired_date text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player.id::text AS player_id,
+            fp_player.name::text AS player_name,
+            fp_player.surname::text AS player_surname,
+            fp_player.dob::text AS player_dob,
+            fp_country.name::text AS country_name,
+            fp_player.foot::text AS player_foot,
+            fp_position.name::text AS position_name,
+            fp_player.role::text AS player_role,
+            fp_player_retired.retired_date::text AS player_retired_date
+        FROM
+            fp_player
+            JOIN
+            fp_country
+                ON
+                fp_player.country_id = fp_country.id
+            JOIN
+            fp_position
+                ON
+                fp_player.position_id = fp_position.id
+            LEFT OUTER JOIN
+            fp_player_retired
+                ON
+                fp_player.id = fp_player_retired.player_id
+        WHERE
+            fp_player.id = id_player::integer;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : position_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION position_player
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            position_role   text,
+            position_code   text,
+            position_name   text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_position.role::text AS position_role,
+            fp_position.code::text AS position_code,
+            fp_position.name::text AS position_name
+        FROM
+            fp_player
+            JOIN
+            fp_player_position
+                ON
+                fp_player.id = fp_player_position.player_id
+            JOIN
+            fp_position
+                ON
+                fp_player_position.position_id = fp_position.id
+        WHERE
+            fp_player.id = id_player::integer
+        ORDER BY
+            fp_position.role,
+            fp_position.name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : nationality_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION position_player
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            country_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_country.name::text AS country_name
+        FROM
+            fp_player
+            JOIN
+            fp_nationality
+                ON
+                fp_player.id = fp_nationality.player_id
+            JOIN
+            fp_country
+                ON
+                fp_nationality.country_id = fp_country.id
+        WHERE
+            fp_player.id = id_player::integer
+        ORDER BY
+            fp_country.name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : search_militancy_players
  *
  * IN      : text, text, text
