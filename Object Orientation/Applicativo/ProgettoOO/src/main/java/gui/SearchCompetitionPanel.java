@@ -925,7 +925,9 @@ public class SearchCompetitionPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				competitionContinentID = competitionContinentMap.get( (String) continentComboBox.getSelectedItem() );
+				String selectedString = (String) continentComboBox.getSelectedItem();
+
+				competitionContinentID = competitionContinentMap.get(selectedString);
 
 
 				if (nationRadioButton.isSelected()) {
@@ -940,6 +942,9 @@ public class SearchCompetitionPanel
 					nationComboBox.setSelectedIndex(-1);
 					competitionNationID = null;
 				}
+
+				continentComboBox.removeAllItems();
+				continentComboBox.addItem(selectedString);
 			}
 
 			@Override
@@ -1041,8 +1046,12 @@ public class SearchCompetitionPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				competitionNationID = competitionNationMap.get((String) nationComboBox.getSelectedItem());
+				String selectedString = (String) nationComboBox.getSelectedItem();
 
+				competitionNationID = competitionNationMap.get(selectedString);
+
+				nationComboBox.removeAllItems();
+				nationComboBox.addItem(selectedString);
 			}
 
 			@Override

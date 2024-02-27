@@ -524,7 +524,13 @@ public class SearchCountryPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				superCountryID = countryNameMap.get( (String) continentComboBox.getSelectedItem());
+				String selectedString = (String) continentComboBox.getSelectedItem();
+
+				superCountryID = countryNameMap.get(selectedString);
+
+				continentComboBox.removeAllItems();
+
+				continentComboBox.addItem(selectedString);
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }

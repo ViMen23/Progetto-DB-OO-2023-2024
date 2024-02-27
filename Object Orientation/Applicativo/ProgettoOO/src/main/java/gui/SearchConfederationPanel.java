@@ -525,7 +525,11 @@ public class SearchConfederationPanel
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
-				superConfederationID = confederationNameMap.get( (String) continentConfederationComboBox.getSelectedItem());
+				String selectedString = (String) continentConfederationComboBox.getSelectedItem();
+				superConfederationID = confederationNameMap.get(selectedString);
+
+				continentConfederationComboBox.removeAllItems();
+				continentConfederationComboBox.addItem(selectedString);
 			}
 
 			@Override

@@ -9,10 +9,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Vector;
 
-public class ViewTeamPanel
-				extends JPanel
+public class ViewPlayerPanel
+	extends JPanel
 {
 
 	private final Color panelColor = Color.white;
@@ -42,19 +41,8 @@ public class ViewTeamPanel
 
 	private String teamType;
 
-	private final Map<String, String> generalInformationTeam = new HashMap<>();
-	private final Vector<String> teamSquadTableColumnName = new Vector<>();
-	private final Vector<String> teamParticipationTableColumnName = new Vector<>();
-	private final Vector<String> teamTrophyTableColumnName = new Vector<>();
-	private final Vector<String> teamPrizeTableColumnName = new Vector<>();
 
-	private final Vector<Vector<String>> teamSquadTableData = new Vector<>();
-	private final Vector<Vector<String>> teamParticipationTableData = new Vector<>();
-	private final Vector<Vector<String>> teamTrophyTableData = new Vector<>();
-	private final Vector<Vector<String>> teamPrizeTableData = new Vector<>();
-
-
-	public ViewTeamPanel()
+	public ViewPlayerPanel()
 	{
 
 		MigLayout migLayout;
@@ -98,7 +86,7 @@ public class ViewTeamPanel
 
 
 
-		string = GuiConfiguration.getMessage("teamInformation");
+		string = GuiConfiguration.getMessage("playerInformation");
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
@@ -121,7 +109,7 @@ public class ViewTeamPanel
 
 
 
-		string = GuiConfiguration.getMessage("team");
+		string = GuiConfiguration.getMessage("player");
 		string = string.toUpperCase();
 		string += ": ";
 
@@ -139,7 +127,7 @@ public class ViewTeamPanel
 
 
 
-		string = "SSC Napoli"; //TODO REPLACE WITH CALL TO DB
+		string = "Alex Meret"; //TODO REPLACE WITH CALL TO DB
 
 		label = new JLabel(string, SwingConstants.LEADING);
 		label.setFont(GuiConfiguration.getOutputBoldFont());

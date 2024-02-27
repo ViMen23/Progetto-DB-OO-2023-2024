@@ -9350,7 +9350,7 @@ BEGIN
 	type_prize = get_column
 				 (
 					'@',
-					'fp_trophy'
+					'fp_prize'
 					'@id@' || NEW.prize_id::text,
 					'type'
 				 )::en_award;
@@ -9396,7 +9396,7 @@ BEGIN
 	type_prize = get_column
 				 (
 					'@',
-					'fp_trophy'
+					'fp_prize'
 					'@id@' || NEW.prize_id::text,
 					'type'
 				 )::en_award;
@@ -9418,7 +9418,7 @@ BEGIN
 			role_prize = get_column
 						 (
 							'@',
-							'fp_trophy'
+							'fp_prize'
 							'@id@' || NEW.prize_id::text,
 							'role'
 						 )::en_role;

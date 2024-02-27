@@ -20,6 +20,11 @@ public class TableModel
 	@Override
 	public Class getColumnClass(int c)
 	{
-		return (!dataVector.isEmpty()) ? super.getValueAt(0, c).getClass() : Object.class;
+		if (!(dataVector.isEmpty())) {
+			return super.getValueAt(0, c).getClass();
+		}
+		else {
+			return Object.class;
+		}
 	}
 }
