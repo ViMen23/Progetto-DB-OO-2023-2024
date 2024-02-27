@@ -1591,7 +1591,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION position_player
+CREATE OR REPLACE FUNCTION nationality_player
 (
     IN  id_player   text
 )
