@@ -870,14 +870,14 @@ CREATE OR REPLACE FUNCTION all_references
 	IN	name_table	text
 )
 RETURNS TABLE
-(
-	constr			text,	-- nome del constraint
-	table_to_ref	text,	-- tabella referenziata
-	col_to_ref		text,	-- colonna della tabella referenziata
-	table_ref		text,	-- tabella che referenzia
-	col_ref			text,	-- colonna della tabella che referenzia
-	col_ord			integer	-- ordine della colonna della tabella che referenzia
-)
+		(
+			constr			text,	-- nome del constraint
+			table_to_ref	text,	-- tabella referenziata
+			col_to_ref		text,	-- colonna della tabella referenziata
+			table_ref		text,	-- tabella che referenzia
+			col_ref			text,	-- colonna della tabella che referenzia
+			col_ord			integer	-- ordine della colonna della tabella che referenzia
+		)
 RETURNS NULL ON NULL INPUT
 AS
 $$
@@ -2940,7 +2940,7 @@ CREATE TABLE fp_attribute_goalkeeping
 	kicking					dm_attribute	NOT NULL	DEFAULT 0,
 	one_on_ones				dm_attribute	NOT NULL	DEFAULT 0,
 	passing_gk				dm_attribute	NOT NULL	DEFAULT 0,
-	punching_tencency		dm_attribute	NOT NULL	DEFAULT 0,
+	punching_tendency		dm_attribute	NOT NULL	DEFAULT 0,
 	reflexes				dm_attribute	NOT NULL	DEFAULT 0,
 	rushing_out_tendency	dm_attribute	NOT NULL	DEFAULT 0,
 	throwing				dm_attribute	NOT NULL	DEFAULT 0
@@ -3756,7 +3756,7 @@ CREATE TABLE fp_admin
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
- * TYPE : PRIMARY KEY CONSTRAINT - fp_admin TABLE
+ * TYPE : PRIMARY KEY CONSTRAINT - fp_user_account TABLE
  * NAME : pk_fp_admin
  *
  * DESC : Non possono esistere account utente diversi con lo stesso username
@@ -3768,6 +3768,7 @@ PRIMARY KEY
 	username
 );
 --------------------------------------------------------------------------------
+
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
@@ -6565,7 +6566,7 @@ BEGIN
 		kicking = random_between(0, 10),
 		one_on_ones = random_between(0, 10),
 		passing_gk = random_between(0, 10),
-		punching_tencency = random_between(0, 10),
+		punching_tendency = random_between(0, 10),
 		reflexes = random_between(0, 10),
 		rushing_out_tendency = random_between(0, 10),
 		throwing = random_between(0, 10)
@@ -6989,6 +6990,7 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
 
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
@@ -9454,6 +9456,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
@@ -10935,6 +10938,9 @@ BEFORE UPDATE ON fp_player_prize_case
 FOR EACH ROW
 EXECUTE FUNCTION tf_refuse();
 --------------------------------------------------------------------------------
+
+
+
 
 
 /*******************************************************************************

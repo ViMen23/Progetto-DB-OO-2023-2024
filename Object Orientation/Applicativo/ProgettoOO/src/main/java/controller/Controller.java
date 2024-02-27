@@ -1952,8 +1952,12 @@ public class Controller
 			Vector<String> attributeGoalkeepingVector = new Vector<>();
 
 			attributeGoalkeepingVector.add(key);
-			attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
-
+			if (null == player.getAttributeGoalkeepingMap().get(key)) {
+				break;
+			} else {
+				attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
+			}
+			
 			playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
 		}
 

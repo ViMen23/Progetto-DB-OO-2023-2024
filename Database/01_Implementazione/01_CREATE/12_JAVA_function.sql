@@ -2335,7 +2335,9 @@ RETURNS TABLE
         (
             militancy_year  text,
             militancy_type  text,
+            team_id         text,
             team_long_name  text,
+            country_id      text,
             country_name    text
         )
 AS
@@ -2346,7 +2348,9 @@ BEGIN
         SELECT
             fp_militancy.start_year::text AS militancy_year,
             fp_militancy.type::text AS militancy_type,
+            fp_team.id::text AS team_id,
             fp_team.long_name::text AS team_long_name,
+            fp_country.id::text AS country_id,
             fp_country.name::text AS country_name
         FROM
             fp_militancy
@@ -2388,6 +2392,7 @@ CREATE OR REPLACE FUNCTION get_national_career_player
 RETURNS TABLE
         (
             militancy_year  text,
+            team_id         text,
             team_long_name  text
         )
 AS
@@ -2397,6 +2402,7 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_militancy.start_year::text AS militancy_year,
+            fp_team.id::text AS team_id,
             fp_team.long_name::text AS team_long_name
         FROM
             fp_militancy
