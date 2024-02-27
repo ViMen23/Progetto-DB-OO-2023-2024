@@ -229,6 +229,8 @@ public class SearchPlayerPanel
 			{
 				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
+				component.setVisible(false);
+
 				MainFrame.getMainFrameInstance().remove(component);
 
 				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();

@@ -10,10 +10,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.sql.Array;
+import java.util.*;
 
 public class ViewTeamPanel
 				extends JPanel
@@ -42,6 +40,16 @@ public class ViewTeamPanel
 
 	private final JButton showButton;
 
+	private final JLabel titleLabel;
+	private final JLabel teamNameLabel;
+	private final JLabel shortNameLabel;
+	private final JLabel shortNameValueLabel;
+	private final JLabel typeLabel;
+	private final JLabel typeValueLabel;
+	private final JLabel countryLabel;
+	private final JLabel countryValueLabel;
+	private final JLabel confederationLabel;
+	private final JLabel confederationValueLabel;
 	private final JLabel titleSquadTable;
 	private final JLabel titleParticipantTable;
 	private final JLabel titleTrophyTable;
@@ -105,6 +113,162 @@ public class ViewTeamPanel
 
 		add(informationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INTESTAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		string += ": ";
+
+		titleLabel = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(titleLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL INTESTAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		teamNameLabel = new JLabel();
+		teamNameLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(teamNameLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL NOME ABBREVIATO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("shortName");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		shortNameLabel = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(shortNameLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL NOME ABBREVIATO VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+		shortNameValueLabel = new JLabel();
+		shortNameValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(shortNameValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TIPO SQUADRA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("teamType");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		typeLabel = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(typeLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TIPO SQUADRA VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		typeValueLabel = new JLabel();
+		typeValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(typeValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL PAESE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("country");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+
+		countryLabel = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(countryLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL PAESE VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		countryValueLabel = new JLabel();
+		countryValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(countryValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL CONFEDERAZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		confederationLabel = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(confederationLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL CONFEDERAZIONE VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		confederationValueLabel = new JLabel();
+		confederationValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(confederationValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 
@@ -280,7 +444,6 @@ public class ViewTeamPanel
 		squadTable.setFillsViewportHeight(true);
 
 		squadTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		squadTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) squadTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -356,7 +519,6 @@ public class ViewTeamPanel
 		participationTable.setFillsViewportHeight(true);
 
 		participationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		participationTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) participationTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -434,7 +596,6 @@ public class ViewTeamPanel
 		trophyTable.setFillsViewportHeight(true);
 
 		trophyTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		trophyTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) trophyTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -490,7 +651,6 @@ public class ViewTeamPanel
 		prizeTable.setFillsViewportHeight(true);
 
 		prizeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		prizeTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) prizeTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -610,45 +770,16 @@ public class ViewTeamPanel
 
 		label.setText(string);
 	}
-
-
-	public JLabel createTitleGeneralInfo()
-	{
-		String string;
-
-		string = GuiConfiguration.getMessage("teamInformation");
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		return label;
-	}
-
 	public void createGeneralInfoPanel()
 	{
-		informationPanel.removeAll();
+		Integer i = 0;
 
-		informationPanel.add(createTitleGeneralInfo(), "span 2");
+		JLabel[] tmp = new JLabel[]{ teamNameLabel, shortNameValueLabel, typeValueLabel, countryValueLabel, confederationValueLabel};
 
-		for (String key: generalInformationTeam.keySet()){
 
-			label = new JLabel(key);
-
-			System.out.println(key + " - " + generalInformationTeam.get(key));
-
-			informationPanel.add(label);
-
-			label = new JLabel(generalInformationTeam.get(key));
-
-			label.setFont(GuiConfiguration.getOutputBoldFont());
-
-			informationPanel.add(label);
+		for (String key: generalInformationTeam.keySet()) {
+			tmp[i].setText(generalInformationTeam.get(key));
+			i++;
 		}
 	}
 }

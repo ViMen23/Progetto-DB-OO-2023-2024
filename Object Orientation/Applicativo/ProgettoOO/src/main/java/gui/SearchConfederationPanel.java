@@ -177,6 +177,8 @@ public class SearchConfederationPanel
 			{
 				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
 
+				component.setVisible(false);
+
 				MainFrame.getMainFrameInstance().remove(component);
 
 				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();

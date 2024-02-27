@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -7,34 +8,39 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.HashMap;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Map;
+import java.util.Vector;
 
 public class ViewPlayerPanel
 	extends JPanel
 {
 
+	private final String playerID;
 	private final Color panelColor = Color.white;
 
 	private final JPanel informationPanel;
-	private final JPanel seasonPanel;
+	private final JPanel navigationPanel;
 	private final JPanel tablePanel;
-	private final JPanel squadPanel;
-	private final JPanel participationPanel;
-	private final JPanel awardPanel;
 
-	private final JTable squadTable;
-	private final JTable participationTable;
-	private final JTable trophyTable;
-	private final JTable prizeTable;
+	private final JLabel nameValueLabel;
+	private final JLabel dobValueLabel;
+	private final JLabel bornCountryValueLabel;
+	private final JLabel preferredFootLabel;
+	private final JLabel mainPositionValueLabel;
+	private final JLabel roleValueLabel;
+	private final JLabel retiredDateValueLabel;
+	private final JLabel positionTableLabel;
+	private final JLabel nationalityTableLabel;
+	private final JButton generalInformationButton;
+	private final JButton detailedInformationButton;
+	private final JButton militancyInformationButton;
+	private final JButton statisticsButton;
 
 
-	private final JComboBox<String> seasonComboBox;
-
-	private final JButton showButton;
-
-	private final Map<String, String> seasonMap = new HashMap<>();
-
+	private final JTable positionTable;
+	private final JTable nationalityTable;
 
 	private JScrollPane scrollPane;
 	private JLabel label;
@@ -42,8 +48,9 @@ public class ViewPlayerPanel
 	private String teamType;
 
 
-	public ViewPlayerPanel()
+	public ViewPlayerPanel(String playerID)
 	{
+		this.playerID = playerID;
 
 		MigLayout migLayout;
 		String string;
@@ -127,23 +134,21 @@ public class ViewPlayerPanel
 
 
 
-		string = "Alex Meret"; //TODO REPLACE WITH CALL TO DB
+		nameValueLabel = new JLabel();
+		nameValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
+		informationPanel.add(nameValueLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL NOME ABBREVIATO
+		 * LABEL DATA DI NASCITA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("shortName");
+		string = GuiConfiguration.getMessage("dob");
 		string = StringUtils.capitalize(string);
 		string += ": ";
 
@@ -155,28 +160,26 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL NOME ABBREVIATO VALORE
+		 * LABEL DATA DI NASCITA VALORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "NAP"; //TODO REPLACE WITH CALL TO DB
+		dobValueLabel = new JLabel();
+		dobValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
+		informationPanel.add(dobValueLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TIPO SQUADRA
+		 * LABEL NAZIONE DI NASCITA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("teamType");
+		string = GuiConfiguration.getMessage("bornCountry");
 		string = StringUtils.capitalize(string);
 		string += ": ";
 
@@ -188,28 +191,27 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TIPO SQUADRA VALORE
+		 * LABEL NAZIONE DI NASCITA VALORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "CLUB";
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
+		bornCountryValueLabel = new JLabel();
+		bornCountryValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
 
-		informationPanel.add(label);
+		informationPanel.add(bornCountryValueLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PAESE
+		 * LABEL PIEDE PREFERITO
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("country");
+		string = GuiConfiguration.getMessage("preferredFoot");
 		string = StringUtils.capitalize(string);
 		string += ": ";
 
@@ -221,28 +223,26 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PAESE VALORE
+		 * LABEL PIEDE PREFERITO VALORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "ITALIA WITH FLAG";
+		preferredFootLabel = new JLabel();
+		preferredFootLabel.setFont(GuiConfiguration.getOutputBoldFont());
 
-		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		informationPanel.add(label);
+		informationPanel.add(preferredFootLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL CONFEDERAZIONE
+		 * LABEL POSIZIONE PRINCIPALE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("confederation");
+		string = GuiConfiguration.getMessage("mainPosition");
 		string = StringUtils.capitalize(string);
 		string += ": ";
 
@@ -254,15 +254,30 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL CONFEDERAZIONE VALORE
+		 * LABEL POSIZIONE PRINCIPALE VALORE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = "FEDERAZIONE GIUOCO CALCIO";
+		mainPositionValueLabel = new JLabel();
+		mainPositionValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(mainPositionValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL RUOLO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("role");
+		string = StringUtils.capitalize(string);
+		string += ": ";
 
 		label = new JLabel(string, SwingConstants.LEADING);
-		label.setFont(GuiConfiguration.getOutputBoldFont());
 
 		informationPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
@@ -270,7 +285,52 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL SCELTA STAGIONE
+		 * LABEL RUOLO VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		roleValueLabel = new JLabel();
+		roleValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(roleValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL DATA DI RITIRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = StringUtils.capitalize(string);
+		string += ": ";
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		informationPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL DATA DI RITIRO VALORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		retiredDateValueLabel = new JLabel();
+		retiredDateValueLabel.setFont(GuiConfiguration.getOutputBoldFont());
+
+		informationPanel.add(retiredDateValueLabel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL GENERALE PER LA NAVIGAZIONE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
@@ -278,49 +338,67 @@ public class ViewPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"20:push[]30[]20[]20:push",
+				"0[25%, fill]0[25%, fill]0[25%, fill]0[25%, fill]0",
 				"10[]10"
 			);
 
-		seasonPanel = new JPanel(migLayout);
-		seasonPanel.setBackground(panelColor);
 
-		add(seasonPanel);
+
+		navigationPanel = new JPanel(migLayout);
+		navigationPanel.setBackground(panelColor);
+
+		add(navigationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL STAGIONE
+		 * BUTTON VAI ALLE INFORMAZIONI GENERALI
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("season");
+		string = GuiConfiguration.getMessage("generalInformation");
 		string = string.toUpperCase();
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		generalInformationButton = new JButton(string);
+		generalInformationButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		seasonPanel.add(label);
+		navigationPanel.add(generalInformationButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON VAI ALLE INFORMAZIONI GENERALI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		generalInformationButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * COMBOBOX STAGIONE
+		 * BUTTON VAI ALLE INFORMAZIONI NEL DETTAGLIO
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		seasonComboBox = new JComboBox<>();
+		string = GuiConfiguration.getMessage("detailedInformation");
+		string = string.toUpperCase();
 
-		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		detailedInformationButton = new JButton(string);
+		detailedInformationButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		GuiConfiguration.fillSeasonComboBox(seasonComboBox, GuiConfiguration.getMinYear(), teamType, seasonMap);
-
-		seasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
-
-		seasonPanel.add(seasonComboBox);
+		navigationPanel.add(detailedInformationButton);
 
 
 
@@ -330,112 +408,159 @@ public class ViewPlayerPanel
 
 
 
+		detailedInformationButton.addActionListener(new ActionListener() {
 
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * BOTTONE MOSTRA
+		 * BUTTON VAI ALLE INFORMAZIONI SULLA MILITANZA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("show");
+		string = GuiConfiguration.getMessage("militancyInformation");
 		string = string.toUpperCase();
 
-		showButton = new JButton(string);
+		militancyInformationButton = new JButton(string);
+		militancyInformationButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		seasonPanel.add(showButton);
+		navigationPanel.add(militancyInformationButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		militancyInformationButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA GENERALE
+		 * BUTTON VAI ALLE INFORMAZIONI SULLE STATISTICHE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("statistics");
+		string = string.toUpperCase();
+
+		statisticsButton = new JButton(string);
+		statisticsButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		navigationPanel.add(statisticsButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		statisticsButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TABELLE
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
 		migLayout = new MigLayout
 			(
-				"debug, wrap 2",
-				"0[60%, fill]3%[37%, fill]0",
-				"0[]20[]10"
-
+				"debug, wrap 2, fill",
+				"0[grow, fill]30[grow, fill]0",
+				"10[]10[]10"
 			);
 
 		tablePanel = new JPanel(migLayout);
-		tablePanel.setOpaque(false);
+		tablePanel.setBackground(panelColor);
 
 		add(tablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA ROSA
+		 * TITOLO TABELLA POSIZIONI
 		 *------------------------------------------------------------------------------------------------------*/
+		string = "Tabella posizioni";
 
 
+		positionTableLabel = new JLabel(string, SwingConstants.LEADING);
 
-		migLayout = new MigLayout
-			(
-				"debug, flowy, fill",
-				"0[fill]0",
-				"0[]10[]10"
-			);
+		positionTableLabel.setOpaque(true);
+		positionTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		positionTableLabel.setForeground(Color.white);
 
-		squadPanel = new JPanel(migLayout);
-		squadPanel.setBackground(panelColor);
+		positionTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		tablePanel.add(squadPanel, "spany");
+
+		tablePanel.add(positionTableLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * TABELLA ROSA
+		 * TITOLO TABELLA NAZIONALITÀ
 		 *------------------------------------------------------------------------------------------------------*/
+		string = "Tabella nazionalità";
 
 
+		nationalityTableLabel = new JLabel(string, SwingConstants.LEADING);
 
-		string = GuiConfiguration.getMessage("squad");
-		string += " ";
-		string += "SCC Napoli "; //TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
+		nationalityTableLabel.setOpaque(true);
+		nationalityTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		nationalityTableLabel.setForeground(Color.white);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		nationalityTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		squadPanel.add(label);
+		tablePanel.add(nationalityTableLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-
 		/*--------------------------------------------------------------------------------------------------------
-		 * TABELLA ROSA
+		 * TABELLA POSIZIONI
 		 *------------------------------------------------------------------------------------------------------*/
 
 
-		squadTable = new JTable(new DefaultTableModel(30, 5));
+		positionTable = new JTable(new DefaultTableModel(5, 3));
 
-		squadTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
-		squadTable.setFillsViewportHeight(true);
+		positionTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		positionTable.setPreferredScrollableViewportSize(positionTable.getPreferredSize());
+		positionTable.setFillsViewportHeight(true);
 
-		squadTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		squadTable.setAutoCreateRowSorter(true);
-		( (DefaultTableCellRenderer) squadTable.getTableHeader().getDefaultRenderer()
+		positionTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		( (DefaultTableCellRenderer) positionTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -447,238 +572,152 @@ public class ViewPlayerPanel
 
 
 
-		scrollPane = new JScrollPane(squadTable);
+		scrollPane = new JScrollPane(positionTable);
 
-		squadPanel.add(scrollPane);
+		tablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABELLA POSIZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+		nationalityTable = new JTable(new DefaultTableModel(3, 1));
+
+		nationalityTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		nationalityTable.setPreferredScrollableViewportSize(nationalityTable.getPreferredSize());
+		nationalityTable.setFillsViewportHeight(true);
+
+		nationalityTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		( (DefaultTableCellRenderer) nationalityTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA PARTECIPAZIONI
+		 * SCROLLPANE SCROLL PER LA TABELLA ROSA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		migLayout = new MigLayout
+		scrollPane = new JScrollPane(nationalityTable);
+
+		tablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+	}
+
+	/*
+	public void getDataTeamView(String teamID,
+								String startYear,
+								Map<String, String> generalInformationTeam,
+								Vector<String> teamSquadTableColumnName,
+								Vector<Vector<String>> teamSquadTableData,
+								Vector<String> teamParticipationTableColumnName,
+								Vector<Vector<String>> teamParticipationTableData,
+								Vector<String> teamTrophyTableColumnName,
+								Vector<Vector<String>> teamTrophyTableData,
+								Vector<String> teamPrizeTableColumnName,
+								Vector<Vector<String>> teamPrizeTableData)
+	{
+
+		generalInformationTeam.clear();
+		teamSquadTableColumnName.clear();
+		teamSquadTableData.clear();
+		teamParticipationTableColumnName.clear();
+		teamParticipationTableData.clear();
+		teamTrophyTableColumnName.clear();
+		teamTrophyTableData.clear();
+		teamPrizeTableColumnName.clear();
+		teamPrizeTableData.clear();
+
+		Controller.getInstance().setTeamView
 			(
-				"debug, flowy, fill",
-				"0[fill]0",
-				"0[]10[]10"
+				generalInformationTeam,
+				teamSquadTableColumnName,
+				teamSquadTableData,
+				teamParticipationTableColumnName,
+				teamParticipationTableData,
+				teamTrophyTableColumnName,
+				teamTrophyTableData,
+				teamPrizeTableColumnName,
+				teamPrizeTableData,
+				teamID,
+				startYear
+			);
+	}
+
+
+
+	public void fillTeamView()
+	{
+		getDataTeamView
+			(
+				teamID,
+				startYear,
+				generalInformationTeam,
+				teamSquadTableColumnName,
+				teamSquadTableData,
+				teamParticipationTableColumnName,
+				teamParticipationTableData,
+				teamTrophyTableColumnName,
+				teamTrophyTableData,
+				teamPrizeTableColumnName,
+				teamPrizeTableData
 			);
 
-		participationPanel = new JPanel(migLayout);
-		participationPanel.setBackground(panelColor);
+		fillTable(squadTable, teamSquadTableData, teamSquadTableColumnName);
 
-		tablePanel.add(participationPanel);
-		/*------------------------------------------------------------------------------------------------------*/
+		setTitleTable(titleSquadTable, "squad");
 
+		fillTable(participationTable, teamParticipationTableData, teamParticipationTableColumnName);
 
+		setTitleTable(titleParticipantTable, "participants");
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TITOLO TABELLA PARTECIPAZIONI
-		 *------------------------------------------------------------------------------------------------------*/
+		fillTable(trophyTable, teamTrophyTableData, teamTrophyTableColumnName);
 
+		setTitleTable(titleTrophyTable, "trophies");
 
+		fillTable(prizeTable, teamPrizeTableData, teamPrizeTableColumnName);
+		setTitleTable(titlePrizeTable, "prizes");
 
-		string = GuiConfiguration.getMessage("participations");
-		string += " ";
-		string += "SCC Napoli "; //TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
+		createGeneralInfoPanel();
 
-		label = new JLabel(string, SwingConstants.LEADING);
+	}
 
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
 
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+	 */
+	public void fillTable(JTable table, Vector<Vector<String>> tableData, Vector<String> tableColumnName)
+	{
+		table.setModel(new TableModel(tableData, tableColumnName));
 
-		label.setFont(GuiConfiguration.getOutputBoldFont());
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	}
 
-		participationPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
 
+	public void createGeneralInfoPanel()
+	{
+		Integer i = 0;
 
+		JLabel[] tmp = new JLabel[]
+			{
+				nameValueLabel,
+				dobValueLabel,
+				bornCountryValueLabel,
+				preferredFootLabel,
+				mainPositionValueLabel,
+				roleValueLabel,
+				retiredDateValueLabel
+			};
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * TABELLA PARTECIPAZIONI
-		 *------------------------------------------------------------------------------------------------------*/
 
+		/*
+		for (String key: generalInformationTeam.keySet()) {
+			tmp[i].setText(generalInformationTeam.get(key));
+			i++;
+		}
 
-
-		participationTable = new JTable(new DefaultTableModel(10, 5));
-
-		participationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
-		participationTable.setFillsViewportHeight(true);
-
-		participationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		participationTable.setAutoCreateRowSorter(true);
-		( (DefaultTableCellRenderer) participationTable.getTableHeader().getDefaultRenderer()
-		).setHorizontalAlignment(SwingConstants.CENTER);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * SCROLLPANE SCROLL PER LA TABELLA PARTECIPAZIONI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		scrollPane = new JScrollPane(participationTable);
-
-		participationPanel.add(scrollPane);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA TROFEI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowy, fill",
-				"0[fill]0",
-				"0[]10[]20[]10[]0[]10"
-			);
-
-		awardPanel = new JPanel(migLayout);
-		awardPanel.setBackground(panelColor);
-
-
-		tablePanel.add(awardPanel, "skip 1");
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL TABELLA TROFEI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("trophies");
-		string += " ";
-		string += "SCC Napoli ";//TODO REPLACE WITH GIVEN VALUE
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		awardPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * TABELLA TROFEI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		trophyTable = new JTable(new DefaultTableModel(5, 5));
-
-		trophyTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
-		trophyTable.setFillsViewportHeight(true);
-
-		trophyTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		trophyTable.setAutoCreateRowSorter(true);
-		( (DefaultTableCellRenderer) trophyTable.getTableHeader().getDefaultRenderer()
-		).setHorizontalAlignment(SwingConstants.CENTER);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		scrollPane = new JScrollPane(trophyTable);
-
-		awardPanel.add(scrollPane);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TITOLO TABELLA TROFEI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("prizes");
-		string += " ";
-		string += "SCC Napoli ";//TODO replace with given value
-		string += GuiConfiguration.getMessage("season");
-		string += " ";
-		string += (String) seasonComboBox.getSelectedItem();
-		string = string.toUpperCase();
-
-		label = new JLabel(string, SwingConstants.LEADING);
-
-		label.setOpaque(true);
-		label.setBackground(GuiConfiguration.getSearchPanelColor());
-		label.setForeground(Color.white);
-
-		label.setBorder(GuiConfiguration.getSearchLabelBorder());
-
-		label.setFont(GuiConfiguration.getOutputBoldFont());
-
-		awardPanel.add(label);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * TABELLA TROFEI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		prizeTable = new JTable(new DefaultTableModel(5,5));
-
-		prizeTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-		prizeTable.setPreferredScrollableViewportSize(prizeTable.getPreferredSize());
-		prizeTable.setFillsViewportHeight(true);
-
-		prizeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		prizeTable.setAutoCreateRowSorter(true);
-		( (DefaultTableCellRenderer) prizeTable.getTableHeader().getDefaultRenderer()
-		).setHorizontalAlignment(SwingConstants.CENTER);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * SCROLLPANE SCROLL PER LA TABELLA DEI PREMI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		scrollPane = new JScrollPane(prizeTable);
-
-		awardPanel.add(scrollPane);
-		/*------------------------------------------------------------------------------------------------------*/
+		 */
 	}
 }

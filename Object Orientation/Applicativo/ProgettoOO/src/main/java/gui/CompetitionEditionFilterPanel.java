@@ -211,6 +211,7 @@ public class CompetitionEditionFilterPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
+				component.setVisible(false);
 
 				MainFrame.getMainFrameInstance().remove(component);
 
