@@ -19,10 +19,10 @@ public class Competition
 	private final String teamType;
 	private final String name;
 	private final Confederation confederation;
+	private final Set<String> editionSet;
 
 
-	private final List<String> editionList;
-	private final Map<String, Team> editionTeamMap;
+	private final Map<String, Team> teamMap;
 
 
 	public Competition(String type,
@@ -35,8 +35,8 @@ public class Competition
 		this.name = name;
 		this.confederation = confederation;
 
-		this.editionList = new ArrayList<>();
-		this.editionTeamMap = new LinkedHashMap<>();
+		this.editionSet = new LinkedHashSet<>();
+		this.teamMap = new LinkedHashMap<>();
 	}
 
 
@@ -70,20 +70,18 @@ public class Competition
 		return confederation;
 	}
 
+	public Set<String> getEditionSet()
+	{
+		return editionSet;
+	}
 
 	public Map<String, Competition> getCompetitionMap()
 	{
 		return COMPETITION_MAP;
 	}
 
-
-	public List<String> getEditionList()
+	public Map<String, Team> getTeamMap()
 	{
-		return editionList;
-	}
-
-	public Map<String, Team> getEditionTeamMap()
-	{
-		return editionTeamMap;
+		return teamMap;
 	}
 }

@@ -10,8 +10,9 @@ import java.util.*;
 
 /**
  * TYPE : class - controller package
+ * <p>
  * NAME : Controller
- *
+ * <p>
  * DESC: TODO
  */
 public class Controller
@@ -23,11 +24,8 @@ public class Controller
 	private final Team ctrlTeam;
 	private final Position ctrlPosition;
 	private final Player ctrlPlayer;
-	private final Statistic ctrlStatistic;
 	private final Trophy ctrlTrophy;
-	private final AssignedTrophy ctrlAssignedTrophy;
 	private final Prize ctrlPrize;
-	private final AssignedPrize ctrlAssignedPrize;
 	private static Controller controllerInstance = null;
 
 	private Controller()
@@ -39,11 +37,8 @@ public class Controller
 		this.ctrlTeam = newTeam();
 		this.ctrlPosition = newPosition();
 		this.ctrlPlayer = newPlayer();
-		this.ctrlStatistic = newStatistic();
 		this.ctrlTrophy = newTrophy();
-		this.ctrlAssignedTrophy = newAssignedTrophy();
 		this.ctrlPrize = newPrize();
-		this.ctrlAssignedPrize = newAssignedPrize();
 	}
 
 	/**
@@ -127,7 +122,7 @@ public class Controller
 	 */
 	private Admin newAdmin()
 	{
-		return new Admin(null, null);
+		return newAdmin(null, null);
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
@@ -140,49 +135,18 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param type
 	 * @param code
 	 * @param name
 	 * @param superCountry
 	 * @return
 	 */
-	private Country newCountry(String ID, String type, String code, String name, Country superCountry)
+	private Country newCountry(String type,
+														 String code,
+														 String name,
+														 Country superCountry)
 	{
-		Country country = ctrlCountry.getCountryMap().get(ID);
-
-		if (null == country) {
-			country = new Country(type, code, name, superCountry);
-		}
-
-		return country;
-	}
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param name
-	 * @return
-	 */
-	private Country newCountry(String ID,
-														String name)
-	{
-		return newCountry(ID, null, null, name, null);
-	}
-
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param type
-	 * @param name
-	 * @return
-	 */
-	private Country newCountry(String ID,
-														String type,
-														String name)
-	{
-		return newCountry(ID, type, null, name, null);
+		return new Country(type, code, name, superCountry);
 	}
 
 
@@ -192,7 +156,7 @@ public class Controller
 	 */
 	private Country newCountry()
 	{
-		return new Country(null, null, null, null);
+		return newCountry(null, null, null, null);
 	}
 
 	/**
@@ -237,35 +201,30 @@ public class Controller
 										listSuperCountryName
 						);
 
+
 		ctrlCountry.getCountryMap().clear();
 
 		Map<String, Country> superCountryMap = new LinkedHashMap<>();
 
 		for (String ID : listSuperCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listSuperCountryName.removeFirst()
-							);
-
-			superCountryMap.put(ID, country);
+			String name = listSuperCountryName.removeFirst();
+			if (null == superCountryMap.get(ID)) {
+				Country country = newCountry(null, null, name, null);
+				superCountryMap.put(ID, country);
+			}
 		}
-
 
 		while (!(listCountryID.isEmpty())) {
 			String ID = listCountryID.removeFirst();
-			Country country = newCountry
-							(
-											ID,
-											listCountryType.removeFirst(),
-											listCountryCode.removeFirst(),
-											listCountryName.removeFirst(),
-											superCountryMap.get(listSuperCountryID.removeFirst())
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String type = listCountryType.removeFirst();
+			String code = listCountryCode.removeFirst();
+			String name = listCountryName.removeFirst();
+			Country superCountry = superCountryMap.get(listSuperCountryID.removeFirst());
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(type, code, name,superCountry);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
-
 	}
 
 
@@ -284,9 +243,7 @@ public class Controller
 		fetchCountry(countryType, superCountryID);
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
-
 			String countryName = ctrlCountry.getCountryMap().get(key).getName();
-
 			countryNameVector.add(countryName);
 			countryNameMap.put(countryName, key);
 		}
@@ -355,76 +312,23 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param shortName
 	 * @param longName
 	 * @param country
 	 * @param superConfederation
 	 * @return
 	 */
-	private Confederation newConfederation(String ID,
-																				String shortName,
-																				String longName,
-																				Country country,
-																				Confederation superConfederation)
+	private Confederation newConfederation(String shortName,
+																				 String longName,
+																				 Country country,
+																				 Confederation superConfederation)
 	{
-		Confederation confederation = ctrlConfederation.getConfederationMap().get(ID);
-
-		if (null == confederation) {
-			confederation = new Confederation(shortName, longName, country, superConfederation);
-		}
-
-		return confederation;
+		return new Confederation(shortName, longName, country, superConfederation);
 	}
 
-	/**
-	 * TODO
-	 * @param ID
-	 * @param shortName
-	 * @return
-	 */
-	private Confederation newConfederation(String ID,
-																				String shortName)
-	{
-		return newConfederation
-						(
-										ID,
-										shortName,
-										null,
-										null,
-										null
-						);
-	}
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param shortName
-	 * @param country
-	 * @return
-	 */
-	private Confederation newConfederation(String ID,
-																				String shortName,
-																				Country country)
-	{
-		return newConfederation
-						(
-										ID,
-										shortName,
-										null,
-										country,
-										null
-						);
-	}
-
-
-	/**
-	 * TODO
-	 * @return
-	 */
 	private Confederation newConfederation()
 	{
-		return new Confederation(null, null, null, null);
+		return newConfederation(null, null, null, null);
 	}
 
 
@@ -478,14 +382,12 @@ public class Controller
 		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listCountryType.removeFirst(),
-											listCountryName.removeFirst()
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String type = listCountryType.removeFirst();
+			String name = listCountryName.removeFirst();
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(type, null, name, null);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
 
 
@@ -494,30 +396,25 @@ public class Controller
 		Map<String, Confederation> superConfederationMap = new LinkedHashMap<>();
 
 		for (String ID : listSuperConfederationID) {
-			Confederation confederation = newConfederation
-							(
-											ID,
-											listSuperConfederationShortName.removeFirst()
-							);
-
-			superConfederationMap.put(ID, confederation);
+			String shortName = listSuperConfederationShortName.removeFirst();
+			if (null == superConfederationMap.get(ID)) {
+				Confederation confederation = newConfederation(shortName, null, null, null);
+				superConfederationMap.put(ID, confederation);
+			}
 		}
 
 
 		while (!(listConfederationID.isEmpty())) {
 			String ID = listConfederationID.removeFirst();
-			Confederation confederation = newConfederation
-							(
-											ID,
-											listConfederationShortName.removeFirst(),
-											listConfederationLongName.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
-											superConfederationMap.get(listSuperConfederationID.removeFirst())
-							);
-
-			ctrlConfederation.getConfederationMap().put(ID, confederation);
+			String shortName = listConfederationShortName.removeFirst();
+			String longName = listConfederationLongName.removeFirst();
+			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
+			Confederation superConfederation = superConfederationMap.get(listSuperConfederationID.removeFirst());
+			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
+				Confederation confederation = newConfederation(shortName, longName, country, superConfederation);
+				ctrlConfederation.getConfederationMap().put(ID, confederation);
+			}
 		}
-
 	}
 
 
@@ -603,56 +500,18 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param type
 	 * @param teamType
 	 * @param name
 	 * @param confederation
 	 * @return
 	 */
-	private Competition newCompetition(String ID,
-																		String type,
-																		String teamType,
-																		String name,
-																		Confederation confederation)
-	{
-		Competition competition = ctrlCompetition.getCompetitionMap().get(ID);
-
-		if (null == competition) {
-			competition = new Competition(type, teamType, name, confederation);
-		}
-
-		return competition;
-	}
-
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param type
-	 * @param name
-	 * @param confederation
-	 * @return
-	 */
-	private Competition newCompetition(String ID,
-																		 String type,
+	private Competition newCompetition(String type,
+																		 String teamType,
 																		 String name,
 																		 Confederation confederation)
 	{
-		return newCompetition(ID, type, null, name, confederation);
-	}
-
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param name
-	 * @return
-	 */
-	private Competition newCompetition(String ID,
-																		 String name)
-	{
-		return newCompetition(ID, null, null, name, null);
+		return new Competition(type, teamType, name, confederation);
 	}
 
 
@@ -662,8 +521,11 @@ public class Controller
 	 */
 	private Competition newCompetition()
 	{
-		return new Competition(null, null, null, null);
+		return newCompetition(null, null, null, null);
 	}
+
+
+
 
 
 	/**
@@ -728,44 +590,37 @@ public class Controller
 		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listCountryName.removeFirst()
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String name = listCountryName.removeFirst();
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(null, null, name, null);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
 
 		ctrlConfederation.getConfederationMap().clear();
 
 		for (String ID : listConfederationID) {
-			Confederation confederation = newConfederation
-							(
-											ID,
-											listConfederationShortName.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst())
-							);
-
-			ctrlConfederation.getConfederationMap().put(ID, confederation);
+			String shortName = listConfederationShortName.removeFirst();
+			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
+			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
+				Confederation confederation = newConfederation(shortName, null, country, null);
+				ctrlConfederation.getConfederationMap().put(ID, confederation);
+			}
 		}
 
 		ctrlCompetition.getCompetitionMap().clear();
 
 		while (!(listCompetitionID.isEmpty())) {
 			String ID = listCompetitionID.removeFirst();
-			Competition competition = newCompetition
-							(
-											ID,
-											listCompetitionType.removeFirst(),
-											listCompetitionTeamType.removeFirst(),
-											listCompetitionName.removeFirst(),
-											ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst())
-							);
-
-			ctrlCompetition.getCompetitionMap().put(ID, competition);
+			String type = listCompetitionType.removeFirst();
+			String teamType = listCompetitionTeamType.removeFirst();
+			String name = listCompetitionName.removeFirst();
+			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
+			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
+				Competition competition = newCompetition(type, teamType, name, confederation);
+				ctrlCompetition.getCompetitionMap().put(ID, competition);
+			}
 		}
-
 	}
 
 
@@ -781,11 +636,12 @@ public class Controller
 						);
 
 
-		List<String> competitionEditionList = ctrlCompetition.getCompetitionMap().get(competitionID).getEditionList();
 
-		competitionEditionList.clear();
+		Set<String> competitionEditionSet = ctrlCompetition.getCompetitionMap().get(competitionID).getEditionSet();
 
-		competitionEditionList.addAll(listCompetitionEdition);
+		competitionEditionSet.clear();
+
+		competitionEditionSet.addAll(listCompetitionEdition);
 	}
 
 
@@ -831,7 +687,7 @@ public class Controller
 	{
 		fetchCompetitionEdition(competitionID);
 
-		competitionEditionVector.addAll(ctrlCompetition.getCompetitionMap().get(competitionID).getEditionList());
+		competitionEditionVector.addAll(ctrlCompetition.getCompetitionMap().get(competitionID).getEditionSet());
 	}
 
 
@@ -911,35 +767,20 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param type
 	 * @param shortName
 	 * @param longName
 	 * @param country
 	 * @return
 	 */
-	private Team newTeam(String ID, String type, String shortName, String longName, Country country)
+	private Team newTeam(String type,
+											 String shortName,
+											 String longName,
+											 Country country)
 	{
-		Team team = ctrlTeam.getTeamMap().get(ID);
-
-		if (null == team) {
-			team = new Team(type, shortName, longName, country);
-		}
-
-		return team;
+		return new Team(type, shortName, longName, country);
 	}
 
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param longName
-	 * @return
-	 */
-	private Team newTeam(String ID, String longName)
-	{
-		return newTeam(ID, null, null, longName, null);
-	}
 
 
 	/**
@@ -948,7 +789,7 @@ public class Controller
 	 */
 	private Team newTeam()
 	{
-		return new Team(null, null, null, null);
+		return newTeam(null, null, null, null);
 	}
 
 
@@ -1007,31 +848,26 @@ public class Controller
 		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listCountryName.removeFirst()
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String name = listCountryName.removeFirst();
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(null, null, name, null);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
 
 		ctrlTeam.getTeamMap().clear();
 
 		while (!(listTeamID.isEmpty())) {
 			String ID = listTeamID.removeFirst();
-			Team team = newTeam
-							(
-											ID,
-											listTeamType.removeFirst(),
-											listTeamShortName.removeFirst(),
-											listTeamLongName.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst())
-							);
-
-			ctrlTeam.getTeamMap().put(ID, team);
+			String type = listTeamType.removeFirst();
+			String shortName = listTeamLongName.removeFirst();
+			String longName = listTeamLongName.removeFirst();
+			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
+			if (null == ctrlTeam.getTeamMap().get(ID)) {
+				Team team = newTeam(type, shortName, longName, country);
+				ctrlTeam.getTeamMap().put(ID, team);
+			}
 		}
-
 	}
 
 	/**
@@ -1059,13 +895,11 @@ public class Controller
 
 		while (!(listTeamID.isEmpty())) {
 			String ID = listTeamID.removeFirst();
-			Team team = newTeam
-				(
-								ID,
-								listTeamLongName.removeFirst()
-				);
-
-			ctrlTeam.getTeamMap().put(ID, team);
+			String longName = listTeamLongName.removeFirst();
+			if (null == ctrlTeam.getTeamMap().get(ID)) {
+				Team team = newTeam(null, null, longName, null);
+				ctrlTeam.getTeamMap().put(ID, team);
+			}
 		}
 	}
 
@@ -1098,13 +932,13 @@ public class Controller
 						);
 
 		ctrlCountry.getCountryMap().clear();
-		Country country = newCountry(countryID, countryName);
+		Country country = newCountry(null, null, countryName, null);
 
 		ctrlConfederation.getConfederationMap().clear();
-		Confederation confederation = newConfederation(confederationID, confederationShortName, country);
+		Confederation confederation = newConfederation(confederationShortName, null, country, null);
 
 		ctrlTeam.getTeamMap().clear();
-		Team team = newTeam(teamID, teamType, teamShortName, teamLongName, country);
+		Team team = newTeam(teamType, teamShortName, teamLongName, country);
 
 		ctrlTeam.getTeamMap().put(teamID, team);
 	}
@@ -1238,7 +1072,6 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param name
 	 * @param surname
 	 * @param dob
@@ -1249,8 +1082,7 @@ public class Controller
 	 * @param retiredDate
 	 * @return
 	 */
-	private Player newPlayer(String ID,
-													 String name,
+	private Player newPlayer(String name,
 													 String surname,
 													 String dob,
 													 Country country,
@@ -1259,61 +1091,8 @@ public class Controller
 													 String role,
 													 String retiredDate)
 	{
-		Player player = ctrlPlayer.getPlayerMap().get(ID);
-
-		if (null == player) {
-			player = new Player
-							(
-											name,
-											surname,
-											dob,
-											country,
-											foot,
-											position,
-											role,
-											retiredDate
-							);
-		}
-
-		return player;
+		return new Player(name, surname, dob, country, foot, position, role, retiredDate);
 	}
-
-
-
-
-
-
-	/**
-	 * TODO
-	 * @param ID
-	 * @param name
-	 * @param surname
-	 * @param role
-	 * @return
-	 */
-	private Player newPlayer(String ID,
-													 String name,
-													 String surname,
-													 String role)
-	{
-		return newPlayer
-						(
-										ID,
-										name,
-										surname,
-										null,
-										null,
-										null,
-										null,
-										role,
-										null
-						);
-	}
-
-
-
-
-
 
 
 	/**
@@ -1322,17 +1101,7 @@ public class Controller
 	 */
 	private Player newPlayer()
 	{
-		return new Player
-						(
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null
-						);
+		return newPlayer(null, null, null, null, null, null, null, null);
 	}
 
 	/**
@@ -1414,48 +1183,42 @@ public class Controller
 		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listCountryName.removeFirst()
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String name = listCountryName.removeFirst();
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(null, null, name, null);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
 
 
 		ctrlPosition.getPositionMap().clear();
 
 		for (String ID : listPositionID) {
-			Position position = newPosition
-							(
-											ID,
-											listPositionName.removeFirst()
-							);
-
-			ctrlPosition.getPositionMap().put(ID, position);
+			String name = listPositionName.removeFirst();
+			if (null == ctrlPosition.getPositionMap().get(ID)) {
+				Position position = newPosition(null, null, name);
+				ctrlPosition.getPositionMap().put(ID, position);
+			}
 		}
+
 
 		ctrlPlayer.getPlayerMap().clear();
 
 		while (!(listPlayerID.isEmpty())) {
 			String ID = listPlayerID.removeFirst();
-			Player player = newPlayer
-							(
-											ID,
-											listPlayerName.removeFirst(),
-											listPlayerSurname.removeFirst(),
-											listPlayerDob.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
-											listPlayerFoot.removeFirst(),
-											ctrlPosition.getPositionMap().get(listPositionID.removeFirst()),
-											listPlayerRole.removeFirst(),
-											listPlayerRetiredDate.removeFirst()
-							);
-
-			ctrlPlayer.getPlayerMap().put(ID, player);
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String dob = listPlayerDob.removeFirst();
+			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
+			String foot = listPlayerFoot.removeFirst();
+			Position position = ctrlPosition.getPositionMap().get(listPositionID.removeFirst());
+			String role = listPlayerRole.removeFirst();
+			String retiredDate = listPlayerRetiredDate.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, dob, country, foot, position, role, retiredDate);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
-
 	}
 
 
@@ -1503,48 +1266,41 @@ public class Controller
 		ctrlCountry.getCountryMap().clear();
 
 		for (String ID : listCountryID) {
-			Country country = newCountry
-							(
-											ID,
-											listCountryName.removeFirst()
-							);
-
-			ctrlCountry.getCountryMap().put(ID, country);
+			String name = listCountryName.removeFirst();
+			if (null == ctrlCountry.getCountryMap().get(ID)) {
+				Country country = newCountry(null, null, name, null);
+				ctrlCountry.getCountryMap().put(ID, country);
+			}
 		}
 
 
 		ctrlPosition.getPositionMap().clear();
 
 		for (String ID : listPositionID) {
-			Position position = newPosition
-							(
-											ID,
-											listPositionName.removeFirst()
-							);
-
-			ctrlPosition.getPositionMap().put(ID, position);
+			String name = listPositionName.removeFirst();
+			if (null == ctrlPosition.getPositionMap().get(ID)) {
+				Position position = newPosition(null, null, name);
+				ctrlPosition.getPositionMap().put(ID, position);
+			}
 		}
 
 		ctrlPlayer.getPlayerMap().clear();
 
 		while (!(listPlayerID.isEmpty())) {
 			String ID = listPlayerID.removeFirst();
-			Player player = newPlayer
-							(
-											ID,
-											listPlayerName.removeFirst(),
-											listPlayerSurname.removeFirst(),
-											listPlayerDob.removeFirst(),
-											ctrlCountry.getCountryMap().get(listCountryID.removeFirst()),
-											listPlayerFoot.removeFirst(),
-											ctrlPosition.getPositionMap().get(listPositionID.removeFirst()),
-											listPlayerRole.removeFirst(),
-											listPlayerRetiredDate.removeFirst()
-							);
-
-			ctrlPlayer.getPlayerMap().put(ID, player);
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String dob = listPlayerDob.removeFirst();
+			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
+			String foot = listPlayerFoot.removeFirst();
+			Position position = ctrlPosition.getPositionMap().get(listPositionID.removeFirst());
+			String role = listPlayerRole.removeFirst();
+			String retiredDate = listPlayerRetiredDate.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, dob, country, foot, position, role, retiredDate);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
-
 	}
 
 	/**
@@ -1575,17 +1331,14 @@ public class Controller
 
 		while (!(listPlayerID.isEmpty())) {
 			String ID = listPlayerID.removeFirst();
-			Player player = newPlayer
-				(
-					ID,
-					listPlayerName.removeFirst(),
-					listPlayerSurname.removeFirst(),
-					listPlayerRole.removeFirst()
-				);
-
-			ctrlPlayer.getPlayerMap().put(ID, player);
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String role = listPlayerRole.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, null, null, null, null, role, null);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
-
 	}
 
 	/**
@@ -1839,36 +1592,18 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param role
 	 * @param code
 	 * @param name
 	 * @return
 	 */
-	private Position newPosition(String ID,
-															 String role,
+	private Position newPosition(String role,
 															 String code,
 															 String name)
 	{
-		Position position = ctrlPosition.getPositionMap().get(ID);
-
-		if (null == position) {
-			position = new Position(role, code, name);
-		}
-
-		return position;
+		return new Position(role, code, name);
 	}
 
-	/**
-	 * TODO
-	 * @param ID
-	 * @param name
-	 * @return
-	 */
-	private Position newPosition(String ID, String name)
-	{
-		return newPosition(ID, null, null, name);
-	}
 
 	/**
 	 * TODO
@@ -1876,7 +1611,7 @@ public class Controller
 	 */
 	private Position newPosition()
 	{
-		return new Position(null, null, null);
+		return newPosition(null, null, null);
 	}
 
 	/**
@@ -1902,17 +1637,14 @@ public class Controller
 
 		while (!(listPositionID.isEmpty())) {
 			String ID = listPositionID.removeFirst();
-			Position position = newPosition
-							(
-											ID,
-											listPositionRole.removeFirst(),
-											listPositionCode.removeFirst(),
-											listPositionName.removeFirst()
-							);
-
-			ctrlPosition.getPositionMap().put(ID, position);
+			String role = listPositionRole.removeFirst();
+			String code = listPositionCode.removeFirst();
+			String name = listPositionName.removeFirst();
+			if (null == ctrlPosition.getPositionMap().get(ID)) {
+				Position position = newPosition(role, code, name);
+				ctrlPosition.getPositionMap().put(ID, position);
+			}
 		}
-
 	}
 
 
@@ -1985,93 +1717,6 @@ public class Controller
 						);
 	}
 
-	private Statistic newStatistic(Team team,
-																 String match,
-																 String goalScored,
-																 String penaltyScored,
-																 String assist,
-																 String yellowCard,
-																 String redCard,
-																 String goalConceded,
-																 String penaltySaved)
-	{
-		return new Statistic
-						(
-										team,
-										null,
-										null,
-										match,
-										goalScored,
-										penaltyScored,
-										assist,
-										yellowCard,
-										redCard,
-										goalConceded,
-										penaltySaved
-						);
-	}
-
-
-
-	/**
-	 * TODO
-	 * @param match
-	 * @param goalScored
-	 * @param penaltyScored
-	 * @param assist
-	 * @param yellowCard
-	 * @param redCard
-	 * @param goalConceded
-	 * @param penaltySaved
-	 * @return
-	 */
-	private Statistic newStatistic(String match,
-																 String goalScored,
-																 String penaltyScored,
-																 String assist,
-																 String yellowCard,
-																 String redCard,
-																 String goalConceded,
-																 String penaltySaved)
-	{
-		return new Statistic
-						(
-										null,
-										null,
-										null,
-										match,
-										goalScored,
-										penaltyScored,
-										assist,
-										yellowCard,
-										redCard,
-										goalConceded,
-										penaltySaved
-						);
-	}
-
-
-	/**
-	 * TODO
-	 * @return
-	 */
-	private Statistic newStatistic()
-	{
-		return new Statistic
-						(
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null,
-										null
-						);
-	}
 
 
 	/**
@@ -2117,21 +1762,22 @@ public class Controller
 		ctrlPlayer.getPlayerMap().clear();
 
 		for (String ID : listPlayerID) {
-			Player player = newPlayer
-							(
-											ID,
-											listPlayerName.removeFirst(),
-											listPlayerSurname.removeFirst(),
-											listPlayerRole.removeFirst()
-							);
-
-			ctrlPlayer.getPlayerMap().put(ID, player);
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String role = listPlayerRole.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, null, null, null, null, role, null);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
 
 
 		while (!(listPlayerID.isEmpty())) {
 			Statistic statistic = newStatistic
 							(
+											null,
+											null,
+											null,
 											listStatisticMatch.removeFirst(),
 											listStatisticGoalScored.removeFirst(),
 											listStatisticPenaltyScored.removeFirst(),
@@ -2189,28 +1835,24 @@ public class Controller
 
 		ctrlTeam.getTeamMap().clear();
 
-		for (String teamID : listTeamID) {
-			Team team = newTeam
-							(
-											teamID,
-											listTeamLongName.removeFirst()
-							);
-
-			ctrlTeam.getTeamMap().put(teamID, team);
+		for (String ID : listTeamID) {
+			String longName = listTeamLongName.removeFirst();
+			if (null == ctrlTeam.getTeamMap().get(ID)) {
+				Team team = newTeam(null, null, longName, null);
+				ctrlTeam.getTeamMap().put(ID, team);
+			}
 		}
 
 		ctrlPlayer.getPlayerMap().clear();
 
-		for (String playerID : listPlayerID) {
-			Player player = newPlayer
-							(
-											playerID,
-											listPlayerName.removeFirst(),
-											listPlayerSurname.removeFirst(),
-											listPlayerRole.removeFirst()
-							);
-
-			ctrlPlayer.getPlayerMap().put(playerID, player);
+		for (String ID : listPlayerID) {
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String role = listPlayerRole.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, null, null, null, null, role, null);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
 
 
@@ -2218,6 +1860,8 @@ public class Controller
 			Statistic statistic = newStatistic
 							(
 											ctrlTeam.getTeamMap().get(listTeamID.removeFirst()),
+											null,
+											null,
 											listStatisticMatch.removeFirst(),
 											listStatisticGoalScored.removeFirst(),
 											listStatisticPenaltyScored.removeFirst(),
@@ -2429,30 +2073,26 @@ public class Controller
 
 		ctrlConfederation.getConfederationMap().clear();
 
-		for (String confederationID : listConfederationID) {
-			Confederation confederation = newConfederation
-							(
-											confederationID,
-											listConfederationShortName.removeFirst()
-							);
-
-			ctrlConfederation.getConfederationMap().put(confederationID, confederation);
+		for (String ID : listConfederationID) {
+			String shortName = listConfederationShortName.removeFirst();
+			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
+				Confederation confederation = newConfederation(shortName, null, null, null);
+				ctrlConfederation.getConfederationMap().put(ID, confederation);
+			}
 		}
 
 
-		ctrlCompetition.getEditionList().clear();
+		ctrlCompetition.getCompetitionMap().clear();
 
 		while (!(listCompetitionID.isEmpty())) {
-			String competitionID = listCompetitionID.removeFirst();
-			Competition competition = newCompetition
-							(
-											competitionID,
-											listCompetitionType.removeFirst(),
-											listCompetitionName.removeFirst(),
-											ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst())
-							);
-
-			ctrlCompetition.getCompetitionMap().put(competitionID, competition);
+			String ID = listCompetitionID.removeFirst();
+			String type = listCompetitionType.removeFirst();
+			String name = listCompetitionName.removeFirst();
+			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
+			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
+				Competition competition = newCompetition(type, null, name, confederation);
+				ctrlCompetition.getCompetitionMap().put(ID, competition);
+			}
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2485,16 +2125,14 @@ public class Controller
 		ctrlPlayer.getPlayerMap().clear();
 
 		while (!(listPlayerID.isEmpty())) {
-			String playerID = listPlayerID.removeFirst();
-			Player player = newPlayer
-							(
-											playerID,
-											listPlayerName.removeFirst(),
-											listPlayerSurname.removeFirst(),
-											listPlayerRole.removeFirst()
-							);
-
-			ctrlPlayer.getPlayerMap().put(playerID, player);
+			String ID = listPlayerID.removeFirst();
+			String name = listPlayerName.removeFirst();
+			String surname = listPlayerSurname.removeFirst();
+			String role = listPlayerRole.removeFirst();
+			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
+				Player player = newPlayer(name, surname, null, null, null, null, role, null);
+				ctrlPlayer.getPlayerMap().put(ID, player);
+			}
 		}
 	}
 
@@ -2507,31 +2145,22 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param type
 	 * @param role
 	 * @param name
 	 * @return
 	 */
-	private Trophy newTrophy(String ID,
-													 String type,
+	private Trophy newTrophy(String type,
 													 String role,
-													 String name)
+													 String name,
+													 Player player,
+													 Team team,
+													 Competition competition,
+													 String assignedYear)
 	{
-		Trophy trophy = ctrlTrophy.getTrophyMap().get(ID);
-
-		if (null == trophy) {
-			trophy = new Trophy(type, role, name);
-		}
-
-		return trophy;
+		return new Trophy(type, role, name, player, team, competition, assignedYear);
 	}
 
-	private Trophy newTrophy(String ID,
-													 String name)
-	{
-		return newTrophy(ID, null, null, name);
-	}
 
 	/**
 	 * TODO
@@ -2539,7 +2168,7 @@ public class Controller
 	 */
 	private Trophy newTrophy()
 	{
-		return new Trophy(null, null, null);
+		return newTrophy(null, null, null, null, null, null, null);
 	}
 
 
@@ -2569,39 +2198,23 @@ public class Controller
 
 		ctrlCompetition.getCompetitionMap().clear();
 
-		for (String competitionID : listCompetitionID) {
-			Competition competition = newCompetition
-							(
-											competitionID,
-											listCompetitionName.removeFirst()
-							);
-
-			ctrlCompetition.getCompetitionMap().put(competitionID, competition);
+		for (String ID : listCompetitionID) {
+			String name = listCompetitionName.removeFirst();
+			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
+				Competition competition = newCompetition(null, null, name, null);
+				ctrlCompetition.getCompetitionMap().put(ID, competition);
+			}
 		}
 
-		ctrlTrophy.getTrophyMap().clear();
-		ctrlAssignedTrophy.getAssignedTrophyList().clear();
 
-		while (!(listTrophyID.isEmpty())) {
-			String trophyID = listTrophyID.removeFirst();
+		for (String ID : listTrophyID) {
+			String name = listTrophyName.removeFirst();
+			Competition competition = ctrlCompetition.getCompetitionMap().get(listCompetitionID.removeFirst());
 
-			Trophy trophy = newTrophy
-							(
-											trophyID,
-											listTrophyName.removeFirst()
-							);
+			Trophy trophy = newTrophy(null, null, name, null, null, competition, null);
 
-			ctrlTrophy.getTrophyMap().put(trophyID, trophy);
-
-			AssignedTrophy assignedTrophy = newAssignedTrophy
-							(
-											trophy,
-											ctrlCompetition.getCompetitionMap().get(listCompetitionID.removeFirst())
-							);
-
-			ctrlAssignedTrophy.getAssignedTrophyList().add(assignedTrophy);
+			ctrlTeam.getTeamMap().get(teamID).getTrophySet().add(trophy);
 		}
-
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -2612,45 +2225,31 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param ID
 	 * @param type
 	 * @param role
 	 * @param name
 	 * @param given
 	 * @return
 	 */
-	private Prize newPrize(String ID,
-												 String type,
+	private Prize newPrize(String type,
 												 String role,
 												 String name,
-												 String given)
+												 String given,
+												 Player player,
+												 Team team,
+												 String assignedYear)
 	{
-		Prize prize = ctrlPrize.getPrizeMap().get(ID);
-
-		if (null == prize) {
-			prize = new Prize(type, role, name, given);
-		}
-
-		return prize;
+		return new Prize(type, role, name, given, player, team, assignedYear);
 	}
 
 
 
-	private Prize newPrize(String ID,
-												 String name,
-												 String given)
-	{
-		return newPrize(ID, null, null, name, given);
-	}
-
-	/**
-	 * TODO
-	 * @return
-	 */
 	private Prize newPrize()
 	{
-		return new Prize(null, null, null, null);
+		return newPrize(null, null, null, null, null, null, null);
 	}
+
+
 
 
 	private void fetchPrize(String teamID,
@@ -2671,91 +2270,16 @@ public class Controller
 						);
 
 
-		ctrlPrize.getPrizeMap().clear();
-		ctrlAssignedPrize.getAssignedPrizeList().clear();
+		for (String ID : listPrizeID) {
+			String name = listPrizeName.removeFirst();
+			String given = listPrizeGiven.removeFirst();
 
-		while (!(listPrizeID.isEmpty())) {
-			String prizeID = listPrizeID.removeFirst();
+			Prize prize = newPrize(null, null, name, given, null, null, null);
 
-			Prize prize = newPrize
-							(
-											prizeID,
-											listPrizeName.removeFirst(),
-											listPrizeGiven.removeFirst()
-							);
-
-			ctrlPrize.getPrizeMap().put(prizeID, prize);
-
-			AssignedPrize assignedPrize = newAssignedPrize
-							(
-											prize
-							);
-
-			ctrlAssignedPrize.getAssignedPrizeList().add(assignedPrize);
+			ctrlTeam.getTeamMap().get(teamID).getPrizeSet().add(prize);
 		}
 
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
-
-	/*--------------------------------------------------------------------------------------------------------
-	 * ASSIGNED TROPHY
-	 *------------------------------------------------------------------------------------------------------*/
-
-
-	private AssignedTrophy newAssignedTrophy(Trophy trophy,
-																					 Competition competition,
-																					 String year,
-																					 Team team,
-																					 Player player)
-	{
-		AssignedTrophy assignedTrophy = new AssignedTrophy(trophy, competition, year, team, player);
-		ctrlAssignedTrophy.getAssignedTrophyList().add(assignedTrophy);
-
-		return assignedTrophy;
-	}
-
-	private AssignedTrophy newAssignedTrophy(Trophy trophy,
-																					 Competition competition)
-	{
-		return newAssignedTrophy(trophy, competition, null, null, null);
-	}
-
-	private AssignedTrophy newAssignedTrophy()
-	{
-		return new AssignedTrophy(null, null, null, null, null);
-	}
-	/*------------------------------------------------------------------------------------------------------*/
-
-
-	/*--------------------------------------------------------------------------------------------------------
-	 * ASSIGNED PRIZE
-	 *------------------------------------------------------------------------------------------------------*/
-
-	private AssignedPrize newAssignedPrize(Prize prize,
-																				 String year,
-																				 Team team,
-																				 Player player)
-	{
-		AssignedPrize assignedPrize = new AssignedPrize(prize, year, team, player);
-		ctrlAssignedPrize.getAssignedPrizeList().add(assignedPrize);
-
-		return assignedPrize;
-	}
-
-
-	private AssignedPrize newAssignedPrize(Prize prize)
-	{
-		return newAssignedPrize(prize, null, null, null);
-	}
-
-	/**
-	 * TODO
-	 * @return
-	 */
-	private AssignedPrize newAssignedPrize()
-	{
-		return new AssignedPrize(null, null, null, null);
-	}
-	/*------------------------------------------------------------------------------------------------------*/
 }

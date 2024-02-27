@@ -18,17 +18,26 @@ public class Prize
 	private final String role;
 	private final String name;
 	private final String given;	// ente che assegna il premio calcistico
+	private final Player player;
+	private final Team team;
+	private final String assignedYear;
 
 
 	public Prize(String type,
 							 String role,
 							 String name,
-							 String given)
+							 String given,
+							 Player player,
+							 Team team,
+							 String assignedYear)
 	{
 		this.type = type;
 		this.role = role;
 		this.name = name;
 		this.given = given;
+		this.player = player;
+		this.team = team;
+		this.assignedYear = assignedYear;
 	}
 
 
@@ -50,6 +59,21 @@ public class Prize
 	public String getGiven()
 	{
 		return given;
+	}
+
+	public Player getPlayer()
+	{
+		return player;
+	}
+
+	public Team getTeam()
+	{
+		return team;
+	}
+
+	public String getAssignedYear()
+	{
+		return assignedYear;
 	}
 
 	public Map<String, Prize> getPrizeMap()

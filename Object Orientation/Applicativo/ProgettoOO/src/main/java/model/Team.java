@@ -1,9 +1,6 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * TYPE : class
@@ -25,6 +22,10 @@ public class Team
 	private final Country country;
 
 
+	private final Map<String, Player> playerMap;
+	private final Set<Trophy> trophySet;
+	private final Set<Prize> prizeSet;
+
 	public Team(String type,
 							String shortName,
 							String longName,
@@ -34,6 +35,10 @@ public class Team
 		this.shortName = shortName;
 		this.longName = longName;
 		this.country = country;
+
+		this.playerMap = new LinkedHashMap<>();
+		this.trophySet = new HashSet<>();
+		this.prizeSet = new HashSet<>();
 	}
 
 
@@ -80,5 +85,20 @@ public class Team
 	public void setLongName(String longName)
 	{
 		this.longName = longName;
+	}
+
+	public Map<String, Player> getPlayerMap()
+	{
+		return playerMap;
+	}
+
+	public Set<Prize> getPrizeSet()
+	{
+		return prizeSet;
+	}
+
+	public Set<Trophy> getTrophySet()
+	{
+		return trophySet;
 	}
 }
