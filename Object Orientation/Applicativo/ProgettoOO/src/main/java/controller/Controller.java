@@ -4,6 +4,7 @@ import dao.*;
 import gui.GuiConfiguration;
 import gui.Regex;
 import model.*;
+import org.apache.commons.lang3.StringUtils;
 import postgresImplDAO.*;
 
 import java.util.*;
@@ -776,9 +777,10 @@ public class Controller
 	private Team newTeam(String type,
 											 String shortName,
 											 String longName,
-											 Country country)
+											 Country country,
+											 Confederation confederation)
 	{
-		return new Team(type, shortName, longName, country);
+		return new Team(type, shortName, longName, country, confederation);
 	}
 
 
@@ -789,7 +791,7 @@ public class Controller
 	 */
 	private Team newTeam()
 	{
-		return newTeam(null, null, null, null);
+		return newTeam(null, null, null, null, null);
 	}
 
 
@@ -864,7 +866,7 @@ public class Controller
 			String longName = listTeamLongName.removeFirst();
 			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
 			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(type, shortName, longName, country);
+				Team team = newTeam(type, shortName, longName, country, null);
 				ctrlTeam.getTeamMap().put(ID, team);
 			}
 		}
@@ -897,7 +899,7 @@ public class Controller
 			String ID = listTeamID.removeFirst();
 			String longName = listTeamLongName.removeFirst();
 			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(null, null, longName, null);
+				Team team = newTeam(null, null, longName, null, null);
 				ctrlTeam.getTeamMap().put(ID, team);
 			}
 		}
@@ -938,7 +940,7 @@ public class Controller
 		Confederation confederation = newConfederation(confederationShortName, null, country, null);
 
 		ctrlTeam.getTeamMap().clear();
-		Team team = newTeam(teamType, teamShortName, teamLongName, country);
+		Team team = newTeam(teamType, teamShortName, teamLongName, country, confederation);
 
 		ctrlTeam.getTeamMap().put(teamID, team);
 	}
@@ -1062,6 +1064,140 @@ public class Controller
 			teamLongNameVector.add(teamLongName);
 			teamLongNameMap.put(teamLongName, key);
 		}
+	}
+
+	public void setTeamView(Map<String, String> infoTeamMap,
+													Vector<String> teamSquadTableColumnName,
+													Vector<Vector<String>> teamSquadTableData,
+													Vector<String> teamPartecipationTableColumnName,
+													Vector<Vector<String>> teamPartecipationTableData,
+													Vector<String> teamTrophyTableColumnName,
+													Vector<Vector<String>> teamTrophyTableData,
+													Vector<String> teamPrizeTableColumnName,
+													Vector<Vector<String>> teamPrizeTableData,
+													String teamID,
+													String startYear)
+	{
+		fetchTeam(teamID);
+		fetchMilitancy(teamID, startYear);
+		fetchPartecipation(teamID, startYear);
+		fetchTrophy(teamID, startYear);
+		fetchPrize(teamID, startYear);
+
+		Team team = ctrlTeam.getTeamMap().get(teamID);
+
+		String string;
+
+		// informazioni squadra
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		infoTeamMap.put(string, team.getLongName());
+
+		string = GuiConfiguration.getMessage("code");
+		string = StringUtils.capitalize(string);
+		infoTeamMap.put(string, team.getShortName());
+
+		string = GuiConfiguration.getMessage("type");
+		string = StringUtils.capitalize(string);
+		infoTeamMap.put(string, team.getType());
+
+		string = GuiConfiguration.getMessage("country");
+		string = StringUtils.capitalize(string);
+		infoTeamMap.put(string, team.getCountry().getName());
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = StringUtils.capitalize(string);
+		infoTeamMap.put(string, team.getConfederation().getShortName());
+
+		// tabella rosa
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		teamSquadTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		teamSquadTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		teamSquadTableColumnName.add(string);
+
+		for (String key : team.getPlayerMap().keySet()) {
+			Vector<String> playerVector = new Vector<>();
+
+			Player player = team.getPlayerMap().get(key);
+
+			playerVector.add(player.getRole());
+			playerVector.add(player.getName());
+			playerVector.add(player.getSurname());
+
+			teamSquadTableData.add(playerVector);
+		}
+
+
+		// tabella partecipazioni
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		teamPartecipationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		teamPartecipationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+		teamPartecipationTableColumnName.add(string);
+
+		for (Competition competition : team.getCompetitionSet()) {
+			Vector<String> partecipationVector = new Vector<>();
+
+			partecipationVector.add(competition.getName());
+			partecipationVector.add(competition.getType());
+			partecipationVector.add(competition.getConfederation().getShortName());
+
+			teamPartecipationTableData.add(partecipationVector);
+		}
+
+
+		// tabella trofei
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		teamTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+		teamTrophyTableColumnName.add(string);
+
+
+		for (Trophy trophy : team.getTrophySet()) {
+			Vector<String> trophyVector = new Vector<>();
+
+			trophyVector.add(trophy.getCompetition().getName());
+			trophyVector.add(trophy.getName());
+
+			teamTrophyTableData.add(trophyVector);
+		}
+
+
+		// tabella premi
+		string = GuiConfiguration.getMessage("prize");
+		string = string.toUpperCase();
+		teamPrizeTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("given");
+		string = string.toUpperCase();
+		teamPrizeTableColumnName.add(string);
+
+
+		for (Prize prize : team.getPrizeSet()) {
+			Vector<String> prizeVector = new Vector<>();
+
+			prizeVector.add(prize.getName());
+			prizeVector.add(prize.getGiven());
+
+			teamPrizeTableData.add(prizeVector);
+		}
+
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -1838,7 +1974,7 @@ public class Controller
 		for (String ID : listTeamID) {
 			String longName = listTeamLongName.removeFirst();
 			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(null, null, longName, null);
+				Team team = newTeam(null, null, longName, null, null);
 				ctrlTeam.getTeamMap().put(ID, team);
 			}
 		}
@@ -2091,7 +2227,7 @@ public class Controller
 			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
 			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
 				Competition competition = newCompetition(type, null, name, confederation);
-				ctrlCompetition.getCompetitionMap().put(ID, competition);
+				ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().add(competition);
 			}
 		}
 	}
@@ -2131,7 +2267,7 @@ public class Controller
 			String role = listPlayerRole.removeFirst();
 			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
 				Player player = newPlayer(name, surname, null, null, null, null, role, null);
-				ctrlPlayer.getPlayerMap().put(ID, player);
+				ctrlTeam.getTeamMap().get(teamID).getPlayerMap().put(ID, player);
 			}
 		}
 	}

@@ -20,23 +20,28 @@ public class Team
 	private String shortName;
 	private String longName;
 	private final Country country;
+	private final Confederation confederation;
 
 
 	private final Map<String, Player> playerMap;
+	private final Set<Competition> competitionSet;
 	private final Set<Trophy> trophySet;
 	private final Set<Prize> prizeSet;
 
 	public Team(String type,
 							String shortName,
 							String longName,
-							Country country)
+							Country country,
+							Confederation confederation)
 	{
 		this.type = type;
 		this.shortName = shortName;
 		this.longName = longName;
 		this.country = country;
+		this.confederation = confederation;
 
 		this.playerMap = new LinkedHashMap<>();
+		this.competitionSet = new HashSet<>();
 		this.trophySet = new HashSet<>();
 		this.prizeSet = new HashSet<>();
 	}
@@ -72,6 +77,11 @@ public class Team
 		return country;
 	}
 
+	public Confederation getConfederation()
+	{
+		return confederation;
+	}
+
 	public Map<String, Team> getTeamMap()
 	{
 		return TEAM_MAP;
@@ -92,13 +102,20 @@ public class Team
 		return playerMap;
 	}
 
-	public Set<Prize> getPrizeSet()
+	public Set<Competition> getCompetitionSet()
 	{
-		return prizeSet;
+		return competitionSet;
 	}
 
 	public Set<Trophy> getTrophySet()
 	{
 		return trophySet;
 	}
+
+	public Set<Prize> getPrizeSet()
+	{
+		return prizeSet;
+	}
+
+
 }
