@@ -841,7 +841,7 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fillTeamTable(teamTableData, teamTableColumnName, teamTable, "teams");
+				fillTeamTable(teamTableData, teamTableColumnName, teamTable, "teams", Boolean.TRUE);
 
 				teamTablePanel.revalidate();
 			}
@@ -931,7 +931,8 @@ public class SearchTeamPanel
 	public void fillTeamTable(Vector<Vector<String>> tableData,
 							  Vector<String> tableColumnName,
 							  JTable table,
-							  String tableName)
+							  String tableName,
+							  Boolean internationalization)
 	{
 		tableColumnName.clear();
 		tableData.clear();
@@ -939,7 +940,7 @@ public class SearchTeamPanel
 
 		Controller.getInstance().setTeamTable
 			(
-				teamTableColumnName,
+				tableColumnName,
 				tableData,
 				teamSubLongName,
 				teamSubShortName,
@@ -949,9 +950,9 @@ public class SearchTeamPanel
 			);
 
 		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
 
 	}
 }

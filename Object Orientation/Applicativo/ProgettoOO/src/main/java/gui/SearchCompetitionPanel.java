@@ -1119,7 +1119,8 @@ public class SearchCompetitionPanel
 						competitionTableData,
 						competitionTableColumnName,
 						competitionTable,
-						"competitions"
+						"competitions",
+						Boolean.TRUE
 					);
 
 				competitionTablePanel.revalidate();
@@ -1211,7 +1212,9 @@ public class SearchCompetitionPanel
 	public void fillCompetitionTable(Vector<Vector<String>> tableData,
 									 Vector<String> tableColumnName,
 									 JTable table,
-									 String tableName) {
+									 String tableName,
+									 Boolean internationalization)
+	{
 		tableData.clear();
 		tableColumnName.clear();
 
@@ -1230,6 +1233,6 @@ public class SearchCompetitionPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
 	}
 }

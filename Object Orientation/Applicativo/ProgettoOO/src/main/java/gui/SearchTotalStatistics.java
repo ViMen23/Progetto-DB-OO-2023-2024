@@ -559,7 +559,8 @@ public class SearchTotalStatistics
 						totalStatisticsTableData,
 						totalStatisticsTableColumnName,
 						totalStatisticsTable,
-						"totalPlayerStatistics"
+						"totalPlayerStatistics",
+						Boolean.TRUE
 					);
 
 				totalStatisticsPanel.revalidate();
@@ -678,7 +679,8 @@ public class SearchTotalStatistics
 	public void fillTotalStatisticsTable(Vector<Vector<String>> tableData,
 										 Vector<String> tableColumnName,
 										 JTable table,
-										 String tableName)
+										 String tableName,
+										 Boolean internationalization)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -694,6 +696,6 @@ public class SearchTotalStatistics
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
 	}
 }

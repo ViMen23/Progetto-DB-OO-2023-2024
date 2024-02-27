@@ -1,17 +1,15 @@
 package gui;
 
 import controller.Controller;
+import model.Team;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EmptyBorder;
-import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.time.Year;
+import java.time.YearMonth;
 import java.util.*;
-import java.util.List;
 
 /**
  * TYPE : class - gui package
@@ -200,13 +198,20 @@ public class GuiConfiguration
 		}
 	}
 
-	public static void setTitleTable(JLabel label,String tableName, int countRows)
+	public static void setTitleTable(JLabel label,String tableName, int countRows, Boolean internationalization)
 	{
 		String string;
 
 		string = GuiConfiguration.getMessage("results");
 		string += " ";
-		string += GuiConfiguration.getMessage(tableName);
+
+		if (internationalization) {
+			string += GuiConfiguration.getMessage(tableName);
+		}
+		else {
+			string += tableName;
+		}
+
 		string += " - ";
 		string += countRows;
 		string += " ";
@@ -465,35 +470,63 @@ public class GuiConfiguration
 	}
 
 
-	public static void setRolePlayer(JCheckBox goalkeeperCheckBox,
-									 JCheckBox defenderCheckBox,
-									 JCheckBox midfielderCheckBox,
-									 JCheckBox forwardCheckBox,
-									 String playerRole)
+	public static void fillSeasonComboBox(JComboBox<String> comboBox,
+										  Integer minimumYear,
+										  String teamType,
+										  Map<String, String> seasonMap)
 	{
-		String string = "";
+		String string;
+		Integer maximumYear = Year.now().getValue();
+		Integer month = YearMonth.now().getMonthValue();
 
-		if (goalkeeperCheckBox.isSelected()) {
-			string += "_GK";
+
+		if (month < 8) {
+			--maximumYear;
 		}
 
-		if (defenderCheckBox.isSelected()) {
-			string += "_DF";
-		}
 
-		if (midfielderCheckBox.isSelected()) {
-			string += "_MF";
-		}
+		for (Integer i = maximumYear; i >= minimumYear; --i)
+		{
+			string = i + " - " + (i + 1)%100;
 
-		if (forwardCheckBox.isSelected()) {
-			string += "_FW";
+			comboBox.addItem(string);
+			seasonMap.put(string, i.toString());
 		}
+	}
 
-		if (string.isEmpty()){
-			playerRole = null;
+	public static void fillSeasonComboBox(JComboBox<String> comboBox,
+								   Vector<String> vector,
+								   Map<String, String> map,
+								   String teamType,
+								   String competitionID,
+								   Boolean selectAll)
+	{
+		String season;
+
+		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
+
+		Controller.getInstance().setCompetitionEditionComboBox(vector, competitionID);
+
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			for (String string : vector) {
+
+				Integer year = Integer.valueOf(string);
+
+				season = year.toString();
+				season += " - ";
+
+				year = (++year)%100;
+
+				season += year.toString();
+
+				comboBox.addItem(season);
+
+				map.put(season, string);
+			}
 		}
 		else {
-			playerRole = string.substring(1);
+			comboBox.setModel(new DefaultComboBoxModel<>(vector));
 		}
 	}
 

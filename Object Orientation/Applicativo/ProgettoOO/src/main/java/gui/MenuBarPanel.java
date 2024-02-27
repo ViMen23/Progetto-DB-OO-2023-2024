@@ -24,8 +24,8 @@ public class MenuBarPanel
 	protected JMenuItem generalResearchPlayerMenuItem;
 	protected JMenuItem militancyResearchPlayerMenuItem;
 	protected JMenu statisticMenu;
-	protected JMenuItem showTotalStatisticMenuItem;
-	protected JMenuItem showCompetitionEditionStatisticMenuItem;
+	protected JMenuItem researchTotalStatisticMenuItem;
+	protected JMenuItem filterCompetitionEditionStatisticMenuItem;
 	protected JButton filterButton;
 	protected JButton diceButton;
 
@@ -54,6 +54,7 @@ public class MenuBarPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/homy.png");
 
 		homeButton = new JButton(imageIcon);
+		homeButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		homeButton.addActionListener(new ActionListener() {
 			@Override
@@ -89,6 +90,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		countryMenu = new JMenu(string);
+		countryMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -136,6 +138,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		confederationMenu = new JMenu(string);
+		confederationMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -181,6 +184,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		competitionMenu = new JMenu(string);
+		competitionMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -227,6 +231,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		teamMenu = new JMenu(string);
+		teamMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -273,6 +278,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		playerMenu = new JMenu(string);
+		playerMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -347,6 +353,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		statisticMenu = new JMenu(string);
+		statisticMenu.setCursor(GuiConfiguration.getButtonCursor());
 
 		migLayout = new MigLayout
 						(
@@ -362,14 +369,14 @@ public class MenuBarPanel
 		/*
 		 * TODO
 		 */
-		string = GuiConfiguration.getMessage("show");
+		string = GuiConfiguration.getMessage("research");
 		string += " ";
 		string += GuiConfiguration.getMessage("totalStatistics");
 		string = string.toUpperCase();
 
-		showTotalStatisticMenuItem = new JMenuItem(string);
+		researchTotalStatisticMenuItem = new JMenuItem(string);
 
-		showTotalStatisticMenuItem.addActionListener(new ActionListener() {
+		researchTotalStatisticMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -385,19 +392,17 @@ public class MenuBarPanel
 			}
 		});
 
-		statisticMenu.getPopupMenu().add(showTotalStatisticMenuItem);
+		statisticMenu.getPopupMenu().add(researchTotalStatisticMenuItem);
 
 		/*
 		 * TODO
 		 */
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("competitionEditionStatistics");
+		string = GuiConfiguration.getMessage("competitionEditionFilter");
 		string = string.toUpperCase();
 
-		showCompetitionEditionStatisticMenuItem = new JMenuItem(string);
+		filterCompetitionEditionStatisticMenuItem = new JMenuItem(string);
 
-		showCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
+		filterCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -413,7 +418,7 @@ public class MenuBarPanel
 			}
 		});
 
-		statisticMenu.getPopupMenu().add(showCompetitionEditionStatisticMenuItem);
+		statisticMenu.getPopupMenu().add(filterCompetitionEditionStatisticMenuItem);
 
 
 		/*
@@ -422,6 +427,7 @@ public class MenuBarPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/filter.png");
 
 		filterButton = new JButton(imageIcon);
+		filterButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		filterButton.addActionListener(new ActionListener() {
 			@Override
@@ -448,6 +454,7 @@ public class MenuBarPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/dice.png");
 
 		diceButton = new JButton(imageIcon);
+		diceButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		add(diceButton);
 

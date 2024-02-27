@@ -860,7 +860,7 @@ public class Controller
 		while (!(listTeamID.isEmpty())) {
 			String ID = listTeamID.removeFirst();
 			String type = listTeamType.removeFirst();
-			String shortName = listTeamLongName.removeFirst();
+			String shortName = listTeamShortName.removeFirst();
 			String longName = listTeamLongName.removeFirst();
 			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
 			if (null == ctrlTeam.getTeamMap().get(ID)) {

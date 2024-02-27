@@ -24,11 +24,12 @@ public class MainFrame
 				"0[]0[]10[]0"
 			);
 
-
+		this.getContentPane().setBackground(new Color(210, 210, 210));
 
 		setLayout(migLayout);
 
 		setExtendedState(JFrame.MAXIMIZED_VERT);
+
 	}
 
 	public static MainFrame getMainFrameInstance() {

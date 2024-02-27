@@ -61,6 +61,8 @@ public class CompetitionEditionFilterPanel
 	private final JComboBox<String> nationComboBox;
 	private final JComboBox<String> competitionComboBox;
 
+	private final JLabel competitionLabel;
+	private final JLabel seasonLabel;
 
 	private final Vector<String> continentVector = new Vector<>();
 	private final Vector<String> nationVector = new Vector<>();
@@ -142,7 +144,7 @@ public class CompetitionEditionFilterPanel
 
 
 
-		string = GuiConfiguration.getMessage("stepFilter");
+		string = GuiConfiguration.getMessage("competitionEditionFilter");
 		string = string.toUpperCase();
 
 		titleButton = new JButton(string);
@@ -502,6 +504,7 @@ public class CompetitionEditionFilterPanel
 
 		worldRadioButton = new JRadioButton(string);
 		worldRadioButton.setEnabled(false);
+		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		countryPanel.add(worldRadioButton, "wrap");
 
@@ -521,6 +524,7 @@ public class CompetitionEditionFilterPanel
 					countryType = Country.COUNTRY_TYPE.WORLD.toString();
 
 					competitionComboBox.setEnabled(true);
+					competitionLabel.setEnabled(true);
 				}
 				else {
 					resetFromCountry();
@@ -542,6 +546,7 @@ public class CompetitionEditionFilterPanel
 
 		continentRadioButton = new JRadioButton(string);
 		continentRadioButton.setEnabled(false);
+		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		countryPanel.add(continentRadioButton);
 
@@ -625,6 +630,7 @@ public class CompetitionEditionFilterPanel
 
 				if (continentRadioButton.isSelected()) {
 					competitionComboBox.setEnabled(true);
+					competitionLabel.setEnabled(true);
 				}
 				else if (nationRadioButton.isSelected()) {
 
@@ -700,6 +706,7 @@ public class CompetitionEditionFilterPanel
 
 		nationComboBox = new JComboBox<>();
 		nationComboBox.setEnabled(false);
+		nationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		nationComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -740,6 +747,7 @@ public class CompetitionEditionFilterPanel
 				nationID = nationMap.get((String) nationComboBox.getSelectedItem());
 
 				competitionComboBox.setEnabled(true);
+				competitionLabel.setEnabled(true);
 			}
 
 			@Override
@@ -864,9 +872,10 @@ public class CompetitionEditionFilterPanel
 		string = GuiConfiguration.getMessage("competition");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		competitionLabel = new JLabel(string, SwingConstants.LEADING);
+		competitionLabel.setEnabled(false);
 
-		competitionPanel.add(label);
+		competitionPanel.add(competitionLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -879,6 +888,7 @@ public class CompetitionEditionFilterPanel
 
 		competitionComboBox = new JComboBox<>();
 		competitionComboBox.setEnabled(false);
+		competitionComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		competitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -925,6 +935,7 @@ public class CompetitionEditionFilterPanel
 
 				if (competitionID != null) {
 					seasonComboBox.setEnabled(true);
+					seasonLabel.setEnabled(true);
 				}
 			}
 
@@ -1032,9 +1043,10 @@ public class CompetitionEditionFilterPanel
 		string = GuiConfiguration.getMessage("season");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		seasonLabel = new JLabel(string, SwingConstants.LEADING);
+		seasonLabel.setEnabled(false);
 
-		seasonPanel.add(label);
+		seasonPanel.add(seasonLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1047,6 +1059,7 @@ public class CompetitionEditionFilterPanel
 
 		seasonComboBox = new JComboBox<>();
 		seasonComboBox.setEnabled(false);
+		seasonComboBox.setCursor(GuiConfiguration.getButtonCursor());
 
 		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
@@ -1070,11 +1083,12 @@ public class CompetitionEditionFilterPanel
 					seasonComboBox.removeAllItems();
 				}
 
-				fillSeasonComboBox
+				GuiConfiguration.fillSeasonComboBox
 					(
 						seasonComboBox,
 						seasonVector,
 						seasonMap,
+						teamType,
 						competitionID,
 						false
 					);
@@ -1089,6 +1103,10 @@ public class CompetitionEditionFilterPanel
 				}
 				else {
 					seasonStartYear = (String) seasonComboBox.getSelectedItem();
+				}
+
+				if (seasonStartYear != null) {
+					searchButton.setEnabled(true);
 				}
 			}
 
@@ -1131,6 +1149,7 @@ public class CompetitionEditionFilterPanel
 
 		searchButton = new JButton(string);
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
+		searchButton.setEnabled(false);
 
 		competitionEditionPanel.add(searchButton, "span 2");
 
@@ -1146,8 +1165,15 @@ public class CompetitionEditionFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				String string = GuiConfiguration.getMessage("playerStatistics");
+				string += " ";
+				string += GuiConfiguration.getMessage("inF");
+				string += " ";
+				string += (String) competitionComboBox.getSelectedItem();
+				string += " ";
+				string += (String) seasonComboBox.getSelectedItem();
 
-				//fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "competitionEditionPlayerStatistics");
+				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, string, Boolean.FALSE);
 
 				revalidate();
 			}
@@ -1252,6 +1278,7 @@ public class CompetitionEditionFilterPanel
 	public void resetFromCountry()
 	{
 		competitionComboBox.setEnabled(false);
+		competitionLabel.setEnabled(false);
 
 		competitionComboBox.setSelectedIndex(-1);
 
@@ -1261,6 +1288,8 @@ public class CompetitionEditionFilterPanel
 	}
 	public void resetFromCompetition() {
 		seasonComboBox.setEnabled(false);
+		searchButton.setEnabled(false);
+		seasonLabel.setEnabled(false);
 
 		seasonComboBox.setSelectedIndex(-1);
 
@@ -1294,45 +1323,26 @@ public class CompetitionEditionFilterPanel
 
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
-
-	public void fillSeasonComboBox(JComboBox<String> comboBox,
-								   Vector<String> vector,
-								   Map<String, String> map,
-								   String competitionID,
-								   Boolean selectAll)
+	public void fillPlayerTable(Vector<Vector<String>> tableData,
+								Vector<String> tableColumnName,
+								JTable table,
+								String tableName,
+								Boolean internationalization)
 	{
-		String season;
+		tableData.clear();
+		tableColumnName.clear();
 
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
+		Controller.getInstance().setStatisticCompetitionEditionTable
+			(
+				tableColumnName,
+				tableData,
+				seasonStartYear,
+				competitionID
+			);
 
-		Controller.getInstance().setCompetitionEditionComboBox(vector, competitionID);
+		table.setModel(new TableModel(tableData, tableColumnName));
+		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			for (String string : vector) {
-
-				Integer year = Integer.valueOf(string);
-
-				season = year.toString();
-				season += " - ";
-
-				year = (++year)%100;
-
-				season += year.toString();
-
-				comboBox.addItem(season);
-
-				map.put(season, string);
-			}
-		}
-		else {
-			comboBox.setModel(new DefaultComboBoxModel<>(vector));
-		}
-	}
-
-
-	public void fillPlayerTable()
-	{
-		//TODO
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
 	}
 }

@@ -588,7 +588,8 @@ public class SearchConfederationPanel
 						confederationTableData,
 						confederationTableColumnName,
 						confederationTable,
-						"confederations"
+						"confederations",
+						Boolean.TRUE
 					);
 
 				confederationTablePanel.revalidate();
@@ -698,7 +699,11 @@ public class SearchConfederationPanel
 	}
 
 
-	public void fillConfederationTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
+	public void fillConfederationTable(Vector<Vector<String>> tableData,
+									   Vector<String> tableColumnName,
+									   JTable table,
+									   String tableName,
+									   Boolean internationalization)
 	{
 		tableColumnName.clear();
 		tableData.clear();
@@ -714,7 +719,7 @@ public class SearchConfederationPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size(), internationalization);
 	}
 
 }

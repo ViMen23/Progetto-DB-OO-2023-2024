@@ -5,33 +5,41 @@ import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ViewTeamPanel
 				extends JPanel
 {
 
-	protected JPanel informationPanel;
-	protected JPanel seasonPanel;
-	protected JPanel tablePanel;
-	protected JPanel squadPanel;
-	protected JPanel participationPanel;
-	protected JPanel awardPanel;
-	protected JPanel trophyPanel;
-	protected JPanel prizePanel;
-	protected JTable squadTable;
-	protected JTable participationTable;
-	protected JTable trophyTable;
-	protected JTable prizeTable;
-	protected JScrollPane scrollPane;
-
-
-	protected JLabel label;
-	protected JComboBox<String> seasonComboBox;
-	protected JButton showButton;
-	protected JButton goButton;
-
 	private final Color panelColor = Color.white;
+
+	private final JPanel informationPanel;
+	private final JPanel seasonPanel;
+	private final JPanel tablePanel;
+	private final JPanel squadPanel;
+	private final JPanel participationPanel;
+	private final JPanel awardPanel;
+
+	private final JTable squadTable;
+	private final JTable participationTable;
+	private final JTable trophyTable;
+	private final JTable prizeTable;
+
+
+	private final JComboBox<String> seasonComboBox;
+
+	private final JButton showButton;
+
+	private final Map<String, String> seasonMap = new HashMap<>();
+
+
+	private JScrollPane scrollPane;
+	private JLabel label;
+
+	private String teamType;
 
 
 	public ViewTeamPanel()
@@ -42,9 +50,9 @@ public class ViewTeamPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy",
-				"0[grow, fill]0",
-				"20[]10[]10[]10"
+				"debug, flowy, fill",
+				"0[fill]10",
+				"0[]20[]20[]10"
 			);
 
 		setLayout(migLayout);
@@ -60,7 +68,7 @@ public class ViewTeamPanel
 			(
 				"debug, wrap 2",
 				"10[grow, fill]40[grow, fill]10",
-				"10[]0[]10[]10[]10[]10[]10"
+				"10[]10[]10[]10[]10[]10[]10[]10"
 			);
 
 		informationPanel = new JPanel(migLayout);
@@ -68,6 +76,30 @@ public class ViewTeamPanel
 
 		add(informationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("teamInformation");
+		string = string.toUpperCase();
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		informationPanel.add(label, "span 2");
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 
@@ -265,7 +297,7 @@ public class ViewTeamPanel
 
 
 		string = GuiConfiguration.getMessage("season");
-		string = StringUtils.capitalize(string);
+		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
 
@@ -284,9 +316,21 @@ public class ViewTeamPanel
 
 		seasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
+		GuiConfiguration.fillSeasonComboBox(seasonComboBox, GuiConfiguration.getMinYear(), teamType, seasonMap);
+
 		seasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
 		seasonPanel.add(seasonComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -315,9 +359,10 @@ public class ViewTeamPanel
 
 		migLayout = new MigLayout
 			(
-				"debug, flowx, fill",
-				"0[grow,fill]10[grow,fill]10",
-				"0[grow, fill]0"
+				"debug, wrap 2",
+				"0[60%, fill]3%[37%, fill]0",
+				"0[]20[]10"
+
 			);
 
 		tablePanel = new JPanel(migLayout);
@@ -325,7 +370,6 @@ public class ViewTeamPanel
 
 		add(tablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
-
 
 
 		/*--------------------------------------------------------------------------------------------------------
@@ -337,34 +381,40 @@ public class ViewTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"[grow, fill]",
-				"10[]0[]10[]10"
+				"0[fill]0",
+				"0[]10[]10"
 			);
 
 		squadPanel = new JPanel(migLayout);
 		squadPanel.setBackground(panelColor);
 
-		tablePanel.add(squadPanel);
+		tablePanel.add(squadPanel, "spany");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TITOLO TABELLA ROSA
+		 * TABELLA ROSA
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
 		string = GuiConfiguration.getMessage("squad");
 		string += " ";
-		string += "SCC Napoli"; //TODO REPLACE WITH VALUE GIVEN;
-		string += " ";
+		string += "SCC Napoli "; //TODO REPLACE WITH GIVEN VALUE
 		string += GuiConfiguration.getMessage("season");
 		string += " ";
 		string += (String) seasonComboBox.getSelectedItem();
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
 		label.setFont(GuiConfiguration.getOutputBoldFont());
 
 		squadPanel.add(label);
@@ -377,7 +427,7 @@ public class ViewTeamPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
-		squadTable = new JTable();
+		squadTable = new JTable(new DefaultTableModel(30, 5));
 
 		squadTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
@@ -413,14 +463,14 @@ public class ViewTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"0[grow, fill]0",
-				"10[]0[]10[]10"
+				"0[fill]0",
+				"0[]10[]10"
 			);
 
 		participationPanel = new JPanel(migLayout);
 		participationPanel.setBackground(panelColor);
 
-		tablePanel.add(participationPanel, "split 2, flowy");
+		tablePanel.add(participationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -428,6 +478,7 @@ public class ViewTeamPanel
 		/*--------------------------------------------------------------------------------------------------------
 		 * LABEL TITOLO TABELLA PARTECIPAZIONI
 		 *------------------------------------------------------------------------------------------------------*/
+
 
 
 		string = GuiConfiguration.getMessage("participations");
@@ -439,6 +490,13 @@ public class ViewTeamPanel
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
 		label.setFont(GuiConfiguration.getOutputBoldFont());
 
 		participationPanel.add(label);
@@ -452,7 +510,7 @@ public class ViewTeamPanel
 
 
 
-		participationTable = new JTable();
+		participationTable = new JTable(new DefaultTableModel(10, 5));
 
 		participationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
@@ -488,12 +546,15 @@ public class ViewTeamPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowy, fill",
-				"[fill]",
-				"10[]0[]10[]10"
+				"0[fill]0",
+				"0[]10[]20[]10[]0[]10"
 			);
 
-		trophyPanel = new JPanel(migLayout);
-		trophyPanel.setBackground(panelColor);
+		awardPanel = new JPanel(migLayout);
+		awardPanel.setBackground(panelColor);
+
+
+		tablePanel.add(awardPanel, "skip 1");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -513,9 +574,16 @@ public class ViewTeamPanel
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
 		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		trophyPanel.add(label);
+		awardPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -526,7 +594,7 @@ public class ViewTeamPanel
 
 
 
-		trophyTable = new JTable();
+		trophyTable = new JTable(new DefaultTableModel(5, 5));
 
 		trophyTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
@@ -548,26 +616,7 @@ public class ViewTeamPanel
 
 		scrollPane = new JScrollPane(trophyTable);
 
-		trophyPanel.add(scrollPane);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA PREMI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		migLayout = new MigLayout
-			(
-				"debug, flowy, fill",
-				"0[fill]0",
-				"10[]0[]10[]10"
-			);
-
-		prizePanel = new JPanel(migLayout);
-		prizePanel.setBackground(panelColor);
+		awardPanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -587,9 +636,16 @@ public class ViewTeamPanel
 		string = string.toUpperCase();
 
 		label = new JLabel(string, SwingConstants.LEADING);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
 		label.setFont(GuiConfiguration.getOutputBoldFont());
 
-		prizePanel.add(label);
+		awardPanel.add(label);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -600,7 +656,7 @@ public class ViewTeamPanel
 
 
 
-		prizeTable = new JTable();
+		prizeTable = new JTable(new DefaultTableModel(5,5));
 
 		prizeTable.setRowHeight(GuiConfiguration.getTableRowHeight());
 		prizeTable.setPreferredScrollableViewportSize(prizeTable.getPreferredSize());
@@ -622,28 +678,7 @@ public class ViewTeamPanel
 
 		scrollPane = new JScrollPane(prizeTable);
 
-		prizePanel.add(scrollPane);
+		awardPanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PANEL TABELLA AWARD
-		 *------------------------------------------------------------------------------------------------------*/
-
-		migLayout = new MigLayout
-			(
-				"debug, flowy, fill",
-				"0[fill]0",
-				"0[]0[]0[]0"
-			);
-
-		awardPanel = new JPanel(migLayout);
-		awardPanel.setBackground(panelColor);
-
-		tablePanel.add(awardPanel);
-
-		awardPanel.add(trophyPanel);
-		awardPanel.add(prizePanel);
 	}
 }

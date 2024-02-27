@@ -1484,7 +1484,7 @@ public class SearchPlayerPanel
 			{
 				setRolePlayer();
 
-				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players");
+				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players", Boolean.TRUE);
 
 				revalidate();
 			}
@@ -1625,7 +1625,8 @@ public class SearchPlayerPanel
 	public void fillPlayerTable(Vector<Vector<String>> tableData,
 								Vector<String> tableColumnName,
 								JTable table,
-								String tableName)
+								String tableName,
+								Boolean internationalization)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -1649,6 +1650,6 @@ public class SearchPlayerPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
 	}
 }

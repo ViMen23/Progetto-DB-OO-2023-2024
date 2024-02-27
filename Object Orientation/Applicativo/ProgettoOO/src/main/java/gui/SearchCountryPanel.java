@@ -580,7 +580,14 @@ public class SearchCountryPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					fillCountryTable(countryTableData, countryTableColumnName, countryTable, "countries");
+					fillCountryTable
+						(
+							countryTableData,
+							countryTableColumnName,
+							countryTable,
+							"countries",
+							Boolean.TRUE
+						);
 
 					countryTablePanel.revalidate();
 				}
@@ -669,7 +676,11 @@ public class SearchCountryPanel
 	}
 
 
-	public void fillCountryTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName, JTable table, String tableName)
+	public void fillCountryTable(Vector<Vector<String>> tableData,
+								 Vector<String> tableColumnName,
+								 JTable table,
+								 String tableName,
+								 Boolean internationalization)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -687,6 +698,6 @@ public class SearchCountryPanel
 		table.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
 
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size());
+		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size(), internationalization);
 	}
 }

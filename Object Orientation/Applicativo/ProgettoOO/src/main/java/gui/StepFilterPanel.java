@@ -54,6 +54,12 @@ public class StepFilterPanel
 	private final JComboBox<String> teamComboBox;
 	private final JComboBox<String> playerComboBox;
 
+
+	private final JLabel competitionLabel;
+	private final JLabel seasonLabel;
+	private final JLabel teamLabel;
+	private final JLabel playerLabel;
+
 	private final Vector<String> continentVector = new Vector<>();
 	private final Vector<String> nationVector = new Vector<>();
 	private final Vector<String> competitionVector = new Vector<>();
@@ -486,6 +492,7 @@ public class StepFilterPanel
 					countryType = Country.COUNTRY_TYPE.WORLD.toString();
 
 					competitionComboBox.setEnabled(true);
+					competitionLabel.setEnabled(true);
 				}
 				else {
 					resetFromCountry();
@@ -586,10 +593,13 @@ public class StepFilterPanel
 					resetFromCountry();
 				}
 
-				continentID = continentMap.get((String) continentComboBox.getSelectedItem());
+				String tmp = (String) continentComboBox.getSelectedItem();
+
+				continentID = continentMap.get(tmp);
 
 				if (continentRadioButton.isSelected()) {
 					competitionComboBox.setEnabled(true);
+					competitionLabel.setEnabled(true);
 				}
 				else if (nationRadioButton.isSelected()) {
 
@@ -599,6 +609,9 @@ public class StepFilterPanel
 
 					nationID = null;
 				}
+
+				continentComboBox.removeAllItems();
+				continentComboBox.addItem(tmp);
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
@@ -705,6 +718,7 @@ public class StepFilterPanel
 				nationID = nationMap.get((String) nationComboBox.getSelectedItem());
 
 				competitionComboBox.setEnabled(true);
+				competitionLabel.setEnabled(true);
 			}
 
 			@Override
@@ -829,9 +843,10 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("competition");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		competitionLabel = new JLabel(string, SwingConstants.LEADING);
+		competitionLabel.setEnabled(false);
 
-		competitionPanel.add(label);
+		competitionPanel.add(competitionLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -890,6 +905,7 @@ public class StepFilterPanel
 
 				if (competitionID != null) {
 					seasonComboBox.setEnabled(true);
+					seasonLabel.setEnabled(true);
 				}
 			}
 
@@ -997,9 +1013,10 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("season");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		seasonLabel = new JLabel(string, SwingConstants.LEADING);
+		seasonLabel.setEnabled(false);
 
-		seasonPanel.add(label);
+		seasonPanel.add(seasonLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1035,11 +1052,12 @@ public class StepFilterPanel
 					seasonComboBox.removeAllItems();
 				}
 
-				fillSeasonComboBox
+				GuiConfiguration.fillSeasonComboBox
 					(
 						seasonComboBox,
 						seasonVector,
 						seasonMap,
+						teamType,
 						competitionID,
 						false
 					);
@@ -1061,6 +1079,7 @@ public class StepFilterPanel
 
 				if (seasonStartYear != null) {
 					teamComboBox.setEnabled(true);
+					teamLabel.setEnabled(true);
 				}
 			}
 
@@ -1168,9 +1187,10 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("team");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		teamLabel = new JLabel(string, SwingConstants.LEADING);
+		teamLabel.setEnabled(false);
 
-		teamPanel.add(label);
+		teamPanel.add(teamLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1219,6 +1239,7 @@ public class StepFilterPanel
 
 					searchButton.setEnabled(true);
 					playerComboBox.setEnabled(true);
+					playerLabel.setEnabled(true);
 				}
 			}
 
@@ -1326,9 +1347,10 @@ public class StepFilterPanel
 		string = GuiConfiguration.getMessage("player");
 		string = StringUtils.capitalize(string);
 
-		label = new JLabel(string, SwingConstants.LEADING);
+		playerLabel = new JLabel(string, SwingConstants.LEADING);
+		playerLabel.setEnabled(false);
 
-		playerPanel.add(label);
+		playerPanel.add(playerLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1415,7 +1437,7 @@ public class StepFilterPanel
 
 		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		stepFilterPanel.add(searchButton, "sgx panel_first_column");
+		stepFilterPanel.add(searchButton, "span 2");
 
 
 
@@ -1463,40 +1485,7 @@ public class StepFilterPanel
 		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
-	public void fillSeasonComboBox(JComboBox<String> comboBox,
-								   Vector<String> vector,
-								   Map<String, String> map,
-								   String competitionID,
-								   Boolean selectAll)
-	{
-		String season;
 
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
-		Controller.getInstance().setCompetitionEditionComboBox(vector, competitionID);
-
-
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			for (String string : vector) {
-
-				Integer year = Integer.valueOf(string);
-
-				season = year.toString();
-				season += " - ";
-
-				year = (++year)%100;
-
-				season += year.toString();
-
-				comboBox.addItem(season);
-
-				map.put(season, string);
-			}
-		}
-		else {
-			comboBox.setModel(new DefaultComboBoxModel<>(vector));
-		}
-	}
 	public void fillTeamComboBox(JComboBox<String> comboBox,
 								   Vector<String> vector,
 								   Map<String, String> map,
@@ -1527,10 +1516,6 @@ public class StepFilterPanel
 
 	public void resetFromTeamType()
 	{
-		worldRadioButton.setEnabled(false);
-		continentRadioButton.setEnabled(false);
-		nationRadioButton.setEnabled(false);
-
 		countryTypeButtonGroup.clearSelection();
 
 		countryType = null;
@@ -1541,6 +1526,7 @@ public class StepFilterPanel
 	public void resetFromCountry()
 	{
 		competitionComboBox.setEnabled(false);
+		competitionLabel.setEnabled(false);
 
 		competitionComboBox.setSelectedIndex(-1);
 
@@ -1551,6 +1537,7 @@ public class StepFilterPanel
 	public void resetFromCompetition()
 	{
 		seasonComboBox.setEnabled(false);
+		seasonLabel.setEnabled(false);
 
 		seasonComboBox.setSelectedIndex(-1);
 
@@ -1562,6 +1549,7 @@ public class StepFilterPanel
 	public void resetFromSeason()
 	{
 		teamComboBox.setEnabled(false);
+		teamLabel.setEnabled(false);
 
 		teamComboBox.setSelectedIndex(-1);
 
@@ -1574,6 +1562,7 @@ public class StepFilterPanel
 	{
 		searchButton.setEnabled(false);
 		playerComboBox.setEnabled(false);
+		playerLabel.setEnabled(false);
 
 		playerComboBox.setSelectedIndex(-1);
 

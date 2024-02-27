@@ -50,6 +50,7 @@ public class TopPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/world2.png");
 
 		localeButton = new JButton(imageIcon);
+		localeButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		localeButton.addActionListener(new ActionListener() {
 			@Override
@@ -85,6 +86,7 @@ public class TopPanel
 		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
 
 		loginButton = new JButton(string, imageIcon);
+		loginButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		loginButton.addActionListener(new ActionListener() {
 			@Override
