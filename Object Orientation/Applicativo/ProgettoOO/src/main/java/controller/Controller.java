@@ -2755,7 +2755,7 @@ public class Controller
 			key += "_";
 			key += militancyType;
 
-			player.getNationalCareer().put(key, teamMap.get(teamID));
+			player.getClubCareer().put(key, teamMap.get(teamID));
 		}
 	}
 
