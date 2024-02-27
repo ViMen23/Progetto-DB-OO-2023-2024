@@ -2004,6 +2004,114 @@ public class Controller
 			playerTagTableData.add(tagVector);
 		}
 	}
+
+
+	public void setPlayerCareerView(Map<String, String> infoPlayerMap,
+																	Vector<String> playerClubCareerTableColumnName,
+																	Vector<Vector<String>> playerClubCareerTableData,
+																	Vector<String> playerNationalCareerTableColumnName,
+																	Vector<Vector<String>> playerNationalCareerTableData,
+																	String playerID)
+	{
+		fetchPlayer(playerID);
+		fetchClubMilitancy(playerID);
+		fetchNationality(playerID);
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+
+		String string;
+
+		// informazioni calciatori
+		string = GuiConfiguration.getMessage("player");
+		string = string.toUpperCase();
+		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
+
+		string = GuiConfiguration.getMessage("dob");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getDob());
+
+		string = GuiConfiguration.getMessage("bornCountry");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getCountry().getName());
+
+		string = GuiConfiguration.getMessage("preferredFoot");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getFoot());
+
+		string = GuiConfiguration.getMessage("mainPosition");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getPosition().getName());
+
+		string = GuiConfiguration.getMessage("role");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getRole());
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = StringUtils.capitalize(string);
+		if (null == player.getRetiredDate()) {
+			infoPlayerMap.put(string, "");
+		} else {
+			infoPlayerMap.put(string, player.getRetiredDate());
+		}
+
+
+		// tabella carriera club
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		for (String key : player.getClubCareer().keySet()) {
+			Vector<String> clubCareerVector = new Vector<>();
+
+			String[] keyPart = key.split("_");
+
+			String season = keyPart[0];
+			season += "/";
+			season += ((Integer) (Integer.valueOf(season) + Integer.valueOf(1))).toString();
+
+			clubCareerVector.add(season);
+
+			String type = keyPart[1];
+
+			clubCareerVector.add(type);
+
+			clubCareerVector.add(player.getClubCareer().get(key).getLongName());
+			clubCareerVector.add(player.getClubCareer().get(key).getCountry().getName());
+
+			playerClubCareerTableData.add(clubCareerVector);
+		}
+
+		// tabella carriera nazionale
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerNationalCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerNationalCareerTableColumnName.add(string);
+
+
+		for (String key : player.getNationalCareer().keySet()) {
+			Vector<String> nationalCareerVector = new Vector<>();
+
+			nationalCareerVector.add(key);
+			nationalCareerVector.add(player.getNationalCareer().get(key).getLongName());
+
+			playerNationalCareerTableData.add(nationalCareerVector);
+		}
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
