@@ -26,10 +26,6 @@ public class SearchCompetitionPanel
 				extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
-
 
 	private final JPanel titlePanel;
 	private final JPanel competitionPanel;
@@ -150,7 +146,7 @@ public class SearchCompetitionPanel
 		titleButton = new JButton(string);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -169,16 +165,13 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 
-				if (competitionPanel.isShowing()){
-					remove(competitionPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else{
-					add(competitionPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						competitionPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -191,7 +184,7 @@ public class SearchCompetitionPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -1219,6 +1212,16 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
+	public JPanel getRootPanel()
+	{
+		return this;
+	}
+
+
 	public void fillCompetitionTable(Vector<Vector<String>> tableData,
 									 Vector<String> tableColumnName,
 									 JTable table,
@@ -1243,6 +1246,8 @@ public class SearchCompetitionPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
 	}
+
+
 }

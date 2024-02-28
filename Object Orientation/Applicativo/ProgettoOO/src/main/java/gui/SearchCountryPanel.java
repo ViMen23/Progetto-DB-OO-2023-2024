@@ -12,18 +12,12 @@ import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class SearchCountryPanel
 				extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
-
 	private final JButton titleButton;
 	private final JButton resetButton;
 	private final JButton searchButton;
@@ -36,7 +30,7 @@ public class SearchCountryPanel
 
 	private final JLabel chooseCountryTypeLabel;
 	private final JLabel chooseCountrySuperLabel;
-	private final JLabel titleTable;
+	private final JLabel titleTableLabel;
 
 	private final ButtonGroup buttonGroup;
 
@@ -45,12 +39,14 @@ public class SearchCountryPanel
 	private final JRadioButton nationRadioButton;
 
 	private final JComboBox<String> continentComboBox;
+
 	private final Vector<String> countryNameVector = new Vector<>();
 	private final Map<String, String> countryNameMap = new HashMap<>();
 
 	private final JTable countryTable;
 	private final Vector<String> countryTableColumnName = new Vector<>();
 	private final Vector<Vector<String>> countryTableData = new Vector<>();
+
 	private final JScrollPane scrollPane;
 
 	private JPanel infoPanel;
@@ -121,7 +117,7 @@ public class SearchCountryPanel
 		titleButton = new JButton(string);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -139,16 +135,13 @@ public class SearchCountryPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				if (countryPanel.isShowing()) {
-					remove(countryPanel);
-					titleButton.setIcon(minimizeIcon);
-				} else {
-					add(countryPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						countryPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -161,7 +154,7 @@ public class SearchCountryPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -178,14 +171,13 @@ public class SearchCountryPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
-
-				MainFrame.getMainFrameInstance().add(searchCountryPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchCountryPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -375,8 +367,6 @@ public class SearchCountryPanel
 				if (nationRadioButton.isSelected()) {
 
 					continentComboBox.setEnabled(true);
-
-					continentComboBox.firePopupMenuWillBecomeVisible();
 
 					countryType = Country.COUNTRY_TYPE.NATION.toString();
 				}
@@ -592,16 +582,16 @@ public class SearchCountryPanel
 				@Override
 				public void actionPerformed(ActionEvent e)
 				{
-					fillCountryTable
+					fillCountryTable();
+
+					GuiConfiguration.setTitleTable
 						(
-							countryTableData,
-							countryTableColumnName,
-							countryTable,
-							"countries",
-							Boolean.TRUE
+							titleTableLabel,
+							GuiConfiguration.getMessage("countries"),
+							countryTableData.size()
 						);
 
-					countryTablePanel.revalidate();
+					getRootPanel().revalidate();
 				}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -642,15 +632,15 @@ public class SearchCountryPanel
 		string += GuiConfiguration.getMessage("performed");
 		string = string.toUpperCase();
 
-		titleTable = new JLabel(string);
+		titleTableLabel = new JLabel(string);
 
-		titleTable.setOpaque(true);
-		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleTable.setForeground(Color.white);
+		titleTableLabel.setOpaque(true);
+		titleTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTableLabel.setForeground(Color.white);
 
-		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		countryTablePanel.add(titleTable);
+		countryTablePanel.add(titleTableLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -692,33 +682,13 @@ public class SearchCountryPanel
 			}
 		});
 
-		countryTable.addMouseListener(new MouseListener() {
+		countryTable.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
 				if (e.getClickCount() >= 1) {
 					printTableIndex();
 				}
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-
 			}
 		});
 
@@ -740,11 +710,10 @@ public class SearchCountryPanel
 	}
 
 
-	public void fillCountryTable(Vector<Vector<String>> tableData,
-								 Vector<String> tableColumnName,
-								 JTable table,
-								 String tableName,
-								 Boolean internationalization)
+	public void getCountryTableData(Vector<String> tableColumnName,
+									Vector<Vector<String>> tableData,
+									String countryType,
+									String superCountryID)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -756,14 +725,13 @@ public class SearchCountryPanel
 				countryType,
 				superCountryID
 			);
+	}
 
+	public void fillCountryTable()
+	{
+		getCountryTableData(countryTableColumnName, countryTableData, countryType, superCountryID);
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
-		table.getColumnModel().getColumn(1).setCellRenderer(new TableRenderer());
-
-
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size(), internationalization);
+		GuiConfiguration.fillTable(countryTable, countryTableData, countryTableColumnName);
 	}
 
 
@@ -792,4 +760,7 @@ public class SearchCountryPanel
 	{
 		System.out.println("Row: " + getRowIndex() + " / " + "Column: " + getColumnIndex());
 	}
+
+
+	public JPanel getRootPanel() { return this; }
 }

@@ -11,7 +11,7 @@ public class MainFrame
 	private static MainFrame mainFrameInstance = null;
 	private MainFrame()
 	{
-		this.setTitle("NON AVRO' ALCUN DIO AL DI FUORI DI GIOELE");
+		this.setTitle("NON AVRO' ALCUN DIO AL DI FUORI DI GIOELE"); //TODO i18n
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 

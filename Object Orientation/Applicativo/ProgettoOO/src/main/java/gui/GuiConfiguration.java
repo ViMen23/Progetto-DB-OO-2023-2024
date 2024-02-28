@@ -30,6 +30,10 @@ public class GuiConfiguration
 	private static final Integer minYear = 1810;
 	private static final Integer minAge = 15;
 	private static final Integer maxAge = 50;
+	private static final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
+	private static final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
+	private static final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
+
 
 	private static ResourceBundle currentResourceBundle;
 
@@ -177,48 +181,6 @@ public class GuiConfiguration
 		//configurazione intestazione tabella
 		UIManager.put("TableHeader.font", outputBoldFont);
 		UIManager.put("TableHeader.textForeground", Color.white);
-	}
-
-
-	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap, Boolean selectAll)
-	{
-		String string;
-
-		dataVector.clear();
-		hashMap.clear();
-
-		if (selectAll) {
-			string = GuiConfiguration.getMessage("select");
-			string += " ";
-			string += GuiConfiguration.getMessage("all");
-			string = StringUtils.capitalize(string);
-
-			dataVector.add(string);
-			hashMap.put(string, null);
-		}
-	}
-
-	public static void setTitleTable(JLabel label,String tableName, int countRows, Boolean internationalization)
-	{
-		String string;
-
-		string = GuiConfiguration.getMessage("results");
-		string += " ";
-
-		if (internationalization) {
-			string += GuiConfiguration.getMessage(tableName);
-		}
-		else {
-			string += tableName;
-		}
-
-		string += " - ";
-		string += countRows;
-		string += " ";
-		string += GuiConfiguration.getMessage("results");
-		string = string.toUpperCase();
-
-		label.setText(string);
 	}
 
 	public static void setLocale(Locale locale)
@@ -373,6 +335,29 @@ public class GuiConfiguration
 	 */
 	public static Integer getMaxAge() { return maxAge; }
 
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getMinimizeIcon
+	 *
+	 * DESC: TODO
+	 */
+	public static ImageIcon getMinimizeIcon() { return minimizeIcon; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getMaximizeIcon
+	 *
+	 * DESC: TODO
+	 */
+	public static ImageIcon getMaximizeIcon() { return maximizeIcon; }
+
+	/**
+	 * TYPE : static method - gui package
+	 * NAME : getResetIcon
+	 *
+	 * DESC: TODO
+	 */
+	public static ImageIcon getResetIcon() { return resetIcon; }
 
 	/**
 	 * TYPE : static method - gui package
@@ -424,6 +409,52 @@ public class GuiConfiguration
 		return null;
 	}
 
+
+	/**
+	 * TODO
+	 * @param dataVector
+	 * @param hashMap
+	 * @param selectAll
+	 */
+	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap, Boolean selectAll)
+	{
+		String string;
+
+		dataVector.clear();
+		hashMap.clear();
+
+		if (selectAll) {
+			string = GuiConfiguration.getMessage("select");
+			string += " ";
+			string += GuiConfiguration.getMessage("all");
+			string = StringUtils.capitalize(string);
+
+			dataVector.add(string);
+			hashMap.put(string, null);
+		}
+	}
+
+	/**
+	 * TODO
+	 * @param label
+	 * @param tableName
+	 * @param countRows
+	 */
+	public static void setTitleTable(JLabel label,String tableName, int countRows)
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage("results");
+		string += " ";
+		string += tableName;
+		string += " - ";
+		string += countRows;
+		string += " ";
+		string += GuiConfiguration.getMessage("results");
+		string = string.toUpperCase();
+
+		label.setText(string);
+	}
 
 	/**
 	 * TYPE : static method - gui package
@@ -529,10 +560,26 @@ public class GuiConfiguration
 			}
 		}
 		else {
-			comboBox.setModel(new DefaultComboBoxModel<>(vector));
+			fillComboBox(comboBox, vector);
 		}
 	}
 
+	/**
+	 *
+	 * @param comboBox
+	 * @param comboBoxDataVector
+	 */
+	public static void fillComboBox(JComboBox<String> comboBox, Vector<String> comboBoxDataVector)
+	{
+		comboBox.setModel(new DefaultComboBoxModel<>(comboBoxDataVector));
+	}
+
+	/**
+	 *
+	 * @param table
+	 * @param tableData
+	 * @param tableColumnName
+	 */
 	public static void fillTable(JTable table, Vector<Vector<String>> tableData, Vector<String> tableColumnName)
 	{
 		table.setModel(new TableModel(tableData, tableColumnName));
@@ -540,7 +587,14 @@ public class GuiConfiguration
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 	}
 
-	public static void switchPanel(Container container, JPanel panelToAdd, Integer index)
+	/**
+	 *
+	 * @param container
+	 * @param panelToAdd
+	 * @param index
+	 * @param constraint
+	 */
+	public static void switchPanel(Container container, JPanel panelToAdd, Integer index, String constraint)
 	{
 		Component component = container.getComponent(index);
 
@@ -548,10 +602,33 @@ public class GuiConfiguration
 
 		container.remove(component);
 
-		container.add(panelToAdd);
+		container.add(panelToAdd, constraint);
 
 		panelToAdd.setVisible(true);
 	}
+
+	/**
+	 *
+	 * @param mainPanel
+	 * @param panelToMinimize
+	 * @param button
+	 * @param constraint
+	 */
+	public static void minimizePanel(JPanel mainPanel, JPanel panelToMinimize, JButton button, String constraint)
+	{
+		if (panelToMinimize.isShowing()) {
+
+			mainPanel.remove(panelToMinimize);
+
+			button.setIcon(minimizeIcon);
+		} else {
+			mainPanel.add(panelToMinimize, constraint);
+			button.setIcon(maximizeIcon);
+		}
+
+		mainPanel.revalidate();
+	}
+
 
 
 }

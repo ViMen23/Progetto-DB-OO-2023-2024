@@ -14,9 +14,9 @@ import java.util.Locale;
 public class ChooseLocalePanel
 				extends JPanel
 {
-	protected JLabel messageLabel;
-	protected JComboBox<String> localeComboBox;
-	protected JButton okButton;
+	private final JLabel messageLabel;
+	private final JComboBox<String> localeComboBox;
+	private final JButton okButton;
 
 	private Locale choosedLocale;
 
@@ -33,10 +33,16 @@ public class ChooseLocalePanel
 						);
 
 		setLayout(migLayout);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI LOCALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = "";
 		string += GuiConfiguration.getMessage("choose");
 		string += " ";
@@ -46,19 +52,36 @@ public class ChooseLocalePanel
 		messageLabel = new JLabel(string);
 
 		add(messageLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
-		localeComboBox = new JComboBox<String>();
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX LOCALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		localeComboBox = new JComboBox<>();
 
 		localeComboBox.addItem("Italiano");
 		localeComboBox.addItem("Inglese");
 		localeComboBox.setSelectedIndex(-1);
 
+		add(localeComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		localeComboBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				String choice = (String) e.getItem();
 
 				switch (choice) {
@@ -71,23 +94,37 @@ public class ChooseLocalePanel
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		add(localeComboBox);
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON CONFERMA
+		 *------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * TODO
-		 */
+
 		string = "";
 		string += GuiConfiguration.getMessage("confirm");
 		string = string.toUpperCase();
 
 		okButton = new JButton(string);
 
+		add(okButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
 				window.dispose();
 
@@ -95,8 +132,7 @@ public class ChooseLocalePanel
 				GuiConfiguration.resetHomeFrame();
 			}
 		});
-
-		add(okButton);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	private void setChoosedLocale(Locale locale)

@@ -21,14 +21,13 @@ import java.awt.event.ItemListener;
 public class AdminLoginPanel
 				extends JPanel
 {
-	protected JLabel usernameLabel;
-	protected JTextField usernameTextField;
-	protected JLabel passwordLabel;
-	protected JPasswordField passwordField;
-	protected JButton okButton;
-	protected JCheckBox showPasswordCheckBox;
+	private final JLabel usernameLabel;
+	private final JTextField usernameTextField;
+	private final JLabel passwordLabel;
+	private final JPasswordField passwordField;
+	private final JButton okButton;
+	private final JCheckBox showPasswordCheckBox;
 
-	protected String string;
 	private Boolean username = false;
 	private Boolean password = false;
 
@@ -45,65 +44,110 @@ public class AdminLoginPanel
 			);
 
 		setLayout(migLayout);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo username: stampa
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL USERNAME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("username");
 		string = string.toUpperCase();
 
 		usernameLabel = new JLabel(string, SwingConstants.CENTER);
 
 		add(usernameLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo username: input
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TEXTFIELD USERNAME
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		usernameTextField = new JTextField(GuiConfiguration.getInputColumn());
-
-		usernameTextField.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				setUsername(Regex.patternUsername.matcher(usernameTextField.getText()).find());
-				tryActiveButton();
-			}
-		});
 
 		add(usernameTextField);
 
 
-		/*
-		 * Campo password: stampa
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+
+		usernameTextField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e)
+			{
+				setUsername(Regex.patternUsername.matcher(usernameTextField.getText()).find());
+				tryActiveButton();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL PASSWORD
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+
 		string = GuiConfiguration.getMessage("password");
 		string = string.toUpperCase();
 
 		passwordLabel = new JLabel(string, SwingConstants.CENTER);
 
 		add(passwordLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo password: input
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PASSWORDFIELD PASSWORD
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
-
-		passwordField.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e) {
-				setPassword(Regex.patternPassword.matcher(new String(passwordField.getPassword())).find());
-				tryActiveButton();
-			}
-		});
 
 		add(passwordField);
 
 
-		/*
-		 * Box mostra password
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		passwordField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e)
+			{
+				setPassword(Regex.patternPassword.matcher(new String(passwordField.getPassword())).find());
+				tryActiveButton();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * CHECKBOX MOSTRA PASSWORD
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("show");
 		string += " ";
 		string += GuiConfiguration.getMessage("password");
@@ -111,9 +155,20 @@ public class AdminLoginPanel
 
 		showPasswordCheckBox = new JCheckBox(string);
 
+		add(showPasswordCheckBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		showPasswordCheckBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				if (ItemEvent.DESELECTED == e.getStateChange()) {
 					passwordField.setEchoChar((char) UIManager.get("PasswordField.echoChar"));
 				} else if (ItemEvent.SELECTED == e.getStateChange()) {
@@ -121,30 +176,44 @@ public class AdminLoginPanel
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(showPasswordCheckBox);
 
-		/*
-		 * Bottone conferma login
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON AVANTI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("next");
 		string = string.toUpperCase();
 
 		okButton = new JButton(string);
 		okButton.setEnabled(false);
 
+		add(okButton, "align trailing");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		okButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				if (Controller.getInstance().isAdmin(usernameTextField.getText(), new String(passwordField.getPassword()))) {
-					System.out.println("Benvenuto");
+					System.out.println("Benvenuto"); //TODO i18n
 				} else {
-					System.out.println("Chi sei?");
+					System.out.println("Chi sei?"); //TODO i18n
 				}
 			}
 		});
-
-		add(okButton, "align trailing");
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 

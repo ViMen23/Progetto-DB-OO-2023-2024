@@ -13,13 +13,16 @@ import java.awt.event.ActionListener;
 public class TopPanel
 				extends JPanel
 {
-	protected JLabel logoLabel;
-	protected JButton localeButton;
-	protected JButton loginButton;
+	private final ImageIcon logoIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
+	private final ImageIcon localeIcon = GuiConfiguration.createImageIcon("images/world2.png");
+	private final ImageIcon loginIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
+
+	private final JLabel logoLabel;
+	private final JButton localeButton;
+	private final JButton loginButton;
 
 	public TopPanel()
 	{
-		ImageIcon imageIcon;
 		String string;
 		MigLayout migLayout;
 
@@ -32,29 +35,46 @@ public class TopPanel
 
 		setLayout(migLayout);
 		setBackground(Color.white);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo logo: stampa
-		 */
-		imageIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
 
-		logoLabel = new JLabel(imageIcon);
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL LOGO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		logoLabel = new JLabel(logoIcon);
 
 		add(logoLabel);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * Campo locale: bottone
-		 */
-		imageIcon = GuiConfiguration.createImageIcon("images/world2.png");
 
-		localeButton = new JButton(imageIcon);
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON LOCALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		localeButton = new JButton(localeIcon);
 		localeButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		add(localeButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		localeButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				String string;
 				string = "";
 				string += GuiConfiguration.getMessage("choose");
@@ -75,22 +95,35 @@ public class TopPanel
 								);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(localeButton);
 
 
-		/*
-		 * Campo login: bottone
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON LOGIN
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
-		imageIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
 
-		loginButton = new JButton(string, imageIcon);
+		loginButton = new JButton(string, loginIcon);
 		loginButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		add(loginButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		loginButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				String string;
 				string = "";
 				string = GuiConfiguration.getMessage("adminLogin");
@@ -109,8 +142,6 @@ public class TopPanel
 								);
 			}
 		});
-
-		add(loginButton);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
-
 }

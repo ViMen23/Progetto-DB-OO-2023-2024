@@ -20,9 +20,6 @@ public class SearchConfederationPanel
 	extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
 	private final JPanel titlePanel;
 	private final JPanel confederationPanel;
@@ -34,8 +31,7 @@ public class SearchConfederationPanel
 	private final JButton resetButton;
 	private final JButton searchButton;
 
-	private JLabel label;
-	private final JLabel titleTable;
+	private final JLabel titleTableLabel;
 
 	private final JRadioButton worldRadioButton;
 	private final JRadioButton continentRadioButton;
@@ -54,6 +50,8 @@ public class SearchConfederationPanel
 	private final JScrollPane scrollPane;
 
 	private JPanel infoPanel;
+
+	private JLabel label;
 
 	private String typeCountry = null;
 	private String superConfederationID = null;
@@ -117,7 +115,7 @@ public class SearchConfederationPanel
 		titleButton = new JButton(string);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -135,17 +133,13 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				if (confederationPanel.isShowing()){
-					remove(confederationPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else {
-					add(confederationPanel,"dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						confederationPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -158,7 +152,7 @@ public class SearchConfederationPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -175,15 +169,13 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
-
-				MainFrame.getMainFrameInstance().add(searchConfederationPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchConfederationPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -373,7 +365,6 @@ public class SearchConfederationPanel
 				if (nationRadioButton.isSelected()) {
 
 					continentConfederationComboBox.setEnabled(true);
-					continentConfederationComboBox.firePopupMenuWillBecomeVisible();
 
 					typeCountry = Country.COUNTRY_TYPE.NATION.toString();
 				}
@@ -515,18 +506,12 @@ public class SearchConfederationPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillConfederationComboBox
-					(
-						continentConfederationComboBox,
-						confederationNameVector,
-						confederationNameMap,
-						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						null
-					);
+				fillConfederationComboBox();
 			}
 
 			@Override
-			public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
 				String selectedString = (String) continentConfederationComboBox.getSelectedItem();
 				superConfederationID = confederationNameMap.get(selectedString);
 
@@ -535,8 +520,7 @@ public class SearchConfederationPanel
 			}
 
 			@Override
-			public void popupMenuCanceled(PopupMenuEvent e) {
-			}
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -589,16 +573,16 @@ public class SearchConfederationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fillConfederationTable
+				fillConfederationTable();
+
+				GuiConfiguration.setTitleTable
 					(
-						confederationTableData,
-						confederationTableColumnName,
-						confederationTable,
-						"confederations",
-						Boolean.TRUE
+						titleTableLabel,
+						GuiConfiguration.getMessage("confederations"),
+						confederationTableData.size()
 					);
 
-				confederationTablePanel.revalidate();
+				getRootPanel().revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -639,15 +623,15 @@ public class SearchConfederationPanel
 		string += GuiConfiguration.getMessage("performed");
 		string = string.toUpperCase();
 
-		titleTable = new JLabel(string);
+		titleTableLabel = new JLabel(string);
 
-		titleTable.setOpaque(true);
-		titleTable.setBackground(GuiConfiguration.getSearchPanelColor());
-		titleTable.setForeground(Color.white);
+		titleTableLabel.setOpaque(true);
+		titleTableLabel.setBackground(GuiConfiguration.getSearchPanelColor());
+		titleTableLabel.setForeground(Color.white);
 
-		titleTable.setBorder(GuiConfiguration.getSearchLabelBorder());
+		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 
-		confederationTablePanel.add(titleTable);
+		confederationTablePanel.add(titleTableLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -684,15 +668,28 @@ public class SearchConfederationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillConfederationComboBox(JComboBox<String> comboBox,
-										  Vector<String> vector,
-										  Map<String, String> map,
-										  String type,
-										  String superConfederationID)
+
+	/**
+	 * TODO
+	 * @return
+	 */
+	public JPanel getRootPanel()
 	{
+		return this;
+	}
 
-		GuiConfiguration.initComboBoxVector(vector, map, true);
-
+	/**
+	 * TODO
+	 * @param vector
+	 * @param map
+	 * @param type
+	 * @param superConfederationID
+	 */
+	public void getConfederationComboBoxData(Vector<String> vector,
+											 Map<String, String> map,
+											 String type,
+											 String superConfederationID)
+	{
 		Controller.getInstance().setConfederationComboBox
 			(
 				vector,
@@ -700,16 +697,19 @@ public class SearchConfederationPanel
 				type,
 				superConfederationID
 			);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
-
-	public void fillConfederationTable(Vector<Vector<String>> tableData,
-									   Vector<String> tableColumnName,
-									   JTable table,
-									   String tableName,
-									   Boolean internationalization)
+	/**
+	 * TODO
+	 * @param tableColumnName
+	 * @param tableData
+	 * @param typeCountry
+	 * @param superConfederationID
+	 */
+	public void getConfederationTableData(Vector<String> tableColumnName,
+										  Vector<Vector<String>> tableData,
+										  String typeCountry,
+										  String superConfederationID)
 	{
 		tableColumnName.clear();
 		tableData.clear();
@@ -722,10 +722,29 @@ public class SearchConfederationPanel
 				superConfederationID
 			);
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	}
 
-		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size(), internationalization);
+	/**
+	 * TODO
+	 */
+	public void fillConfederationComboBox()
+	{
+		GuiConfiguration.initComboBoxVector(confederationNameVector, confederationNameMap, true);
+
+		getConfederationComboBoxData(confederationNameVector, confederationNameMap, typeCountry, superConfederationID);
+
+		GuiConfiguration.fillComboBox(continentConfederationComboBox, confederationNameVector);
+	}
+
+
+	/**
+	 * TODO
+	 */
+	public void fillConfederationTable()
+	{
+		getConfederationTableData(confederationTableColumnName, confederationTableData, typeCountry, superConfederationID);
+
+		GuiConfiguration.fillTable(confederationTable, confederationTableData, confederationTableColumnName);
 	}
 
 }

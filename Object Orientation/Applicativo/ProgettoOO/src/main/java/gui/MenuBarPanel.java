@@ -10,31 +10,34 @@ import java.awt.event.ActionListener;
 public class MenuBarPanel
 				extends  JPanel
 {
-	protected JButton homeButton;
-	protected JMenuBar menuBar;
-	protected JMenu countryMenu;
-	protected JMenuItem generalResearchCountryMenuItem;
-	protected JMenu confederationMenu;
-	protected JMenuItem generalResearchConfederationMenuItem;
-	protected JMenu competitionMenu;
-	protected JMenuItem generalResearchCompetitionMenuItem;
-	protected JMenu teamMenu;
-	protected JMenuItem generalResearchTeamMenuItem;
-	protected JMenu playerMenu;
-	protected JMenuItem generalResearchPlayerMenuItem;
-	protected JMenuItem militancyResearchPlayerMenuItem;
-	protected JMenu statisticMenu;
-	protected JMenuItem researchTotalStatisticMenuItem;
-	protected JMenuItem filterCompetitionEditionStatisticMenuItem;
-	protected JButton filterButton;
-	protected JButton diceButton;
+	private final ImageIcon homeIcon = GuiConfiguration.createImageIcon("images/homy.png");
+	private final ImageIcon filterIcon = GuiConfiguration.createImageIcon("images/filter.png");
+	private final ImageIcon diceIcon = GuiConfiguration.createImageIcon("images/dice.png");
+
+	private final JButton homeButton;
+	private final JMenuBar menuBar;
+	private final JMenu countryMenu;
+	private final JMenuItem generalResearchCountryMenuItem;
+	private final JMenu confederationMenu;
+	private final JMenuItem generalResearchConfederationMenuItem;
+	private final JMenu competitionMenu;
+	private final JMenuItem generalResearchCompetitionMenuItem;
+	private final JMenu teamMenu;
+	private final JMenuItem generalResearchTeamMenuItem;
+	private final JMenu playerMenu;
+	private final JMenuItem generalResearchPlayerMenuItem;
+	private final JMenuItem militancyResearchPlayerMenuItem;
+	private final JMenu statisticMenu;
+	private final JMenuItem researchTotalStatisticMenuItem;
+	private final JMenuItem filterCompetitionEditionStatisticMenuItem;
+	private final JButton filterButton;
+	private final JButton diceButton;
 
 
 
 	public MenuBarPanel()
 	{
 		String string;
-		ImageIcon imageIcon;
 		MigLayout migLayout;
 
 		migLayout = new MigLayout
@@ -46,15 +49,30 @@ public class MenuBarPanel
 
 		setLayout(migLayout);
 		setBackground(Color.white);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * TODO
-		 */
-		imageIcon = GuiConfiguration.createImageIcon("images/homy.png");
 
-		homeButton = new JButton(imageIcon);
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON HOMEPAGE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		homeButton = new JButton(homeIcon);
 		homeButton.setCursor(GuiConfiguration.getButtonCursor());
+
+
+		add(homeButton);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON HOMEPAGE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		homeButton.addActionListener(new ActionListener() {
 			@Override
@@ -62,13 +80,16 @@ public class MenuBarPanel
 				GuiConfiguration.resetHomeFrame();
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(homeButton);
 
 
-		/*
-		 * TODO
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUBAR
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		menuBar = new JMenuBar();
 
 		migLayout = new MigLayout
@@ -81,11 +102,16 @@ public class MenuBarPanel
 		menuBar.setLayout(migLayout);
 
 		add(menuBar);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU PAESI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("countries");
 		string = string.toUpperCase();
 
@@ -102,38 +128,54 @@ public class MenuBarPanel
 		countryMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(countryMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
 		generalResearchCountryMenuItem = new JMenuItem(string);
 
+		countryMenu.getPopupMenu().add(generalResearchCountryMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		generalResearchCountryMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchCountryPanel searchCountryPanel = new SearchCountryPanel();
-
-				MainFrame.getMainFrameInstance().add(searchCountryPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchCountryPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		countryMenu.getPopupMenu().add(generalResearchCountryMenuItem);
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU CONFEDERAZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("confederations");
 		string = string.toUpperCase();
 
@@ -150,36 +192,54 @@ public class MenuBarPanel
 		confederationMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(confederationMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
 		generalResearchConfederationMenuItem = new JMenuItem(string);
 
+		confederationMenu.getPopupMenu().add(generalResearchConfederationMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		generalResearchConfederationMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchConfederationPanel searchConfederationPanel = new SearchConfederationPanel();
-
-				MainFrame.getMainFrameInstance().add(searchConfederationPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchConfederationPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		confederationMenu.getPopupMenu().add(generalResearchConfederationMenuItem);
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU COMPETIZIONI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("competitions");
 		string = string.toUpperCase();
 
@@ -196,37 +256,54 @@ public class MenuBarPanel
 		competitionMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(competitionMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
 		generalResearchCompetitionMenuItem = new JMenuItem(string);
 
+		competitionMenu.getPopupMenu().add(generalResearchCompetitionMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		generalResearchCompetitionMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchCompetitionPanel searchCompetitionPanel = new SearchCompetitionPanel();
-
-				MainFrame.getMainFrameInstance().add(searchCompetitionPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchCompetitionPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		competitionMenu.getPopupMenu().add(generalResearchCompetitionMenuItem);
 
 
-		/*
-		 * TODO
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU SQUADRE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("teams");
 		string = string.toUpperCase();
 
@@ -243,37 +320,54 @@ public class MenuBarPanel
 		teamMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(teamMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
 		generalResearchTeamMenuItem = new JMenuItem(string);
 
+		teamMenu.getPopupMenu().add(generalResearchTeamMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		generalResearchTeamMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
-
-				MainFrame.getMainFrameInstance().add(searchTeamPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchTeamPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		teamMenu.getPopupMenu().add(generalResearchTeamMenuItem);
 
 
-		/*
-		 * TODO
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("players");
 		string = string.toUpperCase();
 
@@ -290,65 +384,92 @@ public class MenuBarPanel
 		playerMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(playerMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("generalResearch");
 		string = string.toUpperCase();
 
 		generalResearchPlayerMenuItem = new JMenuItem(string);
 
+		playerMenu.getPopupMenu().add(generalResearchPlayerMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		generalResearchPlayerMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
-
-				MainFrame.getMainFrameInstance().add(searchPlayerPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchPlayerPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		playerMenu.getPopupMenu().add(generalResearchPlayerMenuItem);
 
 
-		/*
-		 * TODO
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA PER MILITANZA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("militancyResearch");
 		string = string.toUpperCase();
 
 		militancyResearchPlayerMenuItem = new JMenuItem(string);
 
+		playerMenu.getPopupMenu().add(militancyResearchPlayerMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
-
-				MainFrame.getMainFrameInstance().add(militancyFilterPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new MilitancyFilterPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		playerMenu.getPopupMenu().add(militancyResearchPlayerMenuItem);
 
 
-		/*
-		 * TODO
-		 */
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENU STATISTICHE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("statistics");
 		string = string.toUpperCase();
 
@@ -365,10 +486,16 @@ public class MenuBarPanel
 		statisticMenu.getPopupMenu().setLayout(migLayout);
 
 		menuBar.add(statisticMenu);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		/*
-		 * TODO
-		 */
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA STATISTICHE TOTALI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("research");
 		string += " ";
 		string += GuiConfiguration.getMessage("totalStatistics");
@@ -376,87 +503,131 @@ public class MenuBarPanel
 
 		researchTotalStatisticMenuItem = new JMenuItem(string);
 
+		statisticMenu.getPopupMenu().add(researchTotalStatisticMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		researchTotalStatisticMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchTotalStatistics searchTotalStatistics = new SearchTotalStatistics();
-
-				MainFrame.getMainFrameInstance().add(searchTotalStatistics,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchTotalStatistics(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		statisticMenu.getPopupMenu().add(researchTotalStatisticMenuItem);
 
-		/*
-		 * TODO
-		 */
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * MENUITEM RICERCA STATISTICHE PER EDIZIONE COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		string = GuiConfiguration.getMessage("competitionEditionFilter");
 		string = string.toUpperCase();
 
 		filterCompetitionEditionStatisticMenuItem = new JMenuItem(string);
 
+		statisticMenu.getPopupMenu().add(filterCompetitionEditionStatisticMenuItem);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
 		filterCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				CompetitionEditionFilterPanel competitionEditionFilterPanel = new CompetitionEditionFilterPanel();
-
-				MainFrame.getMainFrameInstance().add(competitionEditionFilterPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new CompetitionEditionFilterPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		statisticMenu.getPopupMenu().add(filterCompetitionEditionStatisticMenuItem);
 
 
-		/*
-		 * TODO
-		 */
-		imageIcon = GuiConfiguration.createImageIcon("images/filter.png");
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON FILTRO PER PASSI
+		 *------------------------------------------------------------------------------------------------------*/
 
-		filterButton = new JButton(imageIcon);
+
+
+		filterButton = new JButton(filterIcon);
 		filterButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		add(filterButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
 
 		filterButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				StepFilterPanel stepFilterPanel = new StepFilterPanel();
-
-				MainFrame.getMainFrameInstance().add(stepFilterPanel,"sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new StepFilterPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		add(filterButton);
 
 
-		/*
-		 * TODO
-		 */
-		imageIcon = GuiConfiguration.createImageIcon("images/dice.png");
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON CALCIATORE CASUALE
+		 *------------------------------------------------------------------------------------------------------*/
 
-		diceButton = new JButton(imageIcon);
+		diceButton = new JButton(diceIcon);
 		diceButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		add(diceButton);
 
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		diceButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//TODO
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 }
