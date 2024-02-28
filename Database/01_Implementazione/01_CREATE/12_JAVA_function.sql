@@ -1573,7 +1573,7 @@ CREATE OR REPLACE FUNCTION season_play
 )
 RETURNS TABLE
         (
-            start_year  text,
+            start_year  text
         )
 AS
 $$

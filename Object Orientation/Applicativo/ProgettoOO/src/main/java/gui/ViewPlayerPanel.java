@@ -50,16 +50,20 @@ public class ViewPlayerPanel
 	private final JTable playerNationalityTable;
 	private final JTable playerAttributeGoalkeepingTable;
 	private final JTable playerAttributeMentalTable;
-
 	private final JTable playerAttributePhysicalTable;
 	private final JTable playerAttributeTechnicalTable;
 	private final JTable playerTagTable;
 	private final JTable playerCareerClubTable;
 	private final JTable playerCareerNationalTable;
+	private final JTable caseTrophyClubTable;
+	private final JTable caseTrophyNationalTable;
+	private final JTable casePrizeTable;
+
 
 
 
 	private final Map<String, String> generalInformationPlayer = new LinkedHashMap<>();
+
 	private final Vector<Vector<String>> playerPositionTableData = new Vector<>();
 	private final Vector<Vector<String>> playerNationalityTableData = new Vector<>();
 	private final Vector<Vector<String>> playerAttributeGoalkeepingTableData = new Vector<>();
@@ -70,7 +74,10 @@ public class ViewPlayerPanel
 	private final Vector<Vector<String>> playerCareerClubTableData = new Vector<>();
 	private final Vector<Vector<String>> playerCareerNationalTableData = new Vector<>();
 	private final Vector<Vector<String>> playerClubStatisticsTableData = new Vector<>();
-	private Vector<Vector<String>> playerNationalStatisticsTableData = new Vector<>();
+	private final Vector<Vector<String>> playerNationalStatisticsTableData = new Vector<>();
+	private final Vector<Vector<String>> playerCaseTrophyClubTableData = new Vector<>();
+	private final Vector<Vector<String>> playerCaseTrophyNationalTableData = new Vector<>();
+	private final Vector<Vector<String>> playerCasePrizeTableData = new Vector<>();
 
 
 	private final Vector<String> playerPositionTableColumnName = new Vector<>();
@@ -83,7 +90,10 @@ public class ViewPlayerPanel
 	private final Vector<String> playerCareerClubTableColumnName = new Vector<>();
 	private final Vector<String> playerCareerNationalTableColumnName = new Vector<>();
 	private final Vector<String> playerClubStatisticsTableColumnName = new Vector<>();
-	private Vector<String> playerNationalStatisticsTableColumnName = new Vector<>();
+	private final Vector<String> playerNationalStatisticsTableColumnName = new Vector<>();
+	private final Vector<String> playerCaseTrophyClubTableColumnName = new Vector<>();
+	private final Vector<String> playerCaseTrophyNationalTableColumnName = new Vector<>();
+	private final Vector<String> playerCasePrizeTableColumnName = new Vector<>();
 
 
 	private final JPanel detailedInformationPanel;
@@ -422,7 +432,13 @@ public class ViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				GuiConfiguration.switchPanel(getRootPanel(), casePanel, 2, null);
+
+				initFilterStats();
+
+				fillCaseView();
+
+				MainFrame.getMainFrameInstance().pack();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -2211,6 +2227,80 @@ public class ViewPlayerPanel
 		nationalStatisticsTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL BACHECA GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx, fill",
+				"0[grow, fill]0[grow, fill]0[grow, fill]",
+				"0[]10[]0"
+			);
+
+		casePanel = new JPanel(migLayout);
+		casePanel.setOpaque(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL PANNELLO DI SUPPORTO PER TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"0[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		casePanel.add(panel);
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Titolo"; //TODO i18n
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DEI TROFEI CLUB DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		caseTrophyClubTable = new JTable();
+
+		caseTrophyClubTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		caseTrophyClubTable.setPreferredScrollableViewportSize(caseTrophyClubTable.getPreferredSize());
+		caseTrophyClubTable.setFillsViewportHeight(true);
+
+		caseTrophyClubTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		caseTrophyClubTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) caseTrophyClubTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -2219,8 +2309,159 @@ public class ViewPlayerPanel
 		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
 		 *------------------------------------------------------------------------------------------------------*/
 
-		
 
+
+		scrollPane = new JScrollPane(caseTrophyClubTable);
+
+		panel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL PANNELLO DI SUPPORTO PER TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"0[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		casePanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Titolo"; //TODO i18n
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DEI TROFEI NAZIONALI DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		caseTrophyNationalTable = new JTable();
+
+		caseTrophyNationalTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		caseTrophyNationalTable.setPreferredScrollableViewportSize(caseTrophyNationalTable.getPreferredSize());
+		caseTrophyNationalTable.setFillsViewportHeight(true);
+
+		caseTrophyNationalTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		caseTrophyNationalTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) caseTrophyNationalTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		scrollPane = new JScrollPane(caseTrophyNationalTable);
+
+		panel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL PANNELLO DI SUPPORTO PER TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"0[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		casePanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Titolo"; //TODO i18n
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DEI TROFEI NAZIONALI DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		casePrizeTable = new JTable();
+
+		casePrizeTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		casePrizeTable.setPreferredScrollableViewportSize(casePrizeTable.getPreferredSize());
+		casePrizeTable.setFillsViewportHeight(true);
+
+		casePrizeTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		casePrizeTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) casePrizeTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		scrollPane = new JScrollPane(casePrizeTable);
+
+		panel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 	public JPanel getRootPanel()
 	{
@@ -2255,10 +2496,6 @@ public class ViewPlayerPanel
 				playerID
 			);
 	}
-
-
-
-
 
 	public void getDataPlayerDetailedView()
 	{
@@ -2295,12 +2532,6 @@ public class ViewPlayerPanel
 				playerTagTableData,
 				playerID
 			);
-	}
-
-
-	public void setTeamType(String teamType)
-	{
-		this.teamType = teamType;
 	}
 	public void getDataPlayerCareerView()
 	{
@@ -2342,9 +2573,36 @@ public class ViewPlayerPanel
 				startYear,
 				endYear
 			);
-
-
 	}
+
+	public void getDataPlayerCaseView()
+	{
+		generalInformationPlayer.clear();
+
+		playerCaseTrophyClubTableColumnName.clear();
+		playerCaseTrophyClubTableData.clear();
+
+
+		playerCaseTrophyNationalTableColumnName.clear();
+		playerCaseTrophyNationalTableData.clear();
+
+		playerCasePrizeTableColumnName.clear();
+		playerCasePrizeTableData.clear();
+
+
+		Controller.getInstance().setPlayerCaseView
+			(
+				generalInformationPlayer,
+				playerCaseTrophyClubTableColumnName,
+				playerCaseTrophyClubTableData,
+				playerCaseTrophyNationalTableColumnName,
+				playerCaseTrophyNationalTableData,
+				playerCasePrizeTableColumnName,
+				playerCasePrizeTableData,
+				playerID
+			);
+	}
+
 	public void fillPlayerGeneralView()
 	{
 		getDataPlayerGeneralView();
@@ -2460,6 +2718,35 @@ public class ViewPlayerPanel
 		createGeneralInfoPanel(informationPanel, generalInformationPlayer, "playerInformation");
 	}
 
+
+	public void fillCaseView()
+	{
+		getDataPlayerCaseView();
+
+		GuiConfiguration.fillTable
+			(
+				caseTrophyClubTable,
+				playerCaseTrophyClubTableData,
+				playerCaseTrophyClubTableColumnName
+			);
+
+		GuiConfiguration.fillTable
+			(
+				caseTrophyNationalTable,
+				playerCaseTrophyNationalTableData,
+				playerCaseTrophyNationalTableColumnName
+			);
+
+
+		GuiConfiguration.fillTable
+			(
+				casePrizeTable,
+				playerCasePrizeTableData,
+				playerCasePrizeTableColumnName
+			);
+
+		createGeneralInfoPanel(informationPanel, generalInformationPlayer, "playerInformation");
+	}
 	public JLabel createInformationTitle(String messageKey)
 	{
 		String string;
