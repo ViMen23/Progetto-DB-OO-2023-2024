@@ -1344,6 +1344,6 @@ public class CompetitionEditionFilterPanel
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size(), internationalization);
+		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
 	}
 }
