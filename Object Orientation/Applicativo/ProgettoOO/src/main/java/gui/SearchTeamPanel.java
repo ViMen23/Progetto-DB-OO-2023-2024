@@ -25,10 +25,6 @@ public class SearchTeamPanel
 {
 
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
-
 
 	private final JPanel titlePanel;
 	private final JPanel teamPanel;
@@ -140,7 +136,7 @@ public class SearchTeamPanel
 		titleButton = new JButton(string);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -159,16 +155,13 @@ public class SearchTeamPanel
 			public void actionPerformed(ActionEvent e)
 			{
 
-				if (teamPanel.isShowing()){
-					remove(teamPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else{
-					add(teamPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						teamPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -179,7 +172,7 @@ public class SearchTeamPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -196,14 +189,13 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchTeamPanel searchTeamPanel = new SearchTeamPanel();
-
-				MainFrame.getMainFrameInstance().add(searchTeamPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchCompetitionPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -706,12 +698,12 @@ public class SearchTeamPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				teamContinentID   = teamContinentMap.get((String) continentComboBox.getSelectedItem());
+
+				teamContinentID   = GuiConfiguration.getSelectedItemIDComboBox(continentComboBox, teamContinentMap);
 
 				teamNationID = null;
 
 				if (teamContinentID != null) {
-
 					nationComboBox.setEnabled(true);
 				}
 				else {
@@ -720,6 +712,7 @@ public class SearchTeamPanel
 
 				nationComboBox.setSelectedIndex(-1);
 				teamNationID = null;
+
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
@@ -785,7 +778,9 @@ public class SearchTeamPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				teamNationID = teamNationMap.get((String) nationComboBox.getSelectedItem());
+
+				teamNationID = GuiConfiguration.getSelectedItemIDComboBox(nationComboBox, teamNationMap);
+
 			}
 
 			@Override
@@ -842,9 +837,16 @@ public class SearchTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fillTeamTable(teamTableData, teamTableColumnName, teamTable, "teams", Boolean.TRUE);
+				fillTeamTable();
 
-				teamTablePanel.revalidate();
+				GuiConfiguration.setTitleTable
+					(
+						titleTableLabel,
+						GuiConfiguration.getMessage("teams"),
+						teamTableData.size()
+					);
+
+				revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -929,11 +931,22 @@ public class SearchTeamPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillTeamTable(Vector<Vector<String>> tableData,
-							  Vector<String> tableColumnName,
-							  JTable table,
-							  String tableName,
-							  Boolean internationalization)
+	/**
+	 *
+	 * @return
+	 */
+	public JPanel getRootPanel()
+	{
+		return this;
+	}
+
+	public void getTeamTableData(Vector<String> tableColumnName,
+								 Vector<Vector<String>> tableData,
+								 String teamSubLongName,
+								 String teamSubShortName,
+								 String teamType,
+								 String teamContinentID,
+								 String teamNationID)
 	{
 		tableColumnName.clear();
 		tableData.clear();
@@ -949,11 +962,23 @@ public class SearchTeamPanel
 				teamContinentID,
 				teamNationID
 			);
-
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
-
 	}
+
+	public void fillTeamTable()
+	{
+
+		getTeamTableData
+			(
+				teamTableColumnName,
+				teamTableData,
+				teamSubLongName,
+				teamSubShortName,
+				teamType,
+				teamContinentID,
+				teamNationID
+			);
+
+		GuiConfiguration.fillTable(teamTable, teamTableData, teamTableColumnName);
+	}
+
 }

@@ -130,17 +130,13 @@ public class SearchTotalStatistics
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				if (totalStatisticsPanel.isShowing()){
-					remove(totalStatisticsPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else{
-					add(totalStatisticsPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						totalStatisticsPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -170,14 +166,13 @@ public class SearchTotalStatistics
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchTotalStatistics searchTotalStatistics = new SearchTotalStatistics();
-
-				MainFrame.getMainFrameInstance().add(searchTotalStatistics, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchTotalStatistics(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -555,16 +550,16 @@ public class SearchTotalStatistics
 
 				setRolePlayer();
 
-				fillTotalStatisticsTable
+				fillTotalStatisticsTable();
+
+				GuiConfiguration.setTitleTable
 					(
-						totalStatisticsTableData,
-						totalStatisticsTableColumnName,
-						totalStatisticsTable,
-						"totalPlayerStatistics",
-						Boolean.TRUE
+						titleTableLabel,
+						GuiConfiguration.getMessage("totalPlayerStatistics"),
+						totalStatisticsTableData.size()
 					);
 
-				totalStatisticsPanel.revalidate();
+				revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -650,6 +645,10 @@ public class SearchTotalStatistics
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
+	public JPanel getRootPanel()
+	{
+		return this;
+	}
 	public void setRolePlayer()
 	{
 		String string = "";
@@ -677,11 +676,11 @@ public class SearchTotalStatistics
 			playerRole = string.substring(1);
 		}
 	}
-	public void fillTotalStatisticsTable(Vector<Vector<String>> tableData,
-										 Vector<String> tableColumnName,
-										 JTable table,
-										 String tableName,
-										 Boolean internationalization)
+
+	public void getTotalStatisticsTableData(Vector<String> tableColumnName,
+											Vector<Vector<String>> tableData,
+											String teamType,
+											String playerRole)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -693,10 +692,18 @@ public class SearchTotalStatistics
 				teamType,
 				playerRole
 			);
+	}
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	public void fillTotalStatisticsTable()
+	{
+		getTotalStatisticsTableData
+			(
+				totalStatisticsTableColumnName,
+				totalStatisticsTableData,
+				teamType,
+				playerRole
+			);
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		GuiConfiguration.fillTable(totalStatisticsTable, totalStatisticsTableData, totalStatisticsTableColumnName);
 	}
 }

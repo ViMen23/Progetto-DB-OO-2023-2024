@@ -204,7 +204,7 @@ public class SearchCompetitionPanel
 				GuiConfiguration.switchPanel
 					(
 						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchConfederationPanel(),
+						new SearchCompetitionPanel(),
 						2,
 						"sgx frame"
 					);
@@ -863,8 +863,6 @@ public class SearchCompetitionPanel
 
 					continentComboBox.setEnabled(true);
 
-					continentComboBox.firePopupMenuWillBecomeVisible();
-
 					competitionCountryType = Country.COUNTRY_TYPE.CONTINENT.toString();
 
 				} else {
@@ -918,9 +916,12 @@ public class SearchCompetitionPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				String selectedString = (String) continentComboBox.getSelectedItem();
 
-				competitionContinentID = competitionContinentMap.get(selectedString);
+				competitionContinentID = GuiConfiguration.getSelectedItemIDComboBox
+					(
+						continentComboBox,
+						competitionContinentMap
+					);
 
 
 				if (nationRadioButton.isSelected()) {
@@ -935,9 +936,6 @@ public class SearchCompetitionPanel
 					nationComboBox.setSelectedIndex(-1);
 					competitionNationID = null;
 				}
-
-				continentComboBox.removeAllItems();
-				continentComboBox.addItem(selectedString);
 			}
 
 			@Override
@@ -976,8 +974,6 @@ public class SearchCompetitionPanel
 				if (nationRadioButton.isSelected()){
 
 					continentComboBox.setEnabled(true);
-
-					continentComboBox.firePopupMenuWillBecomeVisible();
 
 					competitionCountryType = Country.COUNTRY_TYPE.NATION.toString();
 				}
@@ -1039,12 +1035,9 @@ public class SearchCompetitionPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				String selectedString = (String) nationComboBox.getSelectedItem();
 
-				competitionNationID = competitionNationMap.get(selectedString);
+				competitionNationID = GuiConfiguration.getSelectedItemIDComboBox(nationComboBox, competitionNationMap);
 
-				nationComboBox.removeAllItems();
-				nationComboBox.addItem(selectedString);
 			}
 
 			@Override
@@ -1116,16 +1109,16 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fillCompetitionTable
+				fillCompetitionTable();
+
+				GuiConfiguration.setTitleTable
 					(
-						competitionTableData,
-						competitionTableColumnName,
-						competitionTable,
-						"competitions",
-						Boolean.TRUE
+						titleTableLabel,
+						GuiConfiguration.getMessage("competitions"),
+						competitionTableData.size()
 					);
 
-				competitionTablePanel.revalidate();
+				getRootPanel().revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1221,11 +1214,25 @@ public class SearchCompetitionPanel
 	}
 
 
-	public void fillCompetitionTable(Vector<Vector<String>> tableData,
-									 Vector<String> tableColumnName,
-									 JTable table,
-									 String tableName,
-									 Boolean internationalization)
+	/**
+	 * TODO
+	 * @param tableColumnName
+	 * @param tableData
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
+	 */
+	public void getCompetitionDataTable(Vector<String> tableColumnName,
+										Vector<Vector<String>> tableData,
+										String competitionSubName,
+										String competitionType,
+										String competitionTeamType,
+										String competitionCountryType,
+										String competitionContinentID,
+										String competitionNationID)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -1241,11 +1248,27 @@ public class SearchCompetitionPanel
 				competitionContinentID,
 				competitionNationID
 			);
+	}
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	/**
+	 * TODO
+	 */
+	public void fillCompetitionTable()
+	{
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		getCompetitionDataTable
+			(
+				competitionTableColumnName,
+				competitionTableData,
+				competitionSubName,
+				competitionType,
+				competitionTeamType,
+				competitionCountryType,
+				competitionContinentID,
+				competitionNationID
+			);
+
+		GuiConfiguration.fillTable(competitionTable, competitionTableData, competitionTableColumnName);
 	}
 
 

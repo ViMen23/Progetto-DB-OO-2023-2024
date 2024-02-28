@@ -480,7 +480,7 @@ public class GuiConfiguration
 				superCountryID
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+		fillComboBox(comboBox, vector);
 	}
 
 
@@ -492,6 +492,8 @@ public class GuiConfiguration
 	 */
 	public static void fillYearComboBox(JComboBox<String> comboBox, Integer minimumYear, Integer maximumYear)
 	{
+
+		comboBox.removeAllItems();
 
 		for( Integer i = maximumYear; i >= minimumYear; --i){
 			comboBox.addItem(i.toString());
@@ -508,6 +510,9 @@ public class GuiConfiguration
 		String string;
 		Integer maximumYear = Year.now().getValue();
 		Integer month = YearMonth.now().getMonthValue();
+
+
+		comboBox.removeAllItems();
 
 
 		if (month < 8) {
@@ -536,6 +541,8 @@ public class GuiConfiguration
 										  Boolean selectAll)
 	{
 		String season;
+
+		comboBox.removeAllItems();
 
 		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
 
@@ -629,6 +636,34 @@ public class GuiConfiguration
 		mainPanel.revalidate();
 	}
 
+	/**
+	 * TODO
+	 * @param comboBox
+	 * @param comboBoxMap
+	 * @return
+	 */
+
+	public static String getSelectedItemIDComboBox(JComboBox<String> comboBox, Map<String, String> comboBoxMap)
+	{
+		String selectedStringID = comboBoxMap.get(getSelectedItemComboBox(comboBox));
+
+		return selectedStringID;
+	}
+
+	/**
+	 * TODO
+	 * @param comboBox
+	 * @return
+	 */
+	public static String getSelectedItemComboBox(JComboBox<String> comboBox)
+	{
+		String selectedString = (String) comboBox.getSelectedItem();
+
+		comboBox.removeAllItems();
+		comboBox.addItem(selectedString);
+
+		return selectedString;
+	}
 
 
 }

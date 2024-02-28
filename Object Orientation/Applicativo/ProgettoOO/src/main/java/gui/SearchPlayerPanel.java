@@ -26,10 +26,6 @@ public class SearchPlayerPanel
 				extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
-
 
 	private final JPanel titlePanel;
 	private final JPanel playerPanel;
@@ -169,7 +165,7 @@ public class SearchPlayerPanel
 		titleButton = new JButton(string);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -187,17 +183,13 @@ public class SearchPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				if (playerPanel.isShowing()) {
-					remove(playerPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else {
-					add(playerPanel,"dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						playerPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -210,7 +202,7 @@ public class SearchPlayerPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -227,15 +219,13 @@ public class SearchPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
-
-				MainFrame.getMainFrameInstance().add(searchPlayerPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new SearchPlayerPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -552,9 +542,6 @@ public class SearchPlayerPanel
 
 		yearReferenceComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		GuiConfiguration.fillYearComboBox(yearReferenceComboBox, GuiConfiguration.getMinYear(), Year.now().getValue());
-		yearReferenceComboBox.setSelectedIndex(-1);
-
 		agePanel.add(yearReferenceComboBox);
 
 
@@ -567,11 +554,19 @@ public class SearchPlayerPanel
 
 		yearReferenceComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				GuiConfiguration.fillYearComboBox
+					(
+						yearReferenceComboBox,
+						GuiConfiguration.getMinYear(),
+						Year.now().getValue()
+					);
+			}
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerReferringYear = (String) yearReferenceComboBox.getSelectedItem();
+				playerReferringYear = (GuiConfiguration.getSelectedItemComboBox(yearReferenceComboBox));
 
 				if (playerReferringYear != null) {
 					minimumAgeComboBox.setEnabled(true);
@@ -615,9 +610,6 @@ public class SearchPlayerPanel
 
 		minimumAgeComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		fillAgeComboBox(minimumAgeComboBox, GuiConfiguration.getMinAge(), GuiConfiguration.getMaxAge());
-		minimumAgeComboBox.setSelectedIndex(-1);
-
 		agePanel.add(minimumAgeComboBox);
 
 
@@ -630,12 +622,15 @@ public class SearchPlayerPanel
 
 		minimumAgeComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
-			public void popupMenuWillBecomeVisible(PopupMenuEvent e) { }
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+				fillAgeComboBox(minimumAgeComboBox, GuiConfiguration.getMinAge(), GuiConfiguration.getMaxAge());
+			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerMinAge = (String) minimumAgeComboBox.getSelectedItem();
+				playerMinAge = GuiConfiguration.getSelectedItemComboBox(minimumAgeComboBox);
 
 				if (playerMinAge != null) {
 					maximumAgeComboBox.setEnabled(true);
@@ -695,14 +690,12 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				maximumAgeComboBox.removeAllItems();
-
 				fillAgeComboBox(maximumAgeComboBox, Integer.valueOf(playerMinAge), GuiConfiguration.getMaxAge());
 			}
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerMaxAge = (String) maximumAgeComboBox.getSelectedItem();
+				playerMaxAge = GuiConfiguration.getSelectedItemComboBox(maximumAgeComboBox);
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
@@ -852,7 +845,7 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerContinentID   = playerContinentMap.get((String) continentComboBox.getSelectedItem());
+				playerContinentID = GuiConfiguration.getSelectedItemIDComboBox(continentComboBox, playerContinentMap);
 
 				if (playerContinentID != null) {
 					nationComboBox.setEnabled(true);
@@ -928,7 +921,7 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerNationID =  playerNationMap.get( (String) nationComboBox.getSelectedItem() );
+				playerNationID =  GuiConfiguration.getSelectedItemIDComboBox(nationComboBox, playerNationMap);
 			}
 
 			@Override
@@ -1228,7 +1221,7 @@ public class SearchPlayerPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerPositionID = playerMainPositionMap.get( (String) mainPositionComboBox.getSelectedItem() );
+				playerPositionID = GuiConfiguration.getSelectedItemIDComboBox(mainPositionComboBox, playerMainPositionMap);
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
@@ -1486,7 +1479,14 @@ public class SearchPlayerPanel
 			{
 				setRolePlayer();
 
-				fillPlayerTable(playerTableData, playerTableColumnName, playerTable, "players", Boolean.TRUE);
+				fillPlayerTable();
+
+				GuiConfiguration.setTitleTable
+					(
+						titleTableLabel,
+						GuiConfiguration.getMessage("players"),
+						playerTableData.size()
+					);
 
 				revalidate();
 			}
@@ -1573,6 +1573,19 @@ public class SearchPlayerPanel
 		playerTablePanel.add(scrollPane);
 		/*------------------------------------------------------------------------------------------------------*/
 	}
+
+	/**
+	 *
+	 * @return
+	 */
+	public JPanel getRootPanel()
+	{
+		return this;
+	}
+
+	/**
+	 *
+	 */
 	public void setRolePlayer()
 	{
 		String string = "";
@@ -1600,8 +1613,16 @@ public class SearchPlayerPanel
 			playerRole = string.substring(1);
 		}
 	}
+
+	/**
+	 *
+	 * @param comboBox
+	 * @param minimumAge
+	 * @param maximumAge
+	 */
 	public void fillAgeComboBox(JComboBox<String> comboBox, Integer minimumAge, Integer maximumAge)
 	{
+		comboBox.removeAllItems();
 
 		for( Integer i = minimumAge; i <= maximumAge; ++i){
 			comboBox.addItem(i.toString());
@@ -1609,6 +1630,12 @@ public class SearchPlayerPanel
 
 	}
 
+	/**
+	 *
+	 * @param comboBox
+	 * @param vector
+	 * @param map
+	 */
 	public void fillPositionComboBox(JComboBox<String> comboBox,
 									 Vector<String> vector,
 									 Map<String, String> map)
@@ -1622,13 +1649,21 @@ public class SearchPlayerPanel
 				map
 			);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+		GuiConfiguration.fillComboBox(comboBox, vector);
 	}
-	public void fillPlayerTable(Vector<Vector<String>> tableData,
-								Vector<String> tableColumnName,
-								JTable table,
-								String tableName,
-								Boolean internationalization)
+
+	public void getPlayerTableData(Vector<String> tableColumnName,
+								   Vector<Vector<String>> tableData,
+								   String playerSubName,
+								   String playerSubSurname,
+								   String playerReferringYear,
+								   String playerMinAge,
+								   String playerMaxAge,
+								   String playerContinentID,
+								   String playerNationID,
+								   String playerRole,
+								   String playerPositionID,
+								   String playerFoot)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -1649,9 +1684,26 @@ public class SearchPlayerPanel
 				playerFoot
 			);
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
+	}
+	public void fillPlayerTable()
+	{
 
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+		getPlayerTableData
+			(
+				playerTableColumnName,
+				playerTableData,
+				playerSubName,
+				playerSubSurname,
+				playerReferringYear,
+				playerMinAge,
+				playerMaxAge,
+				playerContinentID,
+				playerNationID,
+				playerRole,
+				playerPositionID,
+				playerFoot
+			);
+
+		GuiConfiguration.fillTable(playerTable, playerTableData, playerTableColumnName);
 	}
 }

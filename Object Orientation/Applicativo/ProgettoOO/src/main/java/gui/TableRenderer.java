@@ -5,9 +5,6 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 
 public class TableRenderer
 				extends DefaultTableCellRenderer

@@ -24,10 +24,6 @@ public class MilitancyFilterPanel
 {
 
 	protected final Color panelColor = Color.white;
-	private final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
-
 	private final JPanel titlePanel;
 	private final JPanel militancyPanel;
 	private final JPanel teamTypePanel;
@@ -135,7 +131,7 @@ public class MilitancyFilterPanel
 		titleButton = new JButton(string);
 		
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
-		titleButton.setIcon(maximizeIcon);
+		titleButton.setIcon(GuiConfiguration.getMaximizeIcon());
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.getButtonCursor());
 
@@ -153,17 +149,13 @@ public class MilitancyFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-
-				if (militancyPanel.isShowing()) {
-					remove(militancyPanel);
-					titleButton.setIcon(minimizeIcon);
-				}
-				else {
-					add(militancyPanel, "dock center, sgx general");
-					titleButton.setIcon(maximizeIcon);
-				}
-
-				revalidate();
+				GuiConfiguration.minimizePanel
+					(
+						getRootPanel(),
+						militancyPanel,
+						titleButton,
+						"dock center, sgx general"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -176,7 +168,7 @@ public class MilitancyFilterPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -193,14 +185,13 @@ public class MilitancyFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				MilitancyFilterPanel militancyFilterPanel = new MilitancyFilterPanel();
-
-				MainFrame.getMainFrameInstance().add(militancyFilterPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new MilitancyFilterPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -350,7 +341,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				militancyContinentID = militancyContinentMap.get((String) continentComboBox.getSelectedItem());
+				militancyContinentID = GuiConfiguration.getSelectedItemIDComboBox(continentComboBox, militancyContinentMap);
 
 				if (nationComboBox.isEnabled()){
 					resetFromContinent();
@@ -424,7 +415,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				militancyNationID = militancyNationMap.get((String) nationComboBox.getSelectedItem());
+				militancyNationID = GuiConfiguration.getSelectedItemIDComboBox(nationComboBox, militancyNationMap);
 
 				if (clubRadioButton.isEnabled() || nationalRadioButton.isEnabled()) {
 					resetFromNation();
@@ -754,23 +745,13 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillTeamComboBox
-					(
-						teamComboBox,
-						militancyTeamVector,
-						militancyTeamMap,
-						null,
-						null,
-						militancyTeamType,
-						militancyContinentID,
-						militancyNationID
-					);
+				fillTeamComboBox(Boolean.FALSE);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				militancyTeam = militancyTeamMap.get( (String) teamComboBox.getSelectedItem() );
+				militancyTeam = GuiConfiguration.getSelectedItemIDComboBox(teamComboBox, militancyTeamMap);
 
 				if (fromYearComboBox.isEnabled() || toYearComboBox.isEnabled()){
 					resetFromTeam();
@@ -934,7 +915,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				militancyFromYear = (String) fromYearComboBox.getSelectedItem();
+				militancyFromYear = GuiConfiguration.getSelectedItemComboBox(fromYearComboBox);
 
 				toYearComboBox.setSelectedIndex(-1);
 			}
@@ -999,7 +980,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				militancyToYear = (String) toYearComboBox.getSelectedItem();
+				militancyToYear = GuiConfiguration.getSelectedItemComboBox(toYearComboBox);
 			}
 
 			@Override
@@ -1058,16 +1039,17 @@ public class MilitancyFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				fillPlayerTable
+				fillPlayerTable();
+
+
+				GuiConfiguration.setTitleTable
 					(
-						militancyPlayerTableData,
-						militancyPlayerTableColumnName,
-						militancyPlayerTable,
-						"players",
-						Boolean.TRUE
+						titleTableLabel,
+						GuiConfiguration.getMessage("players"),
+						militancyPlayerTableData.size()
 					);
 
-				militancyPlayerTablePanel.revalidate();
+				revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1152,18 +1134,19 @@ public class MilitancyFilterPanel
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillTeamComboBox(JComboBox<String> comboBox,
-									Vector<String> vector,
+	public JPanel getRootPanel()
+	{
+		return this;
+	}
+
+	public void getTeamComboBoxData(Vector<String> vector,
 									Map<String, String> map,
 									String teamSubLongName,
 									String teamSubShortName,
 									String teamType,
 									String teamContinentID,
-								 	String teamNationID)
+									String teamNationID)
 	{
-
-		GuiConfiguration.initComboBoxVector(vector, map, false);
-
 		Controller.getInstance().setTeamComboBox
 			(
 				vector,
@@ -1174,8 +1157,27 @@ public class MilitancyFilterPanel
 				teamContinentID,
 				teamNationID
 			);
+	}
 
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+	public void fillTeamComboBox(Boolean selectAll)
+	{
+
+		GuiConfiguration.initComboBoxVector(militancyTeamVector, militancyTeamMap, selectAll);
+
+		teamComboBox.removeAllItems();
+
+		getTeamComboBoxData
+			(
+				militancyTeamVector,
+				militancyTeamMap,
+				null,
+				null,
+				militancyTeamType,
+				militancyContinentID,
+				militancyNationID
+			);
+
+		GuiConfiguration.fillComboBox(teamComboBox, militancyTeamVector);
 	}
 
 
@@ -1232,11 +1234,12 @@ public class MilitancyFilterPanel
 		militancyToYear = null;
 	}
 
-	public void fillPlayerTable(Vector<Vector<String>> tableData,
-								Vector<String> tableColumnName,
-								JTable table,
-								String tableName,
-								Boolean internationalization)
+
+	public void getPlayerTableData(Vector<String> tableColumnName,
+								   Vector<Vector<String>> tableData,
+								   String militancyTeam,
+								   String militancyFromYear,
+								   String militancyToYear)
 	{
 		tableData.clear();
 		tableColumnName.clear();
@@ -1249,10 +1252,17 @@ public class MilitancyFilterPanel
 				militancyFromYear,
 				militancyToYear
 			);
+	}
 
-		table.setModel(new TableModel(tableData, tableColumnName));
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
-
-		GuiConfiguration.setTitleTable(titleTableLabel, tableName, tableData.size());
+	public void fillPlayerTable()
+	{
+		getPlayerTableData
+			(
+				militancyPlayerTableColumnName,
+				militancyPlayerTableData,
+				militancyTeam,
+				militancyFromYear,
+				militancyToYear
+			);
 	}
 }

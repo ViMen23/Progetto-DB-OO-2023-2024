@@ -24,7 +24,6 @@ public class StepFilterPanel
 				extends JPanel
 {
 	private final Color panelColor = Color.white;
-	private final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
 	private final JPanel titlePanel;
 	private final JPanel stepFilterPanel;
@@ -162,7 +161,7 @@ public class StepFilterPanel
 
 
 
-		resetButton = new JButton(resetIcon);
+		resetButton = new JButton(GuiConfiguration.getResetIcon());
 		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
 		titlePanel.add(resetButton);
@@ -179,14 +178,13 @@ public class StepFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-				component.setVisible(false);
-
-				MainFrame.getMainFrameInstance().remove(component);
-
-				StepFilterPanel stepFilterPanel = new StepFilterPanel();
-
-				MainFrame.getMainFrameInstance().add(stepFilterPanel, "sgx frame");
+				GuiConfiguration.switchPanel
+					(
+						MainFrame.getMainFrameInstance().getContentPane(),
+						new StepFilterPanel(),
+						2,
+						"sgx frame"
+					);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -594,9 +592,7 @@ public class StepFilterPanel
 					resetFromCountry();
 				}
 
-				String tmp = (String) continentComboBox.getSelectedItem();
-
-				continentID = continentMap.get(tmp);
+				continentID = GuiConfiguration.getSelectedItemIDComboBox(continentComboBox, continentMap);
 
 				if (continentRadioButton.isSelected()) {
 					competitionComboBox.setEnabled(true);
@@ -610,9 +606,6 @@ public class StepFilterPanel
 
 					nationID = null;
 				}
-
-				continentComboBox.removeAllItems();
-				continentComboBox.addItem(tmp);
 			}
 			@Override
 			public void popupMenuCanceled(PopupMenuEvent e) { }
@@ -716,7 +709,7 @@ public class StepFilterPanel
 					resetFromCountry();
 				}
 
-				nationID = nationMap.get((String) nationComboBox.getSelectedItem());
+				nationID = GuiConfiguration.getSelectedItemIDComboBox(nationComboBox, nationMap);
 
 				competitionComboBox.setEnabled(true);
 				competitionLabel.setEnabled(true);
@@ -879,19 +872,7 @@ public class StepFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillCompetitionComboBox
-					(
-						competitionComboBox,
-						competitionVector,
-						competitionMap,
-						null,
-						null,
-						teamType,
-						countryType,
-						continentID,
-						nationID,
-						false
-					);
+				fillCompetitionComboBox(false);
 			}
 
 			@Override
@@ -901,7 +882,7 @@ public class StepFilterPanel
 					resetFromCompetition();
 				}
 
-				competitionID = competitionMap.get((String) competitionComboBox.getSelectedItem());
+				competitionID = GuiConfiguration.getSelectedItemIDComboBox(competitionComboBox, competitionMap);
 
 
 				if (competitionID != null) {
@@ -1049,10 +1030,6 @@ public class StepFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-					seasonComboBox.removeAllItems();
-				}
-
 				GuiConfiguration.fillSeasonComboBox
 					(
 						seasonComboBox,
@@ -1072,10 +1049,10 @@ public class StepFilterPanel
 				}
 
 				if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-					seasonStartYear = seasonMap.get((String) seasonComboBox.getSelectedItem());
+					seasonStartYear = GuiConfiguration.getSelectedItemIDComboBox(seasonComboBox, seasonMap);
 				}
 				else {
-					seasonStartYear = (String) seasonComboBox.getSelectedItem();
+					seasonStartYear = GuiConfiguration.getSelectedItemComboBox(seasonComboBox);
 				}
 
 				if (seasonStartYear != null) {
@@ -1223,7 +1200,7 @@ public class StepFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillTeamComboBox(teamComboBox, teamVector, teamMap, seasonStartYear, competitionID, false);
+				fillTeamComboBox(false);
 			}
 
 			@Override
@@ -1233,7 +1210,7 @@ public class StepFilterPanel
 					resetFromTeam();
 				}
 
-				teamID = teamMap.get((String) teamComboBox.getSelectedItem());
+				teamID = GuiConfiguration.getSelectedItemIDComboBox(teamComboBox, teamMap);
 
 				if (teamID != null) {
 					bookmark = teamID;
@@ -1383,13 +1360,13 @@ public class StepFilterPanel
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-				fillPlayerComboBox(playerComboBox, playerVector, playerMap, seasonStartYear, teamID, false);
+				fillPlayerComboBox(false);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-				playerID = playerMap.get((String) playerComboBox.getSelectedItem());
+				playerID = GuiConfiguration.getSelectedItemIDComboBox(playerComboBox, playerMap);
 
 				if (playerID != null) {
 					bookmark = playerID;
@@ -1452,25 +1429,21 @@ public class StepFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 	}
 
-	public void fillCompetitionComboBox(JComboBox<String> comboBox,
-										Vector<String> vector,
-										Map<String, String> map,
-										String competitionSubName,
-										String competitionType,
-										String competitionTeamType,
-										String competitionCountryType,
-										String competitionContinentID,
-										String competitionNationID,
-										Boolean selectAll)
+	public void getCompetitionComboBoxData(Vector<String> vector,
+										   Map<String, String> map,
+										   String competitionSubName,
+										   String competitionType,
+										   String competitionTeamType,
+										   String competitionCountryType,
+										   String competitionContinentID,
+										   String competitionNationID)
 	{
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
 		Controller.getInstance().setCompetitionComboBox
 			(
 				vector,
@@ -1482,37 +1455,58 @@ public class StepFilterPanel
 				competitionContinentID,
 				competitionNationID
 			);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
-
-
-	public void fillTeamComboBox(JComboBox<String> comboBox,
-								   Vector<String> vector,
-								   Map<String, String> map,
-								   String startYear,
-								   String competitionID,
-								   Boolean selectAll)
+	public void getTeamComboBoxData(Vector<String> vector,
+									Map<String, String> map,
+									String startYear,
+									String competitionID)
 	{
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
 		Controller.getInstance().setTeamComboBox(vector, map, startYear, competitionID);
-
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
 	}
 
-	public void fillPlayerComboBox(JComboBox<String> comboBox,
-								   Vector<String> vector,
-								   Map<String, String> map,
-								   String startYear,
-								   String competitionID,
-								   Boolean selectAll)
+	public void getPlayerComboBoxData(Vector<String> vector,
+									  Map<String, String> map,
+									  String startYear,
+									  String competitionID)
 	{
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
 		Controller.getInstance().setPlayerComboBox(vector, map, startYear, competitionID);
+	}
+	public void fillCompetitionComboBox(Boolean selectAll)
+	{
+		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap, selectAll);
 
-		comboBox.setModel(new DefaultComboBoxModel<>(vector));
+		getCompetitionComboBoxData
+			(
+				competitionVector,
+				competitionMap,
+				null,
+				null,
+				teamType,
+				countryType,
+				continentID,
+				nationID
+			);
+
+		GuiConfiguration.fillComboBox(competitionComboBox,competitionVector);
+	}
+
+
+	public void fillTeamComboBox(Boolean selectAll)
+	{
+		GuiConfiguration.initComboBoxVector(teamVector, teamMap, selectAll);
+
+		getTeamComboBoxData(teamVector, teamMap, seasonStartYear, competitionID);
+
+		GuiConfiguration.fillComboBox(teamComboBox, teamVector);
+	}
+
+	public void fillPlayerComboBox(Boolean selectAll)
+	{
+		GuiConfiguration.initComboBoxVector(playerVector, playerMap, selectAll);
+
+		getPlayerComboBoxData(playerVector, playerMap, seasonStartYear, competitionID);
+
+		GuiConfiguration.fillComboBox(playerComboBox, playerVector);
 	}
 
 	public void resetFromTeamType()
