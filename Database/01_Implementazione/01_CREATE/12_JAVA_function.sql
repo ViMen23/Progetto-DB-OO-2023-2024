@@ -745,7 +745,7 @@ BEGIN
             JOIN
             fp_competition
                 ON
-                fp_play.team_id = fp_competition.id
+                fp_play.competition_id = fp_competition.id
         WHERE
             fp_play.player_id = id_player::integer
             AND
@@ -1573,7 +1573,7 @@ CREATE OR REPLACE FUNCTION season_play
 )
 RETURNS TABLE
         (
-            start_year  text,
+            start_year  text
         )
 AS
 $$
