@@ -848,43 +848,49 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
-		teamDAO.fetchTeamDB
-						(
-										teamSubLongName,
-										teamSubShortName,
-										teamType,
-										teamContinentID,
-										teamNationID,
-										listTeamID,
-										listTeamType,
-										listTeamShortName,
-										listTeamLongName,
-										listCountryID,
-										listCountryName
-						);
+		teamDAO.fetchTeamDB(
+						teamSubLongName,
+						teamSubShortName,
+						teamType,
+						teamContinentID,
+						teamNationID,
+						listTeamID,
+						listTeamType,
+						listTeamShortName,
+						listTeamLongName,
+						listCountryID,
+						listCountryName
+		);
 
-		ctrlCountry.getCountryMap().clear();
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
 
-		for (String ID : listCountryID) {
-			String name = listCountryName.removeFirst();
-			if (null == ctrlCountry.getCountryMap().get(ID)) {
-				Country country = newCountry(null, null, name, null);
-				ctrlCountry.getCountryMap().put(ID, country);
-			}
-		}
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
 
-		ctrlTeam.getTeamMap().clear();
+		for (int i = 0; i < listTeamID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 
-		while (!(listTeamID.isEmpty())) {
-			String ID = listTeamID.removeFirst();
-			String type = listTeamType.removeFirst();
-			String shortName = listTeamShortName.removeFirst();
-			String longName = listTeamLongName.removeFirst();
-			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
-			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(type, shortName, longName, country, null);
-				ctrlTeam.getTeamMap().put(ID, team);
-			}
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											listTeamType.get(i),
+											listTeamShortName.get(i),
+											listTeamLongName.get(i),
+											countryMap.get(countryID),
+											null
+							)
+			);
 		}
 	}
 
@@ -900,24 +906,29 @@ public class Controller
 		List<String> listTeamLongName = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
-		teamDAO.fetchTeamDB
-			(
-							competitionStartYear,
-							competitionID,
-							listTeamID,
-							listTeamLongName
+		teamDAO.fetchTeamDB(
+						competitionStartYear,
+						competitionID,
+						listTeamID,
+						listTeamLongName
+		);
+
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		for (int i = 0; i < listTeamID.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
 			);
-
-
-		ctrlTeam.getTeamMap().clear();
-
-		while (!(listTeamID.isEmpty())) {
-			String ID = listTeamID.removeFirst();
-			String longName = listTeamLongName.removeFirst();
-			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(null, null, longName, null, null);
-				ctrlTeam.getTeamMap().put(ID, team);
-			}
 		}
 	}
 
@@ -932,47 +943,37 @@ public class Controller
 
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
-		teamDAO.fetchTeamDB
-						(
-										teamID,
-										mapTeamInfo
-						);
+		teamDAO.fetchTeamDB(teamID, mapTeamInfo);
 
 		if (!(teamID.equalsIgnoreCase(mapTeamInfo.get("teamID")))) {
 			System.out.println("ERRORE");
 			return;
 		}
 
-
-		Country country = newCountry
-						(
-										null,
-										null,
-										mapTeamInfo.get("countryName"),
-										null
-						);
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
 
 
-		Confederation confederation = newConfederation
-						(
-										mapTeamInfo.get("confederationShortName"),
-										null,
-										country,
-										null
-						);
-
-		ctrlTeam.getTeamMap().clear();
-
-		Team team = newTeam
-						(
+		teamMap.putIfAbsent(
+						teamID,
+						newTeam(
 										mapTeamInfo.get("teamType"),
 										mapTeamInfo.get("teamShortName"),
 										mapTeamInfo.get("teamLongName"),
-										country,
-										confederation
-						);
-
-		ctrlTeam.getTeamMap().put(teamID, team);
+										newCountry(
+														null,
+														null,
+														mapTeamInfo.get("countryName"),
+														null
+										),
+										newConfederation(
+														mapTeamInfo.get("confederationShortName"),
+														null,
+														null,
+														null
+										)
+						)
+		);
 	}
 
 
@@ -994,14 +995,13 @@ public class Controller
 															String teamContinentID,
 															String teamNationID)
 	{
-		fetchTeam
-						(
-										teamSubLongName,
-										teamSubShortName,
-										teamType,
-										teamContinentID,
-										teamNationID
-						);
+		fetchTeam(
+						teamSubLongName,
+						teamSubShortName,
+						teamType,
+						teamContinentID,
+						teamNationID
+		);
 
 		for (String key : ctrlTeam.getTeamMap().keySet()) {
 
@@ -1031,14 +1031,13 @@ public class Controller
 													 String teamContinentID,
 													 String teamNationID)
 	{
-		fetchTeam
-						(
-										teamSubLongName,
-										teamSubShortName,
-										teamType,
-										teamContinentID,
-										teamNationID
-						);
+		fetchTeam(
+						teamSubLongName,
+						teamSubShortName,
+						teamType,
+						teamContinentID,
+						teamNationID
+		);
 
 		String string;
 
@@ -1321,69 +1320,76 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayerDB
-						(
-										playerSubName,
-										playerSubSurname,
-										playerReferringYear,
-										playerMinAge,
-										playerMaxAge,
-										playerContinentID,
-										playerNationID,
-										playerRole,
-										playerPositionID,
-										playerFoot,
-										listPlayerID,
-										listPlayerName,
-										listPlayerSurname,
-										listPlayerDob,
-										listPlayerFoot,
-										listPlayerRole,
-										listPlayerRetiredDate,
-										listPositionID,
-										listPositionName,
-										listCountryID,
-										listCountryName
-						);
+		playerDAO.fetchPlayerDB(
+						playerSubName,
+						playerSubSurname,
+						playerReferringYear,
+						playerMinAge,
+						playerMaxAge,
+						playerContinentID,
+						playerNationID,
+						playerRole,
+						playerPositionID,
+						playerFoot,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerDob,
+						listPlayerFoot,
+						listPlayerRole,
+						listPlayerRetiredDate,
+						listPositionID,
+						listPositionName,
+						listCountryID,
+						listCountryName
+		);
 
-		ctrlCountry.getCountryMap().clear();
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
 
-		for (String ID : listCountryID) {
-			String name = listCountryName.removeFirst();
-			if (null == ctrlCountry.getCountryMap().get(ID)) {
-				Country country = newCountry(null, null, name, null);
-				ctrlCountry.getCountryMap().put(ID, country);
-			}
-		}
+		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
+		positionMap.clear();
+
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
 
 
-		ctrlPosition.getPositionMap().clear();
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 
-		for (String ID : listPositionID) {
-			String name = listPositionName.removeFirst();
-			if (null == ctrlPosition.getPositionMap().get(ID)) {
-				Position position = newPosition(null, null, name);
-				ctrlPosition.getPositionMap().put(ID, position);
-			}
-		}
+			String positionID = listPositionID.get(i);
+			positionMap.putIfAbsent(
+							positionID,
+							newPosition(
+											null,
+											null,
+											listPositionName.get(i)
+							)
+			);
 
-
-		ctrlPlayer.getPlayerMap().clear();
-
-		while (!(listPlayerID.isEmpty())) {
-			String ID = listPlayerID.removeFirst();
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String dob = listPlayerDob.removeFirst();
-			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
-			String foot = listPlayerFoot.removeFirst();
-			Position position = ctrlPosition.getPositionMap().get(listPositionID.removeFirst());
-			String role = listPlayerRole.removeFirst();
-			String retiredDate = listPlayerRetiredDate.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, dob, country, foot, position, role, retiredDate);
-				ctrlPlayer.getPlayerMap().put(ID, player);
-			}
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											listPlayerDob.get(i),
+											countryMap.get(countryID),
+											listPlayerFoot.get(i),
+											positionMap.get(positionID),
+											listPlayerRole.get(i),
+											listPlayerRetiredDate.get(i)
+							)
+			);
 		}
 	}
 
@@ -1411,61 +1417,70 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayerDB
-						(
-										militancyPlayerTeamID,
-										militancyPlayerStartYear,
-										militancyPlayerEndYear,
-										listPlayerID,
-										listPlayerName,
-										listPlayerSurname,
-										listPlayerDob,
-										listPlayerFoot,
-										listPlayerRole,
-										listPlayerRetiredDate,
-										listPositionID,
-										listPositionName,
-										listCountryID,
-										listCountryName
-						);
-
-		ctrlCountry.getCountryMap().clear();
-
-		for (String ID : listCountryID) {
-			String name = listCountryName.removeFirst();
-			if (null == ctrlCountry.getCountryMap().get(ID)) {
-				Country country = newCountry(null, null, name, null);
-				ctrlCountry.getCountryMap().put(ID, country);
-			}
-		}
+		playerDAO.fetchPlayerDB(
+						militancyPlayerTeamID,
+						militancyPlayerStartYear,
+						militancyPlayerEndYear,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerDob,
+						listPlayerFoot,
+						listPlayerRole,
+						listPlayerRetiredDate,
+						listPositionID,
+						listPositionName,
+						listCountryID,
+						listCountryName
+		);
 
 
-		ctrlPosition.getPositionMap().clear();
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
 
-		for (String ID : listPositionID) {
-			String name = listPositionName.removeFirst();
-			if (null == ctrlPosition.getPositionMap().get(ID)) {
-				Position position = newPosition(null, null, name);
-				ctrlPosition.getPositionMap().put(ID, position);
-			}
-		}
+		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
+		positionMap.clear();
 
-		ctrlPlayer.getPlayerMap().clear();
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
 
-		while (!(listPlayerID.isEmpty())) {
-			String ID = listPlayerID.removeFirst();
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String dob = listPlayerDob.removeFirst();
-			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
-			String foot = listPlayerFoot.removeFirst();
-			Position position = ctrlPosition.getPositionMap().get(listPositionID.removeFirst());
-			String role = listPlayerRole.removeFirst();
-			String retiredDate = listPlayerRetiredDate.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, dob, country, foot, position, role, retiredDate);
-				ctrlPlayer.getPlayerMap().put(ID, player);
-			}
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
+
+			String positionID = listPositionID.get(i);
+			positionMap.putIfAbsent(
+							positionID,
+							newPosition(
+											null,
+											null,
+											listPositionName.get(i)
+							)
+			);
+
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											listPlayerDob.get(i),
+											countryMap.get(countryID),
+											listPlayerFoot.get(i),
+											positionMap.get(positionID),
+											listPlayerRole.get(i),
+											listPlayerRetiredDate.get(i)
+							)
+			);
 		}
 	}
 
@@ -1483,27 +1498,35 @@ public class Controller
 		List<String> listPlayerRole = new ArrayList<>();
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayerDB
-			(
-				startYear,
-				teamID,
-				listPlayerID,
-				listPlayerName,
-				listPlayerSurname,
-				listPlayerRole
+		playerDAO.fetchPlayerDB(
+						startYear,
+						teamID,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerRole
+		);
+
+
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
 			);
-
-		ctrlPlayer.getPlayerMap().clear();
-
-		while (!(listPlayerID.isEmpty())) {
-			String ID = listPlayerID.removeFirst();
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String role = listPlayerRole.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, null, null, null, null, role, null);
-				ctrlPlayer.getPlayerMap().put(ID, player);
-			}
 		}
 	}
 
@@ -1522,37 +1545,31 @@ public class Controller
 		}
 
 
-		Country country = newCountry
-						(
-										null,
-										null,
-										mapPlayerInfo.get("countryName"),
-										null
-						);
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
 
-
-		Position position = newPosition
-						(
-										null,
-										null,
-										mapPlayerInfo.get("positionName")
-						);
-
-		ctrlPlayer.getPlayerMap().clear();
-
-		Player player = newPlayer
-						(
+		playerMap.putIfAbsent(
+						playerID,
+						newPlayer(
 										mapPlayerInfo.get("playerName"),
 										mapPlayerInfo.get("playerSurname"),
 										mapPlayerInfo.get("playerDob"),
-										country,
+										newCountry(
+														null,
+														null,
+														mapPlayerInfo.get("countryName"),
+														null
+										),
 										mapPlayerInfo.get("playerFoot"),
-										position,
+										newPosition(
+														null,
+														null,
+														mapPlayerInfo.get("positionName")
+										),
 										mapPlayerInfo.get("playerRole"),
 										mapPlayerInfo.get("playerRetiredDate")
-						);
-
-		ctrlPlayer.getPlayerMap().put(playerID, player);
+						)
+		);
 	}
 
 
@@ -1584,19 +1601,18 @@ public class Controller
 																String playerPositionID,
 																String playerFoot)
 	{
-		fetchPlayer
-						(
-										playerSubName,
-										playerSubSurname,
-										playerReferringYear,
-										playerMinAge,
-										playerMaxAge,
-										playerContinentID,
-										playerNationID,
-										playerRole,
-										playerPositionID,
-										playerFoot
-						);
+		fetchPlayer(
+						playerSubName,
+						playerSubSurname,
+						playerReferringYear,
+						playerMinAge,
+						playerMaxAge,
+						playerContinentID,
+						playerNationID,
+						playerRole,
+						playerPositionID,
+						playerFoot
+		);
 
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
@@ -1615,11 +1631,7 @@ public class Controller
 								  String startYear,
 								  String teamID)
 	{
-		fetchPlayer
-			(
-				startYear,
-				teamID
-			);
+		fetchPlayer(startYear, teamID);
 
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
@@ -1646,19 +1658,18 @@ public class Controller
 														 String playerPositionID,
 														 String playerFoot)
 	{
-		fetchPlayer
-						(
-										playerSubName,
-										playerSubSurname,
-										playerReferringYear,
-										playerMinAge,
-										playerMaxAge,
-										playerContinentID,
-										playerNationID,
-										playerRole,
-										playerPositionID,
-										playerFoot
-						);
+		fetchPlayer(
+						playerSubName,
+						playerSubSurname,
+						playerReferringYear,
+						playerMinAge,
+						playerMaxAge,
+						playerContinentID,
+						playerNationID,
+						playerRole,
+						playerPositionID,
+						playerFoot
+		);
 
 
 		String string;
@@ -1734,12 +1745,11 @@ public class Controller
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear)
 	{
-		fetchPlayer
-						(
-										militancyPlayerTeamID,
-										militancyPlayerStartYear,
-										militancyPlayerEndYear
-						);
+		fetchPlayer(
+						militancyPlayerTeamID,
+						militancyPlayerStartYear,
+						militancyPlayerEndYear
+		);
 
 		String string;
 
@@ -2170,25 +2180,27 @@ public class Controller
 		List<String> listPositionName = new ArrayList<>();
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.fetchPositionDB
-						(
-										listPositionID,
-										listPositionRole,
-										listPositionCode,
-										listPositionName
-						);
+		positionDAO.fetchPositionDB(
+						listPositionID,
+						listPositionRole,
+						listPositionCode,
+						listPositionName
+		);
 
-		ctrlPosition.getPositionMap().clear();
+		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
+		positionMap.clear();
 
-		while (!(listPositionID.isEmpty())) {
-			String ID = listPositionID.removeFirst();
-			String role = listPositionRole.removeFirst();
-			String code = listPositionCode.removeFirst();
-			String name = listPositionName.removeFirst();
-			if (null == ctrlPosition.getPositionMap().get(ID)) {
-				Position position = newPosition(role, code, name);
-				ctrlPosition.getPositionMap().put(ID, position);
-			}
+
+		for (int i = 0; i < listPositionID.size(); ++i) {
+			String positionID = listPositionID.get(i);
+			positionMap.putIfAbsent(
+							positionID,
+							newPosition(
+											listPositionRole.get(i),
+											listPositionCode.get(i),
+											listPositionName.get(i)
+							)
+			);
 		}
 	}
 
@@ -2200,23 +2212,26 @@ public class Controller
 		List<String> listPositionName = new ArrayList<>();
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.fetchPositionDB
-						(
-										playerID,
-										listPositionRole,
-										listPositionCode,
-										listPositionName
-						);
+		positionDAO.fetchPositionDB(
+						playerID,
+						listPositionRole,
+						listPositionCode,
+						listPositionName
+		);
 
-		ctrlPlayer.getPlayerMap().get(playerID).getPositionSet().clear();
 
-		while (!(listPositionName.isEmpty())) {
-			String role = listPositionRole.removeFirst();
-			String code = listPositionCode.removeFirst();
-			String name = listPositionName.removeFirst();
+		Set<Position> playerPositionSet = ctrlPlayer.getPlayerMap().get(playerID).getPositionSet();
+		playerPositionSet.clear();
 
-			Position position = newPosition(role, code, name);
-			ctrlPlayer.getPlayerMap().get(playerID).getPositionSet().add(position);
+
+		for (int i = 0; i < listPositionName.size(); ++i) {
+			playerPositionSet.add(
+							newPosition(
+											listPositionRole.get(i),
+											listPositionCode.get(i),
+											listPositionName.get(i)
+							)
+			);
 		}
 	}
 
@@ -2274,20 +2289,19 @@ public class Controller
 																 String goalConceded,
 																 String penaltySaved)
 	{
-		return new Statistic
-						(
-										team,
-										competition,
-										competitionYear,
-										match,
-										goalScored,
-										penaltyScored,
-										assist,
-										yellowCard,
-										redCard,
-										goalConceded,
-										penaltySaved
-						);
+		return new Statistic(
+						team,
+						competition,
+						competitionYear,
+						match,
+						goalScored,
+						penaltyScored,
+						assist,
+						yellowCard,
+						redCard,
+						goalConceded,
+						penaltySaved
+		);
 	}
 
 
@@ -2314,54 +2328,59 @@ public class Controller
 		List<String> listStatisticPenaltySaved = new ArrayList<>();
 
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticDB
-						(
-										teamType,
-										playerRole,
-										listPlayerID,
-										listPlayerRole,
-										listPlayerName,
-										listPlayerSurname,
-										listStatisticMatch,
-										listStatisticGoalScored,
-										listStatisticPenaltyScored,
-										listStatisticAssist,
-										listStatisticYellowCard,
-										listStatisticRedCard,
-										listStatisticGoalConceded,
-										listStatisticPenaltySaved
-						);
-
-		ctrlPlayer.getPlayerMap().clear();
-
-		for (String ID : listPlayerID) {
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String role = listPlayerRole.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, null, null, null, null, role, null);
-				ctrlPlayer.getPlayerMap().put(ID, player);
-			}
-		}
+		statisticDAO.fetchStatisticDB(
+						teamType,
+						playerRole,
+						listPlayerID,
+						listPlayerRole,
+						listPlayerName,
+						listPlayerSurname,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
 
 
-		while (!(listPlayerID.isEmpty())) {
-			Statistic statistic = newStatistic
-							(
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
 											null,
 											null,
 											null,
-											listStatisticMatch.removeFirst(),
-											listStatisticGoalScored.removeFirst(),
-											listStatisticPenaltyScored.removeFirst(),
-											listStatisticAssist.removeFirst(),
-											listStatisticYellowCard.removeFirst(),
-											listStatisticRedCard.removeFirst(),
-											listStatisticGoalConceded.removeFirst(),
-											listStatisticPenaltySaved.removeFirst()
-							);
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
 
-			ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()).getStatisticList().add(statistic);
+			playerMap.get(playerID).getStatisticList().add(
+							newStatistic(
+											null,
+											null,
+											null,
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							)
+			);
 		}
 
 	}
@@ -2386,68 +2405,77 @@ public class Controller
 		List<String> listStatisticPenaltySaved = new ArrayList<>();
 
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticDB
-						(
-										competitionStartYear,
-										competitionID,
-										listTeamID,
-										listTeamLongName,
-										listPlayerID,
-										listPlayerRole,
-										listPlayerName,
-										listPlayerSurname,
-										listStatisticMatch,
-										listStatisticGoalScored,
-										listStatisticPenaltyScored,
-										listStatisticAssist,
-										listStatisticYellowCard,
-										listStatisticRedCard,
-										listStatisticGoalConceded,
-										listStatisticPenaltySaved
-						);
-
-		ctrlTeam.getTeamMap().clear();
-
-		for (String ID : listTeamID) {
-			String longName = listTeamLongName.removeFirst();
-			if (null == ctrlTeam.getTeamMap().get(ID)) {
-				Team team = newTeam(null, null, longName, null, null);
-				ctrlTeam.getTeamMap().put(ID, team);
-			}
-		}
-
-		ctrlPlayer.getPlayerMap().clear();
-
-		for (String ID : listPlayerID) {
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String role = listPlayerRole.removeFirst();
-			if (null == ctrlPlayer.getPlayerMap().get(ID)) {
-				Player player = newPlayer(name, surname, null, null, null, null, role, null);
-				ctrlPlayer.getPlayerMap().put(ID, player);
-			}
-		}
+		statisticDAO.fetchStatisticDB(
+						competitionStartYear,
+						competitionID,
+						listTeamID,
+						listTeamLongName,
+						listPlayerID,
+						listPlayerRole,
+						listPlayerName,
+						listPlayerSurname,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
 
 
-		while (!(listPlayerID.isEmpty())) {
-			Statistic statistic = newStatistic
-							(
-											ctrlTeam.getTeamMap().get(listTeamID.removeFirst()),
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
 											null,
 											null,
-											listStatisticMatch.removeFirst(),
-											listStatisticGoalScored.removeFirst(),
-											listStatisticPenaltyScored.removeFirst(),
-											listStatisticAssist.removeFirst(),
-											listStatisticYellowCard.removeFirst(),
-											listStatisticRedCard.removeFirst(),
-											listStatisticGoalConceded.removeFirst(),
-											listStatisticPenaltySaved.removeFirst()
-							);
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
 
-			ctrlPlayer.getPlayerMap().get(listPlayerID.removeFirst()).getStatisticList().add(statistic);
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
+
+			playerMap.get(playerID).getStatisticList().add(
+							newStatistic(
+											teamMap.get(teamID),
+											null,
+											null,
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							)
+			);
 		}
-
 	}
 
 
@@ -2457,11 +2485,7 @@ public class Controller
 																String teamType,
 																String playerRole)
 	{
-		fetchStatisticTotal
-						(
-										teamType,
-										playerRole
-						);
+		fetchStatisticTotal(teamType, playerRole);
 
 		String string;
 
@@ -2537,11 +2561,7 @@ public class Controller
 																									String competitionStartYear,
 																									String competitionID)
 	{
-		fetchStatisticCompetitionEdition
-						(
-										competitionStartYear,
-										competitionID
-						);
+		fetchStatisticCompetitionEdition(competitionStartYear, competitionID);
 
 		String string;
 
@@ -2633,38 +2653,44 @@ public class Controller
 		List<String> listConfederationShortName = new ArrayList<>();
 
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipationDB
-						(
-										teamID,
-										competitionStartYear,
-										listCompetitionID,
-										listCompetitionType,
-										listCompetitionName,
-										listConfederationID,
-										listConfederationShortName
-						);
-
-		ctrlConfederation.getConfederationMap().clear();
-
-		for (String ID : listConfederationID) {
-			String shortName = listConfederationShortName.removeFirst();
-			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
-				Confederation confederation = newConfederation(shortName, null, null, null);
-				ctrlConfederation.getConfederationMap().put(ID, confederation);
-			}
-		}
+		partecipationDAO.fetchPartecipationDB(
+						teamID,
+						competitionStartYear,
+						listCompetitionID,
+						listCompetitionType,
+						listCompetitionName,
+						listConfederationID,
+						listConfederationShortName
+		);
 
 
-		ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().clear();
+		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
+		confederationMap.clear();
 
-		while (!(listCompetitionID.isEmpty())) {
-			String ID = listCompetitionID.removeFirst();
-			String type = listCompetitionType.removeFirst();
-			String name = listCompetitionName.removeFirst();
-			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
+		Set<Competition> teamCompetitionSet = ctrlTeam.getTeamMap().get(teamID).getCompetitionSet();
+		teamCompetitionSet.clear();
 
-			Competition competition = newCompetition(type, null, name, confederation);
-			ctrlTeam.getTeamMap().get(teamID).getCompetitionSet().add(competition);
+
+		for (int i = 0; i < listCompetitionID.size(); ++i) {
+			String confederationID = listConfederationID.get(i);
+			confederationMap.putIfAbsent(
+							confederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											null,
+											null,
+											null
+							)
+			);
+
+			teamCompetitionSet.add(
+							newCompetition(
+											listCompetitionType.get(i),
+											null,
+											listCompetitionName.get(i),
+											confederationMap.get(confederationID)
+							)
+			);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2682,27 +2708,34 @@ public class Controller
 		List<String> listPlayerRole = new ArrayList<>();
 
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB
-						(
-										teamID,
-										competitionStartYear,
-										listPlayerID,
-										listPlayerName,
-										listPlayerSurname,
-										listPlayerRole
-						);
+		militancyDAO.fetchMilitancyDB(
+						teamID,
+						competitionStartYear,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerRole
+		);
 
 
-		ctrlTeam.getTeamMap().get(teamID).getPlayerMap().clear();
+		Map<String, Player> teamPlayerMap = ctrlTeam.getTeamMap().get(teamID).getPlayerMap();
+		teamPlayerMap.clear();
 
-		while (!(listPlayerID.isEmpty())) {
-			String ID = listPlayerID.removeFirst();
-			String name = listPlayerName.removeFirst();
-			String surname = listPlayerSurname.removeFirst();
-			String role = listPlayerRole.removeFirst();
 
-			Player player = newPlayer(name, surname, null, null, null, null, role, null);
-			ctrlTeam.getTeamMap().get(teamID).getPlayerMap().put(ID, player);
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			teamPlayerMap.putIfAbsent(
+							listPlayerID.get(i),
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
 		}
 	}
 
@@ -2717,20 +2750,16 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB
-						(
-										playerID,
-										listMilitancyYear,
-										listMilitancyType,
-										listTeamID,
-										listTeamLongName,
-										listCountryID,
-										listCountryName
-						);
+		militancyDAO.fetchMilitancyDB(
+						playerID,
+						listMilitancyYear,
+						listMilitancyType,
+						listTeamID,
+						listTeamLongName,
+						listCountryID,
+						listCountryName
+		);
 
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-		player.getClubCareer().clear();
 
 		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
 		countryMap.clear();
@@ -2738,40 +2767,38 @@ public class Controller
 		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
 		teamMap.clear();
 
-		while (!(listMilitancyYear.isEmpty())) {
+		Map<String, Team> playerClubCareer = ctrlPlayer.getPlayerMap().get(playerID).getClubCareer();
+		playerClubCareer.clear();
 
-			String countryID = listCountryID.removeFirst();
-			String countryName = listCountryName.removeFirst();
 
-			if (null == countryMap.get(countryID)) {
-				Country country = newCountry(null, null, countryName, null);
-				countryMap.put(countryID, country);
-			}
+		for (int i = 0; i < listMilitancyYear.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 
-			String teamID = listTeamID.removeFirst();
-			String teamLongName = listTeamLongName.removeFirst();
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											countryMap.get(countryID),
+											null
+							)
+			);
 
-			if (null == teamMap.get(teamID)) {
-				Team team = newTeam
-								(
-												null,
-												null,
-												teamLongName,
-												countryMap.get(countryID),
-												null
-								);
-
-				teamMap.put(teamID, team);
-			}
-
-			String militancyYear = listMilitancyYear.removeFirst();
-			String militancyType = listMilitancyType.removeFirst();
-
-			String key = militancyYear;
-			key += "_";
-			key += militancyType;
-
-			player.getClubCareer().put(key, teamMap.get(teamID));
+			playerClubCareer.putIfAbsent(
+							listMilitancyYear.get(i) + "_" + listMilitancyType.get(i),
+							teamMap.get(teamID)
+			);
 		}
 	}
 
@@ -2783,34 +2810,38 @@ public class Controller
 		List<String> listTeamLongName = new ArrayList<>();
 
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB
-						(
-										playerID,
-										listMilitancyYear,
-										listTeamID,
-										listTeamLongName
-						);
+		militancyDAO.fetchMilitancyDB(
+						playerID,
+						listMilitancyYear,
+						listTeamID,
+						listTeamLongName
+		);
 
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-		player.getNationalCareer().clear();
 
 		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
 		teamMap.clear();
 
-		while (!(listMilitancyYear.isEmpty())) {
+		Map<String, Team> playerNationalCareer = ctrlPlayer.getPlayerMap().get(playerID).getNationalCareer();
+		playerNationalCareer.clear();
 
-			String ID = listTeamID.removeFirst();
-			String longName = listTeamLongName.removeFirst();
 
-			if (null == teamMap.get(ID)) {
-				Team team = newTeam(null, null, longName, null, null);
-				teamMap.put(ID, team);
-			}
+		for (int i = 0; i < listMilitancyYear.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
 
-			String year = listMilitancyYear.removeFirst();
-
-			player.getNationalCareer().put(year, teamMap.get(ID));
+			playerNationalCareer.putIfAbsent(
+							listMilitancyYear.get(i),
+							teamMap.get(teamID)
+			);
 		}
 	}
 
@@ -2864,36 +2895,45 @@ public class Controller
 		List<String> listCompetitionName = new ArrayList<>();
 
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTrophyDB
-						(
-										teamID,
-										competitionStartYear,
-										listTrophyID,
-										listTrophyName,
-										listCompetitionID,
-										listCompetitionName
-						);
+		trophyDAO.fetchTrophyDB(
+						teamID,
+						competitionStartYear,
+						listTrophyID,
+						listTrophyName,
+						listCompetitionID,
+						listCompetitionName
+		);
 
-		ctrlCompetition.getCompetitionMap().clear();
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		competitionMap.clear();
 
-		for (String ID : listCompetitionID) {
-			String name = listCompetitionName.removeFirst();
-			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
-				Competition competition = newCompetition(null, null, name, null);
-				ctrlCompetition.getCompetitionMap().put(ID, competition);
-			}
-		}
+		Set<Trophy> teamTrophySet = ctrlTeam.getTeamMap().get(teamID).getTrophySet();
+		teamTrophySet.clear();
 
 
-		ctrlTeam.getTeamMap().get(teamID).getTrophySet().clear();
+		for (int i = 0; i < listTrophyID.size(); ++i) {
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
 
-		for (String ID : listTrophyID) {
-			String name = listTrophyName.removeFirst();
-			Competition competition = ctrlCompetition.getCompetitionMap().get(listCompetitionID.removeFirst());
-
-			Trophy trophy = newTrophy(null, null, name, null, null, competition, null);
-
-			ctrlTeam.getTeamMap().get(teamID).getTrophySet().add(trophy);
+			teamTrophySet.add(
+							newTrophy(
+											null,
+											null,
+											listTrophyName.get(i),
+											null,
+											null,
+											competitionMap.get(competitionID),
+											null
+							)
+			);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2940,25 +2980,31 @@ public class Controller
 		List<String> listPrizeGiven = new ArrayList<>();
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPrizeDB
-						(
-										teamID,
-										startYear,
-										listPrizeID,
-										listPrizeName,
-										listPrizeGiven
-						);
+		prizeDAO.fetchPrizeDB(
+						teamID,
+						startYear,
+						listPrizeID,
+						listPrizeName,
+						listPrizeGiven
+		);
 
 
-		ctrlTeam.getTeamMap().get(teamID).getPrizeSet().clear();
+		Set<Prize> teamPrizeSet = ctrlTeam.getTeamMap().get(teamID).getPrizeSet();
+		teamPrizeSet.clear();
 
-		for (String ID : listPrizeID) {
-			String name = listPrizeName.removeFirst();
-			String given = listPrizeGiven.removeFirst();
 
-			Prize prize = newPrize(null, null, name, given, null, null, null);
-
-			ctrlTeam.getTeamMap().get(teamID).getPrizeSet().add(prize);
+		for (int i = 0; i < listPrizeID.size(); ++i) {
+			teamPrizeSet.add(
+							newPrize(
+											null,
+											null,
+											listPrizeName.get(i),
+											listPrizeGiven.get(i),
+											null,
+											null,
+											null
+							)
+			);
 		}
 
 	}
@@ -2976,11 +3022,19 @@ public class Controller
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
 		nationalityDAO.fetchNationalityDB(playerID, listCountryName);
 
-		ctrlPlayer.getPlayerMap().get(playerID).getCountrySet().clear();
-		while (!(listCountryName.isEmpty())) {
-			String name = listCountryName.removeFirst();
-			Country country = newCountry(null, null, name, null);
-			ctrlPlayer.getPlayerMap().get(playerID).getCountrySet().add(country);
+		Set<Country> playerCountrySet = ctrlPlayer.getPlayerMap().get(playerID).getCountrySet();
+		playerCountrySet.clear();
+
+
+		for (int i = 0; i < listCountryName.size(); ++i) {
+			playerCountrySet.add(
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -3044,14 +3098,18 @@ public class Controller
 		TagDAO tagDAO = new PostgresImplTagDAO();
 		tagDAO.fetchTagDB(playerID, listTagName);
 
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+		Set<Tag> playerTagSet = ctrlPlayer.getPlayerMap().get(playerID).getTagSet();
+		playerTagSet.clear();
 
-		player.getTagSet().clear();
 
-		while (!(listTagName.isEmpty())) {
-			String name = listTagName.removeFirst();
-			Tag tag = newTag(null, null, name);
-			player.getTagSet().add(tag);
+		for (int i = 0; i < listTagName.size(); ++i) {
+			playerTagSet.add(
+							newTag(
+											null,
+											null,
+											listTagName.get(i)
+							)
+			);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
