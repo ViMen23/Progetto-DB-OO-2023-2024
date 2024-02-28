@@ -9,4 +9,9 @@ public interface PrizeDAO
 										List<String> listPrizeID,
 										List<String> listPrizeName,
 										List<String> listPrizeGiven);
+
+	void fetchPrizeDB(String playerID,
+										List<String> listPrizeAssignYear,
+										List<String> listPrizeName,
+										List<String> listPrizeGiven);
 }

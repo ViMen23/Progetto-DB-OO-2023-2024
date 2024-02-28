@@ -29,7 +29,7 @@ public class Player
 	private Map<String, String> attributePhysicalMap;
 	private Map<String, String> attributeTechnicalMap;
 
-	private Set<Tag> tagSet;
+	private final Set<Tag> tagSet;
 
 	private final Set<Position> positionSet;
 	private final Set<Country> countrySet;
@@ -37,7 +37,10 @@ public class Player
 	private final Map<String, Team> nationalCareer;
 	private final Map<String, Team> clubCareer;
 
-	private final List<Statistic> statisticList;
+	private final Set<Statistic> statisticSet;
+
+	private final Set<Trophy> trophySet;
+	private final Set<Prize> prizeSet;
 
 
 	public Player(String name,
@@ -58,7 +61,7 @@ public class Player
 		this.role = role;
 		this.retiredDate = retiredDate;
 
-		this.statisticList = new ArrayList<>();
+		this.statisticSet = new LinkedHashSet<>();
 		this.positionSet = new LinkedHashSet<>();
 		this.countrySet = new LinkedHashSet<>();
 
@@ -71,6 +74,9 @@ public class Player
 
 		this.nationalCareer = new LinkedHashMap<>();
 		this.clubCareer = new LinkedHashMap<>();
+
+		this.trophySet = new LinkedHashSet<>();
+		this.prizeSet = new LinkedHashSet<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -169,9 +175,10 @@ public class Player
 		this.retiredDate = retiredDate;
 	}
 
-	public List<Statistic> getStatisticList()
+
+	public Set<Statistic> getStatisticSet()
 	{
-		return statisticList;
+		return statisticSet;
 	}
 
 	public Set<Position> getPositionSet()
@@ -237,5 +244,15 @@ public class Player
 	public Map<String, Team> getClubCareer()
 	{
 		return clubCareer;
+	}
+
+	public Set<Trophy> getTrophySet()
+	{
+		return trophySet;
+	}
+
+	public Set<Prize> getPrizeSet()
+	{
+		return prizeSet;
 	}
 }

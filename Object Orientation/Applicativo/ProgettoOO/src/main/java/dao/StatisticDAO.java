@@ -36,4 +36,24 @@ public interface StatisticDAO
 												List<String> listStatisticRedCard,
 												List<String> listStatisticGoalConceded,
 												List<String> listStatisticPenaltySaved);
+
+	void fetchStatisticDB(String playerID,
+												String teamType,
+												String teamID,
+												String competitionID,
+												String startYear,
+												String endYear,
+												List<String> listCompetitionStartYear,
+												List<String> listCompetitionID,
+												List<String> listCompetitionName,
+												List<String> listTeamID,
+												List<String> listTeamLongName,
+												List<String> listStatisticMatch,
+												List<String> listStatisticGoalScored,
+												List<String> listStatisticPenaltyScored,
+												List<String> listStatisticAssist,
+												List<String> listStatisticYellowCard,
+												List<String> listStatisticRedCard,
+												List<String> listStatisticGoalConceded,
+												List<String> listStatisticPenaltySaved);
 }

@@ -2035,6 +2035,111 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : get_prize_case
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_prize_case
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            prize_year  text,
+            prize_name  text,
+            prize_given text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player_prize_case.assign_year::text AS prize_year,
+            fp_prize.name::text AS prize_name,
+            fp_prize.given::text AS prize_given
+        FROM
+            fp_player_prize_case
+            JOIN
+            fp_prize
+                ON
+                fp_player_prize_case.prize_id = fp_prize.id
+        WHERE
+            fp_player_prize_case.player_id = id_player::integer
+        ORDER BY
+            fp_player_prize_case.assign_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_trophy_case
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_trophy_case
+(
+    IN  id_player   text
+    IN  type_team   text
+)
+RETURNS TABLE
+        (
+            comp_start_year text,
+            comp_name       text,
+            team_name       text,
+            trophy_name     text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player_trophy_case.start_year::text AS comp_start_year,
+            fp_competition.name::text AS comp_name,
+            fp_team.long_name::text AS team_name,
+            fp_trophy.name::text AS trophy_name
+        FROM
+            fp_player_trophy_case
+            JOIN
+            fp_trophy
+                ON
+                fp_player_trophy_case.trophy_id = fp_trophy.id
+            JOIN
+            fp_team
+                ON
+                fp_player_trophy_case.team_id = fp_team.id
+            JOIN
+            fp_competition
+                ON
+                fp_player_trophy_case.competition_id = fp_competition.id
+        WHERE
+            fp_player_trophy_case.player_id = id_player::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+        ORDER BY
+            fp_player_trophy_case.start_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : get_attribute_goalkeeping
  *
  * IN      : text

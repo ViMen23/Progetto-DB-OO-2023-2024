@@ -50,4 +50,31 @@ public class PostgresImplPrizeDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchPrizeDB(String playerID,
+													 List<String> listPrizeAssignYear,
+													 List<String> listPrizeName,
+													 List<String> listPrizeGiven)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listPrizeAssignYear.add(rs.getString("prize_year"));
+				listPrizeName.add(rs.getString("prize_name"));
+				listPrizeGiven.add(rs.getString("prize_given"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

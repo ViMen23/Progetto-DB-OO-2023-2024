@@ -2366,7 +2366,7 @@ public class Controller
 							)
 			);
 
-			playerMap.get(playerID).getStatisticList().add(
+			playerMap.get(playerID).getStatisticSet().add(
 							newStatistic(
 											null,
 											null,
@@ -2460,7 +2460,7 @@ public class Controller
 							)
 			);
 
-			playerMap.get(playerID).getStatisticList().add(
+			playerMap.get(playerID).getStatisticSet().add(
 							newStatistic(
 											teamMap.get(teamID),
 											null,
@@ -2478,6 +2478,103 @@ public class Controller
 		}
 	}
 
+
+	private void fetchStatisticPlayer(String playerID,
+																		String teamType,
+																		String teamID,
+																		String competitionID,
+																		String startYear,
+																		String endYear)
+	{
+		List<String> listCompetitionStartYear = new ArrayList<>();
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listStatisticMatch = new ArrayList<>();
+		List<String> listStatisticGoalScored = new ArrayList<>();
+		List<String> listStatisticPenaltyScored = new ArrayList<>();
+		List<String> listStatisticAssist = new ArrayList<>();
+		List<String> listStatisticYellowCard = new ArrayList<>();
+		List<String> listStatisticRedCard = new ArrayList<>();
+		List<String> listStatisticGoalConceded = new ArrayList<>();
+		List<String> listStatisticPenaltySaved = new ArrayList<>();
+
+		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
+		statisticDAO.fetchStatisticDB(
+						playerID,
+						teamType,
+						teamID,
+						competitionID,
+						startYear,
+						endYear,
+						listCompetitionStartYear,
+						listCompetitionID,
+						listCompetitionName,
+						listTeamID,
+						listTeamLongName,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
+
+
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		competitionMap.clear();
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+		playerStatisticSet.clear();
+
+
+		for (int i = 0; i < listCompetitionStartYear.size(); ++i) {
+			String competition_ID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competition_ID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
+
+			String team_ID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							team_ID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+
+			playerStatisticSet.add(
+							newStatistic(
+											teamMap.get(team_ID),
+											competitionMap.get(competition_ID),
+											listCompetitionStartYear.get(i),
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							)
+			);
+		}
+	}
 
 
 	public void setStatisticTable(Vector<String> statisticTableColumnName,
@@ -2538,18 +2635,20 @@ public class Controller
 			Vector<String> statisticVector = new Vector<>();
 
 			Player player = ctrlPlayer.getPlayerMap().get(key);
+			Statistic playerStatistic = player.getStatisticSet().iterator().next();
+
 
 			statisticVector.add(player.getRole());
 			statisticVector.add(player.getName());
 			statisticVector.add(player.getSurname());
-			statisticVector.add(player.getStatisticList().getFirst().getMatch());
-			statisticVector.add(player.getStatisticList().getFirst().getGoalScored());
-			statisticVector.add(player.getStatisticList().getFirst().getPenaltyScored());
-			statisticVector.add(player.getStatisticList().getFirst().getAssist());
-			statisticVector.add(player.getStatisticList().getFirst().getYellowCard());
-			statisticVector.add(player.getStatisticList().getFirst().getRedCard());
-			statisticVector.add(player.getStatisticList().getFirst().getGoalConceded());
-			statisticVector.add(player.getStatisticList().getFirst().getPenaltySaved());
+			statisticVector.add(playerStatistic.getMatch());
+			statisticVector.add(playerStatistic.getGoalScored());
+			statisticVector.add(playerStatistic.getPenaltyScored());
+			statisticVector.add(playerStatistic.getAssist());
+			statisticVector.add(playerStatistic.getYellowCard());
+			statisticVector.add(playerStatistic.getRedCard());
+			statisticVector.add(playerStatistic.getGoalConceded());
+			statisticVector.add(playerStatistic.getPenaltySaved());
 
 			statisticTableData.add(statisticVector);
 		}
@@ -2618,19 +2717,106 @@ public class Controller
 			Vector<String> statisticVector = new Vector<>();
 
 			Player player = ctrlPlayer.getPlayerMap().get(key);
+			Statistic playerStatistic = player.getStatisticSet().iterator().next();
 
-			statisticVector.add(player.getStatisticList().getFirst().getTeam().getLongName());
+			statisticVector.add(playerStatistic.getTeam().getLongName());
 			statisticVector.add(player.getRole());
 			statisticVector.add(player.getName());
 			statisticVector.add(player.getSurname());
-			statisticVector.add(player.getStatisticList().getFirst().getMatch());
-			statisticVector.add(player.getStatisticList().getFirst().getGoalScored());
-			statisticVector.add(player.getStatisticList().getFirst().getPenaltyScored());
-			statisticVector.add(player.getStatisticList().getFirst().getAssist());
-			statisticVector.add(player.getStatisticList().getFirst().getYellowCard());
-			statisticVector.add(player.getStatisticList().getFirst().getRedCard());
-			statisticVector.add(player.getStatisticList().getFirst().getGoalConceded());
-			statisticVector.add(player.getStatisticList().getFirst().getPenaltySaved());
+			statisticVector.add(playerStatistic.getMatch());
+			statisticVector.add(playerStatistic.getGoalScored());
+			statisticVector.add(playerStatistic.getPenaltyScored());
+			statisticVector.add(playerStatistic.getAssist());
+			statisticVector.add(playerStatistic.getYellowCard());
+			statisticVector.add(playerStatistic.getRedCard());
+			statisticVector.add(playerStatistic.getGoalConceded());
+			statisticVector.add(playerStatistic.getPenaltySaved());
+
+			statisticTableData.add(statisticVector);
+		}
+	}
+
+
+	public void setStatisticPlayerTable(Vector<String> statisticTableColumnName,
+																			Vector<Vector<String>> statisticTableData,
+																			String playerID,
+																			String teamType,
+																			String teamID,
+																			String competitionID,
+																			String startYear,
+																			String endYear)
+	{
+		fetchStatisticPlayer(
+						playerID,
+						teamType,
+						teamID,
+						competitionID,
+						startYear,
+						endYear
+		);
+
+		String string;
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		statisticTableColumnName.add(string);
+
+		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+
+		for (Statistic playerStatistic : playerStatisticSet) {
+			Vector<String> statisticVector = new Vector<>();
+
+			statisticVector.add(playerStatistic.getCompetitionYear());
+			statisticVector.add(playerStatistic.getCompetition().getName());
+			statisticVector.add(playerStatistic.getTeam().getLongName());
+			statisticVector.add(playerStatistic.getMatch());
+			statisticVector.add(playerStatistic.getGoalScored());
+			statisticVector.add(playerStatistic.getPenaltyScored());
+			statisticVector.add(playerStatistic.getAssist());
+			statisticVector.add(playerStatistic.getYellowCard());
+			statisticVector.add(playerStatistic.getRedCard());
+			statisticVector.add(playerStatistic.getGoalConceded());
+			statisticVector.add(playerStatistic.getPenaltySaved());
 
 			statisticTableData.add(statisticVector);
 		}
@@ -3006,7 +3192,41 @@ public class Controller
 							)
 			);
 		}
+	}
 
+
+	private void fetchPrize(String playerID)
+	{
+		List<String> listPrizeAssignYear = new ArrayList<>();
+		List<String> listPrizeName = new ArrayList<>();
+		List<String> listPrizeGiven = new ArrayList<>();
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchPrizeDB(
+						playerID,
+						listPrizeAssignYear,
+						listPrizeName,
+						listPrizeGiven
+		);
+
+
+		Set<Prize> playerPrizeSet = ctrlPlayer.getPlayerMap().get(playerID).getPrizeSet();
+		playerPrizeSet.clear();
+
+
+		for (int i = 0; i < listPrizeAssignYear.size(); ++i) {
+			playerPrizeSet.add(
+							newPrize(
+											null,
+											null,
+											listPrizeName.get(i),
+											listPrizeGiven.get(i),
+											null,
+											null,
+											listPrizeAssignYear.get(i)
+							)
+			);
+		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
