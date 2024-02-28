@@ -1,9 +1,13 @@
 package gui;
 
 import controller.Controller;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -22,7 +26,7 @@ public class ViewPlayerPanel
 
 	private final JPanel informationPanel;
 	private final JPanel navigationPanel;
-	private final JPanel generalInformationTablePanel;
+	private final JPanel generalInformationPanel;
 
 	private final JLabel playerPositionTableLabel;
 	private final JLabel nationalityTableLabel;
@@ -38,7 +42,8 @@ public class ViewPlayerPanel
 	private final JButton generalInformationButton;
 	private final JButton detailedInformationButton;
 	private final JButton careerInformationButton;
-	private final JButton statisticsButton;
+	private final JButton clubStatisticsButton;
+	private final JButton nationalStatisticsButton;
 
 
 	private final JTable playerPositionTable;
@@ -64,6 +69,8 @@ public class ViewPlayerPanel
 	private final Vector<Vector<String>> playerTagTableData = new Vector<>();
 	private final Vector<Vector<String>> playerCareerClubTableData = new Vector<>();
 	private final Vector<Vector<String>> playerCareerNationalTableData = new Vector<>();
+	private final Vector<Vector<String>> playerClubStatisticsTableData = new Vector<>();
+	private Vector<Vector<String>> playerNationalStatisticsTableData = new Vector<>();
 
 
 	private final Vector<String> playerPositionTableColumnName = new Vector<>();
@@ -75,15 +82,50 @@ public class ViewPlayerPanel
 	private final Vector<String> playerTagTableColumnName = new Vector<>();
 	private final Vector<String> playerCareerClubTableColumnName = new Vector<>();
 	private final Vector<String> playerCareerNationalTableColumnName = new Vector<>();
+	private final Vector<String> playerClubStatisticsTableColumnName = new Vector<>();
+	private Vector<String> playerNationalStatisticsTableColumnName = new Vector<>();
 
-	private final JPanel detailedInformationTablePanel;
+
+	private final JPanel detailedInformationPanel;
 	private final JPanel careerInformationTablePanel;
+	private final JPanel clubStatisticsPanel;
+	private final JPanel nationalStatisticsPanel;
+	private final JPanel casePanel;
+	private final JPanel filterStatisticsClubPanel;
+	private final JButton filterStatisticsClubButton;
+
+	private final JPanel titleClubFilterPanel;
+	private final JButton resetStatisticsClubButton;
+	private final JComboBox<String> filterStatisticsClubTeamComboBox;
+	private final JComboBox<String> filterStatisticsClubCompetitionComboBox;
+	private final JComboBox<String> filterStatisticsClubInitialSeasonComboBox;
+	private final JComboBox<String> filterStatisticsClubFinalSeasonComboBox;
+	private final JComboBox<String> filterStatisticsNationalFinalSeasonComboBox;
+	private final JButton caseButton;
+	private final JButton searchStatisticsClubButton;
+	private final JPanel clubStatisticsTablePanel;
+	private final JTable playerClubStatisticsTable;
+
+	private final JPanel titleNationalFilterPanel;
+	private final JButton filterStatisticsNationalButton;
+	private final JComboBox<String> filterStatisticsNationalCompetitionComboBox;
+	private final JComboBox<String> filterStatisticsNationalInitialSeasonComboBox;
+	private final JPanel nationalStatisticsTablePanel;
+	private final JTable playerNationalStatisticsTable;
+	private final JButton resetStatisticsNationalButton;
+	private final JButton searchStatisticsNationalButton;
 
 
 	private JScrollPane scrollPane;
 	private JPanel panel;
 	private JLabel label;
 
+	private String teamType = null;
+	private String teamID = null;
+	private String competitionID = null;
+	private String startYear = null;
+	private String endYear = null;
+	private JPanel filterStatisticsNationalPanel;
 
 
 	public ViewPlayerPanel(String playerID)
@@ -133,7 +175,7 @@ public class ViewPlayerPanel
 		migLayout = new MigLayout
 			(
 				"debug, flowx",
-				"0[25%, fill]0[25%, fill]0[25%, fill]0[25%, fill]0",
+				"2%[14%, fill]0[14%, fill]0[14%, fill]0[14%, fill]0[14%, fill]0[14%, fill]2%",
 				"10[]10"
 			);
 
@@ -174,14 +216,14 @@ public class ViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				/*
-				GuiConfiguration.switchPanel(getRootPanel(), generalInformationTablePanel, 2);
+				GuiConfiguration.switchPanel(getRootPanel(), generalInformationPanel, 2, null);
 
-				 */
+				initFilterStats();
 
 				fillPlayerGeneralView();
 
 				MainFrame.getMainFrameInstance().pack();
+
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -215,10 +257,9 @@ public class ViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				/*
-				GuiConfiguration.switchPanel(getRootPanel(), detailedInformationTablePanel, 2);
+				GuiConfiguration.switchPanel(getRootPanel(), detailedInformationPanel, 2, null);
 
-				 */
+				initFilterStats();
 
 				fillPlayerDetailedView();
 
@@ -235,7 +276,7 @@ public class ViewPlayerPanel
 
 
 
-		string = GuiConfiguration.getMessage("careerInformation");
+		string = GuiConfiguration.getMessage("career");
 		string = string.toUpperCase();
 
 		careerInformationButton = new JButton(string);
@@ -256,12 +297,11 @@ public class ViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				/*
-				GuiConfiguration.switchPanel(getRootPanel(), careerInformationTablePanel, 2);
-
-				 */
+				GuiConfiguration.switchPanel(getRootPanel(), careerInformationTablePanel, 2, null);
 
 				fillPlayerCareerView();
+
+				initFilterStats();
 
 				MainFrame.getMainFrameInstance().pack();
 			}
@@ -271,18 +311,18 @@ public class ViewPlayerPanel
 
 
 		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON VAI ALLE INFORMAZIONI SULLE STATISTICHE
+		 * BUTTON VAI ALLE INFORMAZIONI SULLE STATISTICHE CLUB
 		 *------------------------------------------------------------------------------------------------------*/
 
 
 
-		string = GuiConfiguration.getMessage("statistics");
+		string = GuiConfiguration.getMessage("clubStatistics");
 		string = string.toUpperCase();
 
-		statisticsButton = new JButton(string);
-		statisticsButton.setCursor(GuiConfiguration.getButtonCursor());
+		clubStatisticsButton = new JButton(string);
+		clubStatisticsButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		navigationPanel.add(statisticsButton);
+		navigationPanel.add(clubStatisticsButton);
 
 
 
@@ -292,12 +332,97 @@ public class ViewPlayerPanel
 
 
 
-		statisticsButton.addActionListener(new ActionListener() {
+		clubStatisticsButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				GuiConfiguration.switchPanel(getRootPanel(), clubStatisticsPanel, 2, null);
 
+				initFilterStats();
+
+				teamType = Team.TEAM_TYPE.CLUB.toString();
+
+				fillClubStatisticsView();
+
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON VAI ALLE INFORMAZIONI SULLE STATISTICHE NAZIONALI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("nationalStatistics");
+		string = string.toUpperCase();
+
+		nationalStatisticsButton = new JButton(string);
+		nationalStatisticsButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		navigationPanel.add(nationalStatisticsButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		nationalStatisticsButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				GuiConfiguration.switchPanel(getRootPanel(), nationalStatisticsPanel, 2, null);
+
+
+				initFilterStats();
+
+				teamType = Team.TEAM_TYPE.NATIONAL.toString();
+
+				fillNationalStatisticsView();
+
+				MainFrame.getMainFrameInstance().pack();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		
+		
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON VAI ALLE INFORMAZIONI SULLE STATISTICHE NAZIONALI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("case");
+		string = string.toUpperCase();
+
+		caseButton = new JButton(string);
+		caseButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		navigationPanel.add(caseButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		caseButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//TODO
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -317,11 +442,11 @@ public class ViewPlayerPanel
 				"10[]10"
 			);
 
-		generalInformationTablePanel = new JPanel(migLayout);
-		generalInformationTablePanel.setBackground(panelColor);
-		generalInformationTablePanel.setOpaque(false);
+		generalInformationPanel = new JPanel(migLayout);
+		generalInformationPanel.setBackground(panelColor);
+		generalInformationPanel.setOpaque(false);
 
-		add(generalInformationTablePanel);
+		add(generalInformationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -342,7 +467,7 @@ public class ViewPlayerPanel
 		panel = new JPanel(migLayout);
 		panel.setBackground(panelColor);
 
-		generalInformationTablePanel.add(panel);
+		generalInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -414,7 +539,7 @@ public class ViewPlayerPanel
 		panel = new JPanel(migLayout);
 		panel.setBackground(panelColor);
 
-		generalInformationTablePanel.add(panel);
+		generalInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -484,13 +609,11 @@ public class ViewPlayerPanel
 			(
 				"debug, wrap 5, fill",
 				"0[10%, fill]30[10%, fill]30[10%, fill]30[10%, fill]30[10%, fill]0",
-				"10[]10[]10"
+				"10[top]10"
 			);
 
-		detailedInformationTablePanel = new JPanel(migLayout);
-		detailedInformationTablePanel.setBackground(panelColor);
-		detailedInformationTablePanel.setOpaque(false);
-
+		detailedInformationPanel = new JPanel(migLayout);
+		detailedInformationPanel.setOpaque(false);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -511,7 +634,7 @@ public class ViewPlayerPanel
 		panel = new JPanel(migLayout);
 		panel.setBackground(panelColor);
 
-		detailedInformationTablePanel.add(panel);
+		detailedInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -562,7 +685,28 @@ public class ViewPlayerPanel
 
 		scrollPane = new JScrollPane(playerAttributeGoalkeepingTable);
 
-		panel.add(scrollPane);
+		panel.add(scrollPane, "top");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy, fill",
+				"0[grow, fill]0",
+				"0[]10[]0"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		detailedInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -614,7 +758,28 @@ public class ViewPlayerPanel
 
 		scrollPane = new JScrollPane(playerAttributeMentalTable);
 
-		panel.add(scrollPane);
+		panel.add(scrollPane, "top");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy, fill",
+				"0[grow, fill]0",
+				"0[]10[]0"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		detailedInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -666,7 +831,28 @@ public class ViewPlayerPanel
 
 		scrollPane = new JScrollPane(playerAttributePhysicalTable);
 
-		panel.add(scrollPane);
+		panel.add(scrollPane, "top");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy, fill",
+				"0[grow, fill]0",
+				"0[]10[]0"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		detailedInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -719,6 +905,27 @@ public class ViewPlayerPanel
 		scrollPane = new JScrollPane(playerAttributeTechnicalTable);
 
 		panel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy, fill",
+				"0[grow, fill]0",
+				"0[]10[]0"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		detailedInformationPanel.add(panel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -898,8 +1105,1136 @@ public class ViewPlayerPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL STATISTICHE CLUB GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"0[]10[]0"
+			);
+
+		clubStatisticsPanel = new JPanel(migLayout);
+		clubStatisticsPanel.setOpaque(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TITOLO GENERALE DEL FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"0[]110[]0",
+				"10[]10"
+			);
+
+		titleClubFilterPanel = new JPanel(migLayout);
+		titleClubFilterPanel.setOpaque(true);
+		titleClubFilterPanel.setBackground(panelColor);
+
+		clubStatisticsPanel.add(titleClubFilterPanel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON MOSTRA/NASCODI FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+		string = "Filtro per statistiche club"; //TODO i18n
+
+		filterStatisticsClubButton = new JButton(string);
+
+		filterStatisticsClubButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		filterStatisticsClubButton.setIcon(GuiConfiguration.getMinimizeIcon());
+		filterStatisticsClubButton.setIconTextGap(40);
+
+		filterStatisticsClubButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titleClubFilterPanel.add(filterStatisticsClubButton, "width 80%");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				GuiConfiguration.minimizePanel
+					(
+						clubStatisticsPanel,
+						filterStatisticsClubPanel,
+						filterStatisticsClubButton,
+						"dock center, sgx general"
+					);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE DI RESET PER FILTER PANEL
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetStatisticsClubButton = new JButton(GuiConfiguration.getResetIcon());
+		resetStatisticsClubButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titleClubFilterPanel.add(resetStatisticsClubButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetStatisticsClubButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				clubStatisticsButton.doClick();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL STATISTICHE CLUB FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"0[grow, fill]0",
+				"0[]0[]10[]0[]10[]0[]20[]0"
+			);
+
+		filterStatisticsClubPanel = new JPanel(migLayout);
+		filterStatisticsClubPanel.setOpaque(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI TEAM
+		 *------------------------------------------------------------------------------------------------------*/
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		filterStatisticsClubPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO FILTRI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		filterStatisticsClubPanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TEAM
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("team");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX TEAM
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubTeamComboBox = new JComboBox<>();
+
+		filterStatisticsClubTeamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsClubTeamComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsClubTeamComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubTeamComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		filterStatisticsClubPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO FILTRI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		filterStatisticsClubPanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL COMPETITION
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("competition");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubCompetitionComboBox = new JComboBox<>();
+
+		filterStatisticsClubCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsClubCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsClubCompetitionComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI UNA STAGIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("seasonRange");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		filterStatisticsClubPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO FILTRI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"5%[20%]10:push[40%]5%",
+				"10[]10[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		filterStatisticsClubPanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL STAGIONE INIZIALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("initialSeason");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX STAGIONE INIZIALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubInitialSeasonComboBox = new JComboBox<>();
+
+		filterStatisticsClubInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsClubInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsClubInitialSeasonComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL STAGIONE FINALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("finalSeason");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX STAGIONE FINALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubFinalSeasonComboBox = new JComboBox<>();
+
+		filterStatisticsClubFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsClubFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsClubFinalSeasonComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsClubFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE RICERCA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+
+		searchStatisticsClubButton = new JButton(string);
+		searchStatisticsClubButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		filterStatisticsClubPanel.add(searchStatisticsClubButton, "span 2");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		searchStatisticsClubButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//TODO
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TABELLA STATISTICHE CLUB DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"10[]10"
+			);
+
+		clubStatisticsTablePanel = new JPanel(migLayout);
+		clubStatisticsTablePanel.setBackground(panelColor);
+
+		clubStatisticsPanel.add(clubStatisticsTablePanel, "dock south, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Titolo"; //TODO i18n
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		clubStatisticsTablePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DELLE STATISTICHE TOTALI DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		playerClubStatisticsTable = new JTable();
+
+		playerClubStatisticsTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		playerClubStatisticsTable.setPreferredScrollableViewportSize(playerClubStatisticsTable.getPreferredSize());
+		playerClubStatisticsTable.setFillsViewportHeight(true);
+
+		playerClubStatisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		playerClubStatisticsTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) playerClubStatisticsTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		scrollPane = new JScrollPane(playerClubStatisticsTable);
+
+		clubStatisticsTablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL STATISTICHE NAZIONALI GENERALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"0[]10[]0"
+			);
+
+		nationalStatisticsPanel = new JPanel(migLayout);
+		nationalStatisticsPanel.setOpaque(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TITOLO GENERALE DEL FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"0[]110[]0",
+				"10[]10"
+			);
+
+		titleNationalFilterPanel = new JPanel(migLayout);
+		titleNationalFilterPanel.setOpaque(true);
+		titleNationalFilterPanel.setBackground(panelColor);
+
+		nationalStatisticsPanel.add(titleNationalFilterPanel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BUTTON MOSTRA/NASCODI FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Filtro per statistiche nazionali"; //TODO i18n
+
+		filterStatisticsNationalButton = new JButton(string);
+
+		filterStatisticsNationalButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		filterStatisticsNationalButton.setIcon(GuiConfiguration.getMinimizeIcon());
+		filterStatisticsNationalButton.setIconTextGap(40);
+
+		filterStatisticsNationalButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titleNationalFilterPanel.add(filterStatisticsNationalButton, "width 80%");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				GuiConfiguration.minimizePanel
+					(
+						nationalStatisticsPanel,
+						filterStatisticsNationalPanel,
+						filterStatisticsNationalButton,
+						"dock center, sgx general"
+					);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE DI RESET PER FILTER PANEL
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetStatisticsNationalButton = new JButton(GuiConfiguration.getResetIcon());
+		resetStatisticsNationalButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titleNationalFilterPanel.add(resetStatisticsNationalButton);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		resetStatisticsNationalButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				nationalStatisticsButton.doClick();
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL STATISTICHE CLUB FILTRO
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"0[grow, fill]0",
+				"0[]0[]10[]0[]10[]0[]20[]0"
+			);
+
+		filterStatisticsNationalPanel = new JPanel(migLayout);
+		filterStatisticsNationalPanel.setOpaque(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		filterStatisticsNationalPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO FILTRI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowx",
+				"5%[20%]10:push[40%]5%",
+				"10[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		filterStatisticsNationalPanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL COMPETITION
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("competition");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX COMPETIZIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalCompetitionComboBox = new JComboBox<>();
+
+		filterStatisticsNationalCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsNationalCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsNationalCompetitionComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL SCEGLI UNA STAGIONE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("seasonRange");
+		string = string.toUpperCase();
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		filterStatisticsNationalPanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL SUPPORTO FILTRI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, wrap 2",
+				"5%[20%]10:push[40%]5%",
+				"10[]10[]10"
+			);
+
+		panel = new JPanel(migLayout);
+		panel.setBackground(panelColor);
+
+		filterStatisticsNationalPanel.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL STAGIONE INIZIALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("initialSeason");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX STAGIONE INIZIALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalInitialSeasonComboBox = new JComboBox<>();
+
+		filterStatisticsNationalInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsNationalInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsNationalInitialSeasonComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL STAGIONE FINALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("finalSeason");
+		string = StringUtils.capitalize(string);
+
+		label = new JLabel(string, SwingConstants.LEADING);
+
+		panel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * COMBOBOX STAGIONE FINALE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalFinalSeasonComboBox = new JComboBox<>();
+
+		filterStatisticsNationalFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+
+		filterStatisticsNationalFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+
+		panel.add(filterStatisticsNationalFinalSeasonComboBox);
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		filterStatisticsNationalFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+			@Override
+			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+			{
+
+			}
+
+			@Override
+			public void popupMenuCanceled(PopupMenuEvent e) { }
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * BOTTONE RICERCA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+
+		searchStatisticsNationalButton = new JButton(string);
+		searchStatisticsNationalButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		filterStatisticsNationalPanel.add(searchStatisticsNationalButton, "span 2");
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * IMPLEMENTAZIONE LOGICA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		searchStatisticsNationalButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				//TODO
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * PANEL TABELLA STATISTICHE CLUB DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		migLayout = new MigLayout
+			(
+				"debug, flowy",
+				"[grow, fill]",
+				"10[]10"
+			);
+
+		nationalStatisticsTablePanel = new JPanel(migLayout);
+		nationalStatisticsTablePanel.setBackground(panelColor);
+
+		nationalStatisticsPanel.add(nationalStatisticsTablePanel, "dock south, sgx general");
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * LABEL TITOLO TABELLA
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		string = "Titolo"; //TODO i18n
+
+		label = new JLabel(string);
+
+		label.setOpaque(true);
+		label.setBackground(GuiConfiguration.getSearchPanelColor());
+		label.setForeground(Color.white);
+
+		label.setBorder(GuiConfiguration.getSearchLabelBorder());
+
+		nationalStatisticsTablePanel.add(label);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * TABLE TABELLA DELLE STATISTICHE TOTALI DI UN CALCIATORE
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		playerNationalStatisticsTable = new JTable();
+
+		playerNationalStatisticsTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+		playerNationalStatisticsTable.setPreferredScrollableViewportSize(playerNationalStatisticsTable.getPreferredSize());
+		playerNationalStatisticsTable.setFillsViewportHeight(true);
+
+		playerNationalStatisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		playerNationalStatisticsTable.setAutoCreateRowSorter(true);
+		( (DefaultTableCellRenderer) playerNationalStatisticsTable.getTableHeader().getDefaultRenderer()
+		).setHorizontalAlignment(SwingConstants.CENTER);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+
+
+		scrollPane = new JScrollPane(playerNationalStatisticsTable);
+
+		nationalStatisticsTablePanel.add(scrollPane);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+
+		/*--------------------------------------------------------------------------------------------------------
+		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+		 *------------------------------------------------------------------------------------------------------*/
+
+		
+
+	}
+	public JPanel getRootPanel()
+	{
+		return this;
 	}
 
+	public void initFilterStats()
+	{
+		teamType = null;
+		teamID = null;
+		competitionID = null;
+		startYear = null;
+		endYear = null;
+	}
 
 	public void getDataPlayerGeneralView()
 	{
@@ -920,6 +2255,9 @@ public class ViewPlayerPanel
 				playerID
 			);
 	}
+
+
+
 
 
 	public void getDataPlayerDetailedView()
@@ -959,6 +2297,11 @@ public class ViewPlayerPanel
 			);
 	}
 
+
+	public void setTeamType(String teamType)
+	{
+		this.teamType = teamType;
+	}
 	public void getDataPlayerCareerView()
 	{
 		generalInformationPlayer.clear();
@@ -969,8 +2312,6 @@ public class ViewPlayerPanel
 		playerCareerNationalTableColumnName.clear();
 		playerCareerNationalTableData.clear();
 
-
-
 		Controller.getInstance().setPlayerCareerView
 			(
 				generalInformationPlayer,
@@ -980,7 +2321,27 @@ public class ViewPlayerPanel
 				playerCareerNationalTableData,
 				playerID
 			);
+	}
+	public void getDataPlayerStatisticsView(Vector<String> tableColumnName, Vector<Vector<String>> tableData)
+	{
+		generalInformationPlayer.clear();
 
+		tableColumnName.clear();
+		tableData.clear();
+
+
+		Controller.getInstance().setPlayerStatisticView
+			(
+				generalInformationPlayer,
+				tableColumnName,
+				tableData,
+				playerID,
+				teamType,
+				teamID,
+				competitionID,
+				startYear,
+				endYear
+			);
 
 
 	}
@@ -1071,6 +2432,34 @@ public class ViewPlayerPanel
 		createGeneralInfoPanel(informationPanel, generalInformationPlayer, "playerInformation");
 	}
 
+	public void fillClubStatisticsView()
+	{
+		getDataPlayerStatisticsView(playerClubStatisticsTableColumnName, playerClubStatisticsTableData);
+
+		GuiConfiguration.fillTable
+			(
+				playerClubStatisticsTable,
+				playerClubStatisticsTableData,
+				playerClubStatisticsTableColumnName
+			);
+		
+		createGeneralInfoPanel(informationPanel, generalInformationPlayer, "playerInformation");
+	}
+	
+	public void fillNationalStatisticsView()
+	{
+		getDataPlayerStatisticsView(playerNationalStatisticsTableColumnName, playerNationalStatisticsTableData);
+
+		GuiConfiguration.fillTable
+			(
+				playerNationalStatisticsTable,
+				playerNationalStatisticsTableData,
+				playerNationalStatisticsTableColumnName
+			);
+		
+		createGeneralInfoPanel(informationPanel, generalInformationPlayer, "playerInformation");
+	}
+
 	public JLabel createInformationTitle(String messageKey)
 	{
 		String string;
@@ -1094,8 +2483,6 @@ public class ViewPlayerPanel
 
 	public void createGeneralInfoPanel(JPanel panel, Map<String, String> panelHashMap, String messageKey)
 	{
-
-		/*
 		JLabel label;
 
 		panel.removeAll();
@@ -1116,16 +2503,8 @@ public class ViewPlayerPanel
 
 
 			panel.add(label);
-		 */
 		}
+
 	}
-
-
-	/*
-	public JPanel getRootPanel()
-	{
-		return this;
-	}
-
-	 */
+}
 

@@ -817,7 +817,7 @@ public class StepFilterPanel
 			(
 				"debug, flowx",
 				"5%[20%]10:push[40%]5%",
-				"10[][]10"
+				"10[]10[]10"
 			);
 
 		competitionPanel = new JPanel(migLayout);
@@ -1145,7 +1145,7 @@ public class StepFilterPanel
 			(
 				"debug, flowx",
 				"5%[20%]10:push[40%]5%",
-				"10[][]10"
+				"10[]10[]10"
 			);
 
 		teamPanel = new JPanel(migLayout);
@@ -1305,7 +1305,7 @@ public class StepFilterPanel
 			(
 				"debug, flowx",
 				"5%[20%]10:push[40%]5%",
-				"10[][]10"
+				"10[]10[]10"
 			);
 
 		playerPanel = new JPanel(migLayout);
