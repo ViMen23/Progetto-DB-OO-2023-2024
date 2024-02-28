@@ -2092,13 +2092,15 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_trophy_case
 (
-    IN  id_player   text
+    IN  id_player   text,
     IN  type_team   text
 )
 RETURNS TABLE
         (
             comp_start_year text,
+            comp_id         text,
             comp_name       text,
+            team_id         text,
             team_name       text,
             trophy_name     text
         )
@@ -2109,7 +2111,9 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_player_trophy_case.start_year::text AS comp_start_year,
+            fp_competition.id::text AS comp_id,
             fp_competition.name::text AS comp_name,
+            fp_team.id::text AS team_id,
             fp_team.long_name::text AS team_name,
             fp_trophy.name::text AS trophy_name
         FROM

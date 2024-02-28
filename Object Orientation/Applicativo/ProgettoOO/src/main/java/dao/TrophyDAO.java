@@ -10,4 +10,11 @@ public interface TrophyDAO
 										 List<String> listTrophyName,
 										 List<String> listCompetitionID,
 										 List<String> listCompetitionName);
+
+	void fetchTrophyDB(String teamID,
+										 String competitionStartYear,
+										 List<String> listTrophyID,
+										 List<String> listTrophyName,
+										 List<String> listCompetitionID,
+										 List<String> listCompetitionName);
 }
