@@ -60,9 +60,31 @@ public class PostgresImplTrophyDAO
 														List<String> listCompetitionID,
 														List<String> listCompetitionName,
 														List<String> listTeamID,
-														List<String> listTeamName,
+														List<String> listTeamLongName,
 														List<String> listTrophyName)
 	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_trophy_case(?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, teamType);
 
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listCompetitionStartYear.add(rs.getString("comp_start_year"));
+				listCompetitionID.add(rs.getString("comp_id"));
+				listCompetitionName.add(rs.getString("comp_name"));
+				listTeamID.add(rs.getString("team_id"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+				listTrophyName.add(rs.getString("trophy_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
 	}
 }

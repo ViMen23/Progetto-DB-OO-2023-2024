@@ -2101,7 +2101,7 @@ RETURNS TABLE
             comp_id         text,
             comp_name       text,
             team_id         text,
-            team_name       text,
+            team_long_name  text,
             trophy_name     text
         )
 AS
@@ -2114,7 +2114,7 @@ BEGIN
             fp_competition.id::text AS comp_id,
             fp_competition.name::text AS comp_name,
             fp_team.id::text AS team_id,
-            fp_team.long_name::text AS team_name,
+            fp_team.long_name::text AS team_long_name,
             fp_trophy.name::text AS trophy_name
         FROM
             fp_player_trophy_case

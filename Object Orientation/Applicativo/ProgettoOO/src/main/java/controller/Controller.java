@@ -1627,18 +1627,21 @@ public class Controller
 	}
 
 	public void setPlayerComboBox(Vector<String> playerInfoVector,
-								  Map<String, String> playerInfoMap,
-								  String startYear,
-								  String teamID)
+																Map<String, String> playerInfoMap,
+																String startYear,
+																String teamID)
 	{
 		fetchPlayer(startYear, teamID);
 
+		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
 
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+		for (String key : playerMap.keySet()) {
 
-			String playerInfo = ctrlPlayer.getPlayerMap().get(key).getName();
+			Player player = playerMap.get(key);
+
+			String playerInfo = player.getName();
 			playerInfo += " ";
-			playerInfo += ctrlPlayer.getPlayerMap().get(key).getSurname();
+			playerInfo += player.getSurname();
 
 			playerInfoVector.add(playerInfo);
 			playerInfoMap.put(playerInfo, key);
@@ -2236,7 +2239,7 @@ public class Controller
 		string = string.toUpperCase();
 		playerStatisticTableColumnName.add(string);
 
-		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+		Set<Statistic> playerStatisticSet = player.getStatisticSet();
 
 		for (Statistic playerStatistic : playerStatisticSet) {
 			Vector<String> statisticVector = new Vector<>();
@@ -2254,6 +2257,149 @@ public class Controller
 			statisticVector.add(playerStatistic.getPenaltySaved());
 
 			playerStatisticTableData.add(statisticVector);
+		}
+	}
+
+
+	public void setPlayerCaseView(Map<String, String> infoPlayerMap,
+																Vector<String> playerClubTrophyTableColumnName,
+																Vector<Vector<String>> playerClubTrophyTableData,
+																Vector<String> playerNationalTrophyTableColumnName,
+																Vector<Vector<String>> playerNationalTrophyTableData,
+																Vector<String> playerPrizeTableColumnName,
+																Vector<Vector<String>> playerPrizeTableData,
+																String playerID)
+	{
+		fetchPlayer(playerID);
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+
+		String string;
+
+		// informazioni calciatori
+		string = GuiConfiguration.getMessage("player");
+		string = string.toUpperCase();
+		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
+
+		string = GuiConfiguration.getMessage("dob");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getDob());
+
+		string = GuiConfiguration.getMessage("bornCountry");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getCountry().getName());
+
+		string = GuiConfiguration.getMessage("preferredFoot");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getFoot());
+
+		string = GuiConfiguration.getMessage("mainPosition");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getPosition().getName());
+
+		string = GuiConfiguration.getMessage("role");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getRole());
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = StringUtils.capitalize(string);
+		if (null == player.getRetiredDate()) {
+			infoPlayerMap.put(string, "");
+		} else {
+			infoPlayerMap.put(string, player.getRetiredDate());
+		}
+
+
+		fetchPlayerTrophy(playerID, "CLUB");
+
+		// tabella trofei club
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		Set<Trophy> playerTrophySet = player.getTrophySet();
+
+		for (Trophy playerTrophy : playerTrophySet) {
+			Vector<String> trophyVector = new Vector<>();
+
+			trophyVector.add(playerTrophy.getAssignedYear());
+			trophyVector.add(playerTrophy.getCompetition().getName());
+			trophyVector.add(playerTrophy.getTeam().getLongName());
+			trophyVector.add(playerTrophy.getName());
+
+			playerClubTrophyTableData.add(trophyVector);
+		}
+
+
+		fetchPlayerTrophy(playerID, "NATIONAL");
+
+		// tabella trofei nazionale
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		playerTrophySet = player.getTrophySet();
+
+		for (Trophy playerTrophy : playerTrophySet) {
+			Vector<String> trophyVector = new Vector<>();
+
+			trophyVector.add(playerTrophy.getAssignedYear());
+			trophyVector.add(playerTrophy.getCompetition().getName());
+			trophyVector.add(playerTrophy.getTeam().getLongName());
+			trophyVector.add(playerTrophy.getName());
+
+			playerNationalTrophyTableData.add(trophyVector);
+		}
+
+		fetchPrize(playerID);
+
+		// tabella premi
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("prize");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("given");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+		Set<Prize> playerPrizeSet = player.getPrizeSet();
+
+		for (Prize playerPrize : playerPrizeSet) {
+			Vector<String> prizeVector = new Vector<>();
+
+			prizeVector.add(playerPrize.getAssignedYear());
+			prizeVector.add(playerPrize.getName());
+			prizeVector.add(playerPrize.getGiven());
+
+			playerPrizeTableData.add(prizeVector);
 		}
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -3236,6 +3382,77 @@ public class Controller
 											null,
 											competitionMap.get(competitionID),
 											null
+							)
+			);
+		}
+	}
+
+
+	private void fetchPlayerTrophy(String playerID,
+																 String teamType)
+	{
+		List<String> listCompetitionStartYear = new ArrayList<>();
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listTrophyName = new ArrayList<>();
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTrophyDB(
+						playerID,
+						teamType,
+						listCompetitionStartYear,
+						listCompetitionID,
+						listCompetitionName,
+						listTeamID,
+						listTeamLongName,
+						listTrophyName
+		);
+
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		competitionMap.clear();
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		Set<Trophy> playerTrophySet = ctrlPlayer.getPlayerMap().get(playerID).getTrophySet();
+		playerTrophySet.clear();
+
+
+		for (int i = 0; i < listCompetitionStartYear.size(); ++i) {
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
+
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+
+			playerTrophySet.add(
+							newTrophy(
+											null,
+											null,
+											listTrophyName.get(i),
+											null,
+											teamMap.get(teamID),
+											competitionMap.get(competitionID),
+											listCompetitionStartYear.get(i)
 							)
 			);
 		}

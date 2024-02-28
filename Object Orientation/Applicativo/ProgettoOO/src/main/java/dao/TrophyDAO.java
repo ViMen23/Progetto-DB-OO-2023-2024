@@ -17,6 +17,6 @@ public interface TrophyDAO
 										 List<String> listCompetitionID,
 										 List<String> listCompetitionName,
 										 List<String> listTeamID,
-										 List<String> listTeamName,
+										 List<String> listTeamLongName,
 										 List<String> listTrophyName);
 }
