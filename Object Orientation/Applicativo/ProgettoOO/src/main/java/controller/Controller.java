@@ -2138,6 +2138,124 @@ public class Controller
 			playerNationalCareerTableData.add(nationalCareerVector);
 		}
 	}
+
+
+	public void setPlayerStatisticView(Map<String, String> infoPlayerMap,
+																		 Vector<String> playerStatisticTableColumnName,
+																		 Vector<Vector<String>> playerStatisticTableData,
+																		 String playerID,
+																		 String teamType,
+																		 String teamID,
+																		 String competitionID,
+																		 String startYear,
+																		 String endYear)
+	{
+		fetchPlayer(playerID);
+		fetchStatisticPlayer(playerID, teamType, teamID, competitionID, startYear, endYear);
+
+		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+
+		String string;
+
+		// informazioni calciatori
+		string = GuiConfiguration.getMessage("player");
+		string = string.toUpperCase();
+		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
+
+		string = GuiConfiguration.getMessage("dob");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getDob());
+
+		string = GuiConfiguration.getMessage("bornCountry");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getCountry().getName());
+
+		string = GuiConfiguration.getMessage("preferredFoot");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getFoot());
+
+		string = GuiConfiguration.getMessage("mainPosition");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getPosition().getName());
+
+		string = GuiConfiguration.getMessage("role");
+		string = StringUtils.capitalize(string);
+		infoPlayerMap.put(string, player.getRole());
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = StringUtils.capitalize(string);
+		if (null == player.getRetiredDate()) {
+			infoPlayerMap.put(string, "");
+		} else {
+			infoPlayerMap.put(string, player.getRetiredDate());
+		}
+
+
+		// tabella statistiche
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+
+		for (Statistic playerStatistic : playerStatisticSet) {
+			Vector<String> statisticVector = new Vector<>();
+
+			statisticVector.add(playerStatistic.getCompetitionYear());
+			statisticVector.add(playerStatistic.getCompetition().getName());
+			statisticVector.add(playerStatistic.getTeam().getLongName());
+			statisticVector.add(playerStatistic.getMatch());
+			statisticVector.add(playerStatistic.getGoalScored());
+			statisticVector.add(playerStatistic.getPenaltyScored());
+			statisticVector.add(playerStatistic.getAssist());
+			statisticVector.add(playerStatistic.getYellowCard());
+			statisticVector.add(playerStatistic.getRedCard());
+			statisticVector.add(playerStatistic.getGoalConceded());
+			statisticVector.add(playerStatistic.getPenaltySaved());
+
+			playerStatisticTableData.add(statisticVector);
+		}
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 

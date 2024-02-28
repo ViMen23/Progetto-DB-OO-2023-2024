@@ -52,4 +52,17 @@ public class PostgresImplTrophyDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchTrophyDB(String playerID,
+														String teamType,
+														List<String> listCompetitionStartYear,
+														List<String> listCompetitionID,
+														List<String> listCompetitionName,
+														List<String> listTeamID,
+														List<String> listTeamName,
+														List<String> listTrophyName)
+	{
+
+	}
 }
