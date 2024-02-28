@@ -24,4 +24,9 @@ public interface CompetitionDAO
 	void fetchCompetitionEditionDB(String competitionID,
 																 List<String> listCompetitionEdition);
 
+	void fetchCompetitionDB(String playerID,
+													String teamType,
+													List<String> listCompetitionID,
+													List<String> listCompetitionName);
+
 }

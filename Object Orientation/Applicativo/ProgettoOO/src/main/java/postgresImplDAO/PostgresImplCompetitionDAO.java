@@ -112,4 +112,31 @@ public class PostgresImplCompetitionDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchCompetitionDB(String playerID,
+																 String teamType,
+																 List<String> listCompetitionID,
+																 List<String> listCompetitionName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call competition_player(?)}");
+			cs.setString(1, playerID);
+			cs.setString(1, teamType);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listCompetitionID.add(rs.getString("comp_id"));
+				listCompetitionName.add(rs.getString("comp_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

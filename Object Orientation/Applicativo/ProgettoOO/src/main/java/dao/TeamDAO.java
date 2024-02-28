@@ -26,4 +26,8 @@ public interface TeamDAO
 
 	void fetchTeamDB(String teamID,
 									 Map<String, String> mapTeamInfo);
+
+	void fetchTeamDB(String playerID,
+									 List<String> listTeamID,
+									 List<String> listTeamLongName);
 }

@@ -711,6 +711,53 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : competition_player
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_player
+(
+    IN  id_player       text,
+    IN  type_team_comp  text
+)
+RETURNS TABLE
+        (
+            comp_id     text,
+            comp_name   text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT DISTINCT
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name
+        FROM
+            fp_play
+            JOIN
+            fp_competition
+                ON
+                fp_play.team_id = fp_competition.id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_competition.team_type = type_team_comp::en_team
+        ORDER BY
+            fp_competition.name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
 /*******************************************************************************
@@ -894,6 +941,54 @@ BEGIN
             fp_partecipation.start_year = s_year::integer
             AND
             fp_partecipation.competition_id = id_comp::integer
+        ORDER BY
+            fp_team.long_name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : club_team_player
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION club_team_player
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            team_id         text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT DISTINCT
+            fp_team.id::text AS team_id,
+            fp_team.long_name::text AS team_long_name
+        FROM
+            fp_play
+            JOIN
+            fp_team
+                ON
+                fp_play.team_id = fp_team.id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_team.type = 'CLUB'
         ORDER BY
             fp_team.long_name;
         
@@ -1459,6 +1554,47 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : season_play
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION season_play
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            start_year  text,
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT DISTINCT
+            fp_play.start_year::text AS start_year
+        FROM
+            fp_play
+        WHERE
+            fp_play.player_id = id_player::integer
+        ORDER BY
+            fp_play.start_year DESC;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
 
 
 /*******************************************************************************

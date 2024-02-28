@@ -42,6 +42,8 @@ public class Player
 	private final Set<Trophy> trophySet;
 	private final Set<Prize> prizeSet;
 
+	private final Set<String> playSeason;
+
 
 	public Player(String name,
 								String surname,
@@ -77,6 +79,8 @@ public class Player
 
 		this.trophySet = new LinkedHashSet<>();
 		this.prizeSet = new LinkedHashSet<>();
+
+		this.playSeason = new LinkedHashSet<>();
 	}
 
 	public Integer getTotalPlayers()
@@ -254,5 +258,10 @@ public class Player
 	public Set<Prize> getPrizeSet()
 	{
 		return prizeSet;
+	}
+
+	public Set<String> getPlaySeason()
+	{
+		return playSeason;
 	}
 }

@@ -647,6 +647,40 @@ public class Controller
 	}
 
 
+	private void fetchCompetition(String playerID,
+																String teamType)
+	{
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionDB(
+						playerID,
+						teamType,
+						listCompetitionID,
+						listCompetitionName
+		);
+
+
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		competitionMap.clear();
+
+
+		for (int i = 0; i < listCompetitionID.size(); ++i) {
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
+		}
+	}
+
+
 	private void fetchCompetitionEdition(String competitionID)
 	{
 		List<String> listCompetitionEdition = new ArrayList<>();
@@ -664,15 +698,26 @@ public class Controller
 	}
 
 
-	/**
-	 * TODO
-	 * @param competitionNameVector
-	 * @param competitionNameMap
-	 * @param competitionSubName
-	 * @param competitionType
-	 * @param competitionTeamType
-	 * @param competitionCountryType
-	 */
+
+	public void setCompetitionComboBox(Vector<String> competitionNameVector,
+																		 Map<String, String> competitionNameMap,
+																		 String playerID,
+																		 String teamType)
+	{
+		fetchCompetition(playerID, teamType);
+
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+
+		for (String key : competitionMap.keySet()) {
+
+			String competitionName = competitionMap.get(key).getName();
+
+			competitionNameVector.add(competitionName);
+			competitionNameMap.put(competitionName, key);
+		}
+	}
+
+
 	public void setCompetitionComboBox(Vector<String> competitionNameVector,
 																		 Map<String, String> competitionNameMap,
 																		 String competitionSubName,
@@ -977,6 +1022,38 @@ public class Controller
 	}
 
 
+	private void fetchTeamPlayer(String playerID)
+	{
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamDB(
+						playerID,
+						listTeamID,
+						listTeamLongName
+		);
+
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		teamMap.clear();
+
+		for (int i = 0; i < listTeamID.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+		}
+	}
+
+
 	/**
 	 * TODO
 	 * @param teamLongNameVector
@@ -1006,6 +1083,24 @@ public class Controller
 		for (String key : ctrlTeam.getTeamMap().keySet()) {
 
 			String teamLongName = ctrlTeam.getTeamMap().get(key).getLongName();
+
+			teamLongNameVector.add(teamLongName);
+			teamLongNameMap.put(teamLongName, key);
+		}
+	}
+
+
+	public void setTeamComboBox(Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap,
+															String playerID)
+	{
+		fetchTeam(playerID);
+
+		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+
+		for (String key : teamMap.keySet()) {
+
+			String teamLongName = teamMap.get(key).getLongName();
 
 			teamLongNameVector.add(teamLongName);
 			teamLongNameMap.put(teamLongName, key);
@@ -1531,6 +1626,19 @@ public class Controller
 	}
 
 
+	private void fetchPlayerSeason(String playerID)
+	{
+		List<String> startYearSeason = new ArrayList<>();
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		playerDAO.fetchPlayerDB(playerID, startYearSeason);
+
+		Set<String> playerPlaySeason = ctrlPlayer.getPlayerMap().get(playerID).getPlaySeason();
+		playerPlaySeason.clear();
+		playerPlaySeason.addAll(startYearSeason);
+	}
+
+
 	private void fetchPlayer(String playerID)
 	{
 		Map<String, String> mapPlayerInfo = new LinkedHashMap<>();
@@ -1645,6 +1753,20 @@ public class Controller
 
 			playerInfoVector.add(playerInfo);
 			playerInfoMap.put(playerInfo, key);
+		}
+	}
+
+	public void setPlayerComboBox(Vector<String> seasonVector,
+																Map<String, String> seasonMap,
+																String playerID)
+	{
+		fetchPlayerSeason(playerID);
+
+		Set<String> playerPlaySeason = ctrlPlayer.getPlayerMap().get(playerID).getPlaySeason();
+
+		for (String startYearSeason : playerPlaySeason) {
+			seasonVector.add(startYearSeason);
+			seasonMap.put(startYearSeason, startYearSeason);
 		}
 	}
 

@@ -153,11 +153,11 @@ public class PostgresImplPlayerDAO
 
 	@Override
 	public void fetchPlayerDB(String startYear,
-							String teamID,
-							List<String> listPlayerID,
-							List<String> listPlayerName,
-							List<String> listPlayerSurname,
-							List<String> listPlayerRole)
+														String teamID,
+														List<String> listPlayerID,
+														List<String> listPlayerName,
+														List<String> listPlayerSurname,
+														List<String> listPlayerRole)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call filter_players(?, ?)}");
@@ -203,6 +203,29 @@ public class PostgresImplPlayerDAO
 				mapPlayerInfo.put("positionName", rs.getString("position_name"));
 				mapPlayerInfo.put("playerRole", rs.getString("player_role"));
 				mapPlayerInfo.put("playerRetiredDate", rs.getString("player_retired_date"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayerDB(String playerID,
+														List<String> startYearSeason)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call season_play(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				startYearSeason.add(rs.getString("start_year"));
 			}
 
 			rs.close();

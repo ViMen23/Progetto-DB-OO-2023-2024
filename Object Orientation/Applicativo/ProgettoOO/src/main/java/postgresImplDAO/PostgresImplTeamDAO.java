@@ -141,4 +141,29 @@ public class PostgresImplTeamDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchTeamDB(String playerID,
+													List<String> listTeamID,
+													List<String> listTeamLongName)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call club_team_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				listTeamID.add(rs.getString("team_id"));
+				listTeamLongName.add(rs.getString("team_long_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }
