@@ -2420,3 +2420,176 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_statistic_player
+ *
+ * IN      : text, text, text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_statistic_player
+(
+    IN  id_player           text,
+    IN  type_team           text,
+    IN  id_team             text,
+    IN  id_comp             text,
+    IN  s_year_militancy    text,
+    IN  e_year_militancy    text
+)
+RETURNS TABLE
+        (
+            start_year      text,
+            comp_id         text,
+            comp_name       text,
+            team_id         text,
+            team_long_name  text,
+            match           text,
+            goal_scored     text,
+            penalty_scored  text,
+            assist          text,
+            yellow_card     text,
+            red_card        text,
+            goal_conceded   text,
+            penalty_saved   text
+        )
+AS
+$$
+BEGIN
+
+    IF (s_year_militancy IS NULL) THEN
+
+        s_year_militancy = '1810';
+    
+    END IF;
+
+
+    IF (e_year_militancy IS NULL) THEN
+
+        e_year_militancy = extract(year from current_date)::text;
+    
+    END IF;
+
+
+    DROP TABLE IF EXISTS output_table;
+
+	CREATE TEMPORARY TABLE output_table
+    (
+        start_year      text    NOT NULL,
+        comp_id         text    NOT NULL,
+        comp_name       text    NOT NULL,
+        team_id         text    NOT NULL,
+        team_long_name  text    NOT NULL,
+        match           text    NOT NULL,
+        goal_scored     text    NOT NULL,
+        penalty_scored  text    NOT NULL,
+        assist          text    NOT NULL,
+        yellow_card     text    NOT NULL,
+        red_card        text    NOT NULL,
+        goal_conceded   text            ,
+        penalty_saved   text            
+    );
+
+    INSERT INTO output_table
+    SELECT
+        fp_play.start_year::text,
+        fp_competition.id::text,
+        fp_competition.name::text,
+        fp_team.id::text,
+        fp_team.long_name::text,
+        fp_play.match::text,
+        fp_statistic_general.goal_scored::text,
+        fp_statistic_general.penalty_scored::text,
+        fp_statistic_general.assist::text,
+        fp_statistic_general.yellow_card::text,
+        fp_statistic_general.red_card::text,
+        fp_statistic_goalkeeper.goal_conceded::text,
+        fp_statistic_goalkeeper.penalty_saved::text
+    FROM
+        fp_militancy
+        JOIN
+        fp_play
+            ON
+            fp_militancy.start_year = fp_play.start_year
+            AND
+            fp_militancy.team_id = fp_play.team_id
+            AND
+            fp_militancy.player_id = fp_play.player_id
+        JOIN
+        fp_competition
+            ON
+            fp_play.competition_id = fp_competition.id
+        JOIN
+        fp_team
+            ON
+            fp_play.team_id = fp_team.id
+        JOIN
+        fp_statistic_general
+            ON
+            fp_play.id = fp_statistic_general.play_id
+        LEFT OUTER JOIN
+        fp_statistic_goalkeeper
+            ON
+            fp_play.id = fp_statistic_goalkeeper.play_id
+    WHERE
+        fp_militancy.player_id = id_player::integer
+        AND
+        fp_militancy.team_type = type_team::en_team
+        AND
+        fp_militancy.start_year BETWEEN s_year_militancy::integer AND e_year_militancy::integer
+    ORDER BY
+        fp_militancy.start_year DESC,
+        fp_militancy.type DESC;
+
+
+    IF (id_team IS NOT NULL) THEN
+
+       DELETE FROM
+            output_table
+        WHERE
+            output_table.team_id <> id_team;
+
+    END IF;
+
+
+    IF (id_comp IS NOT NULL) THEN
+
+       DELETE FROM
+            output_table
+        WHERE
+            output_table.comp_id <> id_comp;
+
+    END IF;
+
+
+
+    RETURN QUERY
+        SELECT
+            output_table.start_year,
+            output_table.comp_id,
+            output_table.comp_name,
+            output_table.team_id,
+            output_table.team_long_name,
+            output_table.match,
+            output_table.goal_scored,
+            output_table.penalty_scored,
+            output_table.assist,
+            output_table.yellow_card,
+            output_table.red_card,
+            output_table.goal_conceded,
+            output_table.penalty_saved
+        FROM
+            output_table
+        WHERE
+			TRUE;
+
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
