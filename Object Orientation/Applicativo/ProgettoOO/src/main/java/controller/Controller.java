@@ -1094,7 +1094,7 @@ public class Controller
 															Map<String, String> teamLongNameMap,
 															String playerID)
 	{
-		fetchTeam(playerID);
+		fetchTeamPlayer(playerID);
 
 		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
 

@@ -120,9 +120,9 @@ public class PostgresImplCompetitionDAO
 																 List<String> listCompetitionName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call competition_player(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call competition_player(?, ?)}");
 			cs.setString(1, playerID);
-			cs.setString(1, teamType);
+			cs.setString(2, teamType);
 
 			ResultSet rs = cs.executeQuery();
 

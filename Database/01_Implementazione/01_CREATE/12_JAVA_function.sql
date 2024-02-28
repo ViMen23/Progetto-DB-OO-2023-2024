@@ -751,7 +751,7 @@ BEGIN
             AND
             fp_competition.team_type = type_team_comp::en_team
         ORDER BY
-            fp_competition.name;
+            comp_name;
         
 
 END;
@@ -990,7 +990,7 @@ BEGIN
             AND
             fp_team.type = 'CLUB'
         ORDER BY
-            fp_team.long_name;
+            team_long_name;
         
 
 END;
@@ -1573,7 +1573,7 @@ CREATE OR REPLACE FUNCTION season_play
 )
 RETURNS TABLE
         (
-            start_year  text
+            start_year  text,
         )
 AS
 $$
@@ -1587,7 +1587,7 @@ BEGIN
         WHERE
             fp_play.player_id = id_player::integer
         ORDER BY
-            fp_play.start_year DESC;
+            start_year DESC;
         
 
 END;
