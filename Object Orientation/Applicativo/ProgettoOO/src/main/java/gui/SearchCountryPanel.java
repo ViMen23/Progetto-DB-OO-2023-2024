@@ -5,14 +5,15 @@ import model.Country;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 
 public class SearchCountryPanel
@@ -56,6 +57,10 @@ public class SearchCountryPanel
 	private JLabel label;
 	private String countryType = null;
 	private String superCountryID = null;
+
+	private Integer columnIndex;
+	private Integer rowIndex;
+
 
 	public SearchCountryPanel()
 	{
@@ -666,6 +671,58 @@ public class SearchCountryPanel
 		countryTable.setAutoCreateRowSorter(true);
 		( (DefaultTableCellRenderer) countryTable.getTableHeader().getDefaultRenderer()
 		).setHorizontalAlignment(SwingConstants.CENTER);
+
+
+		//countryTable.setCellSelectionEnabled(true);
+
+		countryTable.getColumnModel().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				setColumnIndex(countryTable.convertColumnIndexToModel(countryTable.getSelectedColumn()));
+			}
+		});
+
+
+		countryTable.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+			@Override
+			public void valueChanged(ListSelectionEvent e)
+			{
+				setRowIndex( countryTable.convertRowIndexToModel(countryTable.getSelectedRow()));
+			}
+		});
+
+		countryTable.addMouseListener(new MouseListener() {
+			@Override
+			public void mouseClicked(MouseEvent e)
+			{
+				if (e.getClickCount() >= 1) {
+					printTableIndex();
+				}
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+
+			}
+		});
+
+
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -703,8 +760,36 @@ public class SearchCountryPanel
 
 		table.setModel(new TableModel(tableData, tableColumnName));
 		table.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
+		table.getColumnModel().getColumn(1).setCellRenderer(new TableRenderer());
 
 
 		GuiConfiguration.setTitleTable(titleTable, tableName, tableData.size(), internationalization);
+	}
+
+
+	public Integer getColumnIndex()
+	{
+		return columnIndex;
+	}
+
+	public Integer getRowIndex()
+	{
+		return rowIndex;
+	}
+
+	public void setColumnIndex(Integer columnIndex)
+	{
+		this.columnIndex = columnIndex;
+	}
+
+
+	public void setRowIndex(Integer rowIndex)
+	{
+		this.rowIndex = rowIndex;
+	}
+
+	public void printTableIndex()
+	{
+		System.out.println("Row: " + getRowIndex() + " / " + "Column: " + getColumnIndex());
 	}
 }
