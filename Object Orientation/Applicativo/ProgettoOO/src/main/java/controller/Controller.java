@@ -192,17 +192,16 @@ public class Controller
 		List<String> listSuperCountryName = new ArrayList<>();
 
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
-		countryDAO.fetchCountryDB
-						(
-										countryType,
-										superCountryID,
-										listCountryID,
-										listCountryType,
-										listCountryCode,
-										listCountryName,
-										listSuperCountryID,
-										listSuperCountryName
-						);
+		countryDAO.fetchCountryDB(
+						countryType,
+						superCountryID,
+						listCountryID,
+						listCountryType,
+						listCountryCode,
+						listCountryName,
+						listSuperCountryID,
+						listSuperCountryName
+		);
 
 
 		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
@@ -210,24 +209,28 @@ public class Controller
 
 		Map<String, Country> superCountryMap = new LinkedHashMap<>();
 
-		for (String ID : listSuperCountryID) {
-			String name = listSuperCountryName.removeFirst();
-			if (null == superCountryMap.get(ID)) {
-				Country country = newCountry(null, null, name, null);
-				superCountryMap.put(ID, country);
-			}
-		}
+		for (int i = 0; i < listCountryID.size(); ++i) {
+			String superID = listSuperCountryID.get(i);
+			superCountryMap.putIfAbsent(
+							superID,
+							newCountry(
+											null,
+											null,
+											listSuperCountryName.get(i),
+											null
+							)
+			);
 
-		while (!(listCountryID.isEmpty())) {
-			String ID = listCountryID.removeFirst();
-			String type = listCountryType.removeFirst();
-			String code = listCountryCode.removeFirst();
-			String name = listCountryName.removeFirst();
-			Country superCountry = superCountryMap.get(listSuperCountryID.removeFirst());
-			if (null == countryMap.get(ID)) {
-				Country country = newCountry(type, code, name,superCountry);
-				countryMap.put(ID, country);
-			}
+			String ID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							ID,
+							newCountry(
+											listCountryType.get(i),
+											listCountryCode.get(i),
+											listCountryName.get(i),
+											superCountryMap.get(superID)
+							)
+			);
 		}
 	}
 
@@ -370,56 +373,61 @@ public class Controller
 		List<String> listSuperConfederationShortName = new ArrayList<>();
 
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
-		confederationDAO.fetchConfederationDB
-						(
-										countryType,
-										superConfederationsID,
-										listConfederationID,
-										listConfederationShortName,
-										listConfederationLongName,
-										listCountryID,
-										listCountryName,
-										listCountryType,
-										listSuperConfederationID,
-										listSuperConfederationShortName
-						);
+		confederationDAO.fetchConfederationDB(
+						countryType,
+						superConfederationsID,
+						listConfederationID,
+						listConfederationShortName,
+						listConfederationLongName,
+						listCountryID,
+						listCountryName,
+						listCountryType,
+						listSuperConfederationID,
+						listSuperConfederationShortName
+		);
 
 
-		ctrlCountry.getCountryMap().clear();
-
-		for (String ID : listCountryID) {
-			String type = listCountryType.removeFirst();
-			String name = listCountryName.removeFirst();
-			if (null == ctrlCountry.getCountryMap().get(ID)) {
-				Country country = newCountry(type, null, name, null);
-				ctrlCountry.getCountryMap().put(ID, country);
-			}
-		}
-
-
-		ctrlConfederation.getConfederationMap().clear();
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
 
 		Map<String, Confederation> superConfederationMap = new LinkedHashMap<>();
 
-		for (String ID : listSuperConfederationID) {
-			String shortName = listSuperConfederationShortName.removeFirst();
-			if (null == superConfederationMap.get(ID)) {
-				Confederation confederation = newConfederation(shortName, null, null, null);
-				superConfederationMap.put(ID, confederation);
-			}
-		}
+		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
+		confederationMap.clear();
 
+		for (int i = 0; i < listConfederationID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											listCountryType.get(i),
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 
-		while (!(listConfederationID.isEmpty())) {
-			String ID = listConfederationID.removeFirst();
-			String shortName = listConfederationShortName.removeFirst();
-			String longName = listConfederationLongName.removeFirst();
-			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
-			Confederation superConfederation = superConfederationMap.get(listSuperConfederationID.removeFirst());
-			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
-				Confederation confederation = newConfederation(shortName, longName, country, superConfederation);
-				ctrlConfederation.getConfederationMap().put(ID, confederation);
-			}
+			String superConfederationID = listSuperConfederationID.get(i);
+			superConfederationMap.putIfAbsent(
+							superConfederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											null,
+											null,
+											null
+							)
+			);
+
+			String confederationID = listConfederationID.get(i);
+			confederationMap.putIfAbsent(
+							confederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											listConfederationLongName.get(i),
+											countryMap.get(countryID),
+											superConfederationMap.get(superConfederationID)
+							)
+			);
 		}
 	}
 
@@ -574,58 +582,67 @@ public class Controller
 		List<String> listCountryName = new ArrayList<>();
 
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-		competitionDAO.fetchCompetitionDB
-						(
-										competitionSubName,
-										competitionType,
-										competitionTeamType,
-										competitionCountryType,
-										competitionContinentID,
-										competitionNationID,
-										listCompetitionID,
-										listCompetitionType,
-										listCompetitionTeamType,
-										listCompetitionName,
-										listConfederationID,
-										listConfederationShortName,
-										listCountryID,
-										listCountryName
-						);
+		competitionDAO.fetchCompetitionDB(
+						competitionSubName,
+						competitionType,
+						competitionTeamType,
+						competitionCountryType,
+						competitionContinentID,
+						competitionNationID,
+						listCompetitionID,
+						listCompetitionType,
+						listCompetitionTeamType,
+						listCompetitionName,
+						listConfederationID,
+						listConfederationShortName,
+						listCountryID,
+						listCountryName
+		);
 
 
-		ctrlCountry.getCountryMap().clear();
+		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		countryMap.clear();
 
-		for (String ID : listCountryID) {
-			String name = listCountryName.removeFirst();
-			if (null == ctrlCountry.getCountryMap().get(ID)) {
-				Country country = newCountry(null, null, name, null);
-				ctrlCountry.getCountryMap().put(ID, country);
-			}
-		}
+		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
+		confederationMap.clear();
 
-		ctrlConfederation.getConfederationMap().clear();
+		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		competitionMap.clear();
 
-		for (String ID : listConfederationID) {
-			String shortName = listConfederationShortName.removeFirst();
-			Country country = ctrlCountry.getCountryMap().get(listCountryID.removeFirst());
-			if (null == ctrlConfederation.getConfederationMap().get(ID)) {
-				Confederation confederation = newConfederation(shortName, null, country, null);
-				ctrlConfederation.getConfederationMap().put(ID, confederation);
-			}
-		}
 
-		ctrlCompetition.getCompetitionMap().clear();
+		for (int i = 0; i < listCompetitionID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
 
-		while (!(listCompetitionID.isEmpty())) {
-			String ID = listCompetitionID.removeFirst();
-			String type = listCompetitionType.removeFirst();
-			String teamType = listCompetitionTeamType.removeFirst();
-			String name = listCompetitionName.removeFirst();
-			Confederation confederation = ctrlConfederation.getConfederationMap().get(listConfederationID.removeFirst());
-			if (null == ctrlCompetition.getCompetitionMap().get(ID)) {
-				Competition competition = newCompetition(type, teamType, name, confederation);
-				ctrlCompetition.getCompetitionMap().put(ID, competition);
-			}
+			String confederationID = listConfederationID.get(i);
+			confederationMap.putIfAbsent(
+							confederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											null,
+											countryMap.get(countryID),
+											null
+							)
+			);
+
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											listCompetitionType.get(i),
+											listCompetitionTeamType.get(i),
+											listCompetitionName.get(i),
+											confederationMap.get(confederationID)
+							)
+			);
 		}
 	}
 
@@ -635,16 +652,12 @@ public class Controller
 		List<String> listCompetitionEdition = new ArrayList<>();
 
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-		competitionDAO.fetchCompetitionEditionDB
-						(
-										competitionID,
-										listCompetitionEdition
-						);
-
-
+		competitionDAO.fetchCompetitionEditionDB(
+						competitionID,
+						listCompetitionEdition
+		);
 
 		Set<String> competitionEditionSet = ctrlCompetition.getCompetitionMap().get(competitionID).getEditionSet();
-
 		competitionEditionSet.clear();
 
 		competitionEditionSet.addAll(listCompetitionEdition);
@@ -669,15 +682,14 @@ public class Controller
 																		 String competitionContinentID,
 																		 String competitionNationID)
 	{
-		fetchCompetition
-						(
-										competitionSubName,
-										competitionType,
-										competitionTeamType,
-										competitionCountryType,
-										competitionContinentID,
-										competitionNationID
-						);
+		fetchCompetition(
+						competitionSubName,
+						competitionType,
+						competitionTeamType,
+						competitionCountryType,
+						competitionContinentID,
+						competitionNationID
+		);
 
 		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
 
@@ -717,15 +729,14 @@ public class Controller
 																	String competitionContinentID,
 																	String competitionNationID)
 	{
-		fetchCompetition
-						(
-										competitionSubName,
-										competitionType,
-										competitionTeamType,
-										competitionCountryType,
-										competitionContinentID,
-										competitionNationID
-						);
+		fetchCompetition(
+						competitionSubName,
+						competitionType,
+						competitionTeamType,
+						competitionCountryType,
+						competitionContinentID,
+						competitionNationID
+		);
 
 		String string;
 
@@ -1805,9 +1816,13 @@ public class Controller
 		String string;
 
 		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player");
+		string = GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
-		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
+		infoPlayerMap.put(string, player.getName());
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		infoPlayerMap.put(string, player.getSurname());
 
 		string = GuiConfiguration.getMessage("dob");
 		string = StringUtils.capitalize(string);
@@ -1948,6 +1963,7 @@ public class Controller
 		playerAttributeTechnicalTableColumnName.add(string);
 
 
+		// TODO
 		for (String key : player.getAttributeGoalkeepingMap().keySet()) {
 			Vector<String> attributeGoalkeepingVector = new Vector<>();
 
