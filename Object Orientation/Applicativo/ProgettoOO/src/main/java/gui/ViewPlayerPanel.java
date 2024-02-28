@@ -106,11 +106,11 @@ public class ViewPlayerPanel
 
 	private final JPanel titleClubFilterPanel;
 	private final JButton resetStatisticsClubButton;
-	private final JComboBox<String> filterStatisticsClubTeamComboBox;
-	private final JComboBox<String> filterStatisticsClubCompetitionComboBox;
-	private final JComboBox<String> filterStatisticsClubInitialSeasonComboBox;
-	private final JComboBox<String> filterStatisticsClubFinalSeasonComboBox;
-	private final JComboBox<String> filterStatisticsNationalFinalSeasonComboBox;
+	private final JComboBox<String> statisticsClubTeamComboBox;
+	private final JComboBox<String> statisticsClubCompetitionComboBox;
+	private final JComboBox<String> statisticsClubInitialSeasonComboBox;
+	private final JComboBox<String> statisticsClubFinalSeasonComboBox;
+	private final JComboBox<String> statisticsNationalFinalSeasonComboBox;
 	private final JButton caseButton;
 	private final JButton searchStatisticsClubButton;
 	private final JPanel clubStatisticsTablePanel;
@@ -118,12 +118,15 @@ public class ViewPlayerPanel
 
 	private final JPanel titleNationalFilterPanel;
 	private final JButton filterStatisticsNationalButton;
-	private final JComboBox<String> filterStatisticsNationalCompetitionComboBox;
-	private final JComboBox<String> filterStatisticsNationalInitialSeasonComboBox;
+	private final JComboBox<String> statisticsNationalCompetitionComboBox;
+	private final JComboBox<String> statisticsNationalInitialSeasonComboBox;
 	private final JPanel nationalStatisticsTablePanel;
 	private final JTable playerNationalStatisticsTable;
 	private final JButton resetStatisticsNationalButton;
 	private final JButton searchStatisticsNationalButton;
+
+	private final Vector<String> clubStatisticsTeamVector = new Vector<>();
+	private final Map<String, String> clubStatisticsTeamMap = new LinkedHashMap<>();
 
 
 	private JScrollPane scrollPane;
@@ -133,9 +136,17 @@ public class ViewPlayerPanel
 	private String teamType = null;
 	private String teamID = null;
 	private String competitionID = null;
-	private String startYear = null;
-	private String endYear = null;
+	private String initialSeason = null;
+	private String finalSeason = null;
 	private JPanel filterStatisticsNationalPanel;
+	private final Vector<String> competitionVector = new Vector<>();
+	private final Vector<String> initialSeasonVector = new Vector<>();
+	private final Map<String, String> competitionMap = new LinkedHashMap<>();
+	private final Map<String, String> finalSeasonMap = new LinkedHashMap<>();
+	private final Map<String, String> initialSeasonMap = new LinkedHashMap<>();
+	private final Vector<String> finalSeasonVector = new Vector<>();
+	private final Vector<String> statisticsNationCompetitionVector = new Vector<>();
+	private final Map<String, String> statisticsNationCompetitionMap = new LinkedHashMap<>();
 
 
 	public ViewPlayerPanel(String playerID)
@@ -1318,13 +1329,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubTeamComboBox = new JComboBox<>();
+		statisticsClubTeamComboBox = new JComboBox<>();
 
-		filterStatisticsClubTeamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsClubTeamComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsClubTeamComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsClubTeamComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsClubTeamComboBox);
+		panel.add(statisticsClubTeamComboBox);
 
 
 
@@ -1334,17 +1345,17 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubTeamComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsClubTeamComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillTeamComboBox(true);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				teamID = GuiConfiguration.getSelectedItemIDComboBox(statisticsClubTeamComboBox, clubStatisticsTeamMap);
 			}
 
 			@Override
@@ -1421,13 +1432,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubCompetitionComboBox = new JComboBox<>();
+		statisticsClubCompetitionComboBox = new JComboBox<>();
 
-		filterStatisticsClubCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsClubCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsClubCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsClubCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsClubCompetitionComboBox);
+		panel.add(statisticsClubCompetitionComboBox);
 
 
 
@@ -1437,17 +1448,22 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsClubCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillCompetitionComboBox(
+					statisticsClubCompetitionComboBox,
+					true
+				);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				competitionID = GuiConfiguration.getSelectedItemIDComboBox(
+					statisticsClubCompetitionComboBox, competitionMap
+				);
 			}
 
 			@Override
@@ -1523,13 +1539,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubInitialSeasonComboBox = new JComboBox<>();
+		statisticsClubInitialSeasonComboBox = new JComboBox<>();
 
-		filterStatisticsClubInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsClubInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsClubInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsClubInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsClubInitialSeasonComboBox);
+		panel.add(statisticsClubInitialSeasonComboBox);
 
 
 
@@ -1539,17 +1555,18 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsClubInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillInitialSeasonComboBox(statisticsClubInitialSeasonComboBox);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				initialSeason = GuiConfiguration.getSelectedItemIDComboBox(
+					statisticsClubInitialSeasonComboBox, initialSeasonMap);
 			}
 
 			@Override
@@ -1581,13 +1598,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubFinalSeasonComboBox = new JComboBox<>();
+		statisticsClubFinalSeasonComboBox = new JComboBox<>();
 
-		filterStatisticsClubFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsClubFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsClubFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsClubFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsClubFinalSeasonComboBox);
+		panel.add(statisticsClubFinalSeasonComboBox);
 
 
 
@@ -1597,17 +1614,17 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsClubFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsClubFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillFinalSeasonComboBox(statisticsClubFinalSeasonComboBox);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				finalSeason = GuiConfiguration.getSelectedItemComboBox(statisticsClubFinalSeasonComboBox);
 			}
 
 			@Override
@@ -1643,7 +1660,8 @@ public class ViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				//fillClubStatisticsTable();
+				revalidate();
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -1925,13 +1943,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalCompetitionComboBox = new JComboBox<>();
+		statisticsNationalCompetitionComboBox = new JComboBox<>();
 
-		filterStatisticsNationalCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsNationalCompetitionComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsNationalCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsNationalCompetitionComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsNationalCompetitionComboBox);
+		panel.add(statisticsNationalCompetitionComboBox);
 
 
 
@@ -1941,17 +1959,23 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsNationalCompetitionComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillCompetitionComboBox(
+					statisticsNationalCompetitionComboBox,
+					true
+				);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				competitionID = GuiConfiguration.getSelectedItemIDComboBox(
+					statisticsNationalCompetitionComboBox,
+					competitionMap
+				);
 			}
 
 			@Override
@@ -2027,13 +2051,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalInitialSeasonComboBox = new JComboBox<>();
+		statisticsNationalInitialSeasonComboBox = new JComboBox<>();
 
-		filterStatisticsNationalInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsNationalInitialSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsNationalInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsNationalInitialSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsNationalInitialSeasonComboBox);
+		panel.add(statisticsNationalInitialSeasonComboBox);
 
 
 
@@ -2043,17 +2067,20 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsNationalInitialSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillInitialSeasonComboBox(statisticsNationalInitialSeasonComboBox);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				initialSeason = GuiConfiguration.getSelectedItemIDComboBox(
+					statisticsNationalInitialSeasonComboBox,
+					initialSeasonMap
+				);
 			}
 
 			@Override
@@ -2085,13 +2112,13 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalFinalSeasonComboBox = new JComboBox<>();
+		statisticsNationalFinalSeasonComboBox = new JComboBox<>();
 
-		filterStatisticsNationalFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
+		statisticsNationalFinalSeasonComboBox.setMaximumRowCount(GuiConfiguration.getComboBoxMaximumRowCount());
 
-		filterStatisticsNationalFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
+		statisticsNationalFinalSeasonComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 
-		panel.add(filterStatisticsNationalFinalSeasonComboBox);
+		panel.add(statisticsNationalFinalSeasonComboBox);
 
 
 
@@ -2101,17 +2128,20 @@ public class ViewPlayerPanel
 
 
 
-		filterStatisticsNationalFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
+		statisticsNationalFinalSeasonComboBox.addPopupMenuListener(new PopupMenuListener() {
 			@Override
 			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
 			{
-
+				fillFinalSeasonComboBox(statisticsNationalFinalSeasonComboBox);
 			}
 
 			@Override
 			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
 			{
-
+				finalSeason = GuiConfiguration.getSelectedItemIDComboBox(
+					statisticsNationalFinalSeasonComboBox,
+					finalSeasonMap
+				);
 			}
 
 			@Override
@@ -2473,8 +2503,8 @@ public class ViewPlayerPanel
 		teamType = null;
 		teamID = null;
 		competitionID = null;
-		startYear = null;
-		endYear = null;
+		initialSeason = null;
+		finalSeason = null;
 	}
 
 	public void getDataPlayerGeneralView()
@@ -2570,8 +2600,8 @@ public class ViewPlayerPanel
 				teamType,
 				teamID,
 				competitionID,
-				startYear,
-				endYear
+				initialSeason,
+				finalSeason
 			);
 	}
 
@@ -2793,5 +2823,97 @@ public class ViewPlayerPanel
 		}
 
 	}
+
+	public void getPlayerTeamComboBox(Vector<String> vector, Map<String, String> map)
+	{
+		vector.clear();
+		map.clear();
+
+		Controller.getInstance().setTeamComboBox
+			(
+				vector,
+				map,
+				playerID
+			);
+
+
+		System.out.println(vector);
+
+	}
+
+	public void getPlayerCompetitionComboBox(Vector<String> vector, Map<String, String> map)
+	{
+		vector.clear();
+		map.clear();
+
+		Controller.getInstance().setCompetitionComboBox(
+				vector,
+				map,
+				playerID,
+				teamType
+			);
+
+		System.out.println(playerID);
+		System.out.println(teamType);
+
+		System.out.println(vector);
+	}
+
+	public void getPlayerSeasonComboBox(Vector<String> vector, Map<String, String> map)
+	{
+		vector.clear();
+		map.clear();
+
+		Controller.getInstance().setPlayerComboBox(
+				vector,
+				map,
+				playerID
+			);
+	}
+
+	public void fillTeamComboBox(Boolean selectAll)
+	{
+		GuiConfiguration.initComboBoxVector(clubStatisticsTeamVector, clubStatisticsTeamMap, selectAll);
+
+		getPlayerTeamComboBox(clubStatisticsTeamVector, clubStatisticsTeamMap);
+
+		GuiConfiguration.fillComboBox(statisticsClubTeamComboBox, clubStatisticsTeamVector);
+	}
+
+	public void fillCompetitionComboBox(JComboBox<String> comboBox,
+										Boolean selectAll)
+	{
+		GuiConfiguration.initComboBoxVector(competitionVector, competitionMap, selectAll);
+
+		getPlayerCompetitionComboBox(competitionVector, competitionMap);
+
+		GuiConfiguration.fillComboBox(comboBox, competitionVector);
+	}
+
+	public void fillInitialSeasonComboBox(JComboBox<String> comboBox)
+	{
+		Controller.getInstance().setPlayerComboBox(initialSeasonVector, initialSeasonMap, playerID);
+
+		GuiConfiguration.fillComboBox(comboBox, initialSeasonVector);
+	}
+
+	public void fillFinalSeasonComboBox(JComboBox<String> comboBox)
+	{
+		getPlayerSeasonComboBox(finalSeasonVector, finalSeasonMap);
+
+
+		/*
+		for (String string: finalSeasonVector) {
+
+			if(Integer.valueOf(initialSeason) > Integer.valueOf(string)) {
+				finalSeasonVector.remove(string);
+			}
+		}
+
+		 */
+
+		GuiConfiguration.fillComboBox(comboBox, finalSeasonVector);
+	}
+
 }
 
