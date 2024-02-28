@@ -1,6 +1,5 @@
 package gui;
 
-import sun.swing.DefaultLookup;
 
 import javax.swing.*;
 import javax.swing.border.Border;
