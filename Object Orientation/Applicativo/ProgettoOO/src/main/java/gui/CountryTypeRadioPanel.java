@@ -9,10 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CountryTypeRadioPanel
+public abstract class CountryTypeRadioPanel
 				extends JPanel
 {
-	private String countryType = null;
 
 	public CountryTypeRadioPanel(String title)
 	{
@@ -25,7 +24,7 @@ public class CountryTypeRadioPanel
 
 		migLayout = new MigLayout(
 						"debug, fill",
-						"0[fill][][]0",
+						"0[15%, fill]15%[15%]15%[15%]0",
 						"0[][]"
 		);
 
@@ -39,11 +38,13 @@ public class CountryTypeRadioPanel
 
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
+
 		radioButton = new JRadioButton(string);
+
 		radioButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				countryType = Country.COUNTRY_TYPE.WORLD.toString();
+				setCountryType(Country.COUNTRY_TYPE.WORLD.toString());
 			}
 		});
 
@@ -56,8 +57,9 @@ public class CountryTypeRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				countryType = Country.COUNTRY_TYPE.CONTINENT.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				setCountryType(Country.COUNTRY_TYPE.CONTINENT.toString());
 			}
 		});
 
@@ -70,8 +72,9 @@ public class CountryTypeRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				countryType = Country.COUNTRY_TYPE.NATION.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				setCountryType(Country.COUNTRY_TYPE.NATION.toString());
 			}
 		});
 
@@ -79,9 +82,5 @@ public class CountryTypeRadioPanel
 		this.add(radioButton);
 	}
 
-
-	public String getCountryType()
-	{
-		return countryType;
-	}
+	abstract void setCountryType(String string);
 }

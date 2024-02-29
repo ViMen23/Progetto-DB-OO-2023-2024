@@ -10,7 +10,11 @@ import java.awt.event.ActionListener;
 public class TopSearchPanel
 				extends JPanel
 {
-	public TopSearchPanel(String bottone1, String bottone2, JPanel root, JPanel toRemove)
+	private static final ImageIcon RESET = GuiConfiguration.createImageIcon("images/reset.png");
+	private static final ImageIcon MINIMIZE = GuiConfiguration.createImageIcon("images/minimize.png");
+	private static final ImageIcon MAXIMIZE = GuiConfiguration.createImageIcon("images/maximize.png");
+
+	public TopSearchPanel(String titleButtonString, JPanel rootPanel, JPanel toRemovePanel)
 	{
 		MigLayout migLayout;
 		migLayout = new MigLayout(
@@ -22,38 +26,41 @@ public class TopSearchPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		JButton button;
+		JButton titleButton;
 
-		button = new JButton(bottone1);
-		button.setHorizontalTextPosition(SwingConstants.LEADING);
-		button.setIcon(GuiConfiguration.getMaximizeIcon());
-		button.setIconTextGap(40);
-		button.setCursor(GuiConfiguration.getButtonCursor());
-		button.addActionListener(new ActionListener() {
+		titleButton = new JButton(titleButtonString, MAXIMIZE);
+
+		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		titleButton.setIconTextGap(40);
+		titleButton.setCursor(GuiConfiguration.getButtonCursor());
+
+		titleButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (toRemove.isShowing()) {
-					root.remove(toRemove);
-					//button.setIcon(minimizeIcon);
+				if (toRemovePanel.isShowing()) {
+					rootPanel.remove(toRemovePanel);
+					titleButton.setIcon(MINIMIZE);
 				} else {
-					root.add(toRemove);
-					//button.setIcon(maximizeIcon);
+					rootPanel.add(toRemovePanel);
+					titleButton.setIcon(MAXIMIZE);
 				}
 
-				root.revalidate();
+				rootPanel.revalidate();
 			}
 		});
 
-		this.add(button);
+		this.add(titleButton);
 
+		JButton resetButton;
 
-		button = new JButton(GuiConfiguration.getResetIcon());
-		button.setCursor(GuiConfiguration.getButtonCursor());
+		resetButton = new JButton(RESET);
+		resetButton.setCursor(GuiConfiguration.getButtonCursor());
 
-		button.addActionListener(new ActionListener() {
+		resetButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent e)
+			{
 				Container container = MainFrame.getMainFrameInstance().getContentPane();
 				Component component = container.getComponent(2);
 				component.setVisible(false);
@@ -66,10 +73,9 @@ public class TopSearchPanel
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
 				}
-
 			}
 		});
 
-		this.add(button);
+		this.add(resetButton);
 	}
 }

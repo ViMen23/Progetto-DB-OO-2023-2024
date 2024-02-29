@@ -101,18 +101,7 @@ public class SearchCountryPanel
 		 * BOTTONE TITOLO
 		 *------------------------------------------------------------------------------------------------------*/
 
-
-
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("country");
-		string += " - ";
-		string += GuiConfiguration.getMessage("countries");
-		string += " ";
-		string += GuiConfiguration.getMessage("available");
-		string += " ";
-		string += Controller.getInstance().countCountries().toString();
-		string = string.toUpperCase();
+		string = null;
 
 		titleButton = new JButton(string);
 
