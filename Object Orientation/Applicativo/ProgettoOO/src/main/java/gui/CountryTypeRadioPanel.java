@@ -9,11 +9,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public abstract class CountryTypeRadioPanel
+public class CountryTypeRadioPanel
 				extends JPanel
 {
 
-	public CountryTypeRadioPanel(String title)
+	public CountryTypeRadioPanel(String title, JLabel controlLabel, JPanel rootPanel)
 	{
 		MigLayout migLayout;
 		String string;
@@ -43,8 +43,10 @@ public abstract class CountryTypeRadioPanel
 
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				setCountryType(Country.COUNTRY_TYPE.WORLD.toString());
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Country.COUNTRY_TYPE.WORLD.toString());
+				//setCountryType(Country.COUNTRY_TYPE.WORLD.toString());
 			}
 		});
 
@@ -59,7 +61,8 @@ public abstract class CountryTypeRadioPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				setCountryType(Country.COUNTRY_TYPE.CONTINENT.toString());
+				controlLabel.setText(Country.COUNTRY_TYPE.CONTINENT.toString());
+				//setCountryType(Country.COUNTRY_TYPE.CONTINENT.toString());
 			}
 		});
 
@@ -74,7 +77,8 @@ public abstract class CountryTypeRadioPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				setCountryType(Country.COUNTRY_TYPE.NATION.toString());
+				controlLabel.setText(Country.COUNTRY_TYPE.NATION.toString());
+				//setCountryType(Country.COUNTRY_TYPE.NATION.toString());
 			}
 		});
 
@@ -82,5 +86,5 @@ public abstract class CountryTypeRadioPanel
 		this.add(radioButton);
 	}
 
-	abstract void setCountryType(String string);
+	//abstract void setCountryType(String string);
 }
