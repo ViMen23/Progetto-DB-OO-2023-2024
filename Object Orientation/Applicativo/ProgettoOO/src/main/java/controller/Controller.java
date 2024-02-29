@@ -242,10 +242,10 @@ public class Controller
 	 * @param countryType
 	 * @param superCountryID
 	 */
-	public void setCountryComboBox(Vector<String> countryNameVector,
-																 Map<String, String> countryNameMap,
-																 String countryType,
-																 String superCountryID)
+	public void setCountryComboBox(String countryType,
+																 String superCountryID,
+																 Vector<String> countryNameVector,
+																 Map<String, String> countryNameMap)
 	{
 		fetchCountry(countryType, superCountryID);
 
@@ -266,30 +266,11 @@ public class Controller
 	 * @param countryType
 	 * @param superCountryID
 	 */
-	public void setCountryTable(Vector<String> countryTableColumnName,
-															Vector<Vector<String>> countryTableData,
-															String countryType,
-															String superCountryID)
+	public void setCountryTable(String countryType,
+															String superCountryID,
+															Vector<Vector<String>> countryTableData)
 	{
 		fetchCountry(countryType, superCountryID);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		countryTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("code");
-		string = string.toUpperCase();
-		countryTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		countryTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("superCountry");
-		string = string.toUpperCase();
-		countryTableColumnName.add(string);
 
 		for (String key : ctrlCountry.getCountryMap().keySet()) {
 			Vector<String> countryVector = new Vector<>();
@@ -439,10 +420,10 @@ public class Controller
 	 * @param typeCountry
 	 * @param superConfederationID
 	 */
-	public void setConfederationComboBox(Vector<String> confederationShortNameVector,
-																			 Map<String, String> confederationShortNameMap,
-																			 String typeCountry,
-																			 String superConfederationID)
+	public void setConfederationComboBox(String typeCountry,
+																			 String superConfederationID,
+																			 Vector<String> confederationShortNameVector,
+																			 Map<String, String> confederationShortNameMap)
 	{
 		fetchConfederation(typeCountry, superConfederationID);
 
@@ -456,34 +437,11 @@ public class Controller
 	}
 
 
-	public void setConfederationTable(Vector<String> confederationTableColumnName,
-																		Vector<Vector<String>> confederationTableData,
-																		String countryType,
-																		String superConfederationID)
+	public void setConfederationTable(String countryType,
+																		String superConfederationID,
+																		Vector<Vector<String>> confederationTableData)
 	{
 		fetchConfederation(countryType, superConfederationID);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("confederation");
-		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("code");
-		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("superConfederation");
-		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
 
 		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
 			Vector<String> confederationVector = new Vector<>();
@@ -699,10 +657,10 @@ public class Controller
 
 
 
-	public void setCompetitionComboBox(Vector<String> competitionNameVector,
-																		 Map<String, String> competitionNameMap,
-																		 String playerID,
-																		 String teamType)
+	public void setCompetitionComboBox(String playerID,
+																		 String teamType,
+																		 Vector<String> competitionNameVector,
+																		 Map<String, String> competitionNameMap)
 	{
 		fetchCompetition(playerID, teamType);
 
@@ -718,14 +676,14 @@ public class Controller
 	}
 
 
-	public void setCompetitionComboBox(Vector<String> competitionNameVector,
-																		 Map<String, String> competitionNameMap,
-																		 String competitionSubName,
+	public void setCompetitionComboBox(String competitionSubName,
 																		 String competitionType,
 																		 String competitionTeamType,
 																		 String competitionCountryType,
 																		 String competitionContinentID,
-																		 String competitionNationID)
+																		 String competitionNationID,
+																		 Vector<String> competitionNameVector,
+																		 Map<String, String> competitionNameMap)
 	{
 		fetchCompetition(
 						competitionSubName,
@@ -765,14 +723,13 @@ public class Controller
 	 * @param competitionContinentID
 	 * @param competitionNationID
 	 */
-	public void setCompetitionTable(Vector<String> competitionTableColumnName,
-																	Vector<Vector<String>> competitionTableData,
-																	String competitionSubName,
+	public void setCompetitionTable(String competitionSubName,
 																	String competitionType,
 																	String competitionTeamType,
 																	String competitionCountryType,
 																	String competitionContinentID,
-																	String competitionNationID)
+																	String competitionNationID,
+																	Vector<Vector<String>> competitionTableData)
 	{
 		fetchCompetition(
 						competitionSubName,
@@ -782,28 +739,6 @@ public class Controller
 						competitionContinentID,
 						competitionNationID
 		);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("confederation");
-		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
 
 
 		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
@@ -1064,13 +999,13 @@ public class Controller
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
-	public void setTeamComboBox(Vector<String> teamLongNameVector,
-															Map<String, String> teamLongNameMap,
-															String teamSubLongName,
+	public void setTeamComboBox(String teamSubLongName,
 															String teamSubShortName,
 															String teamType,
 															String teamContinentID,
-															String teamNationID)
+															String teamNationID,
+															Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap)
 	{
 		fetchTeam(
 						teamSubLongName,
@@ -1090,9 +1025,9 @@ public class Controller
 	}
 
 
-	public void setTeamComboBox(Vector<String> teamLongNameVector,
-															Map<String, String> teamLongNameMap,
-															String playerID)
+	public void setTeamComboBox(String playerID,
+															Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap)
 	{
 		fetchTeamPlayer(playerID);
 
@@ -1118,13 +1053,12 @@ public class Controller
 	 * @param teamContinentID
 	 * @param teamNationID
 	 */
-	public void setTeamTable(Vector<String> teamTableColumnName,
-													 Vector<Vector<String>> teamTableData,
-													 String teamSubLongName,
+	public void setTeamTable(String teamSubLongName,
 													 String teamSubShortName,
 													 String teamType,
 													 String teamContinentID,
-													 String teamNationID)
+													 String teamNationID,
+													 Vector<Vector<String>> teamTableData)
 	{
 		fetchTeam(
 						teamSubLongName,
@@ -1133,24 +1067,6 @@ public class Controller
 						teamContinentID,
 						teamNationID
 		);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		teamTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("code");
-		string = string.toUpperCase();
-		teamTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		teamTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		teamTableColumnName.add(string);
 
 
 		for (String key : ctrlTeam.getTeamMap().keySet()) {
@@ -1174,10 +1090,10 @@ public class Controller
 	 * @param competitionStartYear
 	 * @param competitionID
 	 */
-	public void setTeamComboBox(Vector<String> teamLongNameVector,
-															Map<String, String> teamLongNameMap,
-															String competitionStartYear,
-															String competitionID)
+	public void setTeamComboBox(String competitionStartYear,
+															String competitionID,
+															Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap)
 	{
 		fetchTeam(competitionStartYear, competitionID);
 
@@ -1190,17 +1106,13 @@ public class Controller
 		}
 	}
 
-	public void setTeamView(Map<String, String> infoTeamMap,
-													Vector<String> teamSquadTableColumnName,
+	public void setTeamView(String teamID,
+													String startYear,
+													Map<String, String> infoTeamMap,
 													Vector<Vector<String>> teamSquadTableData,
-													Vector<String> teamPartecipationTableColumnName,
 													Vector<Vector<String>> teamPartecipationTableData,
-													Vector<String> teamTrophyTableColumnName,
 													Vector<Vector<String>> teamTrophyTableData,
-													Vector<String> teamPrizeTableColumnName,
-													Vector<Vector<String>> teamPrizeTableData,
-													String teamID,
-													String startYear)
+													Vector<Vector<String>> teamPrizeTableData)
 	{
 		fetchTeam(teamID);
 		fetchMilitancy(teamID, startYear);
@@ -1233,18 +1145,6 @@ public class Controller
 		string = StringUtils.capitalize(string);
 		infoTeamMap.put(string, team.getConfederation().getShortName());
 
-		// tabella rosa
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		teamSquadTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		teamSquadTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		teamSquadTableColumnName.add(string);
 
 		for (String key : team.getPlayerMap().keySet()) {
 			Vector<String> playerVector = new Vector<>();
@@ -1259,19 +1159,6 @@ public class Controller
 		}
 
 
-		// tabella partecipazioni
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		teamPartecipationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		teamPartecipationTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("confederation");
-		string = string.toUpperCase();
-		teamPartecipationTableColumnName.add(string);
-
 		for (Competition competition : team.getCompetitionSet()) {
 			Vector<String> partecipationVector = new Vector<>();
 
@@ -1283,16 +1170,6 @@ public class Controller
 		}
 
 
-		// tabella trofei
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		teamTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("trophy");
-		string = string.toUpperCase();
-		teamTrophyTableColumnName.add(string);
-
-
 		for (Trophy trophy : team.getTrophySet()) {
 			Vector<String> trophyVector = new Vector<>();
 
@@ -1301,16 +1178,6 @@ public class Controller
 
 			teamTrophyTableData.add(trophyVector);
 		}
-
-
-		// tabella premi
-		string = GuiConfiguration.getMessage("prize");
-		string = string.toUpperCase();
-		teamPrizeTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("given");
-		string = string.toUpperCase();
-		teamPrizeTableColumnName.add(string);
 
 
 		for (Prize prize : team.getPrizeSet()) {
@@ -1696,9 +1563,7 @@ public class Controller
 	 * @param playerPositionID
 	 * @param playerFoot
 	 */
-	public void setPlayerComboBox(Vector<String> playerInfoVector,
-																Map<String, String> playerInfoMap,
-																String playerSubName,
+	public void setPlayerComboBox(String playerSubName,
 																String playerSubSurname,
 																String playerReferringYear,
 																String playerMinAge,
@@ -1707,7 +1572,9 @@ public class Controller
 																String playerNationID,
 																String playerRole,
 																String playerPositionID,
-																String playerFoot)
+																String playerFoot,
+																Vector<String> playerInfoVector,
+																Map<String, String> playerInfoMap)
 	{
 		fetchPlayer(
 						playerSubName,
@@ -1734,10 +1601,10 @@ public class Controller
 		}
 	}
 
-	public void setPlayerComboBox(Vector<String> playerInfoVector,
-																Map<String, String> playerInfoMap,
-																String startYear,
-																String teamID)
+	public void setPlayerComboBox(String startYear,
+																String teamID,
+																Vector<String> playerInfoVector,
+																Map<String, String> playerInfoMap)
 	{
 		fetchPlayer(startYear, teamID);
 
@@ -1756,9 +1623,9 @@ public class Controller
 		}
 	}
 
-	public void setPlayerComboBox(Vector<String> seasonVector,
-																Map<String, String> seasonMap,
-																String playerID)
+	public void setPlayerComboBox(String playerID,
+																Vector<String> seasonVector,
+																Map<String, String> seasonMap)
 	{
 		fetchPlayerSeason(playerID);
 
@@ -1770,9 +1637,7 @@ public class Controller
 		}
 	}
 
-	public void setPlayerTable(Vector<String> playerTableColumnName,
-														 Vector<Vector<String>> playerTableData,
-														 String playerSubName,
+	public void setPlayerTable(String playerSubName,
 														 String playerSubSurname,
 														 String playerReferringYear,
 														 String playerMinAge,
@@ -1781,7 +1646,8 @@ public class Controller
 														 String playerNationID,
 														 String playerRole,
 														 String playerPositionID,
-														 String playerFoot)
+														 String playerFoot,
+														 Vector<Vector<String>> playerTableData)
 	{
 		fetchPlayer(
 						playerSubName,
@@ -1795,41 +1661,6 @@ public class Controller
 						playerPositionID,
 						playerFoot
 		);
-
-
-		String string;
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("dob");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("foot");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("position");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
 
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
@@ -1864,51 +1695,16 @@ public class Controller
 	 * @param militancyPlayerStartYear
 	 * @param militancyPlayerEndYear
 	 */
-	public void setPlayerTable(Vector<String> playerTableColumnName,
-														 Vector<Vector<String>> playerTableData,
-														 String militancyPlayerTeamID,
+	public void setPlayerTable(String militancyPlayerTeamID,
 														 String militancyPlayerStartYear,
-														 String militancyPlayerEndYear)
+														 String militancyPlayerEndYear,
+														 Vector<Vector<String>> playerTableData)
 	{
 		fetchPlayer(
 						militancyPlayerTeamID,
 						militancyPlayerStartYear,
 						militancyPlayerEndYear
 		);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("dob");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("foot");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("position");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = string.toUpperCase();
-		playerTableColumnName.add(string);
 
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
@@ -1935,12 +1731,12 @@ public class Controller
 	}
 
 
-	public void setPlayerGeneralView(Map<String, String> infoPlayerMap,
+	public void setPlayerGeneralView(String playerID,
+																	 Map<String, String> infoPlayerMap,
 																	 Vector<String> playerPositionTableColumnName,
 																	 Vector<Vector<String>> playerPositionTableData,
 																	 Vector<String> playerNationalityTableColumnName,
-																	 Vector<Vector<String>> playerNationalityTableData,
-																	 String playerID)
+																	 Vector<Vector<String>> playerNationalityTableData)
 	{
 		fetchPlayer(playerID);
 		fetchPosition(playerID);
@@ -1989,18 +1785,6 @@ public class Controller
 
 
 		// tabella posizioni
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("code");
-		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("position");
-		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
-
 		for (Position position : player.getPositionSet()) {
 			Vector<String> positionVector = new Vector<>();
 
@@ -2013,10 +1797,6 @@ public class Controller
 
 
 		// tabella nazionalita
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		playerNationalityTableColumnName.add(string);
-
 		for (Country country : player.getCountrySet()) {
 			Vector<String> countryVector = new Vector<>();
 
@@ -2027,18 +1807,13 @@ public class Controller
 	}
 
 
-	public void setPlayerDetailedView(Map<String, String> infoPlayerMap,
-																		Vector<String> playerAttributeGoalkeepingTableColumnName,
+	public void setPlayerDetailedView(String playerID,
+																		Map<String, String> infoPlayerMap,
 																		Vector<Vector<String>> playerAttributeGoalkeepingTableData,
-																		Vector<String> playerAttributeMentalTableColumnName,
 																		Vector<Vector<String>> playerAttributeMentalTableData,
-																		Vector<String> playerAttributePhysicalTableColumnName,
 																		Vector<Vector<String>> playerAttributePhysicalTableData,
-																		Vector<String> playerAttributeTechnicalTableColumnName,
 																		Vector<Vector<String>> playerAttributeTechnicalTableData,
-																		Vector<String> playerTagTableColumnName,
-																		Vector<Vector<String>> playerTagTableData,
-																		String playerID)
+																		Vector<Vector<String>> playerTagTableData)
 	{
 		fetchPlayer(playerID);
 		fetchAttribute(playerID);
@@ -2082,35 +1857,17 @@ public class Controller
 		}
 
 
-		// tabelle attributi
-		string = GuiConfiguration.getMessage("attribute");
-		string = string.toUpperCase();
-		playerAttributeGoalkeepingTableColumnName.add(string);
-		playerAttributeMentalTableColumnName.add(string);
-		playerAttributePhysicalTableColumnName.add(string);
-		playerAttributeTechnicalTableColumnName.add(string);
+		if (player.getRole().matches("GK")) {
+			for (String key : player.getAttributeGoalkeepingMap().keySet()) {
+				Vector<String> attributeGoalkeepingVector = new Vector<>();
 
-		string = GuiConfiguration.getMessage("value");
-		string = string.toUpperCase();
-		playerAttributeGoalkeepingTableColumnName.add(string);
-		playerAttributeMentalTableColumnName.add(string);
-		playerAttributePhysicalTableColumnName.add(string);
-		playerAttributeTechnicalTableColumnName.add(string);
-
-
-		// TODO
-		for (String key : player.getAttributeGoalkeepingMap().keySet()) {
-			Vector<String> attributeGoalkeepingVector = new Vector<>();
-
-			attributeGoalkeepingVector.add(key);
-			if (null == player.getAttributeGoalkeepingMap().get(key)) {
-				break;
-			} else {
+				attributeGoalkeepingVector.add(key);
 				attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
+
+				playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
 			}
-			
-			playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
 		}
+
 
 		for (String key : player.getAttributeMentalMap().keySet()) {
 			Vector<String> attributeMentalVector = new Vector<>();
@@ -2141,12 +1898,6 @@ public class Controller
 
 
 
-
-		// tabella tag
-		string = GuiConfiguration.getMessage("tag");
-		string = string.toUpperCase();
-		playerTagTableColumnName.add(string);
-
 		for (Tag tag : player.getTagSet()) {
 			Vector<String> tagVector = new Vector<>();
 
@@ -2157,12 +1908,10 @@ public class Controller
 	}
 
 
-	public void setPlayerCareerView(Map<String, String> infoPlayerMap,
-																	Vector<String> playerClubCareerTableColumnName,
+	public void setPlayerCareerView(String playerID,
+																	Map<String, String> infoPlayerMap,
 																	Vector<Vector<String>> playerClubCareerTableData,
-																	Vector<String> playerNationalCareerTableColumnName,
-																	Vector<Vector<String>> playerNationalCareerTableData,
-																	String playerID)
+																	Vector<Vector<String>> playerNationalCareerTableData)
 	{
 		fetchPlayer(playerID);
 		fetchClubMilitancy(playerID);
@@ -2207,22 +1956,6 @@ public class Controller
 
 
 		// tabella carriera club
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("type");
-		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("country");
-		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
-
 		for (String key : player.getClubCareer().keySet()) {
 			Vector<String> clubCareerVector = new Vector<>();
 
@@ -2245,15 +1978,6 @@ public class Controller
 		}
 
 		// tabella carriera nazionale
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerNationalCareerTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		playerNationalCareerTableColumnName.add(string);
-
-
 		for (String key : player.getNationalCareer().keySet()) {
 			Vector<String> nationalCareerVector = new Vector<>();
 
@@ -2265,15 +1989,14 @@ public class Controller
 	}
 
 
-	public void setPlayerStatisticView(Map<String, String> infoPlayerMap,
-																		 Vector<String> playerStatisticTableColumnName,
-																		 Vector<Vector<String>> playerStatisticTableData,
-																		 String playerID,
+	public void setPlayerStatisticView(String playerID,
 																		 String teamType,
 																		 String teamID,
 																		 String competitionID,
 																		 String startYear,
-																		 String endYear)
+																		 String endYear,
+																		 Map<String, String> infoPlayerMap,
+																		 Vector<Vector<String>> playerStatisticTableData)
 	{
 		fetchPlayer(playerID);
 		fetchStatisticPlayer(playerID, teamType, teamID, competitionID, startYear, endYear);
@@ -2316,51 +2039,6 @@ public class Controller
 		}
 
 
-		// tabella statistiche
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("match");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalScored");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltyScored");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("assist");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("yellowCard");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("redCard");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalConceded");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltySaved");
-		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
-
 		Set<Statistic> playerStatisticSet = player.getStatisticSet();
 
 		for (Statistic playerStatistic : playerStatisticSet) {
@@ -2383,14 +2061,11 @@ public class Controller
 	}
 
 
-	public void setPlayerCaseView(Map<String, String> infoPlayerMap,
-																Vector<String> playerClubTrophyTableColumnName,
+	public void setPlayerCaseView(String playerID,
+																Map<String, String> infoPlayerMap,
 																Vector<Vector<String>> playerClubTrophyTableData,
-																Vector<String> playerNationalTrophyTableColumnName,
 																Vector<Vector<String>> playerNationalTrophyTableData,
-																Vector<String> playerPrizeTableColumnName,
-																Vector<Vector<String>> playerPrizeTableData,
-																String playerID)
+																Vector<Vector<String>> playerPrizeTableData)
 	{
 		fetchPlayer(playerID);
 
@@ -2435,22 +2110,6 @@ public class Controller
 		fetchPlayerTrophy(playerID, "CLUB");
 
 		// tabella trofei club
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("trophy");
-		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
-
 		Set<Trophy> playerTrophySet = player.getTrophySet();
 
 		for (Trophy playerTrophy : playerTrophySet) {
@@ -2468,22 +2127,6 @@ public class Controller
 		fetchPlayerTrophy(playerID, "NATIONAL");
 
 		// tabella trofei nazionale
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("trophy");
-		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
-
 		playerTrophySet = player.getTrophySet();
 
 		for (Trophy playerTrophy : playerTrophySet) {
@@ -2500,18 +2143,6 @@ public class Controller
 		fetchPrize(playerID);
 
 		// tabella premi
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("prize");
-		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("given");
-		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
-
 		Set<Prize> playerPrizeSet = player.getPrizeSet();
 
 		for (Prize playerPrize : playerPrizeSet) {
@@ -2963,59 +2594,11 @@ public class Controller
 	}
 
 
-	public void setStatisticTable(Vector<String> statisticTableColumnName,
-																Vector<Vector<String>> statisticTableData,
-																String teamType,
-																String playerRole)
+	public void setStatisticTable(String teamType,
+																String playerRole,
+																Vector<Vector<String>> statisticTableData)
 	{
 		fetchStatisticTotal(teamType, playerRole);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("match");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltyScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("assist");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("yellowCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("redCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalConceded");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltySaved");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
 			Vector<String> statisticVector = new Vector<>();
@@ -3041,62 +2624,11 @@ public class Controller
 	}
 
 
-	public void setStatisticCompetitionEditionTable(Vector<String> statisticTableColumnName,
-																									Vector<Vector<String>> statisticTableData,
-																									String competitionStartYear,
-																									String competitionID)
+	public void setStatisticCompetitionEditionTable(String competitionStartYear,
+																									String competitionID,
+																									Vector<Vector<String>> statisticTableData)
 	{
 		fetchStatisticCompetitionEdition(competitionStartYear, competitionID);
-
-		String string;
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("match");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltyScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("assist");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("yellowCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("redCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalConceded");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltySaved");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
 
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
@@ -3123,14 +2655,13 @@ public class Controller
 	}
 
 
-	public void setStatisticPlayerTable(Vector<String> statisticTableColumnName,
-																			Vector<Vector<String>> statisticTableData,
-																			String playerID,
+	public void setStatisticPlayerTable(String playerID,
 																			String teamType,
 																			String teamID,
 																			String competitionID,
 																			String startYear,
-																			String endYear)
+																			String endYear,
+																			Vector<Vector<String>> statisticTableData)
 	{
 		fetchStatisticPlayer(
 						playerID,
@@ -3141,51 +2672,6 @@ public class Controller
 						endYear
 		);
 
-		String string;
-
-		string = GuiConfiguration.getMessage("season");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("competition");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("match");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltyScored");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("assist");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("yellowCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("redCard");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("goalConceded");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
-
-		string = GuiConfiguration.getMessage("penaltySaved");
-		string = string.toUpperCase();
-		statisticTableColumnName.add(string);
 
 		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
 

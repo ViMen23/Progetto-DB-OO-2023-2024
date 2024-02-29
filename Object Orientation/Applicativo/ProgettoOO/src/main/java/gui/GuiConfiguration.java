@@ -793,32 +793,7 @@ public class GuiConfiguration
 		label.setText(string);
 	}
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : fillCountryComboBox
-	 *
-	 * DESC: TODO
-	 */
-	public static void fillCountryComboBox(JComboBox<String> comboBox,
-											Vector<String> vector,
-											Map<String, String> map,
-											String type,
-											String superCountryID,
-										   	Boolean selectAll)
-	{
 
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
-		Controller.getInstance().setCountryComboBox
-			(
-				vector,
-				map,
-				type,
-				superCountryID
-			);
-
-		fillComboBox(comboBox, vector);
-	}
 
 
 	/**
