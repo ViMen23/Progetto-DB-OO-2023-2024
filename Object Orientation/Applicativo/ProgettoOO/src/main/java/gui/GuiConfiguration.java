@@ -34,6 +34,49 @@ public class GuiConfiguration
 	private static final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 	private static final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
+	private static final String generalSearchPanelLayoutConstraint = "debug, flowy, fill";
+	private static final String generalSearchPanelColumnConstraint = "0[]0";
+	private static final String generalSearchPanelRowConstraint = "10[]10[]0[]10";
+	private static final String generalSearchPanelAddConstraint = "sgx frame, growy";
+
+	private static final String topSearchPanelLayoutConstraint = "debug, flowx";
+	private static final String topSearchPanelColumnConstraint = "0[]110[]0";
+	private static final String topSearchPanelRowConstraint = "10[]10";
+	private static final String topSearchPanelAddConstraint = "sgx general, dock north";
+
+	private static final String buttonTopSearchPanelAddConstraint = "width 80%";
+
+	private static final String middleSearchPanelLayoutConstraint = "debug, wrap 2";
+
+	private static final String middleSearchPanelColumnConstraint = "10[60%, fill]50[35%, fill]10";
+
+	private static final String middleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]20[]0";
+	private static final String middleSearchPanelAddConstraint = "dock center, sgx general";
+
+	private static final String firstColumnMiddleSearchPanelAddConstraint = "sgx panel_first_column";
+	private static final String secondColumnMiddleSearchPanelAddConstraint = "sgx sgx panel_second_column";
+	private static final String countryTypeLayoutConstraint = "debug, flowx, center";
+	private static final String countryTypeColumnConstraint = "12.5%[15%]15%[15%]15%[15%]12.5%";
+	private static final String countryTypeRowConstraint = "10[]10";
+	private static final String countryTypeAddConstraint = "sgx panel_first_column";
+
+	private static final String infoPanelLayoutConstraint = "debug, flowy";
+	private static final String infoPanelAddConstraint = "sgx panel_second_column";
+
+	private static final String chooseContinentLayoutConstraint = "debug, wrap 2";
+	private static final String chooseContinentColumnConstraint = "5%[20%]10:push[40%]5%";
+	private static final String chooseContinentRowConstraint = "10[]20[]10";
+
+	private static final String chooseContinentAddConstraint = "sgx panel_first_column";
+	private static final String searchButtonAddConstraint = "span 2";
+
+	private static final String tablePanelLayoutConstraint = "debug, flowy";
+	private static final String tablePanelColumnConstraint = "[grow, fill]";
+	private static final String tablePanelRowConstraint = "10[]10";
+	private static final String tablePanelAddConstraint = "dock south, sgx general";
+
+
+
 
 	private static ResourceBundle currentResourceBundle;
 

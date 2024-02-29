@@ -597,7 +597,7 @@ public class SearchCountryPanel
 		countryTablePanel = new JPanel(migLayout);
 		countryTablePanel.setBackground(panelColor);
 
-		add(countryTablePanel, "dock south, sgx general");
+		add(countryTablePanel, z);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
