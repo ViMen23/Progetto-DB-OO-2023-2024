@@ -30,7 +30,7 @@ public class TestPanel
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
 		TitleLabel titlePanel;
-		CountryTypeRadioPanel countryTypeRadioPanel;
+		RadioPanel radioPanel;
 		InfoPanel infoPanel;
 		LabelComboPanel chooseContinentPanel;
 		TablePanel tablePanel;
@@ -58,27 +58,51 @@ public class TestPanel
 
 		centralPanel.setLayout(migLayout);
 
-		topSearchPanel = new TopSearchPanel("Bottone1", this, centralPanel);
+
+		string = GuiConfiguration.getMessage("searchBy");
+		string += " ";
+		string += GuiConfiguration.getMessage("country");
+		string += " - ";
+		string += GuiConfiguration.getMessage("countries");
+		string += " ";
+		string += GuiConfiguration.getMessage("available");
+		string += " ";
+		string += Controller.getInstance().countCountries().toString();
+		string = string.toUpperCase();
+
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.topSearchPanelAddConstraint);
 
 		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		titlePanel = new TitleLabel("TITOLO1");
+
+		string = GuiConfiguration.getMessage("choose");
+		string += " ";
+		string += GuiConfiguration.getMessage("countryType");
+		string = string.toUpperCase();
+
+		titlePanel = new TitleLabel(string);
 		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		titlePanel = new TitleLabel("INFO1");
+		titlePanel = new TitleLabel("INFO"); //TODO i18n
 		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
-		countryTypeRadioPanel = new CountryTypeRadioPanel(countryType);
-		centralPanel.add(countryTypeRadioPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		radioPanel = new RadioPanel(Country.COUNTRY_TYPE.values(), countryType);
+		centralPanel.add(radioPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il primo info box");
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		titlePanel = new TitleLabel("TITOLO2");
+
+		string = "Scegli continente che contiene la nazione"; //TODO I18N
+		string = string.toUpperCase();
+
+		titlePanel = new TitleLabel(string);
 		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		titlePanel = new TitleLabel("INFO2");
+		titlePanel = new TitleLabel("INFO"); //TODO i18n
 		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
 		chooseContinentPanel = new LabelComboPanel(null, continent);
@@ -86,6 +110,8 @@ public class TestPanel
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 		tablePanel = new TablePanel(true, null, null, null);
 		this.add(tablePanel, GuiConfiguration.tablePanelAddConstraint);

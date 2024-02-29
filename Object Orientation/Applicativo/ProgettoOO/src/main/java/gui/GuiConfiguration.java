@@ -1,3 +1,4 @@
+
 package gui;
 
 import controller.Controller;
@@ -34,6 +35,31 @@ public class GuiConfiguration
 	private static final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 	private static final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
 
+	public static final Vector<String> countryTableColumnName = new Vector<>();
+	public static final Vector<String> confederationTableColumnName = new Vector<>();
+	public static final Vector<String> competitionTableColumnName = new Vector<>();
+	public static final Vector<String> teamTableColumnName = new Vector<>();
+	public static final Vector<String> teamParticipationTableColumnName = new Vector<>();
+	public static final Vector<String> playerTableColumnName = new Vector<>();
+	public static final Vector<String> teamTrophyTableColumnName = new Vector<>();
+	public static final Vector<String> teamPrizeTableColumnName = new Vector<>();
+	public static final Vector<String> playerPositionTableColumnName = new Vector<>();
+	public static final Vector<String> playerNationalityTableColumnName = new Vector<>();
+	public static final Vector<String> playerAttributeGoalkeepingTableColumnName = new Vector<>();
+	public static final Vector<String> playerAttributeMentalTableColumnName = new Vector<>();
+	public static final Vector<String> playerAttributePhysicalTableColumnName = new Vector<>();
+	public static final Vector<String> playerAttributeTechnicalTableColumnName = new Vector<>();
+	public static final Vector<String> playerTagTableColumnName = new Vector<>();
+	public static final Vector<String> playerClubCareerTableColumnName = new Vector<>();
+	public static final Vector<String> playerNationalCareerTableColumnName = new Vector<>();
+	public static final Vector<String> playerStatisticTableColumnName = new Vector<>();
+	public static final Vector<String> playerClubTrophyTableColumnName = new Vector<>();
+	public static final Vector<String> playerNationalTrophyTableColumnName = new Vector<>();
+	public static final Vector<String> playerPrizeTableColumnName = new Vector<>();
+	public static final Vector<String> statisticTotalTableColumnName = new Vector<>();
+	public static final Vector<String> statisticEditionTableColumnName = new Vector<>();
+	public static final Vector<String> statisticTableColumnName = new Vector<>();
+
 	public static final String generalSearchPanelLayoutConstraint = "debug, flowy, fill";
 	public static final String generalSearchPanelColumnConstraint = "0[]0";
 	public static final String generalSearchPanelRowConstraint = "10[]10[]0[]10";
@@ -46,7 +72,7 @@ public class GuiConfiguration
 
 	public static final String buttonTopSearchPanelAddConstraint = "width 80%";
 
-	public static final String middleSearchPanelLayoutConstraint = "debug, wrap 2, fill";
+	public static final String middleSearchPanelLayoutConstraint = "debug, wrap 2";
 
 	public static final String middleSearchPanelColumnConstraint = "10[60%, fill]50[35%, fill]10";
 
@@ -86,7 +112,6 @@ public class GuiConfiguration
 	private static Font outputBoldLargeFont;
 	private static Font outputSmallFont;
 	private static Font outputBoldSmallFont;
-
 
 	/**
 	 * TYPE : static method - gui package
@@ -225,6 +250,275 @@ public class GuiConfiguration
 		UIManager.put("TableHeader.font", outputBoldFont);
 		UIManager.put("TableHeader.textForeground", Color.white);
 	}
+
+	public void initTableColumn()
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+
+		countryTableColumnName.add(string);
+		confederationTableColumnName.add(string);
+		competitionTableColumnName.add(string);
+		teamTableColumnName.add(string);
+		playerClubCareerTableColumnName.add(string);
+		playerNationalityTableColumnName.add(string);
+		playerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+
+		countryTableColumnName.add(string);
+		playerPositionTableColumnName.add(string);
+		confederationTableColumnName.add(string);
+		teamTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+
+		countryTableColumnName.add(string);
+		confederationTableColumnName.add(string);
+		competitionTableColumnName.add(string);
+		teamTableColumnName.add(string);
+		playerClubCareerTableColumnName.add(string);
+		teamParticipationTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("superCountry");
+		string = string.toUpperCase();
+
+		countryTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+
+		confederationTableColumnName.add(string);
+		competitionTableColumnName.add(string);
+		teamParticipationTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("superConfederation");
+		string = string.toUpperCase();
+
+		confederationTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+
+		competitionTableColumnName.add(string);
+		teamParticipationTableColumnName.add(string);
+		teamTrophyTableColumnName.add(string);
+		playerStatisticTableColumnName.add(string);
+		playerClubTrophyTableColumnName.add(string);
+		playerNationalTrophyTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
+
+		competitionTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+
+		teamTableColumnName.add(string);
+		playerClubCareerTableColumnName.add(string);
+		playerNationalCareerTableColumnName.add(string);
+		playerStatisticTableColumnName.add(string);
+		playerClubTrophyTableColumnName.add(string);
+		playerNationalTrophyTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+
+		teamTrophyTableColumnName.add(string);
+		playerClubTrophyTableColumnName.add(string);
+		playerNationalTrophyTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("prize");
+		string = string.toUpperCase();
+
+		teamPrizeTableColumnName.add(string);
+		playerPrizeTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("given");
+		string = string.toUpperCase();
+
+		teamPrizeTableColumnName.add(string);
+		playerPrizeTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("dob");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("foot");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+		playerPositionTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("position");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+		playerPositionTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = string.toUpperCase();
+
+		playerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("attribute");
+		string = string.toUpperCase();
+
+		playerAttributeGoalkeepingTableColumnName.add(string);
+		playerAttributeMentalTableColumnName.add(string);
+		playerAttributePhysicalTableColumnName.add(string);
+		playerAttributeTechnicalTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("value");
+		string = string.toUpperCase();
+
+		playerAttributeGoalkeepingTableColumnName.add(string);
+		playerAttributeMentalTableColumnName.add(string);
+		playerAttributePhysicalTableColumnName.add(string);
+		playerAttributeTechnicalTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("tag");
+		string = string.toUpperCase();
+
+		playerTagTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+
+		playerClubCareerTableColumnName.add(string);
+		playerNationalCareerTableColumnName.add(string);
+		playerStatisticTableColumnName.add(string);
+		playerClubTrophyTableColumnName.add(string);
+		playerNationalTrophyTableColumnName.add(string);
+		playerPrizeTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+
+		playerStatisticTableColumnName.add(string);
+		statisticTotalTableColumnName.add(string);
+		statisticEditionTableColumnName.add(string);
+		statisticTableColumnName.add(string);
+	}
+
+
 
 	public static void setLocale(Locale locale)
 	{

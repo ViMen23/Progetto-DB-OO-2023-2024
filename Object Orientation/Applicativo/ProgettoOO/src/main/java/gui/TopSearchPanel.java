@@ -43,7 +43,7 @@ public class TopSearchPanel
 					rootPanel.remove(toRemovePanel);
 					titleButton.setIcon(MINIMIZE);
 				} else {
-					rootPanel.add(toRemovePanel);
+					rootPanel.add(toRemovePanel, GuiConfiguration.middleSearchPanelAddConstraint);
 					titleButton.setIcon(MAXIMIZE);
 				}
 
