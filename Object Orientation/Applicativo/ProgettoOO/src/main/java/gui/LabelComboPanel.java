@@ -4,6 +4,7 @@ import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Vector;
 
 public class LabelComboPanel
 				extends JPanel
@@ -29,6 +30,7 @@ public class LabelComboPanel
 		this.myComboBox = new MyComboBox(false, ctrlLabel);
 		this.add(myComboBox);
 	}
+
 
 	public MyComboBox getMyComboBox()
 	{

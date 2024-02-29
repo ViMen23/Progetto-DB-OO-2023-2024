@@ -98,8 +98,7 @@ public class TestPanel
 			{
 				countryTableColumnName.clear();
 				countryTableData.clear();
-				System.out.println(countryType.getText());
-				System.out.println(countryNameMap.get(continent.getText()));
+
 				Controller.getInstance().setCountryTable(
 								countryTableColumnName,
 								countryTableData,
@@ -129,13 +128,16 @@ public class TestPanel
 
 		continent.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(PropertyChangeEvent evt)
+			{
 				if (continent.getText().equalsIgnoreCase("@fill")) {
-					GuiConfiguration.initComboBoxVector(
-									countryNameVector,
-									countryNameMap,
-									true
-					);
+					countryNameVector.clear();
+					countryNameMap.clear();
+
+					String string;
+					string = GuiConfiguration.getMessage("selectAll");
+					string = StringUtils.capitalize(string);
+					countryNameVector.add(string);
 
 					Controller.getInstance().setCountryComboBox(
 									countryNameVector,
@@ -144,10 +146,8 @@ public class TestPanel
 									null
 					);
 
-					chooseContinentPanel.getMyComboBox().fillComboBox(countryNameVector);
+					chooseContinentPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
 
-				} else {
-					System.out.println(continent.getText());
 				}
 			}
 		});
