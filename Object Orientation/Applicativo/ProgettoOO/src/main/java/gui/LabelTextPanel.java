@@ -5,6 +5,7 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
+import java.awt.*;
 import java.util.regex.Pattern;
 
 public class LabelTextPanel
@@ -19,14 +20,19 @@ public class LabelTextPanel
 		JTextField textField;
 
 
-		migLayout = new MigLayout();
+		migLayout = new MigLayout(
+						GuiConfiguration.chooseContinentLayoutConstraint,
+						GuiConfiguration.chooseContinentColumnConstraint,
+						GuiConfiguration.countryTypeRowConstraint
+		);
 
 		this.setLayout(migLayout);
+		this.setBackground(Color.white);
 
-		label = new JLabel(labelText);
+		label = new JLabel(labelText, SwingConstants.LEADING);
 		this.add(label);
 
-		textField = new JTextField();
+		textField = new JTextField(GuiConfiguration.getInputColumn());
 		this.add(textField);
 		textField.addCaretListener(new CaretListener() {
 			@Override

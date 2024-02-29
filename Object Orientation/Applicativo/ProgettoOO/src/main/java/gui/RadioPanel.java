@@ -18,9 +18,9 @@ public class RadioPanel
 		ButtonGroup buttonGroup = new ButtonGroup();
 
 		migLayout = new MigLayout(
-			GuiConfiguration.countryTypeLayoutConstraint,
-			GuiConfiguration.countryTypeColumnConstraint,
-			GuiConfiguration.countryTypeRowConstraint
+						GuiConfiguration.countryTypeLayoutConstraint,
+						GuiConfiguration.countryTypeColumnConstraint,
+						GuiConfiguration.countryTypeRowConstraint
 		);
 
 		this.setLayout(migLayout);

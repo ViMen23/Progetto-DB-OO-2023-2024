@@ -1,6 +1,7 @@
 package gui;
 
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,17 +22,23 @@ public class RadioComboPanel
 		this.combo = combo;
 
 		MigLayout migLayout;
+		String string;
+
 		migLayout = new MigLayout(
 						GuiConfiguration.chooseContinentLayoutConstraint,
 						GuiConfiguration.chooseContinentColumnConstraint,
-						GuiConfiguration.chooseContinentRowConstraint
+						GuiConfiguration.countryTypeRowConstraint
 		);
 
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
+		string = field.toLowerCase();
+		string = GuiConfiguration.getMessage(string);
+		string = StringUtils.capitalize(string);
+
 		JRadioButton radioButton;
-		radioButton = new JRadioButton(field);
+		radioButton = new JRadioButton(string);
 		this.add(radioButton);
 
 		radioButton.addActionListener(new ActionListener() {

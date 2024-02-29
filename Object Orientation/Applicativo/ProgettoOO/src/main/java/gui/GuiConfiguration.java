@@ -20,14 +20,14 @@ import java.util.*;
  */
 public class GuiConfiguration
 {
-	private static final Integer inputColumn = 25;
+	private static final Integer inputColumn = 35;
 	private static final Integer tableRowHeight = 25;
 	private static final Integer comboBoxMaximumRowCount = 5;
 	private static final Cursor buttonCursor = new Cursor(Cursor.HAND_CURSOR);
 	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(2,10,2,0);
 	private static final Color searchPanelColor = new Color(50, 100, 200);
 
-	public static final String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+	public static final String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
 	private static final Integer minYear = 1810;
 	private static final Integer minAge = 15;
 	private static final Integer maxAge = 50;
@@ -82,7 +82,7 @@ public class GuiConfiguration
 	public static final String firstColumnMiddleSearchPanelAddConstraint = "sgx panel_first_column";
 	public static final String secondColumnMiddleSearchPanelAddConstraint = "sgx sgx panel_second_column";
 	public static final String countryTypeLayoutConstraint = "debug, flowx, center";
-	public static final String countryTypeColumnConstraint = "12.5%[15%]15%[15%]15%[15%]12.5%";
+	public static final String countryTypeColumnConstraint = "[20%]10%[20%]10%[20%]";
 	public static final String countryTypeRowConstraint = "10[]10";
 	public static final String countryTypeAddConstraint = "sgx panel_first_column";
 
@@ -100,6 +100,7 @@ public class GuiConfiguration
 	public static final String tablePanelColumnConstraint = "[grow, fill]";
 	public static final String tablePanelRowConstraint = "10[]10";
 	public static final String tablePanelAddConstraint = "dock south, sgx general";
+	public static final String competitionMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0";
 
 
 
