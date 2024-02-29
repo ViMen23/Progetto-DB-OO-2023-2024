@@ -4,6 +4,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,6 +24,7 @@ public class RadioPanel
 		);
 
 		this.setLayout(migLayout);
+		this.setBackground(Color.white);
 
 		if (2 == enumArray.length) {
 			this.add(new JLabel());

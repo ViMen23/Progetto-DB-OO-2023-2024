@@ -136,9 +136,9 @@ public class GuiConfiguration
 
 		mainFrame.add(topPanel, "sgx frame");
 
-		MenuBarPanel menuBarPanel = new MenuBarPanel();
+		//MenuBarPanel menuBarPanel = new MenuBarPanel();
 
-		mainFrame.add(menuBarPanel, "sgx frame");
+		//mainFrame.add(menuBarPanel, "sgx frame");
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);

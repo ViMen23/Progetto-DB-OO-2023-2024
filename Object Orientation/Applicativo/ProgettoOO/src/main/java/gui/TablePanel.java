@@ -19,6 +19,7 @@ public class TablePanel
 										JLabel controlMouseLabel)
 	{
 		MigLayout migLayout;
+		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.tablePanelLayoutConstraint,
@@ -29,7 +30,16 @@ public class TablePanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		this.titleLabel = new TitleLabel("TITOLO TABELLA");
+
+		string = GuiConfiguration.getMessage("no");
+		string += " ";
+		string += GuiConfiguration.getMessage("research");
+		string += " ";
+		string += GuiConfiguration.getMessage("performed");
+		string = string.toUpperCase();
+
+
+		this.titleLabel = new TitleLabel(string);
 		this.add(titleLabel);
 
 

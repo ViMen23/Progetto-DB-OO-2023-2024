@@ -1,64 +1,65 @@
 //package gui;
 //
 //import controller.Controller;
-//import model.Team;
+//import model.Country;
 //import net.miginfocom.swing.MigLayout;
 //import org.apache.commons.lang3.StringUtils;
 //
 //import javax.swing.*;
+//import javax.swing.event.PopupMenuEvent;
+//import javax.swing.event.PopupMenuListener;
 //import javax.swing.table.DefaultTableCellRenderer;
 //import java.awt.*;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
-//import java.util.HashMap;
-//import java.util.Map;
-//import java.util.Vector;
+//import java.awt.event.ItemEvent;
+//import java.awt.event.ItemListener;
+//import java.util.*;
 //
-//public class SearchTotalStatistics
-//				extends JPanel
+//public class SearchConfederationPanel
+//	extends JPanel
 //{
-//
 //	private final Color panelColor = Color.white;
+//
 //	private final JPanel titlePanel;
-//	private final JPanel totalStatisticsPanel;
-//	private final JPanel teamTypePanel;
-//	private final JPanel rolePanel;
-//	private final JPanel totalStatisticsTablePanel;
+//	private final JPanel confederationPanel;
+//	private final JPanel confederationTypePanel;
+//	private final JPanel confederationSuperPanel;
+//	private final JPanel confederationTablePanel;
 //
 //	private final JButton titleButton;
 //	private final JButton resetButton;
 //	private final JButton searchButton;
 //
-//	private final JRadioButton clubRadioButton;
-//	private final JRadioButton nationalRadioButton;
-//
-//	private final JCheckBox goalkeeperCheckBox;
-//	private final JCheckBox defenderCheckBox;
-//	private final JCheckBox midfielderCheckBox;
-//	private final JCheckBox forwardCheckBox;
-//
-//	private final ButtonGroup teamTypeGroupButton;
-//
 //	private final JLabel titleTableLabel;
 //
-//	private final JTable totalStatisticsTable;
+//	private final JRadioButton worldRadioButton;
+//	private final JRadioButton continentRadioButton;
+//	private final JRadioButton nationRadioButton;
+//
+//	private final JComboBox<String> continentConfederationComboBox;
+//	private final JTable confederationTable;
+//
+//	private final Vector<Vector<String>> confederationTableData = new Vector<>();
+//	private final Vector<String> confederationTableColumnName = new Vector<>();
+//	private final Vector<String> confederationNameVector = new Vector<>();
+//	private final Map<String, String> confederationNameMap = new HashMap<>();
+//
+//
+//	private final ButtonGroup buttonGroup;
 //	private final JScrollPane scrollPane;
 //
-//	private final Vector<String> totalStatisticsTableColumnName = new Vector<>();
-//	private final Vector<Vector<String>> totalStatisticsTableData = new Vector<>();
-//
-//
-//
 //	private JPanel infoPanel;
+//
 //	private JLabel label;
 //
-//	private String teamType = null;
-//	private String playerRole = null;
+//	private String typeCountry = null;
+//	private String superConfederationID = null;
 //
-//	public SearchTotalStatistics()
+//	public SearchConfederationPanel()
 //	{
-//		MigLayout migLayout;
 //		String string;
+//		MigLayout migLayout;
 //
 //		migLayout = new MigLayout
 //			(
@@ -102,7 +103,13 @@
 //
 //		string = GuiConfiguration.getMessage("search");
 //		string += " ";
-//		string += GuiConfiguration.getMessage("totalPlayerStatistics");
+//		string += GuiConfiguration.getMessage("confederations");
+//		string += " - ";
+//		string += GuiConfiguration.getMessage("confederations");
+//		string += " ";
+//		string += GuiConfiguration.getMessage("available");
+//		string += " ";
+//		string += Controller.getInstance().countConfederations().toString();
 //		string = string.toUpperCase();
 //
 //		titleButton = new JButton(string);
@@ -129,7 +136,7 @@
 //				GuiConfiguration.minimizePanel
 //					(
 //						getRootPanel(),
-//						totalStatisticsPanel,
+//						confederationPanel,
 //						titleButton,
 //						"dock center, sgx general"
 //					);
@@ -140,7 +147,7 @@
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * BOTTONE DI RESET PER COUNTRY PANEL
+//		 * BOTTONE DI RESET PER CONFEDERATION PANEL
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -165,7 +172,7 @@
 //				GuiConfiguration.switchPanel
 //					(
 //						MainFrame.getMainFrameInstance().getContentPane(),
-//						new SearchTotalStatistics(),
+//						new SearchConfederationPanel(),
 //						2,
 //						"sgx frame"
 //					);
@@ -176,7 +183,7 @@
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL RICERCA GENERALE
+//		 * PANEL SCELTA CONFEDERAZIONE
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -188,21 +195,23 @@
 //				"0[]0[fill]10[]0[fill]20[]0"
 //			);
 //
-//		totalStatisticsPanel = new JPanel(migLayout);
-//		totalStatisticsPanel.setOpaque(false);
+//		confederationPanel = new JPanel(migLayout);
+//		confederationPanel.setOpaque(false);
 //
-//		add(totalStatisticsPanel, "dock center, sgx general");
+//		add(confederationPanel, "dock center, sgx general");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * LABEL RICERCA PER TIPO SQUADRA
+//		 * LABEL PANEL RICERCA TIPO CONFEDERAZIONE
 //		 *------------------------------------------------------------------------------------------------------*/
 //
-//		string = GuiConfiguration.getMessage("searchBy");
+//
+//
+//		string = GuiConfiguration.getMessage("choose");
 //		string += " ";
-//		string += GuiConfiguration.getMessage("teamType");
+//		string += GuiConfiguration.getMessage("confederationType");
 //		string = string.toUpperCase();
 //
 //		label = new JLabel(string);
@@ -213,7 +222,7 @@
 //
 //		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 //
-//		totalStatisticsPanel.add(label);
+//		confederationPanel.add(label, "sgx panel_first_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -234,45 +243,46 @@
 //
 //		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 //
-//		totalStatisticsPanel.add(label, "sgx panel_second_column");
+//		confederationPanel.add(label, "sgx panel_second_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL RICERCA PER TIPO SQUADRA
+//		 * PANEL SCELTA TIPO CONFEDERAZIONE
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		migLayout = new MigLayout
 //			(
-//				"debug, flowx",
-//				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
+//				"debug, flowx, center",
+//				"12.5%[15%]15%[15%]15%[15%]12.5%",
 //				"10[]10"
 //			);
 //
-//		teamTypePanel = new JPanel(migLayout);
-//		teamTypePanel.setBackground(panelColor);
+//		confederationTypePanel = new JPanel(migLayout);
 //
-//		totalStatisticsPanel.add(teamTypePanel);
+//		confederationTypePanel.setBackground(panelColor);
+//
+//		confederationPanel.add(confederationTypePanel, "sgx panel_first_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * RADIOBUTTON TIPO SQUADRA CLUB
+//		 * RADIOBUTTON TIPO CONFEDERAZIONE MONDO
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		string = GuiConfiguration.getMessage("club");
+//		string = GuiConfiguration.getMessage("world");
 //		string = StringUtils.capitalize(string);
 //
-//		clubRadioButton = new JRadioButton(string);
-//		clubRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+//		worldRadioButton = new JRadioButton(string);
+//		worldRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 //
-//		teamTypePanel.add(clubRadioButton, "skip 1");
+//		confederationTypePanel.add(worldRadioButton);
 //
 //
 //
@@ -282,11 +292,11 @@
 //
 //
 //
-//		clubRadioButton.addActionListener(new ActionListener() {
+//		worldRadioButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
 //			{
-//				teamType = Team.TEAM_TYPE.CLUB.toString();
+//				typeCountry = Country.COUNTRY_TYPE.WORLD.toString();
 //			}
 //		});
 //		/*------------------------------------------------------------------------------------------------------*/
@@ -294,18 +304,18 @@
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * RADIOBUTTON TIPO SQUADRA NAZIONALE
+//		 * RADIOBUTTON TIPO CONFEDERAZIONE CONTINENTE
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		string = GuiConfiguration.getMessage("national");
+//		string = GuiConfiguration.getMessage("continent");
 //		string = StringUtils.capitalize(string);
 //
-//		nationalRadioButton = new JRadioButton(string);
-//		nationalRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+//		continentRadioButton = new JRadioButton(string);
+//		continentRadioButton.setCursor(GuiConfiguration.getButtonCursor());
 //
-//		teamTypePanel.add(nationalRadioButton);
+//		confederationTypePanel.add(continentRadioButton);
 //
 //
 //
@@ -315,11 +325,11 @@
 //
 //
 //
-//		nationalRadioButton.addActionListener(new ActionListener() {
+//		continentRadioButton.addActionListener(new ActionListener() {
 //			@Override
 //			public void actionPerformed(ActionEvent e)
 //			{
-//				teamType = Team.TEAM_TYPE.NATIONAL.toString();
+//				typeCountry = Country.COUNTRY_TYPE.CONTINENT.toString();
 //			}
 //		});
 //		/*------------------------------------------------------------------------------------------------------*/
@@ -327,21 +337,66 @@
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * BUTTONGROUP PER TIPO SQUADRA
+//		 * RADIOBUTTON TIPO PAESE NAZIONE
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		teamTypeGroupButton = new ButtonGroup();
+//		string = GuiConfiguration.getMessage("nation");
+//		string = StringUtils.capitalize(string);
 //
-//		teamTypeGroupButton.add(clubRadioButton);
-//		teamTypeGroupButton.add(nationalRadioButton);
+//		nationRadioButton = new JRadioButton(string);
+//		nationRadioButton.setCursor(GuiConfiguration.getButtonCursor());
+//
+//		confederationTypePanel.add(nationRadioButton);
+//
+//
+//
+//		/*--------------------------------------------------------------------------------------------------------
+//		 * IMPLEMENTAZIONE LOGICA
+//		 *------------------------------------------------------------------------------------------------------*/
+//
+//
+//
+//		nationRadioButton.addItemListener(new ItemListener() {
+//			@Override
+//			public void itemStateChanged(ItemEvent e)
+//			{
+//				if (nationRadioButton.isSelected()) {
+//
+//					continentConfederationComboBox.setEnabled(true);
+//
+//					typeCountry = Country.COUNTRY_TYPE.NATION.toString();
+//				}
+//				else {
+//					continentConfederationComboBox.setEnabled(false);
+//					continentConfederationComboBox.setSelectedIndex(-1);
+//
+//					superConfederationID = null;
+//				}
+//			}
+//		});
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL INFO RICERCA PER TIPO SQUADRA
+//		 * BUTTONGROUP PER TIPO PAESE
+//		 *------------------------------------------------------------------------------------------------------*/
+//
+//
+//
+//		buttonGroup = new ButtonGroup();
+//
+//		buttonGroup.add(worldRadioButton);
+//		buttonGroup.add(continentRadioButton);
+//		buttonGroup.add(nationRadioButton);
+//		/*------------------------------------------------------------------------------------------------------*/
+//
+//
+//
+//		/*--------------------------------------------------------------------------------------------------------
+//		 * PANEL INFO FILTRA PER TIPO SQUADRA
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -356,23 +411,21 @@
 //		infoPanel = new JPanel(migLayout);
 //		infoPanel.setBackground(panelColor);
 //
-//		totalStatisticsPanel.add(infoPanel, "sgx panel_second_column");
+//		confederationPanel.add(infoPanel, "sgx panel_second_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * LABEL RICERCA PER RUOLO
+//		 * LABEL PANEL SCELTA PAESE SUPER
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		string = GuiConfiguration.getMessage("searchBy");
-//		string += " ";
-//		string += GuiConfiguration.getMessage("role");
+//		string = "Scegli confederazione che contiene la confederazione nazione"; //TODO I18N
 //		string = string.toUpperCase();
 //
-//		label = new JLabel(string);
+//		label = new JLabel(string, SwingConstants.LEADING);
 //
 //		label.setOpaque(true);
 //		label.setBackground(GuiConfiguration.getSearchPanelColor());
@@ -380,7 +433,7 @@
 //
 //		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 //
-//		totalStatisticsPanel.add(label);
+//		confederationPanel.add(label, "sgx panel_first_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -401,13 +454,13 @@
 //
 //		label.setBorder(GuiConfiguration.getSearchLabelBorder());
 //
-//		totalStatisticsPanel.add(label, "sgx panel_second_column");
+//		confederationPanel.add(label, "sgx panel_second_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL RICERCA PER RUOLO
+//		 * PANEL SCELTA CONFEDERAZIONE SUPER
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -415,89 +468,66 @@
 //		migLayout = new MigLayout
 //			(
 //				"debug, flowx",
-//				"8%[15%]8%[15%]8%[15%]8%[15%]8%",
+//				"10:push[40%]5%",
 //				"10[]10"
 //			);
 //
+//		confederationSuperPanel = new JPanel(migLayout);
+//		confederationSuperPanel.setBackground(panelColor);
 //
-//		rolePanel = new JPanel(migLayout);
-//		rolePanel.setBackground(panelColor);
-//
-//		totalStatisticsPanel.add(rolePanel);
+//		confederationPanel.add(confederationSuperPanel, "sgx panel_first_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * CHECKBOX RUOLO PORTIERE
+//		 * COMBOBOX DELLE CONFEDERAZIONI SUPER DELLE CONFEDERAZIONI NAZIONALI
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		string = GuiConfiguration.getMessage("goalkeeper");
-//		string = StringUtils.capitalize(string);
+//		continentConfederationComboBox = new JComboBox<>();
+//		continentConfederationComboBox.setEnabled(false);
+//		continentConfederationComboBox.setCursor(GuiConfiguration.getButtonCursor());
 //
-//		goalkeeperCheckBox = new JCheckBox(string);
-//		goalkeeperCheckBox.setCursor(GuiConfiguration.getButtonCursor());
+//		continentConfederationComboBox.setPrototypeDisplayValue(GuiConfiguration.getDisplayValue());
 //
-//		rolePanel.add(goalkeeperCheckBox);
+//		confederationSuperPanel.add(continentConfederationComboBox);
+//
+//
+//
+//		/*--------------------------------------------------------------------------------------------------------
+//		 * IMPLEMENTAZIONE LOGICA
+//		 *------------------------------------------------------------------------------------------------------*/
+//
+//
+//
+//		continentConfederationComboBox.addPopupMenuListener(new PopupMenuListener() {
+//			@Override
+//			public void popupMenuWillBecomeVisible(PopupMenuEvent e)
+//			{
+//				fillConfederationComboBox();
+//			}
+//
+//			@Override
+//			public void popupMenuWillBecomeInvisible(PopupMenuEvent e)
+//			{
+//				superConfederationID = GuiConfiguration.getSelectedItemIDComboBox
+//					(
+//						continentConfederationComboBox,
+//						confederationNameMap
+//					);
+//			}
+//
+//			@Override
+//			public void popupMenuCanceled(PopupMenuEvent e) { }
+//		});
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * CHECKBOX RUOLO DIFENSORE
-//		 *------------------------------------------------------------------------------------------------------*/
-//
-//
-//
-//		string = GuiConfiguration.getMessage("defender");
-//		string = StringUtils.capitalize(string);
-//
-//		defenderCheckBox = new JCheckBox(string);
-//		defenderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
-//
-//		rolePanel.add(defenderCheckBox);
-//
-//		/*------------------------------------------------------------------------------------------------------*/
-//
-//
-//
-//		/*--------------------------------------------------------------------------------------------------------
-//		 * CHECKBOX RUOLO CENTROCAMPISTA
-//		 *------------------------------------------------------------------------------------------------------*/
-//
-//
-//
-//		string = GuiConfiguration.getMessage("midfield");
-//		string = StringUtils.capitalize(string);
-//
-//		midfielderCheckBox = new JCheckBox(string);
-//		midfielderCheckBox.setCursor(GuiConfiguration.getButtonCursor());
-//
-//		rolePanel.add(midfielderCheckBox);
-//		/*------------------------------------------------------------------------------------------------------*/
-//
-//
-//
-//		/*--------------------------------------------------------------------------------------------------------
-//		 * CHECKBOX RUOLO ATTACCANTE
-//		 *------------------------------------------------------------------------------------------------------*/
-//
-//
-//
-//		string = GuiConfiguration.getMessage("fowarder");
-//		string = StringUtils.capitalize(string);
-//
-//		forwardCheckBox = new JCheckBox(string);
-//		forwardCheckBox.setCursor(GuiConfiguration.getButtonCursor());
-//
-//		rolePanel.add(forwardCheckBox);
-//
-//
-//
-//		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL INFO RICERCA PER RUOLO
+//		 * PANEL INFO DEI PAESI SUPER DELLE NAZIONI
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -512,7 +542,7 @@
 //		infoPanel = new JPanel(migLayout);
 //		infoPanel.setBackground(panelColor);
 //
-//		totalStatisticsPanel.add(infoPanel, "sgx panel_second_column");
+//		confederationPanel.add(infoPanel, "sg panel_second_column");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -529,7 +559,7 @@
 //		searchButton = new JButton(string);
 //		searchButton.setCursor(GuiConfiguration.getButtonCursor());
 //
-//		totalStatisticsPanel.add(searchButton, "span 2");
+//		confederationPanel.add(searchButton, "span 2");
 //
 //
 //
@@ -543,19 +573,16 @@
 //			@Override
 //			public void actionPerformed(ActionEvent e)
 //			{
-//
-//				setRolePlayer();
-//
-//				fillTotalStatisticsTable();
+//				fillConfederationTable();
 //
 //				GuiConfiguration.setTitleTable
 //					(
 //						titleTableLabel,
-//						GuiConfiguration.getMessage("totalPlayerStatistics"),
-//						totalStatisticsTableData.size()
+//						GuiConfiguration.getMessage("confederations"),
+//						confederationTableData.size()
 //					);
 //
-//				revalidate();
+//				getRootPanel().revalidate();
 //			}
 //		});
 //		/*------------------------------------------------------------------------------------------------------*/
@@ -563,7 +590,7 @@
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * PANEL TABELLA STATISTICHE TOTALI DI UN CALCIATORE
+//		 * PANEL TABELLA CONFEDERAZIONI
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -575,10 +602,10 @@
 //				"10[]10"
 //			);
 //
-//		totalStatisticsTablePanel = new JPanel(migLayout);
-//		totalStatisticsTablePanel.setBackground(panelColor);
+//		confederationTablePanel = new JPanel(migLayout);
+//		confederationTablePanel.setBackground(panelColor);
 //
-//		add(totalStatisticsTablePanel, "dock south, sgx general");
+//		add(confederationTablePanel, "dock south, sgx general");
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
@@ -604,102 +631,120 @@
 //
 //		titleTableLabel.setBorder(GuiConfiguration.getSearchLabelBorder());
 //
-//		totalStatisticsTablePanel.add(titleTableLabel);
+//		confederationTablePanel.add(titleTableLabel);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * TABLE TABELLA DELLE STATISTICHE TOTALI DI UN CALCIATORE
+//		 * TABLE TABELLA DEI PAESI
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		totalStatisticsTable = new JTable();
+//		confederationTable = new JTable();
 //
-//		totalStatisticsTable.setRowHeight(GuiConfiguration.getTableRowHeight());
-//		totalStatisticsTable.setPreferredScrollableViewportSize(totalStatisticsTable.getPreferredSize());
-//		totalStatisticsTable.setFillsViewportHeight(true);
+//		confederationTable.setRowHeight(GuiConfiguration.getTableRowHeight());
+//		confederationTable.setPreferredScrollableViewportSize(confederationTable.getPreferredSize());
+//		confederationTable.setFillsViewportHeight(true);
 //
-//		totalStatisticsTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-//		totalStatisticsTable.setAutoCreateRowSorter(true);
-//		( (DefaultTableCellRenderer) totalStatisticsTable.getTableHeader().getDefaultRenderer()
+//		confederationTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+//		confederationTable.setAutoCreateRowSorter(true);
+//		( (DefaultTableCellRenderer) confederationTable.getTableHeader().getDefaultRenderer()
 //		).setHorizontalAlignment(SwingConstants.CENTER);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //
 //		/*--------------------------------------------------------------------------------------------------------
-//		 * SCROLLPANE SCROLL PER LA TABELLA DEI CALCIATORI
+//		 * SCROLLPANE SCROLL PER LA TABELLA DEI PAESI
 //		 *------------------------------------------------------------------------------------------------------*/
 //
 //
 //
-//		scrollPane = new JScrollPane(totalStatisticsTable);
+//		scrollPane = new JScrollPane(confederationTable);
 //
-//		totalStatisticsTablePanel.add(scrollPane);
+//		confederationTablePanel.add(scrollPane);
 //		/*------------------------------------------------------------------------------------------------------*/
 //	}
 //
+//
+//	/**
+//	 * TODO
+//	 * @return
+//	 */
 //	public JPanel getRootPanel()
 //	{
 //		return this;
 //	}
-//	public void setRolePlayer()
+//
+//	/**
+//	 * TODO
+//	 * @param vector
+//	 * @param map
+//	 * @param type
+//	 * @param superConfederationID
+//	 */
+//	public void getConfederationComboBoxData(Vector<String> vector,
+//											 Map<String, String> map,
+//											 String type,
+//											 String superConfederationID)
 //	{
-//		String string = "";
-//
-//		if (goalkeeperCheckBox.isSelected()) {
-//			string += "_GK";
-//		}
-//
-//		if (defenderCheckBox.isSelected()) {
-//			string += "_DF";
-//		}
-//
-//		if (midfielderCheckBox.isSelected()) {
-//			string += "_MF";
-//		}
-//
-//		if (forwardCheckBox.isSelected()) {
-//			string += "_FW";
-//		}
-//
-//		if (string.isEmpty()){
-//			playerRole = null;
-//		}
-//		else {
-//			playerRole = string.substring(1);
-//		}
+//		Controller.getInstance().setConfederationComboBox
+//			(
+//				vector,
+//				map,
+//				type,
+//				superConfederationID
+//			);
 //	}
 //
-//	public void getTotalStatisticsTableData(Vector<String> tableColumnName,
-//											Vector<Vector<String>> tableData,
-//											String teamType,
-//											String playerRole)
+//	/**
+//	 * TODO
+//	 * @param tableColumnName
+//	 * @param tableData
+//	 * @param typeCountry
+//	 * @param superConfederationID
+//	 */
+//	public void getConfederationTableData(Vector<String> tableColumnName,
+//										  Vector<Vector<String>> tableData,
+//										  String typeCountry,
+//										  String superConfederationID)
 //	{
-//		tableData.clear();
 //		tableColumnName.clear();
+//		tableData.clear();
 //
-//		Controller.getInstance().setStatisticTable
+//		Controller.getInstance().setConfederationTable
 //			(
 //				tableColumnName,
 //				tableData,
-//				teamType,
-//				playerRole
+//				typeCountry,
+//				superConfederationID
 //			);
+//
 //	}
 //
-//	public void fillTotalStatisticsTable()
+//	/**
+//	 * TODO
+//	 */
+//	public void fillConfederationComboBox()
 //	{
-//		getTotalStatisticsTableData
-//			(
-//				totalStatisticsTableColumnName,
-//				totalStatisticsTableData,
-//				teamType,
-//				playerRole
-//			);
+//		GuiConfiguration.initComboBoxVector(confederationNameVector, confederationNameMap, true);
 //
-//		GuiConfiguration.fillTable(totalStatisticsTable, totalStatisticsTableData, totalStatisticsTableColumnName);
+//		getConfederationComboBoxData(confederationNameVector, confederationNameMap, typeCountry, superConfederationID);
+//
+//		GuiConfiguration.fillComboBox(continentConfederationComboBox, confederationNameVector);
 //	}
+//
+//
+//	/**
+//	 * TODO
+//	 */
+//	public void fillConfederationTable()
+//	{
+//		getConfederationTableData(confederationTableColumnName, confederationTableData, typeCountry, superConfederationID);
+//
+//		GuiConfiguration.fillTable(confederationTable, confederationTableData, confederationTableColumnName);
+//	}
+//
 //}

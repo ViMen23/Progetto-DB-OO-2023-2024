@@ -14,8 +14,8 @@ public class InfoPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.infoPanelLayoutConstraint,
-						null,
-						null
+						GuiConfiguration.tablePanelColumnConstraint,
+						"[grow, fill]"
 		);
 
 		this.setLayout(migLayout);
@@ -24,6 +24,7 @@ public class InfoPanel
 
 		JTextArea textArea = new JTextArea(description);
 		textArea.setEditable(false);
+		textArea.setBorder(null);
 
 		this.add(textArea);
 	}
