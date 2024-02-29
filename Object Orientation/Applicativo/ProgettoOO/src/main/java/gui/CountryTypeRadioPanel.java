@@ -18,14 +18,13 @@ public class CountryTypeRadioPanel
 		MigLayout migLayout;
 		String string;
 
-		TitleLabel titleLabel;
 		ButtonGroup buttonGroup = new ButtonGroup();
 		JRadioButton radioButton;
 
 		migLayout = new MigLayout(
-						"debug, fill",
-						"0[15%, fill]15%[15%]15%[15%]0",
-						"0[][]"
+						GuiConfiguration.countryTypeLayoutConstraint,
+						GuiConfiguration.countryTypeColumnConstraint,
+						GuiConfiguration.countryTypeRowConstraint
 		);
 
 		this.setLayout(migLayout);

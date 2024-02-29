@@ -17,7 +17,6 @@ public class TeamTypeRadioPanel
 		MigLayout migLayout;
 		String string;
 
-		TitleLabel titleLabel;
 		ButtonGroup buttonGroup = new ButtonGroup();
 		JRadioButton radioButton;
 

@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 public class MyTable
 			extends JTable
 {
-	private final JScrollPane scrollPane;
 	public MyTable(Boolean sort, JLabel controlColumnLabel, JLabel controlRowLabel, JLabel controlMouseLabel)
 	{
 		super();
@@ -53,18 +52,11 @@ public class MyTable
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
+				super.mouseClicked(e);
 				if (e.getClickCount() >= 1) {
 					controlMouseLabel.setText("@click");
 				}
 			}
 		});
-
-		scrollPane = new JScrollPane(this);
-	}
-
-
-	public JScrollPane getScrollPane()
-	{
-		return scrollPane;
 	}
 }

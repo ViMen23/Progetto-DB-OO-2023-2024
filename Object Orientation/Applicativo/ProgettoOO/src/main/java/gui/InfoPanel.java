@@ -13,9 +13,9 @@ public class InfoPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						"debug, flowy",
-						"[fill, grow]",
-						"[][]"
+						GuiConfiguration.infoPanelLayoutConstraint,
+						null,
+						null
 		);
 
 		this.setLayout(migLayout);

@@ -17,10 +17,11 @@ public class TopSearchPanel
 	public TopSearchPanel(String titleButtonString, JPanel rootPanel, JPanel toRemovePanel)
 	{
 		MigLayout migLayout;
+
 		migLayout = new MigLayout(
-						"debug",
-						"10[grow, fill]50[fill]10",
-						"[]"
+						GuiConfiguration.topSearchPanelLayoutConstraint,
+						GuiConfiguration.topSearchPanelColumnConstraint,
+						GuiConfiguration.topSearchPanelRowConstraint
 		);
 
 		this.setLayout(migLayout);
@@ -50,7 +51,7 @@ public class TopSearchPanel
 			}
 		});
 
-		this.add(titleButton);
+		this.add(titleButton, GuiConfiguration.buttonTopSearchPanelAddConstraint);
 
 		JButton resetButton;
 
@@ -68,7 +69,7 @@ public class TopSearchPanel
 
 				try {
 					Component newComponent = component.getClass().getDeclaredConstructor().newInstance();
-					container.add(newComponent, "sgx frame, growy");
+					container.add(newComponent, GuiConfiguration.generalSearchPanelAddConstraint);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());

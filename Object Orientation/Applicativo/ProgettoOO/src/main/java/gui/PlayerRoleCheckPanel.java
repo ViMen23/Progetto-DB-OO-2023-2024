@@ -18,7 +18,6 @@ public class PlayerRoleCheckPanel
 		MigLayout migLayout;
 		String string;
 
-		TitleLabel titleLabel;
 		JCheckBox checkBox;
 
 		migLayout = new MigLayout(

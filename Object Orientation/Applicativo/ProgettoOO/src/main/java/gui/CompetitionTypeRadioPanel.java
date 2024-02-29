@@ -21,9 +21,9 @@ public class CompetitionTypeRadioPanel
 		JRadioButton radioButton;
 
 		migLayout = new MigLayout(
-						"debug, fill",
-						"0[fill][][]0",
-						"0[][]"
+						GuiConfiguration.countryTypeLayoutConstraint,
+						GuiConfiguration.countryTypeColumnConstraint,
+						GuiConfiguration.countryTypeRowConstraint
 		);
 
 		this.setLayout(migLayout);

@@ -3,10 +3,11 @@ package gui;
 import controller.Controller;
 import model.Country;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.event.InputMethodEvent;
-import java.awt.event.InputMethodListener;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
@@ -14,63 +15,115 @@ import java.util.*;
 public class TestPanel
 				extends JPanel
 {
-	private final JLabel countryType;
-	private final JLabel continent;
-	private final Vector<String> countryNameVector = new Vector<>();
-	private final Map<String, String> countryNameMap = new HashMap<>();
 	public TestPanel()
 	{
-		this.countryType = new JLabel();
-		this.continent = new JLabel();
+		final JLabel countryType = new JLabel((String) null);
+		final JLabel continent = new JLabel("@null");
+
+		final Vector<String> countryNameVector = new Vector<>();
+		final Map<String, String> countryNameMap = new HashMap<>();
+
+		final Vector<String> countryTableColumnName = new Vector<>();
+		final Vector<Vector<String>> countryTableData = new Vector<>();
+
 
 		MigLayout migLayout;
+		TopSearchPanel topSearchPanel;
+		TitleLabel titlePanel;
+		CountryTypeRadioPanel countryTypeRadioPanel;
+		InfoPanel infoPanel;
+		LabelComboPanel chooseContinentPanel;
+		TablePanel tablePanel;
+		JButton button;
+
+		String string;
+
 
 		migLayout = new MigLayout(
-						"debug, flowy, fill",
-						"0[fill]0",
-						"10[]10[]0[]10"
+						GuiConfiguration.generalSearchPanelLayoutConstraint,
+						GuiConfiguration.generalSearchPanelColumnConstraint,
+						GuiConfiguration.generalSearchPanelRowConstraint
 		);
 
 		this.setLayout(migLayout);
 
 
 		JPanel centralPanel = new JPanel();
+
 		migLayout = new MigLayout(
-						"debug, wrap 2",
-						"10[60%, fill]50[35%, fill]10",
-						"0[]0[fill]10[]0[fill]20[]0"
+						GuiConfiguration.middleSearchPanelLayoutConstraint,
+						GuiConfiguration.middleSearchPanelColumnConstraint,
+						GuiConfiguration.middleSearchPanelRowConstraint
 		);
+
 		centralPanel.setLayout(migLayout);
 
-		this.add(new TopSearchPanel("Bottone1", this, centralPanel), "sgx e");
+		topSearchPanel = new TopSearchPanel("Bottone1", this, centralPanel);
+		this.add(topSearchPanel, GuiConfiguration.topSearchPanelAddConstraint);
 
-		ArrayList<String> rrr = new ArrayList<>();
-		rrr.add("radio1");
-		rrr.add("radio2");
-		rrr.add("radio3");
+		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
 
-		centralPanel.add(new CountryTypeRadioPanel("SCEGLI TIPO PAESE", countryType));
-		centralPanel.add(new InfoPanel("INFO"));
-		centralPanel.add(new TeamTypeRadioPanel("SCEGLI TIPO SQUADRA"));
-		centralPanel.add(new InfoPanel("INFO"));
-		centralPanel.add(new CompetitionTypeRadioPanel("SCEGLI TIPO COMPETIZIONE"));
-		centralPanel.add(new InfoPanel("INFO"));
-		centralPanel.add(new PlayerRoleCheckPanel("SCEGLI RUOLO"));
-		centralPanel.add(new InfoPanel("INFO"));
-		centralPanel.add(new PlayerFootRadioPanel("SCEGLI RUOLO"));
-		centralPanel.add(new InfoPanel("INFO"));
-		ChooseContinentPanel cc = new ChooseContinentPanel("SCEGLI RUOLO", continent);
-		centralPanel.add(cc);
-		centralPanel.add(new InfoPanel("INFO"));
+		titlePanel = new TitleLabel("TITOLO1");
+		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		this.add(centralPanel, "sgx e");
+		titlePanel = new TitleLabel("INFO1");
+		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+
+		countryTypeRadioPanel = new CountryTypeRadioPanel(countryType);
+		centralPanel.add(countryTypeRadioPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+
+		infoPanel = new InfoPanel("Questo e' il primo info box");
+		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+
+		titlePanel = new TitleLabel("TITOLO2");
+		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+
+		titlePanel = new TitleLabel("INFO2");
+		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+
+		chooseContinentPanel = new LabelComboPanel(null, continent);
+		centralPanel.add(chooseContinentPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+
+		infoPanel = new InfoPanel("Questo e' il secondo info box");
+		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+
+		tablePanel = new TablePanel(true, null, null, null);
+		this.add(tablePanel, GuiConfiguration.tablePanelAddConstraint);
+
+
+		button = new JButton("CERCA");
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				countryTableColumnName.clear();
+				countryTableData.clear();
+				System.out.println(countryType.getText());
+				System.out.println(countryNameMap.get(continent.getText()));
+				Controller.getInstance().setCountryTable(
+								countryTableColumnName,
+								countryTableData,
+								countryType.getText(),
+								countryNameMap.get(continent.getText())
+				);
+
+				tablePanel.fillTable(countryTableData, countryTableColumnName);
+				TestPanel.this.revalidate();
+			}
+		});
+
+		centralPanel.add(button, GuiConfiguration.searchButtonAddConstraint);
+
 
 		countryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				cc.getMyComboBox().setEnabled(true);
-				getValueControl();
+				chooseContinentPanel.getMyComboBox().setEnabled(
+								0 == StringUtils.compareIgnoreCase(countryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
+				);
+				chooseContinentPanel.getMyComboBox().setSelectedIndex(-1);
+				continent.setText("@null");
 			}
 		});
 
@@ -91,8 +144,8 @@ public class TestPanel
 									null
 					);
 
+					chooseContinentPanel.getMyComboBox().fillComboBox(countryNameVector);
 
-					cc.getMyComboBox().fillComboBox(countryNameVector);
 				} else {
 					System.out.println(continent.getText());
 				}
@@ -101,10 +154,5 @@ public class TestPanel
 
 
 
-	}
-
-	public void getValueControl()
-	{
-		System.out.println(countryType.getText());
 	}
 }
