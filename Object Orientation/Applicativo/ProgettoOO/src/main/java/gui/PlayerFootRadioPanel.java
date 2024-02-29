@@ -1,6 +1,5 @@
 package gui;
 
-import model.Country;
 import model.Player;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
@@ -13,9 +12,7 @@ import java.awt.event.ActionListener;
 public class PlayerFootRadioPanel
 				extends JPanel
 {
-	private String foot = null;
-
-	public PlayerFootRadioPanel(String title)
+	public PlayerFootRadioPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
 		String string;
@@ -34,17 +31,14 @@ public class PlayerFootRadioPanel
 		this.setBackground(Color.white);
 
 
-		titleLabel = new TitleLabel(title);
-		this.add(titleLabel, "spanx, wrap, grow");
-
-
 		string = GuiConfiguration.getMessage("right");
 		string = StringUtils.capitalize(string);
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				foot = Player.FOOT_TYPE.RIGHT.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Player.FOOT_TYPE.RIGHT.toString());
 			}
 		});
 
@@ -57,8 +51,9 @@ public class PlayerFootRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				foot = Player.FOOT_TYPE.LEFT.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Player.FOOT_TYPE.LEFT.toString());
 			}
 		});
 
@@ -71,17 +66,13 @@ public class PlayerFootRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				foot = Player.FOOT_TYPE.EITHER.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Player.FOOT_TYPE.EITHER.toString());
 			}
 		});
 
 		buttonGroup.add(radioButton);
 		this.add(radioButton);
-	}
-
-	public String getFoot()
-	{
-		return foot;
 	}
 }

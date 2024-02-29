@@ -49,7 +49,7 @@ public class TestPanel
 		rrr.add("radio2");
 		rrr.add("radio3");
 
-		centralPanel.add(new CountryTypeRadioPanel("SCEGLI TIPO PAESE", countryType, this));
+		centralPanel.add(new CountryTypeRadioPanel("SCEGLI TIPO PAESE", countryType));
 		centralPanel.add(new InfoPanel("INFO"));
 		centralPanel.add(new TeamTypeRadioPanel("SCEGLI TIPO SQUADRA"));
 		centralPanel.add(new InfoPanel("INFO"));

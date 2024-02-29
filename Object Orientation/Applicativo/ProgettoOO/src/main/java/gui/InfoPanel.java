@@ -10,7 +10,9 @@ public class InfoPanel
 {
 	public InfoPanel(String description)
 	{
-		MigLayout migLayout = new MigLayout(
+		MigLayout migLayout;
+
+		migLayout = new MigLayout(
 						"debug, flowy",
 						"[fill, grow]",
 						"[][]"
@@ -19,12 +21,9 @@ public class InfoPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		TitleLabel label;
-		label = new TitleLabel("INFO");
-
-		add(label);
 
 		JTextArea textArea = new JTextArea(description);
+		textArea.setEditable(false);
 
 		this.add(textArea);
 	}

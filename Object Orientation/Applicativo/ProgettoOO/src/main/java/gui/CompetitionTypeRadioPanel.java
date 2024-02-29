@@ -12,14 +12,11 @@ import java.awt.event.ActionListener;
 public class CompetitionTypeRadioPanel
 				extends JPanel
 {
-	private String competitionType = null;
-
-	public CompetitionTypeRadioPanel(String title)
+	public CompetitionTypeRadioPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
 		String string;
 
-		TitleLabel titleLabel;
 		ButtonGroup buttonGroup = new ButtonGroup();
 		JRadioButton radioButton;
 
@@ -33,17 +30,14 @@ public class CompetitionTypeRadioPanel
 		this.setBackground(Color.white);
 
 
-		titleLabel = new TitleLabel(title);
-		this.add(titleLabel, "spanx, wrap, grow");
-
-
 		string = GuiConfiguration.getMessage("league");
 		string = StringUtils.capitalize(string);
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				competitionType = Competition.COMPETITION_TYPE.LEAGUE.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Competition.COMPETITION_TYPE.LEAGUE.toString());
 			}
 		});
 
@@ -56,8 +50,9 @@ public class CompetitionTypeRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				competitionType = Competition.COMPETITION_TYPE.CUP.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Competition.COMPETITION_TYPE.CUP.toString());
 			}
 		});
 
@@ -70,18 +65,13 @@ public class CompetitionTypeRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				competitionType = Competition.COMPETITION_TYPE.SUPER_CUP.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Competition.COMPETITION_TYPE.SUPER_CUP.toString());
 			}
 		});
 
 		buttonGroup.add(radioButton);
 		this.add(radioButton);
-	}
-
-
-	public String getCompetitionType()
-	{
-		return competitionType;
 	}
 }

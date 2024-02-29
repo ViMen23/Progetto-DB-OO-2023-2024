@@ -13,7 +13,7 @@ public class CountryTypeRadioPanel
 				extends JPanel
 {
 
-	public CountryTypeRadioPanel(String title, JLabel controlLabel, JPanel rootPanel)
+	public CountryTypeRadioPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
 		String string;
@@ -32,10 +32,6 @@ public class CountryTypeRadioPanel
 		this.setBackground(Color.white);
 
 
-		titleLabel = new TitleLabel(title);
-		this.add(titleLabel, "spanx, wrap, grow");
-
-
 		string = GuiConfiguration.getMessage("world");
 		string = StringUtils.capitalize(string);
 
@@ -46,7 +42,6 @@ public class CountryTypeRadioPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				controlLabel.setText(Country.COUNTRY_TYPE.WORLD.toString());
-				//setCountryType(Country.COUNTRY_TYPE.WORLD.toString());
 			}
 		});
 
@@ -62,7 +57,6 @@ public class CountryTypeRadioPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				controlLabel.setText(Country.COUNTRY_TYPE.CONTINENT.toString());
-				//setCountryType(Country.COUNTRY_TYPE.CONTINENT.toString());
 			}
 		});
 
@@ -78,13 +72,10 @@ public class CountryTypeRadioPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				controlLabel.setText(Country.COUNTRY_TYPE.NATION.toString());
-				//setCountryType(Country.COUNTRY_TYPE.NATION.toString());
 			}
 		});
 
 		buttonGroup.add(radioButton);
 		this.add(radioButton);
 	}
-
-	//abstract void setCountryType(String string);
 }

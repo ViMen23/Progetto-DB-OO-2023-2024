@@ -12,9 +12,7 @@ import java.awt.event.ActionListener;
 public class TeamTypeRadioPanel
 				extends JPanel
 {
-	private String teamType = null;
-
-	public TeamTypeRadioPanel(String title)
+	public TeamTypeRadioPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
 		String string;
@@ -33,17 +31,14 @@ public class TeamTypeRadioPanel
 		this.setBackground(Color.white);
 
 
-		titleLabel = new TitleLabel(title);
-		this.add(titleLabel, "spanx, wrap, grow");
-
-
 		string = GuiConfiguration.getMessage("club");
 		string = StringUtils.capitalize(string);
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				teamType = Team.TEAM_TYPE.CLUB.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Team.TEAM_TYPE.CLUB.toString());
 			}
 		});
 
@@ -56,18 +51,13 @@ public class TeamTypeRadioPanel
 		radioButton = new JRadioButton(string);
 		radioButton.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				teamType = Team.TEAM_TYPE.NATIONAL.toString();
+			public void actionPerformed(ActionEvent e)
+			{
+				controlLabel.setText(Team.TEAM_TYPE.NATIONAL.toString());
 			}
 		});
 
 		buttonGroup.add(radioButton);
 		this.add(radioButton);
-	}
-
-
-	public String getTeamType()
-	{
-		return teamType;
 	}
 }

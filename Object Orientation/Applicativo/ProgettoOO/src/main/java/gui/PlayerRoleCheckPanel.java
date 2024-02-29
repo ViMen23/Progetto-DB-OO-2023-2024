@@ -13,7 +13,7 @@ public class PlayerRoleCheckPanel
 {
 	private int role = 0;
 
-	public PlayerRoleCheckPanel(String title)
+	public PlayerRoleCheckPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
 		String string;
@@ -30,20 +30,20 @@ public class PlayerRoleCheckPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		titleLabel = new TitleLabel(title);
-		this.add(titleLabel, "spanx, wrap, grow");
 
 		string = GuiConfiguration.getMessage("goalkeeper");
 		string = StringUtils.capitalize(string);
 		checkBox = new JCheckBox(string);
 		checkBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				if (ItemEvent.DESELECTED == e.getStateChange()) {
 					role -= 1;
 				} else if (ItemEvent.SELECTED == e.getStateChange()) {
 					role += 1;
 				}
+				controlLabel.setText(getRoleMix());
 			}
 		});
 
@@ -55,12 +55,14 @@ public class PlayerRoleCheckPanel
 		checkBox = new JCheckBox(string);
 		checkBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				if (ItemEvent.DESELECTED == e.getStateChange()) {
 					role -= 10;
 				} else if (ItemEvent.SELECTED == e.getStateChange()) {
 					role += 10;
 				}
+				controlLabel.setText(getRoleMix());
 			}
 		});
 
@@ -72,12 +74,14 @@ public class PlayerRoleCheckPanel
 		checkBox = new JCheckBox(string);
 		checkBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				if (ItemEvent.DESELECTED == e.getStateChange()) {
 					role -= 100;
 				} else if (ItemEvent.SELECTED == e.getStateChange()) {
 					role += 100;
 				}
+				controlLabel.setText(getRoleMix());
 			}
 		});
 
@@ -89,12 +93,14 @@ public class PlayerRoleCheckPanel
 		checkBox = new JCheckBox(string);
 		checkBox.addItemListener(new ItemListener() {
 			@Override
-			public void itemStateChanged(ItemEvent e) {
+			public void itemStateChanged(ItemEvent e)
+			{
 				if (ItemEvent.DESELECTED == e.getStateChange()) {
 					role -= 1000;
 				} else if (ItemEvent.SELECTED == e.getStateChange()) {
 					role += 1000;
 				}
+				controlLabel.setText(getRoleMix());
 			}
 		});
 
@@ -103,7 +109,7 @@ public class PlayerRoleCheckPanel
 	}
 
 
-	public String getRoleMix()
+	private String getRoleMix()
 	{
 		String roleMix = "";
 		int toValue = role;
