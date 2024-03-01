@@ -263,265 +263,392 @@ public class GuiConfiguration
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-
 		countryTableColumnName.add(string);
-		confederationTableColumnName.add(string);
-		competitionTableColumnName.add(string);
-		teamTableColumnName.add(string);
-		playerClubCareerTableColumnName.add(string);
-		playerNationalityTableColumnName.add(string);
-		playerTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("code");
 		string = string.toUpperCase();
-
 		countryTableColumnName.add(string);
-		playerPositionTableColumnName.add(string);
-		confederationTableColumnName.add(string);
-		teamTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-
 		countryTableColumnName.add(string);
-		confederationTableColumnName.add(string);
-		competitionTableColumnName.add(string);
-		teamTableColumnName.add(string);
-		playerClubCareerTableColumnName.add(string);
-		teamParticipationTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("superCountry");
 		string = string.toUpperCase();
-
 		countryTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
-
 		confederationTableColumnName.add(string);
-		competitionTableColumnName.add(string);
-		teamParticipationTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		confederationTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("superConfederation");
 		string = string.toUpperCase();
-
 		confederationTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-
 		competitionTableColumnName.add(string);
-		teamParticipationTableColumnName.add(string);
-		teamTrophyTableColumnName.add(string);
-		playerStatisticTableColumnName.add(string);
-		playerClubTrophyTableColumnName.add(string);
-		playerNationalTrophyTableColumnName.add(string);
-		statisticTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+		competitionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
 		competitionTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-
 		teamTableColumnName.add(string);
-		playerClubCareerTableColumnName.add(string);
-		playerNationalCareerTableColumnName.add(string);
-		playerStatisticTableColumnName.add(string);
-		playerClubTrophyTableColumnName.add(string);
-		playerNationalTrophyTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		teamTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		teamParticipationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		teamParticipationTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("confederation");
+		string = string.toUpperCase();
+		teamParticipationTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		teamTrophyTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("trophy");
 		string = string.toUpperCase();
-
 		teamTrophyTableColumnName.add(string);
-		playerClubTrophyTableColumnName.add(string);
-		playerNationalTrophyTableColumnName.add(string);
 
 
+		// tabella premi
 		string = GuiConfiguration.getMessage("prize");
 		string = string.toUpperCase();
-
 		teamPrizeTableColumnName.add(string);
-		playerPrizeTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("given");
 		string = string.toUpperCase();
-
 		teamPrizeTableColumnName.add(string);
-		playerPrizeTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("surname");
 		string = string.toUpperCase();
-
 		playerTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
-
 		playerTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("dob");
 		string = string.toUpperCase();
-
 		playerTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("foot");
 		string = string.toUpperCase();
+		playerTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("position");
+		string = string.toUpperCase();
+		playerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("retiredDate");
+		string = string.toUpperCase();
 		playerTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
-
-		playerTableColumnName.add(string);
 		playerPositionTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("code");
+		string = string.toUpperCase();
+		playerPositionTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("position");
 		string = string.toUpperCase();
-
-		playerTableColumnName.add(string);
 		playerPositionTableColumnName.add(string);
 
 
-		string = GuiConfiguration.getMessage("retiredDate");
+		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-
-		playerTableColumnName.add(string);
+		playerNationalityTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("attribute");
 		string = string.toUpperCase();
-
 		playerAttributeGoalkeepingTableColumnName.add(string);
 		playerAttributeMentalTableColumnName.add(string);
 		playerAttributePhysicalTableColumnName.add(string);
 		playerAttributeTechnicalTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("value");
 		string = string.toUpperCase();
-
 		playerAttributeGoalkeepingTableColumnName.add(string);
 		playerAttributeMentalTableColumnName.add(string);
 		playerAttributePhysicalTableColumnName.add(string);
 		playerAttributeTechnicalTableColumnName.add(string);
 
-
 		string = GuiConfiguration.getMessage("tag");
 		string = string.toUpperCase();
-
 		playerTagTableColumnName.add(string);
 
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-
 		playerClubCareerTableColumnName.add(string);
-		playerNationalCareerTableColumnName.add(string);
-		playerStatisticTableColumnName.add(string);
-		playerClubTrophyTableColumnName.add(string);
-		playerNationalTrophyTableColumnName.add(string);
-		playerPrizeTableColumnName.add(string);
-		statisticTableColumnName.add(string);
 
+		string = GuiConfiguration.getMessage("type");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
+		playerClubCareerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerNationalCareerTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerNationalCareerTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerStatisticTableColumnName.add(string);
 
 		string = GuiConfiguration.getMessage("match");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("goalScored");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("penaltyScored");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("assist");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("yellowCard");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("redCard");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("goalConceded");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
-		statisticTotalTableColumnName.add(string);
-		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
-
 
 		string = GuiConfiguration.getMessage("penaltySaved");
 		string = string.toUpperCase();
-
 		playerStatisticTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+		playerClubTrophyTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("trophy");
+		string = string.toUpperCase();
+		playerNationalTrophyTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("prize");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("given");
+		string = string.toUpperCase();
+		playerPrizeTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
 		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		statisticTotalTableColumnName.add(string);
+
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
 		statisticEditionTableColumnName.add(string);
-		statisticTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("role");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("surname");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		statisticEditionTableColumnName.add(string);
 	}
 
 

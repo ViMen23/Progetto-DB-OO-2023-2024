@@ -452,11 +452,10 @@ public class MenuBarPanel
 			{
 				GuiConfiguration.switchPanel
 					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						null,
-					//new MilitancyFilterPanel(),
-						2,
-						"sgx frame"
+									MainFrame.getMainFrameInstance().getContentPane(),
+									new MilitancyFilterPanel(),
+									2,
+									"sgx frame"
 					);
 			}
 		});
