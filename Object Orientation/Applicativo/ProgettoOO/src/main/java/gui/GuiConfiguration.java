@@ -127,6 +127,7 @@ public class GuiConfiguration
 
 		initUIManager();
 		initHomeFrame();
+		initTableColumn();
 	}
 
 	public static void initHomeFrame()
@@ -252,7 +253,7 @@ public class GuiConfiguration
 		UIManager.put("TableHeader.textForeground", Color.white);
 	}
 
-	public void initTableColumn()
+	public static void initTableColumn()
 	{
 		String string;
 

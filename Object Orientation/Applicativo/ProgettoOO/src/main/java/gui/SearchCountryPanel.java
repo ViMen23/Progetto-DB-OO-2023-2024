@@ -133,16 +133,7 @@ public class SearchCountryPanel
 								countryTableData
 				);
 
-				// TODO c e una stampa nel controller
-				// TODO c e una stampa qua
-				System.out.println(countryTableData);
-				// TODO il vettore countryTableData e' pieno
-
 				countryTablePanel.fillTable(countryTableData, GuiConfiguration.countryTableColumnName);
-
-				// TODO c e una stampa qua
-				System.out.println(countryTableData);
-				// TODO il vettore countryTableData e' vuoto. E' normale?
 
 				string = GuiConfiguration.getMessage("results");
 				string += " ";

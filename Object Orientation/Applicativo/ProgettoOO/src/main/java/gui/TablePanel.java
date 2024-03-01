@@ -49,11 +49,10 @@ public class TablePanel
 
 	public void fillTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName)
 	{
-		// TODO stampa
-		System.out.println("TablePanel" + tableData);
-		// TODO e' pieno
+
 		MyTable myTable = this.myScrollPane.getMyTable();
 		myTable.setModel(new TableModel(tableData, tableColumnName));
+
 		myTable.setPreferredScrollableViewportSize(myTable.getPreferredSize());
 	}
 
