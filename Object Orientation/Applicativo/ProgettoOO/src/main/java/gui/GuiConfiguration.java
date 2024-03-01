@@ -15,19 +15,11 @@ import java.util.*;
 public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;
-	public static final int TABLE_ROW_HEIGHT = 25;
-	public static final int COMBO_BOX_ROW_COUNT = 5;
 	public static final int MIN_YEAR = 1810;
 	public static final int MIN_AGE = 15;
 	public static final int MAX_AGE = 50;
 
 	public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
-	public static final Border LABEL_BORDER = BorderFactory.createEmptyBorder(2,10,2,0);
-	public static final Color LABEL_BACKGROUND_COLOR = new Color(50, 100, 200);
-	public static final String DISPLAY_VALUE = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
-	public static final ImageIcon MINIMIZE_ICON = GuiConfiguration.createImageIcon("images/minimize.png");
-	public static final ImageIcon MAXIMIZE_ICON = GuiConfiguration.createImageIcon("images/maximize.png");
-	public static final ImageIcon RESET_ICON = GuiConfiguration.createImageIcon("images/reset.png");
 
 	public static final Vector<String> COUNTRY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> CONFEDERATION_TABLE_COLUMN_NAME = new Vector<>();
@@ -69,7 +61,7 @@ public class GuiConfiguration
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
 	public static final String TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "[60%, fill]50[35%, fill]";
 	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[40%]5%";
-	public static final String THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT = "10[]10[]0[]10";
+	public static final String THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT = "[][]0[]";
 	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";

@@ -13,8 +13,8 @@ public class TitleLabel
 		super(title, SwingConstants.LEADING);
 
 		this.setOpaque(true);
-		this.setBackground(GuiConfiguration.LABEL_BACKGROUND_COLOR);
+		this.setBackground(new Color(50, 100, 200));
 		this.setForeground(Color.white);
-		this.setBorder(GuiConfiguration.LABEL_BORDER);
+		this.setBorder(BorderFactory.createEmptyBorder(2,10,2,0));
 	}
 }

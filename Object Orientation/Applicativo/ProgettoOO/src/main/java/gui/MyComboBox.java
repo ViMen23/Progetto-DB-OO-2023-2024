@@ -12,10 +12,12 @@ public class MyComboBox
 	{
 		super();
 
+		String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+
 		this.setEnabled(enable);
 		this.setCursor(GuiConfiguration.HAND_CURSOR);
-		this.setPrototypeDisplayValue(GuiConfiguration.DISPLAY_VALUE);
-		this.setMaximumRowCount(GuiConfiguration.COMBO_BOX_ROW_COUNT);
+		this.setPrototypeDisplayValue(displayValue);
+		this.setMaximumRowCount(5);
 
 		this.addPopupMenuListener(new PopupMenuListener() {
 			@Override
