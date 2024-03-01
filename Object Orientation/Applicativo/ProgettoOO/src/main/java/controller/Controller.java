@@ -164,47 +164,40 @@ public class Controller
 
 	/**
 	 * TODO
+	 */
+	private void setTotalCountry()
+	{
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+		newCountry().setTotalCountries(countryDAO.countCountryDB());
+	}
+
+	/**
+	 * TODO
 	 * @return
 	 */
 	public Integer countCountries()
 	{
-		CountryDAO countryDAO = new PostgresImplCountryDAO();
-
-		ctrlCountry.setTotalCountries(countryDAO.countCountryDB());
-
-		return ctrlCountry.getTotalCountries();
+		setTotalCountry();
+		return newCountry().getTotalCountries();
 	}
-
 
 	/**
 	 * TODO
-	 * @param countryType
-	 * @param superCountryID
+	 * @param listCountryID
+	 * @param listCountryType
+	 * @param listCountryCode
+	 * @param listCountryName
+	 * @param listSuperCountryID
+	 * @param listSuperCountryName
 	 */
-	private void fetchCountry(String countryType,
-														String superCountryID)
+	private void mapCountry(List<String> listCountryID,
+													List<String> listCountryType,
+													List<String> listCountryCode,
+													List<String> listCountryName,
+													List<String> listSuperCountryID,
+													List<String> listSuperCountryName)
 	{
-		List<String> listCountryID = new ArrayList<>();
-		List<String> listCountryType = new ArrayList<>();
-		List<String> listCountryCode = new ArrayList<>();
-		List<String> listCountryName = new ArrayList<>();
-		List<String> listSuperCountryID = new ArrayList<>();
-		List<String> listSuperCountryName = new ArrayList<>();
-
-		CountryDAO countryDAO = new PostgresImplCountryDAO();
-		countryDAO.fetchCountryDB(
-						countryType,
-						superCountryID,
-						listCountryID,
-						listCountryType,
-						listCountryCode,
-						listCountryName,
-						listSuperCountryID,
-						listSuperCountryName
-		);
-
-
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		Map<String, Country> countryMap = newCountry().getCountryMap();
 		countryMap.clear();
 
 		Map<String, Country> superCountryMap = new LinkedHashMap<>();
@@ -237,10 +230,95 @@ public class Controller
 
 	/**
 	 * TODO
-	 * @param countryNameVector
-	 * @param countryNameMap
 	 * @param countryType
 	 * @param superCountryID
+	 */
+	private void fetchCountry(String countryType,
+														String superCountryID)
+	{
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryType = new ArrayList<>();
+		List<String> listCountryCode = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
+		List<String> listSuperCountryID = new ArrayList<>();
+		List<String> listSuperCountryName = new ArrayList<>();
+
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+		countryDAO.fetchCountryDB(
+						countryType,
+						superCountryID,
+						listCountryID,
+						listCountryType,
+						listCountryCode,
+						listCountryName,
+						listSuperCountryID,
+						listSuperCountryName
+		);
+
+		mapCountry(
+						listCountryID,
+						listCountryType,
+						listCountryCode,
+						listCountryName,
+						listSuperCountryID,
+						listSuperCountryName
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	private void setCountryComboBoxDataMap(Vector<String> comboBoxData,
+																				 Map<String, String> comboBoxMap)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+
+		for (String key : countryMap.keySet()) {
+			String countryName = countryMap.get(key).getName();
+
+			comboBoxData.add(countryName);
+			comboBoxMap.put(countryName, key);
+		}
+	}
+
+
+	/**
+	 * TODO
+	 * @param tableData
+	 */
+	private void setCountryTableData(Vector<Vector<String>> tableData)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+
+		for (String key : countryMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Country country = countryMap.get(key);
+
+			vector.add(country.getName());
+			vector.add(country.getCode());
+			vector.add(country.getType());
+
+			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+				vector.add("");
+			} else {
+				vector.add(country.getSuperCountry().getName());
+			}
+
+			tableData.add(vector);
+		}
+	}
+
+
+	/**
+	 * TODO
+	 * @param countryType
+	 * @param superCountryID
+	 * @param countryNameVector
+	 * @param countryNameMap
 	 */
 	public void setCountryComboBox(String countryType,
 																 String superCountryID,
@@ -248,49 +326,21 @@ public class Controller
 																 Map<String, String> countryNameMap)
 	{
 		fetchCountry(countryType, superCountryID);
-
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-
-		for (String key : countryMap.keySet()) {
-			String countryName = countryMap.get(key).getName();
-			countryNameVector.add(countryName);
-			countryNameMap.put(countryName, key);
-		}
+		setCountryComboBoxDataMap(countryNameVector, countryNameMap);
 	}
-
 
 	/**
 	 * TODO
-	 * @param countryTableColumnName
-	 * @param countryTableData
 	 * @param countryType
 	 * @param superCountryID
+	 * @param countryTableData
 	 */
 	public void setCountryTable(String countryType,
 															String superCountryID,
 															Vector<Vector<String>> countryTableData)
 	{
 		fetchCountry(countryType, superCountryID);
-
-		for (String key : ctrlCountry.getCountryMap().keySet()) {
-			Vector<String> countryVector = new Vector<>();
-
-			Country country = ctrlCountry.getCountryMap().get(key);
-
-			countryVector.add(country.getName());
-			countryVector.add(country.getCode());
-			countryVector.add(country.getType());
-
-			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-				countryVector.add("");
-			} else {
-				countryVector.add(country.getSuperCountry().getName());
-			}
-
-			countryTableData.add(countryVector);
-		}
-
-		System.out.println("Controller" + countryTableData);
+		setCountryTableData(countryTableData);
 	}
 
 
@@ -324,19 +374,75 @@ public class Controller
 	}
 
 
+	private void setTotalConfederation()
+	{
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		newConfederation().setTotalConfederations(confederationDAO.countConfederationDB());
+	}
+
 	/**
 	 * TODO
 	 * @return
 	 */
 	public Integer countConfederations()
 	{
-		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
-
-		ctrlConfederation.setTotalConfederations(confederationDAO.countConfederationDB());
-
-		return ctrlConfederation.getTotalConfederations();
+		setTotalConfederation();
+		return newConfederation().getTotalConfederations();
 	}
 
+
+	private void mapConfederation(List<String> listConfederationID,
+																List<String> listConfederationShortName,
+																List<String> listConfederationLongName,
+																List<String> listCountryID,
+																List<String> listCountryName,
+																List<String> listCountryType,
+																List<String> listSuperConfederationID,
+																List<String> listSuperConfederationShortName)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		countryMap.clear();
+
+		Map<String, Confederation> superConfederationMap = new LinkedHashMap<>();
+
+		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
+		confederationMap.clear();
+
+		for (int i = 0; i < listConfederationID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											listCountryType.get(i),
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
+
+			String superConfederationID = listSuperConfederationID.get(i);
+			superConfederationMap.putIfAbsent(
+							superConfederationID,
+							newConfederation(
+											listSuperConfederationShortName.get(i),
+											null,
+											null,
+											null
+							)
+			);
+
+			String confederationID = listConfederationID.get(i);
+			confederationMap.putIfAbsent(
+							confederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											listConfederationLongName.get(i),
+											countryMap.get(countryID),
+											superConfederationMap.get(superConfederationID)
+							)
+			);
+		}
+	}
 
 	/**
 	 * TODO
@@ -369,73 +475,68 @@ public class Controller
 						listSuperConfederationShortName
 		);
 
+		mapConfederation(
+						listConfederationID,
+						listConfederationShortName,
+						listConfederationLongName,
+						listCountryID,
+						listCountryName,
+						listCountryType,
+						listSuperConfederationID,
+						listSuperConfederationShortName
+		);
 
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-		countryMap.clear();
+	}
 
-		Map<String, Confederation> superConfederationMap = new LinkedHashMap<>();
 
-		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
-		confederationMap.clear();
 
-		for (int i = 0; i < listConfederationID.size(); ++i) {
-			String countryID = listCountryID.get(i);
-			countryMap.putIfAbsent(
-							countryID,
-							newCountry(
-											listCountryType.get(i),
-											null,
-											listCountryName.get(i),
-											null
-							)
-			);
+	public void setConfederationComboBoxDataMap(Vector<String> comboBoxData,
+																							Map<String, String> comboBoxMap)
+	{
+		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
 
-			String superConfederationID = listSuperConfederationID.get(i);
-			superConfederationMap.putIfAbsent(
-							superConfederationID,
-							newConfederation(
-											listConfederationShortName.get(i),
-											null,
-											null,
-											null
-							)
-			);
+		for (String key : confederationMap.keySet()) {
 
-			String confederationID = listConfederationID.get(i);
-			confederationMap.putIfAbsent(
-							confederationID,
-							newConfederation(
-											listConfederationShortName.get(i),
-											listConfederationLongName.get(i),
-											countryMap.get(countryID),
-											superConfederationMap.get(superConfederationID)
-							)
-			);
+			String confederationShortName = confederationMap.get(key).getShortName();
+
+			comboBoxData.add(confederationShortName);
+			comboBoxMap.put(confederationShortName, key);
 		}
 	}
 
 
-	/**
-	 * TODO
-	 * @param confederationShortNameVector
-	 * @param confederationShortNameMap
-	 * @param typeCountry
-	 * @param superConfederationID
-	 */
+	private void setConfederationTableData(Vector<Vector<String>> tableData)
+	{
+		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
+
+		for (String key : confederationMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Confederation confederation = confederationMap.get(key);
+
+			vector.add(confederation.getLongName());
+			vector.add(confederation.getShortName());
+			vector.add(confederation.getCountry().getType());
+			vector.add(confederation.getCountry().getName());
+
+			if (confederation.getCountry().getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
+				vector.add("");
+			} else {
+				vector.add(confederation.getSuperConfederation().getShortName());
+			}
+
+			tableData.add(vector);
+		}
+	}
+
+
 	public void setConfederationComboBox(String typeCountry,
 																			 String superConfederationID,
 																			 Vector<String> confederationShortNameVector,
 																			 Map<String, String> confederationShortNameMap)
 	{
 		fetchConfederation(typeCountry, superConfederationID);
-
-		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
-
-			String confederationShortName = ctrlConfederation.getConfederationMap().get(key).getShortName();
-
-			confederationShortNameVector.add(confederationShortName);
-			confederationShortNameMap.put(confederationShortName, key);
-		}
+		setConfederationComboBoxDataMap(confederationShortNameVector, confederationShortNameMap);
 	}
 
 
@@ -444,25 +545,7 @@ public class Controller
 																		Vector<Vector<String>> confederationTableData)
 	{
 		fetchConfederation(countryType, superConfederationID);
-
-		for (String key : ctrlConfederation.getConfederationMap().keySet()) {
-			Vector<String> confederationVector = new Vector<>();
-
-			Confederation confederation = ctrlConfederation.getConfederationMap().get(key);
-
-			confederationVector.add(confederation.getLongName());
-			confederationVector.add(confederation.getShortName());
-			confederationVector.add(confederation.getCountry().getType());
-			confederationVector.add(confederation.getCountry().getName());
-
-			if (confederation.getCountry().getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
-				confederationVector.add("");
-			} else {
-				confederationVector.add(confederation.getSuperConfederation().getShortName());
-			}
-
-			confederationTableData.add(confederationVector);
-		}
+		setConfederationTableData(confederationTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -501,6 +584,11 @@ public class Controller
 
 
 
+	private void setTotalCompetition()
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		newCompetition().setTotalCompetitions(competitionDAO.countCompetitionDB());
+	}
 
 	/**
 	 * TODO
@@ -508,13 +596,86 @@ public class Controller
 	 */
 	public Integer countCompetitions()
 	{
-		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-
-		ctrlCompetition.setTotalCompetitions(competitionDAO.countCompetitionDB());
-
-		return ctrlCompetition.getTotalCompetitions();
+		setTotalCompetition();
+		return newCompetition().getTotalCompetitions();
 	}
 
+
+	private void mapCompetition(List<String> listCompetitionID,
+															List<String> listCompetitionType,
+															List<String> listCompetitionTeamType,
+															List<String> listCompetitionName,
+															List<String> listConfederationID,
+															List<String> listConfederationShortName,
+															List<String> listCountryID,
+															List<String> listCountryName)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		countryMap.clear();
+
+		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
+		confederationMap.clear();
+
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
+		competitionMap.clear();
+
+
+		for (int i = 0; i < listCompetitionID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
+
+			String confederationID = listConfederationID.get(i);
+			confederationMap.putIfAbsent(
+							confederationID,
+							newConfederation(
+											listConfederationShortName.get(i),
+											null,
+											countryMap.get(countryID),
+											null
+							)
+			);
+
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											listCompetitionType.get(i),
+											listCompetitionTeamType.get(i),
+											listCompetitionName.get(i),
+											confederationMap.get(confederationID)
+							)
+			);
+		}
+	}
+
+
+	private void mapCompetition(List<String> listCompetitionID,
+															List<String> listCompetitionName)
+	{
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
+		competitionMap.clear();
+
+		for (int i = 0; i < listCompetitionID.size(); ++i) {
+			String competitionID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competitionID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
+		}
+	}
 
 	/**
 	 * TODO
@@ -559,51 +720,16 @@ public class Controller
 						listCountryName
 		);
 
-
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-		countryMap.clear();
-
-		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
-		confederationMap.clear();
-
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
-		competitionMap.clear();
-
-
-		for (int i = 0; i < listCompetitionID.size(); ++i) {
-			String countryID = listCountryID.get(i);
-			countryMap.putIfAbsent(
-							countryID,
-							newCountry(
-											null,
-											null,
-											listCountryName.get(i),
-											null
-							)
-			);
-
-			String confederationID = listConfederationID.get(i);
-			confederationMap.putIfAbsent(
-							confederationID,
-							newConfederation(
-											listConfederationShortName.get(i),
-											null,
-											countryMap.get(countryID),
-											null
-							)
-			);
-
-			String competitionID = listCompetitionID.get(i);
-			competitionMap.putIfAbsent(
-							competitionID,
-							newCompetition(
-											listCompetitionType.get(i),
-											listCompetitionTeamType.get(i),
-											listCompetitionName.get(i),
-											confederationMap.get(confederationID)
-							)
-			);
-		}
+		mapCompetition(
+						listCompetitionID,
+						listCompetitionType,
+						listCompetitionTeamType,
+						listCompetitionName,
+						listConfederationID,
+						listConfederationShortName,
+						listCountryID,
+						listCountryName
+		);
 	}
 
 
@@ -621,23 +747,10 @@ public class Controller
 						listCompetitionName
 		);
 
-
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
-		competitionMap.clear();
-
-
-		for (int i = 0; i < listCompetitionID.size(); ++i) {
-			String competitionID = listCompetitionID.get(i);
-			competitionMap.putIfAbsent(
-							competitionID,
-							newCompetition(
-											null,
-											null,
-											listCompetitionName.get(i),
-											null
-							)
-			);
-		}
+		mapCompetition(
+						listCompetitionID,
+						listCompetitionName
+		);
 	}
 
 
@@ -658,6 +771,40 @@ public class Controller
 	}
 
 
+	private void setCompetitionComboBoxDataMap(Vector<String> comboBoxData,
+																						 Map<String, String> comboBoxMap)
+	{
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
+
+		for (String key : competitionMap.keySet()) {
+
+			String competitionName = competitionMap.get(key).getName();
+
+			comboBoxData.add(competitionName);
+			comboBoxMap.put(competitionName, key);
+		}
+	}
+
+
+	private void setCompetitionTableData(Vector<Vector<String>> tableData)
+	{
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
+
+		for (String key : competitionMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Competition competition = competitionMap.get(key);
+
+			vector.add(competition.getName());
+			vector.add(competition.getType());
+			vector.add(competition.getTeamType());
+			vector.add(competition.getConfederation().getShortName());
+			vector.add(competition.getConfederation().getCountry().getName());
+
+			tableData.add(vector);
+		}
+	}
+
 
 	public void setCompetitionComboBox(String playerID,
 																		 String teamType,
@@ -665,16 +812,7 @@ public class Controller
 																		 Map<String, String> competitionNameMap)
 	{
 		fetchCompetition(playerID, teamType);
-
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
-
-		for (String key : competitionMap.keySet()) {
-
-			String competitionName = competitionMap.get(key).getName();
-
-			competitionNameVector.add(competitionName);
-			competitionNameMap.put(competitionName, key);
-		}
+		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
 	}
 
 
@@ -696,13 +834,7 @@ public class Controller
 						competitionNationID
 		);
 
-		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
-
-			String competitionName = ctrlCompetition.getCompetitionMap().get(key).getName();
-
-			competitionNameVector.add(competitionName);
-			competitionNameMap.put(competitionName, key);
-		}
+		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
 	}
 
 	public void setCompetitionEditionComboBox(Vector<String> competitionEditionVector,
@@ -714,17 +846,7 @@ public class Controller
 	}
 
 
-	/**
-	 * TODO
-	 * @param competitionTableColumnName
-	 * @param competitionTableData
-	 * @param competitionSubName
-	 * @param competitionType
-	 * @param competitionTeamType
-	 * @param competitionCountryType
-	 * @param competitionContinentID
-	 * @param competitionNationID
-	 */
+
 	public void setCompetitionTable(String competitionSubName,
 																	String competitionType,
 																	String competitionTeamType,
@@ -742,20 +864,7 @@ public class Controller
 						competitionNationID
 		);
 
-
-		for (String key : ctrlCompetition.getCompetitionMap().keySet()) {
-			Vector<String> competitionVector = new Vector<>();
-
-			Competition competition = ctrlCompetition.getCompetitionMap().get(key);
-
-			competitionVector.add(competition.getName());
-			competitionVector.add(competition.getType());
-			competitionVector.add(competition.getTeamType());
-			competitionVector.add(competition.getConfederation().getShortName());
-			competitionVector.add(competition.getConfederation().getCountry().getName());
-
-			competitionTableData.add(competitionVector);
-		}
+		setCompetitionTableData(competitionTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -793,6 +902,11 @@ public class Controller
 	}
 
 
+	private void setTotalTeam()
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		newTeam().setTotalTeam(teamDAO.countTeamDB());
+	}
 
 	/**
 	 * TODO
@@ -800,11 +914,69 @@ public class Controller
 	 */
 	public Integer countTeams()
 	{
-		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		setTotalTeam();
+		return newTeam().getTotalTeam();
+	}
 
-		ctrlTeam.setTotalTeam(teamDAO.countTeamDB());
 
-		return ctrlTeam.getTotalTeam();
+	private void mapTeam(List<String> listTeamID,
+											 List<String> listTeamType,
+											 List<String> listTeamShortName,
+											 List<String> listTeamLongName,
+											 List<String> listCountryID,
+											 List<String> listCountryName)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		countryMap.clear();
+
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+		teamMap.clear();
+
+		for (int i = 0; i < listTeamID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
+
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											listTeamType.get(i),
+											listTeamShortName.get(i),
+											listTeamLongName.get(i),
+											countryMap.get(countryID),
+											null
+							)
+			);
+		}
+	}
+
+	private void mapTeam(List<String> listTeamID,
+											 List<String> listTeamLongName)
+	{
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+		teamMap.clear();
+
+		for (int i = 0; i < listTeamID.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+		}
 	}
 
 
@@ -844,36 +1016,14 @@ public class Controller
 						listCountryName
 		);
 
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-		countryMap.clear();
-
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
-		teamMap.clear();
-
-		for (int i = 0; i < listTeamID.size(); ++i) {
-			String countryID = listCountryID.get(i);
-			countryMap.putIfAbsent(
-							countryID,
-							newCountry(
-											null,
-											null,
-											listCountryName.get(i),
-											null
-							)
-			);
-
-			String teamID = listTeamID.get(i);
-			teamMap.putIfAbsent(
-							teamID,
-							newTeam(
-											listTeamType.get(i),
-											listTeamShortName.get(i),
-											listTeamLongName.get(i),
-											countryMap.get(countryID),
-											null
-							)
-			);
-		}
+		mapTeam(
+						listTeamID,
+						listTeamType,
+						listTeamShortName,
+						listTeamLongName,
+						listCountryID,
+						listCountryName
+		);
 	}
 
 	/**
@@ -895,23 +1045,10 @@ public class Controller
 						listTeamLongName
 		);
 
-
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
-		teamMap.clear();
-
-		for (int i = 0; i < listTeamID.size(); ++i) {
-			String teamID = listTeamID.get(i);
-			teamMap.putIfAbsent(
-							teamID,
-							newTeam(
-											null,
-											null,
-											listTeamLongName.get(i),
-											null,
-											null
-							)
-			);
-		}
+		mapTeam(
+						listTeamID,
+						listTeamLongName
+		);
 	}
 
 
@@ -971,22 +1108,48 @@ public class Controller
 						listTeamLongName
 		);
 
+		mapTeam(
+						listTeamID,
+						listTeamLongName
+		);
+	}
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
-		teamMap.clear();
 
-		for (int i = 0; i < listTeamID.size(); ++i) {
-			String teamID = listTeamID.get(i);
-			teamMap.putIfAbsent(
-							teamID,
-							newTeam(
-											null,
-											null,
-											listTeamLongName.get(i),
-											null,
-											null
-							)
-			);
+	private void setTeamComboBoxDataMap(Vector<String> comboBoxData,
+																			Map<String, String> comboBoxMap)
+	{
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+
+		for (String key : teamMap.keySet()) {
+
+			String teamLongName = teamMap.get(key).getLongName();
+
+			comboBoxData.add(teamLongName);
+			comboBoxMap.put(teamLongName, key);
+		}
+	}
+
+	public void setTeamTableDataMap(Vector<Vector<String>> tableData,
+																	Map<Integer, String> teamTableMap)
+	{
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+
+		Integer row = 0;
+
+		for (String key : teamMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Team team = teamMap.get(key);
+
+			vector.add(team.getLongName());
+			vector.add(team.getShortName());
+			vector.add(team.getType());
+			vector.add(team.getCountry().getName());
+
+			tableData.add(vector);
+
+			teamTableMap.put(row, key);
+			++row;
 		}
 	}
 
@@ -1017,13 +1180,7 @@ public class Controller
 						teamNationID
 		);
 
-		for (String key : ctrlTeam.getTeamMap().keySet()) {
-
-			String teamLongName = ctrlTeam.getTeamMap().get(key).getLongName();
-
-			teamLongNameVector.add(teamLongName);
-			teamLongNameMap.put(teamLongName, key);
-		}
+		setTeamComboBoxDataMap(teamLongNameVector, teamLongNameMap);
 	}
 
 
@@ -1032,35 +1189,18 @@ public class Controller
 															Map<String, String> teamLongNameMap)
 	{
 		fetchTeamPlayer(playerID);
-
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
-
-		for (String key : teamMap.keySet()) {
-
-			String teamLongName = teamMap.get(key).getLongName();
-
-			teamLongNameVector.add(teamLongName);
-			teamLongNameMap.put(teamLongName, key);
-		}
+		setTeamComboBoxDataMap(teamLongNameVector, teamLongNameMap);
 	}
 
 
-	/**
-	 * TODO
-	 * @param teamTableColumnName
-	 * @param teamTableData
-	 * @param teamSubLongName
-	 * @param teamSubShortName
-	 * @param teamType
-	 * @param teamContinentID
-	 * @param teamNationID
-	 */
+
 	public void setTeamTable(String teamSubLongName,
 													 String teamSubShortName,
 													 String teamType,
 													 String teamContinentID,
 													 String teamNationID,
-													 Vector<Vector<String>> teamTableData)
+													 Vector<Vector<String>> teamTableData,
+													 Map<Integer, String> teamTableMap)
 	{
 		fetchTeam(
 						teamSubLongName,
@@ -1070,19 +1210,7 @@ public class Controller
 						teamNationID
 		);
 
-
-		for (String key : ctrlTeam.getTeamMap().keySet()) {
-			Vector<String> teamVector = new Vector<>();
-
-			Team team = ctrlTeam.getTeamMap().get(key);
-
-			teamVector.add(team.getLongName());
-			teamVector.add(team.getShortName());
-			teamVector.add(team.getType());
-			teamVector.add(team.getCountry().getName());
-
-			teamTableData.add(teamVector);
-		}
+		setTeamTableDataMap(teamTableData, teamTableMap);
 	}
 
 	/**
@@ -1098,14 +1226,7 @@ public class Controller
 															Map<String, String> teamLongNameMap)
 	{
 		fetchTeam(competitionStartYear, competitionID);
-
-		for (String key : ctrlTeam.getTeamMap().keySet()) {
-
-			String teamLongName = ctrlTeam.getTeamMap().get(key).getLongName();
-
-			teamLongNameVector.add(teamLongName);
-			teamLongNameMap.put(teamLongName, key);
-		}
+		setTeamComboBoxDataMap(teamLongNameVector, teamLongNameMap);
 	}
 
 	public void setTeamView(String teamID,
@@ -1233,19 +1354,110 @@ public class Controller
 		return newPlayer(null, null, null, null, null, null, null, null);
 	}
 
+
+	private void setTotalPlayer()
+	{
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		newPlayer().setTotalPlayers(playerDAO.countPlayerDB());
+	}
+
 	/**
 	 * TODO
 	 * @return
 	 */
 	public Integer countPlayers()
 	{
-		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-
-		ctrlPlayer.setTotalPlayers(playerDAO.countPlayerDB());
-
-		return ctrlPlayer.getTotalPlayers();
+		setTotalPlayer();
+		return newPlayer().getTotalPlayers();
 	}
 
+
+	private void mapPlayer(List<String> listPlayerID,
+												 List<String> listPlayerName,
+												 List<String> listPlayerSurname,
+												 List<String> listPlayerDob,
+												 List<String> listPlayerFoot,
+												 List<String> listPlayerRole,
+												 List<String> listPlayerRetiredDate,
+												 List<String> listPositionID,
+												 List<String> listPositionName,
+												 List<String> listCountryID,
+												 List<String> listCountryName)
+	{
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		countryMap.clear();
+
+		Map<String, Position> positionMap = newPosition().getPositionMap();
+		positionMap.clear();
+
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String countryID = listCountryID.get(i);
+			countryMap.putIfAbsent(
+							countryID,
+							newCountry(
+											null,
+											null,
+											listCountryName.get(i),
+											null
+							)
+			);
+
+			String positionID = listPositionID.get(i);
+			positionMap.putIfAbsent(
+							positionID,
+							newPosition(
+											null,
+											null,
+											listPositionName.get(i)
+							)
+			);
+
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											listPlayerDob.get(i),
+											countryMap.get(countryID),
+											listPlayerFoot.get(i),
+											positionMap.get(positionID),
+											listPlayerRole.get(i),
+											listPlayerRetiredDate.get(i)
+							)
+			);
+		}
+	}
+
+	private void mapPlayer(List<String> listPlayerID,
+												 List<String> listPlayerName,
+												 List<String> listPlayerSurname,
+												 List<String> listPlayerRole)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		playerMap.clear();
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
+		}
+	}
 
 	/**
 	 * TODO
@@ -1308,53 +1520,19 @@ public class Controller
 						listCountryName
 		);
 
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-		countryMap.clear();
-
-		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
-		positionMap.clear();
-
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
-		playerMap.clear();
-
-
-		for (int i = 0; i < listPlayerID.size(); ++i) {
-			String countryID = listCountryID.get(i);
-			countryMap.putIfAbsent(
-							countryID,
-							newCountry(
-											null,
-											null,
-											listCountryName.get(i),
-											null
-							)
-			);
-
-			String positionID = listPositionID.get(i);
-			positionMap.putIfAbsent(
-							positionID,
-							newPosition(
-											null,
-											null,
-											listPositionName.get(i)
-							)
-			);
-
-			String playerID = listPlayerID.get(i);
-			playerMap.putIfAbsent(
-							playerID,
-							newPlayer(
-											listPlayerName.get(i),
-											listPlayerSurname.get(i),
-											listPlayerDob.get(i),
-											countryMap.get(countryID),
-											listPlayerFoot.get(i),
-											positionMap.get(positionID),
-											listPlayerRole.get(i),
-											listPlayerRetiredDate.get(i)
-							)
-			);
-		}
+		mapPlayer(
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerDob,
+						listPlayerFoot,
+						listPlayerRole,
+						listPlayerRetiredDate,
+						listPositionID,
+						listPositionName,
+						listCountryID,
+						listCountryName
+		);
 	}
 
 
@@ -1399,53 +1577,19 @@ public class Controller
 		);
 
 
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
-		countryMap.clear();
-
-		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
-		positionMap.clear();
-
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
-		playerMap.clear();
-
-
-		for (int i = 0; i < listPlayerID.size(); ++i) {
-			String countryID = listCountryID.get(i);
-			countryMap.putIfAbsent(
-							countryID,
-							newCountry(
-											null,
-											null,
-											listCountryName.get(i),
-											null
-							)
-			);
-
-			String positionID = listPositionID.get(i);
-			positionMap.putIfAbsent(
-							positionID,
-							newPosition(
-											null,
-											null,
-											listPositionName.get(i)
-							)
-			);
-
-			String playerID = listPlayerID.get(i);
-			playerMap.putIfAbsent(
-							playerID,
-							newPlayer(
-											listPlayerName.get(i),
-											listPlayerSurname.get(i),
-											listPlayerDob.get(i),
-											countryMap.get(countryID),
-											listPlayerFoot.get(i),
-											positionMap.get(positionID),
-											listPlayerRole.get(i),
-											listPlayerRetiredDate.get(i)
-							)
-			);
-		}
+		mapPlayer(
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerDob,
+						listPlayerFoot,
+						listPlayerRole,
+						listPlayerRetiredDate,
+						listPositionID,
+						listPositionName,
+						listCountryID,
+						listCountryName
+		);
 	}
 
 	/**
@@ -1471,27 +1615,12 @@ public class Controller
 						listPlayerRole
 		);
 
-
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
-		playerMap.clear();
-
-
-		for (int i = 0; i < listPlayerID.size(); ++i) {
-			String playerID = listPlayerID.get(i);
-			playerMap.putIfAbsent(
-							playerID,
-							newPlayer(
-											listPlayerName.get(i),
-											listPlayerSurname.get(i),
-											null,
-											null,
-											null,
-											null,
-											listPlayerRole.get(i),
-											null
-							)
-			);
-		}
+		mapPlayer(
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerRole
+		);
 	}
 
 
@@ -1549,6 +1678,55 @@ public class Controller
 		);
 	}
 
+	public void setPlayerComboBoxDataMap(Vector<String> comboBoxData,
+																			 Map<String, String> comboBoxMap)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+
+		for (String key : playerMap.keySet()) {
+
+			String playerInfo = "";
+			playerInfo += playerMap.get(key).getName();
+			playerInfo += " ";
+			playerInfo += playerMap.get(key).getSurname();
+
+			comboBoxData.add(playerInfo);
+			comboBoxMap.put(playerInfo, key);
+		}
+	}
+
+	public void setPlayerTableDataMap(Vector<Vector<String>> tableData,
+																		Map<Integer, String> playerTableMap)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+
+		Integer row = 0;
+
+		for (String key : playerMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Player player = playerMap.get(key);
+
+			vector.add(player.getSurname());
+			vector.add(player.getName());
+			vector.add(player.getDob());
+			vector.add(player.getCountry().getName());
+			vector.add(player.getFoot());
+			vector.add(player.getRole());
+			vector.add(player.getPosition().getName());
+
+			if (null == player.getRetiredDate()) {
+				vector.add("");
+			} else {
+				vector.add(player.getRetiredDate());
+			}
+
+			tableData.add(vector);
+
+			playerTableMap.put(row, key);
+			++row;
+		}
+	}
 
 	/**
 	 * TODO
@@ -1591,16 +1769,7 @@ public class Controller
 						playerFoot
 		);
 
-
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
-
-			String playerInfo = ctrlPlayer.getPlayerMap().get(key).getName();
-			playerInfo += " ";
-			playerInfo += ctrlPlayer.getPlayerMap().get(key).getSurname();
-
-			playerInfoVector.add(playerInfo);
-			playerInfoMap.put(playerInfo, key);
-		}
+		setPlayerComboBoxDataMap(playerInfoVector, playerInfoMap);
 	}
 
 	public void setPlayerComboBox(String startYear,
@@ -1609,20 +1778,7 @@ public class Controller
 																Map<String, String> playerInfoMap)
 	{
 		fetchPlayer(startYear, teamID);
-
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
-
-		for (String key : playerMap.keySet()) {
-
-			Player player = playerMap.get(key);
-
-			String playerInfo = player.getName();
-			playerInfo += " ";
-			playerInfo += player.getSurname();
-
-			playerInfoVector.add(playerInfo);
-			playerInfoMap.put(playerInfo, key);
-		}
+		setPlayerComboBoxDataMap(playerInfoVector, playerInfoMap);
 	}
 
 	public void setPlayerComboBox(String playerID,
@@ -1649,7 +1805,8 @@ public class Controller
 														 String playerRole,
 														 String playerPositionID,
 														 String playerFoot,
-														 Vector<Vector<String>> playerTableData)
+														 Vector<Vector<String>> playerTableData,
+														 Map<Integer, String> playerTableMap)
 	{
 		fetchPlayer(
 						playerSubName,
@@ -1664,43 +1821,16 @@ public class Controller
 						playerFoot
 		);
 
-
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
-			Vector<String> playerVector = new Vector<>();
-
-			Player player = ctrlPlayer.getPlayerMap().get(key);
-
-			playerVector.add(player.getSurname());
-			playerVector.add(player.getName());
-			playerVector.add(player.getDob());
-			playerVector.add(player.getCountry().getName());
-			playerVector.add(player.getFoot());
-			playerVector.add(player.getRole());
-			playerVector.add(player.getPosition().getName());
-
-			if (null == player.getRetiredDate()) {
-				playerVector.add("");
-			} else {
-				playerVector.add(player.getRetiredDate());
-			}
-
-			playerTableData.add(playerVector);
-		}
+		setPlayerTableDataMap(playerTableData, playerTableMap);
 	}
 
 
-	/**
-	 * TODO
-	 * @param playerTableColumnName
-	 * @param playerTableData
-	 * @param militancyPlayerTeamID
-	 * @param militancyPlayerStartYear
-	 * @param militancyPlayerEndYear
-	 */
+	
 	public void setPlayerTable(String militancyPlayerTeamID,
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear,
-														 Vector<Vector<String>> playerTableData)
+														 Vector<Vector<String>> playerTableData,
+														 Map<Integer, String> playerTableMap)
 	{
 		fetchPlayer(
 						militancyPlayerTeamID,
@@ -1708,36 +1838,13 @@ public class Controller
 						militancyPlayerEndYear
 		);
 
-
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
-			Vector<String> playerVector = new Vector<>();
-
-			Player player = ctrlPlayer.getPlayerMap().get(key);
-
-			playerVector.add(player.getSurname());
-			playerVector.add(player.getName());
-			playerVector.add(player.getDob());
-			playerVector.add(player.getCountry().getName());
-			playerVector.add(player.getFoot());
-			playerVector.add(player.getRole());
-			playerVector.add(player.getPosition().getName());
-
-			if (null == player.getRetiredDate()) {
-				playerVector.add("");
-			} else {
-				playerVector.add(player.getRetiredDate());
-			}
-
-			playerTableData.add(playerVector);
-		}
+		setPlayerTableDataMap(playerTableData, playerTableMap);
 	}
 
 
 	public void setPlayerGeneralView(String playerID,
 																	 Map<String, String> infoPlayerMap,
-																	 Vector<String> playerPositionTableColumnName,
 																	 Vector<Vector<String>> playerPositionTableData,
-																	 Vector<String> playerNationalityTableColumnName,
 																	 Vector<Vector<String>> playerNationalityTableData)
 	{
 		fetchPlayer(playerID);
@@ -2188,6 +2295,46 @@ public class Controller
 		return newPosition(null, null, null);
 	}
 
+	private void mapPosition(List<String> listPositionID,
+													 List<String> listPositionRole,
+													 List<String> listPositionCode,
+													 List<String> listPositionName)
+	{
+		Map<String, Position> positionMap = newPosition().getPositionMap();
+		positionMap.clear();
+
+		for (int i = 0; i < listPositionID.size(); ++i) {
+			String positionID = listPositionID.get(i);
+			positionMap.putIfAbsent(
+							positionID,
+							newPosition(
+											listPositionRole.get(i),
+											listPositionCode.get(i),
+											listPositionName.get(i)
+							)
+			);
+		}
+	}
+
+	private void mapPosition(String playerID,
+													 List<String> listPositionRole,
+													 List<String> listPositionCode,
+													 List<String> listPositionName)
+	{
+		Set<Position> playerPositionSet = newPlayer().getPlayerMap().get(playerID).getPositionSet();
+		playerPositionSet.clear();
+
+		for (int i = 0; i < listPositionName.size(); ++i) {
+			playerPositionSet.add(
+							newPosition(
+											listPositionRole.get(i),
+											listPositionCode.get(i),
+											listPositionName.get(i)
+							)
+			);
+		}
+	}
+
 	/**
 	 * TODO
 	 */
@@ -2206,21 +2353,12 @@ public class Controller
 						listPositionName
 		);
 
-		Map<String, Position> positionMap = ctrlPosition.getPositionMap();
-		positionMap.clear();
-
-
-		for (int i = 0; i < listPositionID.size(); ++i) {
-			String positionID = listPositionID.get(i);
-			positionMap.putIfAbsent(
-							positionID,
-							newPosition(
-											listPositionRole.get(i),
-											listPositionCode.get(i),
-											listPositionName.get(i)
-							)
-			);
-		}
+		mapPosition(
+						listPositionID,
+						listPositionRole,
+						listPositionCode,
+						listPositionName
+		);
 	}
 
 
@@ -2238,22 +2376,28 @@ public class Controller
 						listPositionName
 		);
 
-
-		Set<Position> playerPositionSet = ctrlPlayer.getPlayerMap().get(playerID).getPositionSet();
-		playerPositionSet.clear();
-
-
-		for (int i = 0; i < listPositionName.size(); ++i) {
-			playerPositionSet.add(
-							newPosition(
-											listPositionRole.get(i),
-											listPositionCode.get(i),
-											listPositionName.get(i)
-							)
-			);
-		}
+		mapPosition(
+						playerID,
+						listPositionRole,
+						listPositionCode,
+						listPositionName
+		);
 	}
 
+
+	private void setPositionComboBoxDataMap(Vector<String> comboBoxData,
+																					Map<String, String> comboBoxMap)
+	{
+		Map<String, Position> positionMap = newPosition().getPositionMap();
+
+		for (String key : positionMap.keySet()) {
+
+			String positionName = positionMap.get(key).getName();
+
+			comboBoxData.add(positionName);
+			comboBoxMap.put(positionName, key);
+		}
+	}
 
 	/**
 	 * TODO
@@ -2264,14 +2408,7 @@ public class Controller
 																	Map<String, String> positionNameMap)
 	{
 		fetchPosition();
-
-		for (String key : ctrlPosition.getPositionMap().keySet()) {
-
-			String positionName = ctrlPosition.getPositionMap().get(key).getName();
-
-			positionNameVector.add(positionName);
-			positionNameMap.put(positionName, key);
-		}
+		setPositionComboBoxDataMap(positionNameVector, positionNameMap);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
