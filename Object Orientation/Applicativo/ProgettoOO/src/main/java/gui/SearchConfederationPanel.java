@@ -114,7 +114,7 @@ public class SearchConfederationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		confederationTablePanel = new TablePanel(true, null, null, null);
+		confederationTablePanel = new TablePanel(true, null, null, null, null);
 		this.add(confederationTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
@@ -139,16 +139,36 @@ public class SearchConfederationPanel
 				confederationTablePanel.fillTable(confederationTableData, GuiConfiguration.confederationTableColumnName);
 
 
-				string = GuiConfiguration.getMessage("results");
+				string = GuiConfiguration.getMessage("research");
 				string += " ";
-				string += GuiConfiguration.getMessage("confederations");
+				string += GuiConfiguration.getMessage("performed");
 				string += " - ";
 				string += confederationTableData.size();
 				string += " ";
-				string += GuiConfiguration.getMessage("results");
+				string += GuiConfiguration.getMessage("confederations");
 				string = string.toUpperCase();
 
 				confederationTablePanel.setTextTitleLabel(string);
+
+				string = StringUtils.capitalize(GuiConfiguration.getMessage("confederationType"));
+				string += ": ";
+
+				if (null != ctrlCountryType.getText()) {
+					string += GuiConfiguration.getMessage(ctrlCountryType.getText().toLowerCase());
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("confederation"));
+				string += ": ";
+
+				if (!(ctrlConfederationName.getText().equalsIgnoreCase(selectAll))) {
+					string += ctrlConfederationName.getText();
+				}
+
+				confederationTablePanel.setDescriptionTextArea(string);
+
+				topSearchPanel.getTitleButton().doClick();
 
 				SearchConfederationPanel.this.revalidate();
 			}
@@ -181,7 +201,7 @@ public class SearchConfederationPanel
 
 					confederationNameVector.add(selectAll);
 
-					Controller.getInstance().setCountryComboBox(
+					Controller.getInstance().setConfederationComboBox(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
 						null,
 						confederationNameVector,

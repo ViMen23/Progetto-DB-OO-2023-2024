@@ -446,20 +446,20 @@ public class MenuBarPanel
 
 
 
-		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				GuiConfiguration.switchPanel
-					(
-									MainFrame.getMainFrameInstance().getContentPane(),
-									new MilitancyFilterPanel(),
-									2,
-									"sgx frame"
-					);
-			}
-		});
-		/*------------------------------------------------------------------------------------------------------*/
+//		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
+//			@Override
+//			public void actionPerformed(ActionEvent e)
+//			{
+//				GuiConfiguration.switchPanel
+//					(
+//									MainFrame.getMainFrameInstance().getContentPane(),
+//									new MilitancyFilterPanel(),
+//									2,
+//									"sgx frame"
+//					);
+//			}
+//		});
+//		/*------------------------------------------------------------------------------------------------------*/
 
 
 

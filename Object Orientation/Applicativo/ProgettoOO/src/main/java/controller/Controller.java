@@ -295,12 +295,11 @@ public class Controller
 
 		for (String key : countryMap.keySet()) {
 			Vector<String> vector = new Vector<>();
-
 			Country country = countryMap.get(key);
 
 			vector.add(country.getName());
 			vector.add(country.getCode());
-			vector.add(country.getType());
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(country.getType().toLowerCase())));
 
 			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				vector.add("");
@@ -490,8 +489,8 @@ public class Controller
 
 
 
-	public void setConfederationComboBoxDataMap(Vector<String> comboBoxData,
-																							Map<String, String> comboBoxMap)
+	private void setConfederationComboBoxDataMap(Vector<String> comboBoxData,
+																							 Map<String, String> comboBoxMap)
 	{
 		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
 
@@ -511,12 +510,12 @@ public class Controller
 
 		for (String key : confederationMap.keySet()) {
 			Vector<String> vector = new Vector<>();
-
 			Confederation confederation = confederationMap.get(key);
 
 			vector.add(confederation.getLongName());
 			vector.add(confederation.getShortName());
-			vector.add(confederation.getCountry().getType());
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(confederation.getCountry().getType().toLowerCase())));
+
 			vector.add(confederation.getCountry().getName());
 
 			if (confederation.getCountry().getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
@@ -796,8 +795,8 @@ public class Controller
 			Competition competition = competitionMap.get(key);
 
 			vector.add(competition.getName());
-			vector.add(competition.getType());
-			vector.add(competition.getTeamType());
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getType().toLowerCase())));
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getTeamType().toLowerCase())));
 			vector.add(competition.getConfederation().getShortName());
 			vector.add(competition.getConfederation().getCountry().getName());
 
@@ -1143,7 +1142,7 @@ public class Controller
 
 			vector.add(team.getLongName());
 			vector.add(team.getShortName());
-			vector.add(team.getType());
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(team.getType().toLowerCase())));
 			vector.add(team.getCountry().getName());
 
 			tableData.add(vector);
@@ -1825,7 +1824,7 @@ public class Controller
 	}
 
 
-	
+
 	public void setPlayerTable(String militancyPlayerTeamID,
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear,

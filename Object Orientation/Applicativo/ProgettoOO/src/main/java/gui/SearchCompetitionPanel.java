@@ -202,7 +202,7 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		competitionTablePanel = new TablePanel(true, null, null, null);
+		competitionTablePanel = new TablePanel(true, null, null, null, null);
 		this.add(competitionTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
@@ -233,16 +233,64 @@ public class SearchCompetitionPanel
 				competitionTablePanel.fillTable(competitionTableData, GuiConfiguration.competitionTableColumnName);
 
 
-				string = GuiConfiguration.getMessage("results");
+				string = GuiConfiguration.getMessage("research");
 				string += " ";
-				string += GuiConfiguration.getMessage("competitions");
+				string += GuiConfiguration.getMessage("performed");
 				string += " - ";
 				string += competitionTableData.size();
 				string += " ";
-				string += GuiConfiguration.getMessage("results");
+				string += GuiConfiguration.getMessage("competitions");
 				string = string.toUpperCase();
 
 				competitionTablePanel.setTextTitleLabel(string);
+
+				string = StringUtils.capitalize(GuiConfiguration.getMessage("name"));
+				string += ": ";
+
+				if (null != ctrlCompetitionSubName.getText()) {
+					string += ctrlCompetitionSubName.getText();
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("competitionType"));
+				string += ": ";
+
+				if (null != ctrlCompetitionType.getText()) {
+					string += GuiConfiguration.getMessage(ctrlCompetitionType.getText().toLowerCase());
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
+				string += ": ";
+
+				if (null != ctrlTeamType.getText()) {
+					string += GuiConfiguration.getMessage(ctrlTeamType.getText().toLowerCase());
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("country"));
+				string += ": ";
+
+				if (null != ctrlCountryType.getText()) {
+					string += GuiConfiguration.getMessage(ctrlCountryType.getText().toLowerCase());
+
+					if (!(ctrlContinentName.getText().equalsIgnoreCase(selectAll))) {
+						string += " - ";
+						string += ctrlContinentName.getText();
+					}
+
+					if (!(ctrlNationName.getText().equalsIgnoreCase(selectAll))) {
+						string += " - ";
+						string += ctrlNationName.getText();
+					}
+				}
+
+				competitionTablePanel.setDescriptionTextArea(string);
+
+				topSearchPanel.getTitleButton().doClick();
 
 				SearchCompetitionPanel.this.revalidate();
 			}

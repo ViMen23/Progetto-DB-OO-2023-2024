@@ -172,7 +172,7 @@ public class SearchTeamPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		teamTablePanel = new TablePanel(true, null, null, null);
+		teamTablePanel = new TablePanel(true, null, null, null, null);
 		this.add(teamTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
@@ -201,16 +201,61 @@ public class SearchTeamPanel
 
 				teamTablePanel.fillTable(teamTableData, GuiConfiguration.teamTableColumnName);
 
-				string = GuiConfiguration.getMessage("results");
+				string = GuiConfiguration.getMessage("research");
 				string += " ";
-				string += GuiConfiguration.getMessage("teams");
+				string += GuiConfiguration.getMessage("performed");
 				string += " - ";
 				string += teamTableData.size();
 				string += " ";
-				string += GuiConfiguration.getMessage("results");
+				string += GuiConfiguration.getMessage("teams");
 				string = string.toUpperCase();
 
 				teamTablePanel.setTextTitleLabel(string);
+
+				string = StringUtils.capitalize(GuiConfiguration.getMessage("longName"));
+				string += ": ";
+
+				if (null != ctrlTeamSubLongName.getText()) {
+					string += ctrlTeamSubLongName.getText();
+				}
+
+				string += "\t";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("shortName"));
+				string += ": ";
+
+				if (null != ctrlTeamSubShortName.getText()) {
+					string += ctrlTeamSubShortName.getText();
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
+				string += ": ";
+
+				if (null != ctrlTeamType.getText()) {
+					string += GuiConfiguration.getMessage(ctrlTeamType.getText().toLowerCase());
+				}
+
+				string += "\n";
+
+				string += StringUtils.capitalize(GuiConfiguration.getMessage("country"));
+				string += ": ";
+
+				if (!(ctrlContinentName.getText().equalsIgnoreCase(selectAll))) {
+					string += ctrlContinentName.getText();
+				}
+
+
+				if (!(ctrlNationName.getText().equalsIgnoreCase(selectAll))) {
+					string += " - ";
+					string += ctrlNationName.getText();
+				}
+
+
+				teamTablePanel.setDescriptionTextArea(string);
+
+				topSearchPanel.getTitleButton().doClick();
 
 				SearchTeamPanel.this.revalidate();
 			}

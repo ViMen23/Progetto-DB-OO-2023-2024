@@ -258,7 +258,7 @@ public class SearchPlayerPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		playerTablePanel = new TablePanel(true, null, null, null);
+		playerTablePanel = new TablePanel(true, null, null, null, null);
 		this.add(playerTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 

@@ -14,7 +14,11 @@ public class TopSearchPanel
 	private static final ImageIcon MINIMIZE = GuiConfiguration.createImageIcon("images/minimize.png");
 	private static final ImageIcon MAXIMIZE = GuiConfiguration.createImageIcon("images/maximize.png");
 
-	public TopSearchPanel(String titleButtonString, JPanel rootPanel, JPanel toRemovePanel)
+	private final JButton titleButton;
+
+	public TopSearchPanel(String titleButtonString,
+												JPanel rootPanel,
+												JPanel toRemovePanel)
 	{
 		MigLayout migLayout;
 
@@ -27,9 +31,9 @@ public class TopSearchPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		JButton titleButton;
 
-		titleButton = new JButton(titleButtonString, MAXIMIZE);
+
+		this.titleButton = new JButton(titleButtonString, MAXIMIZE);
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIconTextGap(40);
@@ -78,5 +82,10 @@ public class TopSearchPanel
 		});
 
 		this.add(resetButton);
+	}
+
+	public JButton getTitleButton()
+	{
+		return titleButton;
 	}
 }
