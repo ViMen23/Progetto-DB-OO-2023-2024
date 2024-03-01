@@ -13,6 +13,7 @@ public class RadioComboPanel
 				extends JPanel
 {
 	private final MyComboBox myComboBox;
+	private final JRadioButton radioButton;
 	private final Boolean combo;
 	public RadioComboPanel(String field,
 												 JLabel ctrlLabelRadio,
@@ -37,8 +38,7 @@ public class RadioComboPanel
 		string = GuiConfiguration.getMessage(string);
 		string = StringUtils.capitalize(string);
 
-		JRadioButton radioButton;
-		radioButton = new JRadioButton(string);
+		this.radioButton = new JRadioButton(string);
 		this.add(radioButton);
 
 		radioButton.addActionListener(new ActionListener() {
@@ -66,5 +66,10 @@ public class RadioComboPanel
 		} else {
 			return null;
 		}
+	}
+
+	public JRadioButton getRadioButton()
+	{
+		return radioButton;
 	}
 }

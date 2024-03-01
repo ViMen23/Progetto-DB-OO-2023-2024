@@ -17,23 +17,24 @@ public class SearchConfederationPanel
 {
 	public SearchConfederationPanel()
 	{
-		final JLabel countryType = new JLabel((String) null);
-		final JLabel continent = new JLabel("@null");
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
+
+		final JLabel ctrlCountryType = new JLabel((String) null);
+		final JLabel ctrlConfederationName = new JLabel(selectAll);
 
 		final Vector<String> confederationNameVector = new Vector<>();
 		final Map<String, String> confederationNameMap = new HashMap<>();
 
-		final Vector<String> confederationTableColumnName = new Vector<>();
 		final Vector<Vector<String>> confederationTableData = new Vector<>();
 
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
-		TitleLabel titlePanel;
-		RadioPanel radioPanel;
+		TitleLabel titleLabel;
+		RadioPanel countryTypePanel;
 		InfoPanel infoPanel;
-		LabelComboPanel chooseContinentPanel;
-		TablePanel tablePanel;
+		LabelComboPanel confederationNamePanel;
+		TablePanel confederationTablePanel;
 		JButton button;
 
 		String string;
@@ -82,14 +83,14 @@ public class SearchConfederationPanel
 		string += GuiConfiguration.getMessage("confederationType");
 		string = string.toUpperCase();
 
-		titlePanel = new TitleLabel(string);
-		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		titleLabel = new TitleLabel(string);
+		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		titlePanel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
-		radioPanel = new RadioPanel(Country.COUNTRY_TYPE.values(), countryType);
-		centralPanel.add(radioPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		countryTypePanel = new RadioPanel(Country.COUNTRY_TYPE.values(), ctrlCountryType);
+		centralPanel.add(countryTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il primo info box");
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
@@ -99,22 +100,22 @@ public class SearchConfederationPanel
 		string = "Scegli confederazione che contiene la confederazione nazione"; //TODO I18N
 		string = string.toUpperCase();
 
-		titlePanel = new TitleLabel(string);
-		centralPanel.add(titlePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		titleLabel = new TitleLabel(string);
+		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		titlePanel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titlePanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
-		chooseContinentPanel = new LabelComboPanel(null, continent);
-		centralPanel.add(chooseContinentPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		confederationNamePanel = new LabelComboPanel(null, ctrlConfederationName);
+		centralPanel.add(confederationNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		tablePanel = new TablePanel(true, null, null, null);
-		this.add(tablePanel, GuiConfiguration.tablePanelAddConstraint);
+		confederationTablePanel = new TablePanel(true, null, null, null);
+		this.add(confederationTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
 		button = new JButton("CERCA");
@@ -126,13 +127,13 @@ public class SearchConfederationPanel
 
 				confederationTableData.clear();
 
-				Controller.getInstance().setCountryTable(
-					countryType.getText(),
-					confederationNameMap.get(continent.getText()),
-					confederationTableData
+				Controller.getInstance().setConfederationTable(
+								ctrlCountryType.getText(),
+								confederationNameMap.get(ctrlConfederationName.getText()),
+								confederationTableData
 				);
 
-				tablePanel.fillTable(confederationTableData, GuiConfiguration.confederationTableColumnName);
+				confederationTablePanel.fillTable(confederationTableData, GuiConfiguration.confederationTableColumnName);
 
 
 				string = GuiConfiguration.getMessage("results");
@@ -144,7 +145,7 @@ public class SearchConfederationPanel
 				string += GuiConfiguration.getMessage("results");
 				string = string.toUpperCase();
 
-				tablePanel.setTextTitleLabel(string);
+				confederationTablePanel.setTextTitleLabel(string);
 
 				SearchConfederationPanel.this.revalidate();
 			}
@@ -153,34 +154,28 @@ public class SearchConfederationPanel
 		centralPanel.add(button, GuiConfiguration.searchButtonAddConstraint);
 
 
-		countryType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-
-				if (0 == StringUtils.compareIgnoreCase(countryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
-					chooseContinentPanel.getMyComboBox().setEnabled(true);
+				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
+					confederationNamePanel.getMyComboBox().setEnabled(true);
+				} else {
+					confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
+					ctrlConfederationName.setText(selectAll);
 				}
-				else {
-					chooseContinentPanel.getMyComboBox().setSelectedIndex(-1);
-					continent.setText("@null");
-				}
-
 			}
 		});
 
-		continent.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlConfederationName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (continent.getText().equalsIgnoreCase("@fill")) {
+				if (ctrlConfederationName.getText().equalsIgnoreCase("@fill")) {
 					confederationNameVector.clear();
 					confederationNameMap.clear();
 
-					String string;
-					string = GuiConfiguration.getMessage("selectAll");
-					string = StringUtils.capitalize(string);
-					confederationNameVector.add(string);
+					confederationNameVector.add(selectAll);
 
 					Controller.getInstance().setCountryComboBox(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -189,7 +184,7 @@ public class SearchConfederationPanel
 						confederationNameMap
 					);
 
-					chooseContinentPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
+					confederationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
 				}
 			}
 		});

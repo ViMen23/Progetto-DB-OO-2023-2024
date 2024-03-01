@@ -8,12 +8,16 @@ public class TableModel
 				extends DefaultTableModel
 {
 
-	public TableModel(Vector<? extends Vector> data, Vector<?> columnNames){
+	public TableModel(Vector<? extends Vector> data,
+										Vector<?> columnNames)
+	{
 		super(data, columnNames);
 	}
 
 	@Override
-	public boolean isCellEditable(int row, int column) {
+	public boolean isCellEditable(int row,
+																int column)
+	{
 		return false;
 	}
 
@@ -22,8 +26,7 @@ public class TableModel
 	{
 		if (!(dataVector.isEmpty())) {
 			return super.getValueAt(0, c).getClass();
-		}
-		else {
+		} else {
 			return Object.class;
 		}
 	}

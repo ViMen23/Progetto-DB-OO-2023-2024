@@ -289,6 +289,8 @@ public class Controller
 
 			countryTableData.add(countryVector);
 		}
+
+		System.out.println("Controller" + countryTableData);
 	}
 
 

@@ -24,7 +24,10 @@ public class Main
 
 		//JScrollPane scrollPane = new JScrollPane(, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		//MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
-		MainFrame.getMainFrameInstance().add(new SearchCompetitionPanel(), "sgx frame, growy");
+		// TODO Vince il vettore dataTable si svuota nel fill?
+		// TODO strano
+		MainFrame.getMainFrameInstance().add(new SearchCountryPanel(), "sgx frame, growy");
+		// TODO Vince il vettore dataTable si svuota nel fill?
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
 		MainFrame.getMainFrameInstance().pack();
