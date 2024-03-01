@@ -10,7 +10,10 @@ import java.awt.event.MouseEvent;
 public class MyTable
 			extends JTable
 {
-	public MyTable(Boolean sort, JLabel controlColumnLabel, JLabel controlRowLabel, JLabel controlMouseLabel)
+	public MyTable(Boolean sort,
+								 JLabel controlColumnLabel,
+								 JLabel controlRowLabel,
+								 JLabel controlMouseLabel)
 	{
 		super();
 
@@ -58,5 +61,23 @@ public class MyTable
 				}
 			}
 		});
+	}
+
+	public MyTable(Boolean sort)
+	{
+		super();
+
+		this.setRowHeight(GuiConfiguration.getTableRowHeight());
+
+		this.setPreferredScrollableViewportSize(this.getPreferredSize());
+		this.setFillsViewportHeight(true);
+
+		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		this.setAutoCreateRowSorter(sort);
+
+		DefaultTableCellRenderer defaultRenderer = (DefaultTableCellRenderer) this.getTableHeader().getDefaultRenderer();
+
+		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 }

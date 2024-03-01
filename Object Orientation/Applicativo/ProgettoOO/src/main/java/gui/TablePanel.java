@@ -12,7 +12,7 @@ public class TablePanel
 {
 	private final TitleLabel titleLabel;
 	private final JTextArea textArea;
-	private final MyScrollPane myScrollPane;
+	private final MyTable myTable;
 
 	public TablePanel(Boolean sort,
 										String description,
@@ -21,6 +21,7 @@ public class TablePanel
 										JLabel controlMouseLabel)
 	{
 		MigLayout migLayout;
+		JScrollPane scrollPane;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.tablePanelLayoutConstraint,
@@ -38,29 +39,62 @@ public class TablePanel
 		this.textArea = new JTextArea(description);
 		textArea.setEditable(false);
 		textArea.setBorder(null);
+		textArea.setFont(GuiConfiguration.getOutputFont());
 
 		this.add(textArea);
 
-		this.myScrollPane = new MyScrollPane(sort, controlColumnLabel, controlRowLabel, controlMouseLabel);
-		this.add(myScrollPane);
+		scrollPane = new JScrollPane();
+		this.add(scrollPane);
+
+		this.myTable = new MyTable(sort, controlColumnLabel, controlRowLabel, controlMouseLabel);
+		scrollPane.setViewportView(myTable);
 	}
 
-	public void fillTable(Vector<Vector<String>> tableData, Vector<String> tableColumnName)
+	public TablePanel(Boolean sort,
+										String description)
 	{
+		MigLayout migLayout;
+		JScrollPane scrollPane;
 
-		MyTable myTable = this.myScrollPane.getMyTable();
-		myTable.setModel(new TableModel(tableData, tableColumnName));
+		migLayout = new MigLayout(
+						GuiConfiguration.tablePanelLayoutConstraint,
+						GuiConfiguration.tablePanelColumnConstraint,
+						GuiConfiguration.tablePanelRowConstraint + "[]10"
+		);
 
-		myTable.setPreferredScrollableViewportSize(myTable.getPreferredSize());
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+
+		this.titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgNoSearch"));
+		this.add(titleLabel);
+
+		this.textArea = new JTextArea(description);
+		textArea.setEditable(false);
+		textArea.setBorder(null);
+		textArea.setFont(GuiConfiguration.getOutputFont());
+
+		this.add(textArea);
+
+		scrollPane = new JScrollPane();
+		this.add(scrollPane);
+
+		this.myTable = new MyTable(sort);
+		scrollPane.setViewportView(myTable);
 	}
 
-	public void setTextTitleLabel(String title)
+	public MyTable getMyTable()
 	{
-		this.titleLabel.setText(title);
+		return myTable;
 	}
 
-	public void setDescriptionTextArea(String description)
+	public JTextArea getTextArea()
 	{
-		this.textArea.setText(description);
+		return textArea;
+	}
+
+	public TitleLabel getTitleLabel()
+	{
+		return titleLabel;
 	}
 }

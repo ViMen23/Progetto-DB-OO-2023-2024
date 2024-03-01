@@ -18,6 +18,7 @@ public class SearchCountryPanel
 	public SearchCountryPanel()
 	{
 		final String selectAll = GuiConfiguration.getMessage("selectAll");
+		final StringBuilder researchMessage = new StringBuilder();
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel(selectAll);
@@ -57,7 +58,7 @@ public class SearchCountryPanel
 		centralPanel.setLayout(migLayout);
 
 		topSearchPanel = new TopSearchPanel(
-						GuiConfiguration.getMessage("msgTopSearchCountryButton") + " " + Controller.getInstance().countCountries().toString(),
+						GuiConfiguration.getMessage("msgTopSearchCountryButton") + " " + Controller.getInstance().countCountries(),
 						this,
 						centralPanel
 		);
@@ -66,7 +67,7 @@ public class SearchCountryPanel
 		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgCountryType"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("countryType").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgInfo"));
@@ -75,11 +76,11 @@ public class SearchCountryPanel
 		countryTypePanel = new RadioPanel(Country.COUNTRY_TYPE.values(), ctrlCountryType);
 		centralPanel.add(countryTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		infoPanel = new InfoPanel("Questo e' il primo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("msgChooseCountryTypeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgContinent"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("continent").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgInfo"));
@@ -88,11 +89,11 @@ public class SearchCountryPanel
 		continentNamePanel = new LabelComboPanel(null, false, ctrlContinentName);
 		centralPanel.add(continentNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
-		infoPanel = new InfoPanel("Questo e' il secondo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("msgChooseContinentInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		countryTablePanel = new TablePanel(true, null, null, null, null);
+		countryTablePanel = new TablePanel(true, null);
 		this.add(countryTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 		button = new JButton(GuiConfiguration.getMessage("msgSearchButton"));
@@ -100,7 +101,7 @@ public class SearchCountryPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String string;
+				MyTable countryTable = countryTablePanel.getMyTable();
 
 				countryTableData.clear();
 
@@ -110,32 +111,15 @@ public class SearchCountryPanel
 								countryTableData
 				);
 
-				countryTablePanel.fillTable(countryTableData, GuiConfiguration.countryTableColumnName);
+				countryTable.setModel(new TableModel(countryTableData, GuiConfiguration.countryTableColumnName));
+				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
-				countryTablePanel.setTextTitleLabel(
+				countryTablePanel.getTitleLabel().setText(
 								GuiConfiguration.getMessage("msgDoneSearch") + " " + countryTableData.size()
 				);
 
-				string = StringUtils.capitalize(GuiConfiguration.getMessage("countryType"));
-				string += ": ";
-
-				if (null != ctrlCountryType.getText()) {
-					string += GuiConfiguration.getMessage(ctrlCountryType.getText().toLowerCase());
-				}
-
-				string += "\n";
-
-				string += StringUtils.capitalize(GuiConfiguration.getMessage("continent"));
-				string += ": ";
-
-				if (!(ctrlContinentName.getText().equalsIgnoreCase(selectAll))) {
-					string += ctrlContinentName.getText();
-				}
-
-				countryTablePanel.setDescriptionTextArea(string);
-
+				countryTablePanel.getTextArea().setText(researchMessage.toString());
 				topSearchPanel.getTitleButton().doClick();
-
 				SearchCountryPanel.this.revalidate();
 			}
 		});
@@ -153,6 +137,9 @@ public class SearchCountryPanel
 					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlContinentName.setText(selectAll);
 				}
+				researchMessage.setLength(0);
+				researchMessage.append(GuiConfiguration.getMessage("countryType")).append(": ");
+				researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
 			}
 		});
 
@@ -173,7 +160,21 @@ public class SearchCountryPanel
 									countryNameMap
 					);
 
+					if (1 == countryNameVector.size()) {
+						countryNameVector.clear();
+						countryNameVector.add(GuiConfiguration.getMessage("msgNoData"));
+						continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
+						continentNamePanel.getMyComboBox().setEnabled(false);
+						continentNamePanel.getMyComboBox().setSelectedIndex(0);
+					}
+
 					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
+				} else {
+					researchMessage.setLength(0);
+					researchMessage.append(GuiConfiguration.getMessage("countryType")).append(": ");
+					researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
+					researchMessage.append('\n').append(GuiConfiguration.getMessage("CONTINENT")).append(": ");
+					researchMessage.append(ctrlContinentName.getText());
 				}
 			}
 		});

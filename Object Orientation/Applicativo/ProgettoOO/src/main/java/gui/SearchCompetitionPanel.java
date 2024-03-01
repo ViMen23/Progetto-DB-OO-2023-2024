@@ -21,6 +21,7 @@ public class SearchCompetitionPanel
 	public SearchCompetitionPanel()
 	{
 		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final StringBuilder researchMessage = new StringBuilder();
 
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);
 		final JLabel ctrlCompetitionType = new JLabel((String) null);
@@ -202,7 +203,7 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		competitionTablePanel = new TablePanel(true, null, null, null, null);
+		competitionTablePanel = new TablePanel(true, null);
 		this.add(competitionTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
@@ -216,7 +217,7 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String string;
+				MyTable countryTable = competitionTablePanel.getMyTable();
 
 				competitionTableData.clear();
 
@@ -230,68 +231,15 @@ public class SearchCompetitionPanel
 								competitionTableData
 				);
 
-				competitionTablePanel.fillTable(competitionTableData, GuiConfiguration.competitionTableColumnName);
+				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.countryTableColumnName));
+				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
+				competitionTablePanel.getTitleLabel().setText(
+								GuiConfiguration.getMessage("msgDoneSearch") + " " + competitionTableData.size()
+				);
 
-				string = GuiConfiguration.getMessage("research");
-				string += " ";
-				string += GuiConfiguration.getMessage("performed");
-				string += " - ";
-				string += competitionTableData.size();
-				string += " ";
-				string += GuiConfiguration.getMessage("competitions");
-				string = string.toUpperCase();
-
-				competitionTablePanel.setTextTitleLabel(string);
-
-				string = StringUtils.capitalize(GuiConfiguration.getMessage("name"));
-				string += ": ";
-
-				if (null != ctrlCompetitionSubName.getText()) {
-					string += ctrlCompetitionSubName.getText();
-				}
-
-				string += "\n";
-
-				string += StringUtils.capitalize(GuiConfiguration.getMessage("competitionType"));
-				string += ": ";
-
-				if (null != ctrlCompetitionType.getText()) {
-					string += GuiConfiguration.getMessage(ctrlCompetitionType.getText().toLowerCase());
-				}
-
-				string += "\n";
-
-				string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
-				string += ": ";
-
-				if (null != ctrlTeamType.getText()) {
-					string += GuiConfiguration.getMessage(ctrlTeamType.getText().toLowerCase());
-				}
-
-				string += "\n";
-
-				string += StringUtils.capitalize(GuiConfiguration.getMessage("country"));
-				string += ": ";
-
-				if (null != ctrlCountryType.getText()) {
-					string += GuiConfiguration.getMessage(ctrlCountryType.getText().toLowerCase());
-
-					if (!(ctrlContinentName.getText().equalsIgnoreCase(selectAll))) {
-						string += " - ";
-						string += ctrlContinentName.getText();
-					}
-
-					if (!(ctrlNationName.getText().equalsIgnoreCase(selectAll))) {
-						string += " - ";
-						string += ctrlNationName.getText();
-					}
-				}
-
-				competitionTablePanel.setDescriptionTextArea(string);
-
+				competitionTablePanel.getTextArea().setText(researchMessage.toString());
 				topSearchPanel.getTitleButton().doClick();
-
 				SearchCompetitionPanel.this.revalidate();
 			}
 		});
