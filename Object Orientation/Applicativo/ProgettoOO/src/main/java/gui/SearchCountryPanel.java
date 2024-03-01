@@ -118,7 +118,10 @@ public class SearchCountryPanel
 		this.add(countryTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
-		button = new JButton("CERCA");
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+
+		button = new JButton(string);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -158,11 +161,15 @@ public class SearchCountryPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				continentNamePanel.getMyComboBox().setEnabled(
-								0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
-				);
-				continentNamePanel.getMyComboBox().setSelectedIndex(-1);
-				ctrlContinentName.setText(selectAll);
+
+				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
+					continentNamePanel.getMyComboBox().setEnabled(true);
+				}
+				else {
+					continentNamePanel.getMyComboBox().setEnabled(false);
+					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
+					ctrlContinentName.setText(selectAll);
+				}
 			}
 		});
 

@@ -20,7 +20,7 @@ public class SearchCompetitionPanel
 
 	public SearchCompetitionPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
+		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
 
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);
 		final JLabel ctrlCompetitionType = new JLabel((String) null);
@@ -70,7 +70,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.middleSearchPanelLayoutConstraint,
 						GuiConfiguration.middleSearchPanelColumnConstraint,
-						"0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]0[]0[fill]20[]0" //TODO
+						GuiConfiguration.competitionMiddleSearchPanelRowConstraint
 		);
 
 		centralPanel.setLayout(migLayout);
@@ -208,7 +208,10 @@ public class SearchCompetitionPanel
 		this.add(competitionTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
-		button = new JButton("CERCA");
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+
+		button = new JButton(string);
 
 
 		button.addActionListener(new ActionListener() {
@@ -244,8 +247,6 @@ public class SearchCompetitionPanel
 				competitionTablePanel.setTextTitleLabel(string);
 
 				SearchCompetitionPanel.this.revalidate();
-
-				System.out.println(competitionTableData);
 			}
 		});
 
@@ -264,13 +265,15 @@ public class SearchCompetitionPanel
 					ctrlContinentName.setText(selectAll);
 					ctrlNationName.setText(selectAll);
 				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString())) {
+					continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					continentTypeNamePanel.getMyComboBox().setEnabled(true);
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					nationTypeNamePanel.getMyComboBox().setEnabled(false);
 					ctrlNationName.setText(selectAll);
 				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
+					continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					continentTypeNamePanel.getMyComboBox().setEnabled(true);
-					nationTypeNamePanel.getMyComboBox().setEnabled(true);
+					nationTypeNamePanel.getMyComboBox().setEnabled(false);
 					ctrlContinentName.setText(ctrlContinentName.getText());
 				}
 			}
@@ -295,11 +298,14 @@ public class SearchCompetitionPanel
 					);
 
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+
 				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-				} else if (ctrlCountryType.getText().equalsIgnoreCase(Country.COUNTRY_TYPE.NATION.toString())) {
-					nationTypeNamePanel.getMyComboBox().setEnabled(true);
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationTypeNamePanel.getMyComboBox().setEnabled(false);
+
+				} else if (ctrlCountryType.getText().equalsIgnoreCase(Country.COUNTRY_TYPE.NATION.toString())) {
+					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationTypeNamePanel.getMyComboBox().setEnabled(true);
 					ctrlNationName.setText(selectAll);
 				}
 			}

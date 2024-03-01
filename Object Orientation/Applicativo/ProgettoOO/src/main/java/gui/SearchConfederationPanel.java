@@ -118,7 +118,10 @@ public class SearchConfederationPanel
 		this.add(confederationTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
 
-		button = new JButton("CERCA");
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+
+		button = new JButton(string);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -161,6 +164,7 @@ public class SearchConfederationPanel
 				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
 					confederationNamePanel.getMyComboBox().setEnabled(true);
 				} else {
+					confederationNamePanel.getMyComboBox().setEnabled(false);
 					confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlConfederationName.setText(selectAll);
 				}
