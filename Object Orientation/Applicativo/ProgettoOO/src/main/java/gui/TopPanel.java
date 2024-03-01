@@ -59,7 +59,7 @@ public class TopPanel
 
 
 		localeButton = new JButton(localeIcon);
-		localeButton.setCursor(GuiConfiguration.getButtonCursor());
+		localeButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		add(localeButton);
 
@@ -108,7 +108,7 @@ public class TopPanel
 		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
 
 		loginButton = new JButton(string, loginIcon);
-		loginButton.setCursor(GuiConfiguration.getButtonCursor());
+		loginButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		add(loginButton);
 

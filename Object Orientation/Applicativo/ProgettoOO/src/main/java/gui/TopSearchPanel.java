@@ -23,9 +23,9 @@ public class TopSearchPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.topSearchPanelLayoutConstraint,
-						GuiConfiguration.topSearchPanelColumnConstraint,
-						GuiConfiguration.topSearchPanelRowConstraint
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -37,7 +37,7 @@ public class TopSearchPanel
 
 		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
 		titleButton.setIconTextGap(40);
-		titleButton.setCursor(GuiConfiguration.getButtonCursor());
+		titleButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		titleButton.addActionListener(new ActionListener() {
 			@Override
@@ -47,7 +47,7 @@ public class TopSearchPanel
 					rootPanel.remove(toRemovePanel);
 					titleButton.setIcon(MINIMIZE);
 				} else {
-					rootPanel.add(toRemovePanel, GuiConfiguration.middleSearchPanelAddConstraint);
+					rootPanel.add(toRemovePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 					titleButton.setIcon(MAXIMIZE);
 				}
 
@@ -55,12 +55,12 @@ public class TopSearchPanel
 			}
 		});
 
-		this.add(titleButton, GuiConfiguration.buttonTopSearchPanelAddConstraint);
+		this.add(titleButton, GuiConfiguration.WIDTH_80P_ADD_CONSTRAINT);
 
 		JButton resetButton;
 
 		resetButton = new JButton(RESET);
-		resetButton.setCursor(GuiConfiguration.getButtonCursor());
+		resetButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		resetButton.addActionListener(new ActionListener() {
 			@Override
@@ -73,7 +73,7 @@ public class TopSearchPanel
 
 				try {
 					Component newComponent = component.getClass().getDeclaredConstructor().newInstance();
-					container.add(newComponent, GuiConfiguration.generalSearchPanelAddConstraint);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());

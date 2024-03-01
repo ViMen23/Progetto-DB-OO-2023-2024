@@ -1,127 +1,105 @@
-
 package gui;
-
-import controller.Controller;
-import model.Team;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import javax.swing.border.Border;
+
 import java.awt.*;
-import java.time.Year;
-import java.time.YearMonth;
+
 import java.util.*;
 
 /**
  * TYPE : class - gui package
  * NAME : GuiConfiguration
- *
  * DESC: TODO
  */
 public class GuiConfiguration
 {
-	private static final Integer inputColumn = 35;
-	private static final Integer tableRowHeight = 25;
-	private static final Integer comboBoxMaximumRowCount = 5;
-	private static final Cursor buttonCursor = new Cursor(Cursor.HAND_CURSOR);
-	private static final Border searchLabelBorder = BorderFactory.createEmptyBorder(2,10,2,0);
-	private static final Color searchPanelColor = new Color(50, 100, 200);
+	public static final int INPUT_COLUMN = 35;
+	public static final int TABLE_ROW_HEIGHT = 25;
+	public static final int COMBO_BOX_ROW_COUNT = 5;
+	public static final int MIN_YEAR = 1810;
+	public static final int MIN_AGE = 15;
+	public static final int MAX_AGE = 50;
 
-	public static final String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
-	private static final int minYear = 1810;
-	private static final int minAge = 15;
-	private static final int maxAge = 50;
-	private static final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
-	private static final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
-	private static final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
+	public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
+	public static final Border LABEL_BORDER = BorderFactory.createEmptyBorder(2,10,2,0);
+	public static final Color LABEL_BACKGROUND_COLOR = new Color(50, 100, 200);
+	public static final String DISPLAY_VALUE = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
+	public static final ImageIcon MINIMIZE_ICON = GuiConfiguration.createImageIcon("images/minimize.png");
+	public static final ImageIcon MAXIMIZE_ICON = GuiConfiguration.createImageIcon("images/maximize.png");
+	public static final ImageIcon RESET_ICON = GuiConfiguration.createImageIcon("images/reset.png");
 
-	public static final Vector<String> countryTableColumnName = new Vector<>();
-	public static final Vector<String> confederationTableColumnName = new Vector<>();
-	public static final Vector<String> competitionTableColumnName = new Vector<>();
-	public static final Vector<String> teamTableColumnName = new Vector<>();
-	public static final Vector<String> teamParticipationTableColumnName = new Vector<>();
-	public static final Vector<String> playerTableColumnName = new Vector<>();
-	public static final Vector<String> teamTrophyTableColumnName = new Vector<>();
-	public static final Vector<String> teamPrizeTableColumnName = new Vector<>();
-	public static final Vector<String> playerPositionTableColumnName = new Vector<>();
-	public static final Vector<String> playerNationalityTableColumnName = new Vector<>();
-	public static final Vector<String> playerAttributeGoalkeepingTableColumnName = new Vector<>();
-	public static final Vector<String> playerAttributeMentalTableColumnName = new Vector<>();
-	public static final Vector<String> playerAttributePhysicalTableColumnName = new Vector<>();
-	public static final Vector<String> playerAttributeTechnicalTableColumnName = new Vector<>();
-	public static final Vector<String> playerTagTableColumnName = new Vector<>();
-	public static final Vector<String> playerClubCareerTableColumnName = new Vector<>();
-	public static final Vector<String> playerNationalCareerTableColumnName = new Vector<>();
-	public static final Vector<String> playerStatisticTableColumnName = new Vector<>();
-	public static final Vector<String> playerClubTrophyTableColumnName = new Vector<>();
-	public static final Vector<String> playerNationalTrophyTableColumnName = new Vector<>();
-	public static final Vector<String> playerPrizeTableColumnName = new Vector<>();
-	public static final Vector<String> statisticTotalTableColumnName = new Vector<>();
-	public static final Vector<String> statisticEditionTableColumnName = new Vector<>();
-	public static final Vector<String> statisticTableColumnName = new Vector<>();
-
-	public static final String generalSearchPanelLayoutConstraint = "debug, flowy, fill";
-	public static final String generalSearchPanelColumnConstraint = "0[]0";
-	public static final String generalSearchPanelRowConstraint = "10[]10[]0[]10";
-	public static final String generalSearchPanelAddConstraint = "sgx frame, growy";
-
-	public static final String topSearchPanelLayoutConstraint = "debug, flowx";
-	public static final String topSearchPanelColumnConstraint = "0[]110[]0";
-	public static final String topSearchPanelRowConstraint = "10[]10";
-	public static final String topSearchPanelAddConstraint = "sgx general, dock north";
-
-	public static final String buttonTopSearchPanelAddConstraint = "width 80%";
-
-	public static final String middleSearchPanelLayoutConstraint = "debug, wrap 2";
-
-	public static final String middleSearchPanelColumnConstraint = "10[60%, fill]50[35%, fill]10";
-
-	public static final String middleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]20[]0";
-	public static final String middleSearchPanelAddConstraint = "dock center, sgx general";
-
-	public static final String firstColumnMiddleSearchPanelAddConstraint = "sgx panel_first_column";
-	public static final String secondColumnMiddleSearchPanelAddConstraint = "sgx sgx panel_second_column";
-	public static final String countryTypeLayoutConstraint = "debug, flowx, center";
-	public static final String countryTypeColumnConstraint = "[20%]10%[20%]10%[20%]";
-	public static final String countryTypeRowConstraint = "10[]10";
-	public static final String countryTypeAddConstraint = "sgx panel_first_column";
-
-	public static final String infoPanelLayoutConstraint = "debug, flowy";
-	public static final String infoPanelAddConstraint = "sgx panel_second_column";
-
-	public static final String chooseContinentLayoutConstraint = "debug, wrap 2";
-	public static final String chooseContinentColumnConstraint = "5%[20%]10:push[40%]5%";
-	public static final String chooseContinentRowConstraint = "10[]20[]10";
-
-	public static final String chooseContinentAddConstraint = "sgx panel_first_column";
-	public static final String searchButtonAddConstraint = "span 2";
-
-	public static final String tablePanelLayoutConstraint = "debug, flowy";
-	public static final String tablePanelColumnConstraint = "[grow, fill]";
-	public static final String tablePanelRowConstraint = "10[]10";
-	public static final String tablePanelAddConstraint = "dock south, sgx general";
-	public static final String competitionMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]0[]0[fill]20[]0";
-	public static final String teamMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]20[]0";
-	public static final String panelToAddRowConstraint = "0[]10";
-	public static final String playerRoleCheckColumnConstraint = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
-	public static final String playerMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0";
+	public static final Vector<String> COUNTRY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> CONFEDERATION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> COMPETITION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> TEAM_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> TEAM_PARTICIPATING_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_POSITION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_NATIONALITY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_ATTRIBUTE_GOALKEEPING_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_ATTRIBUTE_MENTAL_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_ATTRIBUTE_PHYSICAL_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_ATTRIBUTE_TECHNICAL_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_TAG_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> PLAYER_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> STATISTIC_TOTAL_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> STATISTIC_EDITION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
 
 
+	public static final String DEBUG_LAYOUT_CONSTRAINT = "debug";
+	public static final String VLAYOUT_CONSTRAINT = "debug, flowy";
+	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
+	public static final String DEBUG_WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
+	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
 
+	public static final String ONE_CELL_LAYOUT_CONSTRAINT = "[]";
+	public static final String ONE_CELL_GAP_0_10 = "0[]";
+	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
+	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";
+	public static final String TWO_CELL_LAYOUT_CONSTRAINT = "[][]";
+	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
+	public static final String TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "[60%, fill]50[35%, fill]";
+	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[40%]5%";
+	public static final String THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT = "10[]10[]0[]10";
+	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
+	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
+	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
+	public static final String SEVEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill]20[]0";
+	public static final String TEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill]0[]0[fill]20[]0";
+	public static final String THIRTEEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
+
+	public static final String HGROUP_FRAME_ADD_CONSTRAINT = "sgx frame";
+	public static final String HGROUP_FRAME_VGROW_ADD_CONSTRAINT = "sgx frame, growy";
+	public static final String HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT = "sgx general, dock north";
+	public static final String HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT = "sgx general, dock center,";
+	public static final String HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT = "sgx general, dock south";
+	public static final String HGROUP_FIRST_COLUMN_ADD_CONSTRAINT = "sgx first_column";
+	public static final String HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 2, flowy, gap bottom 0";
+	public static final String HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 3, flowy, gap bottom 0";
+	public static final String HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT = "sgx first_column, gap bottom 0";
+	public static final String HGROUP_SECOND_COLUMN_ADD_CONSTRAINT = "sgx second_column";
+	public static final String WIDTH_80P_ADD_CONSTRAINT = "width 80%";
+	public static final String SPAN_2_ADD_CONSTRAINT = "span 2";
 
 	private static ResourceBundle currentResourceBundle;
 
-	private static Font outputFont;
-	private static Font outputBoldFont;
-	private static Font outputLargeFont;
-	private static Font outputBoldLargeFont;
-	private static Font outputSmallFont;
-	private static Font outputBoldSmallFont;
+	public static Font OUTPUT_FONT;
+	public static  Font OUTPUT_BOLD_FONT;
+	public static Font OUTPUT_SMALL_FONT;
+
 
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : initGuiConfiguration
-	 *
 	 * DESC: TODO
 	 */
 	public static void initGuiConfiguration()
@@ -140,11 +118,11 @@ public class GuiConfiguration
 
 		TopPanel topPanel = new TopPanel();
 
-		mainFrame.add(topPanel, "sgx frame");
+		mainFrame.add(topPanel, HGROUP_FRAME_ADD_CONSTRAINT);
 
 		MenuBarPanel menuBarPanel = new MenuBarPanel();
 
-		mainFrame.add(menuBarPanel, "sgx frame");
+		mainFrame.add(menuBarPanel, HGROUP_FRAME_ADD_CONSTRAINT);
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);
@@ -163,10 +141,8 @@ public class GuiConfiguration
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : initGuiConfiguration
-	 *
 	 * DESC: TODO
 	 */
-
 	public static void initUIManager()
 	{
 		try {
@@ -181,26 +157,9 @@ public class GuiConfiguration
 			return;
 		}
 
-
-
-		//font testo
-		Font font = new JPanel().getFont();
-
-		float size = 25;
-
-		outputLargeFont = font.deriveFont(size);
-		outputBoldLargeFont = outputLargeFont.deriveFont(Font.BOLD);
-
-		size = 18;
-
-		outputFont = font.deriveFont(size);
-		outputBoldFont = outputFont.deriveFont(Font.BOLD);
-
-		size = 13;
-
-		outputSmallFont = font.deriveFont(size);
-		outputBoldSmallFont = outputSmallFont.deriveFont(Font.BOLD);
-
+		OUTPUT_FONT = new JPanel().getFont().deriveFont(18F);
+		OUTPUT_BOLD_FONT = OUTPUT_FONT.deriveFont(Font.BOLD);
+		OUTPUT_SMALL_FONT = OUTPUT_FONT.deriveFont(13F);
 
 		//Configurazioni generali
 		UIManager.put("nimbusBase", new Color(130, 130, 130));
@@ -209,449 +168,599 @@ public class GuiConfiguration
 
 
 		//Configurazioni bottone
-		UIManager.put("Button.font", outputFont);
+		UIManager.put("Button.font", OUTPUT_FONT);
 		UIManager.put("Button.textForeground", Color.white);
 
 		//Configurazioni checkBox
 		UIManager.put("CheckBox.background", Color.green);
-		UIManager.put("CheckBox.font", outputFont);
+		UIManager.put("CheckBox.font", OUTPUT_FONT);
 
 		//Configurazioni comboBox
-		UIManager.put("ComboBox.font", outputFont);
+		UIManager.put("ComboBox.font", OUTPUT_FONT);
 		UIManager.put("ComboBox.foreground", Color.white);
 
 		//Configurazioni radioButton
 		UIManager.put("RadioButton.background", Color.green);
-		UIManager.put("RadioButton.font", outputFont);
+		UIManager.put("RadioButton.font", OUTPUT_FONT);
 		UIManager.put("RadioButton.foreground", Color.white);
 
 		//Configurazioni label
-		//UIManager.put("Label.background", Color.green);
-		UIManager.put("Label.font", outputFont);
-		//UIManager.put("Label.foreground", Color.white);
+		UIManager.put("Label.font", OUTPUT_FONT);
 		UIManager.put("Label[Enabled].textForeground", Color.black);
 
 		//configurazioni menu
-		UIManager.put("Menu.font", outputFont);
+		UIManager.put("Menu.font", OUTPUT_FONT);
 		UIManager.put("Menu[Enabled].textForeground", Color.white);
 
 		//configurazioni menuItem
-		UIManager.put("MenuItem.font", outputSmallFont);
+		UIManager.put("MenuItem.font", OUTPUT_SMALL_FONT);
 
 		//configurazioni panel
-		UIManager.put("Panel.font", outputFont);
+		UIManager.put("Panel.font", OUTPUT_FONT);
 
 		// configurazioni text field
-		UIManager.put("TextField.font", outputFont);
+		UIManager.put("TextField.font", OUTPUT_FONT);
 
 		//configurazioni field password
-		UIManager.put("PasswordField.font", outputFont);
+		UIManager.put("PasswordField.font", OUTPUT_FONT);
 		UIManager.put("PasswordField.echoChar", '⚫');
 
 		//configurazioni table
-		UIManager.put("Table.font", outputFont);
+		UIManager.put("Table.font", OUTPUT_FONT);
 		UIManager.put("Table.textForeground", Color.black);
 
 		//configurazione intestazione tabella
-		UIManager.put("TableHeader.font", outputBoldFont);
+		UIManager.put("TableHeader.font", OUTPUT_BOLD_FONT);
 		UIManager.put("TableHeader.textForeground", Color.white);
+
+		//configurazione text field
+		UIManager.put("TextArea.font", OUTPUT_FONT);
 	}
 
-	public static void initTableColumn()
+	public static void initCountryTableColumnName()
 	{
 		String string;
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		countryTableColumnName.add(string);
+		COUNTRY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("code");
 		string = string.toUpperCase();
-		countryTableColumnName.add(string);
+		COUNTRY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		countryTableColumnName.add(string);
+		COUNTRY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("superCountry");
 		string = string.toUpperCase();
-		countryTableColumnName.add(string);
+		COUNTRY_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initConfederationTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
+		CONFEDERATION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("code");
 		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
+		CONFEDERATION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
+		CONFEDERATION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
+		CONFEDERATION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("superConfederation");
 		string = string.toUpperCase();
-		confederationTableColumnName.add(string);
+		CONFEDERATION_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initCompetitionTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
+		COMPETITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
+		COMPETITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("teamType");
 		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
+		COMPETITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
+		COMPETITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		competitionTableColumnName.add(string);
+		COMPETITION_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initTeamTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		teamTableColumnName.add(string);
+		TEAM_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("code");
 		string = string.toUpperCase();
-		teamTableColumnName.add(string);
+		TEAM_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		teamTableColumnName.add(string);
+		TEAM_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		teamTableColumnName.add(string);
+		TEAM_TABLE_COLUMN_NAME.add(string);
 
+	}
+
+	public static void initTeamParticipantTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		teamParticipationTableColumnName.add(string);
+		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		teamParticipationTableColumnName.add(string);
+		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("confederation");
 		string = string.toUpperCase();
-		teamParticipationTableColumnName.add(string);
+		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initTeamTrophyTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		teamTrophyTableColumnName.add(string);
+		TEAM_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("trophy");
 		string = string.toUpperCase();
-		teamTrophyTableColumnName.add(string);
+		TEAM_TROPHY_TABLE_COLUMN_NAME.add(string);
 
+	}
 
-		// tabella premi
+	public static void initTeamPrizeTableColumnName()
+	{
+		String string;
+
 		string = GuiConfiguration.getMessage("prize");
 		string = string.toUpperCase();
-		teamPrizeTableColumnName.add(string);
+		TEAM_PRIZE_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("given");
 		string = string.toUpperCase();
-		teamPrizeTableColumnName.add(string);
+		TEAM_PRIZE_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("surname");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("dob");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("foot");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("position");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("retiredDate");
 		string = string.toUpperCase();
-		playerTableColumnName.add(string);
+		PLAYER_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerPositionTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
+		PLAYER_POSITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("code");
 		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
+		PLAYER_POSITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("position");
 		string = string.toUpperCase();
-		playerPositionTableColumnName.add(string);
+		PLAYER_POSITION_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerNationalityTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		playerNationalityTableColumnName.add(string);
+		PLAYER_NATIONALITY_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerAttributeTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("attribute");
 		string = string.toUpperCase();
-		playerAttributeGoalkeepingTableColumnName.add(string);
-		playerAttributeMentalTableColumnName.add(string);
-		playerAttributePhysicalTableColumnName.add(string);
-		playerAttributeTechnicalTableColumnName.add(string);
+		PLAYER_ATTRIBUTE_GOALKEEPING_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_MENTAL_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_PHYSICAL_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_TECHNICAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("value");
 		string = string.toUpperCase();
-		playerAttributeGoalkeepingTableColumnName.add(string);
-		playerAttributeMentalTableColumnName.add(string);
-		playerAttributePhysicalTableColumnName.add(string);
-		playerAttributeTechnicalTableColumnName.add(string);
+		PLAYER_ATTRIBUTE_GOALKEEPING_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_MENTAL_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_PHYSICAL_TABLE_COLUMN_NAME.add(string);
+		PLAYER_ATTRIBUTE_TECHNICAL_TABLE_COLUMN_NAME.add(string);
+	}
+
+	public static void initPlayerTagTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("tag");
 		string = string.toUpperCase();
-		playerTagTableColumnName.add(string);
+		PLAYER_TAG_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerClubCareerTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("type");
 		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("country");
 		string = string.toUpperCase();
-		playerClubCareerTableColumnName.add(string);
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerNationalityCareerTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerNationalCareerTableColumnName.add(string);
+		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		playerNationalCareerTableColumnName.add(string);
+		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerStatisticTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("match");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalScored");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltyScored");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("assist");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("yellowCard");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("redCard");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalConceded");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltySaved");
 		string = string.toUpperCase();
-		playerStatisticTableColumnName.add(string);
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerClubTrophyTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("trophy");
 		string = string.toUpperCase();
-		playerClubTrophyTableColumnName.add(string);
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerNationalTrophyTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("competition");
 		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("trophy");
 		string = string.toUpperCase();
-		playerNationalTrophyTableColumnName.add(string);
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initPlayerPrizeTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("season");
 		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
+		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("prize");
 		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
+		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("given");
 		string = string.toUpperCase();
-		playerPrizeTableColumnName.add(string);
+		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(string);
+	}
 
+	public static void initStatisticTotalTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("surname");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("match");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalScored");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltyScored");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("assist");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("yellowCard");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("redCard");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalConceded");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltySaved");
 		string = string.toUpperCase();
-		statisticTotalTableColumnName.add(string);
-
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(string);
+	}
+	public static void initStatisticEditionTableColumnName()
+	{
+		String string;
 
 		string = GuiConfiguration.getMessage("team");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("role");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("name");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("surname");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("match");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalScored");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltyScored");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("assist");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("yellowCard");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("redCard");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("goalConceded");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
 
 		string = GuiConfiguration.getMessage("penaltySaved");
 		string = string.toUpperCase();
-		statisticEditionTableColumnName.add(string);
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(string);
+
+	}
+	public static void initStatisticTableColumnNameTableColumnName()
+	{
+		String string;
+
+		string = GuiConfiguration.getMessage("season");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("competition");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("team");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("match");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("goalScored");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("penaltyScored");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("assist");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("yellowCard");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("redCard");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("goalConceded");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
+
+		string = GuiConfiguration.getMessage("penaltySaved");
+		string = string.toUpperCase();
+		STATISTIC_TABLE_COLUMN_NAME.add(string);
 	}
 
-
+	public static void initTableColumn()
+	{
+		initCountryTableColumnName();
+		initConfederationTableColumnName();
+		initCompetitionTableColumnName();
+		initTeamTableColumnName();
+		initTeamParticipantTableColumnName();
+		initTeamTrophyTableColumnName();
+		initTeamPrizeTableColumnName();
+		initPlayerTableColumnName();
+		initPlayerPositionTableColumnName();
+		initPlayerNationalityTableColumnName();
+		initPlayerAttributeTableColumnName();
+		initPlayerTagTableColumnName();
+		initPlayerClubCareerTableColumnName();
+		initPlayerNationalityCareerTableColumnName();
+		initPlayerStatisticTableColumnName();
+		initPlayerClubTrophyTableColumnName();
+		initPlayerNationalTrophyTableColumnName();
+		initPlayerPrizeTableColumnName();
+		initStatisticTotalTableColumnName();
+		initStatisticEditionTableColumnName();
+		initStatisticTableColumnNameTableColumnName();
+	}
 
 	public static void setLocale(Locale locale)
 	{
@@ -663,7 +772,6 @@ public class GuiConfiguration
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : getMessage
-	 *
 	 * DESC: TODO
 	 */
 	public static String getMessage(String key)
@@ -678,161 +786,7 @@ public class GuiConfiguration
 
 	/**
 	 * TYPE : static method - gui package
-	 * NAME : getInputColumn
-	 *
-	 * DESC: TODO
-	 */
-	public static Integer getInputColumn() { return inputColumn; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : outputLargeFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font outputLargeFont() { return outputLargeFont; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getOutputBoldLargeFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font getOutputBoldLargeFont() { return outputBoldLargeFont; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getOutputFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font getOutputFont() { return outputFont; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getOutputBoldFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font getOutputBoldFont() { return outputBoldFont; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getOutputSmallFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font getOutputSmallFont() { return outputSmallFont; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getOutputBoldSmallFont
-	 *
-	 * DESC: TODO
-	 */
-	public static Font getOutputBoldSmallFont() { return outputBoldSmallFont; }
-
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getTableRowHeight
-	 *
-	 * DESC: TODO
-	 */
-	public static Integer getTableRowHeight() { return tableRowHeight; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getComboBoxMaximumRowCount
-	 *
-	 * DESC: TODO
-	 */
-	public static Integer getComboBoxMaximumRowCount() { return comboBoxMaximumRowCount; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getButtonCursor
-	 *
-	 * DESC: TODO
-	 */
-	public static Cursor getButtonCursor() { return buttonCursor; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getSearchPanelBorder
-	 *
-	 * DESC: TODO
-	 */
-	public static Border getSearchLabelBorder() { return searchLabelBorder; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getSearchPanelColor
-	 *
-	 * DESC: TODO
-	 */
-	public static Color getSearchPanelColor() { return searchPanelColor; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getDisplayValue
-	 *
-	 * DESC: TODO
-	 */
-	public static String getDisplayValue() { return displayValue; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMinYear
-	 *
-	 * DESC: TODO
-	 */
-	public static int getMinYear() { return minYear; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMinAge
-	 *
-	 * DESC: TODO
-	 */
-	public static int getMinAge() { return minAge; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMaxAge
-	 *
-	 * DESC: TODO
-	 */
-	public static int getMaxAge() { return maxAge; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMinimizeIcon
-	 *
-	 * DESC: TODO
-	 */
-	public static ImageIcon getMinimizeIcon() { return minimizeIcon; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMaximizeIcon
-	 *
-	 * DESC: TODO
-	 */
-	public static ImageIcon getMaximizeIcon() { return maximizeIcon; }
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getResetIcon
-	 *
-	 * DESC: TODO
-	 */
-	public static ImageIcon getResetIcon() { return resetIcon; }
-
-	/**
-	 * TYPE : static method - gui package
 	 * NAME : setResourceBundle
-	 *
 	 * DESC: TODO
 	 */
 	public static boolean setResourceBundle(Locale locale)
@@ -853,7 +807,6 @@ public class GuiConfiguration
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : createImageIcon
-	 *
 	 * DESC: TODO
 	 */
 	public static ImageIcon createImageIcon(String imagePath) { return createImageIcon(imagePath, 30, 30); }
@@ -862,7 +815,6 @@ public class GuiConfiguration
 	/**
 	 * TYPE : static method - gui package
 	 * NAME : createImageIcon
-	 *
 	 * DESC: TODO
 	 */
 	public static ImageIcon createImageIcon(String imagePath, int width, int height)
@@ -877,166 +829,6 @@ public class GuiConfiguration
 		}
 
 		return null;
-	}
-
-
-	/**
-	 * TODO
-	 * @param dataVector
-	 * @param hashMap
-	 * @param selectAll
-	 */
-	public static void initComboBoxVector(Vector<String> dataVector, Map<String, String> hashMap, Boolean selectAll)
-	{
-		String string;
-
-		dataVector.clear();
-		hashMap.clear();
-
-		if (selectAll) {
-			string = GuiConfiguration.getMessage("select");
-			string += " ";
-			string += GuiConfiguration.getMessage("all");
-			string = StringUtils.capitalize(string);
-
-			dataVector.add(string);
-			hashMap.put(string, null);
-		}
-	}
-
-	/**
-	 * TODO
-	 * @param label
-	 * @param tableName
-	 * @param countRows
-	 */
-	public static void setTitleTable(JLabel label,String tableName, int countRows)
-	{
-		String string;
-
-		string = GuiConfiguration.getMessage("results");
-		string += " ";
-		string += tableName;
-		string += " - ";
-		string += countRows;
-		string += " ";
-		string += GuiConfiguration.getMessage("results");
-		string = string.toUpperCase();
-
-		label.setText(string);
-	}
-
-
-
-
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : fillYearComboBox
-	 *
-	 * DESC: TODO
-	 */
-	public static void fillYearComboBox(JComboBox<String> comboBox, Integer minimumYear, Integer maximumYear)
-	{
-
-		comboBox.removeAllItems();
-
-		for( Integer i = maximumYear; i >= minimumYear; --i){
-			comboBox.addItem(i.toString());
-		}
-
-	}
-
-
-	public static void fillSeasonComboBox(JComboBox<String> comboBox,
-										  Integer minimumYear,
-										  String teamType,
-										  Map<String, String> seasonMap)
-	{
-		String string;
-		Integer maximumYear = Year.now().getValue();
-		Integer month = YearMonth.now().getMonthValue();
-
-
-		comboBox.removeAllItems();
-
-
-		if (month < 8) {
-			--maximumYear;
-		}
-
-
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
-			fillYearComboBox(comboBox, minimumYear, maximumYear);
-		}
-		else {
-			for (Integer i = maximumYear; i >= minimumYear; --i) {
-				string = i + " - " + (i + 1) % 100;
-
-				comboBox.addItem(string);
-				seasonMap.put(string, i.toString());
-			}
-		}
-	}
-
-	public static void fillSeasonComboBox(JComboBox<String> comboBox,
-										  Vector<String> vector,
-										  Map<String, String> map,
-										  String teamType,
-										  String competitionID,
-										  Boolean selectAll)
-	{
-		String season;
-
-		comboBox.removeAllItems();
-
-		GuiConfiguration.initComboBoxVector(vector, map, selectAll);
-
-		Controller.getInstance().setCompetitionEditionComboBox(vector, competitionID);
-
-
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			for (String string : vector) {
-
-				Integer year = Integer.valueOf(string);
-
-				season = year.toString();
-				season += " - ";
-
-				year = (++year)%100;
-
-				season += year.toString();
-
-				comboBox.addItem(season);
-
-				map.put(season, string);
-			}
-		}
-		else {
-			fillComboBox(comboBox, vector);
-		}
-	}
-
-	/**
-	 *
-	 * @param comboBox
-	 * @param comboBoxDataVector
-	 */
-	public static void fillComboBox(JComboBox<String> comboBox, Vector<String> comboBoxDataVector)
-	{
-		comboBox.setModel(new DefaultComboBoxModel<>(comboBoxDataVector));
-	}
-
-	/**
-	 *
-	 * @param table
-	 * @param tableData
-	 * @param tableColumnName
-	 */
-	public static void fillTable(JTable table, Vector<Vector<String>> tableData, Vector<String> tableColumnName)
-	{
-		table.setModel(new TableModel(tableData, tableColumnName));
-
-		table.setPreferredScrollableViewportSize(table.getPreferredSize());
 	}
 
 	/**
@@ -1059,56 +851,6 @@ public class GuiConfiguration
 		panelToAdd.setVisible(true);
 	}
 
-	/**
-	 *
-	 * @param mainPanel
-	 * @param panelToMinimize
-	 * @param button
-	 * @param constraint
-	 */
-	public static void minimizePanel(JPanel mainPanel, JPanel panelToMinimize, JButton button, String constraint)
-	{
-		if (panelToMinimize.isShowing()) {
-
-			mainPanel.remove(panelToMinimize);
-
-			button.setIcon(minimizeIcon);
-		} else {
-			mainPanel.add(panelToMinimize, constraint);
-			button.setIcon(maximizeIcon);
-		}
-
-		mainPanel.revalidate();
-	}
-
-	/**
-	 * TODO
-	 * @param comboBox
-	 * @param comboBoxMap
-	 * @return
-	 */
-
-	public static String getSelectedItemIDComboBox(JComboBox<String> comboBox, Map<String, String> comboBoxMap)
-	{
-		String selectedStringID = comboBoxMap.get(getSelectedItemComboBox(comboBox));
-
-		return selectedStringID;
-	}
-
-	/**
-	 * TODO
-	 * @param comboBox
-	 * @return
-	 */
-	public static String getSelectedItemComboBox(JComboBox<String> comboBox)
-	{
-		String selectedString = (String) comboBox.getSelectedItem();
-
-		comboBox.removeAllItems();
-		comboBox.addItem(selectedString);
-
-		return selectedString;
-	}
 
 
 }

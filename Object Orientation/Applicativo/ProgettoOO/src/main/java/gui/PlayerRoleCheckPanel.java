@@ -21,9 +21,9 @@ public class PlayerRoleCheckPanel
 		JCheckBox checkBox;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.topSearchPanelLayoutConstraint,
-						GuiConfiguration.playerRoleCheckColumnConstraint,
-						GuiConfiguration.countryTypeRowConstraint
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.FOUR_CELL_SIZE_15P_GAP_8P,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);

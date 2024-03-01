@@ -3,9 +3,7 @@ package gui;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.Vector;
 
 public class TablePanel
 				extends JPanel
@@ -24,9 +22,9 @@ public class TablePanel
 		JScrollPane scrollPane;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.tablePanelLayoutConstraint,
-						GuiConfiguration.tablePanelColumnConstraint,
-						GuiConfiguration.tablePanelRowConstraint + "[]10"
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.TWO_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -39,7 +37,6 @@ public class TablePanel
 		this.textArea = new JTextArea(description);
 		textArea.setEditable(false);
 		textArea.setBorder(null);
-		textArea.setFont(GuiConfiguration.getOutputFont());
 
 		this.add(textArea);
 
@@ -57,9 +54,9 @@ public class TablePanel
 		JScrollPane scrollPane;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.tablePanelLayoutConstraint,
-						GuiConfiguration.tablePanelColumnConstraint,
-						GuiConfiguration.tablePanelRowConstraint + "[]10"
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.TWO_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -72,7 +69,6 @@ public class TablePanel
 		this.textArea = new JTextArea(description);
 		textArea.setEditable(false);
 		textArea.setBorder(null);
-		textArea.setFont(GuiConfiguration.getOutputFont());
 
 		this.add(textArea);
 

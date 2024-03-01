@@ -58,9 +58,9 @@ public class SearchCompetitionPanel
 
 
 		migLayout = new MigLayout(
-						GuiConfiguration.generalSearchPanelLayoutConstraint,
-						GuiConfiguration.generalSearchPanelColumnConstraint,
-						GuiConfiguration.generalSearchPanelRowConstraint
+						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
+						GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -69,9 +69,9 @@ public class SearchCompetitionPanel
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.middleSearchPanelLayoutConstraint,
-						GuiConfiguration.middleSearchPanelColumnConstraint,
-						GuiConfiguration.competitionMiddleSearchPanelRowConstraint
+						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TEN_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
@@ -89,9 +89,9 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.topSearchPanelAddConstraint);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -101,20 +101,20 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("name");
 		string = StringUtils.capitalize(string);
 
 		competitionNamePanel = new LabelTextPanel(string, ctrlCompetitionSubName, Regex.patternAlnum);
-		centralPanel.add(competitionNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(competitionNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il primo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -123,16 +123,16 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		competitionTypePanel = new RadioPanel(Competition.COMPETITION_TYPE.values(), ctrlCompetitionType);
-		centralPanel.add(competitionTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(competitionTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -141,16 +141,16 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
-		centralPanel.add(teamTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il terzo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -161,10 +161,10 @@ public class SearchCompetitionPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
 		worldTypePanel = new RadioComboPanel(
@@ -175,10 +175,10 @@ public class SearchCompetitionPanel
 		);
 
 		buttonGroup.add(worldTypePanel.getRadioButton());
-		centralPanel.add(worldTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(worldTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il quarto info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint + ", spany 3"); //TODO
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT + ", spany 3"); //TODO
 
 
 		continentTypeNamePanel = new RadioComboPanel(
@@ -189,7 +189,7 @@ public class SearchCompetitionPanel
 		);
 
 		buttonGroup.add(continentTypeNamePanel.getRadioButton());
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", wrap");
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", wrap");
 
 		nationTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.NATION.toString(),
@@ -199,12 +199,12 @@ public class SearchCompetitionPanel
 		);
 
 		buttonGroup.add(nationTypeNamePanel.getRadioButton());
-		centralPanel.add(nationTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", wrap");
+		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", wrap");
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 		competitionTablePanel = new TablePanel(true, null);
-		this.add(competitionTablePanel, GuiConfiguration.tablePanelAddConstraint);
+		this.add(competitionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("search");
@@ -231,7 +231,7 @@ public class SearchCompetitionPanel
 								competitionTableData
 				);
 
-				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.countryTableColumnName));
+				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COUNTRY_TABLE_COLUMN_NAME));
 				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
 				competitionTablePanel.getTitleLabel().setText(
@@ -246,7 +246,7 @@ public class SearchCompetitionPanel
 
 
 
-		centralPanel.add(button, GuiConfiguration.searchButtonAddConstraint);
+		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override

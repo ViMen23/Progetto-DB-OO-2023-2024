@@ -7,7 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
 public class RadioComboPanel
 				extends JPanel
@@ -26,9 +25,9 @@ public class RadioComboPanel
 		String string;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.chooseContinentLayoutConstraint,
-						GuiConfiguration.chooseContinentColumnConstraint,
-						GuiConfiguration.countryTypeRowConstraint
+						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);

@@ -13,8 +13,8 @@ public class InfoPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.infoPanelLayoutConstraint,
-						GuiConfiguration.tablePanelColumnConstraint,
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
 						"[grow, fill]"
 		);
 

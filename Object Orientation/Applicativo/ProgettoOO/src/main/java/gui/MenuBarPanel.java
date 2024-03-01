@@ -60,7 +60,7 @@ public class MenuBarPanel
 
 
 		homeButton = new JButton(homeIcon);
-		homeButton.setCursor(GuiConfiguration.getButtonCursor());
+		homeButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 
 		add(homeButton);
@@ -116,7 +116,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		countryMenu = new JMenu(string);
-		countryMenu.setCursor(GuiConfiguration.getButtonCursor());
+		countryMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -180,7 +180,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		confederationMenu = new JMenu(string);
-		confederationMenu.setCursor(GuiConfiguration.getButtonCursor());
+		confederationMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -244,7 +244,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		competitionMenu = new JMenu(string);
-		competitionMenu.setCursor(GuiConfiguration.getButtonCursor());
+		competitionMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -308,7 +308,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		teamMenu = new JMenu(string);
-		teamMenu.setCursor(GuiConfiguration.getButtonCursor());
+		teamMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -372,7 +372,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		playerMenu = new JMenu(string);
-		playerMenu.setCursor(GuiConfiguration.getButtonCursor());
+		playerMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -473,7 +473,7 @@ public class MenuBarPanel
 		string = string.toUpperCase();
 
 		statisticMenu = new JMenu(string);
-		statisticMenu.setCursor(GuiConfiguration.getButtonCursor());
+		statisticMenu.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		migLayout = new MigLayout
 						(
@@ -576,7 +576,7 @@ public class MenuBarPanel
 
 
 		filterButton = new JButton(filterIcon);
-		filterButton.setCursor(GuiConfiguration.getButtonCursor());
+		filterButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		add(filterButton);
 
@@ -611,7 +611,7 @@ public class MenuBarPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 		diceButton = new JButton(diceIcon);
-		diceButton.setCursor(GuiConfiguration.getButtonCursor());
+		diceButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		add(diceButton);
 

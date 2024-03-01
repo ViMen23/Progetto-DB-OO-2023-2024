@@ -17,7 +17,7 @@ public class MyTable
 	{
 		super();
 
-		this.setRowHeight(GuiConfiguration.getTableRowHeight());
+		this.setRowHeight(GuiConfiguration.TABLE_ROW_HEIGHT);
 
 		this.setPreferredScrollableViewportSize(this.getPreferredSize());
 		this.setFillsViewportHeight(true);
@@ -67,7 +67,7 @@ public class MyTable
 	{
 		super();
 
-		this.setRowHeight(GuiConfiguration.getTableRowHeight());
+		this.setRowHeight(GuiConfiguration.TABLE_ROW_HEIGHT);
 
 		this.setPreferredScrollableViewportSize(this.getPreferredSize());
 		this.setFillsViewportHeight(true);

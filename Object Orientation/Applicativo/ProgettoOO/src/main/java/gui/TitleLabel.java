@@ -13,8 +13,8 @@ public class TitleLabel
 		super(title, SwingConstants.LEADING);
 
 		this.setOpaque(true);
-		this.setBackground(GuiConfiguration.getSearchPanelColor());
+		this.setBackground(GuiConfiguration.LABEL_BACKGROUND_COLOR);
 		this.setForeground(Color.white);
-		this.setBorder(GuiConfiguration.getSearchLabelBorder());
+		this.setBorder(GuiConfiguration.LABEL_BORDER);
 	}
 }

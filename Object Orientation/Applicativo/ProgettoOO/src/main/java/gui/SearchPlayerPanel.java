@@ -20,7 +20,6 @@ public class SearchPlayerPanel
 							extends JPanel
 {
 
-	public TopSearchPanel topSearchPanel;
 	public SearchPlayerPanel()
 	{
 		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
@@ -50,6 +49,7 @@ public class SearchPlayerPanel
 		final Map<Integer, String> playerTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
+		TopSearchPanel topSearchPanel;
 		InfoPanel infoPanel;
 		TitleLabel titleLabel;
 		LabelTextPanel playerNamePanel;
@@ -68,9 +68,9 @@ public class SearchPlayerPanel
 		String string;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.generalSearchPanelLayoutConstraint,
-						GuiConfiguration.generalSearchPanelColumnConstraint,
-						GuiConfiguration.generalSearchPanelRowConstraint
+						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
+						GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 
@@ -80,9 +80,9 @@ public class SearchPlayerPanel
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.middleSearchPanelLayoutConstraint,
-						GuiConfiguration.middleSearchPanelColumnConstraint,
-						GuiConfiguration.playerMiddleSearchPanelRowConstraint
+						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.THIRTEEN_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
@@ -99,10 +99,11 @@ public class SearchPlayerPanel
 		string += Controller.getInstance().countPlayers().toString();
 		string = string.toUpperCase();
 
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.topSearchPanelAddConstraint);
 
-		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -111,27 +112,27 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("name");
 		string = StringUtils.capitalize(string);
 
 		playerNamePanel = new LabelTextPanel(string, ctrlPlayerSubName, Regex.patternString);
-		centralPanel.add(playerNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 2, flowy, gap bottom 0"); //TODO
+		centralPanel.add(playerNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		string = GuiConfiguration.getMessage("shortName");
 		string = StringUtils.capitalize(string);
 
-		playerSurnamePanel = new LabelTextPanel(string, GuiConfiguration.panelToAddRowConstraint, ctrlPlayerSubSurname, Regex.patternString);
-		centralPanel.add(playerSurnamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		playerSurnamePanel = new LabelTextPanel(string, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerSubSurname, Regex.patternString);
+		centralPanel.add(playerSurnamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 
 		infoPanel = new InfoPanel("Questo e' il primo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -141,32 +142,32 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("referenceYear");
 		string = StringUtils.capitalize(string);
 
 		referringYearPanel = new LabelComboPanel(string, true, ctrlReferenceYear);
-		centralPanel.add(referringYearPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 3, flowy, gap bottom 0"); //TODO
+		centralPanel.add(referringYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
 		string = GuiConfiguration.getMessage("minimumAge");
 		string = StringUtils.capitalize(string);
 
-		playerMinAgePanel = new LabelComboPanel(string, false,  GuiConfiguration.panelToAddRowConstraint, ctrlPlayerMinAge);
-		centralPanel.add(playerMinAgePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", gap bottom 0"); //TODO
+		playerMinAgePanel = new LabelComboPanel(string, false,  GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerMinAge);
+		centralPanel.add(playerMinAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
 
 		string = GuiConfiguration.getMessage("maximumAge");
 		string = StringUtils.capitalize(string);
 
-		playerMaxAgePanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlPlayerMaxAge);
-		centralPanel.add(playerMaxAgePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		playerMaxAgePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerMaxAge);
+		centralPanel.add(playerMaxAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -175,10 +176,10 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		string = Country.COUNTRY_TYPE.CONTINENT.toString();
 		string = string.toLowerCase();
@@ -186,18 +187,18 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		continentTypeNamePanel = new LabelComboPanel(string, true, ctrlContinentName);
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 2, flowy, gap bottom 0"); //TODO
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT); //TODO
 
 		string = Country.COUNTRY_TYPE.NATION.toString();
 		string = string.toLowerCase();
 		string = GuiConfiguration.getMessage(string);
 		string = StringUtils.capitalize(string);
 
-		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlNationName);
-		centralPanel.add(nationTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il terzo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -206,16 +207,16 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		playerRolePanel = new PlayerRoleCheckPanel(ctrlPlayerRole);
-		centralPanel.add(playerRolePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(playerRolePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il quarto info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -224,19 +225,19 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		string = GuiConfiguration.getMessage("position");
 		string = StringUtils.capitalize(string);
 
 		playerPositionPanel = new LabelComboPanel(string, true, ctrlPlayerPosition);
-		centralPanel.add(playerPositionPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(playerPositionPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il quinto info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = GuiConfiguration.getMessage("searchBy");
@@ -245,21 +246,21 @@ public class SearchPlayerPanel
 		string = string.toUpperCase();
 
 		titleLabel = new TitleLabel(string);
-		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
-		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		playerFootPanel = new RadioPanel(Player.FOOT_TYPE.values(), ctrlPlayerFoot);
-		centralPanel.add(playerFootPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(playerFootPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il sesto info box");
-		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
 		playerTablePanel = new TablePanel(true, null, null, null, null);
-		this.add(playerTablePanel, GuiConfiguration.tablePanelAddConstraint);
+		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("search");
@@ -290,7 +291,7 @@ public class SearchPlayerPanel
 								playerTableDataMap
 				);
 
-				playerTablePanel.fillTable(playerTableData, GuiConfiguration.playerTableColumnName);
+				playerTablePanel.getMyTable().setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 
 				string = GuiConfiguration.getMessage("results");
 				string += " ";
@@ -301,13 +302,13 @@ public class SearchPlayerPanel
 				string += GuiConfiguration.getMessage("players");
 				string = string.toUpperCase();
 
-				playerTablePanel.setTextTitleLabel(string);
+				playerTablePanel.getTitleLabel().setText(string);
 
 				SearchPlayerPanel.this.revalidate();
 			}
 		});
 
-		centralPanel.add(button, GuiConfiguration.searchButtonAddConstraint);
+		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 
 		ctrlReferenceYear.addPropertyChangeListener(new PropertyChangeListener() {
@@ -321,7 +322,7 @@ public class SearchPlayerPanel
 					comboBox.removeAllItems();
 
 					int maximumYear = Year.now().getValue();
-					int minimumYear = GuiConfiguration.getMinYear();
+					int minimumYear = GuiConfiguration.MIN_YEAR;
 
 					for (int i = maximumYear; i >= minimumYear; --i){
 						comboBox.addItem(String.valueOf(i));
@@ -353,8 +354,8 @@ public class SearchPlayerPanel
 
 					comboBox.removeAllItems();
 
-					int minAge = GuiConfiguration.getMinAge();
-					int maxAge = GuiConfiguration.getMaxAge();
+					int minAge = GuiConfiguration.MIN_AGE;
+					int maxAge = GuiConfiguration.MAX_AGE;
 
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));
@@ -380,7 +381,7 @@ public class SearchPlayerPanel
 					comboBox.removeAllItems();
 
 					int minAge = Integer.parseInt(ctrlPlayerMinAge.getText());
-					int maxAge = GuiConfiguration.getMaxAge();
+					int maxAge = GuiConfiguration.MAX_AGE;
 
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));

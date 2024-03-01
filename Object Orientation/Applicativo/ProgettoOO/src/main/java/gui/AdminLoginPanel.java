@@ -70,7 +70,7 @@ public class AdminLoginPanel
 
 
 
-		usernameTextField = new JTextField(GuiConfiguration.getInputColumn());
+		usernameTextField = new JTextField(GuiConfiguration.INPUT_COLUMN);
 
 		add(usernameTextField);
 
@@ -118,7 +118,7 @@ public class AdminLoginPanel
 
 
 
-		passwordField = new JPasswordField(GuiConfiguration.getInputColumn());
+		passwordField = new JPasswordField(GuiConfiguration.INPUT_COLUMN);
 
 		add(passwordField);
 
