@@ -44,6 +44,7 @@ public class SearchPlayerPanel
 
 
 		final Vector<Vector<String>> playerTableData = new Vector<>();
+		final Map<Integer, String> playerTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
 		InfoPanel infoPanel;
@@ -282,7 +283,8 @@ public class SearchPlayerPanel
 								ctrlPlayerRole.getText(),
 								positionNameMap.get(ctrlPlayerPosition.getText()),
 								ctrlPlayerFoot.getText(),
-								playerTableData
+								playerTableData,
+								playerTableDataMap
 				);
 
 				playerTablePanel.fillTable(playerTableData, GuiConfiguration.playerTableColumnName);

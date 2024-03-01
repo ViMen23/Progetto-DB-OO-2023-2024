@@ -11,7 +11,7 @@ import java.util.*;
  */
 public class Country
 {
-	public enum COUNTRY_TYPE {NATION, CONTINENT, WORLD}
+	public enum COUNTRY_TYPE {WORLD, CONTINENT, NATION}
 	private static final Map<String, Country> COUNTRY_MAP = new LinkedHashMap<>();
 	private static Integer totalCountries = 0;
 

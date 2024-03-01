@@ -36,6 +36,7 @@ public class SearchTeamPanel
 
 
 		final Vector<Vector<String>> teamTableData = new Vector<>();
+		final Map<Integer, String> teamTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
@@ -194,7 +195,8 @@ public class SearchTeamPanel
 								ctrlTeamType.getText(),
 								continentNameMap.get(ctrlContinentName.getText()),
 								nationNameMap.get(ctrlNationName.getText()),
-								teamTableData
+								teamTableData,
+								teamTableDataMap
 				);
 
 				teamTablePanel.fillTable(teamTableData, GuiConfiguration.teamTableColumnName);
