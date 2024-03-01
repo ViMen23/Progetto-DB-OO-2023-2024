@@ -22,8 +22,8 @@ public class PlayerRoleCheckPanel
 
 		migLayout = new MigLayout(
 						"debug, fill",
-						"0[fill][][][]0",
-						"0[][]"
+						"8%[15%]8%[15%]8%[15%]8%[15%]8%",
+						"10[]10"
 		);
 
 		this.setLayout(migLayout);

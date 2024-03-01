@@ -106,7 +106,7 @@ public class SearchCountryPanel
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
 		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
-		continentNamePanel = new LabelComboPanel(null, ctrlContinentName);
+		continentNamePanel = new LabelComboPanel(null, false, ctrlContinentName);
 		centralPanel.add(continentNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");

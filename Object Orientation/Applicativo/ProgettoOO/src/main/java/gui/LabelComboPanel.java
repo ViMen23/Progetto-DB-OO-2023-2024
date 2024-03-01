@@ -11,13 +11,14 @@ public class LabelComboPanel
 {
 	private final MyComboBox myComboBox;
 	public LabelComboPanel(String field,
+												 Boolean enable,
 												 JLabel ctrlLabel)
 	{
 		MigLayout migLayout;
 		migLayout = new MigLayout(
 						GuiConfiguration.chooseContinentLayoutConstraint,
 						GuiConfiguration.chooseContinentColumnConstraint,
-						GuiConfiguration.chooseContinentRowConstraint
+						GuiConfiguration.countryTypeRowConstraint
 		);
 
 		this.setLayout(migLayout);
@@ -27,7 +28,30 @@ public class LabelComboPanel
 		label = new JLabel(field);
 		this.add(label);
 
-		this.myComboBox = new MyComboBox(false, ctrlLabel);
+		this.myComboBox = new MyComboBox(enable, ctrlLabel);
+		this.add(myComboBox);
+	}
+
+	public LabelComboPanel(String field,
+												 Boolean enable,
+												 String rowConstraint,
+												 JLabel ctrlLabel)
+	{
+		MigLayout migLayout;
+		migLayout = new MigLayout(
+						GuiConfiguration.chooseContinentLayoutConstraint,
+						GuiConfiguration.chooseContinentColumnConstraint,
+						rowConstraint
+		);
+
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+		JLabel label;
+		label = new JLabel(field);
+		this.add(label);
+
+		this.myComboBox = new MyComboBox(enable, ctrlLabel);
 		this.add(myComboBox);
 	}
 

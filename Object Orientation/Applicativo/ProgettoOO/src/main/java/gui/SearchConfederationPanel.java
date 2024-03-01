@@ -68,7 +68,7 @@ public class SearchConfederationPanel
 		string += " ";
 		string += GuiConfiguration.getMessage("available");
 		string += " ";
-		string += Controller.getInstance().countCountries().toString();
+		string += Controller.getInstance().countConfederations().toString();
 		string = string.toUpperCase();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
@@ -106,7 +106,7 @@ public class SearchConfederationPanel
 		titleLabel = new TitleLabel("INFO"); //TODO i18n
 		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
 
-		confederationNamePanel = new LabelComboPanel(null, ctrlConfederationName);
+		confederationNamePanel = new LabelComboPanel(null, false, ctrlConfederationName);
 		centralPanel.add(confederationNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il secondo info box");

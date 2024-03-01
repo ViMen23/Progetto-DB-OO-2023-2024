@@ -84,7 +84,7 @@ public class SearchCompetitionPanel
 		string += " ";
 		string += GuiConfiguration.getMessage("available");
 		string += " ";
-		string += Controller.getInstance().countCountries().toString();
+		string += Controller.getInstance().countCompetitions().toString();
 		string = string.toUpperCase();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
@@ -202,8 +202,6 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-
-
 		competitionTablePanel = new TablePanel(true, null, null, null);
 		this.add(competitionTablePanel, GuiConfiguration.tablePanelAddConstraint);
 
@@ -302,6 +300,7 @@ public class SearchCompetitionPanel
 				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					nationTypeNamePanel.getMyComboBox().setEnabled(false);
+					ctrlNationName.setText(selectAll);
 
 				} else if (ctrlCountryType.getText().equalsIgnoreCase(Country.COUNTRY_TYPE.NATION.toString())) {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);

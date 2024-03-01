@@ -101,6 +101,8 @@ public class GuiConfiguration
 	public static final String tablePanelRowConstraint = "10[]10";
 	public static final String tablePanelAddConstraint = "dock south, sgx general";
 	public static final String competitionMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]0[]0[fill]20[]0";
+	public static final String teamMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]20[]0";
+	public static final String panelToAddRowConstraint = "0[]10";
 
 
 
@@ -138,9 +140,9 @@ public class GuiConfiguration
 
 		mainFrame.add(topPanel, "sgx frame");
 
-		//MenuBarPanel menuBarPanel = new MenuBarPanel();
+		MenuBarPanel menuBarPanel = new MenuBarPanel();
 
-		//mainFrame.add(menuBarPanel, "sgx frame");
+		mainFrame.add(menuBarPanel, "sgx frame");
 
 		mainFrame.pack();
 		mainFrame.setVisible(true);

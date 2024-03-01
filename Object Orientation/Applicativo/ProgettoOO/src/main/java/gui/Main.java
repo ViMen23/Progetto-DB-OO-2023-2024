@@ -21,11 +21,15 @@ public class Main
 		//searchPlayerPanel.setName("searchPlayerPanel");
 
 		//searchCountryPanel.setName("boh");
+		SearchPlayerPanel searchPlayerPanel = new SearchPlayerPanel();
 
-		//JScrollPane scrollPane = new JScrollPane(, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+		JScrollPane scrollPane = new JScrollPane(searchPlayerPanel, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+
+		scrollPane.setColumnHeaderView(searchPlayerPanel.topSearchPanel);
+
 		//MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
 
-		MainFrame.getMainFrameInstance().add(new SearchCompetitionPanel(), "sgx frame, growy");
+		MainFrame.getMainFrameInstance().add(scrollPane, "sgx frame, growy");
 		// TODO Vince il vettore dataTable si svuota nel fill?
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
