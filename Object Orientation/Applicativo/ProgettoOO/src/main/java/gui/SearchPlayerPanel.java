@@ -9,6 +9,9 @@ import org.apache.commons.lang3.StringUtils;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -79,7 +82,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.middleSearchPanelLayoutConstraint,
 						GuiConfiguration.middleSearchPanelColumnConstraint,
-						"0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0" //TODO
+						GuiConfiguration.playerMiddleSearchPanelRowConstraint
 		);
 
 		centralPanel.setLayout(migLayout);
@@ -306,5 +309,155 @@ public class SearchPlayerPanel
 
 		centralPanel.add(button, GuiConfiguration.searchButtonAddConstraint);
 
+
+		ctrlReferenceYear.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlReferenceYear.getText(), "@fill")) {
+
+					JComboBox<String> comboBox = referringYearPanel.getMyComboBox();
+
+					comboBox.removeAllItems();
+
+					int maximumYear = Year.now().getValue();
+					int minimumYear = GuiConfiguration.getMinYear();
+
+					for (int i = maximumYear; i >= minimumYear; --i){
+						comboBox.addItem(String.valueOf(i));
+					}
+
+					System.out.println("ciao");
+				}
+				else {
+					playerMinAgePanel.getMyComboBox().setSelectedIndex(-1);
+					playerMinAgePanel.getMyComboBox().setEnabled(true);
+					ctrlPlayerMinAge.setText(null);
+
+					playerMaxAgePanel.getMyComboBox().setSelectedIndex(-1);
+					playerMaxAgePanel.getMyComboBox().setEnabled(false);
+					ctrlPlayerMaxAge.setText(null);
+				}
+			}
+		});
+
+
+		ctrlPlayerMinAge.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				System.out.println("ciao  " + ctrlPlayerMinAge.getText());
+				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerMinAge.getText(), "@fill")) {
+
+					JComboBox<String> comboBox = playerMinAgePanel.getMyComboBox();
+
+					comboBox.removeAllItems();
+
+					int minAge = GuiConfiguration.getMinAge();
+					int maxAge = GuiConfiguration.getMaxAge();
+
+					for (int i = minAge; i <= maxAge; ++i) {
+						comboBox.addItem(String.valueOf(i));
+					}
+				}
+				else if (null != ctrlPlayerMinAge.getText()){
+					playerMaxAgePanel.getMyComboBox().setSelectedIndex(-1);
+					playerMaxAgePanel.getMyComboBox().setEnabled(true);
+					ctrlPlayerMaxAge.setText(null);
+				}
+			}
+		});
+
+
+		ctrlPlayerMaxAge.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerMaxAge.getText(), "@fill")) {
+
+					JComboBox<String> comboBox = playerMaxAgePanel.getMyComboBox();
+
+					comboBox.removeAllItems();
+
+					int minAge = Integer.parseInt(ctrlPlayerMinAge.getText());
+					int maxAge = GuiConfiguration.getMaxAge();
+
+					for (int i = minAge; i <= maxAge; ++i) {
+						comboBox.addItem(String.valueOf(i));
+					}
+				}
+
+			}
+		});
+		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+					continentNameVector.clear();
+					continentNameMap.clear();
+
+					continentNameVector.add(selectAll);
+
+					Controller.getInstance().setCountryComboBox(
+									Country.COUNTRY_TYPE.CONTINENT.toString(),
+									null,
+									continentNameVector,
+									continentNameMap
+					);
+
+					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+
+				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationTypeNamePanel.getMyComboBox().setEnabled(false);
+					ctrlNationName.setText(selectAll);
+				} else {
+					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationTypeNamePanel.getMyComboBox().setEnabled(true);
+					ctrlNationName.setText(selectAll);
+				}
+			}
+		});
+
+		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+					nationNameVector.clear();
+					nationNameMap.clear();
+
+					nationNameVector.add(selectAll);
+
+					Controller.getInstance().setCountryComboBox(
+									Country.COUNTRY_TYPE.NATION.toString(),
+									continentNameMap.get(ctrlContinentName.getText()),
+									nationNameVector,
+									nationNameMap
+					);
+
+					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				}
+			}
+		});
+
+		ctrlPlayerPosition.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlPlayerPosition.getText().equalsIgnoreCase("@fill")) {
+
+					positionNameVector.clear();
+					positionNameMap.clear();
+
+					positionNameVector.add(selectAll);
+
+					Controller.getInstance().setPositionComboBox(positionNameVector, positionNameMap);
+
+					playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
+				}
+			}
+		});
 	}
 }

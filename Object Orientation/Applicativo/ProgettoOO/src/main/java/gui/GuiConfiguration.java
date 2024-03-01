@@ -28,9 +28,9 @@ public class GuiConfiguration
 	private static final Color searchPanelColor = new Color(50, 100, 200);
 
 	public static final String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxx";
-	private static final Integer minYear = 1810;
-	private static final Integer minAge = 15;
-	private static final Integer maxAge = 50;
+	private static final int minYear = 1810;
+	private static final int minAge = 15;
+	private static final int maxAge = 50;
 	private static final ImageIcon minimizeIcon = GuiConfiguration.createImageIcon("images/minimize.png");
 	private static final ImageIcon maximizeIcon = GuiConfiguration.createImageIcon("images/maximize.png");
 	private static final ImageIcon resetIcon = GuiConfiguration.createImageIcon("images/reset.png");
@@ -103,6 +103,8 @@ public class GuiConfiguration
 	public static final String competitionMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]0[]0[fill]20[]0";
 	public static final String teamMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]20[]0";
 	public static final String panelToAddRowConstraint = "0[]10";
+	public static final String playerRoleCheckColumnConstraint = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
+	public static final String playerMiddleSearchPanelRowConstraint = "0[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]10[]0[fill]20[]0";
 
 
 
@@ -658,7 +660,7 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static Integer getMinYear() { return minYear; }
+	public static int getMinYear() { return minYear; }
 
 	/**
 	 * TYPE : static method - gui package
@@ -666,7 +668,7 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static Integer getMinAge() { return minAge; }
+	public static int getMinAge() { return minAge; }
 
 	/**
 	 * TYPE : static method - gui package
@@ -674,7 +676,7 @@ public class GuiConfiguration
 	 *
 	 * DESC: TODO
 	 */
-	public static Integer getMaxAge() { return maxAge; }
+	public static int getMaxAge() { return maxAge; }
 
 	/**
 	 * TYPE : static method - gui package
