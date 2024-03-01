@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -22,10 +23,10 @@ public class MilitancyFilterPanel
 	{
 		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
 
-		final JLabel ctrlContinentName = new JLabel(selectAll);
-		final JLabel ctrlNationName = new JLabel(selectAll);
+		final JLabel ctrlContinentName = new JLabel((String) null);
+		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlTeamType = new JLabel((String) null);
-		final JLabel ctrlTeamName = new JLabel(selectAll);
+		final JLabel ctrlTeamName = new JLabel((String) null);
 		final JLabel ctrlFromYear = new JLabel((String) null);
 		final JLabel ctrlToYear = new JLabel((String) null);
 
@@ -181,7 +182,7 @@ public class MilitancyFilterPanel
 		string += GuiConfiguration.getMessage("year");
 		string = StringUtils.capitalize(string);
 
-		fromYearPanel = new LabelComboPanel(string, false, ctrlContinentName);
+		fromYearPanel = new LabelComboPanel(string, false, ctrlFromYear);
 		centralPanel.add(fromYearPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 2, flowy, gap bottom 0"); //TODO
 
 		string = GuiConfiguration.getMessage("to");
@@ -189,7 +190,7 @@ public class MilitancyFilterPanel
 		string += GuiConfiguration.getMessage("year");
 		string = StringUtils.capitalize(string);
 
-		toYearPanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlNationName);
+		toYearPanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlToYear);
 		centralPanel.add(toYearPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
 
 		infoPanel = new InfoPanel("Questo e' il quarto info box");
@@ -205,6 +206,7 @@ public class MilitancyFilterPanel
 		string = string.toUpperCase();
 
 		button = new JButton(string);
+		button.setEnabled(false);
 
 
 		button.addActionListener(new ActionListener() {
@@ -248,10 +250,12 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				continentTypeNamePanel.getMyComboBox().setEnabled(true);
-				//TODO LEGGI: selectAll è considerato come null non come una scelta possibile nel comboBox
-				if (!(ctrlContinentName.getText().equalsIgnoreCase(selectAll))) {
-					ctrlContinentName.setText(selectAll);
+				if (null != ctrlContinentName.getText()) {
+					continentTypeNamePanel.getMyComboBox().removeAllItems();
+					ctrlContinentName.setText(null);
+				}
+				else {
+					continentTypeNamePanel.getMyComboBox().setEnabled(true);
 				}
 			}
 		});
@@ -260,7 +264,12 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (null == ctrlContinentName.getText()) {
+					nationTypeNamePanel.getMyComboBox().removeAllItems();
+					nationTypeNamePanel.getMyComboBox().setEnabled(false);
+					ctrlNationName.setText(null);
+				}
+				else if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
 					continentNameVector.clear();
 					continentNameMap.clear();
 
@@ -273,13 +282,147 @@ public class MilitancyFilterPanel
 
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
 				}
-				else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.
+				else {
+					if (null != ctrlNationName.getText()) {
+						nationTypeNamePanel.getMyComboBox().removeAllItems();
+						ctrlNationName.setText(null);
+					}
+					else {
+						nationTypeNamePanel.getMyComboBox().setEnabled(true);
+					}
 				}
 
+			}
+		});
 
+		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (null == ctrlNationName.getText()) {
+					teamNamePanel.getMyComboBox().removeAllItems();
+					teamNamePanel.getMyComboBox().setEnabled(false);
+					ctrlTeamName.setText(null);
+				}
+				else if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+					nationNameVector.clear();
+					nationNameMap.clear();
+
+					Controller.getInstance().setCountryComboBox(
+									Country.COUNTRY_TYPE.NATION.toString(),
+									continentNameMap.get(ctrlContinentName.getText()),
+									nationNameVector,
+									nationNameMap
+					);
+
+					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				}
+				else {
+					if (null != ctrlTeamName.getText()) {
+						teamNamePanel.getMyComboBox().removeAllItems();
+						ctrlTeamName.setText(null);
+					}
+					else {
+						teamNamePanel.getMyComboBox().setEnabled(true);
+					}
+				}
+			}
+		});
+
+
+		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (null == ctrlTeamName.getText()) {
+					button.setEnabled(false);
+					fromYearPanel.getMyComboBox().setEnabled(false);
+
+					fromYearPanel.getMyComboBox().removeAllItems();
+
+					ctrlFromYear.setText(null);
+				}
+				else if (ctrlTeamName.getText().equalsIgnoreCase("@fill")) {
+					teamNameVector.clear();
+					teamNameMap.clear();
+
+					Controller.getInstance().setTeamComboBox(
+									null,
+									null,
+									ctrlTeamType.getText(),
+									continentNameMap.get(ctrlContinentName.getText()),
+									nationNameMap.get(ctrlNationName.getText()),
+									teamNameVector,
+									teamNameMap
+					);
+
+					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
+				}
+				else {
+					if (null != ctrlFromYear.getText()) {
+						fromYearPanel.getMyComboBox().removeAllItems();
+						ctrlFromYear.setText(null);
+					}
+					else {
+						button.setEnabled(true);
+						fromYearPanel.getMyComboBox().setEnabled(true);
+					}
+				}
+			}
+		});
+
+
+		ctrlFromYear.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (null == ctrlFromYear.getText()) {
+					toYearPanel.getMyComboBox().removeAllItems();
+					toYearPanel.getMyComboBox().setEnabled(false);
+					ctrlToYear.setText(null);
+				}
+				else if (ctrlFromYear.getText().equalsIgnoreCase("@fill")) {
+
+					JComboBox<String> comboBox = fromYearPanel.getMyComboBox();
+
+					comboBox.removeAllItems();
+
+					int maximumYear = Year.now().getValue();
+					int minimumYear = GuiConfiguration.getMinYear();
+
+					for (int i = maximumYear; i >= minimumYear; --i) {
+						comboBox.addItem(String.valueOf(i));
+					}
+				}
+				else {
+					if (null != ctrlToYear.getText()) {
+						toYearPanel.getMyComboBox().removeAllItems();
+						ctrlToYear.setText(null);
+					}
+					else {
+						toYearPanel.getMyComboBox().setEnabled(true);
+					}
+				}
+			}
+		});
+
+
+		ctrlToYear.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlToYear.getText(), "@fill")) {
+					JComboBox<String> comboBox = toYearPanel.getMyComboBox();
+
+					comboBox.removeAllItems();
+
+					int maximumYear = Year.now().getValue();
+					int minimumYear = Integer.parseInt(ctrlFromYear.getText());
+
+					for (int i = maximumYear; i >= minimumYear; --i) {
+						comboBox.addItem(String.valueOf(i));
+					}
+				}
 			}
 		});
 	}
