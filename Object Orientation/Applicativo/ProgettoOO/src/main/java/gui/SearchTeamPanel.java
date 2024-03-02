@@ -81,47 +81,38 @@ public class SearchTeamPanel
 		string += GuiConfiguration.getMessage("teams");
 		string += " ";
 		string += Controller.getInstance().countTeams().toString();
-		string = string.toUpperCase();
+
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("name").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		string = GuiConfiguration.getMessage("longName");
-		string = StringUtils.capitalize(string);
-		teamLongNamePanel = new LabelTextPanel(string, ctrlTeamSubLongName, Regex.patternAlnum);
+		teamLongNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("longName"), ctrlTeamSubLongName, Regex.patternAlnum);
 		centralPanel.add(teamLongNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("shortName");
-		string = StringUtils.capitalize(string);
-		teamShortNamePanel = new LabelTextPanel(string, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlTeamSubShortName, Regex.patternCode);
+
+		teamShortNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("shortName"), GuiConfiguration.ONE_CELL_GAP_0_10, ctrlTeamSubShortName, Regex.patternCode);
 		centralPanel.add(teamShortNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamNameInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("namesInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("teamType"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
@@ -131,29 +122,22 @@ public class SearchTeamPanel
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("NATION");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("NATION").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.CONTINENT.toString();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-		continentTypeNamePanel = new LabelComboPanel(string, true, ctrlContinentName);
+
+		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
 		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.NATION.toString();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamNationInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -162,10 +146,7 @@ public class SearchTeamPanel
 		this.add(teamTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
-		string = GuiConfiguration.getMessage("search");
-		string = string.toUpperCase();
-
-		button = new JButton(string);
+		button = new JButton(GuiConfiguration.getMessage("search"));
 
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -194,7 +175,6 @@ public class SearchTeamPanel
 				string += GuiConfiguration.getMessage("teams");
 				string += " ";
 				string += teamTableData.size();
-				string = string.toUpperCase();
 
 				teamTablePanel.getTitleLabel().setText(string);
 
@@ -202,7 +182,7 @@ public class SearchTeamPanel
 				string = "";
 
 				if (ctrlTeamSubLongName.getText() != null) {
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("longName"));
+					string += GuiConfiguration.getMessage("longName").toUpperCase();
 					string += ": ";
 					string += ctrlTeamSubLongName.getText();
 				}
@@ -211,16 +191,16 @@ public class SearchTeamPanel
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("shortName"));
+					string += GuiConfiguration.getMessage("shortName").toUpperCase();
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamSubShortName.getText()));
+					string += ctrlTeamSubShortName.getText();
 				}
 
 				if (ctrlTeamType.getText() != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
+					string += GuiConfiguration.getMessage("teamType");
 					string += ": ";
 					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamType.getText()));
 				}
@@ -229,7 +209,7 @@ public class SearchTeamPanel
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("country"));
+					string += GuiConfiguration.getMessage("country");
 					string += ": ";
 					string += ctrlContinentName.getText();
 

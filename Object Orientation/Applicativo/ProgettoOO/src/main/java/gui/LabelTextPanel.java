@@ -34,9 +34,12 @@ public class LabelTextPanel
 		this.add(textField);
 		textField.addCaretListener(new CaretListener() {
 			@Override
-			public void caretUpdate(CaretEvent e) {
-				if (pattern.matcher(textField.getText()).find()) {
-					ctrlLabel.setText(textField.getText());
+			public void caretUpdate(CaretEvent e)
+			{
+				String text = textField.getText();
+
+				if (pattern.matcher(text).find()) {
+					ctrlLabel.setText(text);
 				} else {
 					ctrlLabel.setText(null);
 				}
@@ -70,9 +73,12 @@ public class LabelTextPanel
 		this.add(textField);
 		textField.addCaretListener(new CaretListener() {
 			@Override
-			public void caretUpdate(CaretEvent e) {
-				if (pattern.matcher(textField.getText()).find()) {
-					ctrlLabel.setText(textField.getText());
+			public void caretUpdate(CaretEvent e)
+			{
+				String text = textField.getText();
+
+				if (pattern.matcher(text).find()) {
+					ctrlLabel.setText(text);
 				} else {
 					ctrlLabel.setText(null);
 				}

@@ -34,14 +34,9 @@ public class RadioPanel
 			JRadioButton radioButton;
 			int j = i;
 
-			String string = enumArray[i].toString();
-			string = GuiConfiguration.getMessage(string);
-			string = StringUtils.capitalize(string);
-
-			radioButton = new JRadioButton(string);
+			radioButton = new JRadioButton(GuiConfiguration.getMessage(enumArray[i].toString()));
 			buttonGroup.add(radioButton);
 			this.add(radioButton);
-
 
 			radioButton.addActionListener(new ActionListener() {
 				@Override

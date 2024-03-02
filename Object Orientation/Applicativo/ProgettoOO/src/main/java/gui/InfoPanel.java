@@ -3,10 +3,6 @@ package gui;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.Caret;
-import javax.swing.text.DefaultCaret;
-import javax.swing.text.JTextComponent;
 import java.awt.*;
 
 public class InfoPanel
@@ -27,9 +23,10 @@ public class InfoPanel
 
 		JTextArea textArea = new JTextArea(description);
 		textArea.setBorder(null);
+		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		textArea.setFont(GuiConfiguration.OUTPUT_SMALL_FONT);
+		textArea.setFont(GuiConfiguration.outputSmallFont);
 
 		textArea.getCaret().deinstall(textArea);
 		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

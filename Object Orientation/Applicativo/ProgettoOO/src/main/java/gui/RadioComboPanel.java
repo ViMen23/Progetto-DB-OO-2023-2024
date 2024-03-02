@@ -22,7 +22,6 @@ public class RadioComboPanel
 		this.combo = combo;
 
 		MigLayout migLayout;
-		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
@@ -33,10 +32,8 @@ public class RadioComboPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		string = GuiConfiguration.getMessage(field);
-		string = StringUtils.capitalize(string);
 
-		this.radioButton = new JRadioButton(string);
+		this.radioButton = new JRadioButton(GuiConfiguration.getMessage(field));
 		this.add(radioButton);
 
 		radioButton.addActionListener(new ActionListener() {
@@ -65,7 +62,6 @@ public class RadioComboPanel
 		this.combo = combo;
 
 		MigLayout migLayout;
-		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
@@ -76,10 +72,7 @@ public class RadioComboPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		string = GuiConfiguration.getMessage(field);
-		string = StringUtils.capitalize(string);
-
-		this.radioButton = new JRadioButton(string);
+		this.radioButton = new JRadioButton(GuiConfiguration.getMessage(field));
 		this.add(radioButton);
 
 		radioButton.addActionListener(new ActionListener() {

@@ -16,7 +16,6 @@ public class PlayerRoleCheckPanel
 	public PlayerRoleCheckPanel(JLabel controlLabel)
 	{
 		MigLayout migLayout;
-		String string;
 
 		JCheckBox checkBox;
 
@@ -30,9 +29,7 @@ public class PlayerRoleCheckPanel
 		this.setBackground(Color.white);
 
 
-		string = GuiConfiguration.getMessage("goalkeeper");
-		string = StringUtils.capitalize(string);
-		checkBox = new JCheckBox(string);
+		checkBox = new JCheckBox(GuiConfiguration.getMessage("goalkeeper"));
 		checkBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -49,9 +46,7 @@ public class PlayerRoleCheckPanel
 		this.add(checkBox);
 
 
-		string = GuiConfiguration.getMessage("defender");
-		string = StringUtils.capitalize(string);
-		checkBox = new JCheckBox(string);
+		checkBox = new JCheckBox(GuiConfiguration.getMessage("defender"));
 		checkBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -68,9 +63,7 @@ public class PlayerRoleCheckPanel
 		this.add(checkBox);
 
 
-		string = GuiConfiguration.getMessage("midfield");
-		string = StringUtils.capitalize(string);
-		checkBox = new JCheckBox(string);
+		checkBox = new JCheckBox(GuiConfiguration.getMessage("midfield"));
 		checkBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)
@@ -87,9 +80,7 @@ public class PlayerRoleCheckPanel
 		this.add(checkBox);
 
 
-		string = GuiConfiguration.getMessage("forwarder");
-		string = StringUtils.capitalize(string);
-		checkBox = new JCheckBox(string);
+		checkBox = new JCheckBox(GuiConfiguration.getMessage("forwarder"));
 		checkBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e)

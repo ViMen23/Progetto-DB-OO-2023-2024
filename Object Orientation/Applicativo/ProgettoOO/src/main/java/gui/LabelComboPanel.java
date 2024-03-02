@@ -37,6 +37,8 @@ public class LabelComboPanel
 												 JLabel ctrlLabel)
 	{
 		MigLayout migLayout;
+		JLabel label;
+
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
@@ -46,7 +48,7 @@ public class LabelComboPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		JLabel label;
+
 		label = new JLabel(field);
 		this.add(label);
 
