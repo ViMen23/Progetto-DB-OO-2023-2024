@@ -308,7 +308,6 @@ VALUES
  * INSERT FP_PLAYER
  ******************************************************************************/
 
-
 INSERT INTO fp_player (name, surname, dob, foot, position_id, role, country_id)
 VALUES
 (
@@ -316,7 +315,7 @@ VALUES
 	'Meret',
 	'1997-03-22',
 	'LEFT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -325,7 +324,7 @@ VALUES
 	'Gollini',
 	'1995-03-18',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -334,7 +333,7 @@ VALUES
 	'Sirigu',
 	'1987-01-12',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -343,7 +342,7 @@ VALUES
 	'Idasiak',
 	'2002-02-03',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Poland', 'id')::integer
 ),
@@ -352,7 +351,7 @@ VALUES
 	'Boffelli',
 	'2004-09-04',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -361,7 +360,7 @@ VALUES
 	'Marfella',
 	'1999-09-15',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -370,7 +369,7 @@ VALUES
 	'Kim',
 	'1996-11-15',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@South Korea', 'id')::integer
 ),
@@ -379,7 +378,7 @@ VALUES
 	'Rrahmani',
 	'1994-02-24',
 	'EITHER',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Jugoslavia', 'id')::integer
 ),
@@ -388,7 +387,7 @@ VALUES
 	'Østigård',
 	'1999-11-28',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Norway', 'id')::integer
 ),
@@ -397,7 +396,7 @@ VALUES
 	'Jesus',
 	'1991-06-10',
 	'LEFT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer
 ),
@@ -406,7 +405,7 @@ VALUES
 	'Olivera',
 	'1991-05-27',
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer
 ),
@@ -415,7 +414,7 @@ VALUES
 	'Rui',
 	'1997-03-22',
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer
 ),
@@ -424,7 +423,7 @@ VALUES
 	'Di Lorenzo',
 	'1993-08-04',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -433,7 +432,7 @@ VALUES
 	'Zanoli',
 	'2000-10-03',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -442,7 +441,7 @@ VALUES
 	'Bereszyński',
 	'1992-07-12',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Poland', 'id')::integer
 ),
@@ -451,7 +450,7 @@ VALUES
 	'Lobotka',
 	'1994-11-25',
 	'EITHER',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Slovakia', 'id')::integer
 ),
@@ -460,7 +459,7 @@ VALUES
 	'Demme',
 	'1991-11-21',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer
 ),
@@ -469,7 +468,7 @@ VALUES
 	'Anguissa',
 	'1995-11-16',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Cameroon', 'id')::integer
 ),
@@ -478,7 +477,7 @@ VALUES
 	'Zieliński',
 	'1994-05-20',
 	'EITHER',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Poland', 'id')::integer
 ),
@@ -487,7 +486,7 @@ VALUES
 	'Ndombélé',
 	'1996-12-28',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@France', 'id')::integer
 ),
@@ -496,7 +495,7 @@ VALUES
 	'Zedadka',
 	'2000-06-09',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@leftMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@France', 'id')::integer
 ),
@@ -505,7 +504,7 @@ VALUES
 	'Elmas',
 	'1999-09-24',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@North Macedonia', 'id')::integer
 ),
@@ -514,7 +513,7 @@ VALUES
 	'Gaetano',
 	'2000-05-05',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -523,7 +522,7 @@ VALUES
 	'Kvaratskhelia',
 	'2001-02-12',
 	'EITHER',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Georgia', 'id')::integer
 ),
@@ -532,7 +531,7 @@ VALUES
 	'Zerbin',
 	'1999-03-03',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -541,7 +540,7 @@ VALUES
 	'Lozano',
 	'1995-07-30',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Mexico', 'id')::integer
 ),
@@ -550,7 +549,7 @@ VALUES
 	'Politano',
 	'1993-08-03',
 	'LEFT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -559,7 +558,7 @@ VALUES
 	'Ounas',
 	'1996-11-11',
 	'LEFT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@France', 'id')::integer
 ),
@@ -568,7 +567,7 @@ VALUES
 	'Raspadori',
 	'2000-02-18',
 	'EITHER',
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer,
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -577,7 +576,7 @@ VALUES
 	'Osimhen',
 	'1998-12-29',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer
 ),
@@ -586,7 +585,7 @@ VALUES
 	'Simeone',
 	'1995-07-05',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer
 ),
@@ -595,7 +594,7 @@ VALUES
 	'Provedel',
 	'1994-03-17',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -604,7 +603,7 @@ VALUES
 	'Mandas',
 	'2001-09-17',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Greece', 'id')::integer
 ),
@@ -613,7 +612,7 @@ VALUES
 	'Sepe',
 	'1991-05-08',
 	'LEFT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -622,7 +621,7 @@ VALUES
 	'Casale',
 	'1998-02-14',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -631,7 +630,7 @@ VALUES
 	'Romagnoli',
 	'1995-01-12',
 	'LEFT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -640,7 +639,7 @@ VALUES
 	'Gil',
 	'1993-04-17',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer
 ),
@@ -649,7 +648,7 @@ VALUES
 	'Gila',
 	'2000-08-29',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer
 ),
@@ -658,7 +657,7 @@ VALUES
 	'Pellegrini',
 	'1999-03-07',
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -667,7 +666,7 @@ VALUES
 	'Kamenović',
 	'2000-07-16',
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Jugoslavia', 'id')::integer
 ),
@@ -676,7 +675,7 @@ VALUES
 	'Marusic',
 	'1992-10-17',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Jugoslavia', 'id')::integer
 ),
@@ -685,7 +684,7 @@ VALUES
 	'Hysaj',
 	'1994-02-02',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF',
 	get_column('@', 'fp_country@name@Albania', 'id')::integer
 ),
@@ -694,7 +693,7 @@ VALUES
 	'Rovella',
 	'2001-12-04',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -703,7 +702,7 @@ VALUES
 	'Cataldi',
 	'1994-08-06',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -712,7 +711,7 @@ VALUES
 	'Guendouzi',
 	'1999-04-14',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@France', 'id')::integer
 ),
@@ -721,7 +720,7 @@ VALUES
 	'Alberto',
 	'1992-09-28',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer
 ),
@@ -730,7 +729,7 @@ VALUES
 	'Vecino',
 	'1991-08-24',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer
 ),
@@ -739,7 +738,7 @@ VALUES
 	'Lazzari',
 	'1993-11-29',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@rightMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -748,7 +747,7 @@ VALUES
 	'Kamada',
 	'1996-08-05',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer
 ),
@@ -757,7 +756,7 @@ VALUES
 	'Anderson',
 	'1999-09-23',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer
 ),
@@ -766,7 +765,7 @@ VALUES
 	'Zaccagni',
 	'1995-06-16',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -775,7 +774,7 @@ VALUES
 	'González',
 	'2003-01-07',
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Paraguay', 'id')::integer
 ),
@@ -784,7 +783,7 @@ VALUES
 	'Fernandes',
 	'2006-03-10',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Guinea-Bissau', 'id')::integer
 ),
@@ -793,7 +792,7 @@ VALUES
 	'Isaksen',
 	'2001-04-19',
 	'EITHER',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer
 ),
@@ -802,7 +801,7 @@ VALUES
 	'Anderson',
 	'1993-04-15',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer
 ),
@@ -811,7 +810,7 @@ VALUES
 	'Rodríguez',
 	'1987-07-28',
 	'EITHER',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer
 ),
@@ -820,7 +819,7 @@ VALUES
 	'Lombardi',
 	'1995-08-19',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -829,7 +828,7 @@ VALUES
 	'Castellanos',
 	'1998-10-03',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer
 ),
@@ -838,7 +837,7 @@ VALUES
 	'Immobile',
 	'1990-02-20',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer
 ),
@@ -847,7 +846,7 @@ VALUES
 	'Milinkovic-Savic',
 	'1995-02-27',
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer
 );
@@ -861,7 +860,7 @@ VALUES
 	'2003-06-29',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'EITHER',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -870,7 +869,7 @@ VALUES
 	'2000-07-21',
 	get_column('@', 'fp_country@name@Norway', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -879,7 +878,7 @@ VALUES
 	'1998-12-20',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -888,7 +887,7 @@ VALUES
 	'2000-07-12',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -897,7 +896,7 @@ VALUES
 	'2001-09-05',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -906,7 +905,7 @@ VALUES
 	'2003-02-26',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'EITHER',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -915,7 +914,7 @@ VALUES
 	'2000-05-28',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -924,7 +923,7 @@ VALUES
 	'1997-07-22',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -933,7 +932,7 @@ VALUES
 	'1994-01-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -942,7 +941,7 @@ VALUES
 	'1993-07-28',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -951,7 +950,7 @@ VALUES
 	'2003-01-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'EITHER',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -960,7 +959,7 @@ VALUES
 	'1998-07-22',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -969,7 +968,7 @@ VALUES
 	'1997-11-02',
 	get_column('@', 'fp_country@name@Ecuador', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -978,7 +977,7 @@ VALUES
 	'2002-01-10',
 	get_column('@', 'fp_country@name@Norway', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -987,7 +986,7 @@ VALUES
 	'2000-1-31',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer,
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer,
 	'FW'
 ),
 (
@@ -996,7 +995,7 @@ VALUES
 	'2000-01-20',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1005,7 +1004,7 @@ VALUES
 	'1999-07-10',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1014,7 +1013,7 @@ VALUES
 	'1998-12-17',
 	get_column('@', 'fp_country@name@Norway', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1023,7 +1022,7 @@ VALUES
 	'2001-06-18',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1032,7 +1031,7 @@ VALUES
 	'1997-02-09',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1041,7 +1040,7 @@ VALUES
 	'2001-01-17',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1050,7 +1049,7 @@ VALUES
 	'2002-01-23',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1059,7 +1058,7 @@ VALUES
 	'1997-05-19',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1068,7 +1067,7 @@ VALUES
 	'1997-05-14',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1077,7 +1076,7 @@ VALUES
 	'1994-08-11',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1086,7 +1085,7 @@ VALUES
 	'1996-01-11',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1095,7 +1094,7 @@ VALUES
 	'2001-02-05',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1104,7 +1103,7 @@ VALUES
 	'1997-01-13',
 	get_column('@', 'fp_country@name@Colombia', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1113,7 +1112,7 @@ VALUES
 	'2000-10-25',
 	get_column('@', 'fp_country@name@Hungary', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1122,7 +1121,7 @@ VALUES
 	'1997-11-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1131,7 +1130,7 @@ VALUES
 	'1997-02-07',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1140,7 +1139,7 @@ VALUES
 	'1995-02-08',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1149,7 +1148,7 @@ VALUES
 	'2003-04-21',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1158,7 +1157,7 @@ VALUES
 	'1998-02-12',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1167,7 +1166,7 @@ VALUES
 	'1999-03-27',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1176,7 +1175,7 @@ VALUES
 	'2000-11-02',
 	get_column('@', 'fp_country@name@Canada', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1185,7 +1184,7 @@ VALUES
 	'1998-01-18',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1194,7 +1193,7 @@ VALUES
 	'1997-04-03',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1203,7 +1202,7 @@ VALUES
 	'1999-09-21',
 	get_column('@', 'fp_country@name@Sweden', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1212,7 +1211,7 @@ VALUES
 	'1998-10-07',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1221,7 +1220,7 @@ VALUES
 	'1997-11-21',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1230,7 +1229,7 @@ VALUES
 	'1997-10-31',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1239,7 +1238,7 @@ VALUES
 	'1994-08-08',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1248,7 +1247,7 @@ VALUES
 	'1995-09-10',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1257,7 +1256,7 @@ VALUES
 	'2004-10-06',
 	get_column('@', 'fp_country@name@Ireland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1266,7 +1265,7 @@ VALUES
 	'2003-08-08',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1275,7 +1274,7 @@ VALUES
 	'1999-06-24',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1284,7 +1283,7 @@ VALUES
 	'1998-12-24',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1293,7 +1292,7 @@ VALUES
 	'2002-12-17',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1302,7 +1301,7 @@ VALUES
 	'1997-08-23',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1311,7 +1310,7 @@ VALUES
 	'1998-11-04',
 	get_column('@', 'fp_country@name@Morocco', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1320,7 +1319,7 @@ VALUES
 	'1992-04-16',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1329,7 +1328,7 @@ VALUES
 	'1999-08-12',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1338,7 +1337,7 @@ VALUES
 	'1996-06-23',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1347,7 +1346,7 @@ VALUES
 	'1992-06-15',
 	get_column('@', 'fp_country@name@Egypt', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1356,7 +1355,7 @@ VALUES
 	'2000-11-28',
 	get_column('@', 'fp_country@name@Algeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1365,7 +1364,7 @@ VALUES
 	'2002-06-08',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1374,7 +1373,7 @@ VALUES
 	'2002-03-19',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1383,7 +1382,7 @@ VALUES
 	'1996-03-15',
 	get_column('@', 'fp_country@name@South Korea', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1392,7 +1391,7 @@ VALUES
 	'2001-04-11',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1401,7 +1400,7 @@ VALUES
 	'1994-05-09',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1410,7 +1409,7 @@ VALUES
 	'1997-02-19',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1419,7 +1418,7 @@ VALUES
 	'1997-11-24',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1428,7 +1427,7 @@ VALUES
 	'2001-06-20',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1437,7 +1436,7 @@ VALUES
 	'1996-07-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1446,7 +1445,7 @@ VALUES
 	'2000-01-20',
 	get_column('@', 'fp_country@name@Serbia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1455,7 +1454,7 @@ VALUES
 	'1998-10-26',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1464,7 +1463,7 @@ VALUES
 	'1994-12-30',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1473,7 +1472,7 @@ VALUES
 	'1999-04-13',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1482,7 +1481,7 @@ VALUES
 	'1997-02-08',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1491,7 +1490,7 @@ VALUES
 	'1995-03-09',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1500,7 +1499,7 @@ VALUES
 	'1991-06-28',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1509,7 +1508,7 @@ VALUES
 	'2002-02-26',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1518,7 +1517,7 @@ VALUES
 	'2000-08-27',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1527,7 +1526,7 @@ VALUES
 	'2000-04-20',
 	get_column('@', 'fp_country@name@Sweden', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1536,7 +1535,7 @@ VALUES
 	'2000-02-16',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1545,7 +1544,7 @@ VALUES
 	'1997-10-06',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1554,7 +1553,7 @@ VALUES
 	'1997-07-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1563,7 +1562,7 @@ VALUES
 	'1997-08-06',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1572,7 +1571,7 @@ VALUES
 	'1999-06-11',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1581,7 +1580,7 @@ VALUES
 	'2005-04-12',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1590,7 +1589,7 @@ VALUES
 	'2002-07-12',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1599,7 +1598,7 @@ VALUES
 	'2002-10-18',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1608,7 +1607,7 @@ VALUES
 	'2002-01-13',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1617,7 +1616,7 @@ VALUES
 	'2001-12-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1626,7 +1625,7 @@ VALUES
 	'2001-04-09',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1635,7 +1634,7 @@ VALUES
 	'2001-06-20',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1644,7 +1643,7 @@ VALUES
 	'2000-01-14',
 	get_column('@', 'fp_country@name@Canada', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1653,7 +1652,7 @@ VALUES
 	'1997-05-20',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1662,7 +1661,7 @@ VALUES
 	'2001-02-23',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1671,7 +1670,7 @@ VALUES
 	'2000-02-04',
 	get_column('@', 'fp_country@name@Cameroon', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1680,7 +1679,7 @@ VALUES
 	'2000-08-22',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1689,7 +1688,7 @@ VALUES
 	'1998-01-18',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1698,7 +1697,7 @@ VALUES
 	'1999-05-07',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1707,7 +1706,7 @@ VALUES
 	'1999-05-03',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1716,7 +1715,7 @@ VALUES
 	'1998-02-16',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1725,7 +1724,7 @@ VALUES
 	'1997-04-08',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1734,7 +1733,7 @@ VALUES
 	'1997-10-25',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1743,7 +1742,7 @@ VALUES
 	'1991-12-04',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1752,7 +1751,7 @@ VALUES
 	'1991-06-20',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1761,7 +1760,7 @@ VALUES
 	'1996-12-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1770,7 +1769,7 @@ VALUES
 	'1998-01-07',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1779,7 +1778,7 @@ VALUES
 	'1997-11-10',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1788,7 +1787,7 @@ VALUES
 	'1992-07-08',
 	get_column('@', 'fp_country@name@South Korea', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1797,7 +1796,7 @@ VALUES
 	'1998-01-31',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1806,7 +1805,7 @@ VALUES
 	'2001-10-23',
 	get_column('@', 'fp_country@name@Wales', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1815,7 +1814,7 @@ VALUES
 	'1997-03-10',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1824,7 +1823,7 @@ VALUES
 	'1999-10-31',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1833,7 +1832,7 @@ VALUES
 	'2002-05-06',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1842,7 +1841,7 @@ VALUES
 	'2000-04-04',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1851,7 +1850,7 @@ VALUES
 	'1999-09-13',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1860,7 +1859,7 @@ VALUES
 	'2000-02-02',
 	get_column('@', 'fp_country@name@Ghana', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1869,7 +1868,7 @@ VALUES
 	'1998-04-06',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1878,7 +1877,7 @@ VALUES
 	'1997-02-16',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1887,7 +1886,7 @@ VALUES
 	'2000-12-12',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1896,7 +1895,7 @@ VALUES
 	'1999-09-09',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -1905,7 +1904,7 @@ VALUES
 	'1999-01-10',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1914,7 +1913,7 @@ VALUES
 	'1991-04-29',
 	get_column('@', 'fp_country@name@Sweden', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -1923,7 +1922,7 @@ VALUES
 	'1996-02-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1932,7 +1931,7 @@ VALUES
 	'1995-02-11',
 	get_column('@', 'fp_country@name@Slovakia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -1941,7 +1940,7 @@ VALUES
 	'1995-05-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -1950,7 +1949,7 @@ VALUES
 	'1995-07-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1959,7 +1958,7 @@ VALUES
 	'1993-12-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1968,7 +1967,7 @@ VALUES
 	'2001-01-04',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1977,7 +1976,7 @@ VALUES
 	'2000-02-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -1986,7 +1985,7 @@ VALUES
 	'2000-03-09',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -1995,7 +1994,7 @@ VALUES
 	'1998-03-11',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2004,7 +2003,7 @@ VALUES
 	'1995-07-16',
 	get_column('@', 'fp_country@name@Switzerland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2013,7 +2012,7 @@ VALUES
 	'1996-07-15',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2022,7 +2021,7 @@ VALUES
 	'1998-02-22',
 	get_column('@', 'fp_country@name@Côte d''Ivoire', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2031,7 +2030,7 @@ VALUES
 	'2004-02-28',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2040,7 +2039,7 @@ VALUES
 	'2003-01-22',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2049,7 +2048,7 @@ VALUES
 	'2000-12-12',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2058,7 +2057,7 @@ VALUES
 	'2002-04-17',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2067,7 +2066,7 @@ VALUES
 	'2003-04-14',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2076,7 +2075,7 @@ VALUES
 	'2001-07-14',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2085,7 +2084,7 @@ VALUES
 	'1997-02-15',
 	get_column('@', 'fp_country@name@Burkina Faso', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2094,7 +2093,7 @@ VALUES
 	'2002-11-18',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2103,7 +2102,7 @@ VALUES
 	'2001-01-25',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2112,7 +2111,7 @@ VALUES
 	'2001-05-01',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2121,7 +2120,7 @@ VALUES
 	'1998-04-23',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2130,7 +2129,7 @@ VALUES
 	'2001-03-26',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2139,7 +2138,7 @@ VALUES
 	'1999-11-10',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2148,7 +2147,7 @@ VALUES
 	'1999-01-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2157,7 +2156,7 @@ VALUES
 	'2000-06-17',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2166,7 +2165,7 @@ VALUES
 	'1998-10-5',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2175,7 +2174,7 @@ VALUES
 	'2000-05-08',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2184,7 +2183,7 @@ VALUES
 	'1998-08-28',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2193,7 +2192,7 @@ VALUES
 	'1993-10-28',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2202,7 +2201,7 @@ VALUES
 	'1996-04-11',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2211,7 +2210,7 @@ VALUES
 	'1999-02-25',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2220,7 +2219,7 @@ VALUES
 	'1997-01-17',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2229,7 +2228,7 @@ VALUES
 	'1997-12-19',
 	get_column('@', 'fp_country@name@Canada', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2238,7 +2237,7 @@ VALUES
 	'1994-02-12',
 	get_column('@', 'fp_country@name@Guinea', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2247,7 +2246,7 @@ VALUES
 	'1997-12-06',
 	get_column('@', 'fp_country@name@Switzerland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2256,7 +2255,7 @@ VALUES
 	'1996-04-02',
 	get_column('@', 'fp_country@name@Cameroon', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2265,7 +2264,7 @@ VALUES
 	'1997-03-13',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2274,7 +2273,7 @@ VALUES
 	'1996-04-10',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2283,7 +2282,7 @@ VALUES
 	'1996-05-02',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2292,7 +2291,7 @@ VALUES
 	'1995-02-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2301,7 +2300,7 @@ VALUES
 	'1994-05-27',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2310,7 +2309,7 @@ VALUES
 	'1995-02-18',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2319,7 +2318,7 @@ VALUES
 	'1995-02-06',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2328,7 +2327,7 @@ VALUES
 	'1994-02-08',
 	get_column('@', 'fp_country@name@Türkiye', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2337,7 +2336,7 @@ VALUES
 	'2004-11-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2346,7 +2345,7 @@ VALUES
 	'1999-08-07',
 	get_column('@', 'fp_country@name@Cameroon', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2355,7 +2354,7 @@ VALUES
 	'1999-10-21',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2364,7 +2363,7 @@ VALUES
 	'2000-07-13',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2373,7 +2372,7 @@ VALUES
 	'1995-03-30',
 	get_column('@', 'fp_country@name@Morocco', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2382,7 +2381,7 @@ VALUES
 	'1999-05-29',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2391,7 +2390,7 @@ VALUES
 	'1994-05-28',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2400,7 +2399,7 @@ VALUES
 	'1995-07-12',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2409,7 +2408,7 @@ VALUES
 	'1994-11-01',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2418,7 +2417,7 @@ VALUES
 	'1994-12-04',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2427,7 +2426,7 @@ VALUES
 	'1994-05-06',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2436,7 +2435,7 @@ VALUES
 	'2001-11-20',
 	get_column('@', 'fp_country@name@Senegal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2445,7 +2444,7 @@ VALUES
 	'1996-03-25',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2454,7 +2453,7 @@ VALUES
 	'2002-01-09',
 	get_column('@', 'fp_country@name@Ecuador', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2463,7 +2462,7 @@ VALUES
 	'1998-01-04',
 	get_column('@', 'fp_country@name@Benin', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2472,7 +2471,7 @@ VALUES
 	'2000-09-20',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2481,7 +2480,7 @@ VALUES
 	'1999-05-17',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2490,7 +2489,7 @@ VALUES
 	'1999-01-30',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2499,7 +2498,7 @@ VALUES
 	'2000-04-25',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2508,7 +2507,7 @@ VALUES
 	'2002-09-14',
 	get_column('@', 'fp_country@name@Senegal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2517,7 +2516,7 @@ VALUES
 	'2000-01-01',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2526,7 +2525,7 @@ VALUES
 	'1997-07-07',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2535,7 +2534,7 @@ VALUES
 	'2002-11-18',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2544,7 +2543,7 @@ VALUES
 	'2002-05-16',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2553,7 +2552,7 @@ VALUES
 	'2000-04-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2562,7 +2561,7 @@ VALUES
 	'2000-11-12',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2571,7 +2570,7 @@ VALUES
 	'1992-11-23',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2580,7 +2579,7 @@ VALUES
 	'1997-12-13',
 	get_column('@', 'fp_country@name@Slovakia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2589,7 +2588,7 @@ VALUES
 	'1997-11-24',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2598,7 +2597,7 @@ VALUES
 	'2000-02-21',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2607,7 +2606,7 @@ VALUES
 	'1997-07-19',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2616,7 +2615,7 @@ VALUES
 	'1996-12-12',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2625,7 +2624,7 @@ VALUES
 	'1999-10-18',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2634,7 +2633,7 @@ VALUES
 	'1997-06-25',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2643,7 +2642,7 @@ VALUES
 	'1995-04-25',
 	get_column('@', 'fp_country@name@Cameroon', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2652,7 +2651,7 @@ VALUES
 	'1997-12-01',
 	get_column('@', 'fp_country@name@Algeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2661,7 +2660,7 @@ VALUES
 	'1998-01-21',
 	get_column('@', 'fp_country@name@Ecuador', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2670,7 +2669,7 @@ VALUES
 	'1999-08-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2679,7 +2678,7 @@ VALUES
 	'1998-05-30',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2688,7 +2687,7 @@ VALUES
 	'1997-10-02',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2697,7 +2696,7 @@ VALUES
 	'1999-01-21',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2706,7 +2705,7 @@ VALUES
 	'1995-02-27',
 	get_column('@', 'fp_country@name@Czech Republic', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2715,7 +2714,7 @@ VALUES
 	'1997-02-20',
 	get_column('@', 'fp_country@name@Serbia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2724,7 +2723,7 @@ VALUES
 	'1995-09-15',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2733,7 +2732,7 @@ VALUES
 	'1996-02-13',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2742,7 +2741,7 @@ VALUES
 	'1998-10-16',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2751,7 +2750,7 @@ VALUES
 	'1994-03-11',
 	get_column('@', 'fp_country@name@Scotland', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2760,7 +2759,7 @@ VALUES
 	'1991-09-20',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2769,7 +2768,7 @@ VALUES
 	'1993-01-07',
 	get_column('@', 'fp_country@name@Slovenia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2778,7 +2777,7 @@ VALUES
 	'1992-05-11',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2787,7 +2786,7 @@ VALUES
 	'1993-05-13',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2796,7 +2795,7 @@ VALUES
 	'1992-04-30',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2805,7 +2804,7 @@ VALUES
 	'1987-06-24',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2814,7 +2813,7 @@ VALUES
 	'1998-01-08',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2823,7 +2822,7 @@ VALUES
 	'1994-05-27',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2832,7 +2831,7 @@ VALUES
 	'2000-12-20',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2841,7 +2840,7 @@ VALUES
 	'1997-09-16',
 	get_column('@', 'fp_country@name@Côte d''Ivoire', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2850,7 +2849,7 @@ VALUES
 	'1998-09-17',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2859,7 +2858,7 @@ VALUES
 	'1991-07-08',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2868,7 +2867,7 @@ VALUES
 	'2001-03-14',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2877,7 +2876,7 @@ VALUES
 	'2004-07-01',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2886,7 +2885,7 @@ VALUES
 	'2002-02-26',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2895,7 +2894,7 @@ VALUES
 	'1999-07-13',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2904,7 +2903,7 @@ VALUES
 	'2003-05-31',
 	get_column('@', 'fp_country@name@Slovenia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2913,7 +2912,7 @@ VALUES
 	'2002-06-10',
 	get_column('@', 'fp_country@name@Scotland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2922,7 +2921,7 @@ VALUES
 	'2002-01-20',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2931,7 +2930,7 @@ VALUES
 	'2003-04-04',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2940,7 +2939,7 @@ VALUES
 	'2001-08-04',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -2949,7 +2948,7 @@ VALUES
 	'2001-07-03',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2958,7 +2957,7 @@ VALUES
 	'2000-09-16',
 	get_column('@', 'fp_country@name@Georgia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -2967,7 +2966,7 @@ VALUES
 	'1998-09-21',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -2976,7 +2975,7 @@ VALUES
 	'2004-11-20',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -2985,7 +2984,7 @@ VALUES
 	'2002-10-31',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -2994,7 +2993,7 @@ VALUES
 	'2001-01-25',
 	get_column('@', 'fp_country@name@Türkiye', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3003,7 +3002,7 @@ VALUES
 	'2001-05-22',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3012,7 +3011,7 @@ VALUES
 	'2000-04-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3021,7 +3020,7 @@ VALUES
 	'1996-08-15',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3030,7 +3029,7 @@ VALUES
 	'1995-10-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer,
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer,
 	'FW'
 ),
 (
@@ -3039,7 +3038,7 @@ VALUES
 	'1997-11-18',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3048,7 +3047,7 @@ VALUES
 	'1994-07-22',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3057,7 +3056,7 @@ VALUES
 	'1997-08-03',
 	get_column('@', 'fp_country@name@Jamaica', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3066,7 +3065,7 @@ VALUES
 	'1996-04-13',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3075,7 +3074,7 @@ VALUES
 	'1997-11-14',
 	get_column('@', 'fp_country@name@Morocco', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3084,7 +3083,7 @@ VALUES
 	'1998-11-16',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3093,7 +3092,7 @@ VALUES
 	'1995-04-18',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@rightMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3102,7 +3101,7 @@ VALUES
 	'1999-01-23',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3111,7 +3110,7 @@ VALUES
 	'1996-12-21',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3120,7 +3119,7 @@ VALUES
 	'1996-04-27',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3129,7 +3128,7 @@ VALUES
 	'1995-01-01',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3138,7 +3137,7 @@ VALUES
 	'1994-02-10',
 	get_column('@', 'fp_country@name@Paraguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3147,7 +3146,7 @@ VALUES
 	'1996-05-30',
 	get_column('@', 'fp_country@name@Russian Federation', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3156,7 +3155,7 @@ VALUES
 	'1994-05-27',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3165,7 +3164,7 @@ VALUES
 	'1995-01-20',
 	get_column('@', 'fp_country@name@Uruguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3174,7 +3173,7 @@ VALUES
 	'1993-05-25',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3183,7 +3182,7 @@ VALUES
 	'1994-10-18',
 	get_column('@', 'fp_country@name@Scotland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3192,7 +3191,7 @@ VALUES
 	'1992-06-24',
 	get_column('@', 'fp_country@name@Austria', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3201,7 +3200,7 @@ VALUES
 	'1998-04-20',
 	get_column('@', 'fp_country@name@Sweden', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3210,7 +3209,7 @@ VALUES
 	'2002-08-13',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3219,7 +3218,7 @@ VALUES
 	'2001-06-06',
 	get_column('@', 'fp_country@name@Algeria', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3228,7 +3227,7 @@ VALUES
 	'1999-09-06',
 	get_column('@', 'fp_country@name@Albania', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3237,7 +3236,7 @@ VALUES
 	'1999-10-28',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3246,7 +3245,7 @@ VALUES
 	'2001-06-13',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3255,7 +3254,7 @@ VALUES
 	'2002-01-18',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3264,7 +3263,7 @@ VALUES
 	'1998-05-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3273,7 +3272,7 @@ VALUES
 	'2000-06-19',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3282,7 +3281,7 @@ VALUES
 	'1993-07-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3291,7 +3290,7 @@ VALUES
 	'2001-02-06',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3300,7 +3299,7 @@ VALUES
 	'1999-05-29',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3309,7 +3308,7 @@ VALUES
 	'1995-12-04',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3318,7 +3317,7 @@ VALUES
 	'1996-06-01',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3327,7 +3326,7 @@ VALUES
 	'1996-04-12',
 	get_column('@', 'fp_country@name@Scotland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3336,7 +3335,7 @@ VALUES
 	'2003-05-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3345,7 +3344,7 @@ VALUES
 	'1998-08-10',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3354,7 +3353,7 @@ VALUES
 	'1996-02-21',
 	get_column('@', 'fp_country@name@Morocco', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3363,7 +3362,7 @@ VALUES
 	'1996-05-14',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3372,7 +3371,7 @@ VALUES
 	'1995-09-28',
 	get_column('@', 'fp_country@name@Austria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3381,7 +3380,7 @@ VALUES
 	'1997-01-24',
 	get_column('@', 'fp_country@name@Austria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3390,7 +3389,7 @@ VALUES
 	'1995-08-05',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3399,7 +3398,7 @@ VALUES
 	'1992-09-1',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3408,7 +3407,7 @@ VALUES
 	'1994-09-16',
 	get_column('@', 'fp_country@name@Serbia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3417,7 +3416,7 @@ VALUES
 	'2001-04-20',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3426,7 +3425,7 @@ VALUES
 	'1999-08-25',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3435,7 +3434,7 @@ VALUES
 	'1999-08-24',
 	get_column('@', 'fp_country@name@Côte d''Ivoire', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3444,7 +3443,7 @@ VALUES
 	'2005-01-31',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3453,7 +3452,7 @@ VALUES
 	'2004-04-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3462,7 +3461,7 @@ VALUES
 	'2002-05-23',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3471,7 +3470,7 @@ VALUES
 	'2003-08-15',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3480,7 +3479,7 @@ VALUES
 	'2000-02-02',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3489,7 +3488,7 @@ VALUES
 	'2003-06-17',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3498,7 +3497,7 @@ VALUES
 	'2002-09-01',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3507,7 +3506,7 @@ VALUES
 	'2002-03-01',
 	get_column('@', 'fp_country@name@Côte d''Ivoire', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3516,7 +3515,7 @@ VALUES
 	'2003-05-06',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3525,7 +3524,7 @@ VALUES
 	'2003-02-17',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3534,7 +3533,7 @@ VALUES
 	'2000-06-05',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3543,7 +3542,7 @@ VALUES
 	'1995-05-20',
 	get_column('@', 'fp_country@name@Serbia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3552,7 +3551,7 @@ VALUES
 	'2001-11-25',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3561,7 +3560,7 @@ VALUES
 	'2001-10-07',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3570,7 +3569,7 @@ VALUES
 	'2000-01-07',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3579,7 +3578,7 @@ VALUES
 	'1994-05-25',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3588,7 +3587,7 @@ VALUES
 	'2001-08-01',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3597,7 +3596,7 @@ VALUES
 	'2000-05-10',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3606,7 +3605,7 @@ VALUES
 	'1993-11-23',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3615,7 +3614,7 @@ VALUES
 	'1999-02-27',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3624,7 +3623,7 @@ VALUES
 	'2002-04-10',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3633,7 +3632,7 @@ VALUES
 	'1998-01-12',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3642,7 +3641,7 @@ VALUES
 	'2003-08-25',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3651,7 +3650,7 @@ VALUES
 	'1997-03-03',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3660,7 +3659,7 @@ VALUES
 	'1999-08-30',
 	get_column('@', 'fp_country@name@Ireland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3669,7 +3668,7 @@ VALUES
 	'2000-05-12',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3678,7 +3677,7 @@ VALUES
 	'2001-03-10',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3687,7 +3686,7 @@ VALUES
 	'1998-02-26',
 	get_column('@', 'fp_country@name@Poland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3696,7 +3695,7 @@ VALUES
 	'1999-11-26',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3705,7 +3704,7 @@ VALUES
 	'1997-05-10',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3714,7 +3713,7 @@ VALUES
 	'2000-03-25',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3723,7 +3722,7 @@ VALUES
 	'2000-12-16',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3732,7 +3731,7 @@ VALUES
 	'1999-07-22',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3741,7 +3740,7 @@ VALUES
 	'1999-02-03',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3750,7 +3749,7 @@ VALUES
 	'1996-01-12',
 	get_column('@', 'fp_country@name@Democratic Republic of the Congo', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3759,7 +3758,7 @@ VALUES
 	'1998-01-17',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3768,7 +3767,7 @@ VALUES
 	'1997-01-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3777,7 +3776,7 @@ VALUES
 	'1993-10-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3786,7 +3785,7 @@ VALUES
 	'1998-11-22',
 	get_column('@', 'fp_country@name@Greece', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3795,7 +3794,7 @@ VALUES
 	'1999-01-25',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3804,7 +3803,7 @@ VALUES
 	'1993-06-19',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3813,7 +3812,7 @@ VALUES
 	'1998-07-22',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3822,7 +3821,7 @@ VALUES
 	'1994-05-17',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3831,7 +3830,7 @@ VALUES
 	'1995-04-18',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3840,7 +3839,7 @@ VALUES
 	'1991-11-17',
 	get_column('@', 'fp_country@name@Ukraine', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3849,7 +3848,7 @@ VALUES
 	'1997-02-21',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -3858,7 +3857,7 @@ VALUES
 	'1997-01-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3867,7 +3866,7 @@ VALUES
 	'1994-06-12',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -3876,7 +3875,7 @@ VALUES
 	'1997-05-10',
 	get_column('@', 'fp_country@name@Türkiye', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3885,7 +3884,7 @@ VALUES
 	'1993-06-13',
 	get_column('@', 'fp_country@name@Ghana', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3894,7 +3893,7 @@ VALUES
 	'1993-11-21',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer,
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer,
 	'FW'
 ),
 (
@@ -3903,7 +3902,7 @@ VALUES
 	'1991-01-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3912,7 +3911,7 @@ VALUES
 	'1991-02-11',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3921,7 +3920,7 @@ VALUES
 	'1994-05-27',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3930,7 +3929,7 @@ VALUES
 	'1993-04-25',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3939,7 +3938,7 @@ VALUES
 	'1994-03-27',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3948,7 +3947,7 @@ VALUES
 	'1991-03-05',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -3957,7 +3956,7 @@ VALUES
 	'1992-11-05',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3966,7 +3965,7 @@ VALUES
 	'1993-03-31',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3975,7 +3974,7 @@ VALUES
 	'1998-04-17',
 	get_column('@', 'fp_country@name@Colombia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -3984,7 +3983,7 @@ VALUES
 	'1998-11-29',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -3993,7 +3992,7 @@ VALUES
 	'1994-03-24',
 	get_column('@', 'fp_country@name@North Macedonia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4002,7 +4001,7 @@ VALUES
 	'1989-04-10',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4011,7 +4010,7 @@ VALUES
 	'1999-08-12',
 	get_column('@', 'fp_country@name@Austria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4020,7 +4019,7 @@ VALUES
 	'1998-01-13',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4029,7 +4028,7 @@ VALUES
 	'2002-11-29',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4038,7 +4037,7 @@ VALUES
 	'2000-10-17',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4047,7 +4046,7 @@ VALUES
 	'1998-05-22',
 	get_column('@', 'fp_country@name@Nigeria', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4056,7 +4055,7 @@ VALUES
 	'1999-07-14',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4065,7 +4064,7 @@ VALUES
 	'1998-08-28',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4074,7 +4073,7 @@ VALUES
 	'1997-04-07',
 	get_column('@', 'fp_country@name@Curaçao', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4083,7 +4082,7 @@ VALUES
 	'2001-07-20',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4092,7 +4091,7 @@ VALUES
 	'1994-01-20',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4101,7 +4100,7 @@ VALUES
 	'2000-07-24',
 	get_column('@', 'fp_country@name@Paraguay', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer,
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer,
 	'FW'
 ),
 (
@@ -4110,7 +4109,7 @@ VALUES
 	'2000-05-10',
 	get_column('@', 'fp_country@name@Morocco', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4119,7 +4118,7 @@ VALUES
 	'2001-02-03',
 	get_column('@', 'fp_country@name@South Korea', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4128,7 +4127,7 @@ VALUES
 	'2002-01-30',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4137,7 +4136,7 @@ VALUES
 	'2002-09-16',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4146,7 +4145,7 @@ VALUES
 	'1990-08-28',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4155,7 +4154,7 @@ VALUES
 	'1991-03-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4164,7 +4163,7 @@ VALUES
 	'2000-06-21',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4173,7 +4172,7 @@ VALUES
 	'1996-05-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4182,7 +4181,7 @@ VALUES
 	'1999-02-03',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4191,7 +4190,7 @@ VALUES
 	'1997-08-31',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4200,7 +4199,7 @@ VALUES
 	'1999-05-12',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4209,7 +4208,7 @@ VALUES
 	'1991-01-12',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4218,7 +4217,7 @@ VALUES
 	'1991-10-12',
 	get_column('@', 'fp_country@name@Greece', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4227,7 +4226,7 @@ VALUES
 	'1996-11-20',
 	get_column('@', 'fp_country@name@Switzerland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4236,7 +4235,7 @@ VALUES
 	'1989-12-16',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4245,7 +4244,7 @@ VALUES
 	'1996-09-11',
 	get_column('@', 'fp_country@name@Denmark', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4254,7 +4253,7 @@ VALUES
 	'1992-07-30',
 	get_column('@', 'fp_country@name@Croatia', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4263,7 +4262,7 @@ VALUES
 	'1997-03-16',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4272,7 +4271,7 @@ VALUES
 	'1996-01-26',
 	get_column('@', 'fp_country@name@South Korea', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4281,7 +4280,7 @@ VALUES
 	'1995-08-19',
 	get_column('@', 'fp_country@name@Algeria', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4290,7 +4289,7 @@ VALUES
 	'1993-02-18',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4299,7 +4298,7 @@ VALUES
 	'1997-01-06',
 	get_column('@', 'fp_country@name@Senegal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4308,7 +4307,7 @@ VALUES
 	'1998-03-10',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4317,7 +4316,7 @@ VALUES
 	'1997-09-19',
 	get_column('@', 'fp_country@name@Ghana', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4326,7 +4325,7 @@ VALUES
 	'1997-04-23',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4335,7 +4334,7 @@ VALUES
 	'1992-01-24',
 	get_column('@', 'fp_country@name@Czech Republic', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4344,7 +4343,7 @@ VALUES
 	'1994-07-20',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4353,7 +4352,7 @@ VALUES
 	'1993-07-17',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4362,7 +4361,7 @@ VALUES
 	'1995-09-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4371,7 +4370,7 @@ VALUES
 	'1994-03-07',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Goalkeeper', 'id')::integer,
+	get_column('@', 'fp_position@name@goalkeeper', 'id')::integer,
 	'GK'
 ),
 (
@@ -4380,7 +4379,7 @@ VALUES
 	'1999-01-25',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4389,7 +4388,7 @@ VALUES
 	'2000-12-16',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4398,7 +4397,7 @@ VALUES
 	'1998-08-25',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4407,7 +4406,7 @@ VALUES
 	'1998-01-29',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4416,7 +4415,7 @@ VALUES
 	'2001-01-06',
 	get_column('@', 'fp_country@name@Burkina Faso', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4425,7 +4424,7 @@ VALUES
 	'2003-06-26',
 	get_column('@', 'fp_country@name@Serbia', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4434,7 +4433,7 @@ VALUES
 	'1996-05-03',
 	get_column('@', 'fp_country@name@Mali', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4443,7 +4442,7 @@ VALUES
 	'2000-02-03',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4452,7 +4451,7 @@ VALUES
 	'2001-12-28',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4461,7 +4460,7 @@ VALUES
 	'2002-01-20',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4470,7 +4469,7 @@ VALUES
 	'1993-11-08',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4479,7 +4478,7 @@ VALUES
 	'2002-02-03',
 	get_column('@', 'fp_country@name@Romania', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4488,7 +4487,7 @@ VALUES
 	'2002-03-14',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4497,7 +4496,7 @@ VALUES
 	'2002-07-15',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4506,7 +4505,7 @@ VALUES
 	'1999-08-17',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4515,7 +4514,7 @@ VALUES
 	'1999-07-28',
 	get_column('@', 'fp_country@name@Bosnia and Herzegovina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4524,7 +4523,7 @@ VALUES
 	'2001-03-13',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4533,7 +4532,7 @@ VALUES
 	'2002-11-13',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4542,7 +4541,7 @@ VALUES
 	'2002-04-15',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4551,7 +4550,7 @@ VALUES
 	'1997-11-26',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4560,7 +4559,7 @@ VALUES
 	'1999-04-08',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4569,7 +4568,7 @@ VALUES
 	'1997-05-10',
 	get_column('@', 'fp_country@name@Argentina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4578,7 +4577,7 @@ VALUES
 	'2000-08-19',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4587,7 +4586,7 @@ VALUES
 	'1999-04-13',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4596,7 +4595,7 @@ VALUES
 	'2000-04-04',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4605,7 +4604,7 @@ VALUES
 	'1997-08-31',
 	get_column('@', 'fp_country@name@Brazil', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4614,7 +4613,7 @@ VALUES
 	'1998-02-23',
 	get_column('@', 'fp_country@name@Senegal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4623,7 +4622,7 @@ VALUES
 	'2001-06-04',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4632,7 +4631,7 @@ VALUES
 	'2000-08-31',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4641,7 +4640,7 @@ VALUES
 	'1998-12-14',
 	get_column('@', 'fp_country@name@Italy', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4650,7 +4649,7 @@ VALUES
 	'1991-01-07',
 	get_column('@', 'fp_country@name@Venezuela', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4659,7 +4658,7 @@ VALUES
 	'1990-09-10',
 	get_column('@', 'fp_country@name@Portugal', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4668,7 +4667,7 @@ VALUES
 	'1997-01-02',
 	get_column('@', 'fp_country@name@Spain', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Central Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@centralMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4677,7 +4676,7 @@ VALUES
 	'1996-07-13',
 	get_column('@', 'fp_country@name@Türkiye', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4686,7 +4685,7 @@ VALUES
 	'2000-04-25',
 	get_column('@', 'fp_country@name@Belgium', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@centreBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4695,7 +4694,7 @@ VALUES
 	'1996-01-06',
 	get_column('@', 'fp_country@name@Japan', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer,
 	'MF'
 ),
 (
@@ -4704,7 +4703,7 @@ VALUES
 	'1997-08-28',
 	get_column('@', 'fp_country@name@United States', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@leftBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4713,7 +4712,7 @@ VALUES
 	'1999-05-10',
 	get_column('@', 'fp_country@name@Switzerland', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4722,7 +4721,7 @@ VALUES
 	'1998-01-01',
 	get_column('@', 'fp_country@name@Germany', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4731,7 +4730,7 @@ VALUES
 	'1997-04-13',
 	get_column('@', 'fp_country@name@England', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Right-Back', 'id')::integer,
+	get_column('@', 'fp_position@name@rightBack', 'id')::integer,
 	'DF'
 ),
 (
@@ -4740,7 +4739,7 @@ VALUES
 	'1999-06-17',
 	get_column('@', 'fp_country@name@Netherlands', 'id')::integer,
 	'LEFT',
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer,
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer,
 	'FW'
 ),
 (
@@ -4749,7 +4748,7 @@ VALUES
 	'1998-03-03',
 	get_column('@', 'fp_country@name@Bosnia and Herzegovina', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Centre Forward', 'id')::integer,
+	get_column('@', 'fp_position@name@centreForward', 'id')::integer,
 	'FW'
 ),
 (
@@ -4758,12 +4757,10 @@ VALUES
 	'1994-02-02',
 	get_column('@', 'fp_country@name@Norway', 'id')::integer,
 	'RIGHT',
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer,
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer,
 	'MF'
 );
-
 --------------------------------------------------------------------------------
-
 
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
