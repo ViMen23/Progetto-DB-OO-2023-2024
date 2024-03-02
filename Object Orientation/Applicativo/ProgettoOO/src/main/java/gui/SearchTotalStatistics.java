@@ -4,7 +4,6 @@ import controller.Controller;
 
 import model.Team;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +29,6 @@ public class SearchTotalStatistics
 		TablePanel totalStatisticsTablePanel;
 		JButton button;
 
-		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
@@ -50,40 +48,29 @@ public class SearchTotalStatistics
 
 		centralPanel.setLayout(migLayout);
 
-		string = GuiConfiguration.getMessage("searchTotalPlayerStatistics");
-		string = string.toUpperCase();
-
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("searchTotalPlayerStatistics"), this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("teamType"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
 		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("totalStatisticsTeamTypeInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamTypeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("role"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		playerRolePanel = new PlayerRoleCheckPanel(ctrlPlayerRole);
@@ -96,9 +83,7 @@ public class SearchTotalStatistics
 		totalStatisticsTablePanel = new TablePanel(true, null);
 		this.add(totalStatisticsTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("search");
-		string = string.toUpperCase();
-		button = new JButton(string);
+		button = new JButton(GuiConfiguration.getMessage("search"));
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
@@ -123,25 +108,32 @@ public class SearchTotalStatistics
 				string += GuiConfiguration.getMessage("countries");
 				string += " ";
 				string += totalStatisticsTableData.size();
-				string = string.toUpperCase();
 
 				totalStatisticsTablePanel.getTitleLabel().setText(string);
 
 				// messaggio informazioni ricerca effettuata
 				string = "";
 				if (ctrlTeamType.getText() != null) {
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
+					string += GuiConfiguration.getMessage("teamType");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamType.getText()));
+					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
 				}
 
 				if (ctrlPlayerRole.getText() != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("role"));
+					string += GuiConfiguration.getMessage("role");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlPlayerRole.getText())); //TODO RICORDA DF_MF
+
+					String[] keyPart = ctrlPlayerRole.getText().split("_");
+
+					string += GuiConfiguration.getMessage(keyPart[0]);
+
+					for (int i = 1; i < keyPart.length; ++i) {
+						string += ", ";
+						string += GuiConfiguration.getMessage(keyPart[i]);
+					}
 				}
 
 				totalStatisticsTablePanel.getTextArea().setText(string);

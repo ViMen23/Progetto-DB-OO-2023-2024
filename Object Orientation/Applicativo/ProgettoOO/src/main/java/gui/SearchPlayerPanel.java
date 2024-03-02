@@ -451,7 +451,7 @@ public class SearchPlayerPanel
 
 					if (1 == continentNameVector.size()) {
 						continentNameVector.clear();
-						continentNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						continentNameVector.add(GuiConfiguration.getMessage("noData"));
 						continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
 						continentTypeNamePanel.getMyComboBox().setEnabled(false);
 						continentTypeNamePanel.getMyComboBox().setSelectedIndex(0);
@@ -492,7 +492,7 @@ public class SearchPlayerPanel
 
 					if (1 == nationNameVector.size()) {
 						nationNameVector.clear();
-						nationNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						nationNameVector.add(GuiConfiguration.getMessage("noData"));
 						nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 						nationTypeNamePanel.getMyComboBox().setEnabled(false);
 						nationTypeNamePanel.getMyComboBox().setSelectedIndex(0);
@@ -518,7 +518,7 @@ public class SearchPlayerPanel
 
 					if (1 == positionNameVector.size()) {
 						positionNameVector.clear();
-						positionNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						positionNameVector.add(GuiConfiguration.getMessage("noData"));
 						playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
 						playerPositionPanel.getMyComboBox().setEnabled(false);
 						playerPositionPanel.getMyComboBox().setSelectedIndex(0);
