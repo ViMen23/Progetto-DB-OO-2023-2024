@@ -26,6 +26,7 @@ public class InfoPanel
 		textArea.setOpaque(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
+		textArea.setFont(GuiConfiguration.OUTPUT_SMALL_FONT);
 		this.add(textArea);
 	}
 }

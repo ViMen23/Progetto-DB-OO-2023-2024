@@ -42,6 +42,7 @@ public class RadioPanel
 			buttonGroup.add(radioButton);
 			this.add(radioButton);
 
+
 			radioButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e)

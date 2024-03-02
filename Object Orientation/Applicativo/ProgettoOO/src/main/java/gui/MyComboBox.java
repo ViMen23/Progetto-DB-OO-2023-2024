@@ -17,7 +17,7 @@ public class MyComboBox
 		this.setEnabled(enable);
 		this.setCursor(GuiConfiguration.HAND_CURSOR);
 		this.setPrototypeDisplayValue(displayValue);
-		this.setMaximumRowCount(5);
+		this.setMaximumRowCount(7);
 
 		this.addPopupMenuListener(new PopupMenuListener() {
 			@Override

@@ -18,7 +18,6 @@ public class SearchCountryPanel
 	public SearchCountryPanel()
 	{
 		final String selectAll = GuiConfiguration.getMessage("selectAll");
-		final StringBuilder researchMessage = new StringBuilder();
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel(selectAll);
@@ -134,13 +133,35 @@ public class SearchCountryPanel
 				countryTable.setModel(new TableModel(countryTableData, GuiConfiguration.COUNTRY_TABLE_COLUMN_NAME));
 				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
+				// messaggio ricerca effettuata
 				string = GuiConfiguration.getMessage("doneSearch");
+				string += " - ";
+				string += GuiConfiguration.getMessage("countries");
 				string += " ";
 				string += countryTableData.size();
 				string = string.toUpperCase();
+
 				countryTablePanel.getTitleLabel().setText(string);
 
-				countryTablePanel.getTextArea().setText(researchMessage.toString());
+				// messaggio informazioni ricerca effettuata
+				string = "";
+				if (ctrlCountryType.getText() != null) {
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("countryType"));
+					string += ": ";
+					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCountryType.getText()));
+				}
+
+				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("CONTINENT"));
+					string += ": ";
+					string += ctrlContinentName.getText();
+				}
+
+				countryTablePanel.getTextArea().setText(string);
+
 				topSearchPanel.getTitleButton().doClick();
 				SearchCountryPanel.this.revalidate();
 			}
@@ -159,9 +180,6 @@ public class SearchCountryPanel
 					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlContinentName.setText(selectAll);
 				}
-				researchMessage.setLength(0);
-				researchMessage.append(GuiConfiguration.getMessage("countryType")).append(": ");
-				researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
 			}
 		});
 
@@ -184,19 +202,13 @@ public class SearchCountryPanel
 
 					if (1 == countryNameVector.size()) {
 						countryNameVector.clear();
-						countryNameVector.add(GuiConfiguration.getMessage("noData"));
+						countryNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
 						continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
 						continentNamePanel.getMyComboBox().setEnabled(false);
 						continentNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
-				} else {
-					researchMessage.setLength(0);
-					researchMessage.append(GuiConfiguration.getMessage("countryType")).append(": ");
-					researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
-					researchMessage.append('\n').append(GuiConfiguration.getMessage("CONTINENT")).append(": ");
-					researchMessage.append(ctrlContinentName.getText());
 				}
 			}
 		});

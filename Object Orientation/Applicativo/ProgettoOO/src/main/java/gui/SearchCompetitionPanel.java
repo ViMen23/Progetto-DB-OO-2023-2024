@@ -21,7 +21,6 @@ public class SearchCompetitionPanel
 	public SearchCompetitionPanel()
 	{
 		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
-		final StringBuilder researchMessage = new StringBuilder();
 
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);
 		final JLabel ctrlCompetitionType = new JLabel((String) null);
@@ -77,17 +76,12 @@ public class SearchCompetitionPanel
 		centralPanel.setLayout(migLayout);
 
 
-		string = GuiConfiguration.getMessage("search");
-		string += " ";
-		string += GuiConfiguration.getMessage("competitions");
+		string = GuiConfiguration.getMessage("searchCompetitions");
 		string += " - ";
-		string += GuiConfiguration.getMessage("competitions");
+		string += GuiConfiguration.getMessage("availableCompetitions");
 		string += " ";
-		string += GuiConfiguration.getMessage("available");
-		string += " ";
-		string += Controller.getInstance().countCompetitions().toString();
+		string += Controller.getInstance().countCompetitions();
 		string = string.toUpperCase();
-
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
@@ -95,75 +89,72 @@ public class SearchCompetitionPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
 
+		string = GuiConfiguration.getMessage("name");
+		string = string.toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
 		string = GuiConfiguration.getMessage("name");
 		string = StringUtils.capitalize(string);
-
 		competitionNamePanel = new LabelTextPanel(string, ctrlCompetitionSubName, Regex.patternAlnum);
 		centralPanel.add(competitionNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il primo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionNameInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("competitionType");
-		string = string.toUpperCase();
 
+		string = GuiConfiguration.getMessage("competitionType");
+		string = string.toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		competitionTypePanel = new RadioPanel(Competition.COMPETITION_TYPE.values(), ctrlCompetitionType);
 		centralPanel.add(competitionTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il secondo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionTypeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
 
+		string = GuiConfiguration.getMessage("teamType");
+		string = string.toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
 		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il terzo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionTeamTypeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("country");
-		string += "/";
-		string += GuiConfiguration.getMessage("confederation");
-		string = string.toUpperCase();
 
+		string = GuiConfiguration.getMessage("country");
+		string = string.toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
@@ -199,7 +190,7 @@ public class SearchCompetitionPanel
 		buttonGroup.add(nationTypeNamePanel.getRadioButton());
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il quarto info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionCountryInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -210,7 +201,6 @@ public class SearchCompetitionPanel
 
 		string = GuiConfiguration.getMessage("search");
 		string = string.toUpperCase();
-
 		button = new JButton(string);
 
 
@@ -219,6 +209,7 @@ public class SearchCompetitionPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				MyTable countryTable = competitionTablePanel.getMyTable();
+				String string;
 
 				competitionTableData.clear();
 
@@ -232,15 +223,66 @@ public class SearchCompetitionPanel
 								competitionTableData
 				);
 
-				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COUNTRY_TABLE_COLUMN_NAME));
+				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COMPETITION_TABLE_COLUMN_NAME));
 				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
-				competitionTablePanel.getTitleLabel().setText(
-								GuiConfiguration.getMessage("msgDoneSearch") + " " + competitionTableData.size()
-				);
+				string = GuiConfiguration.getMessage("doneSearch");
+				string += " - ";
+				string += GuiConfiguration.getMessage("competitions");
+				string += " ";
+				string += competitionTableData.size();
+				string = string.toUpperCase();
 
-				competitionTablePanel.getTextArea().setText(researchMessage.toString());
+				competitionTablePanel.getTitleLabel().setText(string);
+
+				// messaggio informazioni ricerca effettuata
+				string = "";
+
+				if (ctrlCompetitionSubName.getText() != null) {
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("name"));
+					string += ": ";
+					string += ctrlCompetitionSubName.getText();
+				}
+
+				if (ctrlCompetitionType.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("competitionType"));
+					string += ": ";
+					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCompetitionType.getText()));
+				}
+
+				if (ctrlTeamType.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("teamType"));
+					string += ": ";
+					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamType.getText()));
+				}
+
+				if (ctrlCountryType.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("country"));
+					string += ": ";
+					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCountryType.getText()));
+					if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+						string += " - ";
+						string += ctrlContinentName.getText();
+						if (!ctrlNationName.getText().equalsIgnoreCase(selectAll)) {
+							string += " - ";
+							string += ctrlNationName.getText();
+						}
+					}
+				}
+
+				competitionTablePanel.getTextArea().setText(string);
+
 				topSearchPanel.getTitleButton().doClick();
+
 				SearchCompetitionPanel.this.revalidate();
 			}
 		});
@@ -292,6 +334,16 @@ public class SearchCompetitionPanel
 									continentNameMap
 					);
 
+					if (1 == continentNameVector.size()) {
+						continentNameVector.clear();
+						continentNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+						continentTypeNamePanel.getMyComboBox().setEnabled(false);
+						continentTypeNamePanel.getMyComboBox().setSelectedIndex(0);
+						nationTypeNamePanel.getMyComboBox().setEnabled(false);
+						nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					}
+
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
 
 				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
@@ -324,6 +376,14 @@ public class SearchCompetitionPanel
 									nationNameVector,
 									nationNameMap
 					);
+
+					if (1 == nationNameVector.size()) {
+						nationNameVector.clear();
+						nationNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+						nationTypeNamePanel.getMyComboBox().setEnabled(false);
+						nationTypeNamePanel.getMyComboBox().setSelectedIndex(0);
+					}
 
 					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}

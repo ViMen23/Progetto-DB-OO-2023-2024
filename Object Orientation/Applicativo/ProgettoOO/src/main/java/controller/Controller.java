@@ -514,7 +514,7 @@ public class Controller
 
 			vector.add(confederation.getLongName());
 			vector.add(confederation.getShortName());
-			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(confederation.getCountry().getType().toLowerCase())));
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(confederation.getCountry().getType())));
 
 			vector.add(confederation.getCountry().getName());
 
@@ -795,8 +795,8 @@ public class Controller
 			Competition competition = competitionMap.get(key);
 
 			vector.add(competition.getName());
-			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getType().toLowerCase())));
-			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getTeamType().toLowerCase())));
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getType())));
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(competition.getTeamType())));
 			vector.add(competition.getConfederation().getShortName());
 			vector.add(competition.getConfederation().getCountry().getName());
 

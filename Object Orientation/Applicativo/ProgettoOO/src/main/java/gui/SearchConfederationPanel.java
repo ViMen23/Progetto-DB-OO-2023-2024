@@ -18,7 +18,6 @@ public class SearchConfederationPanel
 	public SearchConfederationPanel()
 	{
 		final String selectAll = GuiConfiguration.getMessage("selectAll");
-		final StringBuilder researchMessage = new StringBuilder();
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlConfederationName = new JLabel(selectAll);
@@ -37,6 +36,8 @@ public class SearchConfederationPanel
 		LabelComboPanel confederationNamePanel;
 		TablePanel confederationTablePanel;
 		JButton button;
+
+		String string;
 
 
 		migLayout = new MigLayout(
@@ -58,39 +59,52 @@ public class SearchConfederationPanel
 
 		centralPanel.setLayout(migLayout);
 
-		topSearchPanel = new TopSearchPanel(
-						GuiConfiguration.getMessage("msgTopSearchConfederationButton") + " " + Controller.getInstance().countConfederations().toString(),
-						this,
-						centralPanel
-		);
+		string = GuiConfiguration.getMessage("searchConfederations");
+		string += " - ";
+		string += GuiConfiguration.getMessage("availableConfederations");
+		string += Controller.getInstance().countConfederations().toString();
+		string = string.toUpperCase();
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("confederationType").toUpperCase());
+		string = GuiConfiguration.getMessage("confederationType");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgInfo"));
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		countryTypePanel = new RadioPanel(Country.COUNTRY_TYPE.values(), ctrlCountryType);
 		centralPanel.add(countryTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("country"));
+		string = GuiConfiguration.getMessage("confederationTypeInfo");
+		string = StringUtils.capitalize(string);
+		infoPanel = new InfoPanel(string);
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("continentalConfederation").toUpperCase());
+		string = GuiConfiguration.getMessage("continentConfederation");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgInfo"));
+		string = GuiConfiguration.getMessage("info");
+		string = string.toUpperCase();
+		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		confederationNamePanel = new LabelComboPanel(null, false, ctrlConfederationName);
 		centralPanel.add(confederationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("country"));
+		string = GuiConfiguration.getMessage("continentConfederationInfo");
+		string = StringUtils.capitalize(string);
+		infoPanel = new InfoPanel(string);
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -98,12 +112,15 @@ public class SearchConfederationPanel
 		this.add(confederationTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
-		button = new JButton(GuiConfiguration.getMessage("msgSearchButton"));
+		string = GuiConfiguration.getMessage("search");
+		string = string.toUpperCase();
+		button = new JButton(string);
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				MyTable countryTable = confederationTablePanel.getMyTable();
+				String string = "WE";
 
 				confederationTableData.clear();
 
@@ -116,11 +133,35 @@ public class SearchConfederationPanel
 				countryTable.setModel(new TableModel(confederationTableData, GuiConfiguration.CONFEDERATION_TABLE_COLUMN_NAME));
 				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
 
-				confederationTablePanel.getTitleLabel().setText(
-								GuiConfiguration.getMessage("msgDoneSearch") + " " + confederationTableData.size()
-				);
+				// messaggio ricerca effettuata
+				string = GuiConfiguration.getMessage("doneSearch");
+				string += " - ";
+				string += GuiConfiguration.getMessage("confederations");
+				string += " ";
+				string += confederationTableData.size();
+				string = string.toUpperCase();
 
-				confederationTablePanel.getTextArea().setText(researchMessage.toString());
+				confederationTablePanel.getTitleLabel().setText(string);
+
+				// messaggio informazioni ricerca effettuata
+				string = "";
+
+				if (ctrlCountryType.getText() != null) {
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("confederationType"));
+					string += ": ";
+					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCountryType.getText()));
+				}
+
+				if (!ctrlConfederationName.getText().equalsIgnoreCase(selectAll)) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("continentConfederation"));
+					string += ": ";
+					string += ctrlConfederationName.getText();
+				}
+
+				confederationTablePanel.getTextArea().setText(string);
 				topSearchPanel.getTitleButton().doClick();
 				SearchConfederationPanel.this.revalidate();
 			}
@@ -140,9 +181,6 @@ public class SearchConfederationPanel
 					confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlConfederationName.setText(selectAll);
 				}
-				researchMessage.setLength(0);
-				researchMessage.append(GuiConfiguration.getMessage("confederationType")).append(": ");
-				researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
 			}
 		});
 
@@ -165,19 +203,13 @@ public class SearchConfederationPanel
 
 					if (1 == confederationNameVector.size()) {
 						confederationNameVector.clear();
-						confederationNameVector.add(GuiConfiguration.getMessage("msgNoData"));
+						confederationNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
 						confederationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
 						confederationNamePanel.getMyComboBox().setEnabled(false);
 						confederationNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					confederationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
-				} else {
-					researchMessage.setLength(0);
-					researchMessage.append(GuiConfiguration.getMessage("countryType")).append(": ");
-					researchMessage.append(GuiConfiguration.getMessage(ctrlCountryType.getText()));
-					researchMessage.append('\n').append(GuiConfiguration.getMessage("continentalConfederation")).append(": ");
-					researchMessage.append(ctrlConfederationName.getText());
 				}
 			}
 		});
