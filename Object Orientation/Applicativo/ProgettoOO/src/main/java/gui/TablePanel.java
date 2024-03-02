@@ -74,8 +74,8 @@ public class TablePanel
 		this.add(titleLabel);
 
 		this.textArea = new JTextArea(description);
-		textArea.setBorder(null);
-
+		textArea.setBorder(BorderFactory.createEmptyBorder(2,20,2,0));
+		textArea.setEditable(false);
 		textArea.getCaret().deinstall(textArea);
 		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
