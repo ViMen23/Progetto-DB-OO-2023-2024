@@ -1,8 +1,6 @@
 package gui;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -11,9 +9,8 @@ public class MyTable
 			extends JTable
 {
 	public MyTable(Boolean sort,
-								 JLabel controlColumnLabel,
-								 JLabel controlRowLabel,
-								 JLabel controlMouseLabel)
+								 Integer[] tableIndex,
+								 JLabel ctrlMouseLabel)
 	{
 		super();
 
@@ -31,33 +28,15 @@ public class MyTable
 		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 
 
-		this.getColumnModel().getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e)
-			{
-				controlColumnLabel.setText(
-					String.valueOf(MyTable.this.convertColumnIndexToModel(MyTable.this.getSelectedColumn()))
-				);
-			}
-		});
-
-		this.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-			@Override
-			public void valueChanged(ListSelectionEvent e)
-			{
-				controlRowLabel.setText(
-					String.valueOf(MyTable.this.convertRowIndexToModel(MyTable.this.getSelectedRow()))
-				);
-			}
-		});
-
 		this.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
 				super.mouseClicked(e);
 				if (e.getClickCount() >= 1) {
-					controlMouseLabel.setText("@click");
+					tableIndex[0] = MyTable.this.convertRowIndexToModel(getSelectedRow());
+					tableIndex[1] = MyTable.this.convertColumnIndexToModel(getSelectedColumn());
+					ctrlMouseLabel.setText("@click");
 				}
 			}
 		});

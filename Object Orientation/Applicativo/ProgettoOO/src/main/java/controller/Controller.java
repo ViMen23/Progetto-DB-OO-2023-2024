@@ -763,7 +763,7 @@ public class Controller
 						listCompetitionEdition
 		);
 
-		Set<String> competitionEditionSet = ctrlCompetition.getCompetitionMap().get(competitionID).getEditionSet();
+		Set<String> competitionEditionSet = newCompetition().getCompetitionMap().get(competitionID).getEditionSet();
 		competitionEditionSet.clear();
 
 		competitionEditionSet.addAll(listCompetitionEdition);
@@ -841,7 +841,7 @@ public class Controller
 	{
 		fetchCompetitionEdition(competitionID);
 
-		competitionEditionVector.addAll(ctrlCompetition.getCompetitionMap().get(competitionID).getEditionSet());
+		competitionEditionVector.addAll(newCompetition().getCompetitionMap().get(competitionID).getEditionSet());
 	}
 
 
@@ -1129,9 +1129,10 @@ public class Controller
 	}
 
 	public void setTeamTableDataMap(Vector<Vector<String>> tableData,
-																	Map<Integer, String> teamTableMap)
+																	Map<Integer, Map<Integer, String>> teamTableMap)
 	{
 		Map<String, Team> teamMap = newTeam().getTeamMap();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
 
 		Integer row = 0;
 
@@ -1147,9 +1148,11 @@ public class Controller
 
 			tableData.add(vector);
 
-			teamTableMap.put(row, key);
+			teamLongNameMap.put(row, key);
 			++row;
 		}
+
+		teamTableMap.put(0, teamLongNameMap);
 	}
 
 
@@ -1199,7 +1202,7 @@ public class Controller
 													 String teamContinentID,
 													 String teamNationID,
 													 Vector<Vector<String>> teamTableData,
-													 Map<Integer, String> teamTableMap)
+													 Map<Integer, Map<Integer, String>> teamTableMap)
 	{
 		fetchTeam(
 						teamSubLongName,
@@ -1710,9 +1713,9 @@ public class Controller
 			vector.add(player.getName());
 			vector.add(player.getDob());
 			vector.add(player.getCountry().getName());
-			vector.add(player.getFoot());
-			vector.add(player.getRole());
-			vector.add(player.getPosition().getName());
+			vector.add(GuiConfiguration.getMessage(player.getFoot()));
+			vector.add(GuiConfiguration.getMessage(player.getRole()));
+			vector.add(GuiConfiguration.getMessage(player.getPosition().getName()));
 
 			if (null == player.getRetiredDate()) {
 				vector.add("");
@@ -1898,7 +1901,7 @@ public class Controller
 
 			positionVector.add(position.getRole());
 			positionVector.add(position.getCode());
-			positionVector.add(position.getName());
+			positionVector.add(GuiConfiguration.getMessage(position.getName()));
 
 			playerPositionTableData.add(positionVector);
 		}
@@ -2391,7 +2394,7 @@ public class Controller
 
 		for (String key : positionMap.keySet()) {
 
-			String positionName = positionMap.get(key).getName();
+			String positionName = GuiConfiguration.getMessage(positionMap.get(key).getName());
 
 			comboBoxData.add(positionName);
 			comboBoxMap.put(positionName, key);
@@ -2679,13 +2682,13 @@ public class Controller
 		);
 
 
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
 		competitionMap.clear();
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+		Set<Statistic> playerStatisticSet = newPlayer().getPlayerMap().get(playerID).getStatisticSet();
 		playerStatisticSet.clear();
 
 
@@ -2860,10 +2863,10 @@ public class Controller
 		);
 
 
-		Map<String, Confederation> confederationMap = ctrlConfederation.getConfederationMap();
+		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
 		confederationMap.clear();
 
-		Set<Competition> teamCompetitionSet = ctrlTeam.getTeamMap().get(teamID).getCompetitionSet();
+		Set<Competition> teamCompetitionSet = newTeam().getTeamMap().get(teamID).getCompetitionSet();
 		teamCompetitionSet.clear();
 
 
@@ -2957,13 +2960,13 @@ public class Controller
 		);
 
 
-		Map<String, Country> countryMap = ctrlCountry.getCountryMap();
+		Map<String, Country> countryMap = newCountry().getCountryMap();
 		countryMap.clear();
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Map<String, Team> playerClubCareer = ctrlPlayer.getPlayerMap().get(playerID).getClubCareer();
+		Map<String, Team> playerClubCareer = newPlayer().getPlayerMap().get(playerID).getClubCareer();
 		playerClubCareer.clear();
 
 
@@ -3100,10 +3103,10 @@ public class Controller
 						listCompetitionName
 		);
 
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
 		competitionMap.clear();
 
-		Set<Trophy> teamTrophySet = ctrlTeam.getTeamMap().get(teamID).getTrophySet();
+		Set<Trophy> teamTrophySet = newTeam().getTeamMap().get(teamID).getTrophySet();
 		teamTrophySet.clear();
 
 
@@ -3156,13 +3159,13 @@ public class Controller
 						listTrophyName
 		);
 
-		Map<String, Competition> competitionMap = ctrlCompetition.getCompetitionMap();
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
 		competitionMap.clear();
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Set<Trophy> playerTrophySet = ctrlPlayer.getPlayerMap().get(playerID).getTrophySet();
+		Set<Trophy> playerTrophySet = newPlayer().getPlayerMap().get(playerID).getTrophySet();
 		playerTrophySet.clear();
 
 

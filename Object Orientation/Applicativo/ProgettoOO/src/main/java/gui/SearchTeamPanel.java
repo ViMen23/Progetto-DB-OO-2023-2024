@@ -28,15 +28,18 @@ public class SearchTeamPanel
 		final JLabel ctrlContinentName = new JLabel(selectAll);
 		final JLabel ctrlNationName = new JLabel(selectAll);
 
+		final Integer[] tableIndex = {-1, -1};
+		final JLabel ctrlMouseTable = new JLabel((String) null);
+
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
 
 		final Vector<String> nationNameVector = new Vector<>();
 		final Map<String, String> nationNameMap = new HashMap<>();
 
-
 		final Vector<Vector<String>> teamTableData = new Vector<>();
-		final Map<Integer, String> teamTableDataMap = new HashMap<>();
+		final Map<Integer, Map<Integer, String>> teamTableDataMap = new HashMap<>();
+
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
@@ -142,7 +145,7 @@ public class SearchTeamPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		teamTablePanel = new TablePanel(true, null, null, null, null);
+		teamTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 		this.add(teamTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
@@ -156,6 +159,7 @@ public class SearchTeamPanel
 				String string;
 
 				teamTableData.clear();
+				teamTableDataMap.clear();
 
 				Controller.getInstance().setTeamTable(
 								ctrlTeamSubLongName.getText(),
@@ -278,6 +282,22 @@ public class SearchTeamPanel
 					);
 
 					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				}
+			}
+		});
+
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String test = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+						System.out.println("VAIVAI --> " + test);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
+					}
 				}
 			}
 		});

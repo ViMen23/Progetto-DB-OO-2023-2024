@@ -14,9 +14,8 @@ public class TablePanel
 
 	public TablePanel(Boolean sort,
 										String description,
-										JLabel controlColumnLabel,
-										JLabel controlRowLabel,
-										JLabel controlMouseLabel)
+										Integer[] tableIndex,
+										JLabel ctrlMouseLabel)
 	{
 		MigLayout migLayout;
 		JScrollPane scrollPane;
@@ -45,7 +44,7 @@ public class TablePanel
 		scrollPane = new JScrollPane();
 		this.add(scrollPane);
 
-		this.myTable = new MyTable(sort, controlColumnLabel, controlRowLabel, controlMouseLabel);
+		this.myTable = new MyTable(sort, tableIndex, ctrlMouseLabel);
 		scrollPane.setViewportView(myTable);
 	}
 

@@ -26,7 +26,6 @@ public class InfoPanel
 		textArea.setEditable(false);
 		textArea.setLineWrap(true);
 		textArea.setWrapStyleWord(true);
-		textArea.setFont(GuiConfiguration.outputSmallFont);
 
 		textArea.getCaret().deinstall(textArea);
 		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));

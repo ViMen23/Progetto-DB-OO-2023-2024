@@ -44,7 +44,6 @@ public class SearchPlayerPanel
 		final Vector<String> positionNameVector = new Vector<>();
 		final Map<String, String> positionNameMap = new HashMap<>();
 
-
 		final Vector<Vector<String>> playerTableData = new Vector<>();
 		final Map<Integer, String> playerTableDataMap = new HashMap<>();
 
@@ -165,19 +164,10 @@ public class SearchPlayerPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		continentTypeNamePanel = new LabelComboPanel(
-						GuiConfiguration.getMessage(Country.COUNTRY_TYPE.CONTINENT.toString()),
-						true,
-						ctrlContinentName
-		);
+		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
 		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		nationTypeNamePanel = new LabelComboPanel(
-						GuiConfiguration.getMessage(Country.COUNTRY_TYPE.NATION.toString()),
-						false,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
-						ctrlNationName
-		);
+		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
@@ -219,12 +209,12 @@ public class SearchPlayerPanel
 		playerFootPanel = new RadioPanel(Player.FOOT_TYPE.values(), ctrlPlayerFoot);
 		centralPanel.add(playerFootPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("footInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		playerTablePanel = new TablePanel(true, null, null, null, null);
+		playerTablePanel = new TablePanel(true, null, null, null);
 		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -337,14 +327,14 @@ public class SearchPlayerPanel
 					}
 				}
 
-				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+				if (!ctrlPlayerPosition.getText().equalsIgnoreCase(selectAll)) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
 
 					string += GuiConfiguration.getMessage("position");
 					string += ": ";
-					string += GuiConfiguration.getMessage(ctrlPlayerPosition.getText());
+					string += ctrlPlayerPosition.getText();
 				}
 
 				if (ctrlPlayerFoot.getText() != null) {

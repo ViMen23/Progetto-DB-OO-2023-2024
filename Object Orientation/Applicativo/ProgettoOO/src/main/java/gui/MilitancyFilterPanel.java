@@ -200,7 +200,7 @@ public class MilitancyFilterPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		playerTablePanel = new TablePanel(true, null, null, null, null);
+		playerTablePanel = new TablePanel(true, null, null, null);
 		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
