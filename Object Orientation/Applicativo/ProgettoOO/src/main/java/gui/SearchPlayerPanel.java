@@ -22,7 +22,7 @@ public class SearchPlayerPanel
 
 	public SearchPlayerPanel()
 	{
-		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
 
 		final JLabel ctrlPlayerSubName = new JLabel((String) null);
 		final JLabel ctrlPlayerSubSurname = new JLabel((String) null);
@@ -88,173 +88,138 @@ public class SearchPlayerPanel
 		centralPanel.setLayout(migLayout);
 
 
-		string = GuiConfiguration.getMessage("search");
-		string += " ";
-		string += GuiConfiguration.getMessage("players");
+		string = GuiConfiguration.getMessage("searchPlayers");
 		string += " - ";
-		string += GuiConfiguration.getMessage("players");
-		string += " ";
-		string += GuiConfiguration.getMessage("available");
+		string += GuiConfiguration.getMessage("availablePlayers");
 		string += " ";
 		string += Controller.getInstance().countPlayers().toString();
-		string = string.toUpperCase();
-
-
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("name").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-
-		string = GuiConfiguration.getMessage("name");
-		string = StringUtils.capitalize(string);
-
-		playerNamePanel = new LabelTextPanel(string, ctrlPlayerSubName, Regex.patternString);
+		playerNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("name"),
+						ctrlPlayerSubName, Regex.patternString
+		);
 		centralPanel.add(playerNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("shortName");
-		string = StringUtils.capitalize(string);
-
-		playerSurnamePanel = new LabelTextPanel(string, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerSubSurname, Regex.patternString);
+		playerSurnamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("surname"),
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlPlayerSubSurname,
+						Regex.patternString
+		);
 		centralPanel.add(playerSurnamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 
-		infoPanel = new InfoPanel("Questo e' il primo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("namesInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("age");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("age"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		string = GuiConfiguration.getMessage("referenceYear");
-		string = StringUtils.capitalize(string);
-
-		referringYearPanel = new LabelComboPanel(string, true, ctrlReferenceYear);
+		referringYearPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("referenceYear"),
+						true,
+						ctrlReferenceYear
+		);
 		centralPanel.add(referringYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("minimumAge");
-		string = StringUtils.capitalize(string);
 
-		playerMinAgePanel = new LabelComboPanel(string, false,  GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerMinAge);
+		playerMinAgePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("minAge"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlPlayerMinAge
+		);
 		centralPanel.add(playerMinAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("maximumAge");
-		string = StringUtils.capitalize(string);
 
-		playerMaxAgePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlPlayerMaxAge);
+		playerMaxAgePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("maxAge"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlPlayerMaxAge);
 		centralPanel.add(playerMaxAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il secondo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("ageInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("bornNation");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("bornCountry"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.CONTINENT.toString();
-		string = string.toLowerCase();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-
-		continentTypeNamePanel = new LabelComboPanel(string, true, ctrlContinentName);
+		continentTypeNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage(Country.COUNTRY_TYPE.CONTINENT.toString()),
+						true,
+						ctrlContinentName
+		);
 		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.NATION.toString();
-		string = string.toLowerCase();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-
-		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		nationTypeNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage(Country.COUNTRY_TYPE.NATION.toString()),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlNationName
+		);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il terzo info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("role");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("role"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		playerRolePanel = new PlayerRoleCheckPanel(ctrlPlayerRole);
 		centralPanel.add(playerRolePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il quarto info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("roleInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("mainPosition");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("mainPosition"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("position");
-		string = StringUtils.capitalize(string);
-
-		playerPositionPanel = new LabelComboPanel(string, true, ctrlPlayerPosition);
+		playerPositionPanel = new LabelComboPanel(GuiConfiguration.getMessage("position"), true, ctrlPlayerPosition);
 		centralPanel.add(playerPositionPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il quinto info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("positionInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("searchBy");
-		string += " ";
-		string += GuiConfiguration.getMessage("preferredFoot");
-		string = string.toUpperCase();
-
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("foot"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel("INFO"); //TODO i18n
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		playerFootPanel = new RadioPanel(Player.FOOT_TYPE.values(), ctrlPlayerFoot);
 		centralPanel.add(playerFootPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il sesto info box");
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -262,16 +227,13 @@ public class SearchPlayerPanel
 		playerTablePanel = new TablePanel(true, null, null, null, null);
 		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
-
-		string = GuiConfiguration.getMessage("search");
-		string = string.toUpperCase();
-
-		button = new JButton(string);
+		button = new JButton(GuiConfiguration.getMessage("search"));
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				MyTable playerTable = playerTablePanel.getMyTable();
 				String string;
 
 				playerTableData.clear();
@@ -291,19 +253,102 @@ public class SearchPlayerPanel
 								playerTableDataMap
 				);
 
-				playerTablePanel.getMyTable().setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
+				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
+				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
 
-				string = GuiConfiguration.getMessage("results");
-				string += " ";
-				string += GuiConfiguration.getMessage("players");
+				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
-				string += playerTableData.size();
-				string += " ";
 				string += GuiConfiguration.getMessage("players");
-				string = string.toUpperCase();
-
+				string += " ";
+				string += playerTableData.size();
 				playerTablePanel.getTitleLabel().setText(string);
 
+				//messaggio informazioni ricerca effettuata
+				string = "";
+
+				if (ctrlPlayerSubName.getText() != null) {
+					string += GuiConfiguration.getMessage("name");
+					string += ": ";
+					string += ctrlPlayerSubName.getText();
+				}
+
+				if (ctrlPlayerSubSurname.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += GuiConfiguration.getMessage("surname");
+					string += ": ";
+					string += ctrlPlayerSubSurname.getText();
+				}
+
+				if (ctrlReferenceYear.getText() != null && ctrlPlayerMinAge.getText() != null) {
+
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += GuiConfiguration.getMessage("referenceYear");
+					string += ": ";
+					string += ctrlReferenceYear.getText();
+
+					string += "\n";
+
+					string += GuiConfiguration.getMessage("age");
+
+					string += ": ";
+					string += ctrlPlayerMinAge.getText();
+					string += " - ";
+
+					if (ctrlPlayerMaxAge.getText() != null) {
+						string += ctrlPlayerMaxAge.getText();
+					}
+					else {
+						string += GuiConfiguration.MAX_AGE;
+					}
+				}
+
+				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += GuiConfiguration.getMessage("country");
+					string += ": ";
+					string += ctrlContinentName.getText();
+
+					if (!ctrlNationName.getText().equalsIgnoreCase(selectAll)) {
+						string += " - ";
+						string += ctrlNationName.getText();
+					}
+				}
+
+				if (ctrlPlayerRole.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += GuiConfiguration.getMessage("role");
+					string += ": ";
+
+					String[] keyPart = ctrlPlayerRole.getText().split("_");
+
+					string += GuiConfiguration.getMessage(keyPart[0]);
+
+					for (int i = 1; i < keyPart.length; ++i) {
+						string += ", ";
+						string += GuiConfiguration.getMessage(keyPart[i]);
+					}
+				}
+
+				if (ctrlPlayerFoot.getText() != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+
+					string += GuiConfiguration.getMessage("foot");
+					string +=  ": ";
+
+					string += GuiConfiguration.getMessage(ctrlPlayerFoot.getText());
+				}
+
+				playerTablePanel.getTextArea().setText(string);
 				SearchPlayerPanel.this.revalidate();
 			}
 		});
@@ -327,8 +372,6 @@ public class SearchPlayerPanel
 					for (int i = maximumYear; i >= minimumYear; --i){
 						comboBox.addItem(String.valueOf(i));
 					}
-
-					System.out.println("ciao");
 				}
 				else {
 					playerMinAgePanel.getMyComboBox().setSelectedIndex(-1);
@@ -347,7 +390,6 @@ public class SearchPlayerPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				System.out.println("ciao  " + ctrlPlayerMinAge.getText());
 				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerMinAge.getText(), "@fill")) {
 
 					JComboBox<String> comboBox = playerMinAgePanel.getMyComboBox();
@@ -407,6 +449,16 @@ public class SearchPlayerPanel
 									continentNameMap
 					);
 
+					if (1 == continentNameVector.size()) {
+						continentNameVector.clear();
+						continentNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+						continentTypeNamePanel.getMyComboBox().setEnabled(false);
+						continentTypeNamePanel.getMyComboBox().setSelectedIndex(0);
+						nationTypeNamePanel.getMyComboBox().setEnabled(false);
+						nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					}
+
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
 
 				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
@@ -438,6 +490,14 @@ public class SearchPlayerPanel
 									nationNameMap
 					);
 
+					if (1 == nationNameVector.size()) {
+						nationNameVector.clear();
+						nationNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+						nationTypeNamePanel.getMyComboBox().setEnabled(false);
+						nationTypeNamePanel.getMyComboBox().setSelectedIndex(0);
+					}
+
 					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}
 			}
@@ -455,6 +515,14 @@ public class SearchPlayerPanel
 					positionNameVector.add(selectAll);
 
 					Controller.getInstance().setPositionComboBox(positionNameVector, positionNameMap);
+
+					if (1 == positionNameVector.size()) {
+						positionNameVector.clear();
+						positionNameVector.add(StringUtils.capitalize(GuiConfiguration.getMessage("noData")));
+						playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
+						playerPositionPanel.getMyComboBox().setEnabled(false);
+						playerPositionPanel.getMyComboBox().setSelectedIndex(0);
+					}
 
 					playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
 				}
