@@ -21,11 +21,11 @@ public class InfoPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-
 		JTextArea textArea = new JTextArea(description);
 		textArea.setEditable(false);
-		textArea.setBorder(null);
-
+		textArea.setOpaque(false);
+		textArea.setLineWrap(true);
+		textArea.setWrapStyleWord(true);
 		this.add(textArea);
 	}
 }

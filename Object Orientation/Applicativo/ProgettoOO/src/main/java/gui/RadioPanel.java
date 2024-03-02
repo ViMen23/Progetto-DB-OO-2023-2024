@@ -35,7 +35,6 @@ public class RadioPanel
 			int j = i;
 
 			String string = enumArray[i].toString();
-			string = string.toLowerCase();
 			string = GuiConfiguration.getMessage(string);
 			string = StringUtils.capitalize(string);
 

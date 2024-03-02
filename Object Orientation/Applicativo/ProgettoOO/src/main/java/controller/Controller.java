@@ -299,7 +299,7 @@ public class Controller
 
 			vector.add(country.getName());
 			vector.add(country.getCode());
-			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(country.getType().toLowerCase())));
+			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(country.getType())));
 
 			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				vector.add("");
