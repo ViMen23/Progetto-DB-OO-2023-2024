@@ -208,7 +208,7 @@ public class SearchCompetitionPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				MyTable countryTable = competitionTablePanel.getMyTable();
+				MyTable competitionTable = competitionTablePanel.getMyTable();
 				String string;
 
 				competitionTableData.clear();
@@ -223,8 +223,8 @@ public class SearchCompetitionPanel
 								competitionTableData
 				);
 
-				countryTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COMPETITION_TABLE_COLUMN_NAME));
-				countryTable.setPreferredScrollableViewportSize(countryTable.getPreferredSize());
+				competitionTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COMPETITION_TABLE_COLUMN_NAME));
+				competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
 
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
@@ -282,7 +282,6 @@ public class SearchCompetitionPanel
 				competitionTablePanel.getTextArea().setText(string);
 
 				topSearchPanel.getTitleButton().doClick();
-
 				SearchCompetitionPanel.this.revalidate();
 			}
 		});
