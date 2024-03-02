@@ -337,6 +337,16 @@ public class SearchPlayerPanel
 					}
 				}
 
+				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+
+					string += GuiConfiguration.getMessage("position");
+					string += ": ";
+					string += GuiConfiguration.getMessage(ctrlPlayerPosition.getText());
+				}
+
 				if (ctrlPlayerFoot.getText() != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
@@ -344,11 +354,12 @@ public class SearchPlayerPanel
 
 					string += GuiConfiguration.getMessage("foot");
 					string +=  ": ";
-
 					string += GuiConfiguration.getMessage(ctrlPlayerFoot.getText());
 				}
 
 				playerTablePanel.getTextArea().setText(string);
+
+				topSearchPanel.getTitleButton().doClick();
 				SearchPlayerPanel.this.revalidate();
 			}
 		});

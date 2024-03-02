@@ -9685,26 +9685,26 @@ VALUES
  ******************************************************************************/
 INSERT INTO fp_position (role, code, name)
 VALUES
-('GK', 'GK', 'Goalkeeper'),
-('DF', 'CB', 'Centre-Back'),
-('DF', 'LB', 'Left-Back'),
-('DF', 'LD', 'Left Defender'),
-('DF', 'RB', 'Right-Back'),
-('DF', 'RD', 'Right Defender'),
-('DF', 'SW', 'Sweeper'),
-('MF', 'AM', 'Attacking Midfield'),
-('MF', 'CM', 'Central Midfield'),
-('MF', 'DM', 'Defensive Midfield'),
-('MF', 'LM', 'Left Midfield'),
-('MF', 'MW', 'Mid-Wing'),
-('MF', 'RM', 'Right Midfield'),
-('FW', 'CF', 'Centre Forward'),
-('FW', 'FN', 'False Nine'),
-('FW', 'LF', 'Left Forward'),
-('FW', 'LW', 'Left Winger'),
-('FW', 'RW', 'Right Winger'),
-('FW', 'RF', 'Right Forward'),
-('FW', 'SS', 'Second Striker');
+('GK', 'GK', 'goalkeeper'),
+('DF', 'CB', 'centreBack'),
+('DF', 'LB', 'leftBack'),
+('DF', 'LD', 'leftDefender'),
+('DF', 'RB', 'rightBack'),
+('DF', 'RD', 'rightDefender'),
+('DF', 'SW', 'sweeper'),
+('MF', 'AM', 'attackingMidfield'),
+('MF', 'CM', 'centralMidfield'),
+('MF', 'DM', 'defensiveMidfield'),
+('MF', 'LM', 'leftMidfield'),
+('MF', 'MW', 'midWing'),
+('MF', 'RM', 'rightMidfield'),
+('FW', 'CF', 'centreForward'),
+('FW', 'FN', 'falseNine'),
+('FW', 'LF', 'leftForward'),
+('FW', 'LW', 'leftWinger'),
+('FW', 'RW', 'rightWinger'),
+('FW', 'RF', 'rightForward'),
+('FW', 'SS', 'secondStriker');
 --------------------------------------------------------------------------------
 
 
