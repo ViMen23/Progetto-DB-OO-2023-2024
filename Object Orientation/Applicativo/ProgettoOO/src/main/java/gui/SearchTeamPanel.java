@@ -56,7 +56,7 @@ public class SearchTeamPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
-						GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 
@@ -67,7 +67,7 @@ public class SearchTeamPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 						GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT
 		);
 
@@ -107,12 +107,12 @@ public class SearchTeamPanel
 		string = StringUtils.capitalize(string);
 
 		teamLongNamePanel = new LabelTextPanel(string, ctrlTeamSubLongName, Regex.patternAlnum);
-		centralPanel.add(teamLongNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", split 2, flowy, gap bottom 0"); //TODO
+		centralPanel.add(teamLongNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		string = GuiConfiguration.getMessage("shortName");
 		string = StringUtils.capitalize(string);
 
-		teamShortNamePanel = new LabelTextPanel(string, ctrlTeamSubShortName, Regex.patternCode);
+		teamShortNamePanel = new LabelTextPanel(string, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlTeamSubShortName, Regex.patternCode);
 		centralPanel.add(teamShortNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 
@@ -157,18 +157,18 @@ public class SearchTeamPanel
 		string = StringUtils.capitalize(string);
 
 		continentTypeNamePanel = new LabelComboPanel(string, true, ctrlContinentName);
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", split 2, flowy, gap bottom 0"); //TODO
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		string = Country.COUNTRY_TYPE.NATION.toString();
 		string = string.toLowerCase();
 		string = GuiConfiguration.getMessage(string);
 		string = StringUtils.capitalize(string);
 
-		nationTypeNamePanel = new LabelComboPanel(string, false, ctrlNationName);
+		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel("Questo e' il terzo info box");
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT); //TODO
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 

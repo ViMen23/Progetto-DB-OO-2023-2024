@@ -70,7 +70,7 @@ public class SearchPlayerPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
-						GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 
@@ -81,7 +81,7 @@ public class SearchPlayerPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 						GuiConfiguration.THIRTEEN_CELL_LAYOUT_CONSTRAINT
 		);
 
@@ -187,7 +187,7 @@ public class SearchPlayerPanel
 		string = StringUtils.capitalize(string);
 
 		continentTypeNamePanel = new LabelComboPanel(string, true, ctrlContinentName);
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT); //TODO
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		string = Country.COUNTRY_TYPE.NATION.toString();
 		string = string.toLowerCase();

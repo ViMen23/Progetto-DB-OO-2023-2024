@@ -60,7 +60,7 @@ public class SearchCompetitionPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
-						GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -70,8 +70,8 @@ public class SearchCompetitionPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TEN_CELL_LAYOUT_CONSTRAINT
+						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.NINE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
@@ -175,31 +175,32 @@ public class SearchCompetitionPanel
 		);
 
 		buttonGroup.add(worldTypePanel.getRadioButton());
-		centralPanel.add(worldTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		infoPanel = new InfoPanel("Questo e' il quarto info box");
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT + ", spany 3"); //TODO
-
+		centralPanel.add(worldTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
 		continentTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
+						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlCountryType,
 						ctrlContinentName,
 						true
 		);
 
 		buttonGroup.add(continentTypeNamePanel.getRadioButton());
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", wrap");
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
 
 		nationTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.NATION.toString(),
+						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlCountryType,
 						ctrlNationName,
 						true
 		);
 
 		buttonGroup.add(nationTypeNamePanel.getRadioButton());
-		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT + ", wrap");
+		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel("Questo e' il quarto info box");
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 

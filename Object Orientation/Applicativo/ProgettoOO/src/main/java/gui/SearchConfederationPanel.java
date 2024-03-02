@@ -42,7 +42,7 @@ public class SearchConfederationPanel
 		migLayout = new MigLayout(
 			GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
 			GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
-			GuiConfiguration.THREE_CELL_INT_GAP_10_0_LAYOUT_CONSTRAINT
+			GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -52,7 +52,7 @@ public class SearchConfederationPanel
 
 		migLayout = new MigLayout(
 			GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
-			GuiConfiguration.TWO_CELL_FILL_SIZE_60P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+			GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 			GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT
 		);
 
@@ -77,7 +77,7 @@ public class SearchConfederationPanel
 		countryTypePanel = new RadioPanel(Country.COUNTRY_TYPE.values(), ctrlCountryType);
 		centralPanel.add(countryTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("msgChooseConfederationTypeInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("country"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -90,7 +90,7 @@ public class SearchConfederationPanel
 		confederationNamePanel = new LabelComboPanel(null, false, ctrlConfederationName);
 		centralPanel.add(confederationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("msgChooseContinentConfederationInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("country"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
