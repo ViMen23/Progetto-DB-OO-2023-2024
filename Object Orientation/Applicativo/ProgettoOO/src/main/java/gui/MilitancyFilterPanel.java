@@ -63,9 +63,9 @@
 //
 //
 //		migLayout = new MigLayout(
-//						GuiConfiguration.generalSearchPanelLayoutConstraint,
-//						GuiConfiguration.generalSearchPanelColumnConstraint,
-//						""//TODO
+//						GuiConfiguration.VFILL_LAYOUT_CONSTRAINT,
+//						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
+//						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 //		);
 //
 //
@@ -75,9 +75,9 @@
 //		JPanel centralPanel = new JPanel();
 //
 //		migLayout = new MigLayout(
-//						GuiConfiguration.middleSearchPanelLayoutConstraint,
-//						GuiConfiguration.middleSearchPanelColumnConstraint,
-//						GuiConfiguration.playerMiddleSearchPanelRowConstraint
+//						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+//						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+//						""//TODO
 //		);
 //
 //		centralPanel.setLayout(migLayout);
@@ -87,9 +87,10 @@
 //		string = string.toUpperCase();
 //
 //		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-//		this.add(topSearchPanel, GuiConfiguration.topSearchPanelAddConstraint);
+//		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 //
-//		this.add(centralPanel, GuiConfiguration.middleSearchPanelAddConstraint);
+//		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+//
 //		string = "1. ";
 //		string += GuiConfiguration.getMessage("choose");
 //		string += " ";
@@ -97,16 +98,18 @@
 //		string = string.toUpperCase();
 //
 //		titleLabel = new TitleLabel(string);
-//		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		titleLabel = new TitleLabel("INFO"); //TODO i18n
-//		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		string = GuiConfiguration.getMessage("info");
+//		string = string.toUpperCase();
+//		titleLabel = new TitleLabel(string);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //
 //		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
-//		centralPanel.add(teamTypePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		infoPanel = new InfoPanel("Questo e' il secondo info box");
-//		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		infoPanel = new InfoPanel("Questo e' il secondo info box"); //TODO
+//		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //		string = "2. ";
@@ -116,31 +119,30 @@
 //		string += "/";
 //		string += GuiConfiguration.getMessage("confederation");
 //		string = string.toUpperCase();
-//
 //		titleLabel = new TitleLabel(string);
-//		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		titleLabel = new TitleLabel("INFO"); //TODO i18n
-//		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		string = GuiConfiguration.getMessage("info");
+//		string = string.toUpperCase();
+//		titleLabel = new TitleLabel(string);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //
 //		string = Country.COUNTRY_TYPE.CONTINENT.toString();
-//		string = string.toLowerCase();
 //		string = GuiConfiguration.getMessage(string);
 //		string = StringUtils.capitalize(string);
 //
 //		continentTypeNamePanel = new LabelComboPanel(string, false, ctrlContinentName);
-//		centralPanel.add(continentTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 2, flowy, gap bottom 0"); //TODO
+//		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 //
 //		string = Country.COUNTRY_TYPE.NATION.toString();
-//		string = string.toLowerCase();
 //		string = GuiConfiguration.getMessage(string);
 //		string = StringUtils.capitalize(string);
 //
-//		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlNationName);
-//		centralPanel.add(nationTypeNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+//		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		infoPanel = new InfoPanel("Questo e' il primo info box");
-//		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		infoPanel = new InfoPanel("Questo e' il primo info box"); //TODO
+//		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //		string = "3. ";
@@ -148,21 +150,22 @@
 //		string += " ";
 //		string += GuiConfiguration.getMessage("team");
 //		string = string.toUpperCase();
-//
 //		titleLabel = new TitleLabel(string);
-//		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		titleLabel = new TitleLabel("INFO"); //TODO i18n
-//		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		string = GuiConfiguration.getMessage("info");
+//		string = string.toUpperCase();
+//		titleLabel = new TitleLabel(string);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //
 //		string = GuiConfiguration.getMessage("team");
 //		string = StringUtils.capitalize(string);
 //
 //		teamNamePanel = new LabelComboPanel(string, false, ctrlTeamName);
-//		centralPanel.add(teamNamePanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		infoPanel = new InfoPanel("Questo e' il terzo info box");
-//		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		infoPanel = new InfoPanel("Questo e' il terzo info box"); //TODO
+//		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //		string = "4. ";
@@ -170,12 +173,13 @@
 //		string += " ";
 //		string += GuiConfiguration.getMessage("years");
 //		string = string.toUpperCase();
-//
 //		titleLabel = new TitleLabel(string);
-//		centralPanel.add(titleLabel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		titleLabel = new TitleLabel("INFO"); //TODO i18n
-//		centralPanel.add(titleLabel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		string = GuiConfiguration.getMessage("info");
+//		string = string.toUpperCase();
+//		titleLabel = new TitleLabel(string);
+//		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //
 //		string = GuiConfiguration.getMessage("from");
 //		string += " ";
@@ -183,28 +187,27 @@
 //		string = StringUtils.capitalize(string);
 //
 //		fromYearPanel = new LabelComboPanel(string, false, ctrlFromYear);
-//		centralPanel.add(fromYearPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint + ", split 2, flowy, gap bottom 0"); //TODO
+//		centralPanel.add(fromYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 //
 //		string = GuiConfiguration.getMessage("to");
 //		string += " ";
 //		string += GuiConfiguration.getMessage("year");
 //		string = StringUtils.capitalize(string);
 //
-//		toYearPanel = new LabelComboPanel(string, false, GuiConfiguration.panelToAddRowConstraint, ctrlToYear);
-//		centralPanel.add(toYearPanel, GuiConfiguration.firstColumnMiddleSearchPanelAddConstraint);
+//		toYearPanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear);
+//		centralPanel.add(toYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 //
-//		infoPanel = new InfoPanel("Questo e' il quarto info box");
-//		centralPanel.add(infoPanel, GuiConfiguration.secondColumnMiddleSearchPanelAddConstraint);
+//		infoPanel = new InfoPanel("Questo e' il quarto info box"); //TODO
+//		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 //		/*------------------------------------------------------------------------------------------------------*/
 //
 //
 //		playerTablePanel = new TablePanel(true, null, null, null, null);
-//		this.add(playerTablePanel, GuiConfiguration.tablePanelAddConstraint);
+//		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 //
 //
 //		string = GuiConfiguration.getMessage("search");
 //		string = string.toUpperCase();
-//
 //		button = new JButton(string);
 //		button.setEnabled(false);
 //
@@ -225,7 +228,7 @@
 //								playerTableDataMap
 //				);
 //
-//				playerTablePanel.fillTable(playerTableData, GuiConfiguration.playerTableColumnName);
+//				playerTablePanel(playerTableData, GuiConfiguration.playerTableColumnName);
 //
 //
 //				string = GuiConfiguration.getMessage("results");

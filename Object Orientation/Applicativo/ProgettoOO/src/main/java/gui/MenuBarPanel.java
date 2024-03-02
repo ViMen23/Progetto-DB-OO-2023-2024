@@ -519,8 +519,7 @@ public class MenuBarPanel
 				GuiConfiguration.switchPanel
 					(
 						MainFrame.getMainFrameInstance().getContentPane(),
-						null,
-									//new SearchTotalStatistics(),
+						new SearchTotalStatistics(),
 						2,
 						"sgx frame"
 					);

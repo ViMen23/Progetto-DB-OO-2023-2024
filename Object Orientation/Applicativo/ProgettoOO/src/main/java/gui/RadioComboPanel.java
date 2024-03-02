@@ -33,8 +33,7 @@ public class RadioComboPanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-		string = field.toLowerCase();
-		string = GuiConfiguration.getMessage(string);
+		string = GuiConfiguration.getMessage(field);
 		string = StringUtils.capitalize(string);
 
 		this.radioButton = new JRadioButton(string);
@@ -80,8 +79,6 @@ public class RadioComboPanel
 		string = GuiConfiguration.getMessage(field);
 		string = StringUtils.capitalize(string);
 
-		System.out.println(field);
-		System.out.println(string);
 		this.radioButton = new JRadioButton(string);
 		this.add(radioButton);
 

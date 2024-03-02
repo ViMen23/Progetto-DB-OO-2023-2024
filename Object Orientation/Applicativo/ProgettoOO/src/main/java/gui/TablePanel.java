@@ -21,6 +21,8 @@ public class TablePanel
 		MigLayout migLayout;
 		JScrollPane scrollPane;
 
+		String string;
+
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
@@ -31,7 +33,9 @@ public class TablePanel
 		this.setBackground(Color.white);
 
 
-		this.titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgNoSearch"));
+		string = GuiConfiguration.getMessage("noSearch");
+		string = string.toUpperCase();
+		this.titleLabel = new TitleLabel(string);
 		this.add(titleLabel);
 
 		this.textArea = new JTextArea(description);
@@ -53,6 +57,8 @@ public class TablePanel
 		MigLayout migLayout;
 		JScrollPane scrollPane;
 
+		String string;
+
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
@@ -62,13 +68,16 @@ public class TablePanel
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);
 
-
-		this.titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgNoSearch"));
+		string = GuiConfiguration.getMessage("noSearch");
+		string = string.toUpperCase();
+		this.titleLabel = new TitleLabel(string);
 		this.add(titleLabel);
 
 		this.textArea = new JTextArea(description);
-		textArea.setEditable(false);
 		textArea.setBorder(null);
+
+		textArea.getCaret().deinstall(textArea);
+		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 		this.add(textArea);
 

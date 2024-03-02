@@ -17,7 +17,7 @@ public class SearchConfederationPanel
 {
 	public SearchConfederationPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
+		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlConfederationName = new JLabel(selectAll);
@@ -62,6 +62,7 @@ public class SearchConfederationPanel
 		string = GuiConfiguration.getMessage("searchConfederations");
 		string += " - ";
 		string += GuiConfiguration.getMessage("availableConfederations");
+		string += " ";
 		string += Controller.getInstance().countConfederations().toString();
 		string = string.toUpperCase();
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);

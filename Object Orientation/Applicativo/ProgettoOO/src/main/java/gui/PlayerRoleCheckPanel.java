@@ -87,7 +87,7 @@ public class PlayerRoleCheckPanel
 		this.add(checkBox);
 
 
-		string = GuiConfiguration.getMessage("fowarder");
+		string = GuiConfiguration.getMessage("forwarder");
 		string = StringUtils.capitalize(string);
 		checkBox = new JCheckBox(string);
 		checkBox.addItemListener(new ItemListener() {

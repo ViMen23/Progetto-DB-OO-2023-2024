@@ -12,7 +12,7 @@ public class MyComboBox
 	{
 		super();
 
-		String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
+		String displayValue = "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx";
 
 		this.setEnabled(enable);
 		this.setCursor(GuiConfiguration.HAND_CURSOR);
