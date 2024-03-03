@@ -1250,8 +1250,7 @@ public class Controller
 		String string;
 
 		// informazioni squadra
-		string = GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
+		string = GuiConfiguration.getMessage("team").toUpperCase();
 		infoTeamMap.put(string, team.getLongName());
 
 		string = GuiConfiguration.getMessage("code");
@@ -1935,8 +1934,7 @@ public class Controller
 		String string;
 
 		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player");
-		string = string.toUpperCase();
+		string = GuiConfiguration.getMessage("player").toUpperCase();
 		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
 
 		string = GuiConfiguration.getMessage("dob");
@@ -2033,8 +2031,7 @@ public class Controller
 		String string;
 
 		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player");
-		string = string.toUpperCase();
+		string = GuiConfiguration.getMessage("player").toUpperCase();
 		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
 
 		string = GuiConfiguration.getMessage("dob");
@@ -2117,8 +2114,7 @@ public class Controller
 		String string;
 
 		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player");
-		string = string.toUpperCase();
+		string = GuiConfiguration.getMessage("player").toUpperCase();
 		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
 
 		string = GuiConfiguration.getMessage("dob");
@@ -2185,8 +2181,7 @@ public class Controller
 		String string;
 
 		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player");
-		string = string.toUpperCase();
+		string = GuiConfiguration.getMessage("player").toUpperCase();
 		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
 
 		string = GuiConfiguration.getMessage("dob");

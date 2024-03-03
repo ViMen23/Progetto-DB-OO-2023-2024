@@ -17,7 +17,7 @@ public class SearchCountryPanel
 {
 	public SearchCountryPanel()
 	{
-		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel(selectAll);

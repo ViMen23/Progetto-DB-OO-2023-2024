@@ -51,6 +51,7 @@ public class GuiConfiguration
 	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
 	public static final String DEBUG_WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
 	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
+	public static final String CENTER_VLAYOUT_CONSTRAINT = "debug, flowy, center";
 
 	public static final String ONE_CELL_LAYOUT_CONSTRAINT = "[]";
 	public static final String ONE_CELL_GAP_0_10 = "0[]";
@@ -61,6 +62,7 @@ public class GuiConfiguration
 	public static final String TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "20[59%, fill]50[35%, fill]20";
 	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[40%]5%";
 	public static final String THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT = "10[][][]";
+	public static final String THREE_CELL_EXT_GAP_0_INT_GAP_0_10_LAYOUT_CONSTRAINT = "0[]0[][]0";
 	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
@@ -222,7 +224,7 @@ public class GuiConfiguration
 
 	public static void initCompetitionTableColumnName()
 	{
-		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
+		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("teamType"));
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
@@ -231,7 +233,7 @@ public class GuiConfiguration
 
 	public static void initTeamTableColumnName()
 	{
-		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("code"));
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
@@ -239,14 +241,14 @@ public class GuiConfiguration
 
 	public static void initTeamParticipantTableColumnName()
 	{
-		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
+		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
 	}
 
 	public static void initTeamTrophyTableColumnName()
 	{
-		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
+		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
 	}
 
@@ -306,21 +308,21 @@ public class GuiConfiguration
 	{
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
-		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 	}
 
 	public static void initPlayerNationalityCareerTableColumnName()
 	{
 		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 	}
 
 	public static void initPlayerStatisticTableColumnName()
 	{
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));
@@ -334,16 +336,16 @@ public class GuiConfiguration
 	public static void initPlayerClubTrophyTableColumnName()
 	{
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
-		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
 	}
 
 	public static void initPlayerNationalTrophyTableColumnName()
 	{
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
-		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
 	}
 
@@ -370,7 +372,7 @@ public class GuiConfiguration
 	}
 	public static void initStatisticEditionTableColumnName()
 	{
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
 		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name"));
 		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname"));
@@ -387,8 +389,8 @@ public class GuiConfiguration
 	public static void initStatisticTableColumnNameTableColumnName()
 	{
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team"));
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));

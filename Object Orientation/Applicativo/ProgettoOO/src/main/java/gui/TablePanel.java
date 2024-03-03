@@ -54,7 +54,6 @@ public class TablePanel
 		MigLayout migLayout;
 		JScrollPane scrollPane;
 
-		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,

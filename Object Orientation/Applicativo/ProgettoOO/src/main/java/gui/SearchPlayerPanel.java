@@ -35,6 +35,9 @@ public class SearchPlayerPanel
 		final JLabel ctrlPlayerPosition = new JLabel(selectAll);
 		final JLabel ctrlPlayerFoot = new JLabel((String) null);
 
+		final Integer[] tableIndex = {-1, -1};
+		final JLabel ctrlMouseTable = new JLabel((String) null);
+
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
 
@@ -45,7 +48,7 @@ public class SearchPlayerPanel
 		final Map<String, String> positionNameMap = new HashMap<>();
 
 		final Vector<Vector<String>> playerTableData = new Vector<>();
-		final Map<Integer, String> playerTableDataMap = new HashMap<>();
+		final Map<Integer, Map<Integer, String>> playerTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
@@ -104,10 +107,7 @@ public class SearchPlayerPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		playerNamePanel = new LabelTextPanel(
-						GuiConfiguration.getMessage("name"),
-						ctrlPlayerSubName, Regex.patternString
-		);
+		playerNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("name"), ctrlPlayerSubName, Regex.patternString);
 		centralPanel.add(playerNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		playerSurnamePanel = new LabelTextPanel(
@@ -130,11 +130,7 @@ public class SearchPlayerPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		referringYearPanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("referenceYear"),
-						true,
-						ctrlReferenceYear
-		);
+		referringYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("referenceYear"), true, ctrlReferenceYear);
 		centralPanel.add(referringYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
 
@@ -214,7 +210,7 @@ public class SearchPlayerPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		playerTablePanel = new TablePanel(true, null, null, null);
+		playerTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -227,21 +223,24 @@ public class SearchPlayerPanel
 				String string;
 
 				playerTableData.clear();
+				playerTableDataMap.clear();
 
-				Controller.getInstance().setPlayerTable(
-								ctrlPlayerSubName.getText(),
-								ctrlPlayerSubSurname.getText(),
-								ctrlReferenceYear.getText(),
-								ctrlPlayerMinAge.getText(),
-								ctrlPlayerMaxAge.getText(),
-								continentNameMap.get(ctrlContinentName.getText()),
-								nationNameMap.get(ctrlNationName.getText()),
-								ctrlPlayerRole.getText(),
-								positionNameMap.get(ctrlPlayerPosition.getText()),
-								ctrlPlayerFoot.getText(),
-								playerTableData,
-								playerTableDataMap
-				);
+
+//				Controller.getInstance().setPlayerTable(
+//								ctrlPlayerSubName.getText(),
+//								ctrlPlayerSubSurname.getText(),
+//								ctrlReferenceYear.getText(),
+//								ctrlPlayerMinAge.getText(),
+//								ctrlPlayerMaxAge.getText(),
+//								continentNameMap.get(ctrlContinentName.getText()),
+//								nationNameMap.get(ctrlNationName.getText()),
+//								ctrlPlayerRole.getText(),
+//								positionNameMap.get(ctrlPlayerPosition.getText()),
+//								ctrlPlayerFoot.getText(),
+//								playerTableData,
+//								playerTableDataMap
+//				);
+				//TODO REMOVE THIS AFTER FIX CONTROLLER
 
 				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
@@ -257,7 +256,7 @@ public class SearchPlayerPanel
 				string = "";
 
 				if (ctrlPlayerSubName.getText() != null) {
-					string += GuiConfiguration.getMessage("name");
+					string += GuiConfiguration.getMessage("name").toUpperCase();
 					string += ": ";
 					string += ctrlPlayerSubName.getText();
 				}
@@ -266,7 +265,7 @@ public class SearchPlayerPanel
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += GuiConfiguration.getMessage("surname");
+					string += GuiConfiguration.getMessage("surname").toUpperCase();
 					string += ": ";
 					string += ctrlPlayerSubSurname.getText();
 				}
@@ -276,7 +275,7 @@ public class SearchPlayerPanel
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += GuiConfiguration.getMessage("referenceYear");
+					string += GuiConfiguration.getMessage("referenceYear").toUpperCase();
 					string += ": ";
 					string += ctrlReferenceYear.getText();
 
@@ -332,7 +331,7 @@ public class SearchPlayerPanel
 						string += "\n";
 					}
 
-					string += GuiConfiguration.getMessage("position");
+					string += GuiConfiguration.getMessage("position").toUpperCase();
 					string += ": ";
 					string += ctrlPlayerPosition.getText();
 				}
@@ -526,6 +525,22 @@ public class SearchPlayerPanel
 					}
 
 					playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
+				}
+			}
+		});
+
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String test = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+						System.out.println("VAIVAI --> " + test);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
+					}
 				}
 			}
 		});

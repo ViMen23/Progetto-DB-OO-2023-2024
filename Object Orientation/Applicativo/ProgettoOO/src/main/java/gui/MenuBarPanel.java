@@ -446,20 +446,20 @@ public class MenuBarPanel
 
 
 
-//		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e)
-//			{
-//				GuiConfiguration.switchPanel
-//					(
-//									MainFrame.getMainFrameInstance().getContentPane(),
-//									new MilitancyFilterPanel(),
-//									2,
-//									"sgx frame"
-//					);
-//			}
-//		});
-//		/*------------------------------------------------------------------------------------------------------*/
+		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				GuiConfiguration.switchPanel
+					(
+									MainFrame.getMainFrameInstance().getContentPane(),
+									new MilitancyFilterPanel(),
+									2,
+									"sgx frame"
+					);
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 
@@ -494,12 +494,7 @@ public class MenuBarPanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
-
-		string = GuiConfiguration.getMessage("research");
-		string += " ";
-		string += GuiConfiguration.getMessage("totalStatistics");
-		string = string.toUpperCase();
-
+		string = GuiConfiguration.getMessage("totalStatisticsResearch");
 		researchTotalStatisticMenuItem = new JMenuItem(string);
 
 		statisticMenu.getPopupMenu().add(researchTotalStatisticMenuItem);
@@ -557,8 +552,7 @@ public class MenuBarPanel
 				GuiConfiguration.switchPanel
 					(
 						MainFrame.getMainFrameInstance().getContentPane(),
-						null,
-									//new CompetitionEditionFilterPanel(),
+						new CompetitionEditionFilterPanel(),
 						2,
 						"sgx frame"
 					);
@@ -594,8 +588,7 @@ public class MenuBarPanel
 				GuiConfiguration.switchPanel
 					(
 						MainFrame.getMainFrameInstance().getContentPane(),
-						null,
-						//new StepFilterPanel(),
+						new StepFilterPanel(),
 						2,
 						"sgx frame"
 					);

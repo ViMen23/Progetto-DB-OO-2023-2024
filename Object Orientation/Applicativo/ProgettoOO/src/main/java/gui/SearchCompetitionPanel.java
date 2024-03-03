@@ -20,7 +20,7 @@ public class SearchCompetitionPanel
 
 	public SearchCompetitionPanel()
 	{
-		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
 
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);
 		final JLabel ctrlCompetitionType = new JLabel((String) null);
@@ -230,7 +230,7 @@ public class SearchCompetitionPanel
 					}
 					string += GuiConfiguration.getMessage("competitionType");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCompetitionType.getText()));
+					string += GuiConfiguration.getMessage(ctrlCompetitionType.getText());
 				}
 
 				if (ctrlTeamType.getText() != null) {
@@ -239,7 +239,7 @@ public class SearchCompetitionPanel
 					}
 					string += GuiConfiguration.getMessage("teamType");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamType.getText()));
+					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
 				}
 
 				if (ctrlCountryType.getText() != null) {
@@ -248,7 +248,7 @@ public class SearchCompetitionPanel
 					}
 					string += GuiConfiguration.getMessage("country");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlCountryType.getText()));
+					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 					if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
 						string += " - ";
 						string += ctrlContinentName.getText();
@@ -265,7 +265,6 @@ public class SearchCompetitionPanel
 				SearchCompetitionPanel.this.revalidate();
 			}
 		});
-
 
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);

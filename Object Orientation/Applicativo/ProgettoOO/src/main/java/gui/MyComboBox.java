@@ -37,17 +37,8 @@ public class MyComboBox
 
 				controlLabel.setText(selectedString);
 			}
-
 			@Override
-			public void popupMenuCanceled(PopupMenuEvent e)
-			{
-
-			}
+			public void popupMenuCanceled(PopupMenuEvent e) { }
 		});
-	}
-
-	public void fillComboBox(Vector<String> comboBoxDataVector)
-	{
-		this.setModel(new DefaultComboBoxModel<>(comboBoxDataVector));
 	}
 }

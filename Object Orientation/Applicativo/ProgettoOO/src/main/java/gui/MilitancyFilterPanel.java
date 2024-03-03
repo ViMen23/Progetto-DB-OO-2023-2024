@@ -28,6 +28,8 @@ public class MilitancyFilterPanel
 		final JLabel ctrlFromYear = new JLabel((String) null);
 		final JLabel ctrlToYear = new JLabel((String) null);
 
+		final Integer[] tableIndex = {-1, -1};
+		final JLabel ctrlMouseTable = new JLabel((String) null);
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -39,7 +41,7 @@ public class MilitancyFilterPanel
 		final Map<String, String> teamNameMap = new HashMap<>();
 
 		final Vector<Vector<String>> playerTableData = new Vector<>();
-		final Map<Integer, String> playerTableDataMap = new HashMap<>();
+		final Map<Integer, Map<Integer, String>> playerTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
@@ -75,138 +77,89 @@ public class MilitancyFilterPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
-						""//TODO
+						GuiConfiguration.NINE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		string = GuiConfiguration.getMessage("militancyFilter");
-		string = string.toUpperCase();
-
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("militancyFilter"), this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 
 		string = "1. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
 		string += GuiConfiguration.getMessage("teamType");
-		string = string.toUpperCase();
-
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
 		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il secondo info box"); //TODO
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamTypeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "2. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("nation");
-		string += "/";
-		string += GuiConfiguration.getMessage("confederation");
-		string = string.toUpperCase();
+		string += GuiConfiguration.getMessage("NATION").toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.CONTINENT.toString();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-
-		continentTypeNamePanel = new LabelComboPanel(string, false, ctrlContinentName);
+		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), false, ctrlContinentName);
 		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = Country.COUNTRY_TYPE.NATION.toString();
-		string = GuiConfiguration.getMessage(string);
-		string = StringUtils.capitalize(string);
-
-		nationTypeNamePanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il primo info box"); //TODO
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "3. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("team");
-		string = string.toUpperCase();
+		string += GuiConfiguration.getMessage("team").toUpperCase();
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("team");
-		string = StringUtils.capitalize(string);
-
-		teamNamePanel = new LabelComboPanel(string, false, ctrlTeamName);
+		teamNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("team"), false, ctrlTeamName);
 		centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il terzo info box"); //TODO
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "4. ";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("years");
-		string = string.toUpperCase();
+		string += GuiConfiguration.getMessage("yearsRange");
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("info");
-		string = string.toUpperCase();
-		titleLabel = new TitleLabel(string);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("from");
-		string += " ";
-		string += GuiConfiguration.getMessage("year");
-		string = StringUtils.capitalize(string);
-
-		fromYearPanel = new LabelComboPanel(string, false, ctrlFromYear);
+		fromYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("fromYear"), false, ctrlFromYear);
 		centralPanel.add(fromYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		string = GuiConfiguration.getMessage("to");
-		string += " ";
-		string += GuiConfiguration.getMessage("year");
-		string = StringUtils.capitalize(string);
-
-		toYearPanel = new LabelComboPanel(string, false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear);
+		toYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("toYear"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear);
 		centralPanel.add(toYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel("Questo e' il quarto info box"); //TODO
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("yearsRangeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		playerTablePanel = new TablePanel(true, null, null, null);
+		playerTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
-		string = GuiConfiguration.getMessage("search");
-		string = string.toUpperCase();
-		button = new JButton(string);
+		button = new JButton(GuiConfiguration.getMessage("search"));
 		button.setEnabled(false);
 
 
@@ -218,14 +171,17 @@ public class MilitancyFilterPanel
 				String string;
 
 				playerTableData.clear();
+				playerTableDataMap.clear();
 
-				Controller.getInstance().setPlayerTable(
-								teamNameMap.get(ctrlTeamName.getText()),
-								ctrlFromYear.getText(),
-								ctrlToYear.getText(),
-								playerTableData,
-								playerTableDataMap
-				);
+
+//				Controller.getInstance().setPlayerTable(
+//								teamNameMap.get(ctrlTeamName.getText()),
+//								ctrlFromYear.getText(),
+//								ctrlToYear.getText(),
+//								playerTableData,
+//								playerTableDataMap
+//				);
+				//TODO REMOVE WHEN THE CONTROLLER IS FIXED
 
 				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());

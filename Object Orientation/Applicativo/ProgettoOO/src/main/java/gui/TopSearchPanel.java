@@ -20,22 +20,11 @@ public class TopSearchPanel
 												JPanel rootPanel,
 												JPanel toRemovePanel)
 	{
-		MigLayout migLayout;
 
-		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
-		);
+		this(titleButtonString);
 
-		this.setLayout(migLayout);
-		this.setBackground(Color.white);
-
-
-
-		this.titleButton = new JButton(titleButtonString, MAXIMIZE);
-
-		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		titleButton.setEnabled(true);
+		titleButton.setIcon(MAXIMIZE);
 		titleButton.setIconTextGap(40);
 		titleButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
@@ -54,10 +43,30 @@ public class TopSearchPanel
 				rootPanel.revalidate();
 			}
 		});
+	}
+
+	public TopSearchPanel(String titleButtonString)
+	{
+		MigLayout migLayout;
+		JButton resetButton;
+
+		migLayout = new MigLayout(
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+		);
+
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+		this.titleButton = new JButton(titleButtonString);
+
+		titleButton.setHorizontalTextPosition(SwingConstants.LEADING);
+		titleButton.setCursor(GuiConfiguration.HAND_CURSOR);
+		titleButton.setEnabled(false);
 
 		this.add(titleButton, GuiConfiguration.WIDTH_80P_ADD_CONSTRAINT);
 
-		JButton resetButton;
 
 		resetButton = new JButton(RESET);
 		resetButton.setCursor(GuiConfiguration.HAND_CURSOR);

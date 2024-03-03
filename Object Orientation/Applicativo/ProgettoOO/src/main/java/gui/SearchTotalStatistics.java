@@ -8,6 +8,10 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 public class SearchTotalStatistics
@@ -18,7 +22,11 @@ public class SearchTotalStatistics
 		final JLabel ctrlTeamType = new JLabel((String) null);
 		final JLabel ctrlPlayerRole = new JLabel((String) null);
 
+		final Integer[] tableIndex = {-1, -1};
+		final JLabel ctrlMouseTable = new JLabel((String) null);
+
 		final Vector<Vector<String>> totalStatisticsTableData = new Vector<>();
+		final Map<Integer, Map<Integer, String>> totalStatisticsTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;
@@ -76,11 +84,11 @@ public class SearchTotalStatistics
 		playerRolePanel = new PlayerRoleCheckPanel(ctrlPlayerRole);
 		centralPanel.add(playerRolePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("totalStatisticsRoleInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("roleInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		totalStatisticsTablePanel = new TablePanel(true, null);
+		totalStatisticsTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 		this.add(totalStatisticsTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -92,12 +100,16 @@ public class SearchTotalStatistics
 				String string;
 
 				totalStatisticsTableData.clear();
+				totalStatisticsTableDataMap.clear();
 
-				Controller.getInstance().setStatisticTable(
-								ctrlTeamType.getText(),
-								ctrlPlayerRole.getText(),
-								totalStatisticsTableData
-				);
+
+//				Controller.getInstance().setStatisticTable(
+//								ctrlTeamType.getText(),
+//								ctrlPlayerRole.getText(),
+//								totalStatisticsTableData,
+//								totalStatisticsTableDataMap
+//				);
+				//TODO REMOVE AFTER FIX ON CONTROLLER
 
 				totalStatisticsTable.setModel(new TableModel(totalStatisticsTableData, GuiConfiguration.STATISTIC_TOTAL_TABLE_COLUMN_NAME));
 				totalStatisticsTable.setPreferredScrollableViewportSize(totalStatisticsTable.getPreferredSize());
@@ -105,7 +117,7 @@ public class SearchTotalStatistics
 				// messaggio ricerca effettuata
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
-				string += GuiConfiguration.getMessage("countries");
+				string += GuiConfiguration.getMessage("players");
 				string += " ";
 				string += totalStatisticsTableData.size();
 
@@ -145,5 +157,20 @@ public class SearchTotalStatistics
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String test = totalStatisticsTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+						System.out.println("VAIVAI --> " + test);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
+					}
+				}
+			}
+		});
 	}
 }

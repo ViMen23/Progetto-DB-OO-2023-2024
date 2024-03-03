@@ -4,7 +4,6 @@ import controller.Controller;
 import model.Country;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -20,7 +19,7 @@ public class SearchTeamPanel
 {
 	public SearchTeamPanel()
 	{
-		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
 
 		final JLabel ctrlTeamSubLongName = new JLabel((String) null);
 		final JLabel ctrlTeamSubShortName = new JLabel((String) null);
@@ -80,8 +79,6 @@ public class SearchTeamPanel
 		string = GuiConfiguration.getMessage("searchTeams");
 		string += " - ";
 		string += GuiConfiguration.getMessage("availableTeams");
-		string += " - ";
-		string += GuiConfiguration.getMessage("teams");
 		string += " ";
 		string += Controller.getInstance().countTeams().toString();
 
@@ -206,7 +203,7 @@ public class SearchTeamPanel
 					}
 					string += GuiConfiguration.getMessage("teamType");
 					string += ": ";
-					string += StringUtils.capitalize(GuiConfiguration.getMessage(ctrlTeamType.getText()));
+					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
 				}
 
 				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {

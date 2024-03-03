@@ -12,21 +12,7 @@ public class MyTable
 								 Integer[] tableIndex,
 								 JLabel ctrlMouseLabel)
 	{
-		super();
-
-		this.setRowHeight(25);
-
-		this.setPreferredScrollableViewportSize(this.getPreferredSize());
-		this.setFillsViewportHeight(true);
-
-		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
-		this.setAutoCreateRowSorter(sort);
-
-		DefaultTableCellRenderer defaultRenderer = (DefaultTableCellRenderer) this.getTableHeader().getDefaultRenderer();
-
-		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
-
+		this(sort);
 
 		this.addMouseListener(new MouseAdapter() {
 			@Override
@@ -52,11 +38,9 @@ public class MyTable
 		this.setFillsViewportHeight(true);
 
 		this.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-
 		this.setAutoCreateRowSorter(sort);
 
 		DefaultTableCellRenderer defaultRenderer = (DefaultTableCellRenderer) this.getTableHeader().getDefaultRenderer();
-
 		defaultRenderer.setHorizontalAlignment(SwingConstants.CENTER);
 	}
 }

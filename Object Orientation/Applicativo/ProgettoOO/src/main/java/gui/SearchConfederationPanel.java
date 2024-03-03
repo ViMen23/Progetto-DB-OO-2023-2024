@@ -17,7 +17,7 @@ public class SearchConfederationPanel
 {
 	public SearchConfederationPanel()
 	{
-		final String selectAll = StringUtils.capitalize(GuiConfiguration.getMessage("selectAll"));
+		final String selectAll = GuiConfiguration.getMessage("selectAll");
 
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlConfederationName = new JLabel(selectAll);
@@ -108,7 +108,7 @@ public class SearchConfederationPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				MyTable countryTable = confederationTablePanel.getMyTable();
-				String string = "WE";
+				String string;
 
 				confederationTableData.clear();
 

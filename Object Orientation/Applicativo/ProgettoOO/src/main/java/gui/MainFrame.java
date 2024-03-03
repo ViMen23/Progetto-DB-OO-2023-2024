@@ -19,9 +19,9 @@ public class MainFrame
 
 		migLayout = new MigLayout
 			(
-				"debug, flowy, center",
-				"0[]0",
-				"0[]0[]10[]0"
+				GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
+				GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
+				GuiConfiguration.THREE_CELL_EXT_GAP_0_INT_GAP_0_10_LAYOUT_CONSTRAINT
 			);
 
 		this.getContentPane().setBackground(new Color(210, 210, 210));
