@@ -47,8 +47,8 @@ public class SearchTeamPanel
 		LabelTextPanel teamLongNamePanel;
 		LabelTextPanel teamShortNamePanel;
 		RadioPanel teamTypePanel;
-		LabelComboPanel continentTypeNamePanel;
-		LabelComboPanel nationTypeNamePanel;
+		LabelComboPanel continentNamePanel;
+		LabelComboPanel nationNamePanel;
 		TablePanel teamTablePanel;
 		JButton button;
 
@@ -131,11 +131,11 @@ public class SearchTeamPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
+		continentNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
+		centralPanel.add(continentNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
-		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+		nationNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
@@ -247,15 +247,25 @@ public class SearchTeamPanel
 									continentNameMap
 					);
 
-					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+					if (1 == continentNameVector.size()) {
+						continentNameVector.clear();
+						continentNameVector.add(GuiConfiguration.getMessage("noData"));
+						continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+						continentNamePanel.getMyComboBox().setEnabled(false);
+						continentNamePanel.getMyComboBox().setSelectedIndex(0);
+						nationNamePanel.getMyComboBox().setEnabled(false);
+						nationNamePanel.getMyComboBox().setSelectedIndex(-1);
+					}
+
+					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
 
 				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
+					nationNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationNamePanel.getMyComboBox().setEnabled(false);
 					ctrlNationName.setText(selectAll);
 				} else {
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(true);
+					nationNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationNamePanel.getMyComboBox().setEnabled(true);
 					ctrlNationName.setText(selectAll);
 				}
 			}
@@ -278,7 +288,15 @@ public class SearchTeamPanel
 									nationNameMap
 					);
 
-					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+					if (1 == nationNameVector.size()) {
+						nationNameVector.clear();
+						nationNameVector.add(GuiConfiguration.getMessage("noData"));
+						nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+						nationNamePanel.getMyComboBox().setEnabled(false);
+						nationNamePanel.getMyComboBox().setSelectedIndex(0);
+					}
+
+					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}
 			}
 		});

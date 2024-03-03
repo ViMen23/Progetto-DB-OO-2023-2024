@@ -20,21 +20,18 @@ public class SearchCompetitionPanel
 
 	public SearchCompetitionPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
-
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);
 		final JLabel ctrlCompetitionType = new JLabel((String) null);
 		final JLabel ctrlTeamType = new JLabel((String) null);
 		final JLabel ctrlCountryType = new JLabel((String) null);
-		final JLabel ctrlContinentName = new JLabel(selectAll);
-		final JLabel ctrlNationName = new JLabel(selectAll);
+		final JLabel ctrlContinentName = new JLabel((String) null);
+		final JLabel ctrlNationName = new JLabel((String) null);
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
 
 		final Vector<String> nationNameVector = new Vector<>();
 		final Map<String, String> nationNameMap = new HashMap<>();
-
 
 		final Vector<Vector<String>> competitionTableData = new Vector<>();
 
@@ -249,10 +246,10 @@ public class SearchCompetitionPanel
 					string += GuiConfiguration.getMessage("country");
 					string += ": ";
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
-					if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+					if (continentNameMap.get(ctrlContinentName.getText()) != null) {
 						string += " - ";
 						string += ctrlContinentName.getText();
-						if (!ctrlNationName.getText().equalsIgnoreCase(selectAll)) {
+						if (nationNameMap.get(ctrlNationName.getText()) != null) {
 							string += " - ";
 							string += ctrlNationName.getText();
 						}
@@ -272,25 +269,14 @@ public class SearchCompetitionPanel
 		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
-				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString())) {
-					continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					continentTypeNamePanel.getMyComboBox().setEnabled(false);
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlContinentName.setText(selectAll);
-					ctrlNationName.setText(selectAll);
-				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString())) {
-					continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					continentTypeNamePanel.getMyComboBox().setEnabled(true);
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(selectAll);
-				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
-					continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					continentTypeNamePanel.getMyComboBox().setEnabled(true);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlContinentName.setText(ctrlContinentName.getText());
-				}
+				continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+				nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+				nationTypeNamePanel.getMyComboBox().setEnabled(false);
+				ctrlContinentName.setText(null);
+				ctrlNationName.setText(null);
+				continentTypeNamePanel.getMyComboBox().setEnabled(
+								0 != StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString())
+				);
 			}
 		});
 
@@ -299,11 +285,11 @@ public class SearchCompetitionPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlContinentName.getText(), "@fill")) {
 					continentNameVector.clear();
 					continentNameMap.clear();
 
-					continentNameVector.add(selectAll);
+					continentNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -315,24 +301,16 @@ public class SearchCompetitionPanel
 					if (1 == continentNameVector.size()) {
 						continentNameVector.clear();
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
-						continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-						continentTypeNamePanel.getMyComboBox().setEnabled(false);
-						continentTypeNamePanel.getMyComboBox().setSelectedIndex(0);
-						nationTypeNamePanel.getMyComboBox().setEnabled(false);
-						nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					}
-
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-
-				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+				} else if (null == continentNameMap.get(ctrlContinentName.getText())) {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(selectAll);
-
-				} else if (ctrlCountryType.getText().equalsIgnoreCase(Country.COUNTRY_TYPE.NATION.toString())) {
+					ctrlNationName.setText(null);
+				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					nationTypeNamePanel.getMyComboBox().setEnabled(true);
-					ctrlNationName.setText(selectAll);
+					ctrlNationName.setText(null);
 				}
 			}
 		});
@@ -342,11 +320,11 @@ public class SearchCompetitionPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlNationName.getText(), "@fill")) {
 					nationNameVector.clear();
 					nationNameMap.clear();
 
-					nationNameVector.add(selectAll);
+					nationNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.NATION.toString(),
@@ -358,9 +336,6 @@ public class SearchCompetitionPanel
 					if (1 == nationNameVector.size()) {
 						nationNameVector.clear();
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
-						nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-						nationTypeNamePanel.getMyComboBox().setEnabled(false);
-						nationTypeNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));

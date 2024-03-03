@@ -17,10 +17,8 @@ public class SearchCountryPanel
 {
 	public SearchCountryPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
-
 		final JLabel ctrlCountryType = new JLabel((String) null);
-		final JLabel ctrlContinentName = new JLabel(selectAll);
+		final JLabel ctrlContinentName = new JLabel((String) null);
 
 		final Vector<String> countryNameVector = new Vector<>();
 		final Map<String, String> countryNameMap = new HashMap<>();
@@ -136,7 +134,7 @@ public class SearchCountryPanel
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 				}
 
-				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+				if (null != countryNameMap.get(ctrlContinentName.getText())) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -163,7 +161,7 @@ public class SearchCountryPanel
 				} else {
 					continentNamePanel.getMyComboBox().setEnabled(false);
 					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlContinentName.setText(selectAll);
+					ctrlContinentName.setText(null);
 				}
 			}
 		});
@@ -172,11 +170,11 @@ public class SearchCountryPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlContinentName.getText(), "@fill")) {
 					countryNameVector.clear();
 					countryNameMap.clear();
 
-					countryNameVector.add(selectAll);
+					countryNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -188,9 +186,6 @@ public class SearchCountryPanel
 					if (1 == countryNameVector.size()) {
 						countryNameVector.clear();
 						countryNameVector.add(GuiConfiguration.getMessage("noData"));
-						continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));
-						continentNamePanel.getMyComboBox().setEnabled(false);
-						continentNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(countryNameVector));

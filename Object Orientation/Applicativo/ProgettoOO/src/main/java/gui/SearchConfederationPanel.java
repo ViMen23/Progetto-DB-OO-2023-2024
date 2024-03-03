@@ -17,10 +17,8 @@ public class SearchConfederationPanel
 {
 	public SearchConfederationPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
-
 		final JLabel ctrlCountryType = new JLabel((String) null);
-		final JLabel ctrlConfederationName = new JLabel(selectAll);
+		final JLabel ctrlConfederationName = new JLabel((String) null);
 
 		final Vector<String> confederationNameVector = new Vector<>();
 		final Map<String, String> confederationNameMap = new HashMap<>();
@@ -139,7 +137,7 @@ public class SearchConfederationPanel
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 				}
 
-				if (!ctrlConfederationName.getText().equalsIgnoreCase(selectAll)) {
+				if (null != confederationNameMap.get(ctrlConfederationName.getText())) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -149,6 +147,7 @@ public class SearchConfederationPanel
 				}
 
 				confederationTablePanel.getTextArea().setText(string);
+
 				topSearchPanel.getTitleButton().doClick();
 				SearchConfederationPanel.this.revalidate();
 			}
@@ -166,7 +165,7 @@ public class SearchConfederationPanel
 				} else {
 					confederationNamePanel.getMyComboBox().setEnabled(false);
 					confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlConfederationName.setText(selectAll);
+					ctrlConfederationName.setText(null);
 				}
 			}
 		});
@@ -175,11 +174,11 @@ public class SearchConfederationPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlConfederationName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlConfederationName.getText(), "@fill")) {
 					confederationNameVector.clear();
 					confederationNameMap.clear();
 
-					confederationNameVector.add(selectAll);
+					confederationNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setConfederationComboBox(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -191,9 +190,6 @@ public class SearchConfederationPanel
 					if (1 == confederationNameVector.size()) {
 						confederationNameVector.clear();
 						confederationNameVector.add(GuiConfiguration.getMessage("noData"));
-						confederationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
-						confederationNamePanel.getMyComboBox().setEnabled(false);
-						confederationNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					confederationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(confederationNameVector));
