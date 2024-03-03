@@ -4,6 +4,7 @@ import controller.Controller;
 import model.Country;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -19,13 +20,11 @@ public class SearchTeamPanel
 {
 	public SearchTeamPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
-
 		final JLabel ctrlTeamSubLongName = new JLabel((String) null);
 		final JLabel ctrlTeamSubShortName = new JLabel((String) null);
 		final JLabel ctrlTeamType = new JLabel((String) null);
-		final JLabel ctrlContinentName = new JLabel(selectAll);
-		final JLabel ctrlNationName = new JLabel(selectAll);
+		final JLabel ctrlContinentName = new JLabel((String) null);
+		final JLabel ctrlNationName = new JLabel((String) null);
 
 		final Integer[] tableIndex = {-1, -1};
 		final JLabel ctrlMouseTable = new JLabel((String) null);
@@ -206,7 +205,7 @@ public class SearchTeamPanel
 					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
 				}
 
-				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+				if (continentNameMap.get(ctrlContinentName.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -214,7 +213,7 @@ public class SearchTeamPanel
 					string += ": ";
 					string += ctrlContinentName.getText();
 
-					if (!ctrlNationName.getText().equalsIgnoreCase(selectAll)) {
+					if (nationNameMap.get(ctrlNationName.getText()) != null) {
 						string += " - ";
 						string += ctrlNationName.getText();
 					}
@@ -234,11 +233,11 @@ public class SearchTeamPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlContinentName.getText(), "@fill")) {
 					continentNameVector.clear();
 					continentNameMap.clear();
 
-					continentNameVector.add(selectAll);
+					continentNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -250,23 +249,13 @@ public class SearchTeamPanel
 					if (1 == continentNameVector.size()) {
 						continentNameVector.clear();
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
-						continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-						continentNamePanel.getMyComboBox().setEnabled(false);
-						continentNamePanel.getMyComboBox().setSelectedIndex(0);
-						nationNamePanel.getMyComboBox().setEnabled(false);
-						nationNamePanel.getMyComboBox().setSelectedIndex(-1);
 					}
 
 					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-
-				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
-					nationNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(selectAll);
 				} else {
 					nationNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationNamePanel.getMyComboBox().setEnabled(true);
-					ctrlNationName.setText(selectAll);
+					nationNamePanel.getMyComboBox().setEnabled(continentNameMap.get(ctrlContinentName.getText()) != null);
+					ctrlNationName.setText(null);
 				}
 			}
 		});
@@ -275,11 +264,11 @@ public class SearchTeamPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlNationName.getText(), "@fill")) {
 					nationNameVector.clear();
 					nationNameMap.clear();
 
-					nationNameVector.add(selectAll);
+					nationNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.NATION.toString(),
@@ -291,11 +280,7 @@ public class SearchTeamPanel
 					if (1 == nationNameVector.size()) {
 						nationNameVector.clear();
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
-						nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-						nationNamePanel.getMyComboBox().setEnabled(false);
-						nationNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
-
 					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}
 			}

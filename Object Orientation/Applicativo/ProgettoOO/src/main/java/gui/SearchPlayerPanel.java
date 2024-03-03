@@ -22,17 +22,15 @@ public class SearchPlayerPanel
 
 	public SearchPlayerPanel()
 	{
-		final String selectAll = GuiConfiguration.getMessage("selectAll");
-
 		final JLabel ctrlPlayerSubName = new JLabel((String) null);
 		final JLabel ctrlPlayerSubSurname = new JLabel((String) null);
 		final JLabel ctrlReferenceYear = new JLabel((String) null);
 		final JLabel ctrlPlayerMinAge = new JLabel((String) null);
 		final JLabel ctrlPlayerMaxAge = new JLabel((String) null);
-		final JLabel ctrlContinentName = new JLabel(selectAll);
-		final JLabel ctrlNationName = new JLabel(selectAll);
+		final JLabel ctrlContinentName = new JLabel((String) null);
+		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlPlayerRole = new JLabel((String) null);
-		final JLabel ctrlPlayerPosition = new JLabel(selectAll);
+		final JLabel ctrlPlayerPosition = new JLabel((String) null);
 		final JLabel ctrlPlayerFoot = new JLabel((String) null);
 
 		final Integer[] tableIndex = {-1, -1};
@@ -280,9 +278,7 @@ public class SearchPlayerPanel
 					string += ctrlReferenceYear.getText();
 
 					string += "\n";
-
 					string += GuiConfiguration.getMessage("age");
-
 					string += ": ";
 					string += ctrlPlayerMinAge.getText();
 					string += " - ";
@@ -295,7 +291,7 @@ public class SearchPlayerPanel
 					}
 				}
 
-				if (!ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
+				if (continentNameMap.get(ctrlContinentName.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -303,7 +299,7 @@ public class SearchPlayerPanel
 					string += ": ";
 					string += ctrlContinentName.getText();
 
-					if (!ctrlNationName.getText().equalsIgnoreCase(selectAll)) {
+					if (nationNameMap.get(ctrlNationName.getText()) != null) {
 						string += " - ";
 						string += ctrlNationName.getText();
 					}
@@ -326,7 +322,7 @@ public class SearchPlayerPanel
 					}
 				}
 
-				if (!ctrlPlayerPosition.getText().equalsIgnoreCase(selectAll)) {
+				if (positionNameMap.get(ctrlPlayerPosition.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -402,8 +398,7 @@ public class SearchPlayerPanel
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));
 					}
-				}
-				else if (null != ctrlPlayerMinAge.getText()){
+				} else if (null != ctrlPlayerMinAge.getText()){
 					playerMaxAgePanel.getMyComboBox().setSelectedIndex(-1);
 					playerMaxAgePanel.getMyComboBox().setEnabled(true);
 					ctrlPlayerMaxAge.setText(null);
@@ -436,11 +431,11 @@ public class SearchPlayerPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlContinentName.getText(), "@fill")) {
 					continentNameVector.clear();
 					continentNameMap.clear();
 
-					continentNameVector.add(selectAll);
+					continentNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.CONTINENT.toString(),
@@ -452,23 +447,13 @@ public class SearchPlayerPanel
 					if (1 == continentNameVector.size()) {
 						continentNameVector.clear();
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
-						continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-						continentTypeNamePanel.getMyComboBox().setEnabled(false);
-						continentTypeNamePanel.getMyComboBox().setSelectedIndex(0);
-						nationTypeNamePanel.getMyComboBox().setEnabled(false);
-						nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
 					}
 
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-
-				} else if (ctrlContinentName.getText().equalsIgnoreCase(selectAll)) {
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(selectAll);
 				} else {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(true);
-					ctrlNationName.setText(selectAll);
+					nationTypeNamePanel.getMyComboBox().setEnabled(continentNameMap.get(ctrlContinentName.getText()) != null);
+					ctrlNationName.setText(null);
 				}
 			}
 		});
@@ -477,11 +462,11 @@ public class SearchPlayerPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlNationName.getText(), "@fill")) {
 					nationNameVector.clear();
 					nationNameMap.clear();
 
-					nationNameVector.add(selectAll);
+					nationNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setCountryComboBox(
 									Country.COUNTRY_TYPE.NATION.toString(),
@@ -493,9 +478,6 @@ public class SearchPlayerPanel
 					if (1 == nationNameVector.size()) {
 						nationNameVector.clear();
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
-						nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-						nationTypeNamePanel.getMyComboBox().setEnabled(false);
-						nationTypeNamePanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
@@ -507,21 +489,18 @@ public class SearchPlayerPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlPlayerPosition.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerPosition.getText(), "@fill")) {
 
 					positionNameVector.clear();
 					positionNameMap.clear();
 
-					positionNameVector.add(selectAll);
+					positionNameVector.add(GuiConfiguration.getMessage("selectAll"));
 
 					Controller.getInstance().setPositionComboBox(positionNameVector, positionNameMap);
 
 					if (1 == positionNameVector.size()) {
 						positionNameVector.clear();
 						positionNameVector.add(GuiConfiguration.getMessage("noData"));
-						playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
-						playerPositionPanel.getMyComboBox().setEnabled(false);
-						playerPositionPanel.getMyComboBox().setSelectedIndex(0);
 					}
 
 					playerPositionPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
