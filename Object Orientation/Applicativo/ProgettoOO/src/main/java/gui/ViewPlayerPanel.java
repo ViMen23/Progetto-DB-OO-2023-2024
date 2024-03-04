@@ -33,6 +33,9 @@ public class ViewPlayerPanel
 		TablePanel clubCareerPanel;
 		TablePanel nationalCareerPanel;
 		JPanel clubStatisticsPanel;
+		JPanel clubStatisticsFilterGeneralPanel;
+		TopSearchPanel topFilterPanel;
+		JPanel clubStatisticsFilterPanel;
 
 
 		migLayout = new MigLayout(
@@ -187,27 +190,41 @@ public class ViewPlayerPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.ONE_CELL_TOP_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		clubStatisticsPanel = new JPanel(migLayout);
 		clubStatisticsPanel.setOpaque(false);
 
-		clubCareerPanel = new TablePanel(false);
-		clubCareerPanel.getMyTable().setModel(new DefaultTableModel(5, 1));
-		clubCareerPanel.getTitleLabel().setText(GuiConfiguration.getMessage("clubCareer"));
-		clubCareerPanel.getMyTable().setPreferredScrollableViewportSize(clubCareerPanel.getMyTable().getPreferredSize());
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+		);
 
-		careerTablePanel.add(clubCareerPanel);
+		clubStatisticsFilterGeneralPanel = new JPanel(migLayout);
 
-		nationalCareerPanel = new TablePanel(false);
-		nationalCareerPanel.getMyTable().setModel(new DefaultTableModel(5, 1));
-		nationalCareerPanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalCareer"));
-		nationalCareerPanel.getMyTable().setPreferredScrollableViewportSize(nationalCareerPanel.getMyTable().getPreferredSize());
 
-		careerTablePanel.add(nationalCareerPanel);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT
+		);
+
+		clubStatisticsFilterPanel = new JPanel(migLayout);
+
+		topFilterPanel = new TopSearchPanel(
+						GuiConfiguration.getMessage("filterClubStatistics"),
+						clubStatisticsFilterGeneralPanel,
+						clubStatisticsFilterPanel
+		);
+		clubStatisticsFilterGeneralPanel.add(topFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		clubStatisticsFilterGeneralPanel.add(clubStatisticsFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 
 

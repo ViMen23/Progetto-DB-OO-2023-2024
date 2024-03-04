@@ -1,12 +1,11 @@
 package gui;
 
 import controller.Controller;
-import model.Country;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -71,7 +70,7 @@ public class ViewTeamPanel
 		);
 
 		navigationPanel = new JPanel(migLayout);
-		navigationPanel.setOpaque(false);
+		navigationPanel.setBackground(Color.white);
 
 		this.add(navigationPanel);
 
@@ -93,7 +92,7 @@ public class ViewTeamPanel
 		);
 
 		squadParticipationPanel = new JPanel(migLayout);
-		setOpaque(false);
+		squadParticipationPanel.setOpaque(false);
 
 		showSeasonPanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("season").toUpperCase(),
@@ -174,48 +173,31 @@ public class ViewTeamPanel
 			}
 		});
 
-		showButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				MyTable squadTable = squadPanel.getMyTable();
-				MyTable participationTable = participationPanel.getMyTable();
-
-				infoTeamMap.clear();
-				squadTableData.clear();
-				squadTableMap.clear();
-				participationTableData.clear();
-
-				Controller.getInstance().setTeamSeasonView(
-								teamID,
-								seasonMap.get(ctrlSeason.getText()),
-								infoTeamMap,
-								squadTableData,
-								squadTableMap,
-								participationTableData
-				);
-
-				generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
-
-				squadTable.setModel(new TableModel(squadTableData, GuiConfiguration.TEAM_SQUAD_TABLE_COLUMN_NAME));
-				squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
-
-				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.TEAM_PARTICIPATING_TABLE_COLUMN_NAME));
-				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
-			}
-		});
-
 		caseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
 				MyTable trophyTable = trophyPanel.getMyTable();
-				MyTable prizeTable = trophyPanel.getMyTable();
+				MyTable prizeTable = prizePanel.getMyTable();
 
-				trophyTable.setModel(new DefaultTableModel(10, 2));
+				infoTeamMap.clear();
+				trophyTableData.clear();
+				prizeTableData.clear();
+
+				Controller.getInstance().setTeamCaseView(
+								teamID,
+								teamType,
+								infoTeamMap,
+								trophyTableData,
+								prizeTableData
+				);
+
+				generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
+
+				trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.TEAM_TROPHY_TABLE_COLUMN_NAME));
 				trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
 
-				prizeTable.setModel(new DefaultTableModel(10, 2));
+				prizeTable.setModel(new TableModel(prizeTableData, GuiConfiguration.TEAM_PRIZE_TABLE_COLUMN_NAME));
 				prizeTable.setPreferredScrollableViewportSize(prizeTable.getPreferredSize());
 
 				ViewTeamPanel.this.remove(squadParticipationPanel);
@@ -245,8 +227,6 @@ public class ViewTeamPanel
 					if (seasonVector.isEmpty()) {
 						seasonVector.add(GuiConfiguration.getMessage("noData"));
 					}
-
-					System.out.println(seasonVector);
 					showSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
 				}
 				else {
@@ -255,5 +235,39 @@ public class ViewTeamPanel
 			}
 		});
 
+		showButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				MyTable squadTable = squadPanel.getMyTable();
+				MyTable participationTable = participationPanel.getMyTable();
+
+				infoTeamMap.clear();
+				squadTableData.clear();
+				squadTableMap.clear();
+				participationTableData.clear();
+
+				Controller.getInstance().setTeamSeasonView(
+								teamID,
+								seasonMap.get(ctrlSeason.getText()),
+								infoTeamMap,
+								squadTableData,
+								squadTableMap,
+								participationTableData
+				);
+
+				generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
+
+				squadTable.setModel(new TableModel(squadTableData, GuiConfiguration.TEAM_SQUAD_TABLE_COLUMN_NAME));
+				squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
+
+				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.TEAM_PARTICIPATING_TABLE_COLUMN_NAME));
+				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
+
+				revalidate();
+			}
+		});
+
+		squadParticipationButton.doClick();
 	}
 }

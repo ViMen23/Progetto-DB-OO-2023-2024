@@ -270,12 +270,14 @@ public class GuiConfiguration
 
 	public static void initTeamTrophyTableColumnName()
 	{
+		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
 	}
 
 	public static void initTeamPrizeTableColumnName()
 	{
+		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize"));
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("given"));
 	}
