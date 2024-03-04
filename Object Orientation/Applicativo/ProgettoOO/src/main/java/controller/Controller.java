@@ -3419,7 +3419,7 @@ public class Controller
 				season += (Integer.parseInt(trophy.getCompetitionStartYear()) + 1);
 				vector.add(season);
 				vector.add(trophy.getCompetition().getName());
-				vector.add(trophy.getName());
+				vector.add(GuiConfiguration.getMessage(trophy.getName()));
 
 				tableData.add(vector);
 			}
@@ -3429,7 +3429,7 @@ public class Controller
 
 				vector.add(trophy.getCompetitionStartYear());
 				vector.add(trophy.getCompetition().getName());
-				vector.add(trophy.getName());
+				vector.add(GuiConfiguration.getMessage(trophy.getName()));
 
 				tableData.add(vector);
 			}

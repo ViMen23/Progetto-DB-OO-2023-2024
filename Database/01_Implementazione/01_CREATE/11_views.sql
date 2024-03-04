@@ -31,4 +31,6 @@ AS
 		TRUE
 	ORDER BY
 		fp_position.role,
-		fp_position.name
+		fp_position.name;
+
+--------------------------------------------------------------------------------
