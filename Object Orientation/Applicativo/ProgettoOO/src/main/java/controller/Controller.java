@@ -1262,7 +1262,6 @@ public class Controller
 		}
 
 		teamTableMap.put(0, teamLongNameMap);
-		System.out.println(teamTableMap);
 	}
 
 
@@ -3493,7 +3492,7 @@ public class Controller
 							newPrize(
 											null,
 											null,
-											listPrizeName.get(i),
+											GuiConfiguration.getMessage(listPrizeName.get(i)),
 											listPrizeGiven.get(i),
 											null,
 											null,

@@ -9724,15 +9724,15 @@ VALUES
  ******************************************************************************/
 INSERT INTO fp_trophy (type, name, role)
 VALUES
-('TEAM', 'First place', NULL),
-('TEAM', 'Second place', NULL),
-('TEAM', 'Third place', NULL),
-('PLAYER', 'Most Valuable Player', NULL),
-('PLAYER', 'Best Striker', 'FW'),
-('PLAYER', 'Best Midfielder', 'MF'),
-('PLAYER', 'Best Defender', 'DF'),
-('PLAYER', 'Best Goalkeeper', 'GK'),
-('PLAYER', 'Goal of the Season', NULL);
+('TEAM', 'firstPlace', NULL),
+('TEAM', 'secondPlace', NULL),
+('TEAM', 'thirdPlace', NULL),
+('PLAYER', 'mostValuablePlayer', NULL),
+('PLAYER', 'bestStriker', 'FW'),
+('PLAYER', 'bestMidfielder', 'MF'),
+('PLAYER', 'bestDefender', 'DF'),
+('PLAYER', 'bestGoalkeeper', 'GK'),
+('PLAYER', 'goalOfTheSeason', NULL);
 --------------------------------------------------------------------------------
 
 
