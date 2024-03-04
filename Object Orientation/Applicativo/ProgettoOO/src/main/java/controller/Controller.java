@@ -1172,8 +1172,6 @@ public class Controller
 
 	private void fetchTeamYear(String teamID)
 	{
-		fetchTeam(teamID);
-		
 		List<String> listTeamYear = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
@@ -1310,7 +1308,7 @@ public class Controller
 																	Vector<String> teamYearVector,
 																	Map<String, String> teamYearMap)
 	{
-		fetchTeamPlayer(teamID);
+		fetchTeamYear(teamID);
 		setTeamComboBoxDataMap(teamID, teamType, teamYearVector, teamYearMap);
 	}
 
