@@ -16,13 +16,13 @@ INSERT INTO fp_team_trophy_case (team_id, trophy_id, competition_id, start_year)
 VALUES
 (
 	get_column('@', 'fp_team@long_name@SSC Napoli', 'id')::integer,
-	get_column('@', 'fp_trophy@name@First place', 'id')::integer,
+	get_column('@', 'fp_trophy@name@firstPlace', 'id')::integer,
 	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022
 ),
 (
 	get_column('@', 'fp_team@long_name@SS Lazio', 'id')::integer,
-	get_column('@', 'fp_trophy@name@Second place', 'id')::integer,
+	get_column('@', 'fp_trophy@name@secondPlace', 'id')::integer,
 	get_column('@', 'fp_competition@name@Serie A', 'id')::integer,
 	2022
 );
