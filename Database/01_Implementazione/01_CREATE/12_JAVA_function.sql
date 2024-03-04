@@ -1024,12 +1024,12 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            start_year::text AS start_year
+            years.start_year::text AS start_year
         FROM
             (
                 (
                     SELECT
-                        start_year
+                        fp_militancy.start_year
                     FROM
                         fp_militancy
                     WHERE
@@ -1038,7 +1038,7 @@ BEGIN
                 UNION
                 (
                     SELECT
-                        start_year
+                        fp_partecipation.start_year
                     FROM
                         fp_partecipation
                     WHERE
