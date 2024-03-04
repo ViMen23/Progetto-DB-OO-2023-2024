@@ -36,6 +36,7 @@ public class PostgresImplAttributeGoalkeepingDAO
 				mapAttributeGoalkeeping.put("aerialReach", rs.getString("aerial_reach"));
 				mapAttributeGoalkeeping.put("commandOfArea", rs.getString("command_of_area"));
 				mapAttributeGoalkeeping.put("communication", rs.getString("communication"));
+				mapAttributeGoalkeeping.put("eccentricity", rs.getString("eccentricity"));
 				mapAttributeGoalkeeping.put("firstTouchGk", rs.getString("first_touch_gk"));
 				mapAttributeGoalkeeping.put("handling", rs.getString("handling"));
 				mapAttributeGoalkeeping.put("kicking", rs.getString("kicking"));

@@ -2688,7 +2688,7 @@ BEGIN
 		natural_fitness = random_between(0, 10),
 		pace = random_between(0, 10),
 		stamina = random_between(0, 10),
-		strenght = random_between(0, 10)
+		strength = random_between(0, 10)
 	WHERE
 		player_id = id_player;
 	
@@ -2732,7 +2732,7 @@ BEGIN
 		long_throws = random_between(0, 10),
 		marking = random_between(0, 10),
 		passing = random_between(0, 10),
-		penality_taking = random_between(0, 10),
+		penalty_taking = random_between(0, 10),
 		tackling = random_between(0, 10),
 		technique = random_between(0, 10)	
 	WHERE

@@ -1349,7 +1349,7 @@ CREATE TABLE fp_attribute_physical
 	natural_fitness	dm_attribute	NOT NULL	DEFAULT 0,
 	pace			dm_attribute	NOT NULL	DEFAULT 0,
 	stamina			dm_attribute	NOT NULL	DEFAULT 0,
-	strenght		dm_attribute	NOT NULL	DEFAULT 0
+	strength		dm_attribute	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
@@ -1410,7 +1410,7 @@ CREATE TABLE fp_attribute_technical
 	long_throws			dm_attribute	NOT NULL	DEFAULT 0,
 	marking				dm_attribute	NOT NULL	DEFAULT 0,
 	passing				dm_attribute	NOT NULL	DEFAULT 0,
-	penality_taking		dm_attribute	NOT NULL	DEFAULT 0,
+	penalty_taking		dm_attribute	NOT NULL	DEFAULT 0,
 	tackling			dm_attribute	NOT NULL	DEFAULT 0,
 	technique			dm_attribute	NOT NULL	DEFAULT 0
 );

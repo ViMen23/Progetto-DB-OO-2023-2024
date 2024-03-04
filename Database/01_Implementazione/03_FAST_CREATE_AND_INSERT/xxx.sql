@@ -3066,7 +3066,7 @@ CREATE TABLE fp_attribute_physical
 	natural_fitness	dm_attribute	NOT NULL	DEFAULT 0,
 	pace			dm_attribute	NOT NULL	DEFAULT 0,
 	stamina			dm_attribute	NOT NULL	DEFAULT 0,
-	strenght		dm_attribute	NOT NULL	DEFAULT 0
+	strength		dm_attribute	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
@@ -3127,7 +3127,7 @@ CREATE TABLE fp_attribute_technical
 	long_throws			dm_attribute	NOT NULL	DEFAULT 0,
 	marking				dm_attribute	NOT NULL	DEFAULT 0,
 	passing				dm_attribute	NOT NULL	DEFAULT 0,
-	penality_taking		dm_attribute	NOT NULL	DEFAULT 0,
+	penalty_taking		dm_attribute	NOT NULL	DEFAULT 0,
 	tackling			dm_attribute	NOT NULL	DEFAULT 0,
 	technique			dm_attribute	NOT NULL	DEFAULT 0
 );
@@ -6460,7 +6460,7 @@ BEGIN
 		natural_fitness = random_between(0, 10),
 		pace = random_between(0, 10),
 		stamina = random_between(0, 10),
-		strenght = random_between(0, 10)
+		strength = random_between(0, 10)
 	WHERE
 		player_id = id_player;
 	
@@ -6504,7 +6504,7 @@ BEGIN
 		long_throws = random_between(0, 10),
 		marking = random_between(0, 10),
 		passing = random_between(0, 10),
-		penality_taking = random_between(0, 10),
+		penalty_taking = random_between(0, 10),
 		tackling = random_between(0, 10),
 		technique = random_between(0, 10)	
 	WHERE
@@ -29362,7 +29362,7 @@ RETURNS TABLE
             natural_fitness	text,
             pace			text,
             stamina			text,
-            strenght		text
+            strength		text
         )
 AS
 $$
@@ -29378,7 +29378,7 @@ BEGIN
             fp_attribute_physical.natural_fitness::text,
             fp_attribute_physical.pace::text,
             fp_attribute_physical.stamina::text,
-            fp_attribute_physical.strenght::text
+            fp_attribute_physical.strength::text
         FROM
             fp_attribute_physical
         WHERE
@@ -29419,7 +29419,7 @@ RETURNS TABLE
             long_throws			text,
             marking				text,
             passing				text,
-            penality_taking		text,
+            penalty_taking		text,
             tackling			text,
             technique			text
         )
@@ -29440,7 +29440,7 @@ BEGIN
             fp_attribute_technical.long_throws::text,
             fp_attribute_technical.marking::text,
             fp_attribute_technical.passing::text,
-            fp_attribute_technical.penality_taking::text,
+            fp_attribute_technical.penalty_taking::text,
             fp_attribute_technical.tackling::text,
             fp_attribute_technical.technique::text  
         FROM

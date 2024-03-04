@@ -40,7 +40,7 @@ public class PostgresImplAttributePhysicalDAO
 				mapAttributePhysical.put("naturalFitness", rs.getString("natural_fitness"));
 				mapAttributePhysical.put("pace", rs.getString("pace"));
 				mapAttributePhysical.put("stamina", rs.getString("stamina"));
-				mapAttributePhysical.put("strenght", rs.getString("strenght"));
+				mapAttributePhysical.put("strength", rs.getString("strength"));
 			}
 
 			rs.close();

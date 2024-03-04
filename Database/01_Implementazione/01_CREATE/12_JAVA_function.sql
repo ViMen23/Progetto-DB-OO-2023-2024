@@ -2485,7 +2485,7 @@ RETURNS TABLE
             natural_fitness	text,
             pace			text,
             stamina			text,
-            strenght		text
+            strength		text
         )
 AS
 $$
@@ -2501,7 +2501,7 @@ BEGIN
             fp_attribute_physical.natural_fitness::text,
             fp_attribute_physical.pace::text,
             fp_attribute_physical.stamina::text,
-            fp_attribute_physical.strenght::text
+            fp_attribute_physical.strength::text
         FROM
             fp_attribute_physical
         WHERE
@@ -2542,7 +2542,7 @@ RETURNS TABLE
             long_throws			text,
             marking				text,
             passing				text,
-            penality_taking		text,
+            penalty_taking		text,
             tackling			text,
             technique			text
         )
@@ -2563,7 +2563,7 @@ BEGIN
             fp_attribute_technical.long_throws::text,
             fp_attribute_technical.marking::text,
             fp_attribute_technical.passing::text,
-            fp_attribute_technical.penality_taking::text,
+            fp_attribute_technical.penalty_taking::text,
             fp_attribute_technical.tackling::text,
             fp_attribute_technical.technique::text  
         FROM

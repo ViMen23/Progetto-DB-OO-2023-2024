@@ -3066,7 +3066,7 @@ CREATE TABLE fp_attribute_physical
 	natural_fitness	dm_attribute	NOT NULL	DEFAULT 0,
 	pace			dm_attribute	NOT NULL	DEFAULT 0,
 	stamina			dm_attribute	NOT NULL	DEFAULT 0,
-	strenght		dm_attribute	NOT NULL	DEFAULT 0
+	strength		dm_attribute	NOT NULL	DEFAULT 0
 );
 --------------------------------------------------------------------------------
 
@@ -3127,7 +3127,7 @@ CREATE TABLE fp_attribute_technical
 	long_throws			dm_attribute	NOT NULL	DEFAULT 0,
 	marking				dm_attribute	NOT NULL	DEFAULT 0,
 	passing				dm_attribute	NOT NULL	DEFAULT 0,
-	penality_taking		dm_attribute	NOT NULL	DEFAULT 0,
+	penalty_taking		dm_attribute	NOT NULL	DEFAULT 0,
 	tackling			dm_attribute	NOT NULL	DEFAULT 0,
 	technique			dm_attribute	NOT NULL	DEFAULT 0
 );
@@ -6460,7 +6460,7 @@ BEGIN
 		natural_fitness = random_between(0, 10),
 		pace = random_between(0, 10),
 		stamina = random_between(0, 10),
-		strenght = random_between(0, 10)
+		strength = random_between(0, 10)
 	WHERE
 		player_id = id_player;
 	
@@ -6504,7 +6504,7 @@ BEGIN
 		long_throws = random_between(0, 10),
 		marking = random_between(0, 10),
 		passing = random_between(0, 10),
-		penality_taking = random_between(0, 10),
+		penalty_taking = random_between(0, 10),
 		tackling = random_between(0, 10),
 		technique = random_between(0, 10)	
 	WHERE

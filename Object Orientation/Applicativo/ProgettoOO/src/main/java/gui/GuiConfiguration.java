@@ -59,7 +59,7 @@ public class GuiConfiguration
 	public static final String CENTER_WRAP_2_LAYOUT_CONSTRAINT = "debug, center, wrap 2";
 
 	public static final String ONE_CELL_LAYOUT_CONSTRAINT = "[]";
-	public static final String ONE_CELL_GAP_0_10 = "0[]";
+	public static final String ONE_CELL_GAP_0_10 = "0[]10";
 	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
 	public static final String ONE_CELL_TOP_LAYOUT_CONSTRAINT = "[top]";
 	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";

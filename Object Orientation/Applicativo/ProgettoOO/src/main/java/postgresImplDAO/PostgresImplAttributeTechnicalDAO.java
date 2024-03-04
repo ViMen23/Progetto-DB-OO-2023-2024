@@ -44,7 +44,7 @@ public class PostgresImplAttributeTechnicalDAO
 				mapAttributeTechnical.put("longThrows", rs.getString("long_throws"));
 				mapAttributeTechnical.put("marking", rs.getString("marking"));
 				mapAttributeTechnical.put("passing", rs.getString("passing"));
-				mapAttributeTechnical.put("penalityTaking", rs.getString("penality_taking"));
+				mapAttributeTechnical.put("penaltyTaking", rs.getString("penalty_taking"));
 				mapAttributeTechnical.put("tackling", rs.getString("tackling"));
 				mapAttributeTechnical.put("technique", rs.getString("technique"));
 			}
