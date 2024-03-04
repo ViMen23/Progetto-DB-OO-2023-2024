@@ -2119,63 +2119,15 @@ public class Controller
 	public void setPlayerCaseView(String playerID,
 																Map<String, String> infoPlayerMap,
 																Vector<Vector<String>> playerClubTrophyTableData,
+																Map<Integer, Map<Integer, String>> playerClubTrophyTableMap,
 																Vector<Vector<String>> playerNationalTrophyTableData,
+																Map<Integer, Map<Integer, String>> playerNationalTrophyTableMap,
 																Vector<Vector<String>> playerPrizeTableData)
 	{
-		fetchPlayer(playerID);
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-
 		setPlayerInfoMap(playerID, infoPlayerMap);
-
-
-		fetchPlayerTrophy(playerID, "CLUB");
-
-		// tabella trofei club
-		Set<Trophy> playerTrophySet = player.getTrophySet();
-
-		for (Trophy playerTrophy : playerTrophySet) {
-			Vector<String> trophyVector = new Vector<>();
-
-			trophyVector.add(playerTrophy.getCompetitionStartYear());
-			trophyVector.add(playerTrophy.getCompetition().getName());
-			trophyVector.add(playerTrophy.getTeam().getLongName());
-			trophyVector.add(playerTrophy.getName());
-
-			playerClubTrophyTableData.add(trophyVector);
-		}
-
-
-		fetchPlayerTrophy(playerID, "NATIONAL");
-
-		// tabella trofei nazionale
-		playerTrophySet = player.getTrophySet();
-
-		for (Trophy playerTrophy : playerTrophySet) {
-			Vector<String> trophyVector = new Vector<>();
-
-			trophyVector.add(playerTrophy.getCompetitionStartYear());
-			trophyVector.add(playerTrophy.getCompetition().getName());
-			trophyVector.add(playerTrophy.getTeam().getLongName());
-			trophyVector.add(playerTrophy.getName());
-
-			playerNationalTrophyTableData.add(trophyVector);
-		}
-
-		fetchPlayerPrize(playerID);
-
-		// tabella premi
-		Set<Prize> playerPrizeSet = player.getPrizeSet();
-
-		for (Prize playerPrize : playerPrizeSet) {
-			Vector<String> prizeVector = new Vector<>();
-
-			prizeVector.add(playerPrize.getAssignedYear());
-			prizeVector.add(playerPrize.getName());
-			prizeVector.add(playerPrize.getGiven());
-
-			playerPrizeTableData.add(prizeVector);
-		}
+		setPlayerTrophyTable(playerID, "CLUB", playerClubTrophyTableData, playerClubTrophyTableMap);
+		setPlayerTrophyTable(playerID, "NATIONAL", playerNationalTrophyTableData, playerNationalTrophyTableMap);
+		setPlayerPrizeTable(playerID, playerPrizeTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -3071,6 +3023,22 @@ public class Controller
 		teamSquadTableMap.put(2, playerSurnameMap);
 	}
 
+	private void setNationalCareerTableDataMap(String playerID,
+																						 Vector<Vector<String>> tableData,
+																						 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		Map<String, Team> playerNationalCareer = newPlayer().getPlayerMap().get(playerID).getNationalCareer();
+
+		for (String key : playerNationalCareer.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(key);
+			vector.add(playerNationalCareer.get(key).getLongName());
+
+			tableData.add(vector);
+		}
+	}
+
 	public void setTeamSquadTable(String teamID,
 																String startYear,
 																Vector<Vector<String>> teamSquadTableData,
@@ -3079,6 +3047,16 @@ public class Controller
 		fetchMilitancy(teamID, startYear);
 		setTeamSquadTableDataMap(teamID, teamSquadTableData, teamSquadTableMap);
 	}
+
+
+	public void setNationalCareerTable(String playerID,
+																		 Vector<Vector<String>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		fetchNationalMilitancy(playerID);
+		setNationalCareerTableDataMap(playerID, tableData, tableMap);
+	}
+
 
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -3216,8 +3194,8 @@ public class Controller
 		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Set<Trophy> playerTrophySet = newPlayer().getPlayerMap().get(playerID).getTrophySet();
-		playerTrophySet.clear();
+		Map<Trophy, String> playerTrophyMap = newPlayer().getPlayerMap().get(playerID).getTrophyMap();
+		playerTrophyMap.clear();
 
 
 		for (int i = 0; i < listCompetitionStartYear.size(); ++i) {
@@ -3244,7 +3222,7 @@ public class Controller
 							)
 			);
 
-			playerTrophySet.add(
+			playerTrophyMap.putIfAbsent(
 							newTrophy(
 											null,
 											null,
@@ -3253,7 +3231,8 @@ public class Controller
 											teamMap.get(teamID),
 											competitionMap.get(competitionID),
 											listCompetitionStartYear.get(i)
-							)
+							),
+							teamID
 			);
 		}
 	}
@@ -3292,12 +3271,68 @@ public class Controller
 
 	}
 
+	private void setPlayerTrophyTableDataMap(String playerID,
+																					 String teamType,
+																					 Vector<Vector<String>> tableData,
+																					 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		Map<Trophy, String> playerTrophyMap = newPlayer().getPlayerMap().get(playerID).getTrophyMap();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
+
+		Integer row = 0;
+		// TODO ID_TEAM
+		if (teamType.equalsIgnoreCase("CLUB")) {
+			String season;
+			for (Trophy trophy : playerTrophyMap.keySet()) {
+				Vector<String> vector = new Vector<>();
+
+				season = trophy.getCompetitionStartYear();
+				season += "/";
+				season += (Integer.parseInt(trophy.getCompetitionStartYear()) + 1);
+				vector.add(season);
+				vector.add(trophy.getCompetition().getName());
+				vector.add(trophy.getTeam().getLongName());
+				vector.add(GuiConfiguration.getMessage(trophy.getName()));
+
+				tableData.add(vector);
+
+				teamLongNameMap.put(row, playerTrophyMap.get(trophy));
+				++row;
+			}
+		} else if (teamType.equalsIgnoreCase("NATIONAL")) {
+			for (Trophy trophy : playerTrophyMap.keySet()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(trophy.getCompetitionStartYear());
+				vector.add(trophy.getCompetition().getName());
+				vector.add(trophy.getTeam().getLongName());
+				vector.add(GuiConfiguration.getMessage(trophy.getName()));
+
+				tableData.add(vector);
+
+				teamLongNameMap.put(row, playerTrophyMap.get(trophy));
+				++row;
+			}
+		}
+
+		tableMap.put(2, teamLongNameMap);
+	}
+
 	public void setTeamTrophyTable(String teamID,
 																 String teamType,
 																 Vector<Vector<String>> tableData)
 	{
 		fetchTeamTrophy(teamID);
 		setTeamTrophyTableData(teamID, teamType, tableData);
+	}
+
+	public void setPlayerTrophyTable(String playerID,
+																	 String teamType,
+																	 Vector<Vector<String>> tableData,
+																	 Map<Integer, Map<Integer, String>> TableMap)
+	{
+		fetchPlayerTrophy(playerID, teamType);
+		setPlayerTrophyTableDataMap(playerID, teamType, tableData, TableMap);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -3436,11 +3471,35 @@ public class Controller
 		}
 	}
 
+	private void setPlayerPrizeTableData(String playerID,
+																			 Vector<Vector<String>> tableData)
+	{
+		Set<Prize> playerPrizeSet = newPlayer().getPlayerMap().get(playerID).getPrizeSet();
+
+		for (Prize prize : playerPrizeSet) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(prize.getAssignedYear());
+			vector.add(prize.getName());
+			vector.add(prize.getGiven());
+
+			tableData.add(vector);
+		}
+	}
+
 	public void setTeamPrizeTable(String teamID,
 																Vector<Vector<String>> tableData)
 	{
 		fetchTeamPrize(teamID);
 		setTeamPrizeTableData(teamID, tableData);
+	}
+
+
+	public void setPlayerPrizeTable(String playerID,
+																	Vector<Vector<String>> tableData)
+	{
+		fetchPlayerPrize(playerID);
+		setPlayerPrizeTableData(playerID, tableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 

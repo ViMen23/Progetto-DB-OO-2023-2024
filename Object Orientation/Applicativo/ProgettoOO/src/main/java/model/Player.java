@@ -39,7 +39,7 @@ public class Player
 
 	private final Set<Statistic> statisticSet;
 
-	private final Set<Trophy> trophySet;
+	private final Map<Trophy, String> trophyMap;
 	private final Set<Prize> prizeSet;
 
 	private final Set<String> playSeason;
@@ -77,7 +77,7 @@ public class Player
 		this.nationalCareer = new LinkedHashMap<>();
 		this.clubCareer = new LinkedHashMap<>();
 
-		this.trophySet = new LinkedHashSet<>();
+		this.trophyMap = new LinkedHashMap<>();
 		this.prizeSet = new LinkedHashSet<>();
 
 		this.playSeason = new LinkedHashSet<>();
@@ -250,9 +250,9 @@ public class Player
 		return clubCareer;
 	}
 
-	public Set<Trophy> getTrophySet()
+	public Map<Trophy, String> getTrophyMap()
 	{
-		return trophySet;
+		return trophyMap;
 	}
 
 	public Set<Prize> getPrizeSet()
