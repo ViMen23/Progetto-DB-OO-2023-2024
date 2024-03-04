@@ -19,29 +19,13 @@ import java.util.*;
 public class Controller
 {
 	private final Admin ctrlAdmin;
-	private final Country ctrlCountry;
-	private final Confederation ctrlConfederation;
-	private final Competition ctrlCompetition;
-	private final Team ctrlTeam;
-	private final Position ctrlPosition;
 	private final Player ctrlPlayer;
-	private final Trophy ctrlTrophy;
-	private final Prize ctrlPrize;
-	private final Tag ctrlTag;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
 		this.ctrlAdmin = newAdmin();
-		this.ctrlCountry = newCountry();
-		this.ctrlConfederation = newConfederation();
-		this.ctrlCompetition = newCompetition();
-		this.ctrlTeam = newTeam();
-		this.ctrlPosition = newPosition();
 		this.ctrlPlayer = newPlayer();
-		this.ctrlTrophy = newTrophy();
-		this.ctrlPrize = newPrize();
-		this.ctrlTag = newTag();
 	}
 
 	/**
@@ -1024,6 +1008,40 @@ public class Controller
 		}
 	}
 
+	private void mapTeam(String teamID,
+											 Map<String, String> mapTeamInfo)
+	{
+		if (!(teamID.equalsIgnoreCase(mapTeamInfo.get("teamID")))) {
+			System.out.println("ERRORE");
+			return;
+		}
+
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+		teamMap.clear();
+
+
+		teamMap.putIfAbsent(
+						teamID,
+						newTeam(
+										mapTeamInfo.get("teamType"),
+										mapTeamInfo.get("teamShortName"),
+										mapTeamInfo.get("teamLongName"),
+										newCountry(
+														null,
+														null,
+														mapTeamInfo.get("countryName"),
+														null
+										),
+										newConfederation(
+														mapTeamInfo.get("confederationShortName"),
+														null,
+														null,
+														null
+										)
+						)
+		);
+	}
+
 	private void mapTeam(List<String> listTeamID,
 											 List<String> listTeamLongName)
 	{
@@ -1139,35 +1157,7 @@ public class Controller
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.fetchTeamDB(teamID, mapTeamInfo);
 
-		if (!(teamID.equalsIgnoreCase(mapTeamInfo.get("teamID")))) {
-			System.out.println("ERRORE");
-			return;
-		}
-
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
-		teamMap.clear();
-
-
-		teamMap.putIfAbsent(
-						teamID,
-						newTeam(
-										mapTeamInfo.get("teamType"),
-										mapTeamInfo.get("teamShortName"),
-										mapTeamInfo.get("teamLongName"),
-										newCountry(
-														null,
-														null,
-														mapTeamInfo.get("countryName"),
-														null
-										),
-										newConfederation(
-														mapTeamInfo.get("confederationShortName"),
-														null,
-														null,
-														null
-										)
-						)
-		);
+		mapTeam(teamID, mapTeamInfo);
 	}
 
 	private void fetchTeamYear(String teamID)
@@ -1337,7 +1327,7 @@ public class Controller
 	private void mapTeamInfoMap(String teamID,
 															Map<String, String> infoTeamMap)
 	{
-		Team team = ctrlTeam.getTeamMap().get(teamID);
+		Team team = newTeam().getTeamMap().get(teamID);
 
 		infoTeamMap.put(GuiConfiguration.getMessage("team"), team.getLongName());
 		infoTeamMap.put(GuiConfiguration.getMessage("code"), team.getShortName());
@@ -1538,6 +1528,42 @@ public class Controller
 		}
 	}
 
+	private void mapPlayer(String playerID,
+												 Map<String, String> mapPlayerInfo)
+	{
+		if (!(playerID.equalsIgnoreCase(mapPlayerInfo.get("playerID")))) {
+			System.out.println("ERRORE");
+			return;
+		}
+
+
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		playerMap.clear();
+
+		playerMap.putIfAbsent(
+						playerID,
+						newPlayer(
+										mapPlayerInfo.get("playerName"),
+										mapPlayerInfo.get("playerSurname"),
+										mapPlayerInfo.get("playerDob"),
+										newCountry(
+														null,
+														null,
+														mapPlayerInfo.get("countryName"),
+														null
+										),
+										mapPlayerInfo.get("playerFoot"),
+										newPosition(
+														null,
+														null,
+														mapPlayerInfo.get("positionName")
+										),
+										mapPlayerInfo.get("playerRole"),
+										mapPlayerInfo.get("playerRetiredDate")
+						)
+		);
+	}
+
 	/**
 	 * TODO
 	 * @param playerSubName
@@ -1710,7 +1736,7 @@ public class Controller
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		playerDAO.fetchPlayerDB(playerID, startYearSeason);
 
-		Set<String> playerPlaySeason = ctrlPlayer.getPlayerMap().get(playerID).getPlaySeason();
+		Set<String> playerPlaySeason = newPlayer().getPlayerMap().get(playerID).getPlaySeason();
 		playerPlaySeason.clear();
 		playerPlaySeason.addAll(startYearSeason);
 	}
@@ -1723,38 +1749,36 @@ public class Controller
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		playerDAO.fetchPlayerDB(playerID, mapPlayerInfo);
 
+		mapPlayer(playerID, mapPlayerInfo);
+	}
 
-		if (!(playerID.equalsIgnoreCase(mapPlayerInfo.get("playerID")))) {
-			System.out.println("ERRORE");
-			return;
+	private void mapPlayerInfoMap(String playerID,
+																Map<String, String> infoPlayerMap)
+	{
+		Player player = newPlayer().getPlayerMap().get(playerID);
+
+		infoPlayerMap.put(GuiConfiguration.getMessage("name"), player.getName());
+		infoPlayerMap.put(GuiConfiguration.getMessage("surname"), player.getSurname());
+		infoPlayerMap.put(GuiConfiguration.getMessage("dob"), player.getDob());
+		infoPlayerMap.put(GuiConfiguration.getMessage("bornCountry"), player.getCountry().getName());
+		infoPlayerMap.put(GuiConfiguration.getMessage("preferredFoot"), GuiConfiguration.getMessage(player.getFoot()));
+		infoPlayerMap.put(GuiConfiguration.getMessage("mainPosition"), GuiConfiguration.getMessage(player.getPosition().getName()));
+		// TODO attenzione ruolo
+		infoPlayerMap.put(GuiConfiguration.getMessage("role"), GuiConfiguration.getMessage(player.getRole()));
+
+		if (null == player.getRetiredDate()) {
+			infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), "");
+		} else {
+			infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), player.getRetiredDate());
 		}
+	}
 
+	public void setPlayerInfoMap(String playerID,
+															 Map<String, String> infoPlayerMap)
+	{
+		fetchPlayer(playerID);
+		mapPlayerInfoMap(playerID, infoPlayerMap);
 
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
-		playerMap.clear();
-
-		playerMap.putIfAbsent(
-						playerID,
-						newPlayer(
-										mapPlayerInfo.get("playerName"),
-										mapPlayerInfo.get("playerSurname"),
-										mapPlayerInfo.get("playerDob"),
-										newCountry(
-														null,
-														null,
-														mapPlayerInfo.get("countryName"),
-														null
-										),
-										mapPlayerInfo.get("playerFoot"),
-										newPosition(
-														null,
-														null,
-														mapPlayerInfo.get("positionName")
-										),
-										mapPlayerInfo.get("playerRole"),
-										mapPlayerInfo.get("playerRetiredDate")
-						)
-		);
 	}
 
 	public void setPlayerComboBoxDataMap(Vector<String> comboBoxData,
@@ -1873,7 +1897,7 @@ public class Controller
 	{
 		fetchPlayerSeason(playerID);
 
-		Set<String> playerPlaySeason = ctrlPlayer.getPlayerMap().get(playerID).getPlaySeason();
+		Set<String> playerPlaySeason = newPlayer().getPlayerMap().get(playerID).getPlaySeason();
 
 		for (String startYearSeason : playerPlaySeason) {
 			seasonVector.add(startYearSeason);
@@ -1933,72 +1957,9 @@ public class Controller
 																	 Vector<Vector<String>> playerPositionTableData,
 																	 Vector<Vector<String>> playerNationalityTableData)
 	{
-		fetchPlayer(playerID);
-		fetchPosition(playerID);
-		fetchNationality(playerID);
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-
-		String string;
-
-		// informazioni calciatori
-		string = GuiConfiguration.getMessage("name");
-		string = string.toUpperCase();
-		infoPlayerMap.put(string, player.getName());
-
-		string = GuiConfiguration.getMessage("surname");
-		string = string.toUpperCase();
-		infoPlayerMap.put(string, player.getSurname());
-
-		string = GuiConfiguration.getMessage("dob");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getDob());
-
-		string = GuiConfiguration.getMessage("bornCountry");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("preferredFoot");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getFoot());
-
-		string = GuiConfiguration.getMessage("mainPosition");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getPosition().getName());
-
-		string = GuiConfiguration.getMessage("role");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getRole());
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = StringUtils.capitalize(string);
-		if (null == player.getRetiredDate()) {
-			infoPlayerMap.put(string, "");
-		} else {
-			infoPlayerMap.put(string, player.getRetiredDate());
-		}
-
-
-		// tabella posizioni
-		for (Position position : player.getPositionSet()) {
-			Vector<String> positionVector = new Vector<>();
-
-			positionVector.add(position.getRole());
-			positionVector.add(position.getCode());
-			positionVector.add(GuiConfiguration.getMessage(position.getName()));
-
-			playerPositionTableData.add(positionVector);
-		}
-
-
-		// tabella nazionalita
-		for (Country country : player.getCountrySet()) {
-			Vector<String> countryVector = new Vector<>();
-
-			countryVector.add(country.getName());
-
-			playerNationalityTableData.add(countryVector);
-		}
+		setPlayerInfoMap(playerID, infoPlayerMap);
+		setPositionTable(playerID, playerPositionTableData);
+		setNationalityTable(playerID, playerNationalityTableData);
 	}
 
 
@@ -2018,37 +1979,7 @@ public class Controller
 
 		String string;
 
-		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player").toUpperCase();
-		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
-
-		string = GuiConfiguration.getMessage("dob");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getDob());
-
-		string = GuiConfiguration.getMessage("bornCountry");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("preferredFoot");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getFoot());
-
-		string = GuiConfiguration.getMessage("mainPosition");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getPosition().getName());
-
-		string = GuiConfiguration.getMessage("role");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getRole());
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = StringUtils.capitalize(string);
-		if (null == player.getRetiredDate()) {
-			infoPlayerMap.put(string, "");
-		} else {
-			infoPlayerMap.put(string, player.getRetiredDate());
-		}
+		setPlayerInfoMap(playerID, infoPlayerMap);
 
 
 		if (player.getRole().matches("GK")) {
@@ -2092,13 +2023,8 @@ public class Controller
 
 
 
-		for (Tag tag : player.getTagSet()) {
-			Vector<String> tagVector = new Vector<>();
 
-			tagVector.add(tag.getName());
-
-			playerTagTableData.add(tagVector);
-		}
+		setTagTable(playerID, playerTagTableData);
 	}
 
 
@@ -2115,38 +2041,7 @@ public class Controller
 
 		String string;
 
-		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player").toUpperCase();
-		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
-
-		string = GuiConfiguration.getMessage("dob");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getDob());
-
-		string = GuiConfiguration.getMessage("bornCountry");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("preferredFoot");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getFoot());
-
-		string = GuiConfiguration.getMessage("mainPosition");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getPosition().getName());
-
-		string = GuiConfiguration.getMessage("role");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getRole());
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = StringUtils.capitalize(string);
-		if (null == player.getRetiredDate()) {
-			infoPlayerMap.put(string, "");
-		} else {
-			infoPlayerMap.put(string, player.getRetiredDate());
-		}
-
+		setPlayerInfoMap(playerID, infoPlayerMap);
 
 		// tabella carriera club
 		for (String key : player.getClubCareer().keySet()) {
@@ -2196,39 +2091,7 @@ public class Controller
 
 		Player player = ctrlPlayer.getPlayerMap().get(playerID);
 
-		String string;
-
-		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player").toUpperCase();
-		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
-
-		string = GuiConfiguration.getMessage("dob");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getDob());
-
-		string = GuiConfiguration.getMessage("bornCountry");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("preferredFoot");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getFoot());
-
-		string = GuiConfiguration.getMessage("mainPosition");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getPosition().getName());
-
-		string = GuiConfiguration.getMessage("role");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getRole());
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = StringUtils.capitalize(string);
-		if (null == player.getRetiredDate()) {
-			infoPlayerMap.put(string, "");
-		} else {
-			infoPlayerMap.put(string, player.getRetiredDate());
-		}
+		setPlayerInfoMap(playerID, infoPlayerMap);
 
 
 		Set<Statistic> playerStatisticSet = player.getStatisticSet();
@@ -2263,39 +2126,7 @@ public class Controller
 
 		Player player = ctrlPlayer.getPlayerMap().get(playerID);
 
-		String string;
-
-		// informazioni calciatori
-		string = GuiConfiguration.getMessage("player").toUpperCase();
-		infoPlayerMap.put(string, player.getName() + " " + player.getSurname());
-
-		string = GuiConfiguration.getMessage("dob");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getDob());
-
-		string = GuiConfiguration.getMessage("bornCountry");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("preferredFoot");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getFoot());
-
-		string = GuiConfiguration.getMessage("mainPosition");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getPosition().getName());
-
-		string = GuiConfiguration.getMessage("role");
-		string = StringUtils.capitalize(string);
-		infoPlayerMap.put(string, player.getRole());
-
-		string = GuiConfiguration.getMessage("retiredDate");
-		string = StringUtils.capitalize(string);
-		if (null == player.getRetiredDate()) {
-			infoPlayerMap.put(string, "");
-		} else {
-			infoPlayerMap.put(string, player.getRetiredDate());
-		}
+		setPlayerInfoMap(playerID, infoPlayerMap);
 
 
 		fetchPlayerTrophy(playerID, "CLUB");
@@ -2481,6 +2312,22 @@ public class Controller
 		}
 	}
 
+	private void setPositionTableData(String playerID,
+																		Vector<Vector<String>> playerPositionTableData)
+	{
+		Set<Position> playerPositionSet = newPlayer().getPlayerMap().get(playerID).getPositionSet();
+
+		for (Position position : playerPositionSet) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(GuiConfiguration.getMessage(position.getRole()));
+			vector.add(position.getCode());
+			vector.add(GuiConfiguration.getMessage(position.getName()));
+
+			playerPositionTableData.add(vector);
+		}
+	}
+
 	/**
 	 * TODO
 	 * @param positionNameVector
@@ -2491,6 +2338,14 @@ public class Controller
 	{
 		fetchPosition();
 		setPositionComboBoxDataMap(positionNameVector, positionNameMap);
+	}
+
+
+	public void setPositionTable(String playerID,
+															 Vector<Vector<String>> playerPositionTableData)
+	{
+		fetchPosition(playerID);
+		setPositionTableData(playerID, playerPositionTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -2584,7 +2439,7 @@ public class Controller
 		);
 
 
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
 		playerMap.clear();
 
 
@@ -2663,10 +2518,10 @@ public class Controller
 		);
 
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Map<String, Player> playerMap = ctrlPlayer.getPlayerMap();
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
 		playerMap.clear();
 
 
@@ -2826,10 +2681,10 @@ public class Controller
 
 		Integer row = 0;
 
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+		for (String key : newPlayer().getPlayerMap().keySet()) {
 			Vector<String> statisticVector = new Vector<>();
 
-			Player player = ctrlPlayer.getPlayerMap().get(key);
+			Player player = newPlayer().getPlayerMap().get(key);
 			Statistic playerStatistic = player.getStatisticSet().iterator().next();
 
 
@@ -2861,10 +2716,10 @@ public class Controller
 		fetchStatisticCompetitionEdition(competitionStartYear, competitionID);
 
 
-		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
+		for (String key : newPlayer().getPlayerMap().keySet()) {
 			Vector<String> statisticVector = new Vector<>();
 
-			Player player = ctrlPlayer.getPlayerMap().get(key);
+			Player player = newPlayer().getPlayerMap().get(key);
 			Statistic playerStatistic = player.getStatisticSet().iterator().next();
 
 			statisticVector.add(playerStatistic.getTeam().getLongName());
@@ -2903,7 +2758,7 @@ public class Controller
 		);
 
 
-		Set<Statistic> playerStatisticSet = ctrlPlayer.getPlayerMap().get(playerID).getStatisticSet();
+		Set<Statistic> playerStatisticSet = newPlayer().getPlayerMap().get(playerID).getStatisticSet();
 
 		for (Statistic playerStatistic : playerStatisticSet) {
 			Vector<String> statisticVector = new Vector<>();
@@ -3162,10 +3017,10 @@ public class Controller
 		);
 
 
-		Map<String, Team> teamMap = ctrlTeam.getTeamMap();
+		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
-		Map<String, Team> playerNationalCareer = ctrlPlayer.getPlayerMap().get(playerID).getNationalCareer();
+		Map<String, Team> playerNationalCareer = newPlayer().getPlayerMap().get(playerID).getNationalCareer();
 		playerNationalCareer.clear();
 
 
@@ -3484,7 +3339,7 @@ public class Controller
 														List<String> listPrizeName,
 														List<String> listPrizeGiven)
 	{
-		Set<Prize> teamPrizeSet = ctrlTeam.getTeamMap().get(teamID).getPrizeSet();
+		Set<Prize> teamPrizeSet = newTeam().getTeamMap().get(teamID).getPrizeSet();
 		teamPrizeSet.clear();
 
 		for (int i = 0; i < listPrizeID.size(); ++i) {
@@ -3492,7 +3347,7 @@ public class Controller
 							newPrize(
 											null,
 											null,
-											GuiConfiguration.getMessage(listPrizeName.get(i)),
+											listPrizeName.get(i),
 											listPrizeGiven.get(i),
 											null,
 											null,
@@ -3622,6 +3477,27 @@ public class Controller
 
 		mapNationality(playerID, listCountryName);
 	}
+
+	private void setNationalityTableData(String playerID,
+																			 Vector<Vector<String>> tableData)
+	{
+		Set<Country> playerCountrySet = newPlayer().getPlayerMap().get(playerID).getCountrySet();
+
+		for (Country country : playerCountrySet) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(country.getName());
+
+			tableData.add(vector);
+		}
+	}
+
+	public void setNationalityTable(String playerID,
+																	Vector<Vector<String>> tableData)
+	{
+		fetchNationality(playerID);
+		setNationalityTableData(playerID, tableData);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -3702,6 +3578,27 @@ public class Controller
 		tagDAO.fetchTagDB(playerID, listTagName);
 
 		mapTag(playerID, listTagName);
+	}
+
+	private void setTagTableData(String playerID,
+															 Vector<Vector<String>> tableData)
+	{
+		Set<Tag> playerTagSet = newPlayer().getPlayerMap().get(playerID).getTagSet();
+
+		for (Tag tag : playerTagSet) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(tag.getName());
+
+			tableData.add(vector);
+		}
+	}
+
+	public void setTagTable(String playerID,
+													Vector<Vector<String>> tableData)
+	{
+		fetchTag(playerID);
+		setTagTableData(playerID, tableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 }
