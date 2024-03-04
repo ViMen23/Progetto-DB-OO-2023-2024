@@ -21,8 +21,8 @@ public interface CompetitionDAO
 
 	Integer countCompetitionDB();
 
-	void fetchCompetitionEditionDB(String competitionID,
-																 List<String> listCompetitionEdition);
+	void fetchCompetitionDB(String competitionID,
+													List<String> listCompetitionEdition);
 
 	void fetchCompetitionDB(String playerID,
 													String teamType,

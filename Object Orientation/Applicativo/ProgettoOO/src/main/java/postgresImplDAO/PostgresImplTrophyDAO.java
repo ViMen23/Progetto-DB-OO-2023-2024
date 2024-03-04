@@ -24,16 +24,15 @@ public class PostgresImplTrophyDAO
 	}
 	@Override
 	public void fetchTrophyDB(String teamID,
-														String competitionStartYear,
 														List<String> listTrophyID,
 														List<String> listTrophyName,
 														List<String> listCompetitionID,
+														List<String> listCompetitionStartYear,
 														List<String> listCompetitionName)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call trophy_team(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call trophy_team(?)}");
 			cs.setString(1, teamID);
-			cs.setString(2, competitionStartYear);
 
 			ResultSet rs = cs.executeQuery();
 
@@ -41,6 +40,7 @@ public class PostgresImplTrophyDAO
 				listTrophyID.add(rs.getString("trophy_id"));
 				listTrophyName.add(rs.getString("trophy_name"));
 				listCompetitionID.add(rs.getString("comp_id"));
+				listCompetitionStartYear.add(rs.getString("comp_start_year"));
 				listCompetitionName.add(rs.getString("comp_name"));
 			}
 

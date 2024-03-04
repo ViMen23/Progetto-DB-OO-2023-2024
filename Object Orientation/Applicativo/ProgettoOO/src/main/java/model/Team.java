@@ -27,6 +27,7 @@ public class Team
 	private final Set<Competition> competitionSet;
 	private final Set<Trophy> trophySet;
 	private final Set<Prize> prizeSet;
+	private final Set<String> yearSet;
 
 	public Team(String type,
 							String shortName,
@@ -42,8 +43,9 @@ public class Team
 
 		this.playerMap = new LinkedHashMap<>();
 		this.competitionSet = new HashSet<>();
-		this.trophySet = new HashSet<>();
-		this.prizeSet = new HashSet<>();
+		this.trophySet = new LinkedHashSet<>();
+		this.prizeSet = new LinkedHashSet<>();
+		this.yearSet = new LinkedHashSet<>();
 	}
 
 
@@ -117,5 +119,8 @@ public class Team
 		return prizeSet;
 	}
 
-
+	public Set<String> getYearSet()
+	{
+		return yearSet;
+	}
 }

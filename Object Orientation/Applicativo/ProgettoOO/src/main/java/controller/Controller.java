@@ -367,12 +367,19 @@ public class Controller
 		return new Confederation(shortName, longName, country, superConfederation);
 	}
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	private Confederation newConfederation()
 	{
 		return newConfederation(null, null, null, null);
 	}
 
 
+	/**
+	 * TODO
+	 */
 	private void setTotalConfederation()
 	{
 		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
@@ -390,6 +397,17 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param listConfederationID
+	 * @param listConfederationShortName
+	 * @param listConfederationLongName
+	 * @param listCountryID
+	 * @param listCountryName
+	 * @param listCountryType
+	 * @param listSuperConfederationID
+	 * @param listSuperConfederationShortName
+	 */
 	private void mapConfederation(List<String> listConfederationID,
 																List<String> listConfederationShortName,
 																List<String> listConfederationLongName,
@@ -488,7 +506,11 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
 	private void setConfederationComboBoxDataMap(Vector<String> comboBoxData,
 																							 Map<String, String> comboBoxMap)
 	{
@@ -504,6 +526,10 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param tableData
+	 */
 	private void setConfederationTableData(Vector<Vector<String>> tableData)
 	{
 		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
@@ -529,6 +555,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param typeCountry
+	 * @param superConfederationID
+	 * @param confederationShortNameVector
+	 * @param confederationShortNameMap
+	 */
 	public void setConfederationComboBox(String typeCountry,
 																			 String superConfederationID,
 																			 Vector<String> confederationShortNameVector,
@@ -539,6 +572,12 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param countryType
+	 * @param superConfederationID
+	 * @param confederationTableData
+	 */
 	public void setConfederationTable(String countryType,
 																		String superConfederationID,
 																		Vector<Vector<String>> confederationTableData)
@@ -676,6 +715,15 @@ public class Controller
 		}
 	}
 
+	private void mapCompetition(String competitionID,
+															List<String> listCompetitionEdition)
+	{
+		Set<String> competitionEditionSet = newCompetition().getCompetitionMap().get(competitionID).getEditionSet();
+		competitionEditionSet.clear();
+
+		competitionEditionSet.addAll(listCompetitionEdition);
+	}
+
 	/**
 	 * TODO
 	 * @param competitionSubName
@@ -753,20 +801,14 @@ public class Controller
 	}
 
 
-	private void fetchCompetitionEdition(String competitionID)
+	private void fetchCompetition(String competitionID)
 	{
 		List<String> listCompetitionEdition = new ArrayList<>();
 
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
-		competitionDAO.fetchCompetitionEditionDB(
-						competitionID,
-						listCompetitionEdition
-		);
+		competitionDAO.fetchCompetitionDB(competitionID, listCompetitionEdition);
 
-		Set<String> competitionEditionSet = newCompetition().getCompetitionMap().get(competitionID).getEditionSet();
-		competitionEditionSet.clear();
-
-		competitionEditionSet.addAll(listCompetitionEdition);
+		mapCompetition(competitionID, listCompetitionEdition);
 	}
 
 
@@ -781,6 +823,30 @@ public class Controller
 
 			comboBoxData.add(competitionName);
 			comboBoxMap.put(competitionName, key);
+		}
+	}
+
+
+	private void setCompetitionComboBoxDataMap(String teamType,
+																						 String competitionID,
+																						 Vector<String> comboBoxData,
+																						 Map<String, String> comboBoxMap)
+	{
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			String season;
+			for (String edition : newCompetition().getCompetitionMap().get(competitionID).getEditionSet()) {
+				season = edition;
+				season += "/";
+				season += (Integer.parseInt(edition) + 1);
+
+				comboBoxData.add(season);
+				comboBoxMap.put(season, edition);
+			}
+		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			for (String edition : newCompetition().getCompetitionMap().get(competitionID).getEditionSet()) {
+				comboBoxData.add(edition);
+				comboBoxMap.put(edition, edition);
+			}
 		}
 	}
 
@@ -836,16 +902,13 @@ public class Controller
 		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
 	}
 
-	public void setCompetitionEditionComboBox(String competitionID,
+	public void setCompetitionEditionComboBox(String teamType,
+																						String competitionID,
 																						Vector<String> competitionEditionVector,
 																						Map<String, String> competitionEditionMap)
 	{
-		fetchCompetitionEdition(competitionID);
-
-		for (String edition : newCompetition().getCompetitionMap().get(competitionID).getEditionSet()) {
-			competitionEditionVector.add(edition);
-			competitionEditionMap.put(edition, edition);
-		}
+		fetchCompetition(competitionID);
+		setCompetitionComboBoxDataMap(teamType, competitionID, competitionEditionVector, competitionEditionMap);
 	}
 
 
@@ -982,6 +1045,15 @@ public class Controller
 		}
 	}
 
+	private void mapTeam(String teamID,
+											 List<String> listTeamYear)
+	{
+		Set<String> teamYearSet = newTeam().getTeamMap().get(teamID).getYearSet();
+		teamYearSet.clear();
+
+		teamYearSet.addAll(listTeamYear);
+	}
+
 
 	/**
 	 *
@@ -1098,6 +1170,15 @@ public class Controller
 		);
 	}
 
+	private void fetchTeamYear(String teamID)
+	{
+		List<String> listTeamYear = new ArrayList<>();
+
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamDB(teamID, listTeamYear);
+		mapTeam(teamID, listTeamYear);
+	}
+
 
 	private void fetchTeamPlayer(String playerID)
 	{
@@ -1129,6 +1210,29 @@ public class Controller
 
 			comboBoxData.add(teamLongName);
 			comboBoxMap.put(teamLongName, key);
+		}
+	}
+
+	private void setTeamComboBoxDataMap(String teamID,
+																			String teamType,
+																			Vector<String> comboBoxData,
+																			Map<String, String> comboBoxMap)
+	{
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			String season;
+			for (String year : newTeam().getTeamMap().get(teamID).getYearSet()) {
+				season = year;
+				season += "/";
+				season += (Integer.parseInt(year) + 1);
+
+				comboBoxData.add(season);
+				comboBoxMap.put(season, year);
+			}
+		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			for (String year : newTeam().getTeamMap().get(teamID).getYearSet()) {
+				comboBoxData.add(year);
+				comboBoxMap.put(year, year);
+			}
 		}
 	}
 
@@ -1199,6 +1303,16 @@ public class Controller
 	}
 
 
+	public void setTeamYearComboBox(String teamID,
+																	String teamType,
+																	Vector<String> teamYearVector,
+																	Map<String, String> teamYearMap)
+	{
+		fetchTeamPlayer(teamID);
+		setTeamComboBoxDataMap(teamID, teamType, teamYearVector, teamYearMap);
+	}
+
+
 
 	public void setTeamTable(String teamSubLongName,
 													 String teamSubShortName,
@@ -1219,36 +1333,9 @@ public class Controller
 		setTeamTableDataMap(teamTableData, teamTableMap);
 	}
 
-	/**
-	 * TODO
-	 * @param teamLongNameVector
-	 * @param teamLongNameMap
-	 * @param competitionStartYear
-	 * @param competitionID
-	 */
-	public void setTeamComboBox(String competitionStartYear,
-															String competitionID,
-															Vector<String> teamLongNameVector,
-															Map<String, String> teamLongNameMap)
+	private void mapTeamInfoMap(String teamID,
+															Map<String, String> infoTeamMap)
 	{
-		fetchTeam(competitionStartYear, competitionID);
-		setTeamComboBoxDataMap(teamLongNameVector, teamLongNameMap);
-	}
-
-	public void setTeamView(String teamID,
-													String startYear,
-													Map<String, String> infoTeamMap,
-													Vector<Vector<String>> teamSquadTableData,
-													Vector<Vector<String>> teamPartecipationTableData,
-													Vector<Vector<String>> teamTrophyTableData,
-													Vector<Vector<String>> teamPrizeTableData)
-	{
-		fetchTeam(teamID);
-		fetchMilitancy(teamID, startYear);
-		fetchPartecipation(teamID, startYear);
-		fetchTrophy(teamID, startYear);
-		fetchPrize(teamID, startYear);
-
 		Team team = ctrlTeam.getTeamMap().get(teamID);
 
 		String string;
@@ -1272,51 +1359,53 @@ public class Controller
 		string = GuiConfiguration.getMessage("confederation");
 		string = StringUtils.capitalize(string);
 		infoTeamMap.put(string, team.getConfederation().getShortName());
+	}
 
+	public void setTeamInfoMap(String teamID,
+														 Map<String, String> infoTeamMap)
+	{
+		fetchTeam(teamID);
+		mapTeamInfoMap(teamID, infoTeamMap);
 
-		for (String key : team.getPlayerMap().keySet()) {
-			Vector<String> playerVector = new Vector<>();
+	}
 
-			Player player = team.getPlayerMap().get(key);
+	/**
+	 * TODO
+	 * @param teamLongNameVector
+	 * @param teamLongNameMap
+	 * @param competitionStartYear
+	 * @param competitionID
+	 */
+	public void setTeamComboBox(String competitionStartYear,
+															String competitionID,
+															Vector<String> teamLongNameVector,
+															Map<String, String> teamLongNameMap)
+	{
+		fetchTeam(competitionStartYear, competitionID);
+		setTeamComboBoxDataMap(teamLongNameVector, teamLongNameMap);
+	}
 
-			playerVector.add(player.getRole());
-			playerVector.add(player.getName());
-			playerVector.add(player.getSurname());
+	public void setTeamSeasonView(String teamID,
+																String startYear,
+																Map<String, String> infoTeamMap,
+																Vector<Vector<String>> teamSquadTableData,
+																Map<Integer, Map<Integer, String>> teamSquadTableMap,
+																Vector<Vector<String>> teamPartecipationTableData)
+	{
+		setTeamInfoMap(teamID, infoTeamMap);
+		setPartecipationTable(teamID, startYear, teamPartecipationTableData);
+		setTeamSquadTable(teamID, startYear, teamSquadTableData, teamSquadTableMap);
+	}
 
-			teamSquadTableData.add(playerVector);
-		}
-
-
-		for (Competition competition : team.getCompetitionSet()) {
-			Vector<String> partecipationVector = new Vector<>();
-
-			partecipationVector.add(competition.getName());
-			partecipationVector.add(competition.getType());
-			partecipationVector.add(competition.getConfederation().getShortName());
-
-			teamPartecipationTableData.add(partecipationVector);
-		}
-
-
-		for (Trophy trophy : team.getTrophySet()) {
-			Vector<String> trophyVector = new Vector<>();
-
-			trophyVector.add(trophy.getCompetition().getName());
-			trophyVector.add(trophy.getName());
-
-			teamTrophyTableData.add(trophyVector);
-		}
-
-
-		for (Prize prize : team.getPrizeSet()) {
-			Vector<String> prizeVector = new Vector<>();
-
-			prizeVector.add(prize.getName());
-			prizeVector.add(prize.getGiven());
-
-			teamPrizeTableData.add(prizeVector);
-		}
-
+	public void setTeamCaseView(String teamID, 
+															String teamType,
+															Map<String, String> infoTeamMap,
+															Vector<Vector<String>> teamTrophyTableData,
+															Vector<Vector<String>> teamPrizeTableData)
+	{
+		setTeamInfoMap(teamID, infoTeamMap);
+		setTeamPrizeTable(teamID, teamPrizeTableData);
+		setTeamTrophyTable(teamID, teamType, teamTrophyTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -2232,7 +2321,7 @@ public class Controller
 		for (Trophy playerTrophy : playerTrophySet) {
 			Vector<String> trophyVector = new Vector<>();
 
-			trophyVector.add(playerTrophy.getAssignedYear());
+			trophyVector.add(playerTrophy.getCompetitionStartYear());
 			trophyVector.add(playerTrophy.getCompetition().getName());
 			trophyVector.add(playerTrophy.getTeam().getLongName());
 			trophyVector.add(playerTrophy.getName());
@@ -2249,7 +2338,7 @@ public class Controller
 		for (Trophy playerTrophy : playerTrophySet) {
 			Vector<String> trophyVector = new Vector<>();
 
-			trophyVector.add(playerTrophy.getAssignedYear());
+			trophyVector.add(playerTrophy.getCompetitionStartYear());
 			trophyVector.add(playerTrophy.getCompetition().getName());
 			trophyVector.add(playerTrophy.getTeam().getLongName());
 			trophyVector.add(playerTrophy.getName());
@@ -2257,7 +2346,7 @@ public class Controller
 			playerNationalTrophyTableData.add(trophyVector);
 		}
 
-		fetchPrize(playerID);
+		fetchPlayerPrize(playerID);
 
 		// tabella premi
 		Set<Prize> playerPrizeSet = player.getPrizeSet();
@@ -2857,27 +2946,13 @@ public class Controller
 	 * PARTECIPATION
 	 *------------------------------------------------------------------------------------------------------*/
 
-	private void fetchPartecipation(String teamID,
-																	String competitionStartYear)
+	private void mapPartecipation(String teamID,
+																List<String> listCompetitionID,
+																List<String> listCompetitionType,
+																List<String> listCompetitionName,
+																List<String> listConfederationID,
+																List<String> listConfederationShortName)
 	{
-		List<String> listCompetitionID = new ArrayList<>();
-		List<String> listCompetitionType = new ArrayList<>();
-		List<String> listCompetitionName = new ArrayList<>();
-		List<String> listConfederationID = new ArrayList<>();
-		List<String> listConfederationShortName = new ArrayList<>();
-
-		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipationDB(
-						teamID,
-						competitionStartYear,
-						listCompetitionID,
-						listCompetitionType,
-						listCompetitionName,
-						listConfederationID,
-						listConfederationShortName
-		);
-
-
 		Map<String, Confederation> confederationMap = newConfederation().getConfederationMap();
 		confederationMap.clear();
 
@@ -2907,32 +2982,75 @@ public class Controller
 			);
 		}
 	}
+	private void fetchPartecipation(String teamID,
+																	String competitionStartYear)
+	{
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionType = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+		List<String> listConfederationID = new ArrayList<>();
+		List<String> listConfederationShortName = new ArrayList<>();
+
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipationDB(
+						teamID,
+						competitionStartYear,
+						listCompetitionID,
+						listCompetitionType,
+						listCompetitionName,
+						listConfederationID,
+						listConfederationShortName
+		);
+
+		mapPartecipation(
+						teamID,
+						listCompetitionID,
+						listCompetitionType,
+						listCompetitionName,
+						listConfederationID,
+						listConfederationShortName
+		);
+
+	}
+
+	private void setPartecipationTableData(String teamID,
+																				 Vector<Vector<String>> teamPartecipationTableData)
+	{
+		Set<Competition> teamCompetitionSet = newTeam().getTeamMap().get(teamID).getCompetitionSet();
+
+		for (Competition competition : teamCompetitionSet) {
+			Vector<String> partecipationVector = new Vector<>();
+
+			partecipationVector.add(competition.getName());
+			partecipationVector.add(competition.getType());
+			partecipationVector.add(competition.getConfederation().getShortName());
+
+			teamPartecipationTableData.add(partecipationVector);
+		}
+	}
+
+	public void setPartecipationTable(String teamID,
+																		String competitionStartYear,
+																		Vector<Vector<String>> teamPartecipationTableData)
+	{
+		fetchPartecipation(teamID, competitionStartYear);
+		setPartecipationTableData(teamID, teamPartecipationTableData);
+	}
+
 	/*------------------------------------------------------------------------------------------------------*/
 
 
 	/*--------------------------------------------------------------------------------------------------------
 	 * MILITANCY
 	 *------------------------------------------------------------------------------------------------------*/
-	private void fetchMilitancy(String teamID,
-															String competitionStartYear)
+
+	private void mapMilitancy(String teamID,
+														List<String> listPlayerID,
+														List<String> listPlayerName,
+														List<String> listPlayerSurname,
+														List<String> listPlayerRole)
 	{
-		List<String> listPlayerID = new ArrayList<>();
-		List<String> listPlayerName = new ArrayList<>();
-		List<String> listPlayerSurname = new ArrayList<>();
-		List<String> listPlayerRole = new ArrayList<>();
-
-		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB(
-						teamID,
-						competitionStartYear,
-						listPlayerID,
-						listPlayerName,
-						listPlayerSurname,
-						listPlayerRole
-		);
-
-
-		Map<String, Player> teamPlayerMap = ctrlTeam.getTeamMap().get(teamID).getPlayerMap();
+		Map<String, Player> teamPlayerMap = newTeam().getTeamMap().get(teamID).getPlayerMap();
 		teamPlayerMap.clear();
 
 
@@ -2951,6 +3069,33 @@ public class Controller
 							)
 			);
 		}
+	}
+	private void fetchMilitancy(String teamID,
+															String startYear)
+	{
+		List<String> listPlayerID = new ArrayList<>();
+		List<String> listPlayerName = new ArrayList<>();
+		List<String> listPlayerSurname = new ArrayList<>();
+		List<String> listPlayerRole = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB(
+						teamID,
+						startYear,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerRole
+		);
+
+		mapMilitancy(
+						teamID,
+						listPlayerID,
+						listPlayerName,
+						listPlayerSurname,
+						listPlayerRole
+		);
+
 	}
 
 
@@ -3059,6 +3204,42 @@ public class Controller
 		}
 	}
 
+	private void setTeamSquadTableDataMap(String teamID,
+																				Vector<Vector<String>> teamSquadTableData,
+																				Map<Integer, Map<Integer, String>> teamSquadTableMap)
+	{
+		Map<String, Player> teamPlayerMap = newTeam().getTeamMap().get(teamID).getPlayerMap();
+		Map<Integer, String> playerSurnameMap = new HashMap<>();
+
+		Integer row = 0;
+
+		for (String key : teamPlayerMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Player player = teamPlayerMap.get(key);
+
+			vector.add(player.getRole());
+			vector.add(player.getName());
+			vector.add(player.getSurname());
+
+			teamSquadTableData.add(vector);
+
+			playerSurnameMap.put(row, key);
+			++row;
+		}
+
+		teamSquadTableMap.put(2, playerSurnameMap);
+	}
+
+	public void setTeamSquadTable(String teamID,
+																String startYear,
+																Vector<Vector<String>> teamSquadTableData,
+																Map<Integer, Map<Integer, String>> teamSquadTableMap)
+	{
+		fetchMilitancy(teamID, startYear);
+		setTeamSquadTableDataMap(teamID, teamSquadTableData, teamSquadTableMap);
+	}
+
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -3079,9 +3260,9 @@ public class Controller
 													 Player player,
 													 Team team,
 													 Competition competition,
-													 String assignedYear)
+													 String competitionStartYear)
 	{
-		return new Trophy(type, role, name, player, team, competition, assignedYear);
+		return new Trophy(type, role, name, player, team, competition, competitionStartYear);
 	}
 
 
@@ -3094,30 +3275,13 @@ public class Controller
 		return newTrophy(null, null, null, null, null, null, null);
 	}
 
-
-	/**
-	 * TODO
-	 * @param teamID
-	 * @param competitionStartYear
-	 */
-	private void fetchTrophy(String teamID,
-													 String competitionStartYear)
+	private void mapTeamTrophy(String teamID,
+														 List<String> listTrophyID,
+														 List<String> listTrophyName,
+														 List<String> listCompetitionID,
+														 List<String> listCompetitionStartYear,
+														 List<String> listCompetitionName)
 	{
-		List<String> listTrophyID = new ArrayList<>();
-		List<String> listTrophyName = new ArrayList<>();
-		List<String> listCompetitionID = new ArrayList<>();
-		List<String> listCompetitionName = new ArrayList<>();
-
-		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTrophyDB(
-						teamID,
-						competitionStartYear,
-						listTrophyID,
-						listTrophyName,
-						listCompetitionID,
-						listCompetitionName
-		);
-
 		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
 		competitionMap.clear();
 
@@ -3145,10 +3309,42 @@ public class Controller
 											null,
 											null,
 											competitionMap.get(competitionID),
-											null
+											listCompetitionStartYear.get(i)
 							)
 			);
 		}
+	}
+
+	/**
+	 * TODO
+	 * @param teamID
+	 */
+	private void fetchTeamTrophy(String teamID)
+	{
+		List<String> listTrophyID = new ArrayList<>();
+		List<String> listTrophyName = new ArrayList<>();
+		List<String> listCompetitionID = new ArrayList<>();
+		List<String> listCompetitionStartYear = new ArrayList<>();
+		List<String> listCompetitionName = new ArrayList<>();
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTrophyDB(
+						teamID,
+						listTrophyID,
+						listTrophyName,
+						listCompetitionID,
+						listCompetitionStartYear,
+						listCompetitionName
+		);
+
+		mapTeamTrophy(
+						teamID,
+						listTrophyID,
+						listTrophyName,
+						listCompetitionID,
+						listCompetitionStartYear,
+						listCompetitionName
+		);
 	}
 
 
@@ -3221,6 +3417,48 @@ public class Controller
 			);
 		}
 	}
+
+	private void setTeamTrophyTableData(String teamID,
+																			String teamType,
+																			Vector<Vector<String>> tableData)
+	{
+		Set<Trophy> teamTrophySet = newTeam().getTeamMap().get(teamID).getTrophySet();
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			String season;
+			for (Trophy trophy : teamTrophySet) {
+				Vector<String> vector = new Vector<>();
+
+				season = trophy.getCompetitionStartYear();
+				season += "/";
+				season += (Integer.parseInt(trophy.getCompetitionStartYear()) + 1);
+				vector.add(season);
+				vector.add(trophy.getCompetition().getName());
+				vector.add(trophy.getName());
+
+				tableData.add(vector);
+			}
+		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			for (Trophy trophy : teamTrophySet) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(trophy.getCompetitionStartYear());
+				vector.add(trophy.getCompetition().getName());
+				vector.add(trophy.getName());
+
+				tableData.add(vector);
+			}
+		}
+
+	}
+
+	public void setTeamTrophyTable(String teamID,
+																 String teamType,
+																 Vector<Vector<String>> tableData)
+	{
+		fetchTeamTrophy(teamID);
+		setTeamTrophyTableData(teamID, teamType, tableData);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -3255,28 +3493,14 @@ public class Controller
 	}
 
 
-
-
-	private void fetchPrize(String teamID,
-													String startYear)
+	private void mapTeamPrize(String teamID,
+														List<String> listPrizeID,
+														List<String> listPrizeAssignYear,
+														List<String> listPrizeName,
+														List<String> listPrizeGiven)
 	{
-		List<String> listPrizeID = new ArrayList<>();
-		List<String> listPrizeName = new ArrayList<>();
-		List<String> listPrizeGiven = new ArrayList<>();
-
-		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPrizeDB(
-						teamID,
-						startYear,
-						listPrizeID,
-						listPrizeName,
-						listPrizeGiven
-		);
-
-
 		Set<Prize> teamPrizeSet = ctrlTeam.getTeamMap().get(teamID).getPrizeSet();
 		teamPrizeSet.clear();
-
 
 		for (int i = 0; i < listPrizeID.size(); ++i) {
 			teamPrizeSet.add(
@@ -3287,21 +3511,48 @@ public class Controller
 											listPrizeGiven.get(i),
 											null,
 											null,
-											null
+											listPrizeAssignYear.get(i)
 							)
 			);
 		}
 	}
 
 
-	private void fetchPrize(String playerID)
+	private void fetchTeamPrize(String teamID)
+	{
+		List<String> listPrizeID = new ArrayList<>();
+		List<String> listPrizeAssignYear = new ArrayList<>();
+		List<String> listPrizeName = new ArrayList<>();
+		List<String> listPrizeGiven = new ArrayList<>();
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchTeamPrizeDB(
+						teamID,
+						listPrizeID,
+						listPrizeAssignYear,
+						listPrizeName,
+						listPrizeGiven
+		);
+
+		mapTeamPrize(
+						teamID,
+						listPrizeID,
+						listPrizeAssignYear,
+						listPrizeName,
+						listPrizeGiven
+		);
+
+	}
+
+
+	private void fetchPlayerPrize(String playerID)
 	{
 		List<String> listPrizeAssignYear = new ArrayList<>();
 		List<String> listPrizeName = new ArrayList<>();
 		List<String> listPrizeGiven = new ArrayList<>();
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPrizeDB(
+		prizeDAO.fetchPlayerPrizeDB(
 						playerID,
 						listPrizeAssignYear,
 						listPrizeName,
@@ -3326,6 +3577,30 @@ public class Controller
 							)
 			);
 		}
+	}
+
+
+	private void setTeamPrizeTableData(String teamID,
+																		 Vector<Vector<String>> tableData)
+	{
+		Set<Prize> teamPrizeSet = newTeam().getTeamMap().get(teamID).getPrizeSet();
+
+		for (Prize prize : teamPrizeSet) {
+			Vector<String> vector = new Vector<>();
+
+			vector.add(prize.getAssignedYear());
+			vector.add(prize.getName());
+			vector.add(prize.getGiven());
+
+			tableData.add(vector);
+		}
+	}
+
+	public void setTeamPrizeTable(String teamID,
+																Vector<Vector<String>> tableData)
+	{
+		fetchTeamPrize(teamID);
+		setTeamPrizeTableData(teamID, tableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 

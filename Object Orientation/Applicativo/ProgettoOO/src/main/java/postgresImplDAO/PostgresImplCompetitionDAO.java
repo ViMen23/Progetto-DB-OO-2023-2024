@@ -91,8 +91,8 @@ public class PostgresImplCompetitionDAO
 	}
 
 	@Override
-	public void fetchCompetitionEditionDB(String competitionID,
-																				List<String> listCompetitionEdition)
+	public void fetchCompetitionDB(String competitionID,
+																 List<String> listCompetitionEdition)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call filter_competition_edition(?)}");

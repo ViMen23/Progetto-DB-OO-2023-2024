@@ -30,4 +30,7 @@ public interface TeamDAO
 	void fetchTeamDB(String playerID,
 									 List<String> listTeamID,
 									 List<String> listTeamLongName);
+
+	void fetchTeamDB(String teamID,
+									 List<String> listTeamYear);
 }

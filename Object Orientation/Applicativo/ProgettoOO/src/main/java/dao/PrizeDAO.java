@@ -4,14 +4,14 @@ import java.util.List;
 
 public interface PrizeDAO
 {
-	void fetchPrizeDB(String teamID,
-										String startYear,
-										List<String> listPrizeID,
-										List<String> listPrizeName,
-										List<String> listPrizeGiven);
+	void fetchTeamPrizeDB(String teamID,
+												List<String> listPrizeID,
+												List<String> listPrizeAssignYear,
+												List<String> listPrizeName,
+												List<String> listPrizeGiven);
 
-	void fetchPrizeDB(String playerID,
-										List<String> listPrizeAssignYear,
-										List<String> listPrizeName,
-										List<String> listPrizeGiven);
+	void fetchPlayerPrizeDB(String playerID,
+													List<String> listPrizeAssignYear,
+													List<String> listPrizeName,
+													List<String> listPrizeGiven);
 }

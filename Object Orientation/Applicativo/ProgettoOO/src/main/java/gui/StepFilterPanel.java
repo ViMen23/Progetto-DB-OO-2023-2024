@@ -358,6 +358,7 @@ public class StepFilterPanel
 					seasonMap.clear();
 
 					Controller.getInstance().setCompetitionEditionComboBox(
+									ctrlTeamType.getText(),
 									competitionNameMap.get(ctrlCompetitionName.getText()),
 									seasonVector,
 									seasonMap

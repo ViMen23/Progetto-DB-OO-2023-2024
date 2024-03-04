@@ -23,21 +23,21 @@ public class PostgresImplPrizeDAO
 		}
 	}
 	@Override
-	public void fetchPrizeDB(String teamID,
-													 String startYear,
-													 List<String> listPrizeID,
-													 List<String> listPrizeName,
-													 List<String> listPrizeGiven)
+	public void fetchTeamPrizeDB(String teamID,
+															 List<String> listPrizeID,
+															 List<String> listPrizeAssignYear,
+															 List<String> listPrizeName,
+															 List<String> listPrizeGiven)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call prize_team(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
 			cs.setString(1, teamID);
-			cs.setString(2, startYear);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
 				listPrizeID.add(rs.getString("prize_id"));
+				listPrizeAssignYear.add(rs.getString("prize_assign_year"));
 				listPrizeName.add(rs.getString("prize_name"));
 				listPrizeGiven.add(rs.getString("prize_given"));
 			}
@@ -52,10 +52,10 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchPrizeDB(String playerID,
-													 List<String> listPrizeAssignYear,
-													 List<String> listPrizeName,
-													 List<String> listPrizeGiven)
+	public void fetchPlayerPrizeDB(String playerID,
+																 List<String> listPrizeAssignYear,
+																 List<String> listPrizeName,
+																 List<String> listPrizeGiven)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");

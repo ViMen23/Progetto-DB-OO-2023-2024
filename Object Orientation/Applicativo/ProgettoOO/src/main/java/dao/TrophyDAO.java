@@ -5,10 +5,10 @@ import java.util.List;
 public interface TrophyDAO
 {
 	void fetchTrophyDB(String teamID,
-										 String competitionStartYear,
 										 List<String> listTrophyID,
 										 List<String> listTrophyName,
 										 List<String> listCompetitionID,
+										 List<String> listCompetitionStartYear,
 										 List<String> listCompetitionName);
 
 	void fetchTrophyDB(String playerID,

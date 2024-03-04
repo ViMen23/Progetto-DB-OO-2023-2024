@@ -21,7 +21,7 @@ public class Trophy
 	private final Player player;
 	private final Team team;
 	private final Competition competition;
-	private final String assignedYear;
+	private final String competitionStartYear;
 
 
 	public Trophy(String type,
@@ -30,7 +30,7 @@ public class Trophy
 								Player player,
 								Team team,
 								Competition competition,
-								String assignedYear)
+								String competitionStartYear)
 	{
 		this.type = type;
 		this.role = role;
@@ -38,7 +38,7 @@ public class Trophy
 		this.player = player;
 		this.team = team;
 		this.competition = competition;
-		this.assignedYear = assignedYear;
+		this.competitionStartYear = competitionStartYear;
 	}
 
 
@@ -72,9 +72,9 @@ public class Trophy
 		return competition;
 	}
 
-	public String getAssignedYear()
+	public String getCompetitionStartYear()
 	{
-		return assignedYear;
+		return competitionStartYear;
 	}
 
 	public Map<String, Trophy> getTrophyMap()

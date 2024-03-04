@@ -1001,6 +1001,61 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : year_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION year_team
+(
+    IN  id_team text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            start_year::text AS start_year
+        FROM
+            (
+                (
+                    SELECT
+                        start_year
+                    FROM
+                        fp_militancy
+                    WHERE
+                        fp_militancy.team_id = id_team::integer
+                )
+                UNION
+                (
+                    SELECT
+                        start_year
+                    FROM
+                        fp_partecipation
+                    WHERE
+                        fp_partecipation.team_id = id_team::integer
+                )
+            )
+        ORDER BY start_year DESC;
+
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : info_team
  *
  * IN      : text
@@ -1120,7 +1175,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : trophy_team
  *
- * IN      : text, text
+ * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text)
@@ -1129,15 +1184,15 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION trophy_team
 (
-    IN  id_team text,
-    IN  s_year  text
+    IN  id_team text
 )
 RETURNS TABLE
         (
-            trophy_id   text,
-            trophy_name text,
-            comp_id     text,
-            comp_name   text
+            trophy_id       text,
+            trophy_name     text,
+            comp_id         text,
+            comp_start_year text,
+            comp_name       text
         )
 AS
 $$
@@ -1148,6 +1203,7 @@ BEGIN
             fp_trophy.id::text AS trophy_id,
             fp_trophy.name::text AS trophy_name,
             fp_competition.id::text AS comp_id,
+            fp_team_trophy_case.start_year::text AS comp_start_year,
             fp_competition.name::text AS comp_name
         FROM
             fp_team_trophy_case
@@ -1161,8 +1217,9 @@ BEGIN
                 fp_team_trophy_case.competition_id = fp_competition.id
         WHERE
             fp_team_trophy_case.team_id = id_team::integer
-            AND
-            fp_team_trophy_case.start_year = s_year::integer;
+        ORDER BY
+            fp_team_trophy_case.start_year DESC,
+            fp_competition.name;
         
 
 END;
@@ -1175,7 +1232,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : prize_team
  *
- * IN      : text, text
+ * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text)
@@ -1184,14 +1241,14 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION prize_team
 (
-    IN  id_team text,
-    IN  s_year  text
+    IN  id_team text
 )
 RETURNS TABLE
         (
-            prize_id    text,
-            prize_name  text,
-            prize_given text
+            prize_id            text,
+            prize_assign_year   text
+            prize_name          text,
+            prize_given         text
         )
 AS
 $$
@@ -1200,6 +1257,7 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_prize.id::text AS prize_id,
+            fp_team_prize_case.assign_year::text AS prize_assign_year,
             fp_prize.name::text AS prize_name,
             fp_prize.given::text AS prize_given
         FROM
@@ -1210,8 +1268,9 @@ BEGIN
                  fp_team_prize_case.prize_id = fp_prize.id
         WHERE
             fp_team_prize_case.team_id = id_team::integer
-            AND
-            fp_team_prize_case.assign_year = s_year::integer;
+        ORDER BY
+            fp_team_prize_case.assign_year DESC,
+            fp_prize.name;
         
 
 END;
