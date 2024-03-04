@@ -134,7 +134,7 @@ public class SearchCountryPanel
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 				}
 
-				if (null != countryNameMap.get(ctrlContinentName.getText())) {
+				if (countryNameMap.get(ctrlContinentName.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -156,13 +156,11 @@ public class SearchCountryPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
-					continentNamePanel.getMyComboBox().setEnabled(true);
-				} else {
-					continentNamePanel.getMyComboBox().setEnabled(false);
-					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlContinentName.setText(null);
-				}
+				continentNamePanel.getMyComboBox().setSelectedIndex(-1);
+				continentNamePanel.getMyComboBox().setEnabled(
+								0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
+				);
+				ctrlContinentName.setText(null);
 			}
 		});
 

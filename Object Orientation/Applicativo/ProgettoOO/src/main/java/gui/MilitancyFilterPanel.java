@@ -47,15 +47,13 @@ public class MilitancyFilterPanel
 		TopSearchPanel topSearchPanel;
 		InfoPanel infoPanel;
 		TitleLabel titleLabel;
-		LabelComboPanel continentTypeNamePanel;
-		LabelComboPanel nationTypeNamePanel;
+		LabelComboPanel continentNamePanel;
+		LabelComboPanel nationNamePanel;
 		RadioPanel teamTypePanel;
 		LabelComboPanel teamNamePanel;
 		LabelComboPanel fromYearPanel;
 		LabelComboPanel toYearPanel;
 		TablePanel playerTablePanel;
-
-
 		JButton button;
 
 
@@ -111,11 +109,19 @@ public class MilitancyFilterPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), false, ctrlContinentName);
-		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
+		continentNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("CONTINENT"),
+						false,
+						ctrlContinentName
+		);
+		centralPanel.add(continentNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
-		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+		nationNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("NATION"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName
+		);
+		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
@@ -147,7 +153,11 @@ public class MilitancyFilterPanel
 		fromYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("fromYear"), false, ctrlFromYear);
 		centralPanel.add(fromYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		toYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("toYear"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear);
+		toYearPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("toYear"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear
+		);
 		centralPanel.add(toYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("yearsRangeInfo"));
@@ -174,14 +184,14 @@ public class MilitancyFilterPanel
 				playerTableDataMap.clear();
 
 
-//				Controller.getInstance().setPlayerTable(
-//								teamNameMap.get(ctrlTeamName.getText()),
-//								ctrlFromYear.getText(),
-//								ctrlToYear.getText(),
-//								playerTableData,
-//								playerTableDataMap
-//				);
-				//TODO REMOVE WHEN THE CONTROLLER IS FIXED
+				Controller.getInstance().setPlayerTable(
+								teamNameMap.get(ctrlTeamName.getText()),
+								ctrlFromYear.getText(),
+								ctrlToYear.getText(),
+								playerTableData,
+								playerTableDataMap
+				);
+
 
 				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
@@ -199,7 +209,7 @@ public class MilitancyFilterPanel
 				// messaggio informazioni ricerca effettuata
 				string = "";
 				if (ctrlTeamName.getText() != null) {
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("teamName"));
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("team"));
 					string += ": ";
 					string += ctrlTeamName.getText();
 				}
@@ -208,15 +218,14 @@ public class MilitancyFilterPanel
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("rangeYears"));
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("yearsRange"));
 					string += ": ";
 					string += ctrlFromYear.getText();
 					string += "-";
 
 					if (ctrlToYear.getText() != null) {
 						string += ctrlToYear.getText();
-					}
-					else {
+					} else {
 						string += Year.now().toString();
 					}
 				}
@@ -235,13 +244,9 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (null != ctrlContinentName.getText()) {
-					continentTypeNamePanel.getMyComboBox().removeAllItems();
-					ctrlContinentName.setText(null);
-				}
-				else {
-					continentTypeNamePanel.getMyComboBox().setEnabled(true);
-				}
+				continentNamePanel.getMyComboBox().setSelectedIndex(-1);
+				continentNamePanel.getMyComboBox().setEnabled(null != ctrlTeamType.getText());
+				ctrlContinentName.setText(null);
 			}
 		});
 
@@ -249,12 +254,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (null == ctrlContinentName.getText()) {
-					nationTypeNamePanel.getMyComboBox().removeAllItems();
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(null);
-				}
-				else if (ctrlContinentName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlContinentName.getText(), "@fill")) {
 					continentNameVector.clear();
 					continentNameMap.clear();
 
@@ -265,18 +265,17 @@ public class MilitancyFilterPanel
 									continentNameMap
 					);
 
-					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-				}
-				else {
-					if (null != ctrlNationName.getText()) {
-						nationTypeNamePanel.getMyComboBox().removeAllItems();
-						ctrlNationName.setText(null);
+					if (continentNameVector.isEmpty()) {
+						continentNameVector.clear();
+						continentNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
-					else {
-						nationTypeNamePanel.getMyComboBox().setEnabled(true);
-					}
-				}
 
+					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+				} else {
+					nationNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationNamePanel.getMyComboBox().setEnabled(continentNameMap.get(ctrlContinentName.getText()) != null);
+					ctrlNationName.setText(null);
+				}
 			}
 		});
 
@@ -284,12 +283,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (null == ctrlNationName.getText()) {
-					teamNamePanel.getMyComboBox().removeAllItems();
-					teamNamePanel.getMyComboBox().setEnabled(false);
-					ctrlTeamName.setText(null);
-				}
-				else if (ctrlNationName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlNationName.getText(), "@fill")) {
 					nationNameVector.clear();
 					nationNameMap.clear();
 
@@ -300,16 +294,16 @@ public class MilitancyFilterPanel
 									nationNameMap
 					);
 
-					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-				}
-				else {
-					if (null != ctrlTeamName.getText()) {
-						teamNamePanel.getMyComboBox().removeAllItems();
-						ctrlTeamName.setText(null);
+					if (nationNameVector.isEmpty()) {
+						nationNameVector.clear();
+						nationNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
-					else {
-						teamNamePanel.getMyComboBox().setEnabled(true);
-					}
+
+					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				} else {
+					teamNamePanel.getMyComboBox().setSelectedIndex(-1);
+					teamNamePanel.getMyComboBox().setEnabled(nationNameMap.get(ctrlNationName.getText()) != null);
+					ctrlTeamName.setText(null);
 				}
 			}
 		});
@@ -319,15 +313,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (null == ctrlTeamName.getText()) {
-					button.setEnabled(false);
-					fromYearPanel.getMyComboBox().setEnabled(false);
-
-					fromYearPanel.getMyComboBox().removeAllItems();
-
-					ctrlFromYear.setText(null);
-				}
-				else if (ctrlTeamName.getText().equalsIgnoreCase("@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlTeamName.getText(), "@fill")) {
 					teamNameVector.clear();
 					teamNameMap.clear();
 
@@ -341,17 +327,17 @@ public class MilitancyFilterPanel
 									teamNameMap
 					);
 
+					if (teamNameVector.isEmpty()) {
+						teamNameVector.clear();
+						teamNameVector.add(GuiConfiguration.getMessage("noData"));
+					}
+
 					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
-				}
-				else {
-					if (null != ctrlFromYear.getText()) {
-						fromYearPanel.getMyComboBox().removeAllItems();
-						ctrlFromYear.setText(null);
-					}
-					else {
-						button.setEnabled(true);
-						fromYearPanel.getMyComboBox().setEnabled(true);
-					}
+				} else {
+					fromYearPanel.getMyComboBox().setSelectedIndex(-1);
+					fromYearPanel.getMyComboBox().setEnabled(teamNameMap.get(ctrlTeamName.getText()) != null);
+					button.setEnabled(teamNameMap.get(ctrlTeamName.getText()) != null);
+					ctrlFromYear.setText(null);
 				}
 			}
 		});
@@ -361,13 +347,7 @@ public class MilitancyFilterPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (null == ctrlFromYear.getText()) {
-					toYearPanel.getMyComboBox().removeAllItems();
-					toYearPanel.getMyComboBox().setEnabled(false);
-					ctrlToYear.setText(null);
-				}
-				else if (ctrlFromYear.getText().equalsIgnoreCase("@fill")) {
-
+				if (0 == StringUtils.compareIgnoreCase(ctrlFromYear.getText(), "@fill")) {
 					JComboBox<String> comboBox = fromYearPanel.getMyComboBox();
 
 					comboBox.removeAllItems();
@@ -378,15 +358,10 @@ public class MilitancyFilterPanel
 					for (int i = maximumYear; i >= minimumYear; --i) {
 						comboBox.addItem(String.valueOf(i));
 					}
-				}
-				else {
-					if (null != ctrlToYear.getText()) {
-						toYearPanel.getMyComboBox().removeAllItems();
-						ctrlToYear.setText(null);
-					}
-					else {
-						toYearPanel.getMyComboBox().setEnabled(true);
-					}
+				} else {
+					toYearPanel.getMyComboBox().setSelectedIndex(-1);
+					toYearPanel.getMyComboBox().setEnabled(ctrlFromYear.getText() != null);
+					ctrlToYear.setText(null);
 				}
 			}
 		});
@@ -406,6 +381,22 @@ public class MilitancyFilterPanel
 
 					for (int i = maximumYear; i >= minimumYear; --i) {
 						comboBox.addItem(String.valueOf(i));
+					}
+				}
+			}
+		});
+
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String test = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+						System.out.println("VAIVAI --> " + test);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
 					}
 				}
 			}

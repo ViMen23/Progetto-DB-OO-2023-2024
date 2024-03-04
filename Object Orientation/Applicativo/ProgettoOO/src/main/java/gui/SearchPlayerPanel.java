@@ -105,7 +105,11 @@ public class SearchPlayerPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		playerNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("name"), ctrlPlayerSubName, Regex.patternString);
+		playerNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("name"),
+						ctrlPlayerSubName,
+						Regex.patternString
+		);
 		centralPanel.add(playerNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 		playerSurnamePanel = new LabelTextPanel(
@@ -128,7 +132,11 @@ public class SearchPlayerPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		referringYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("referenceYear"), true, ctrlReferenceYear);
+		referringYearPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("referenceYear"),
+						true,
+						ctrlReferenceYear
+		);
 		centralPanel.add(referringYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
 
@@ -158,10 +166,18 @@ public class SearchPlayerPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		continentTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
+		continentTypeNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("CONTINENT"),
+						true,
+						ctrlContinentName
+		);
 		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		nationTypeNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		nationTypeNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("NATION"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName
+		);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));
@@ -187,7 +203,11 @@ public class SearchPlayerPanel
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		playerPositionPanel = new LabelComboPanel(GuiConfiguration.getMessage("position"), true, ctrlPlayerPosition);
+		playerPositionPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("position"),
+						true,
+						ctrlPlayerPosition
+		);
 		centralPanel.add(playerPositionPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("positionInfo"));
@@ -224,21 +244,20 @@ public class SearchPlayerPanel
 				playerTableDataMap.clear();
 
 
-//				Controller.getInstance().setPlayerTable(
-//								ctrlPlayerSubName.getText(),
-//								ctrlPlayerSubSurname.getText(),
-//								ctrlReferenceYear.getText(),
-//								ctrlPlayerMinAge.getText(),
-//								ctrlPlayerMaxAge.getText(),
-//								continentNameMap.get(ctrlContinentName.getText()),
-//								nationNameMap.get(ctrlNationName.getText()),
-//								ctrlPlayerRole.getText(),
-//								positionNameMap.get(ctrlPlayerPosition.getText()),
-//								ctrlPlayerFoot.getText(),
-//								playerTableData,
-//								playerTableDataMap
-//				);
-				//TODO REMOVE THIS AFTER FIX CONTROLLER
+				Controller.getInstance().setPlayerTable(
+								ctrlPlayerSubName.getText(),
+								ctrlPlayerSubSurname.getText(),
+								ctrlReferenceYear.getText(),
+								ctrlPlayerMinAge.getText(),
+								ctrlPlayerMaxAge.getText(),
+								continentNameMap.get(ctrlContinentName.getText()),
+								nationNameMap.get(ctrlNationName.getText()),
+								ctrlPlayerRole.getText(),
+								positionNameMap.get(ctrlPlayerPosition.getText()),
+								ctrlPlayerFoot.getText(),
+								playerTableData,
+								playerTableDataMap
+				);
 
 				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
@@ -269,7 +288,6 @@ public class SearchPlayerPanel
 				}
 
 				if (ctrlReferenceYear.getText() != null && ctrlPlayerMinAge.getText() != null) {
-
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -285,8 +303,7 @@ public class SearchPlayerPanel
 
 					if (ctrlPlayerMaxAge.getText() != null) {
 						string += ctrlPlayerMaxAge.getText();
-					}
-					else {
+					} else {
 						string += GuiConfiguration.MAX_AGE;
 					}
 				}
@@ -368,14 +385,12 @@ public class SearchPlayerPanel
 					for (int i = maximumYear; i >= minimumYear; --i){
 						comboBox.addItem(String.valueOf(i));
 					}
-				}
-				else {
+				} else {
 					playerMinAgePanel.getMyComboBox().setSelectedIndex(-1);
-					playerMinAgePanel.getMyComboBox().setEnabled(true);
-					ctrlPlayerMinAge.setText(null);
-
 					playerMaxAgePanel.getMyComboBox().setSelectedIndex(-1);
+					playerMinAgePanel.getMyComboBox().setEnabled(true);
 					playerMaxAgePanel.getMyComboBox().setEnabled(false);
+					ctrlPlayerMinAge.setText(null);
 					ctrlPlayerMaxAge.setText(null);
 				}
 			}
@@ -387,7 +402,6 @@ public class SearchPlayerPanel
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerMinAge.getText(), "@fill")) {
-
 					JComboBox<String> comboBox = playerMinAgePanel.getMyComboBox();
 
 					comboBox.removeAllItems();
@@ -398,7 +412,7 @@ public class SearchPlayerPanel
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));
 					}
-				} else if (null != ctrlPlayerMinAge.getText()){
+				} else if (null != ctrlPlayerMinAge.getText()) {
 					playerMaxAgePanel.getMyComboBox().setSelectedIndex(-1);
 					playerMaxAgePanel.getMyComboBox().setEnabled(true);
 					ctrlPlayerMaxAge.setText(null);
@@ -412,7 +426,6 @@ public class SearchPlayerPanel
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerMaxAge.getText(), "@fill")) {
-
 					JComboBox<String> comboBox = playerMaxAgePanel.getMyComboBox();
 
 					comboBox.removeAllItems();
@@ -424,9 +437,9 @@ public class SearchPlayerPanel
 						comboBox.addItem(String.valueOf(i));
 					}
 				}
-
 			}
 		});
+
 		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
@@ -490,7 +503,6 @@ public class SearchPlayerPanel
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerPosition.getText(), "@fill")) {
-
 					positionNameVector.clear();
 					positionNameMap.clear();
 

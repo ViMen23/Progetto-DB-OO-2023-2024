@@ -27,7 +27,7 @@ public class Main
 		//MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
 
 		MainFrame.getMainFrameInstance().add(new SearchPlayerPanel(), "sgx frame, growy");
-		// TODO Vince il vettore dataTable si svuota nel fill?
+
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
 		MainFrame.getMainFrameInstance().pack();

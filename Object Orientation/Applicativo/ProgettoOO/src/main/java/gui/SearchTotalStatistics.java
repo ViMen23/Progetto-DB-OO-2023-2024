@@ -56,7 +56,11 @@ public class SearchTotalStatistics
 
 		centralPanel.setLayout(migLayout);
 
-		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("searchTotalPlayerStatistics"), this, centralPanel);
+		topSearchPanel = new TopSearchPanel(
+						GuiConfiguration.getMessage("searchTotalPlayerStatistics"),
+						this,
+						centralPanel
+		);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -103,15 +107,17 @@ public class SearchTotalStatistics
 				totalStatisticsTableDataMap.clear();
 
 
-//				Controller.getInstance().setStatisticTable(
-//								ctrlTeamType.getText(),
-//								ctrlPlayerRole.getText(),
-//								totalStatisticsTableData,
-//								totalStatisticsTableDataMap
-//				);
-				//TODO REMOVE AFTER FIX ON CONTROLLER
+				Controller.getInstance().setStatisticTable(
+								ctrlTeamType.getText(),
+								ctrlPlayerRole.getText(),
+								totalStatisticsTableData,
+								totalStatisticsTableDataMap
+				);
 
-				totalStatisticsTable.setModel(new TableModel(totalStatisticsTableData, GuiConfiguration.STATISTIC_TOTAL_TABLE_COLUMN_NAME));
+
+				totalStatisticsTable.setModel(
+								new TableModel(totalStatisticsTableData, GuiConfiguration.STATISTIC_TOTAL_TABLE_COLUMN_NAME)
+				);
 				totalStatisticsTable.setPreferredScrollableViewportSize(totalStatisticsTable.getPreferredSize());
 
 				// messaggio ricerca effettuata

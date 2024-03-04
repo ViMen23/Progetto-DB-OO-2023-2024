@@ -836,12 +836,16 @@ public class Controller
 		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
 	}
 
-	public void setCompetitionEditionComboBox(Vector<String> competitionEditionVector,
-																						String competitionID)
+	public void setCompetitionEditionComboBox(String competitionID,
+																						Vector<String> competitionEditionVector,
+																						Map<String, String> competitionEditionMap)
 	{
 		fetchCompetitionEdition(competitionID);
 
-		competitionEditionVector.addAll(newCompetition().getCompetitionMap().get(competitionID).getEditionSet());
+		for (String edition : newCompetition().getCompetitionMap().get(competitionID).getEditionSet()) {
+			competitionEditionVector.add(edition);
+			competitionEditionMap.put(edition, edition);
+		}
 	}
 
 
@@ -1686,7 +1690,11 @@ public class Controller
 
 		for (String key : playerMap.keySet()) {
 
+			// TODO ruolo attenzione
 			String playerInfo = "";
+			playerInfo += "[";
+			playerInfo += GuiConfiguration.getMessage(playerMap.get(key).getRole());
+			playerInfo += "] ";
 			playerInfo += playerMap.get(key).getName();
 			playerInfo += " ";
 			playerInfo += playerMap.get(key).getSurname();
@@ -1697,9 +1705,10 @@ public class Controller
 	}
 
 	public void setPlayerTableDataMap(Vector<Vector<String>> tableData,
-																		Map<Integer, String> playerTableMap)
+																		Map<Integer, Map<Integer, String>> playerTableMap)
 	{
 		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		Map<Integer, String> playerSurnameMap = new HashMap<>();
 
 		Integer row = 0;
 
@@ -1724,9 +1733,11 @@ public class Controller
 
 			tableData.add(vector);
 
-			playerTableMap.put(row, key);
+			playerSurnameMap.put(row, key);
 			++row;
 		}
+
+		playerTableMap.put(0, playerSurnameMap);
 	}
 
 	/**
@@ -1807,7 +1818,7 @@ public class Controller
 														 String playerPositionID,
 														 String playerFoot,
 														 Vector<Vector<String>> playerTableData,
-														 Map<Integer, String> playerTableMap)
+														 Map<Integer, Map<Integer, String>> playerTableMap)
 	{
 		fetchPlayer(
 						playerSubName,
@@ -1831,7 +1842,7 @@ public class Controller
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear,
 														 Vector<Vector<String>> playerTableData,
-														 Map<Integer, String> playerTableMap)
+														 Map<Integer, Map<Integer, String>> playerTableMap)
 	{
 		fetchPlayer(
 						militancyPlayerTeamID,
@@ -2732,9 +2743,14 @@ public class Controller
 
 	public void setStatisticTable(String teamType,
 																String playerRole,
-																Vector<Vector<String>> statisticTableData)
+																Vector<Vector<String>> statisticTableData,
+																Map<Integer, Map<Integer, String>> statisticTableDataMap)
 	{
 		fetchStatisticTotal(teamType, playerRole);
+
+		Map<Integer, String> playerSurnameMap = new HashMap<>();
+
+		Integer row = 0;
 
 		for (String key : ctrlPlayer.getPlayerMap().keySet()) {
 			Vector<String> statisticVector = new Vector<>();
@@ -2756,7 +2772,11 @@ public class Controller
 			statisticVector.add(playerStatistic.getPenaltySaved());
 
 			statisticTableData.add(statisticVector);
+			playerSurnameMap.put(row, key);
+			++row;
 		}
+
+		statisticTableDataMap.put(2, playerSurnameMap);
 	}
 
 

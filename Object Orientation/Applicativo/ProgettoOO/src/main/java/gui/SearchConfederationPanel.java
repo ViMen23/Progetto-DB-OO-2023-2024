@@ -137,7 +137,7 @@ public class SearchConfederationPanel
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 				}
 
-				if (null != confederationNameMap.get(ctrlConfederationName.getText())) {
+				if (confederationNameMap.get(ctrlConfederationName.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -160,13 +160,11 @@ public class SearchConfederationPanel
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
-					confederationNamePanel.getMyComboBox().setEnabled(true);
-				} else {
-					confederationNamePanel.getMyComboBox().setEnabled(false);
-					confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlConfederationName.setText(null);
-				}
+				confederationNamePanel.getMyComboBox().setSelectedIndex(-1);
+				confederationNamePanel.getMyComboBox().setEnabled(
+								0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
+				);
+				ctrlConfederationName.setText(null);
 			}
 		});
 

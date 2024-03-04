@@ -268,15 +268,13 @@ public class SearchCompetitionPanel
 
 		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt) {
+			public void propertyChange(PropertyChangeEvent evt)
+			{
 				continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-				nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-				nationTypeNamePanel.getMyComboBox().setEnabled(false);
-				ctrlContinentName.setText(null);
-				ctrlNationName.setText(null);
 				continentTypeNamePanel.getMyComboBox().setEnabled(
 								0 != StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString())
 				);
+				ctrlContinentName.setText(null);
 			}
 		});
 
@@ -303,13 +301,15 @@ public class SearchCompetitionPanel
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-				} else if (null == continentNameMap.get(ctrlContinentName.getText())) {
+				} else {
 					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(false);
-					ctrlNationName.setText(null);
-				} else if (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())) {
-					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					nationTypeNamePanel.getMyComboBox().setEnabled(true);
+					nationTypeNamePanel.getMyComboBox().setEnabled(
+									(
+													continentNameMap.get(ctrlContinentName.getText()) != null
+																	&&
+													0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
+									)
+					);
 					ctrlNationName.setText(null);
 				}
 			}

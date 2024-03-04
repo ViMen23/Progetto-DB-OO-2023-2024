@@ -96,11 +96,20 @@ public class SearchTeamPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		teamLongNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("longName"), ctrlTeamSubLongName, Regex.patternAlnum);
+		teamLongNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("longName"),
+						ctrlTeamSubLongName,
+						Regex.patternAlnum
+		);
 		centralPanel.add(teamLongNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 
-		teamShortNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("shortName"), GuiConfiguration.ONE_CELL_GAP_0_10, ctrlTeamSubShortName, Regex.patternCode);
+		teamShortNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("shortName"),
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlTeamSubShortName,
+						Regex.patternCode
+		);
 		centralPanel.add(teamShortNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 
@@ -130,10 +139,19 @@ public class SearchTeamPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		continentNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("CONTINENT"), true, ctrlContinentName);
+		continentNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("CONTINENT"),
+						true,
+						ctrlContinentName
+		);
 		centralPanel.add(continentNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		nationNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("NATION"), false, GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName);
+		nationNamePanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("NATION"),
+						false,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlNationName
+		);
 		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nationInfo"));

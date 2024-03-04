@@ -54,8 +54,8 @@ public class CompetitionEditionFilterPanel
 		RadioPanel teamTypePanel;
 		InfoPanel infoPanel;
 		RadioComboPanel worldTypePanel;
-		RadioComboPanel continentNamePanel;
-		RadioComboPanel nationNamePanel;
+		RadioComboPanel continentTypeNamePanel;
+		RadioComboPanel nationTypeNamePanel;
 		LabelComboPanel competitionNamePanel;
 		LabelComboPanel seasonPanel;
 		TablePanel competitionEditionTablePanel;
@@ -126,7 +126,7 @@ public class CompetitionEditionFilterPanel
 		buttonGroup.add(worldTypePanel.getRadioButton());
 		centralPanel.add(worldTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT);
 
-		continentNamePanel = new RadioComboPanel(
+		continentTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
 						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlCountryType,
@@ -134,11 +134,11 @@ public class CompetitionEditionFilterPanel
 						true
 		);
 
-		continentNamePanel.getRadioButton().setEnabled(false);
-		buttonGroup.add(continentNamePanel.getRadioButton());
-		centralPanel.add(continentNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
+		continentTypeNamePanel.getRadioButton().setEnabled(false);
+		buttonGroup.add(continentTypeNamePanel.getRadioButton());
+		centralPanel.add(continentTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
 
-		nationNamePanel = new RadioComboPanel(
+		nationTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.NATION.toString(),
 						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlCountryType,
@@ -146,9 +146,9 @@ public class CompetitionEditionFilterPanel
 						true
 		);
 
-		nationNamePanel.getRadioButton().setEnabled(false);
-		buttonGroup.add(nationNamePanel.getRadioButton());
-		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+		nationTypeNamePanel.getRadioButton().setEnabled(false);
+		buttonGroup.add(nationTypeNamePanel.getRadioButton());
+		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("countryInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
@@ -189,23 +189,99 @@ public class CompetitionEditionFilterPanel
 		this.add(competitionEditionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
+		button.setEnabled(false);
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				MyTable competitionEditionStatisticsTable = competitionEditionTablePanel.getMyTable();
+				String string;
+
+				competitionEditionTableData.clear();
+				competitionEditionTableDataMap.clear();
+
+
+				Controller.getInstance().setStatisticCompetitionEditionTable(
+								seasonMap.get(ctrlSeason.getText()),
+								competitionNameMap.get(ctrlCompetitionName.getText()),
+								competitionEditionTableData
+								//competitionEditionTableDataMap
+				);
+
+
+				competitionEditionStatisticsTable.setModel(
+								new TableModel(competitionEditionTableData, GuiConfiguration.STATISTIC_EDITION_TABLE_COLUMN_NAME)
+				);
+				competitionEditionStatisticsTable.setPreferredScrollableViewportSize(competitionEditionStatisticsTable.getPreferredSize());
+
+				// messaggio ricerca effettuata
+				string = GuiConfiguration.getMessage("doneSearch");
+				string += " - ";
+				string += GuiConfiguration.getMessage("statistics");
+				string += " ";
+				string += competitionEditionTableData.size();
+
+				competitionEditionTablePanel.getTitleLabel().setText(string);
+
+				// messaggio informazioni ricerca effettuata
+//				string = "";
+//				if (ctrlTeamType.getText() != null) {
+//					string += GuiConfiguration.getMessage("teamType");
+//					string += ": ";
+//					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
+//				}
+//
+//				if (ctrlPlayerRole.getText() != null) {
+//					if (!string.isEmpty()) {
+//						string += "\n";
+//					}
+//					string += GuiConfiguration.getMessage("role");
+//					string += ": ";
+//
+//					String[] keyPart = ctrlPlayerRole.getText().split("_");
+//
+//					string += GuiConfiguration.getMessage(keyPart[0]);
+//
+//					for (int i = 1; i < keyPart.length; ++i) {
+//						string += ", ";
+//						string += GuiConfiguration.getMessage(keyPart[i]);
+//					}
+//				}
+
+				competitionEditionTablePanel.getTextArea().setText(string);
+
+				topSearchPanel.getTitleButton().doClick();
+				CompetitionEditionFilterPanel.this.revalidate();
 			}
 		});
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
+		ctrlTeamType.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				buttonGroup.clearSelection();
+				worldTypePanel.getRadioButton().setEnabled(null != ctrlTeamType.getText());
+				continentTypeNamePanel.getRadioButton().setEnabled(null != ctrlTeamType.getText());
+				nationTypeNamePanel.getRadioButton().setEnabled(
+								null != ctrlTeamType.getText() && 0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), Team.TEAM_TYPE.CLUB.toString())
+				);
+				continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+				ctrlContinentName.setText(null);
+			}
+		});
 
 		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				//TODO
+				continentTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+				continentTypeNamePanel.getMyComboBox().setEnabled(
+								0 != StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString())
+				);
+				ctrlContinentName.setText(null);
 			}
 		});
 
@@ -228,10 +304,13 @@ public class CompetitionEditionFilterPanel
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
-					continentNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
-				}
-				else {
-					//TODO
+					continentTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(continentNameVector));
+				} else {
+					nationTypeNamePanel.getMyComboBox().setSelectedIndex(-1);
+					nationTypeNamePanel.getMyComboBox().setEnabled(
+									continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString())
+					);
+					ctrlNationName.setText(null);
 				}
 			}
 		});
@@ -254,10 +333,15 @@ public class CompetitionEditionFilterPanel
 					if (nationNameVector.isEmpty()) {
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
-					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-				}
-				else {
-					//TODO
+					nationTypeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				} else {
+					competitionNamePanel.getMyComboBox().setSelectedIndex(-1);
+					competitionNamePanel.getMyComboBox().setEnabled(
+									(nationNameMap.get(ctrlNationName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString()))
+									|| (continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString()))
+									|| (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString()))
+					);
+					ctrlCompetitionName.setText(null);
 				}
 			}
 		});
@@ -285,10 +369,11 @@ public class CompetitionEditionFilterPanel
 						competitionNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
-					competitionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
-				}
-				else {
-					//TODO
+					competitionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(competitionNameVector));
+				} else {
+					seasonPanel.getMyComboBox().setSelectedIndex(-1);
+					seasonPanel.getMyComboBox().setEnabled(competitionNameMap.get(ctrlCompetitionName.getText()) != null);
+					ctrlSeason.setText(null);
 				}
 			}
 		});
@@ -301,22 +386,19 @@ public class CompetitionEditionFilterPanel
 					seasonVector.clear();
 					seasonMap.clear();
 
-//					Controller.getInstance().setCompetitionEditionComboBox
-//									(
-//													competitionNameMap.get(ctrlCompetitionName.getText()),
-//													seasonVector,
-//													seasonMap
-//									);
-					//TODO REMOVE COMMENT WHEN CONTROLLER IS FIXED
+					Controller.getInstance().setCompetitionEditionComboBox(
+									competitionNameMap.get(ctrlCompetitionName.getText()),
+									seasonVector,
+									seasonMap
+					);
 
 					if (seasonVector.isEmpty()) {
 						seasonVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
 					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
-				}
-				else {
-					//TODO
+				} else {
+					button.setEnabled(seasonMap.get(ctrlSeason.getText()) != null);
 				}
 			}
 		});

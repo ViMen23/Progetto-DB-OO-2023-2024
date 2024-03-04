@@ -1,7 +1,11 @@
 package gui;
 
+import database.DatabaseConnection;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -103,6 +107,11 @@ public class GuiConfiguration
 		initUIManager();
 		initHomeFrame();
 		initTableColumn();
+		try {
+			DatabaseConnection.getInstance();
+		} catch (SQLException e) {
+			System.out.println("ERRORE: " + e.getMessage());
+		}
 	}
 
 	public static void initHomeFrame()
