@@ -15,7 +15,7 @@ public class GeneralInfoPanel
 
 		migLayout = new MigLayout
 						(
-										GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+										GuiConfiguration.CENTER_WRAP_2_LAYOUT_CONSTRAINT,
 										"10[40%, fill]40[50%, fill]10",//TODO
 										null
 						);

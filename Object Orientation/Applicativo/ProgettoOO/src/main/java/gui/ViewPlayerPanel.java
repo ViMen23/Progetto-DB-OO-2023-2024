@@ -36,6 +36,8 @@ public class ViewPlayerPanel
 		JPanel clubStatisticsFilterGeneralPanel;
 		TopSearchPanel topFilterPanel;
 		JPanel clubStatisticsFilterPanel;
+		TitleLabel titleLabel;
+
 
 
 		migLayout = new MigLayout(
@@ -225,6 +227,38 @@ public class ViewPlayerPanel
 		clubStatisticsFilterGeneralPanel.add(clubStatisticsFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		/*
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("name").toUpperCase());
+		clubStatisticsFilterPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		clubStatisticsFilterPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
+
+		teamLongNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("longName"),
+						ctrlTeamSubLongName,
+						Regex.patternAlnum
+		);
+		clubStatisticsFilterPanel.add(teamLongNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
+
+
+		teamShortNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("shortName"),
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlTeamSubShortName,
+						Regex.patternCode
+		);
+		centralPanel.add(teamShortNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("namesInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+		
+		 */
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 

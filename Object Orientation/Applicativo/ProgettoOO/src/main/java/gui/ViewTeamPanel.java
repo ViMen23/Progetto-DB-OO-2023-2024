@@ -65,7 +65,7 @@ public class ViewTeamPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_SIZE_15P_INT_GAP_0_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
 		);
 
@@ -260,9 +260,11 @@ public class ViewTeamPanel
 
 				squadTable.setModel(new TableModel(squadTableData, GuiConfiguration.TEAM_SQUAD_TABLE_COLUMN_NAME));
 				squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
+				squadPanel.getTitleLabel().setText(GuiConfiguration.getMessage("squad") + " " + ctrlSeason.getText());
 
 				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.TEAM_PARTICIPATING_TABLE_COLUMN_NAME));
 				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
+				participationPanel.getTitleLabel().setText(GuiConfiguration.getMessage("participations") + " " + ctrlSeason.getText());
 
 				revalidate();
 			}
