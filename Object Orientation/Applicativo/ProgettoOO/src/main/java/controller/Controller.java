@@ -1211,6 +1211,7 @@ public class Controller
 			comboBoxData.add(teamLongName);
 			comboBoxMap.put(teamLongName, key);
 		}
+
 	}
 
 	private void setTeamComboBoxDataMap(String teamID,
@@ -1261,6 +1262,7 @@ public class Controller
 		}
 
 		teamTableMap.put(0, teamLongNameMap);
+		System.out.println(teamTableMap);
 	}
 
 
@@ -1338,27 +1340,11 @@ public class Controller
 	{
 		Team team = ctrlTeam.getTeamMap().get(teamID);
 
-		String string;
-
-		// informazioni squadra
-		string = GuiConfiguration.getMessage("team").toUpperCase();
-		infoTeamMap.put(string, team.getLongName());
-
-		string = GuiConfiguration.getMessage("code");
-		string = StringUtils.capitalize(string);
-		infoTeamMap.put(string, team.getShortName());
-
-		string = GuiConfiguration.getMessage("type");
-		string = StringUtils.capitalize(string);
-		infoTeamMap.put(string, team.getType());
-
-		string = GuiConfiguration.getMessage("country");
-		string = StringUtils.capitalize(string);
-		infoTeamMap.put(string, team.getCountry().getName());
-
-		string = GuiConfiguration.getMessage("confederation");
-		string = StringUtils.capitalize(string);
-		infoTeamMap.put(string, team.getConfederation().getShortName());
+		infoTeamMap.put(GuiConfiguration.getMessage("team"), team.getLongName());
+		infoTeamMap.put(GuiConfiguration.getMessage("code"), team.getShortName());
+		infoTeamMap.put(GuiConfiguration.getMessage("type"), GuiConfiguration.getMessage(team.getType()));
+		infoTeamMap.put(GuiConfiguration.getMessage("country"), team.getCountry().getName());
+		infoTeamMap.put(GuiConfiguration.getMessage("confederation"), team.getConfederation().getShortName());
 	}
 
 	public void setTeamInfoMap(String teamID,
