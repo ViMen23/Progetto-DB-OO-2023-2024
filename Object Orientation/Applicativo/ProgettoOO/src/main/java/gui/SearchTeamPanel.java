@@ -7,6 +7,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -67,7 +68,7 @@ public class SearchTeamPanel
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 						GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT
 		);
@@ -310,8 +311,13 @@ public class SearchTeamPanel
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						String test = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-						System.out.println("VAIVAI --> " + test);
+						JPanel panel = new ViewTeamPanel(teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]));
+
+						SearchTeamPanel.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);
+						
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

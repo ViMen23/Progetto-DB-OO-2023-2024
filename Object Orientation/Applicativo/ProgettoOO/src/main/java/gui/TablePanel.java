@@ -23,7 +23,7 @@ public class TablePanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.TWO_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);
@@ -58,7 +58,7 @@ public class TablePanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.TWO_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);
@@ -81,6 +81,34 @@ public class TablePanel
 		this.myTable = new MyTable(sort);
 		scrollPane.setViewportView(myTable);
 	}
+
+	public TablePanel(Boolean sort)
+	{
+		MigLayout migLayout;
+		JScrollPane scrollPane;
+
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						null
+		);
+
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+		this.titleLabel = new TitleLabel(null);
+		this.add(titleLabel);
+
+		this.textArea = null;
+
+		scrollPane = new JScrollPane();
+		this.add(scrollPane);
+
+		this.myTable = new MyTable(sort);
+		scrollPane.setViewportView(myTable);
+	}
+
 
 	public MyTable getMyTable()
 	{

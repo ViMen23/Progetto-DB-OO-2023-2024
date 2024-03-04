@@ -4,7 +4,6 @@ import database.DatabaseConnection;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -53,7 +52,7 @@ public class GuiConfiguration
 	public static final String DEBUG_LAYOUT_CONSTRAINT = "debug";
 	public static final String VLAYOUT_CONSTRAINT = "debug, flowy";
 	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
-	public static final String DEBUG_WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
+	public static final String WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
 	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
 	public static final String CENTER_VLAYOUT_CONSTRAINT = "debug, flowy, center";
 

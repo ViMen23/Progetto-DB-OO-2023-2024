@@ -50,7 +50,7 @@ public class SearchConfederationPanel
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-			GuiConfiguration.DEBUG_WRAP_2_LAYOUT_CONSTRAINT,
+			GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
 			GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 			GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT
 		);

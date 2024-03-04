@@ -26,7 +26,7 @@ public class Main
 
 		//MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
 
-		MainFrame.getMainFrameInstance().add(new SearchPlayerPanel(), "sgx frame, growy");
+		MainFrame.getMainFrameInstance().add(new ViewTeamPanel("1"), "sgx frame, growy");
 
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
