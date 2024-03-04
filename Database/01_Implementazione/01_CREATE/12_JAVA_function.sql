@@ -1044,7 +1044,7 @@ BEGIN
                     WHERE
                         fp_partecipation.team_id = id_team::integer
                 )
-            )
+            ) AS years
         ORDER BY start_year DESC;
 
 
@@ -1246,7 +1246,7 @@ CREATE OR REPLACE FUNCTION prize_team
 RETURNS TABLE
         (
             prize_id            text,
-            prize_assign_year   text
+            prize_assign_year   text,
             prize_name          text,
             prize_given         text
         )
