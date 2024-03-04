@@ -1172,6 +1172,8 @@ public class Controller
 
 	private void fetchTeamYear(String teamID)
 	{
+		fetchTeam(teamID);
+		
 		List<String> listTeamYear = new ArrayList<>();
 
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
