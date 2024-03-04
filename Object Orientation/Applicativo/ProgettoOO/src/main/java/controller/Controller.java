@@ -1397,7 +1397,7 @@ public class Controller
 		setTeamSquadTable(teamID, startYear, teamSquadTableData, teamSquadTableMap);
 	}
 
-	public void setTeamCaseView(String teamID, 
+	public void setTeamCaseView(String teamID,
 															String teamType,
 															Map<String, String> infoTeamMap,
 															Vector<Vector<String>> teamTrophyTableData,
