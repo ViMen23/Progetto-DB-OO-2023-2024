@@ -77,12 +77,12 @@ public class ViewTeamPanel
 		squadParticipationButton = new JButton(GuiConfiguration.getMessage("seasonDetails"));
 		squadParticipationButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
-		navigationPanel.add(squadParticipationButton);
+		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
-		navigationPanel.add(caseButton);
+		navigationPanel.add(caseButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(

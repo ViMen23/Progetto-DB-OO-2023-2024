@@ -92,6 +92,7 @@ public class GuiConfiguration
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 3, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT = "sgx first_column, gap bottom 0";
 	public static final String HGROUP_SECOND_COLUMN_ADD_CONSTRAINT = "sgx second_column";
+	public static final String HGRUOP_ADD_CONSTRAINT = "sgx group";
 	public static final String WIDTH_80P_ADD_CONSTRAINT = "width 80%";
 	public static final String SPAN_2_ADD_CONSTRAINT = "span 2";
 
