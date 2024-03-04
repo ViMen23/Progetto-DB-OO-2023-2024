@@ -3334,14 +3334,10 @@ public class Controller
 	 * NATIONALITY
 	 *------------------------------------------------------------------------------------------------------*/
 
-	private void fetchNationality(String playerID)
+	private void mapNationality(String playerID,
+															List<String> listCountryName)
 	{
-		List<String> listCountryName = new ArrayList<>();
-
-		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		nationalityDAO.fetchNationalityDB(playerID, listCountryName);
-
-		Set<Country> playerCountrySet = ctrlPlayer.getPlayerMap().get(playerID).getCountrySet();
+		Set<Country> playerCountrySet = newPlayer().getPlayerMap().get(playerID).getCountrySet();
 		playerCountrySet.clear();
 
 
@@ -3355,6 +3351,16 @@ public class Controller
 							)
 			);
 		}
+	}
+
+	private void fetchNationality(String playerID)
+	{
+		List<String> listCountryName = new ArrayList<>();
+
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		nationalityDAO.fetchNationalityDB(playerID, listCountryName);
+
+		mapNationality(playerID, listCountryName);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -3383,7 +3389,7 @@ public class Controller
 		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
 		attributeTechnicalDAO.fetchAttributeTechnicalDB(playerID, attributeTechnicalMap);
 
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
+		Player player = newPlayer().getPlayerMap().get(playerID);
 
 		player.setAttributeGoalkeepingMap(attributeGoalkeepingMap);
 		player.setAttributeMentalMap(attributeMentalMap);
@@ -3410,14 +3416,10 @@ public class Controller
 		return newTag(null, null, null);
 	}
 
-	private void fetchTag(String playerID)
+	private void mapTag(String playerID,
+											List <String> listTagName)
 	{
-		List<String> listTagName = new ArrayList<>();
-
-		TagDAO tagDAO = new PostgresImplTagDAO();
-		tagDAO.fetchTagDB(playerID, listTagName);
-
-		Set<Tag> playerTagSet = ctrlPlayer.getPlayerMap().get(playerID).getTagSet();
+		Set<Tag> playerTagSet = newPlayer().getPlayerMap().get(playerID).getTagSet();
 		playerTagSet.clear();
 
 
@@ -3430,6 +3432,16 @@ public class Controller
 							)
 			);
 		}
+	}
+
+	private void fetchTag(String playerID)
+	{
+		List<String> listTagName = new ArrayList<>();
+
+		TagDAO tagDAO = new PostgresImplTagDAO();
+		tagDAO.fetchTagDB(playerID, listTagName);
+
+		mapTag(playerID, listTagName);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 }
