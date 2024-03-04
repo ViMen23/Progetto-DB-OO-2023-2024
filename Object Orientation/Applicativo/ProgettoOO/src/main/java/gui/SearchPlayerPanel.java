@@ -143,6 +143,7 @@ public class SearchPlayerPanel
 		playerMinAgePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("minAge"),
 						false,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlPlayerMinAge
 		);
@@ -152,8 +153,10 @@ public class SearchPlayerPanel
 		playerMaxAgePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("maxAge"),
 						false,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_10,
-						ctrlPlayerMaxAge);
+						ctrlPlayerMaxAge
+		);
 		centralPanel.add(playerMaxAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("ageInfo"));
@@ -176,7 +179,9 @@ public class SearchPlayerPanel
 		nationTypeNamePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("NATION"),
 						false,
-						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlNationName
 		);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 

@@ -119,7 +119,9 @@ public class MilitancyFilterPanel
 		nationNamePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("NATION"),
 						false,
-						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlNationName
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlNationName
 		);
 		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
@@ -156,7 +158,9 @@ public class MilitancyFilterPanel
 		toYearPanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("toYear"),
 						false,
-						GuiConfiguration.ONE_CELL_GAP_0_10, ctrlToYear
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_10,
+						ctrlToYear
 		);
 		centralPanel.add(toYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 

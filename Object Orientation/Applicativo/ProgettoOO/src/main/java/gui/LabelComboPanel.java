@@ -13,11 +13,17 @@ public class LabelComboPanel
 												 Boolean enable,
 												 JLabel ctrlLabel)
 	{
-		this(field, enable, GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT, ctrlLabel);
+		this(
+						field,
+						enable,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT, ctrlLabel
+		);
 	}
 
 	public LabelComboPanel(String field,
 												 Boolean enable,
+												 String columnConstraint,
 												 String rowConstraint,
 												 JLabel ctrlLabel)
 	{
@@ -26,7 +32,7 @@ public class LabelComboPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						columnConstraint,
 						rowConstraint
 		);
 
@@ -40,7 +46,6 @@ public class LabelComboPanel
 		this.myComboBox = new MyComboBox(enable, ctrlLabel);
 		this.add(myComboBox);
 	}
-
 
 	public MyComboBox getMyComboBox()
 	{

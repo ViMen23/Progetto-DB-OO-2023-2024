@@ -150,6 +150,7 @@ public class SearchTeamPanel
 		nationNamePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("NATION"),
 						false,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_10,
 						ctrlNationName
 		);
@@ -311,11 +312,25 @@ public class SearchTeamPanel
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						JPanel panel = new ViewTeamPanel(teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]));
+						String ID;
+						String teamType;
+
+						ID = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						System.out.println(teamTableData.get(tableIndex[1]).get(2));
+						if (teamTableData.get(tableIndex[1]).get(2).contains("C")) {
+							teamType = Team.TEAM_TYPE.CLUB.toString();
+						}
+						else {
+							teamType = Team.TEAM_TYPE.NATIONAL.toString();
+						}
+						System.out.println(teamType);
+
+						JPanel panel = new ViewTeamPanel(ID, teamType);
 
 						SearchTeamPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);
-						
+
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
