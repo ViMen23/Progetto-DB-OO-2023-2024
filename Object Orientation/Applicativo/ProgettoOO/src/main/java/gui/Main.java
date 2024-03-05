@@ -24,14 +24,29 @@ public class Main
 
 		//searchCountryPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(new ViewPlayerGeneralInfo("30"), "sgx frame, growy");
+		JPanel panel = new TopPanel();
+		panel.setVisible(true);
 
-		// TODO DA RIFARE SIA VISTA SQUADRA CHE VISTA PLAYER
-		//MainFrame.getMainFrameInstance().add(new ViewTeamCasePanel("214", "CLUB"), "sgx frame, growy");
+		JPanel menuPanel = new MenuBarPanel();
+		menuPanel.setVisible(false);
+
+		MainFrame.getMainFrameInstance().add(panel, "sgx frame");
+
+		JPanel panel1 = new AdminNavigationPanel();
+
+		panel1.setVisible(true);
+
+		MainFrame.getMainFrameInstance().add(panel1, "sgx frame, gap top 20");
+
+
 
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
+		MainFrame.getMainFrameInstance().setVisible(true);
+
 		MainFrame.getMainFrameInstance().pack();
+
+
 
 
 		//Controller.getInstance().subConfederations("Confederation of North and Central America and Caribbean Association Football");

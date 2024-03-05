@@ -20,6 +20,8 @@ public class LabelTextPanel
 					BorderFactory.createEmptyBorder(-2,0,-2,10),
 					BorderFactory.createMatteBorder(0, 0,0, 30, ERROR)
 	);
+	private final JTextField textField;
+
 	public LabelTextPanel(String labelText,
 												JLabel ctrlLabel,
 												Pattern pattern)
@@ -34,7 +36,6 @@ public class LabelTextPanel
 	{
 		MigLayout migLayout;
 		JLabel label;
-		JTextField textField;
 		final Border border;
 
 
@@ -68,5 +69,10 @@ public class LabelTextPanel
 				}
 			}
 		});
+	}
+
+	public JTextField getTextField()
+	{
+		return textField;
 	}
 }

@@ -67,7 +67,7 @@ public class GuiConfiguration
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[]10[]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
 	public static final String TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "20[59%, fill]50[35%, fill]20";
-	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[40%]5%";
+	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[60%, fill]5%";
 	public static final String TWO_CELL_GROW_FILL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[grow, fill]10[grow, fill]0";
 	public static final String TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT = "[15%, fill]150[15%, fill]";
 	public static final String THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT = "10[][][]";
@@ -113,7 +113,7 @@ public class GuiConfiguration
 		setLocale(Locale.of("it", "IT"));
 
 		initUIManager();
-		initHomeFrame();
+		//initHomeFrame();
 		initTableColumn();
 		try {
 			DatabaseConnection.getInstance();
@@ -205,6 +205,8 @@ public class GuiConfiguration
 
 		// configurazioni text field
 		UIManager.put("TextField.font", outputFont);
+		UIManager.put("TextField[Disabled].backgroundPainter", UIManager.get("TextField[Enabled].backgroundPainter"));
+		UIManager.put("TextField[Disabled].borderPainter", UIManager.get("TextField[Enabled].borderPainter"));
 
 		//configurazioni field password
 		UIManager.put("PasswordField.font", outputFont);
