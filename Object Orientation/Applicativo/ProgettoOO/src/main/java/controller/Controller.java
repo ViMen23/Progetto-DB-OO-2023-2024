@@ -1767,7 +1767,7 @@ public class Controller
 		infoPlayerMap.put(GuiConfiguration.getMessage("surname"), player.getSurname());
 		infoPlayerMap.put(GuiConfiguration.getMessage("dob"), player.getDob());
 		infoPlayerMap.put(GuiConfiguration.getMessage("bornCountry"), player.getCountry().getName());
-		infoPlayerMap.put(GuiConfiguration.getMessage("preferredFoot"), GuiConfiguration.getMessage(player.getFoot()));
+		infoPlayerMap.put(GuiConfiguration.getMessage("foot"), GuiConfiguration.getMessage(player.getFoot()));
 		infoPlayerMap.put(GuiConfiguration.getMessage("mainPosition"), GuiConfiguration.getMessage(player.getPosition().getName()));
 		// TODO attenzione ruolo
 		infoPlayerMap.put(GuiConfiguration.getMessage("role"), GuiConfiguration.getMessage(player.getRole()));
