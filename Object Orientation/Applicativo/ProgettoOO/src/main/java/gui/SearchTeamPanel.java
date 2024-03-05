@@ -7,7 +7,6 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -326,7 +325,7 @@ public class SearchTeamPanel
 						}
 						System.out.println(teamType);
 
-						JPanel panel = new ViewTeamPanel(ID, teamType);
+						JPanel panel = new ViewTeamCasePanel(ID, teamType);
 
 						SearchTeamPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);

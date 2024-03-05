@@ -26,7 +26,8 @@ public class Main
 
 		//MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
 
-		MainFrame.getMainFrameInstance().add(new ViewPlayerPanel("3"), "sgx frame, growy");
+		// TODO DA RIFARE SIA VISTA SQUADRA CHE VISTA PLAYER
+		MainFrame.getMainFrameInstance().add(new ViewTeamCasePanel("214", "CLUB"), "sgx frame, growy");
 
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 

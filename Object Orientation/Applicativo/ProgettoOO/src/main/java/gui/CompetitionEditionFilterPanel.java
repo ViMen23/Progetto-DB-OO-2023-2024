@@ -205,8 +205,8 @@ public class CompetitionEditionFilterPanel
 				Controller.getInstance().setStatisticCompetitionEditionTable(
 								seasonMap.get(ctrlSeason.getText()),
 								competitionNameMap.get(ctrlCompetitionName.getText()),
-								competitionEditionTableData
-								//competitionEditionTableDataMap
+								competitionEditionTableData,
+								competitionEditionTableDataMap
 				);
 
 

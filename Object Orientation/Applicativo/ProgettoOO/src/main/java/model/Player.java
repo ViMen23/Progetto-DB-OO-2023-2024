@@ -37,7 +37,7 @@ public class Player
 	private final Map<String, Team> nationalCareer;
 	private final Map<String, Team> clubCareer;
 
-	private final Set<Statistic> statisticSet;
+	private final Map<Statistic, String> statisticMap;
 
 	private final Map<Trophy, String> trophyMap;
 	private final Set<Prize> prizeSet;
@@ -63,7 +63,7 @@ public class Player
 		this.role = role;
 		this.retiredDate = retiredDate;
 
-		this.statisticSet = new LinkedHashSet<>();
+		this.statisticMap = new LinkedHashMap<>();
 		this.positionSet = new LinkedHashSet<>();
 		this.countrySet = new LinkedHashSet<>();
 
@@ -180,9 +180,9 @@ public class Player
 	}
 
 
-	public Set<Statistic> getStatisticSet()
+	public Map<Statistic, String> getStatisticMap()
 	{
-		return statisticSet;
+		return statisticMap;
 	}
 
 	public Set<Position> getPositionSet()

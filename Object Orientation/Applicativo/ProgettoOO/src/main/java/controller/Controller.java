@@ -18,13 +18,11 @@ import java.util.*;
  */
 public class Controller
 {
-	private final Admin ctrlAdmin;
 	private final Player ctrlPlayer;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
-		this.ctrlAdmin = newAdmin();
 		this.ctrlPlayer = newPlayer();
 	}
 
@@ -73,7 +71,7 @@ public class Controller
 			return false;
 		}
 
-		if (ctrlAdmin.getAdminConnected() != null) {
+		if (newAdmin().getAdminConnected() != null) {
 			return false;
 		}
 
@@ -81,7 +79,7 @@ public class Controller
 
 		AdminDAO adminDAO = new PostgresImplAdminDAO();
 		if (adminDAO.isAdminDB(admin.getUsername(), admin.getPassword())) {
-			ctrlAdmin.setAdminConnected(admin);
+			newAdmin().setAdminConnected(admin);
 			System.out.println("Connesso");
 			return true;
 		}
@@ -1971,59 +1969,14 @@ public class Controller
 																		Vector<Vector<String>> playerAttributeTechnicalTableData,
 																		Vector<Vector<String>> playerTagTableData)
 	{
-		fetchPlayer(playerID);
-		fetchAttribute(playerID);
-		fetchTag(playerID);
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-
-		String string;
-
 		setPlayerInfoMap(playerID, infoPlayerMap);
-
-
-		if (player.getRole().matches("GK")) {
-			for (String key : player.getAttributeGoalkeepingMap().keySet()) {
-				Vector<String> attributeGoalkeepingVector = new Vector<>();
-
-				attributeGoalkeepingVector.add(key);
-				attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
-
-				playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
-			}
-		}
-
-
-		for (String key : player.getAttributeMentalMap().keySet()) {
-			Vector<String> attributeMentalVector = new Vector<>();
-
-			attributeMentalVector.add(key);
-			attributeMentalVector.add(player.getAttributeMentalMap().get(key));
-
-			playerAttributeMentalTableData.add(attributeMentalVector);
-		}
-
-		for (String key : player.getAttributePhysicalMap().keySet()) {
-			Vector<String> attributePhysicalVector = new Vector<>();
-
-			attributePhysicalVector.add(key);
-			attributePhysicalVector.add(player.getAttributePhysicalMap().get(key));
-
-			playerAttributePhysicalTableData.add(attributePhysicalVector);
-		}
-
-		for (String key : player.getAttributeTechnicalMap().keySet()) {
-			Vector<String> attributeTechnicalVector = new Vector<>();
-
-			attributeTechnicalVector.add(key);
-			attributeTechnicalVector.add(player.getAttributeTechnicalMap().get(key));
-
-			playerAttributeTechnicalTableData.add(attributeTechnicalVector);
-		}
-
-
-
-
+		setAttributeTableData(
+						playerID,
+						playerAttributeGoalkeepingTableData,
+						playerAttributeMentalTableData,
+						playerAttributePhysicalTableData,
+						playerAttributeTechnicalTableData
+		);
 		setTagTable(playerID, playerTagTableData);
 	}
 
@@ -2031,49 +1984,13 @@ public class Controller
 	public void setPlayerCareerView(String playerID,
 																	Map<String, String> infoPlayerMap,
 																	Vector<Vector<String>> playerClubCareerTableData,
-																	Vector<Vector<String>> playerNationalCareerTableData)
+																	Map<Integer, Map<Integer, String>> playerClubCareerTableMap,
+																	Vector<Vector<String>> playerNationalCareerTableData,
+																	Map<Integer, Map<Integer, String>> playerNationalCareerTableMap)
 	{
-		fetchPlayer(playerID);
-		fetchClubMilitancy(playerID);
-		fetchNationality(playerID);
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-
-		String string;
-
 		setPlayerInfoMap(playerID, infoPlayerMap);
-
-		// tabella carriera club
-		for (String key : player.getClubCareer().keySet()) {
-			Vector<String> clubCareerVector = new Vector<>();
-
-			String[] keyPart = key.split("_");
-
-			String season = keyPart[0];
-			season += "/";
-			season += ((Integer) (Integer.parseInt(keyPart[0]) + 1)).toString();
-
-			clubCareerVector.add(season);
-
-			String type = keyPart[1];
-
-			clubCareerVector.add(type);
-
-			clubCareerVector.add(player.getClubCareer().get(key).getLongName());
-			clubCareerVector.add(player.getClubCareer().get(key).getCountry().getName());
-
-			playerClubCareerTableData.add(clubCareerVector);
-		}
-
-		// tabella carriera nazionale
-		for (String key : player.getNationalCareer().keySet()) {
-			Vector<String> nationalCareerVector = new Vector<>();
-
-			nationalCareerVector.add(key);
-			nationalCareerVector.add(player.getNationalCareer().get(key).getLongName());
-
-			playerNationalCareerTableData.add(nationalCareerVector);
-		}
+		setClubCareerTableDataMap(playerID, playerClubCareerTableData, playerClubCareerTableMap);
+		setNationalCareerTable(playerID, playerNationalCareerTableData, playerNationalCareerTableMap);
 	}
 
 
@@ -2084,35 +2001,20 @@ public class Controller
 																		 String startYear,
 																		 String endYear,
 																		 Map<String, String> infoPlayerMap,
-																		 Vector<Vector<String>> playerStatisticTableData)
+																		 Vector<Vector<String>> playerStatisticTableData,
+																		 Map<Integer, Map<Integer, String>> playerStatisticTableMap)
 	{
-		fetchPlayer(playerID);
-		fetchStatisticPlayer(playerID, teamType, teamID, competitionID, startYear, endYear);
-
-		Player player = ctrlPlayer.getPlayerMap().get(playerID);
-
 		setPlayerInfoMap(playerID, infoPlayerMap);
-
-
-		Set<Statistic> playerStatisticSet = player.getStatisticSet();
-
-		for (Statistic playerStatistic : playerStatisticSet) {
-			Vector<String> statisticVector = new Vector<>();
-
-			statisticVector.add(playerStatistic.getCompetitionYear());
-			statisticVector.add(playerStatistic.getCompetition().getName());
-			statisticVector.add(playerStatistic.getTeam().getLongName());
-			statisticVector.add(playerStatistic.getMatch());
-			statisticVector.add(playerStatistic.getGoalScored());
-			statisticVector.add(playerStatistic.getPenaltyScored());
-			statisticVector.add(playerStatistic.getAssist());
-			statisticVector.add(playerStatistic.getYellowCard());
-			statisticVector.add(playerStatistic.getRedCard());
-			statisticVector.add(playerStatistic.getGoalConceded());
-			statisticVector.add(playerStatistic.getPenaltySaved());
-
-			playerStatisticTableData.add(statisticVector);
-		}
+		setPlayerStatisticTable(
+						playerID,
+						teamType,
+						teamID,
+						competitionID,
+						startYear,
+						endYear,
+						playerStatisticTableData,
+						playerStatisticTableMap
+		);
 	}
 
 
@@ -2350,6 +2252,196 @@ public class Controller
 	}
 
 
+	private void mapStatisticTotal(List<String> listPlayerID,
+																 List<String> listPlayerRole,
+																 List<String> listPlayerName,
+																 List<String> listPlayerSurname,
+																 List<String> listStatisticMatch,
+																 List<String> listStatisticGoalScored,
+																 List<String> listStatisticPenaltyScored,
+																 List<String> listStatisticAssist,
+																 List<String> listStatisticYellowCard,
+																 List<String> listStatisticRedCard,
+																 List<String> listStatisticGoalConceded,
+																 List<String> listStatisticPenaltySaved)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
+
+			playerMap.get(playerID).getStatisticMap().putIfAbsent(
+							newStatistic(
+											null,
+											null,
+											null,
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							),
+							null
+			);
+		}
+	}
+
+
+	private void mapStatisticCompetitionEdition(List<String> listTeamID,
+																							List<String> listTeamLongName,
+																							List<String> listPlayerID,
+																							List<String> listPlayerRole,
+																							List<String> listPlayerName,
+																							List<String> listPlayerSurname,
+																							List<String> listStatisticMatch,
+																							List<String> listStatisticGoalScored,
+																							List<String> listStatisticPenaltyScored,
+																							List<String> listStatisticAssist,
+																							List<String> listStatisticYellowCard,
+																							List<String> listStatisticRedCard,
+																							List<String> listStatisticGoalConceded,
+																							List<String> listStatisticPenaltySaved)
+	{
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+		teamMap.clear();
+
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		playerMap.clear();
+
+
+		for (int i = 0; i < listPlayerID.size(); ++i) {
+			String teamID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							teamID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+
+			String playerID = listPlayerID.get(i);
+			playerMap.putIfAbsent(
+							playerID,
+							newPlayer(
+											listPlayerName.get(i),
+											listPlayerSurname.get(i),
+											null,
+											null,
+											null,
+											null,
+											listPlayerRole.get(i),
+											null
+							)
+			);
+
+			playerMap.get(playerID).getStatisticMap().putIfAbsent(
+							newStatistic(
+											teamMap.get(teamID),
+											null,
+											null,
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							),
+							teamID
+			);
+		}
+	}
+
+	private void mapStatisticPlayer(String playerID,
+																	List<String> listCompetitionStartYear,
+																	List<String> listCompetitionID,
+																	List<String> listCompetitionName,
+																	List<String> listTeamID,
+																	List<String> listTeamLongName,
+																	List<String> listStatisticMatch,
+																	List<String> listStatisticGoalScored,
+																	List<String> listStatisticPenaltyScored,
+																	List<String> listStatisticAssist,
+																	List<String> listStatisticYellowCard,
+																	List<String> listStatisticRedCard,
+																	List<String> listStatisticGoalConceded,
+																	List<String> listStatisticPenaltySaved)
+	{
+		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
+		competitionMap.clear();
+
+		Map<String, Team> teamMap = newTeam().getTeamMap();
+		teamMap.clear();
+
+		Map<Statistic, String> playerStatisticMap = newPlayer().getPlayerMap().get(playerID).getStatisticMap();
+		playerStatisticMap.clear();
+
+
+		for (int i = 0; i < listCompetitionStartYear.size(); ++i) {
+			String competition_ID = listCompetitionID.get(i);
+			competitionMap.putIfAbsent(
+							competition_ID,
+							newCompetition(
+											null,
+											null,
+											listCompetitionName.get(i),
+											null
+							)
+			);
+
+			String team_ID = listTeamID.get(i);
+			teamMap.putIfAbsent(
+							team_ID,
+							newTeam(
+											null,
+											null,
+											listTeamLongName.get(i),
+											null,
+											null
+							)
+			);
+
+			playerStatisticMap.putIfAbsent(
+							newStatistic(
+											teamMap.get(team_ID),
+											competitionMap.get(competition_ID),
+											listCompetitionStartYear.get(i),
+											listStatisticMatch.get(i),
+											listStatisticGoalScored.get(i),
+											listStatisticPenaltyScored.get(i),
+											listStatisticAssist.get(i),
+											listStatisticYellowCard.get(i),
+											listStatisticRedCard.get(i),
+											listStatisticGoalConceded.get(i),
+											listStatisticPenaltySaved.get(i)
+							),
+							team_ID
+			);
+		}
+	}
+
 
 	/**
 	 * TODO
@@ -2391,42 +2483,20 @@ public class Controller
 		);
 
 
-		Map<String, Player> playerMap = newPlayer().getPlayerMap();
-		playerMap.clear();
-
-
-		for (int i = 0; i < listPlayerID.size(); ++i) {
-			String playerID = listPlayerID.get(i);
-			playerMap.putIfAbsent(
-							playerID,
-							newPlayer(
-											listPlayerName.get(i),
-											listPlayerSurname.get(i),
-											null,
-											null,
-											null,
-											null,
-											listPlayerRole.get(i),
-											null
-							)
-			);
-
-			playerMap.get(playerID).getStatisticSet().add(
-							newStatistic(
-											null,
-											null,
-											null,
-											listStatisticMatch.get(i),
-											listStatisticGoalScored.get(i),
-											listStatisticPenaltyScored.get(i),
-											listStatisticAssist.get(i),
-											listStatisticYellowCard.get(i),
-											listStatisticRedCard.get(i),
-											listStatisticGoalConceded.get(i),
-											listStatisticPenaltySaved.get(i)
-							)
-			);
-		}
+		mapStatisticTotal(
+						listPlayerID,
+						listPlayerRole,
+						listPlayerName,
+						listPlayerSurname,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
 
 	}
 
@@ -2469,58 +2539,22 @@ public class Controller
 						listStatisticPenaltySaved
 		);
 
-
-		Map<String, Team> teamMap = newTeam().getTeamMap();
-		teamMap.clear();
-
-		Map<String, Player> playerMap = newPlayer().getPlayerMap();
-		playerMap.clear();
-
-
-		for (int i = 0; i < listPlayerID.size(); ++i) {
-			String teamID = listTeamID.get(i);
-			teamMap.putIfAbsent(
-							teamID,
-							newTeam(
-											null,
-											null,
-											listTeamLongName.get(i),
-											null,
-											null
-							)
-			);
-
-			String playerID = listPlayerID.get(i);
-			playerMap.putIfAbsent(
-							playerID,
-							newPlayer(
-											listPlayerName.get(i),
-											listPlayerSurname.get(i),
-											null,
-											null,
-											null,
-											null,
-											listPlayerRole.get(i),
-											null
-							)
-			);
-
-			playerMap.get(playerID).getStatisticSet().add(
-							newStatistic(
-											teamMap.get(teamID),
-											null,
-											null,
-											listStatisticMatch.get(i),
-											listStatisticGoalScored.get(i),
-											listStatisticPenaltyScored.get(i),
-											listStatisticAssist.get(i),
-											listStatisticYellowCard.get(i),
-											listStatisticRedCard.get(i),
-											listStatisticGoalConceded.get(i),
-											listStatisticPenaltySaved.get(i)
-							)
-			);
-		}
+		mapStatisticCompetitionEdition(
+						listTeamID,
+						listTeamLongName,
+						listPlayerID,
+						listPlayerRole,
+						listPlayerName,
+						listPlayerSurname,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
 	}
 
 
@@ -2569,57 +2603,163 @@ public class Controller
 		);
 
 
-		Map<String, Competition> competitionMap = newCompetition().getCompetitionMap();
-		competitionMap.clear();
-
-		Map<String, Team> teamMap = newTeam().getTeamMap();
-		teamMap.clear();
-
-		Set<Statistic> playerStatisticSet = newPlayer().getPlayerMap().get(playerID).getStatisticSet();
-		playerStatisticSet.clear();
-
-
-		for (int i = 0; i < listCompetitionStartYear.size(); ++i) {
-			String competition_ID = listCompetitionID.get(i);
-			competitionMap.putIfAbsent(
-							competition_ID,
-							newCompetition(
-											null,
-											null,
-											listCompetitionName.get(i),
-											null
-							)
-			);
-
-			String team_ID = listTeamID.get(i);
-			teamMap.putIfAbsent(
-							team_ID,
-							newTeam(
-											null,
-											null,
-											listTeamLongName.get(i),
-											null,
-											null
-							)
-			);
-
-			playerStatisticSet.add(
-							newStatistic(
-											teamMap.get(team_ID),
-											competitionMap.get(competition_ID),
-											listCompetitionStartYear.get(i),
-											listStatisticMatch.get(i),
-											listStatisticGoalScored.get(i),
-											listStatisticPenaltyScored.get(i),
-											listStatisticAssist.get(i),
-											listStatisticYellowCard.get(i),
-											listStatisticRedCard.get(i),
-											listStatisticGoalConceded.get(i),
-											listStatisticPenaltySaved.get(i)
-							)
-			);
-		}
+		mapStatisticPlayer(
+						playerID,
+						listCompetitionStartYear,
+						listCompetitionID,
+						listCompetitionName,
+						listTeamID,
+						listTeamLongName,
+						listStatisticMatch,
+						listStatisticGoalScored,
+						listStatisticPenaltyScored,
+						listStatisticAssist,
+						listStatisticYellowCard,
+						listStatisticRedCard,
+						listStatisticGoalConceded,
+						listStatisticPenaltySaved
+		);
 	}
+
+	private void setStatisticTableDataMap(Vector<Vector<String>> statisticTableData,
+																				Map<Integer, Map<Integer, String>> statisticTableDataMap)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		Map<Integer, String> playerSurnameMap = new HashMap<>();
+
+		Integer row = 0;
+
+		for (String key : playerMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Player player = newPlayer().getPlayerMap().get(key);
+
+			Statistic playerStatistic = player.getStatisticMap().keySet().iterator().next();
+
+			vector.add(player.getRole());
+			vector.add(player.getName());
+			vector.add(player.getSurname());
+			vector.add(playerStatistic.getMatch());
+			vector.add(playerStatistic.getGoalScored());
+			vector.add(playerStatistic.getPenaltyScored());
+			vector.add(playerStatistic.getAssist());
+			vector.add(playerStatistic.getYellowCard());
+			vector.add(playerStatistic.getRedCard());
+			vector.add(playerStatistic.getGoalConceded());
+			vector.add(playerStatistic.getPenaltySaved());
+
+			statisticTableData.add(vector);
+
+			playerSurnameMap.put(row, key);
+			++row;
+		}
+
+		statisticTableDataMap.put(2, playerSurnameMap);
+	}
+
+	private void setStatisticCompetitionEditionTableDataMap(Vector<Vector<String>> statisticTableData,
+																													Map<Integer, Map<Integer, String>> statisticTableMap)
+	{
+		Map<String, Player> playerMap = newPlayer().getPlayerMap();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
+		Map<Integer, String> playerSurnameMap = new HashMap<>();
+
+		Integer row = 0;
+
+		for (String key : playerMap.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			Player player = playerMap.get(key);
+			Map<Statistic, String> playerStatistiMap = player.getStatisticMap();
+
+			for (Statistic playerStatistic : playerStatistiMap.keySet()) {
+				vector.add(playerStatistic.getTeam().getLongName());
+				vector.add(player.getRole());
+				vector.add(player.getName());
+				vector.add(player.getSurname());
+				vector.add(playerStatistic.getMatch());
+				vector.add(playerStatistic.getGoalScored());
+				vector.add(playerStatistic.getPenaltyScored());
+				vector.add(playerStatistic.getAssist());
+				vector.add(playerStatistic.getYellowCard());
+				vector.add(playerStatistic.getRedCard());
+				vector.add(playerStatistic.getGoalConceded());
+				vector.add(playerStatistic.getPenaltySaved());
+
+				statisticTableData.add(vector);
+
+				teamLongNameMap.put(row, playerStatistiMap.get(playerStatistic));
+				playerSurnameMap.put(row, key);
+				++row;
+			}
+		}
+
+		statisticTableMap.put(0, teamLongNameMap);
+		statisticTableMap.put(3, playerSurnameMap);
+	}
+
+
+	private void setPlayerStatisticTableDataMap(String playerID,
+																							String teamType,
+																							Vector<Vector<String>> tableData,
+																							Map<Integer, Map<Integer, String>> tableMap)
+	{
+		Map<Statistic, String> playerStatisticMap = newPlayer().getPlayerMap().get(playerID).getStatisticMap();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
+
+		Integer row = 0;
+
+		if (teamType.equalsIgnoreCase("CLUB")) {
+			String season;
+			for (Statistic statistic : playerStatisticMap.keySet()) {
+				Vector<String> vector = new Vector<>();
+
+				season = statistic.getCompetitionYear();
+				season += "/";
+				season += (Integer.parseInt(statistic.getCompetitionYear()) + 1);
+				vector.add(season);
+				vector.add(statistic.getCompetition().getName());
+				vector.add(statistic.getTeam().getLongName());
+				vector.add(statistic.getMatch());
+				vector.add(statistic.getGoalScored());
+				vector.add(statistic.getPenaltyScored());
+				vector.add(statistic.getAssist());
+				vector.add(statistic.getYellowCard());
+				vector.add(statistic.getRedCard());
+				vector.add(statistic.getGoalConceded());
+				vector.add(statistic.getPenaltySaved());
+
+				tableData.add(vector);
+
+				teamLongNameMap.put(row, playerStatisticMap.get(statistic));
+				++row;
+			}
+		} else if (teamType.equalsIgnoreCase("NATIONAL")) {
+			for (Statistic statistic : playerStatisticMap.keySet()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(statistic.getCompetitionYear());
+				vector.add(statistic.getCompetition().getName());
+				vector.add(statistic.getTeam().getLongName());
+				vector.add(statistic.getMatch());
+				vector.add(statistic.getGoalScored());
+				vector.add(statistic.getPenaltyScored());
+				vector.add(statistic.getAssist());
+				vector.add(statistic.getYellowCard());
+				vector.add(statistic.getRedCard());
+				vector.add(statistic.getGoalConceded());
+				vector.add(statistic.getPenaltySaved());
+
+				tableData.add(vector);
+
+				teamLongNameMap.put(row, playerStatisticMap.get(statistic));
+				++row;
+			}
+		}
+
+		tableMap.put(2, teamLongNameMap);
+	}
+
 
 
 	public void setStatisticTable(String teamType,
@@ -2628,77 +2768,30 @@ public class Controller
 																Map<Integer, Map<Integer, String>> statisticTableDataMap)
 	{
 		fetchStatisticTotal(teamType, playerRole);
+		setStatisticTableDataMap(statisticTableData, statisticTableDataMap);
 
-		Map<Integer, String> playerSurnameMap = new HashMap<>();
-
-		Integer row = 0;
-
-		for (String key : newPlayer().getPlayerMap().keySet()) {
-			Vector<String> statisticVector = new Vector<>();
-
-			Player player = newPlayer().getPlayerMap().get(key);
-			Statistic playerStatistic = player.getStatisticSet().iterator().next();
-
-
-			statisticVector.add(player.getRole());
-			statisticVector.add(player.getName());
-			statisticVector.add(player.getSurname());
-			statisticVector.add(playerStatistic.getMatch());
-			statisticVector.add(playerStatistic.getGoalScored());
-			statisticVector.add(playerStatistic.getPenaltyScored());
-			statisticVector.add(playerStatistic.getAssist());
-			statisticVector.add(playerStatistic.getYellowCard());
-			statisticVector.add(playerStatistic.getRedCard());
-			statisticVector.add(playerStatistic.getGoalConceded());
-			statisticVector.add(playerStatistic.getPenaltySaved());
-
-			statisticTableData.add(statisticVector);
-			playerSurnameMap.put(row, key);
-			++row;
-		}
-
-		statisticTableDataMap.put(2, playerSurnameMap);
 	}
 
 
 	public void setStatisticCompetitionEditionTable(String competitionStartYear,
 																									String competitionID,
-																									Vector<Vector<String>> statisticTableData)
+																									Vector<Vector<String>> statisticTableData,
+																									Map<Integer, Map<Integer, String>> statisticTableMap)
 	{
 		fetchStatisticCompetitionEdition(competitionStartYear, competitionID);
-
-
-		for (String key : newPlayer().getPlayerMap().keySet()) {
-			Vector<String> statisticVector = new Vector<>();
-
-			Player player = newPlayer().getPlayerMap().get(key);
-			Statistic playerStatistic = player.getStatisticSet().iterator().next();
-
-			statisticVector.add(playerStatistic.getTeam().getLongName());
-			statisticVector.add(player.getRole());
-			statisticVector.add(player.getName());
-			statisticVector.add(player.getSurname());
-			statisticVector.add(playerStatistic.getMatch());
-			statisticVector.add(playerStatistic.getGoalScored());
-			statisticVector.add(playerStatistic.getPenaltyScored());
-			statisticVector.add(playerStatistic.getAssist());
-			statisticVector.add(playerStatistic.getYellowCard());
-			statisticVector.add(playerStatistic.getRedCard());
-			statisticVector.add(playerStatistic.getGoalConceded());
-			statisticVector.add(playerStatistic.getPenaltySaved());
-
-			statisticTableData.add(statisticVector);
-		}
+		setStatisticCompetitionEditionTableDataMap(statisticTableData, statisticTableMap);
 	}
 
 
-	public void setStatisticPlayerTable(String playerID,
+
+	public void setPlayerStatisticTable(String playerID,
 																			String teamType,
 																			String teamID,
 																			String competitionID,
 																			String startYear,
 																			String endYear,
-																			Vector<Vector<String>> statisticTableData)
+																			Vector<Vector<String>> playerStatisticTableData,
+																			Map<Integer, Map<Integer, String>> playerStatisticTableMap)
 	{
 		fetchStatisticPlayer(
 						playerID,
@@ -2709,26 +2802,13 @@ public class Controller
 						endYear
 		);
 
+		setPlayerStatisticTableDataMap(
+						playerID,
+						teamType,
+						playerStatisticTableData,
+						playerStatisticTableMap
+		);
 
-		Set<Statistic> playerStatisticSet = newPlayer().getPlayerMap().get(playerID).getStatisticSet();
-
-		for (Statistic playerStatistic : playerStatisticSet) {
-			Vector<String> statisticVector = new Vector<>();
-
-			statisticVector.add(playerStatistic.getCompetitionYear());
-			statisticVector.add(playerStatistic.getCompetition().getName());
-			statisticVector.add(playerStatistic.getTeam().getLongName());
-			statisticVector.add(playerStatistic.getMatch());
-			statisticVector.add(playerStatistic.getGoalScored());
-			statisticVector.add(playerStatistic.getPenaltyScored());
-			statisticVector.add(playerStatistic.getAssist());
-			statisticVector.add(playerStatistic.getYellowCard());
-			statisticVector.add(playerStatistic.getRedCard());
-			statisticVector.add(playerStatistic.getGoalConceded());
-			statisticVector.add(playerStatistic.getPenaltySaved());
-
-			statisticTableData.add(statisticVector);
-		}
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2890,28 +2970,14 @@ public class Controller
 
 	}
 
-
-	private void fetchClubMilitancy(String playerID)
+	private void mapClubMilitancy(String playerID,
+																List<String> listMilitancyYear,
+																List<String> listMilitancyType,
+																List<String> listTeamID,
+																List<String> listTeamLongName,
+																List<String> listCountryID,
+																List<String> listCountryName)
 	{
-		List<String> listMilitancyYear = new ArrayList<>();
-		List<String> listMilitancyType = new ArrayList<>();
-		List<String> listTeamID = new ArrayList<>();
-		List<String> listTeamLongName = new ArrayList<>();
-		List<String> listCountryID = new ArrayList<>();
-		List<String> listCountryName = new ArrayList<>();
-
-		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB(
-						playerID,
-						listMilitancyYear,
-						listMilitancyType,
-						listTeamID,
-						listTeamLongName,
-						listCountryID,
-						listCountryName
-		);
-
-
 		Map<String, Country> countryMap = newCountry().getCountryMap();
 		countryMap.clear();
 
@@ -2947,28 +3013,17 @@ public class Controller
 			);
 
 			playerClubCareer.putIfAbsent(
-							listMilitancyYear.get(i) + "_" + listMilitancyType.get(i),
+							teamID + "@" + listMilitancyYear.get(i) + "@" + listMilitancyType.get(i),
 							teamMap.get(teamID)
 			);
 		}
 	}
 
-
-	private void fetchNationalMilitancy(String playerID)
+	private void mapNationalMilitancy(String playerID,
+																		List<String> listMilitancyYear,
+																		List<String> listTeamID,
+																		List<String> listTeamLongName)
 	{
-		List<String> listMilitancyYear = new ArrayList<>();
-		List<String> listTeamID = new ArrayList<>();
-		List<String> listTeamLongName = new ArrayList<>();
-
-		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyDB(
-						playerID,
-						listMilitancyYear,
-						listTeamID,
-						listTeamLongName
-		);
-
-
 		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
@@ -2990,10 +3045,65 @@ public class Controller
 			);
 
 			playerNationalCareer.putIfAbsent(
-							listMilitancyYear.get(i),
+							teamID + "@" + listMilitancyYear.get(i),
 							teamMap.get(teamID)
 			);
 		}
+	}
+
+
+	private void fetchClubMilitancy(String playerID)
+	{
+		List<String> listMilitancyYear = new ArrayList<>();
+		List<String> listMilitancyType = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+		List<String> listCountryID = new ArrayList<>();
+		List<String> listCountryName = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB(
+						playerID,
+						listMilitancyYear,
+						listMilitancyType,
+						listTeamID,
+						listTeamLongName,
+						listCountryID,
+						listCountryName
+		);
+
+		mapClubMilitancy(
+						playerID,
+						listMilitancyYear,
+						listMilitancyType,
+						listTeamID,
+						listTeamLongName,
+						listCountryID,
+						listCountryName
+		);
+	}
+
+
+	private void fetchNationalMilitancy(String playerID)
+	{
+		List<String> listMilitancyYear = new ArrayList<>();
+		List<String> listTeamID = new ArrayList<>();
+		List<String> listTeamLongName = new ArrayList<>();
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyDB(
+						playerID,
+						listMilitancyYear,
+						listTeamID,
+						listTeamLongName
+		);
+
+		mapNationalMilitancy(
+						playerID,
+						listMilitancyYear,
+						listTeamID,
+						listTeamLongName
+		);
 	}
 
 	private void setTeamSquadTableDataMap(String teamID,
@@ -3023,21 +3133,69 @@ public class Controller
 		teamSquadTableMap.put(2, playerSurnameMap);
 	}
 
+
+	private void setClubCareerTableDataMap(String playerID,
+																				 Vector<Vector<String>> tableData,
+																				 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		Map<String, Team> playerClubCareer = newPlayer().getPlayerMap().get(playerID).getClubCareer();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
+
+		Integer row = 0;
+
+		for (String key : playerClubCareer.keySet()) {
+			Vector<String> vector = new Vector<>();
+
+			String[] keyPart = key.split("@");
+
+			String season = keyPart[1];
+			season += "/";
+			season += (Integer.parseInt(keyPart[1]) + 1);
+
+			vector.add(season);
+
+			String type = keyPart[2];
+
+			vector.add(type);
+			vector.add(playerClubCareer.get(key).getLongName());
+			vector.add(playerClubCareer.get(key).getCountry().getName());
+
+			tableData.add(vector);
+
+			teamLongNameMap.put(row, keyPart[0]);
+			++row;
+		}
+
+		tableMap.put(2, teamLongNameMap);
+	}
+
+
 	private void setNationalCareerTableDataMap(String playerID,
 																						 Vector<Vector<String>> tableData,
 																						 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		Map<String, Team> playerNationalCareer = newPlayer().getPlayerMap().get(playerID).getNationalCareer();
+		Map<Integer, String> teamLongNameMap = new HashMap<>();
+
+		Integer row = 0;
 
 		for (String key : playerNationalCareer.keySet()) {
 			Vector<String> vector = new Vector<>();
 
-			vector.add(key);
+			String[] keyPart = key.split("@");
+
+			vector.add(keyPart[1]);
 			vector.add(playerNationalCareer.get(key).getLongName());
 
 			tableData.add(vector);
+
+			teamLongNameMap.put(row, keyPart[0]);
+			++row;
 		}
+
+		tableMap.put(1, teamLongNameMap);
 	}
+
 
 	public void setTeamSquadTable(String teamID,
 																String startYear,
@@ -3055,6 +3213,14 @@ public class Controller
 	{
 		fetchNationalMilitancy(playerID);
 		setNationalCareerTableDataMap(playerID, tableData, tableMap);
+	}
+
+	public void setClubCareerTable(String playerID,
+																 Vector<Vector<String>> tableData,
+																 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		fetchClubMilitancy(playerID);
+		setClubCareerTableDataMap(playerID, tableData, tableMap);
 	}
 
 
@@ -3392,6 +3558,30 @@ public class Controller
 		}
 	}
 
+	private void mapPlayerPrize(String playerID,
+															List<String> listPrizeAssignYear,
+															List<String> listPrizeName,
+															List<String> listPrizeGiven)
+	{
+		Set<Prize> playerPrizeSet = newPlayer().getPlayerMap().get(playerID).getPrizeSet();
+		playerPrizeSet.clear();
+
+
+		for (int i = 0; i < listPrizeAssignYear.size(); ++i) {
+			playerPrizeSet.add(
+							newPrize(
+											null,
+											null,
+											listPrizeName.get(i),
+											listPrizeGiven.get(i),
+											null,
+											null,
+											listPrizeAssignYear.get(i)
+							)
+			);
+		}
+	}
+
 
 	private void fetchTeamPrize(String teamID)
 	{
@@ -3434,24 +3624,12 @@ public class Controller
 						listPrizeGiven
 		);
 
-
-		Set<Prize> playerPrizeSet = ctrlPlayer.getPlayerMap().get(playerID).getPrizeSet();
-		playerPrizeSet.clear();
-
-
-		for (int i = 0; i < listPrizeAssignYear.size(); ++i) {
-			playerPrizeSet.add(
-							newPrize(
-											null,
-											null,
-											listPrizeName.get(i),
-											listPrizeGiven.get(i),
-											null,
-											null,
-											listPrizeAssignYear.get(i)
-							)
-			);
-		}
+		mapPlayerPrize(
+						playerID,
+						listPrizeAssignYear,
+						listPrizeName,
+						listPrizeGiven
+		);
 	}
 
 
@@ -3564,6 +3742,19 @@ public class Controller
 	 * ATTRIBUTE
 	 *------------------------------------------------------------------------------------------------------*/
 
+	private void mapAttribute(String playerID,
+														Map<String, String> attributeGoalkeepingMap,
+														Map<String, String> attributeMentalMap,
+														Map<String, String> attributePhysicalMap,
+														Map<String, String> attributeTechnicalMap)
+	{
+		Player player = newPlayer().getPlayerMap().get(playerID);
+
+		player.setAttributeGoalkeepingMap(attributeGoalkeepingMap);
+		player.setAttributeMentalMap(attributeMentalMap);
+		player.setAttributePhysicalMap(attributePhysicalMap);
+		player.setAttributeTechnicalMap(attributeTechnicalMap);
+	}
 
 	private void fetchAttribute(String playerID)
 	{
@@ -3584,12 +3775,79 @@ public class Controller
 		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
 		attributeTechnicalDAO.fetchAttributeTechnicalDB(playerID, attributeTechnicalMap);
 
+		mapAttribute(
+						playerID,
+						attributeGoalkeepingMap,
+						attributeMentalMap,
+						attributePhysicalMap,
+						attributeTechnicalMap
+		);
+	}
+
+
+	private void setAttributeTableData(String playerID,
+																		 Vector<Vector<String>> playerAttributeGoalkeepingTableData,
+																		 Vector<Vector<String>> playerAttributeMentalTableData,
+																		 Vector<Vector<String>> playerAttributePhysicalTableData,
+																		 Vector<Vector<String>> playerAttributeTechnicalTableData)
+	{
 		Player player = newPlayer().getPlayerMap().get(playerID);
 
-		player.setAttributeGoalkeepingMap(attributeGoalkeepingMap);
-		player.setAttributeMentalMap(attributeMentalMap);
-		player.setAttributePhysicalMap(attributePhysicalMap);
-		player.setAttributeTechnicalMap(attributeTechnicalMap);
+		if (player.getRole().matches("GK")) {
+			for (String key : player.getAttributeGoalkeepingMap().keySet()) {
+				Vector<String> attributeGoalkeepingVector = new Vector<>();
+
+				attributeGoalkeepingVector.add(GuiConfiguration.getMessage(key));
+				attributeGoalkeepingVector.add(player.getAttributeGoalkeepingMap().get(key));
+
+				playerAttributeGoalkeepingTableData.add(attributeGoalkeepingVector);
+			}
+		}
+
+
+		for (String key : player.getAttributeMentalMap().keySet()) {
+			Vector<String> attributeMentalVector = new Vector<>();
+
+			attributeMentalVector.add(GuiConfiguration.getMessage(key));
+			attributeMentalVector.add(player.getAttributeMentalMap().get(key));
+
+			playerAttributeMentalTableData.add(attributeMentalVector);
+		}
+
+		for (String key : player.getAttributePhysicalMap().keySet()) {
+			Vector<String> attributePhysicalVector = new Vector<>();
+
+			attributePhysicalVector.add(GuiConfiguration.getMessage(key));
+			attributePhysicalVector.add(player.getAttributePhysicalMap().get(key));
+
+			playerAttributePhysicalTableData.add(attributePhysicalVector);
+		}
+
+		for (String key : player.getAttributeTechnicalMap().keySet()) {
+			Vector<String> attributeTechnicalVector = new Vector<>();
+
+			attributeTechnicalVector.add(GuiConfiguration.getMessage(key));
+			attributeTechnicalVector.add(player.getAttributeTechnicalMap().get(key));
+
+			playerAttributeTechnicalTableData.add(attributeTechnicalVector);
+		}
+	}
+
+
+	public void setAttributeTable(String playerID,
+																Vector<Vector<String>> playerAttributeGoalkeepingTableData,
+																Vector<Vector<String>> playerAttributeMentalTableData,
+																Vector<Vector<String>> playerAttributePhysicalTableData,
+																Vector<Vector<String>> playerAttributeTechnicalTableData)
+	{
+		fetchAttribute(playerID);
+		setAttributeTableData(
+						playerID,
+						playerAttributeGoalkeepingTableData,
+						playerAttributeMentalTableData,
+						playerAttributePhysicalTableData,
+						playerAttributeTechnicalTableData
+		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
