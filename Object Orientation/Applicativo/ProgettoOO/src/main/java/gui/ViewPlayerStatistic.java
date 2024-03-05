@@ -14,12 +14,14 @@ public class ViewPlayerStatistic
 				extends JPanel
 {
 
-	public ViewPlayerStatistic(String playerID, Boolean club, String title)
+	public ViewPlayerStatistic(String playerID, String teamType, String title)
 	{
 		final JLabel ctrlTeamName = new JLabel((String) null);
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
 		final JLabel ctrlInitialSeason = new JLabel((String) null);
 		final JLabel ctrlFinalSeason = new JLabel((String) null);
+
+		final Map<String, String> infoPlayerMap = new HashMap<>();
 
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
@@ -37,6 +39,7 @@ public class ViewPlayerStatistic
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
 
 		MigLayout migLayout;
+		TopViewPlayerPanel topViewPlayerPanel;
 		TopSearchPanel topFilterPanel;
 		JPanel centralPanel;
 		InfoPanel infoPanel;
@@ -49,15 +52,27 @@ public class ViewPlayerStatistic
 		JButton button;
 
 		String rowConstraint;
-		String teamType;
 
-		if (club) {
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
+		);
+
+		this.setLayout(migLayout);
+
+
+		topViewPlayerPanel = new TopViewPlayerPanel(playerID);
+		this.add(topViewPlayerPanel);
+		topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 			rowConstraint = GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT;
-			teamType = Team.TEAM_TYPE.CLUB.toString();
 		}
 		else {
 			rowConstraint = GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT;
-			teamType = Team.TEAM_TYPE.NATIONAL.toString();
 		}
 
 		migLayout = new MigLayout(
@@ -87,7 +102,7 @@ public class ViewPlayerStatistic
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		if (club) {
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 			titleLabel = new TitleLabel(GuiConfiguration.getMessage("team").toUpperCase());
 			centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 

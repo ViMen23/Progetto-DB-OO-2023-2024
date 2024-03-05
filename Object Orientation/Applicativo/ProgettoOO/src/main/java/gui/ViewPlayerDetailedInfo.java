@@ -31,9 +31,6 @@ public class ViewPlayerDetailedInfo
 						tagTableData
 		);
 
-		System.out.println(goalkeepingAttributeTableData);
-		System.out.println(mentalAttributeTableData);
-
 		final MyTable goalkeepingTable;
 		final MyTable mentalTable;
 		final MyTable physicalTable;
