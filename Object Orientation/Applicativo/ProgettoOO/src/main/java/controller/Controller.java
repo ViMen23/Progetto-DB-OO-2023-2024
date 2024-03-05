@@ -4,7 +4,6 @@ import dao.*;
 import gui.GuiConfiguration;
 import gui.Regex;
 import model.*;
-import org.apache.commons.lang3.StringUtils;
 import postgresImplDAO.*;
 
 import java.util.*;
@@ -289,7 +288,7 @@ public class Controller
 
 			vector.add(country.getName());
 			vector.add(country.getCode());
-			vector.add(StringUtils.capitalize(GuiConfiguration.getMessage(country.getType())));
+			vector.add(GuiConfiguration.getMessage(country.getType()));
 
 			if (country.getType().equalsIgnoreCase(Country.COUNTRY_TYPE.WORLD.toString())) {
 				vector.add("");
@@ -1017,11 +1016,6 @@ public class Controller
 	private void mapTeam(String teamID,
 											 Map<String, String> mapTeamInfo)
 	{
-		if (!(teamID.equalsIgnoreCase(mapTeamInfo.get("teamID")))) {
-			System.out.println("ERRORE");
-			return;
-		}
-
 		Map<String, Team> teamMap = newTeam().getTeamMap();
 		teamMap.clear();
 
@@ -1159,7 +1153,6 @@ public class Controller
 	{
 		Map<String, String> mapTeamInfo = new LinkedHashMap<>();
 
-
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		teamDAO.fetchTeamDB(teamID, mapTeamInfo);
 
@@ -1207,7 +1200,6 @@ public class Controller
 			comboBoxData.add(teamLongName);
 			comboBoxMap.put(teamLongName, key);
 		}
-
 	}
 
 	private void setTeamComboBoxDataMap(String teamID,
@@ -1537,12 +1529,6 @@ public class Controller
 	private void mapPlayer(String playerID,
 												 Map<String, String> mapPlayerInfo)
 	{
-		if (!(playerID.equalsIgnoreCase(mapPlayerInfo.get("playerID")))) {
-			System.out.println("ERRORE");
-			return;
-		}
-
-
 		Map<String, Player> playerMap = newPlayer().getPlayerMap();
 		playerMap.clear();
 
@@ -1687,7 +1673,6 @@ public class Controller
 						listCountryName
 		);
 
-
 		mapPlayer(
 						listPlayerID,
 						listPlayerName,
@@ -1763,8 +1748,8 @@ public class Controller
 	{
 		Player player = newPlayer().getPlayerMap().get(playerID);
 
-		infoPlayerMap.put(GuiConfiguration.getMessage("name"), player.getName());
-		infoPlayerMap.put(GuiConfiguration.getMessage("surname"), player.getSurname());
+		infoPlayerMap.put(GuiConfiguration.getMessage("name").toUpperCase(), player.getName());
+		infoPlayerMap.put(GuiConfiguration.getMessage("surname").toUpperCase(), player.getSurname());
 		infoPlayerMap.put(GuiConfiguration.getMessage("dob"), player.getDob());
 		infoPlayerMap.put(GuiConfiguration.getMessage("bornCountry"), player.getCountry().getName());
 		infoPlayerMap.put(GuiConfiguration.getMessage("foot"), GuiConfiguration.getMessage(player.getFoot()));
@@ -1844,49 +1829,6 @@ public class Controller
 		playerTableMap.put(0, playerSurnameMap);
 	}
 
-	/**
-	 * TODO
-	 * @param playerInfoVector
-	 * @param playerInfoMap
-	 * @param playerSubName
-	 * @param playerSubSurname
-	 * @param playerReferringYear
-	 * @param playerMinAge
-	 * @param playerMaxAge
-	 * @param playerContinentID
-	 * @param playerNationID
-	 * @param playerRole
-	 * @param playerPositionID
-	 * @param playerFoot
-	 */
-	public void setPlayerComboBox(String playerSubName,
-																String playerSubSurname,
-																String playerReferringYear,
-																String playerMinAge,
-																String playerMaxAge,
-																String playerContinentID,
-																String playerNationID,
-																String playerRole,
-																String playerPositionID,
-																String playerFoot,
-																Vector<String> playerInfoVector,
-																Map<String, String> playerInfoMap)
-	{
-		fetchPlayer(
-						playerSubName,
-						playerSubSurname,
-						playerReferringYear,
-						playerMinAge,
-						playerMaxAge,
-						playerContinentID,
-						playerNationID,
-						playerRole,
-						playerPositionID,
-						playerFoot
-		);
-
-		setPlayerComboBoxDataMap(playerInfoVector, playerInfoMap);
-	}
 
 	public void setPlayerComboBox(String startYear,
 																String teamID,
@@ -2166,7 +2108,6 @@ public class Controller
 		Map<String, Position> positionMap = newPosition().getPositionMap();
 
 		for (String key : positionMap.keySet()) {
-
 			String positionName = GuiConfiguration.getMessage(positionMap.get(key).getName());
 
 			comboBoxData.add(positionName);
@@ -2275,7 +2216,6 @@ public class Controller
 	{
 		Map<String, Player> playerMap = newPlayer().getPlayerMap();
 		playerMap.clear();
-
 
 		for (int i = 0; i < listPlayerID.size(); ++i) {
 			String playerID = listPlayerID.get(i);
@@ -2777,7 +2717,6 @@ public class Controller
 	{
 		fetchStatisticTotal(teamType, playerRole);
 		setStatisticTableDataMap(statisticTableData, statisticTableDataMap);
-
 	}
 
 
@@ -2816,7 +2755,6 @@ public class Controller
 						playerStatisticTableData,
 						playerStatisticTableMap
 		);
-
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
@@ -2902,7 +2840,7 @@ public class Controller
 			Vector<String> partecipationVector = new Vector<>();
 
 			partecipationVector.add(competition.getName());
-			partecipationVector.add(competition.getType());
+			partecipationVector.add(GuiConfiguration.getMessage(competition.getType()));
 			partecipationVector.add(competition.getConfederation().getShortName());
 
 			teamPartecipationTableData.add(partecipationVector);
@@ -3162,9 +3100,7 @@ public class Controller
 
 			vector.add(season);
 
-			String type = keyPart[2];
-
-			vector.add(type);
+			vector.add(GuiConfiguration.getMessage(keyPart[2]));
 			vector.add(playerClubCareer.get(key).getLongName());
 			vector.add(playerClubCareer.get(key).getCountry().getName());
 
@@ -3454,7 +3390,7 @@ public class Controller
 		Map<Integer, String> teamLongNameMap = new HashMap<>();
 
 		Integer row = 0;
-		// TODO ID_TEAM
+
 		if (teamType.equalsIgnoreCase("CLUB")) {
 			String season;
 			for (Trophy trophy : playerTrophyMap.keySet()) {
@@ -3849,6 +3785,7 @@ public class Controller
 																Vector<Vector<String>> playerAttributeTechnicalTableData)
 	{
 		fetchAttribute(playerID);
+
 		setAttributeTableData(
 						playerID,
 						playerAttributeGoalkeepingTableData,

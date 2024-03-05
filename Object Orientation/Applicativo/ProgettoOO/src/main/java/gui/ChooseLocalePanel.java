@@ -9,7 +9,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashSet;
 import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class ChooseLocalePanel
 				extends JPanel
@@ -61,6 +64,21 @@ public class ChooseLocalePanel
 		 *------------------------------------------------------------------------------------------------------*/
 
 
+		Set<Locale> localeSet = new HashSet<>();
+		for (Locale locale : Locale.getAvailableLocales()) {
+			try {
+				ResourceBundle resourceBundle = ResourceBundle.getBundle("guiBundle", locale);
+				localeSet.add(resourceBundle.getLocale());
+			} catch (Exception ignore) {
+
+			}
+		}
+
+		for (Locale locale : localeSet) {
+			System.out.println(GuiConfiguration.getMessage(locale.toString()));
+		}
+
+
 
 		localeComboBox = new JComboBox<>();
 
@@ -87,6 +105,7 @@ public class ChooseLocalePanel
 				switch (choice) {
 					case "Italiano":
 						setChoosedLocale(Locale.of("it", "IT"));
+
 						break;
 					case "Inglese":
 						setChoosedLocale(Locale.of("en", "US"));
@@ -97,18 +116,7 @@ public class ChooseLocalePanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON CONFERMA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "";
-		string += GuiConfiguration.getMessage("confirm");
-		string = string.toUpperCase();
-
-		okButton = new JButton(string);
+		okButton = new JButton(GuiConfiguration.getMessage("confirm"));
 
 		add(okButton);
 		/*------------------------------------------------------------------------------------------------------*/

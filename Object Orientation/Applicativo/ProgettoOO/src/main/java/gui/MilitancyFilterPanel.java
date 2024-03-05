@@ -213,7 +213,7 @@ public class MilitancyFilterPanel
 				// messaggio informazioni ricerca effettuata
 				string = "";
 				if (ctrlTeamName.getText() != null) {
-					string += StringUtils.capitalize(GuiConfiguration.getMessage("team"));
+					string += StringUtils.capitalize(GuiConfiguration.getMessage("team").toUpperCase());
 					string += ": ";
 					string += ctrlTeamName.getText();
 				}
@@ -270,7 +270,6 @@ public class MilitancyFilterPanel
 					);
 
 					if (continentNameVector.isEmpty()) {
-						continentNameVector.clear();
 						continentNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
@@ -299,7 +298,6 @@ public class MilitancyFilterPanel
 					);
 
 					if (nationNameVector.isEmpty()) {
-						nationNameVector.clear();
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
@@ -332,7 +330,6 @@ public class MilitancyFilterPanel
 					);
 
 					if (teamNameVector.isEmpty()) {
-						teamNameVector.clear();
 						teamNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
@@ -396,8 +393,17 @@ public class MilitancyFilterPanel
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						String test = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-						System.out.println("VAIVAI --> " + test);
+						String playerID;
+
+						playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+
+						MilitancyFilterPanel.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(MilitancyFilterPanel.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

@@ -311,19 +311,18 @@ public class SearchTeamPanel
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						String ID;
+						String teamID;
 						String teamType;
 
-						ID = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+						teamID = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
 						if (teamTableData.get(tableIndex[1]).get(2).contains("C")) {
 							teamType = Team.TEAM_TYPE.CLUB.toString();
-						}
-						else {
+						} else {
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
 
-						JPanel panel = new ViewTeamSeasonPanel(ID, teamType);
+						JPanel panel = new ViewTeamSeasonPanel(teamID, teamType);
 
 						SearchTeamPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);

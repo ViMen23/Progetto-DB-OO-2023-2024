@@ -3,6 +3,7 @@ package gui;
 import controller.Controller;
 import model.Country;
 import model.Player;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -531,8 +532,17 @@ public class SearchPlayerPanel
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						String test = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-						System.out.println("VAIVAI --> " + test);
+						String playerID;
+
+						playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+
+						SearchPlayerPanel.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchPlayerPanel.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

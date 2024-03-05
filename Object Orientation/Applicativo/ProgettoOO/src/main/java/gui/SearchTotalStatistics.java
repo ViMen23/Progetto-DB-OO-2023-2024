@@ -169,8 +169,17 @@ public class SearchTotalStatistics
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
-						String test = totalStatisticsTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-						System.out.println("VAIVAI --> " + test);
+						String playerID;
+
+						playerID = totalStatisticsTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+
+						SearchTotalStatistics.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTotalStatistics.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

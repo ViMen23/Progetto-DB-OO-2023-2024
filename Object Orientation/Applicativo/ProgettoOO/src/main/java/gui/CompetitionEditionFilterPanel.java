@@ -224,33 +224,6 @@ public class CompetitionEditionFilterPanel
 
 				competitionEditionTablePanel.getTitleLabel().setText(string);
 
-				// messaggio informazioni ricerca effettuata
-//				string = "";
-//				if (ctrlTeamType.getText() != null) {
-//					string += GuiConfiguration.getMessage("teamType");
-//					string += ": ";
-//					string += GuiConfiguration.getMessage(ctrlTeamType.getText());
-//				}
-//
-//				if (ctrlPlayerRole.getText() != null) {
-//					if (!string.isEmpty()) {
-//						string += "\n";
-//					}
-//					string += GuiConfiguration.getMessage("role");
-//					string += ": ";
-//
-//					String[] keyPart = ctrlPlayerRole.getText().split("_");
-//
-//					string += GuiConfiguration.getMessage(keyPart[0]);
-//
-//					for (int i = 1; i < keyPart.length; ++i) {
-//						string += ", ";
-//						string += GuiConfiguration.getMessage(keyPart[i]);
-//					}
-//				}
-
-				competitionEditionTablePanel.getTextArea().setText(string);
-
 				topSearchPanel.getTitleButton().doClick();
 				CompetitionEditionFilterPanel.this.revalidate();
 			}
@@ -404,5 +377,44 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						if (0 == tableIndex[1]) {
+							String teamID;
+
+							teamID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+							JPanel panel = new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText());
+
+							CompetitionEditionFilterPanel.this.setVisible(false);
+							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
+
+							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+							panel.setVisible(true);
+						} else if (3 == tableIndex[1]) {
+							String playerID;
+
+							playerID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
+							JPanel panel = new ViewPlayerGeneralInfo(playerID);
+
+							CompetitionEditionFilterPanel.this.setVisible(false);
+							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
+
+							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+							panel.setVisible(true);
+						}
+
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
+					}
+				}
+			}
+		});
 	}
 }

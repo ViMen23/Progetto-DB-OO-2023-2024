@@ -29545,6 +29545,8 @@ BEGIN
                 fp_team.country_id = fp_country.id
         WHERE
             fp_militancy.player_id = id_player::integer
+            AND
+            fp_militancy.team_type = 'CLUB'
         ORDER BY
             fp_militancy.start_year DESC,
             fp_militancy.type DESC;
@@ -29593,6 +29595,8 @@ BEGIN
                 fp_militancy.team_id = fp_team.id
         WHERE
             fp_militancy.player_id = id_player::integer
+            AND
+            fp_militancy.team_type = 'NATIONAL'
         ORDER BY
             fp_militancy.start_year DESC;
         
@@ -29773,6 +29777,5 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
-
 
 

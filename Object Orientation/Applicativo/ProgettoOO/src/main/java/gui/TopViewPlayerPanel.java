@@ -138,12 +138,7 @@ public class TopViewPlayerPanel
 				container.remove(component);
 
 				try {
-
-					Component newComponent = new ViewPlayerStatistic(
-									playerID,
-									Team.TEAM_TYPE.CLUB.toString(),
-									GuiConfiguration.getMessage("filterClubStatistics")
-					);
+					Component newComponent = new ViewPlayerClubStatistic(playerID);
 
 					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
@@ -164,12 +159,7 @@ public class TopViewPlayerPanel
 				container.remove(component);
 
 				try {
-
-					Component newComponent = new ViewPlayerStatistic(
-									playerID,
-									Team.TEAM_TYPE.NATIONAL.toString(),
-									GuiConfiguration.getMessage("filterNationalStatistics")
-					);
+					Component newComponent = new ViewPlayerNationalStatistic(playerID);
 
 					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
@@ -204,6 +194,6 @@ public class TopViewPlayerPanel
 
 	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
 	{
-		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
+		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "playerInformation");
 	}
 }

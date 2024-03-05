@@ -3,26 +3,30 @@ package gui;
 import controller.Controller;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class ViewPlayerStatistic
+public class ViewPlayerClubStatistic
 				extends JPanel
 {
 
-	public ViewPlayerStatistic(String playerID, String teamType, String title)
+	public ViewPlayerClubStatistic(String playerID)
 	{
 		final JLabel ctrlTeamName = new JLabel((String) null);
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
 		final JLabel ctrlInitialSeason = new JLabel((String) null);
 		final JLabel ctrlFinalSeason = new JLabel((String) null);
 
-		final Map<String, String> infoPlayerMap = new HashMap<>();
+		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
@@ -39,9 +43,12 @@ public class ViewPlayerStatistic
 		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
 
+		final Integer[] tableIndex = {-1, -1};
+		final JLabel ctrlMouseTable = new JLabel((String) null);
+
 		Controller.getInstance().setPlayerStatisticView(
 						playerID,
-						teamType,
+						Team.TEAM_TYPE.CLUB.toString(),
 						null,
 						null,
 						null,
@@ -93,23 +100,17 @@ public class ViewPlayerStatistic
 		statisticFilterPanel.setOpaque(false);
 		this.add(statisticFilterPanel);
 
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			rowConstraint = GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT;
-		}
-		else {
-			rowConstraint = GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT;
-		}
 
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
-						rowConstraint
+						GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel = new JPanel(migLayout);
 
 		topFilterPanel = new TopSearchPanel(
-						title,
+						GuiConfiguration.getMessage("filterClubStatistics"),
 						statisticFilterPanel,
 						centralPanel
 		);
@@ -118,19 +119,19 @@ public class ViewPlayerStatistic
 		statisticFilterPanel.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			titleLabel = new TitleLabel(GuiConfiguration.getMessage("team").toUpperCase());
-			centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-			titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
-			centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("team").toUpperCase());
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-			teamNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("team"), true, ctrlTeamName);
-			centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-			infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamInfo"));
-			centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
-		}
+		teamNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("team"), true, ctrlTeamName);
+		centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
 		/*------------------------------------------------------------------------------------------------------*/
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("competition").toUpperCase());
@@ -170,7 +171,7 @@ public class ViewPlayerStatistic
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		playerStatisticTablePanel = new TablePanel(true, null);
+		playerStatisticTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 
 		statisticTable = playerStatisticTablePanel.getMyTable();
 		statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
@@ -195,7 +196,7 @@ public class ViewPlayerStatistic
 
 				Controller.getInstance().setPlayerStatisticView(
 								playerID,
-								teamType,
+								Team.TEAM_TYPE.CLUB.toString(),
 								teamNameMap.get(ctrlTeamName.getText()),
 								competitionNameMap.get(ctrlCompetitionName.getText()),
 								initialSeasonMap.get(ctrlInitialSeason.getText()),
@@ -207,7 +208,7 @@ public class ViewPlayerStatistic
 
 				topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 
-				playerStatisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.TEAM_TABLE_COLUMN_NAME));
+				playerStatisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
 				playerStatisticTable.setPreferredScrollableViewportSize(playerStatisticTable.getPreferredSize());
 
 				string = GuiConfiguration.getMessage("doneSearch");
@@ -253,13 +254,132 @@ public class ViewPlayerStatistic
 				playerStatisticTablePanel.getTextArea().setText(string);
 
 				topFilterPanel.getTitleButton().doClick();
-				ViewPlayerStatistic.this.revalidate();
+				ViewPlayerClubStatistic.this.revalidate();
 			}
 		});
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlTeamName.getText(), "@fill")) {
+					teamNameVector.clear();
+					teamNameMap.clear();
 
+					Controller.getInstance().setTeamComboBox(
+									playerID,
+									teamNameVector,
+									teamNameMap
+					);
+
+					if (teamNameVector.isEmpty()) {
+						teamNameVector.add(GuiConfiguration.getMessage("noData"));
+					}
+
+					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
+				}
+			}
+		});
+
+		ctrlCompetitionName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlCompetitionName.getText(), "@fill")) {
+					competitionNameVector.clear();
+					competitionNameMap.clear();
+
+					Controller.getInstance().setCompetitionComboBox(
+									playerID,
+									Team.TEAM_TYPE.CLUB.toString(),
+									competitionNameVector,
+									competitionNameMap
+					);
+
+					if (competitionNameVector.isEmpty()) {
+						competitionNameVector.add(GuiConfiguration.getMessage("noData"));
+					}
+
+					competitionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(competitionNameVector));
+				}
+			}
+		});
+
+		ctrlInitialSeason.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlInitialSeason.getText(), "@fill")) {
+					initialSeasonVector.clear();
+					initialSeasonMap.clear();
+
+					Controller.getInstance().setPlayerComboBox(
+									playerID,
+									initialSeasonVector,
+									initialSeasonMap
+					);
+
+					if (initialSeasonVector.isEmpty()) {
+						initialSeasonVector.add(GuiConfiguration.getMessage("noData"));
+					}
+
+					initialSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(initialSeasonVector));
+				} else {
+					finalSeasonPanel.getMyComboBox().setSelectedIndex(-1);
+					finalSeasonPanel.getMyComboBox().setEnabled(null != initialSeasonMap.get(ctrlInitialSeason.getText()));
+					ctrlFinalSeason.setText(null);
+				}
+			}
+		});
+
+		ctrlFinalSeason.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlFinalSeason.getText(), "@fill")) {
+					finalSeasonVector.clear();
+					finalSeasonMap.clear();
+
+					for (String season : initialSeasonVector) {
+						finalSeasonVector.add(season);
+						finalSeasonMap.put(season, initialSeasonMap.get(season));
+						if (season.equalsIgnoreCase(ctrlInitialSeason.getText())) {
+							break;
+						}
+					}
+
+					finalSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(finalSeasonVector));
+				}
+			}
+		});
+
+		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String teamID;
+
+						teamID = playerStatisticTableMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString());
+
+						ViewPlayerClubStatistic.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerClubStatistic.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseTable.setText("@null");
+					}
+
+				}
+			}
+		});
 	}
 }

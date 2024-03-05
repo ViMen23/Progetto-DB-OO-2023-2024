@@ -1,11 +1,7 @@
 package gui;
 
 import net.miginfocom.swing.MigLayout;
-
-import org.apache.commons.lang3.StringUtils;
-
 import javax.swing.*;
-
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,133 +9,79 @@ import java.awt.event.ActionListener;
 public class TopPanel
 				extends JPanel
 {
-	private final ImageIcon logoIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
-	private final ImageIcon localeIcon = GuiConfiguration.createImageIcon("images/world2.png");
-	private final ImageIcon loginIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
-
-	private final JLabel logoLabel;
-	private final JButton localeButton;
-	private final JButton loginButton;
-
 	public TopPanel()
 	{
-		String string;
+		final ImageIcon logoIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
+		final ImageIcon localeIcon = GuiConfiguration.createImageIcon("images/world2.png");
+		final ImageIcon loginIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
+
+		final JLabel logoLabel;
+		final JButton localeButton;
+		final JButton loginButton;
+
 		MigLayout migLayout;
 
-		migLayout = new MigLayout
-						(
-										"debug",
-										"5%[]50%[]5%[]5%",
-										"[]"
-						);
+		migLayout = new MigLayout(
+						"debug",
+						"5%[]50%[]5%[]5%",//TODO
+						"[]"
+		);
 
 		setLayout(migLayout);
 		setBackground(Color.white);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL LOGO
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
 		logoLabel = new JLabel(logoIcon);
-
 		add(logoLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON LOCALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
 		localeButton = new JButton(localeIcon);
 		localeButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
 		add(localeButton);
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
+		/*------------------------------------------------------------------------------------------------------*/
 
 		localeButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String string;
-				string = "";
-				string += GuiConfiguration.getMessage("choose");
-				string += " ";
-				string += GuiConfiguration.getMessage("locale");
-				string = string.toUpperCase();
-
-				JOptionPane.showOptionDialog
-								(
-												null,
-												new ChooseLocalePanel(),
-												string,
-												JOptionPane.DEFAULT_OPTION,
-												JOptionPane.PLAIN_MESSAGE,
-												null,
-												new Object[]{},
-												null
-								);
+				JOptionPane.showOptionDialog(
+								null,
+								new ChooseLocalePanel(),
+								GuiConfiguration.getMessage("chooseLanguage"),
+								JOptionPane.DEFAULT_OPTION,
+								JOptionPane.PLAIN_MESSAGE,
+								null,
+								new Object[]{},
+								null
+				);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON LOGIN
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = StringUtils.capitalize(GuiConfiguration.getMessage("login"));
-
-		loginButton = new JButton(string, loginIcon);
+		loginButton = new JButton(GuiConfiguration.getMessage("login"), loginIcon);
 		loginButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		add(loginButton);
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
+		/*------------------------------------------------------------------------------------------------------*/
 
 
 		loginButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String string;
-				string = "";
-				string = GuiConfiguration.getMessage("adminLogin");
-				string = string.toUpperCase();
-
-				JOptionPane.showOptionDialog
-								(
-												null,
-												new AdminLoginPanel(),
-												string,
-												JOptionPane.DEFAULT_OPTION,
-												JOptionPane.PLAIN_MESSAGE,
-												null,
-												new Object[]{},
-												null
-								);
+				JOptionPane.showOptionDialog(
+								null,
+								new AdminLoginPanel(),
+								GuiConfiguration.getMessage("adminLogin"),
+								JOptionPane.DEFAULT_OPTION,
+								JOptionPane.PLAIN_MESSAGE,
+								null,
+								new Object[]{},
+								null
+				);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

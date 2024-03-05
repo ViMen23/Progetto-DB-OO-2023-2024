@@ -18,7 +18,7 @@ public class ViewTeamSeasonPanel
 	{
 		final JLabel ctrlSeason = new JLabel((String) null);
 		final Integer[] tableIndex = {-1, -1};
-		final JLabel ctrlMouseTable = new JLabel((String) null);
+		final JLabel ctrlMouseSquadTable = new JLabel((String) null);
 
 
 		final Map<String, String> infoTeamMap = new LinkedHashMap<>();
@@ -43,33 +43,8 @@ public class ViewTeamSeasonPanel
 		TablePanel squadPanel;
 		TablePanel participationPanel;
 
-		String firstSeason;
-		String string;
+		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
 
-
-		Controller.getInstance().setTeamYearComboBox(
-						teamID,
-						teamType,
-						seasonVector,
-						seasonMap
-		);
-
-
-		try {
-			firstSeason = seasonVector.getFirst();
-		}
-		catch(NoSuchElementException e) {
-			firstSeason = null;
-		}
-
-		Controller.getInstance().setTeamSeasonView(
-						teamID,
-						seasonMap.get(firstSeason),
-						infoTeamMap,
-						squadTableData,
-						squadTableMap,
-						participationTableData
-		);
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
@@ -91,7 +66,6 @@ public class ViewTeamSeasonPanel
 						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT,
 						ctrlSeason
 		);
-		showSeasonPanel.getMyComboBox().addItem(firstSeason);
 
 		showButton = new JButton(GuiConfiguration.getMessage("show"));
 		showSeasonPanel.add(showButton);
@@ -110,12 +84,9 @@ public class ViewTeamSeasonPanel
 
 		this.add(tablePanel);
 
-		squadPanel = new TablePanel(false, tableIndex, ctrlMouseTable);
+		squadPanel = new TablePanel(false, tableIndex, ctrlMouseSquadTable);
 
-		string = GuiConfiguration.getMessage("squad");
-		string += " ";
-		string += firstSeason;
-		squadPanel.getTitleLabel().setText(string);
+		squadPanel.getTitleLabel().setText(GuiConfiguration.getMessage("squad"));
 
 		squadTable = squadPanel.getMyTable();
 		squadTable.setModel(new TableModel(squadTableData, GuiConfiguration.TEAM_SQUAD_TABLE_COLUMN_NAME));
@@ -126,10 +97,7 @@ public class ViewTeamSeasonPanel
 
 		participationPanel = new TablePanel(false);
 
-		string = GuiConfiguration.getMessage("participations");
-		string += " ";
-		string += firstSeason;
-		participationPanel.getTitleLabel().setText(string);
+		participationPanel.getTitleLabel().setText(GuiConfiguration.getMessage("participations"));
 
 		participationTable = participationPanel.getMyTable();
 		participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.TEAM_PARTICIPATING_TABLE_COLUMN_NAME));
@@ -158,8 +126,7 @@ public class ViewTeamSeasonPanel
 						seasonVector.add(GuiConfiguration.getMessage("noData"));
 					}
 					showSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
-				}
-				else {
+				} else {
 					showButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
 				}
 			}
@@ -207,11 +174,28 @@ public class ViewTeamSeasonPanel
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseSquadTable.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt)
-			{
-				//TODO
+			public void propertyChange(PropertyChangeEvent evt) {
+				if (ctrlMouseSquadTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String playerID;
+
+						playerID = squadTableMap.get(tableIndex[1]).get(tableIndex[0]);
+
+						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+
+						ViewTeamSeasonPanel.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewTeamSeasonPanel.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlMouseSquadTable.setText("@null");
+					}
+
+				}
 			}
 		});
 	}

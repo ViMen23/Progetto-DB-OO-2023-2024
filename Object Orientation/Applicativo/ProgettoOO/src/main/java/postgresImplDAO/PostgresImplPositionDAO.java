@@ -31,8 +31,8 @@ public class PostgresImplPositionDAO
 
 			while (rs.next()) {
 				listPositionID.add(rs.getString("position_id"));
-				listPositionRole.add(rs.getString("position_code"));
-				listPositionCode.add(rs.getString("position_role"));
+				listPositionRole.add(rs.getString("position_role"));
+				listPositionCode.add(rs.getString("position_code"));
 				listPositionName.add(rs.getString("position_name"));
 			}
 
@@ -58,8 +58,8 @@ public class PostgresImplPositionDAO
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				listPositionRole.add(rs.getString("position_code"));
-				listPositionCode.add(rs.getString("position_role"));
+				listPositionRole.add(rs.getString("position_role"));
+				listPositionCode.add(rs.getString("position_code"));
 				listPositionName.add(rs.getString("position_name"));
 			}
 

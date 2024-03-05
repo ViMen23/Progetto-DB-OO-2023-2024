@@ -223,7 +223,17 @@ public class StepFilterPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				JPanel panel;
+				if (null == ctrlPlayerInfo.getText()) {
+					panel = new ViewTeamSeasonPanel(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText());
+				} else {
+					panel = new ViewPlayerGeneralInfo(playerInfoMap.get(ctrlPlayerInfo.getText()));
+				}
+				StepFilterPanel.this.setVisible(false);
+				MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this);
+
+				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				panel.setVisible(true);
 			}
 		});
 

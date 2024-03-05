@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -111,7 +112,25 @@ public class ViewPlayerCase
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				//TODO
+				if (ctrlClubMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String teamID;
+
+						teamID = clubTrophyTableMap.get(clubTableIndex[1]).get(clubTableIndex[0]);
+
+
+						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString());
+
+						ViewPlayerCase.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlClubMouseTable.setText("@null");
+					}
+				}
 			}
 		});
 
@@ -119,7 +138,25 @@ public class ViewPlayerCase
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				//TODO
+				if (ctrlNationalMouseTable.getText().equalsIgnoreCase("@click")) {
+					try {
+						String teamID;
+
+						teamID = nationalTrophyTableMap.get(nationalTableIndex[1]).get(nationalTableIndex[0]);
+
+
+						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString());
+
+						ViewPlayerCase.this.setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
+
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						panel.setVisible(true);
+					} catch (Exception ignored) {
+					} finally {
+						ctrlNationalMouseTable.setText("@null");
+					}
+				}
 			}
 		});
 	}

@@ -94,7 +94,11 @@ public class SearchCompetitionPanel
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
 
-		competitionNamePanel = new LabelTextPanel(GuiConfiguration.getMessage("name"), ctrlCompetitionSubName, Regex.patternAlnum);
+		competitionNamePanel = new LabelTextPanel(
+						GuiConfiguration.getMessage("name"),
+						ctrlCompetitionSubName,
+						Regex.patternAlnum
+		);
 		centralPanel.add(competitionNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nameInfo"));
