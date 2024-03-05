@@ -1,6 +1,5 @@
 package gui;
 
-import controller.Controller;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
 
@@ -11,11 +10,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class StatisticFilterPanel
+public class ViewPlayerStatistic
 				extends JPanel
 {
 
-	public StatisticFilterPanel(String playerID, Boolean club, String title, Map<String, String> infoPlayerMap)
+	public ViewPlayerStatistic(String playerID, Boolean club, String title)
 	{
 		final JLabel ctrlTeamName = new JLabel((String) null);
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
@@ -154,7 +153,7 @@ public class StatisticFilterPanel
 				MyTable playerStatisticTable = playerStatisticTablePanel.getMyTable();
 				String string;
 
-				infoPlayerMap.clear();
+				//infoPlayerMap.clear();
 				playerStatisticTableData.clear();
 				playerStatisticTableMap.clear();
 
@@ -216,7 +215,7 @@ public class StatisticFilterPanel
 				playerStatisticTablePanel.getTextArea().setText(string);
 
 				topFilterPanel.getTitleButton().doClick();
-				StatisticFilterPanel.this.revalidate();
+				ViewPlayerStatistic.this.revalidate();
 			}
 		});
 

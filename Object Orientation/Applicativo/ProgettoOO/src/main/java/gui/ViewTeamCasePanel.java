@@ -31,12 +31,8 @@ public class ViewTeamCasePanel
 		);
 
 		MigLayout migLayout;
-		JPanel navigationPanel;
-		GeneralInfoPanel generalInfoPanel;
-		JButton squadParticipationButton;
-		JButton caseButton;
+		ViewTeamCaseGeneralInfo viewTeamCaseGeneralInfo;
 		JPanel tablePanel;
-		JPanel casePanel;
 		TablePanel trophyPanel;
 		TablePanel prizePanel;
 
@@ -44,58 +40,26 @@ public class ViewTeamCasePanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.THREE_CELL_EXT_GAP_0_10_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		generalInfoPanel = new GeneralInfoPanel();
-		this.add(generalInfoPanel);
-		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
+		viewTeamCaseGeneralInfo = new ViewTeamCaseGeneralInfo(teamID, teamType);
+		this.add(viewTeamCaseGeneralInfo);
+		viewTeamCaseGeneralInfo.setGeneralInfoPanel(infoTeamMap);
 		/*------------------------------------------------------------------------------------------------------*/
-
-		migLayout = new MigLayout(
-						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
-		);
-
-		navigationPanel = new JPanel(migLayout);
-		navigationPanel.setBackground(Color.white);
-
-		this.add(navigationPanel);
-
-		squadParticipationButton = new JButton(GuiConfiguration.getMessage("seasonDetails"));
-		squadParticipationButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
-
-		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
-		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		navigationPanel.add(caseButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-		migLayout = new MigLayout(
-						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.TWO_CELL_LAYOUT_CONSTRAINT
-		);
-
-		casePanel = new JPanel(migLayout);
-
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_GROW_FILL_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_TOP_LAYOUT_CONSTRAINT
+						GuiConfiguration.TWO_CELL_GROW_FILL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
 		tablePanel = new JPanel(migLayout);
 
-		casePanel.add(tablePanel);
+		this.add(tablePanel);
 
 		trophyPanel = new TablePanel(false);
 		trophyPanel.getTitleLabel().setText(GuiConfiguration.getMessage("trophies"));
@@ -110,48 +74,5 @@ public class ViewTeamCasePanel
 		prizePanel.getMyTable().setPreferredScrollableViewportSize(prizePanel.getMyTable().getPreferredSize());
 
 		tablePanel.add(prizePanel);
-
-		this.add(casePanel);
-
-
-// TODO decommentare quando pronta l altra vista
-
-//		squadParticipationButton.addActionListener(new ActionListener() {
-//			@Override
-//			public void actionPerformed(ActionEvent e)
-//			{
-//				Container container = MainFrame.getMainFrameInstance().getContentPane();
-//				Component component = container.getComponent(2);
-//				component.setVisible(false);
-//				container.remove(component);
-//
-//				try {
-//					Component newComponent = new ViewTeamSeasonPanel(teamID, teamType);
-//					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					newComponent.setVisible(true);
-//				} catch (Exception ex) {
-//					System.out.println(ex.getMessage());
-//				}
-//			}
-//		});
-
-		caseButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-				try {
-					Component newComponent = new ViewTeamCasePanel(teamID, teamType);
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
 	}
 }

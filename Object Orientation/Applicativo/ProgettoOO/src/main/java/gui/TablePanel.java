@@ -109,6 +109,35 @@ public class TablePanel
 		scrollPane.setViewportView(myTable);
 	}
 
+	public TablePanel(Boolean sort,
+										Integer[] tableIndex,
+										JLabel ctrlMouseLabel) {
+		MigLayout migLayout;
+		JScrollPane scrollPane;
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						null
+		);
+
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+
+		this.titleLabel = new TitleLabel(null);
+		this.add(titleLabel);
+
+		this.textArea = null;
+
+		scrollPane = new JScrollPane();
+		this.add(scrollPane);
+
+		this.myTable = new MyTable(sort, tableIndex, ctrlMouseLabel);
+		scrollPane.setViewportView(myTable);
+	}
+
+
 
 	public MyTable getMyTable()
 	{

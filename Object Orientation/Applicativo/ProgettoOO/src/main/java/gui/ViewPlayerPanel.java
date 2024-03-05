@@ -4,7 +4,6 @@
 //import net.miginfocom.swing.MigLayout;
 //
 //import javax.swing.*;
-//import javax.swing.table.DefaultTableModel;
 //import java.awt.*;
 //import java.awt.event.ActionEvent;
 //import java.awt.event.ActionListener;
@@ -18,49 +17,49 @@
 //{
 //	public ViewPlayerPanel(String playerID)
 //	{
-////		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
-////
-////		final Vector<Vector<String>> positionTableData = new Vector<>();
-////		final Vector<Vector<String>> nationalityTableData = new Vector<>();
-////
-////		final Vector<Vector<String>> goalkeepingAttributeTableData = new Vector<>();
-////		final Vector<Vector<String>> mentalAttributeTableData = new Vector<>();
-////		final Vector<Vector<String>> physicalAttributeTableData = new Vector<>();
-////		final Vector<Vector<String>> technicalAttributeTableData = new Vector<>();
-////		final Vector<Vector<String>> tagTableData = new Vector<>();
-////
-////		final Vector<Vector<String>> clubCareerTableData = new Vector<>();
-////		final Map<Integer, Map<Integer, String>> clubCareerTableMap = new HashMap<>();
-////		final Vector<Vector<String>> nationalCareerTableData = new Vector<>();
-////		final Map<Integer, Map<Integer, String>> nationalCareerTableMap = new HashMap<>();
-////
-////		MigLayout migLayout;
-////		GeneralInfoPanel generalInfoPanel;
-////		JPanel navigationPanel;
-////		JButton generalInfoButton;
-////		JButton detailedInfoButton;
-////		JButton careerButton;
-////		JButton clubStatisticsButton;
-////		JButton nationalStatisticsButton;
-////		JButton caseButton;
-////		JPanel generalInfoTablePanel;
-////		TablePanel positionPanel;
-////		TablePanel nationalityPanel;
-////		JPanel detailedInfoTablePanel;
-////		TablePanel goalkeepingAttributePanel;
-////		TablePanel mentalAttributePanel;
-////		TablePanel physicalAttributePanel;
-////		TablePanel technicalAttributePanel;
-////		TablePanel tagPanel;
-////		JPanel careerTablePanel;
-////		TablePanel clubCareerPanel;
-////		TablePanel nationalCareerPanel;
-////		StatisticFilterPanel clubStatisticsPanel;
-////		StatisticFilterPanel nationalStatisticsPanel;
-////		JPanel caseAwardsPanel;
-////		TablePanel clubTrophyPanel;
-////		TablePanel nationalTrophyPanel;
-////		TablePanel prizePanel;
+//		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
+//
+//		final Vector<Vector<String>> positionTableData = new Vector<>();
+//		final Vector<Vector<String>> nationalityTableData = new Vector<>();
+//
+//		final Vector<Vector<String>> goalkeepingAttributeTableData = new Vector<>();
+//		final Vector<Vector<String>> mentalAttributeTableData = new Vector<>();
+//		final Vector<Vector<String>> physicalAttributeTableData = new Vector<>();
+//		final Vector<Vector<String>> technicalAttributeTableData = new Vector<>();
+//		final Vector<Vector<String>> tagTableData = new Vector<>();
+//
+//		final Vector<Vector<String>> clubCareerTableData = new Vector<>();
+//		final Map<Integer, Map<Integer, String>> clubCareerTableMap = new HashMap<>();
+//		final Vector<Vector<String>> nationalCareerTableData = new Vector<>();
+//		final Map<Integer, Map<Integer, String>> nationalCareerTableMap = new HashMap<>();
+//
+//		MigLayout migLayout;
+//		GeneralInfoPanel generalInfoPanel;
+//		JPanel navigationPanel;
+//		JButton generalInfoButton;
+//		JButton detailedInfoButton;
+//		JButton careerButton;
+//		JButton clubStatisticsButton;
+//		JButton nationalStatisticsButton;
+//		JButton caseButton;
+//		JPanel generalInfoTablePanel;
+//		TablePanel positionPanel;
+//		TablePanel nationalityPanel;
+//		JPanel detailedInfoTablePanel;
+//		TablePanel goalkeepingAttributePanel;
+//		TablePanel mentalAttributePanel;
+//		TablePanel physicalAttributePanel;
+//		TablePanel technicalAttributePanel;
+//		TablePanel tagPanel;
+//		JPanel careerTablePanel;
+//		TablePanel clubCareerPanel;
+//		TablePanel nationalCareerPanel;
+//		ViewPlayerStatistic clubStatisticsPanel;
+//		ViewPlayerStatistic nationalStatisticsPanel;
+//		JPanel caseAwardsPanel;
+//		TablePanel clubTrophyPanel;
+//		TablePanel nationalTrophyPanel;
+//		TablePanel prizePanel;
 //
 //		// TODO. DA RIFARE.
 //		// TODO. PERSO TUTTO IL SENSO DELLA MODULARITA NON AGGIUNGENDO EFFICIENZA MA SOLO INUTILE COMPLESSITA
@@ -183,14 +182,14 @@
 //		nationalCareerPanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalCareer"));
 //		careerTablePanel.add(nationalCareerPanel);
 //		/*------------------------------------------------------------------------------------------------------*/
-//		clubStatisticsPanel = new StatisticFilterPanel(
+//		clubStatisticsPanel = new ViewPlayerStatistic(
 //						playerID,
 //						true,
 //						GuiConfiguration.getMessage("filterClubStatistics"),
 //						infoPlayerMap
 //		);
 //
-//		nationalStatisticsPanel = new StatisticFilterPanel(
+//		nationalStatisticsPanel = new ViewPlayerStatistic(
 //						playerID,
 //						false,
 //						GuiConfiguration.getMessage("filterNationalStatistics"),

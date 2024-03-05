@@ -316,16 +316,14 @@ public class SearchTeamPanel
 
 						ID = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						System.out.println(teamTableData.get(tableIndex[1]).get(2));
 						if (teamTableData.get(tableIndex[1]).get(2).contains("C")) {
 							teamType = Team.TEAM_TYPE.CLUB.toString();
 						}
 						else {
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
-						System.out.println(teamType);
 
-						JPanel panel = new ViewTeamCasePanel(ID, teamType);
+						JPanel panel = new ViewTeamSeasonPanel(ID, teamType);
 
 						SearchTeamPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);
