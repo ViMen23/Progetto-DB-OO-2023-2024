@@ -1,208 +1,83 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class ViewPlayerGeneralInfo
 				extends JPanel
 {
-	private final GeneralInfoPanel generalInfoPanel;
-
 	public ViewPlayerGeneralInfo(String playerID)
 	{
+		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
+
+		final Vector<Vector<String>> positionTableData = new Vector<>();
+		final Vector<Vector<String>> nationalityTableData = new Vector<>();
+
+		Controller.getInstance().setPlayerGeneralView(
+						playerID,
+						infoPlayerMap,
+						positionTableData,
+						nationalityTableData
+		);
+
+		final MyTable positionTable;
+		final MyTable nationalityTable;
+
 		MigLayout migLayout;
-		JPanel navigationPanel;
-		JButton generalInfoButton;
-		JButton detailedInfoButton;
-		JButton careerButton;
-		JButton clubStatisticsButton;
-		JButton nationalStatisticsButton;
-		JButton caseButton;
+		TopViewPlayerPanel topViewPlayerPanel;
+		JPanel tablePanel;
+		TablePanel positionPanel;
+		TablePanel nationalityPanel;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
-		setLayout(migLayout);
-		setOpaque(false);
 
-		generalInfoPanel = new GeneralInfoPanel();
-		this.add(generalInfoPanel);
+		this.setLayout(migLayout);
+
+
+		topViewPlayerPanel = new TopViewPlayerPanel(playerID);
+		this.add(topViewPlayerPanel);
+		topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT,
-						null
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_GROW_FILL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
-		navigationPanel = new JPanel(migLayout);
-		navigationPanel.setBackground(Color.white);
-		this.add(navigationPanel);
+		tablePanel = new JPanel(migLayout);
+		tablePanel.setOpaque(false);
 
-		generalInfoButton = new JButton(GuiConfiguration.getMessage("general"));
-		generalInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(generalInfoButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		this.add(tablePanel);
 
-		detailedInfoButton = new JButton(GuiConfiguration.getMessage("detailed"));
-		detailedInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(detailedInfoButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		positionPanel = new TablePanel(false);
+		positionPanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
 
-		careerButton = new JButton(GuiConfiguration.getMessage("career"));
-		careerButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(careerButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		positionTable = positionPanel.getMyTable();
+		positionTable.setModel(new TableModel(positionTableData, GuiConfiguration.PLAYER_POSITION_TABLE_COLUMN_NAME));
+		positionTable.setPreferredScrollableViewportSize(positionTable.getPreferredSize());
 
-		clubStatisticsButton = new JButton(GuiConfiguration.getMessage("clubStatistics"));
-		clubStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(clubStatisticsButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		tablePanel.add(positionPanel);
 
-		nationalStatisticsButton = new JButton(GuiConfiguration.getMessage("nationalStatistics"));
-		nationalStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(nationalStatisticsButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		nationalityPanel = new TablePanel(false);
+		nationalityPanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalities"));
 
-		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
-		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(caseButton, GuiConfiguration.HGRUOP_ADD_CONSTRAINT);
+		nationalityTable = nationalityPanel.getMyTable();
+		nationalityTable.setModel(new TableModel(nationalityTableData, GuiConfiguration.PLAYER_NATIONALITY_TABLE_COLUMN_NAME));
+		nationalityTable.setPreferredScrollableViewportSize(nationalityTable.getPreferredSize());
+
+		tablePanel.add(nationalityPanel);
 		/*------------------------------------------------------------------------------------------------------*/
-		generalInfoButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
 
-				try {
-					Component newComponent = new ViewPlayerGeneralInfo(playerID);
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
-
-		detailedInfoButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-//				try {
-//					Component newComponent = new ViewPlayerDetailedInfo(playerID);
-//					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					newComponent.setVisible(true);
-//				} catch (Exception ex) {
-//					System.out.println(ex.getMessage());
-//				}
-			}
-		});
-
-		careerButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-//				try {
-//					Component newComponent = new ViewPlayerCareer(playerID);
-//					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					newComponent.setVisible(true);
-//				} catch (Exception ex) {
-//					System.out.println(ex.getMessage());
-//				}
-			}
-		});
-
-		clubStatisticsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-				try {
-
-					Component newComponent = new ViewPlayerStatistic(
-									playerID,
-									true,
-									GuiConfiguration.getMessage("filterClubStatistics")
-					);
-
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
-
-		nationalStatisticsButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-				try {
-
-					Component newComponent = new ViewPlayerStatistic(
-									playerID,
-									false,
-									GuiConfiguration.getMessage("filterNationalStatistics")
-					);
-
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
-			}
-		});
-		caseButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
-
-//				try {
-//
-//					Component newComponent = new ViewPlayerCase();
-//
-//					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					newComponent.setVisible(true);
-//
-//				} catch (Exception ex) {
-//					System.out.println(ex.getMessage());
-//				}
-			}
-		});
 	}
 
-	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
-	{
-		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");
-	}
 }

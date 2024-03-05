@@ -8,12 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-public class ViewTeamCaseGeneralInfo
+public class TopViewTeamPanel
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
 
-	public ViewTeamCaseGeneralInfo(String teamID, String teamType)
+	public TopViewTeamPanel(String teamID, String teamType)
 	{
 
 		MigLayout migLayout;

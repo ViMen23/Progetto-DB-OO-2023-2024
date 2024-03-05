@@ -36,7 +36,7 @@ public class ViewTeamSeasonPanel
 		final MyTable participationTable;
 
 		MigLayout migLayout;
-		ViewTeamCaseGeneralInfo viewTeamCaseGeneralInfo;
+		TopViewTeamPanel topViewTeamPanel;
 		LabelComboPanel showSeasonPanel;
 		JButton showButton;
 		JPanel tablePanel;
@@ -79,9 +79,9 @@ public class ViewTeamSeasonPanel
 
 		this.setLayout(migLayout);
 
-		viewTeamCaseGeneralInfo = new ViewTeamCaseGeneralInfo(teamID, teamType);
-		this.add(viewTeamCaseGeneralInfo);
-		viewTeamCaseGeneralInfo.setGeneralInfoPanel(infoTeamMap);
+		topViewTeamPanel = new TopViewTeamPanel(teamID, teamType);
+		this.add(topViewTeamPanel);
+		topViewTeamPanel.setGeneralInfoPanel(infoTeamMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		showSeasonPanel = new LabelComboPanel(
@@ -185,7 +185,7 @@ public class ViewTeamSeasonPanel
 								participationTableData
 				);
 
-				viewTeamCaseGeneralInfo.setGeneralInfoPanel(infoTeamMap);
+				topViewTeamPanel.setGeneralInfoPanel(infoTeamMap);
 
 				string = GuiConfiguration.getMessage("squad");
 				string += " ";

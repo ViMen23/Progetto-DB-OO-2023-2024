@@ -5,9 +5,6 @@ import net.miginfocom.swing.MigLayout;
 
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -31,7 +28,7 @@ public class ViewTeamCasePanel
 		);
 
 		MigLayout migLayout;
-		ViewTeamCaseGeneralInfo viewTeamCaseGeneralInfo;
+		TopViewTeamPanel topViewTeamPanel;
 		JPanel tablePanel;
 		TablePanel trophyPanel;
 		TablePanel prizePanel;
@@ -46,9 +43,9 @@ public class ViewTeamCasePanel
 		this.setLayout(migLayout);
 
 
-		viewTeamCaseGeneralInfo = new ViewTeamCaseGeneralInfo(teamID, teamType);
-		this.add(viewTeamCaseGeneralInfo);
-		viewTeamCaseGeneralInfo.setGeneralInfoPanel(infoTeamMap);
+		topViewTeamPanel = new TopViewTeamPanel(teamID, teamType);
+		this.add(topViewTeamPanel);
+		topViewTeamPanel.setGeneralInfoPanel(infoTeamMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
