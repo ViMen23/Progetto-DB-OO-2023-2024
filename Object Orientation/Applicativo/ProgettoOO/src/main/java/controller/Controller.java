@@ -18,12 +18,11 @@ import java.util.*;
  */
 public class Controller
 {
-	private final Player ctrlPlayer;
 	private static Controller controllerInstance = null;
 
 	private Controller()
 	{
-		this.ctrlPlayer = newPlayer();
+
 	}
 
 	/**
@@ -119,12 +118,16 @@ public class Controller
 
 
 	/**
-	 * TODO
-	 * @param type
-	 * @param code
-	 * @param name
-	 * @param superCountry
-	 * @return
+	 * TYPE : function - controller package
+	 * <p>
+	 * NAME : newCountry
+	 * <p>
+	 * DESC: funzione che crea una nuova istanza di paese chiamando il costruttore della classe
+	 * @param type il tipo di paese
+	 * @param code il codice univoco del paese
+	 * @param name il nome del paese
+	 * @param superCountry il paese che contiene il paese in questione
+	 * @return il paese creato
 	 */
 	private Country newCountry(String type,
 														 String code,
@@ -136,8 +139,13 @@ public class Controller
 
 
 	/**
-	 * TODO
-	 * @return
+	 * TYPE : function - controller package
+	 * <p>
+	 * NAME : newCountry
+	 * <p>
+	 * DESC: funzione che crea una nuova istanza di paese chiamando la funzione newCountry della
+	 * classe Controller con argomenti null.
+	 * @return il paese creato
 	 */
 	private Country newCountry()
 	{
@@ -1970,7 +1978,7 @@ public class Controller
 																		Vector<Vector<String>> playerTagTableData)
 	{
 		setPlayerInfoMap(playerID, infoPlayerMap);
-		setAttributeTableData(
+		setAttributeTable(
 						playerID,
 						playerAttributeGoalkeepingTableData,
 						playerAttributeMentalTableData,
