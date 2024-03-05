@@ -1997,7 +1997,7 @@ public class Controller
 																	Map<Integer, Map<Integer, String>> playerNationalCareerTableMap)
 	{
 		setPlayerInfoMap(playerID, infoPlayerMap);
-		setClubCareerTableDataMap(playerID, playerClubCareerTableData, playerClubCareerTableMap);
+		setClubCareerTable(playerID, playerClubCareerTableData, playerClubCareerTableMap);
 		setNationalCareerTable(playerID, playerNationalCareerTableData, playerNationalCareerTableMap);
 	}
 
