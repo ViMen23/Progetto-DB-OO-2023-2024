@@ -24,7 +24,7 @@ public class Main
 
 		//searchCountryPanel.setName("boh");
 
-		MainFrame.getMainFrameInstance().add(new ViewPlayerGeneralInfo("3"), "sgx frame, growy");
+		MainFrame.getMainFrameInstance().add(new ViewPlayerGeneralInfo("30"), "sgx frame, growy");
 
 		// TODO DA RIFARE SIA VISTA SQUADRA CHE VISTA PLAYER
 		//MainFrame.getMainFrameInstance().add(new ViewTeamCasePanel("214", "CLUB"), "sgx frame, growy");

@@ -52,6 +52,7 @@ public class ViewPlayerStatistic
 		);
 
 		final MyTable statisticTable;
+
 		MigLayout migLayout;
 		TopViewPlayerPanel topViewPlayerPanel;
 		JPanel statisticFilterPanel;
@@ -71,7 +72,7 @@ public class ViewPlayerStatistic
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_CELL_GAP_0_10
 		);
 
 		this.setLayout(migLayout);
@@ -82,14 +83,6 @@ public class ViewPlayerStatistic
 		topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
-			rowConstraint = GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT;
-		}
-		else {
-			rowConstraint = GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT;
-		}
-
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_CELL,
@@ -98,6 +91,14 @@ public class ViewPlayerStatistic
 
 		statisticFilterPanel = new JPanel(migLayout);
 		statisticFilterPanel.setOpaque(false);
+		this.add(statisticFilterPanel);
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			rowConstraint = GuiConfiguration.SEVEN_CELL_LAYOUT_CONSTRAINT;
+		}
+		else {
+			rowConstraint = GuiConfiguration.FIVE_CELL_LAYOUT_CONSTRAINT;
+		}
 
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
@@ -109,12 +110,12 @@ public class ViewPlayerStatistic
 
 		topFilterPanel = new TopSearchPanel(
 						title,
-						this,
+						statisticFilterPanel,
 						centralPanel
 		);
 
-		this.add(topFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
-		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		statisticFilterPanel.add(topFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		statisticFilterPanel.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
@@ -175,7 +176,7 @@ public class ViewPlayerStatistic
 		statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
 		statisticTable.setPreferredScrollableViewportSize(statisticTable.getPreferredSize());
 
-		centralPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		statisticFilterPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -258,6 +259,7 @@ public class ViewPlayerStatistic
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 	}
 }

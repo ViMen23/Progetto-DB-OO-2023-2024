@@ -188,16 +188,16 @@ public class TopViewPlayerPanel
 				component.setVisible(false);
 				container.remove(component);
 
-//				try {
-//
-//					Component newComponent = new ViewPlayerCase();
-//
-//					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					newComponent.setVisible(true);
-//
-//				} catch (Exception ex) {
-//					System.out.println(ex.getMessage());
-//				}
+				try {
+
+					Component newComponent = new ViewPlayerCase(playerID);
+
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					newComponent.setVisible(true);
+
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+				}
 			}
 		});
 	}

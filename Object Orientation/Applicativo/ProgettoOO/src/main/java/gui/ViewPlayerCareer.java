@@ -38,10 +38,6 @@ public class ViewPlayerCareer
 						nationalCareerTableMap
 		);
 
-		System.out.println(clubCareerTableData);
-		System.out.println(nationalCareerTableData);
-
-
 		final MyTable clubCareerTable;
 		final MyTable nationalCareerTable;
 
