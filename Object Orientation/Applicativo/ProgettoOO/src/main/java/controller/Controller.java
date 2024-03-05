@@ -3202,9 +3202,6 @@ public class Controller
 		}
 
 		tableMap.put(1, teamLongNameMap);
-		System.out.println("WWWW");
-		System.out.println(tableData);
-		System.out.println("WWWW");
 	}
 
 
