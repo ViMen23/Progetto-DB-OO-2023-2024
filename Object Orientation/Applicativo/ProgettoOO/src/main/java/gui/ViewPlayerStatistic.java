@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
 
@@ -38,6 +39,19 @@ public class ViewPlayerStatistic
 		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
 
+		Controller.getInstance().setPlayerStatisticView(
+						playerID,
+						teamType,
+						null,
+						null,
+						null,
+						null,
+						infoPlayerMap,
+						playerStatisticTableData,
+						playerStatisticTableMap
+		);
+
+		final MyTable statisticTable;
 		MigLayout migLayout;
 		TopViewPlayerPanel topViewPlayerPanel;
 		JPanel statisticFilterPanel;
@@ -82,8 +96,8 @@ public class ViewPlayerStatistic
 						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
-		setLayout(migLayout);
-		setOpaque(false);
+		statisticFilterPanel = new JPanel(migLayout);
+		statisticFilterPanel.setOpaque(false);
 
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
@@ -156,6 +170,11 @@ public class ViewPlayerStatistic
 		/*------------------------------------------------------------------------------------------------------*/
 
 		playerStatisticTablePanel = new TablePanel(true, null);
+
+		statisticTable = playerStatisticTablePanel.getMyTable();
+		statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
+		statisticTable.setPreferredScrollableViewportSize(statisticTable.getPreferredSize());
+
 		centralPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
@@ -169,28 +188,30 @@ public class ViewPlayerStatistic
 				MyTable playerStatisticTable = playerStatisticTablePanel.getMyTable();
 				String string;
 
-				//infoPlayerMap.clear();
+				infoPlayerMap.clear();
 				playerStatisticTableData.clear();
 				playerStatisticTableMap.clear();
 
-//				Controller.getInstance().setPlayerStatisticView(
-//								playerID,
-//								teamType,
-//								teamNameMap.get(ctrlTeamName.getText()),
-//								competitionNameMap.get(ctrlCompetitionName.getText()),
-//								initialSeasonMap.get(ctrlInitialSeason.getText()),
-//								finalSeasonMap.get(ctrlFinalSeason.getText()),
-//								infoPlayerMap,
-//								playerStatisticTableData,
-//								playerStatisticTableMap
-//				);
+				Controller.getInstance().setPlayerStatisticView(
+								playerID,
+								teamType,
+								teamNameMap.get(ctrlTeamName.getText()),
+								competitionNameMap.get(ctrlCompetitionName.getText()),
+								initialSeasonMap.get(ctrlInitialSeason.getText()),
+								finalSeasonMap.get(ctrlFinalSeason.getText()),
+								infoPlayerMap,
+								playerStatisticTableData,
+								playerStatisticTableMap
+				);
+
+				topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 
 				playerStatisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.TEAM_TABLE_COLUMN_NAME));
 				playerStatisticTable.setPreferredScrollableViewportSize(playerStatisticTable.getPreferredSize());
 
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
-				string += GuiConfiguration.getMessage("teams");
+				string += GuiConfiguration.getMessage("statistics");
 				string += " ";
 				string += playerStatisticTableData.size();
 
@@ -218,7 +239,7 @@ public class ViewPlayerStatistic
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += GuiConfiguration.getMessage("initialSeason");
+					string += GuiConfiguration.getMessage("seasonsRange");
 					string += ": ";
 					string += ctrlInitialSeason.getText();
 
