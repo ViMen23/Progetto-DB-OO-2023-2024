@@ -1,5 +1,6 @@
 package gui;
 
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -140,7 +141,7 @@ public class TopViewPlayerPanel
 
 					Component newComponent = new ViewPlayerStatistic(
 									playerID,
-									true,
+									Team.TEAM_TYPE.CLUB.toString(),
 									GuiConfiguration.getMessage("filterClubStatistics")
 					);
 
@@ -166,7 +167,7 @@ public class TopViewPlayerPanel
 
 					Component newComponent = new ViewPlayerStatistic(
 									playerID,
-									false,
+									Team.TEAM_TYPE.NATIONAL.toString(),
 									GuiConfiguration.getMessage("filterNationalStatistics")
 					);
 

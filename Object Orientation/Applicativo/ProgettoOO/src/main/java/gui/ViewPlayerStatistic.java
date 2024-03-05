@@ -40,6 +40,7 @@ public class ViewPlayerStatistic
 
 		MigLayout migLayout;
 		TopViewPlayerPanel topViewPlayerPanel;
+		JPanel statisticFilterPanel;
 		TopSearchPanel topFilterPanel;
 		JPanel centralPanel;
 		InfoPanel infoPanel;
