@@ -2901,3 +2901,120 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_national_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+DROP FUNCTION new_national_team(text);
+
+CREATE OR REPLACE FUNCTION new_national_team
+(
+    IN  id_country  text
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+	rec_country	record;
+    count_row   integer;
+
+BEGIN
+
+	rec_country = get_record
+				  (
+						'@',
+						'fp_country'
+						'@id@' || id_country::text
+				  );
+
+
+	INSERT INTO
+		fp_team
+		(
+			type,
+			country_id,
+			long_name,
+			short_name
+		)
+	VALUES
+	(
+		'NATIONAL',
+		id_country::integer,
+		rec_country.name,
+		rec_country.code
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	RETURN count_row;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_club_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : boolean
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_club_team
+(
+    IN  id_country      text,
+    IN  long_name_team  text,
+    IN  short_name_team text
+)
+RETURNS integer
+AS
+$$
+DECLARE
+
+    count_row   integer;
+
+BEGIN
+
+	INSERT INTO
+		fp_team
+		(
+			type,
+			country_id,
+			long_name,
+			short_name
+		)
+	VALUES
+	(
+		'CLUB',
+		id_country::integer,
+		long_name_team::dm_alnum,
+		short_name_team::dm_code
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	RETURN count_row;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
