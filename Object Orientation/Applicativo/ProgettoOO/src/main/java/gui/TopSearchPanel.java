@@ -36,7 +36,7 @@ public class TopSearchPanel
 					rootPanel.remove(toRemovePanel);
 					titleButton.setIcon(MINIMIZE);
 				} else {
-					rootPanel.add(toRemovePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+					rootPanel.add(toRemovePanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 					titleButton.setIcon(MAXIMIZE);
 				}
 
@@ -82,7 +82,7 @@ public class TopSearchPanel
 
 				try {
 					Component newComponent = component.getClass().getDeclaredConstructor().newInstance();
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());

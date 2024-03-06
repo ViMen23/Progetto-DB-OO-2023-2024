@@ -109,7 +109,7 @@ public class ViewPlayerCareer
 						ViewPlayerCareer.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCareer.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
@@ -135,7 +135,7 @@ public class ViewPlayerCareer
 						ViewPlayerCareer.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCareer.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {

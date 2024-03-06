@@ -80,9 +80,9 @@ public class SearchCompetitionPanel
 		string += Controller.getInstance().countCompetitions();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -180,7 +180,7 @@ public class SearchCompetitionPanel
 
 
 		competitionTablePanel = new TablePanel(true, null);
-		this.add(competitionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(competitionTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 

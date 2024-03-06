@@ -63,9 +63,9 @@ public class SearchCountryPanel
 		string += Controller.getInstance().countCountries();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -96,7 +96,7 @@ public class SearchCountryPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 		countryTablePanel = new TablePanel(true, null);
-		this.add(countryTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(countryTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
 		button.addActionListener(new ActionListener() {

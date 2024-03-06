@@ -17,13 +17,11 @@ public class AdminNavigationPanel
 		TitleLabel titleLabel;
 		JButton button;
 
-		String string;
-
 		migLayout = new MigLayout
 						(
-										"debug, wrap 3",
-										"0[grow, fill]0",
-										"0[]0[]0"
+										GuiConfiguration.WRAP_3_LAYOUT_CONSTRAINT,
+										GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
+										GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 						);
 
 		this.setLayout(migLayout);
@@ -49,7 +47,7 @@ public class AdminNavigationPanel
 
 					MainFrame.getMainFrameInstance().getContentPane().remove(component);
 				}
-				MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -70,7 +68,7 @@ public class AdminNavigationPanel
 
 					MainFrame.getMainFrameInstance().getContentPane().remove(component);
 				}
-				MainFrame.getMainFrameInstance().add(new AdminSearchTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(new AdminSearchTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 			}
 		});
 

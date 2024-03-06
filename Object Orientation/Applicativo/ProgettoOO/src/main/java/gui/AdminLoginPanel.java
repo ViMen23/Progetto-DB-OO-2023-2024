@@ -7,6 +7,7 @@ import javax.swing.*;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -21,67 +22,37 @@ import java.awt.event.ItemListener;
 public class AdminLoginPanel
 				extends JPanel
 {
-	private final JLabel usernameLabel;
-	private final JTextField usernameTextField;
-	private final JLabel passwordLabel;
-	private final JPasswordField passwordField;
 	private final JButton okButton;
-	private final JCheckBox showPasswordCheckBox;
-
 	private Boolean username = false;
 	private Boolean password = false;
 
-	public AdminLoginPanel()
+	public AdminLoginPanel(JLabel ctrlLabel)
 	{
-		String string;
 		MigLayout migLayout;
+		JLabel usernameLabel;
+		JTextField usernameTextField;
+		JLabel passwordLabel;
+		JPasswordField passwordField;
+		JCheckBox showPasswordCheckBox;
 
-		migLayout = new MigLayout
-			(
-				"debug, flowy",
-				"",
-				"30:push[]20[]20[]20[]20[]20[]30:push"
-			);
 
-		setLayout(migLayout);
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
+						null,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+		);
+
+		this.setLayout(migLayout);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		usernameLabel = new JLabel(GuiConfiguration.getMessage("username"), SwingConstants.CENTER);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL USERNAME
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("username");
-		string = string.toUpperCase();
-
-		usernameLabel = new JLabel(string, SwingConstants.CENTER);
-
-		add(usernameLabel);
+		this.add(usernameLabel);
 		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * TEXTFIELD USERNAME
-		 *------------------------------------------------------------------------------------------------------*/
-
-
 
 		usernameTextField = new JTextField(GuiConfiguration.INPUT_COLUMN);
 
-		add(usernameTextField);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
+		this.add(usernameTextField);
 
 		usernameTextField.addCaretListener(new CaretListener() {
 			@Override
@@ -93,42 +64,14 @@ public class AdminLoginPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		passwordLabel = new JLabel(GuiConfiguration.getMessage("password"), SwingConstants.CENTER);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL PASSWORD
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-
-		string = GuiConfiguration.getMessage("password");
-		string = string.toUpperCase();
-
-		passwordLabel = new JLabel(string, SwingConstants.CENTER);
-
-		add(passwordLabel);
+		this.add(passwordLabel);
 		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * PASSWORDFIELD PASSWORD
-		 *------------------------------------------------------------------------------------------------------*/
-
-
 
 		passwordField = new JPasswordField(GuiConfiguration.INPUT_COLUMN);
 
-		add(passwordField);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
+		this.add(passwordField);
 
 		passwordField.addCaretListener(new CaretListener() {
 			@Override
@@ -140,29 +83,9 @@ public class AdminLoginPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		showPasswordCheckBox = new JCheckBox(GuiConfiguration.getMessage("showPassword"));
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * CHECKBOX MOSTRA PASSWORD
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("show");
-		string += " ";
-		string += GuiConfiguration.getMessage("password");
-		string = string.toUpperCase();
-
-		showPasswordCheckBox = new JCheckBox(string);
-
-		add(showPasswordCheckBox);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
+		this.add(showPasswordCheckBox);
 
 
 		showPasswordCheckBox.addItemListener(new ItemListener() {
@@ -178,28 +101,10 @@ public class AdminLoginPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON AVANTI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("next");
-		string = string.toUpperCase();
-
-		okButton = new JButton(string);
+		okButton = new JButton(GuiConfiguration.getMessage("next"));
 		okButton.setEnabled(false);
 
-		add(okButton, "align trailing");
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
+		this.add(okButton, GuiConfiguration.TRAILING_ADD_CONSTRAINT);
 
 
 		okButton.addActionListener(new ActionListener() {
@@ -207,9 +112,24 @@ public class AdminLoginPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				if (Controller.getInstance().isAdmin(usernameTextField.getText(), new String(passwordField.getPassword()))) {
-					System.out.println("Benvenuto"); //TODO i18n
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage("msgCorrectLogin"));
+
+					Container container = MainFrame.getMainFrameInstance().getContentPane();
+					for (Component component: container.getComponents()) {
+						if (!(component instanceof TopPanel)) {
+							component.setVisible(false);
+							container.remove(component);
+						}
+					}
+
+					container.add(new AdminNavigationPanel(), GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+
+					Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
+					window.dispose();
+
+					ctrlLabel.setText("@login");
 				} else {
-					System.out.println("Chi sei?"); //TODO i18n
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage("msgIncorrectLogin"));
 				}
 			}
 		});

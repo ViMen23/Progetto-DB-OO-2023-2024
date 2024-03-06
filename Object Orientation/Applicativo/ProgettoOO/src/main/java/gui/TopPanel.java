@@ -1,10 +1,14 @@
 package gui;
 
 import net.miginfocom.swing.MigLayout;
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 public class TopPanel
 				extends JPanel
@@ -14,6 +18,7 @@ public class TopPanel
 		final ImageIcon logoIcon = GuiConfiguration.createImageIcon("images/foogo3.png", 350, 75);
 		final ImageIcon localeIcon = GuiConfiguration.createImageIcon("images/world2.png");
 		final ImageIcon loginIcon = GuiConfiguration.createImageIcon("images/loginLogout.png");
+		final JLabel ctrlLabel = new JLabel((String) null);
 
 		final JLabel logoLabel;
 		final JButton localeButton;
@@ -29,7 +34,7 @@ public class TopPanel
 
 		setLayout(migLayout);
 		setBackground(Color.white);
-		setPreferredSize(new Dimension(1314, 0));
+		setPreferredSize(new Dimension(1400, 0));
 		/*------------------------------------------------------------------------------------------------------*/
 
 		logoLabel = new JLabel(logoIcon);
@@ -73,16 +78,26 @@ public class TopPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showOptionDialog(
-								null,
-								new AdminLoginPanel(),
-								GuiConfiguration.getMessage("adminLogin"),
-								JOptionPane.DEFAULT_OPTION,
-								JOptionPane.PLAIN_MESSAGE,
-								null,
-								new Object[]{},
-								null
-				);
+				if (0 == StringUtils.compareIgnoreCase(loginButton.getText(), GuiConfiguration.getMessage("login"))) {
+					JOptionPane.showOptionDialog(
+									null,
+									new AdminLoginPanel(ctrlLabel),
+									GuiConfiguration.getMessage("adminLogin"),
+									JOptionPane.DEFAULT_OPTION,
+									JOptionPane.PLAIN_MESSAGE,
+									null,
+									new Object[]{},
+									null
+					);
+
+					if(null != ctrlLabel.getText()) {
+						loginButton.setText(GuiConfiguration.getMessage("logout"));
+					}
+				}
+				else {
+					loginButton.setText(GuiConfiguration.getMessage("login"));
+					ctrlLabel.setText(null);
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

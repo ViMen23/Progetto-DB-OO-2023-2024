@@ -88,9 +88,9 @@ public class StepFilterPanel
 
 		string = GuiConfiguration.getMessage("stepFilter");
 		topSearchPanel = new TopSearchPanel(string);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "1. ";
@@ -232,7 +232,7 @@ public class StepFilterPanel
 				StepFilterPanel.this.setVisible(false);
 				MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this);
 
-				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 				panel.setVisible(true);
 			}
 		});

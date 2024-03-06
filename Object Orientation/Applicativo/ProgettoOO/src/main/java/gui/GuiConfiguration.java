@@ -55,6 +55,7 @@ public class GuiConfiguration
 	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
 
 	public static final String WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
+	public static final String WRAP_3_LAYOUT_CONSTRAINT = "debug, wrap 3";
 	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
 	public static final String CENTER_VLAYOUT_CONSTRAINT = "debug, flowy, center";
 
@@ -81,19 +82,20 @@ public class GuiConfiguration
 	public static final String NINE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String THIRTEEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
 
-	public static final String HGROUP_FRAME_ADD_CONSTRAINT = "sgx frame";
-	public static final String HGROUP_FRAME_VGROW_ADD_CONSTRAINT = "sgx frame, growy";
-	public static final String HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT = "sgx general, dock north";
-	public static final String HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT = "sgx general, dock center,";
-	public static final String HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT = "sgx general, dock south";
+	public static final String HGROUP_ADD_CONSTRAINT = "sgx";
+	public static final String HGROUP_VGROW_ADD_CONSTRAINT = "sgx, growy";
+	public static final String HGROUP_DOCK_NORTH_ADD_CONSTRAINT = "sgx, dock north";
+	public static final String HGROUP_DOCK_CENTER_ADD_CONSTRAINT = "sgx, dock center,";
+	public static final String HGROUP_DOCK_SOUTH_ADD_CONSTRAINT = "sgx, dock south";
 	public static final String HGROUP_FIRST_COLUMN_ADD_CONSTRAINT = "sgx first_column";
+	public static final String HGROUP_TGAP_20_ADD_CONSTRAINT = "sgx, gap top 20";
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 2, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 3, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT = "sgx first_column, gap bottom 0";
 	public static final String HGROUP_SECOND_COLUMN_ADD_CONSTRAINT = "sgx second_column";
-	public static final String HGRUOP_ADD_CONSTRAINT = "sgx group";
 	public static final String WIDTH_80P_ADD_CONSTRAINT = "width 80%";
 	public static final String SPAN_2_ADD_CONSTRAINT = "span 2";
+	public static final String TRAILING_ADD_CONSTRAINT = "trailing";
 
 	private static ResourceBundle currentResourceBundle;
 
@@ -113,7 +115,7 @@ public class GuiConfiguration
 		setLocale(Locale.of("it", "IT"));
 
 		initUIManager();
-		//initHomeFrame();
+		initHomeFrame();
 		initTableColumn();
 		try {
 			DatabaseConnection.getInstance();
@@ -126,9 +128,9 @@ public class GuiConfiguration
 	{
 		JFrame mainFrame = MainFrame.getMainFrameInstance();
 		TopPanel topPanel = new TopPanel();
-		mainFrame.add(topPanel, HGROUP_FRAME_ADD_CONSTRAINT);
+		mainFrame.add(topPanel, HGROUP_ADD_CONSTRAINT);
 		MenuBarPanel menuBarPanel = new MenuBarPanel();
-		mainFrame.add(menuBarPanel, HGROUP_FRAME_ADD_CONSTRAINT);
+		mainFrame.add(menuBarPanel, HGROUP_ADD_CONSTRAINT);
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}

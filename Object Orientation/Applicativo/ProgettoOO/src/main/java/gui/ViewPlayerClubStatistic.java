@@ -115,8 +115,8 @@ public class ViewPlayerClubStatistic
 						centralPanel
 		);
 
-		statisticFilterPanel.add(topFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
-		statisticFilterPanel.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		statisticFilterPanel.add(topFilterPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
+		statisticFilterPanel.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -177,7 +177,7 @@ public class ViewPlayerClubStatistic
 		statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
 		statisticTable.setPreferredScrollableViewportSize(statisticTable.getPreferredSize());
 
-		statisticFilterPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		statisticFilterPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -371,7 +371,7 @@ public class ViewPlayerClubStatistic
 						ViewPlayerClubStatistic.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerClubStatistic.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {

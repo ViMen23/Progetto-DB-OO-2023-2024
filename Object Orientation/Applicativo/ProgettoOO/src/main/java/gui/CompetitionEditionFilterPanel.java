@@ -86,9 +86,9 @@ public class CompetitionEditionFilterPanel
 
 		string = GuiConfiguration.getMessage("competitionEditionFilter");
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "1. ";
@@ -186,7 +186,7 @@ public class CompetitionEditionFilterPanel
 
 
 		competitionEditionTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(competitionEditionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(competitionEditionTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
 		button.setEnabled(false);
@@ -393,7 +393,7 @@ public class CompetitionEditionFilterPanel
 							CompetitionEditionFilterPanel.this.setVisible(false);
 							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
 
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 							panel.setVisible(true);
 						} else if (3 == tableIndex[1]) {
 							String playerID;
@@ -405,7 +405,7 @@ public class CompetitionEditionFilterPanel
 							CompetitionEditionFilterPanel.this.setVisible(false);
 							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
 
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 							panel.setVisible(true);
 						}
 
