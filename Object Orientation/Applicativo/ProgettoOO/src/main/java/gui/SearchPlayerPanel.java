@@ -94,9 +94,9 @@ public class SearchPlayerPanel
 		string += " ";
 		string += Controller.getInstance().countPlayers().toString();
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("name").toUpperCase());
@@ -234,7 +234,7 @@ public class SearchPlayerPanel
 
 
 		playerTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(playerTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
 
@@ -540,7 +540,7 @@ public class SearchPlayerPanel
 						SearchPlayerPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchPlayerPanel.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {

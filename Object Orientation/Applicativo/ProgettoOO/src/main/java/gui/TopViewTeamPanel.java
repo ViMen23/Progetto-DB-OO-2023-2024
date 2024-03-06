@@ -47,11 +47,11 @@ public class TopViewTeamPanel
 
 		squadParticipationButton = new JButton(GuiConfiguration.getMessage("seasonDetails"));
 		squadParticipationButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		squadParticipationButton.addActionListener(new ActionListener() {
@@ -65,7 +65,7 @@ public class TopViewTeamPanel
 
 				try {
 					Component newComponent = new ViewTeamSeasonPanel(teamID, teamType);
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
@@ -85,7 +85,7 @@ public class TopViewTeamPanel
 
 				try {
 					Component newComponent = new ViewTeamCasePanel(teamID, teamType);
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());

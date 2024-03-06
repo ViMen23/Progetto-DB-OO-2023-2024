@@ -82,9 +82,9 @@ public class MilitancyFilterPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("militancyFilter"), this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 
 		string = "1. ";
 		string += GuiConfiguration.getMessage("teamType");
@@ -170,7 +170,7 @@ public class MilitancyFilterPanel
 
 
 		playerTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(playerTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(playerTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -402,7 +402,7 @@ public class MilitancyFilterPanel
 						MilitancyFilterPanel.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(MilitancyFilterPanel.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {

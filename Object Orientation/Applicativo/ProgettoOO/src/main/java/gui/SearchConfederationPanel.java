@@ -64,9 +64,9 @@ public class SearchConfederationPanel
 		string += Controller.getInstance().countConfederations().toString();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("confederationType"));
@@ -97,7 +97,7 @@ public class SearchConfederationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 		confederationTablePanel = new TablePanel(true, null);
-		this.add(confederationTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(confederationTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));

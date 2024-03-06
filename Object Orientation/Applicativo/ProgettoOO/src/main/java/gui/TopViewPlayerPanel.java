@@ -48,27 +48,27 @@ public class TopViewPlayerPanel
 
 		generalInfoButton = new JButton(GuiConfiguration.getMessage("general"));
 		generalInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(generalInfoButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(generalInfoButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		detailedInfoButton = new JButton(GuiConfiguration.getMessage("detailed"));
 		detailedInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(detailedInfoButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(detailedInfoButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		careerButton = new JButton(GuiConfiguration.getMessage("career"));
 		careerButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(careerButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(careerButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		clubStatisticsButton = new JButton(GuiConfiguration.getMessage("clubStatistics"));
 		clubStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(clubStatisticsButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(clubStatisticsButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		nationalStatisticsButton = new JButton(GuiConfiguration.getMessage("nationalStatistics"));
 		nationalStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(nationalStatisticsButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(nationalStatisticsButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 		generalInfoButton.addActionListener(new ActionListener() {
 			@Override
@@ -81,7 +81,7 @@ public class TopViewPlayerPanel
 
 				try {
 					Component newComponent = new ViewPlayerGeneralInfo(playerID);
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
@@ -100,7 +100,7 @@ public class TopViewPlayerPanel
 
 				try {
 					Component newComponent = new ViewPlayerDetailedInfo(playerID);
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
@@ -119,7 +119,7 @@ public class TopViewPlayerPanel
 
 				try {
 					Component newComponent = new ViewPlayerCareer(playerID);
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
 					System.out.println(ex.getMessage());
@@ -139,7 +139,7 @@ public class TopViewPlayerPanel
 				try {
 					Component newComponent = new ViewPlayerClubStatistic(playerID);
 
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 
 				} catch (Exception ex) {
@@ -160,7 +160,7 @@ public class TopViewPlayerPanel
 				try {
 					Component newComponent = new ViewPlayerNationalStatistic(playerID);
 
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 
 				} catch (Exception ex) {
@@ -181,7 +181,7 @@ public class TopViewPlayerPanel
 
 					Component newComponent = new ViewPlayerCase(playerID);
 
-					container.add(newComponent, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 
 				} catch (Exception ex) {

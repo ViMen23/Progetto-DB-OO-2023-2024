@@ -19,7 +19,7 @@ public class AdminNavigationPanel
 
 		migLayout = new MigLayout
 						(
-										GuiConfiguration.WRAP_3_LAYOUT_CONSTRAINT,
+										GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
 										GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 										GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 						);
@@ -31,10 +31,10 @@ public class AdminNavigationPanel
 
 
 		titleLabel = new TitleLabel("VISTA ADMIN"); //TODO
-		this.add(titleLabel, "span");
+		this.add(titleLabel, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		button = new JButton(GuiConfiguration.getMessage("create") + " " + GuiConfiguration.getMessage("team").toUpperCase());
+		button = new JButton(GuiConfiguration.getMessage("addTeam"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		button.addActionListener(new ActionListener() {
@@ -47,7 +47,7 @@ public class AdminNavigationPanel
 
 					MainFrame.getMainFrameInstance().getContentPane().remove(component);
 				}
-				MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -55,7 +55,7 @@ public class AdminNavigationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		button = new JButton(GuiConfiguration.getMessage("modify")+ " " + GuiConfiguration.getMessage("team").toUpperCase());
+		button = new JButton(GuiConfiguration.getMessage("manageTeam"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		button.addActionListener(new ActionListener() {
@@ -68,44 +68,17 @@ public class AdminNavigationPanel
 
 					MainFrame.getMainFrameInstance().getContentPane().remove(component);
 				}
-				MainFrame.getMainFrameInstance().add(new AdminChooseSearchTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(
+								new AdminSearchTeam(),
+								GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT
+				);
 			}
 		});
 
 		this.add(button);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-		button = new JButton(GuiConfiguration.getMessage("delete")+ " " + GuiConfiguration.getMessage("team").toUpperCase());
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				//TODO
-			}
-		});
-
-		this.add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
-		button = new JButton(GuiConfiguration.getMessage("create")+ " " + GuiConfiguration.getMessage("player").toUpperCase());
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				//TODO
-			}
-		});
-
-		this.add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-		button = new JButton(GuiConfiguration.getMessage("modify")+ " " + GuiConfiguration.getMessage("player").toUpperCase());
+		button = new JButton(GuiConfiguration.getMessage("addPlayer"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		button.addActionListener(new ActionListener() {
@@ -120,7 +93,7 @@ public class AdminNavigationPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		button = new JButton(GuiConfiguration.getMessage("delete")+ " " + GuiConfiguration.getMessage("player").toUpperCase());
+		button = new JButton(GuiConfiguration.getMessage("managePlayer"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		button.addActionListener(new ActionListener() {
@@ -132,5 +105,6 @@ public class AdminNavigationPanel
 		});
 
 		this.add(button);
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 }

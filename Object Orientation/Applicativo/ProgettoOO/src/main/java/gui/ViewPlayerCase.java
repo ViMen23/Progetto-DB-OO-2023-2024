@@ -124,7 +124,7 @@ public class ViewPlayerCase
 						ViewPlayerCase.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
@@ -150,7 +150,7 @@ public class ViewPlayerCase
 						ViewPlayerCase.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {

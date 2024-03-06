@@ -15,11 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class CompetitionEditionFilterPanel
+public class AdminFilterTeam
 				extends JPanel
 {
-
-	public CompetitionEditionFilterPanel()
+	public AdminFilterTeam()
 	{
 		final JLabel ctrlTeamType = new JLabel((String) null);
 		final JLabel ctrlCountryType = new JLabel((String) null);
@@ -27,9 +26,7 @@ public class CompetitionEditionFilterPanel
 		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
 		final JLabel ctrlSeason = new JLabel((String) null);
-
-		final Integer[] tableIndex = {-1, -1};
-		final JLabel ctrlMouseTable = new JLabel((String) null);
+		final JLabel ctrlTeamName = new JLabel((String) null);
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -43,13 +40,14 @@ public class CompetitionEditionFilterPanel
 		final Vector<String> seasonVector = new Vector<>();
 		final Map<String, String> seasonMap = new HashMap<>();
 
-		final Vector<Vector<String>> competitionEditionTableData = new Vector<>();
-		final Map<Integer, Map<Integer, String>> competitionEditionTableDataMap = new HashMap<>();
+		final Vector<String> teamNameVector = new Vector<>();
+		final Map<String, String> teamNameMap = new HashMap<>();
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
 
 		MigLayout migLayout;
-		TopSearchPanel topSearchPanel;
+		AdminChooseSearchTeam adminChooseSearchTeam;
+		AdminTopSearchPanel topSearchPanel;
 		TitleLabel titleLabel;
 		RadioPanel teamTypePanel;
 		InfoPanel infoPanel;
@@ -58,7 +56,7 @@ public class CompetitionEditionFilterPanel
 		RadioComboPanel nationTypeNamePanel;
 		LabelComboPanel competitionNamePanel;
 		LabelComboPanel seasonPanel;
-		TablePanel competitionEditionTablePanel;
+		LabelComboPanel teamNamePanel;
 		JButton button;
 
 		String string;
@@ -73,19 +71,24 @@ public class CompetitionEditionFilterPanel
 		this.setLayout(migLayout);
 
 
+		adminChooseSearchTeam = new AdminChooseSearchTeam();
+
+		this.add(adminChooseSearchTeam, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
+
+
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.NINE_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
 
 
-		string = GuiConfiguration.getMessage("competitionEditionFilter");
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		string = GuiConfiguration.getMessage("stepFilter");
+		topSearchPanel = new AdminTopSearchPanel(string);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -96,24 +99,14 @@ public class CompetitionEditionFilterPanel
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
-		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
-
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
 		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamTypeInfo"));
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "2. ";
 		string += GuiConfiguration.getMessage("country");
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
-		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
-
 
 		worldTypePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.WORLD.toString(),
@@ -149,9 +142,6 @@ public class CompetitionEditionFilterPanel
 		nationTypeNamePanel.getRadioButton().setEnabled(false);
 		buttonGroup.add(nationTypeNamePanel.getRadioButton());
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("countryInfo"));
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "3. ";
@@ -159,14 +149,8 @@ public class CompetitionEditionFilterPanel
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
-		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
-
 		competitionNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("competition"), false, ctrlCompetitionName);
 		centralPanel.add(competitionNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionInfo"));
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		string = "4. ";
@@ -174,58 +158,37 @@ public class CompetitionEditionFilterPanel
 		titleLabel = new TitleLabel(string);
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
-		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
-
 		seasonPanel = new LabelComboPanel(GuiConfiguration.getMessage("season"), false, ctrlSeason);
 		centralPanel.add(seasonPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
-
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("seasonInfo"));
-		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		string = "5. ";
+		string += GuiConfiguration.getMessage("team").toUpperCase();
+		titleLabel = new TitleLabel(string);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		competitionEditionTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(competitionEditionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		teamNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("team"), false, ctrlTeamName);
+		centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		button = new JButton(GuiConfiguration.getMessage("search"));
+		button = new JButton(GuiConfiguration.getMessage("go"));
 		button.setEnabled(false);
+		/*------------------------------------------------------------------------------------------------------*/
+
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				MyTable competitionEditionStatisticsTable = competitionEditionTablePanel.getMyTable();
-				String string;
+				JPanel panel;
 
-				competitionEditionTableData.clear();
-				competitionEditionTableDataMap.clear();
+				panel = new AdminViewTeam(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText());
 
 
-				Controller.getInstance().setStatisticCompetitionEditionTable(
-								seasonMap.get(ctrlSeason.getText()),
-								competitionNameMap.get(ctrlCompetitionName.getText()),
-								competitionEditionTableData,
-								competitionEditionTableDataMap
-				);
+				AdminFilterTeam.this.setVisible(false);
+				MainFrame.getMainFrameInstance().getContentPane().remove(AdminFilterTeam.this);
 
-
-				competitionEditionStatisticsTable.setModel(
-								new TableModel(competitionEditionTableData, GuiConfiguration.STATISTIC_EDITION_TABLE_COLUMN_NAME)
-				);
-				competitionEditionStatisticsTable.setPreferredScrollableViewportSize(competitionEditionStatisticsTable.getPreferredSize());
-
-				// messaggio ricerca effettuata
-				string = GuiConfiguration.getMessage("doneSearch");
-				string += " - ";
-				string += GuiConfiguration.getMessage("statistics");
-				string += " ";
-				string += competitionEditionTableData.size();
-
-				competitionEditionTablePanel.getTitleLabel().setText(string);
-
-				topSearchPanel.getTitleButton().doClick();
-				CompetitionEditionFilterPanel.this.revalidate();
+				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				panel.setVisible(true);
 			}
 		});
 
@@ -311,8 +274,8 @@ public class CompetitionEditionFilterPanel
 					competitionNamePanel.getMyComboBox().setSelectedIndex(-1);
 					competitionNamePanel.getMyComboBox().setEnabled(
 									(nationNameMap.get(ctrlNationName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString()))
-									|| (continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString()))
-									|| (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString()))
+													|| (continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString()))
+													|| (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString()))
 					);
 					ctrlCompetitionName.setText(null);
 				}
@@ -372,47 +335,35 @@ public class CompetitionEditionFilterPanel
 
 					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
 				} else {
-					button.setEnabled(seasonMap.get(ctrlSeason.getText()) != null);
+					teamNamePanel.getMyComboBox().setSelectedIndex(-1);
+					teamNamePanel.getMyComboBox().setEnabled(seasonMap.get(ctrlSeason.getText()) != null);
+					ctrlTeamName.setText(null);
 				}
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
-					try {
-						if (0 == tableIndex[1]) {
-							String teamID;
+				if (0 == StringUtils.compareIgnoreCase(ctrlTeamName.getText(), "@fill")) {
+					teamNameVector.clear();
+					teamNameMap.clear();
 
-							teamID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+					Controller.getInstance().setTeamComboBox(
+									seasonMap.get(ctrlSeason.getText()),
+									competitionNameMap.get(ctrlCompetitionName.getText()),
+									teamNameVector,
+									teamNameMap
+					);
 
-							JPanel panel = new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText());
-
-							CompetitionEditionFilterPanel.this.setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
-
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-							panel.setVisible(true);
-						} else if (3 == tableIndex[1]) {
-							String playerID;
-
-							playerID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-
-							JPanel panel = new ViewPlayerGeneralInfo(playerID);
-
-							CompetitionEditionFilterPanel.this.setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
-
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-							panel.setVisible(true);
-						}
-
-					} catch (Exception ignored) {
-					} finally {
-						ctrlMouseTable.setText("@null");
+					if (teamNameVector.isEmpty()) {
+						teamNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
+
+					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
+				} else {
+					button.setEnabled(teamNameMap.get(ctrlTeamName.getText()) != null);
 				}
 			}
 		});

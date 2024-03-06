@@ -40,9 +40,9 @@ public class AdminSearchTeam
 
 
 		MigLayout migLayout;
-		TopSearchPanel topSearchPanel;
+		AdminChooseSearchTeam adminChooseSearchTeam;
+		AdminTopSearchPanel topSearchPanel;
 		TitleLabel titleLabel;
-		InfoPanel infoPanel;
 		LabelTextPanel teamLongNamePanel;
 		LabelTextPanel teamShortNamePanel;
 		RadioPanel teamTypePanel;
@@ -64,6 +64,9 @@ public class AdminSearchTeam
 		this.setLayout(migLayout);
 		this.setOpaque(false);
 
+		adminChooseSearchTeam = new AdminChooseSearchTeam();
+
+		this.add(adminChooseSearchTeam, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		JPanel centralPanel = new JPanel();
 
@@ -82,10 +85,10 @@ public class AdminSearchTeam
 		string += " ";
 		string += Controller.getInstance().countTeams().toString();
 
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
-		this.add(topSearchPanel, GuiConfiguration.HGROUP_DOCK_NORTH_ADD_CONSTRAINT);
+		topSearchPanel = new AdminTopSearchPanel(string, this, centralPanel);
+		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
-		this.add(centralPanel, GuiConfiguration.HGROUP_DOCK_CENTER_ADD_CONSTRAINT);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -137,7 +140,7 @@ public class AdminSearchTeam
 		/*------------------------------------------------------------------------------------------------------*/
 
 		teamTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(teamTablePanel, GuiConfiguration.HGROUP_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(teamTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
@@ -298,12 +301,12 @@ public class AdminSearchTeam
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, teamType);
+						JPanel panel = new AdminViewTeam(teamID, teamType);
 
 						AdminSearchTeam.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchTeam.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
