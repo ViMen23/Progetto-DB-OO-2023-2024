@@ -3,10 +3,7 @@ package postgresImplDAO;
 import dao.PrizeDAO;
 import database.DatabaseConnection;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PostgresImplPrizeDAO
@@ -70,6 +67,56 @@ public class PostgresImplPrizeDAO
 			}
 
 			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void newPrizeTeam(String teamID,
+													 String prizeID,
+													 String assignedYear,
+													 String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_prize_team(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+			cs.setString(3, prizeID);
+			cs.setString(4, assignedYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deletePrizeTeam(String teamID,
+															String prizeID,
+															String assignedYear,
+															String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_prize_team(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+			cs.setString(3, prizeID);
+			cs.setString(4, assignedYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
 			cs.close();
 			conn.close();
 

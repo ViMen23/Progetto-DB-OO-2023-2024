@@ -14,4 +14,14 @@ public interface PrizeDAO
 													List<String> listPrizeAssignYear,
 													List<String> listPrizeName,
 													List<String> listPrizeGiven);
+
+	void newPrizeTeam(String teamID,
+										String prizeID,
+										String assignedYear,
+										String message);
+
+	void deletePrizeTeam(String teamID,
+											 String prizeID,
+											 String assignedYear,
+											 String message);
 }

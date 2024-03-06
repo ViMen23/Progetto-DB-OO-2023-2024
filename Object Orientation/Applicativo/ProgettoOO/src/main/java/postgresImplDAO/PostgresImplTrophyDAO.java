@@ -3,10 +3,7 @@ package postgresImplDAO;
 import dao.TrophyDAO;
 import database.DatabaseConnection;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 
 public class PostgresImplTrophyDAO
@@ -80,6 +77,60 @@ public class PostgresImplTrophyDAO
 			}
 
 			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void newTrophyTeam(String teamID,
+														String trophyID,
+														String competitionID,
+														String competitionStartYear,
+														String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_trophy_team(?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+			cs.setString(3, trophyID);
+			cs.setString(4, competitionID);
+			cs.setString(5, competitionStartYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deleteTrophyTeam(String teamID,
+															 String trophyID,
+															 String competitionID,
+															 String competitionStartYear,
+															 String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_trophy_team(?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+			cs.setString(3, trophyID);
+			cs.setString(4, competitionID);
+			cs.setString(5, competitionStartYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
 			cs.close();
 			conn.close();
 

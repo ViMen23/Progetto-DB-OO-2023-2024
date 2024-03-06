@@ -9,7 +9,7 @@
  ******************************************************************************/
 
 /*******************************************************************************
- * JAVA FUNCTION
+ * JAVA FUNCTION OUTPUT
  ******************************************************************************/
 
 
@@ -2902,6 +2902,9 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * JAVA FUNCTION ADMIN
+ ******************************************************************************/
 
 
 /*******************************************************************************
@@ -2911,32 +2914,37 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : boolean
+ * RETURNS : text
  *
  * DESC : TODO
  ******************************************************************************/
-DROP FUNCTION new_national_team(text);
-
 CREATE OR REPLACE FUNCTION new_national_team
 (
     IN  id_country  text
 )
-RETURNS integer
+RETURNS text
 AS
 $$
 DECLARE
 
-	rec_country	record;
-    count_row   integer;
+	name_country    text;
+    code_country    text;
+    count_row       integer;
+    output_message  text;
 
 BEGIN
 
-	rec_country = get_record
-				  (
-						'@',
-						'fp_country'
-						'@id@' || id_country::text
-				  );
+	SELECT
+        fp_country.name::text,
+        fp_country.code::text
+    INTO
+        name_country,
+        code_country
+    FROM
+        fp_country
+    WHERE
+        fp_country.id = id_country::integer;
+
 
 
 	INSERT INTO
@@ -2951,14 +2959,21 @@ BEGIN
 	(
 		'NATIONAL',
 		id_country::integer,
-		rec_country.name,
-		rec_country.code
+		name_country::dm_alnum,
+		code_country::dm_code
 	)
 	ON CONFLICT DO NOTHING;
 
     GET DIAGNOSTICS count_row = row_count;
-	
-	RETURN count_row;
+
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertNationalTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
 
 END;
 $$
@@ -2973,7 +2988,7 @@ LANGUAGE plpgsql;
  * IN      : text, text, text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : boolean
+ * RETURNS : integer
  *
  * DESC : TODO
  ******************************************************************************/
@@ -2983,12 +2998,13 @@ CREATE OR REPLACE FUNCTION new_club_team
     IN  long_name_team  text,
     IN  short_name_team text
 )
-RETURNS integer
+RETURNS text
 AS
 $$
 DECLARE
 
-    count_row   integer;
+    count_row       integer;
+    output_message  text;
 
 BEGIN
 
@@ -3011,10 +3027,503 @@ BEGIN
 
     GET DIAGNOSTICS count_row = row_count;
 	
-	RETURN count_row;
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertClubTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
 
 END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_club_team
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_club_team
+(
+    IN  id_team         text,
+    IN  long_name_team  text,
+    IN  short_name_team text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    conflict        boolean;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    SELECT
+        count(*) >= 1
+    INTO
+        conflict
+    FROM
+        fp_team
+    WHERE
+        fp_team.type = 'CLUB'
+        AND
+        fp_team.long_name = long_name_team::dm_alnum;
+
+
+    IF (conflict) THEN
+        output_message = 'errorMessageUpdateClubTeamConflict';
+        RETURN output_message;
+    END IF;
+
+
+	UPDATE
+		fp_team
+	SET
+        long_name = long_name_team,
+        short_name = short_name_team
+	WHERE
+        id = id_team::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateClubTeam';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_team
+(
+    IN  id_team text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    partecipation   boolean;
+    militancy       boolean;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    SELECT
+        count(*) >= 1
+    INTO
+        partecipation
+    FROM
+        fp_partecipation
+    WHERE
+        fp_partecipation.team_id = id_team::integer;
+    
+
+    SELECT
+        count(*) >= 1
+    INTO
+        militancy
+    FROM
+        fp_militancy
+    WHERE
+        fp_militancy.team_id = id_team::integer;
+
+
+    IF (partecipation OR militancy) THEN
+        output_message = 'errorMessageDeleteTeamReference';
+        RETURN output_message;
+    END IF;
+
+
+
+	DELETE FROM
+		fp_team
+	WHERE
+        id = id_team::integer;	
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_partecipation
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_partecipation
+(
+    IN  id_team         text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_partecipation
+		(
+			start_year,
+            competition_id,
+            team_id
+		)
+	VALUES
+	(
+		start_year_comp::dm_year,
+		id_comp::integer,
+        id_team::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPartecipation';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_partecipation
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_partecipation
+(
+    IN  id_team         text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_partecipation
+	WHERE
+		fp_partecipation.start_year = start_year_comp::dm_year
+        AND
+		fp_partecipation.competition_id = id_comp::integer
+        AND
+        fp_partecipation.team_id = id_team::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePartecipation';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_trophy_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_trophy_team
+(
+    IN  id_team         text,
+    IN  id_trophy       text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_team_trophy_case
+		(
+			team_id,
+            trophy_id,
+            start_year,
+            competition_id
+		)
+	VALUES
+	(
+        id_team::integer,
+        id_trophy::integer,
+		start_year_comp::dm_year,
+		id_comp::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertTrophyTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_trophy_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_trophy_team
+(
+    IN  id_team         text,
+    IN  id_trophy       text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_team_trophy_case
+	WHERE
+        fp_team_trophy_case.team_id = id_team::integer
+        AND
+        fp_team_trophy_case.trophy_id = id_trophy::integer
+        AND
+		fp_team_trophy_case.start_year = start_year_comp::dm_year
+        AND
+		fp_team_trophy_case.competition_id = id_comp::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteTrophyTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_prize_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_prize_team
+(
+    IN  id_team     text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_team_prize_case
+		(
+            team_id,
+            prize_id,
+            assign_year
+		)
+	VALUES
+	(
+        id_team::integer,
+        id_prize::integer,
+		a_year::dm_year
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPrizeTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_prize_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_prize_team
+(
+    IN  id_team     text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_team_prize_case
+	WHERE
+        fp_team_prize_case.team_id = id_team::integer
+        AND
+        fp_team_prize_case.prize_id = id_prize::integer
+        AND
+		fp_team_prize_case.a_year = a_year::dm_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePrizeTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------

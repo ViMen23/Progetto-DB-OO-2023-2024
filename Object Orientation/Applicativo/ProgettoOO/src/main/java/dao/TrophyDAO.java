@@ -19,4 +19,16 @@ public interface TrophyDAO
 										 List<String> listTeamID,
 										 List<String> listTeamLongName,
 										 List<String> listTrophyName);
+
+	void newTrophyTeam(String teamID,
+										 String trophyID,
+										 String competitionID,
+										 String competitionStartYear,
+										 String message);
+
+	void deleteTrophyTeam(String teamID,
+												String trophyID,
+												String competitionID,
+												String competitionStartYear,
+												String message);
 }

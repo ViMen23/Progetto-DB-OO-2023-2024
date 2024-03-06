@@ -1,5 +1,8 @@
 package gui;
 
+import dao.TeamDAO;
+import postgresImplDAO.PostgresImplTeamDAO;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -21,6 +24,10 @@ public class Main
 		MainFrame.getMainFrameInstance().setVisible(true);
 
 		MainFrame.getMainFrameInstance().pack();
+
+		String message = null;
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.newNationalTeamDB("11", message);
 	}
 	
 	public static void main(String[] args)

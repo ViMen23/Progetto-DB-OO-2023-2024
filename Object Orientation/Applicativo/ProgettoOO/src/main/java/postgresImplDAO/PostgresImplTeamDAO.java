@@ -189,4 +189,96 @@ public class PostgresImplTeamDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void newNationalTeamDB(String countryID,
+																String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_national_team(?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, countryID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void newClubTeamDB(String countryID,
+														String teamLongName,
+														String teamShortName,
+														String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_club_team(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, countryID);
+			cs.setString(3, teamLongName);
+			cs.setString(4, teamShortName);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void updateClubTeamDB(String teamID,
+															 String teamLongName,
+															 String teamShortName,
+															 String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_club_team(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+			cs.setString(3, teamLongName);
+			cs.setString(4, teamShortName);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void deleteTeamDB(String teamID,
+													 String message)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_team(?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, teamID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

@@ -11,4 +11,14 @@ public interface PartecipationDAO
 														List<String> listCompetitionName,
 														List<String> listConfederationID,
 														List<String> listConfederationShortName);
+
+	void newPartecipationDB(String teamID,
+													String competitionID,
+													String competitionStartYear,
+													String message);
+
+	void deletePartecipationDB(String teamID,
+														 String competitionID,
+														 String competitionStartYear,
+														 String message);
 }
