@@ -30,7 +30,7 @@ public class AdminNavigationPanel
 
 
 
-		titleLabel = new TitleLabel("VISTA ADMIN");
+		titleLabel = new TitleLabel("VISTA ADMIN"); //TODO
 		this.add(titleLabel, "span");
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -68,7 +68,7 @@ public class AdminNavigationPanel
 
 					MainFrame.getMainFrameInstance().getContentPane().remove(component);
 				}
-				MainFrame.getMainFrameInstance().add(new AdminSearchTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(new AdminChooseSearchTeam(), GuiConfiguration.HGROUP_VGROW_ADD_CONSTRAINT);
 			}
 		});
 

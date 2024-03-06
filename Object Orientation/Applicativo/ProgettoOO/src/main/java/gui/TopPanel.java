@@ -34,7 +34,7 @@ public class TopPanel
 
 		setLayout(migLayout);
 		setBackground(Color.white);
-		setPreferredSize(new Dimension(1400, 0));
+		//setPreferredSize(new Dimension(1400, 0));
 		/*------------------------------------------------------------------------------------------------------*/
 
 		logoLabel = new JLabel(logoIcon);

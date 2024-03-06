@@ -1329,7 +1329,7 @@ public class Controller
 
 		infoTeamMap.put(GuiConfiguration.getMessage("team"), team.getLongName());
 		infoTeamMap.put(GuiConfiguration.getMessage("code"), team.getShortName());
-		infoTeamMap.put(GuiConfiguration.getMessage("type"), GuiConfiguration.getMessage(team.getType()));
+		infoTeamMap.put(GuiConfiguration.getMessage("type").toUpperCase(), GuiConfiguration.getMessage(team.getType()));
 		infoTeamMap.put(GuiConfiguration.getMessage("country"), team.getCountry().getName());
 		infoTeamMap.put(GuiConfiguration.getMessage("confederation"), team.getConfederation().getShortName());
 	}

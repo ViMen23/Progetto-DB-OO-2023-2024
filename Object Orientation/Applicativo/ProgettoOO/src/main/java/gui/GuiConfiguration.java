@@ -65,9 +65,11 @@ public class GuiConfiguration
 	public static final String ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT = "10[top]0";
 	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";
 	public static final String ONE_GROW_FILL_GAP_0_0_CELL = "0[grow, fill]0";
+	public static final String ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT = "[70%, fill]";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[]10[]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
 	public static final String TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "20[59%, fill]50[35%, fill]20";
+	public static final String TWO_CELL_FILL_SIZE_20P_30P_EXT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%][30%, fill]5%";
 	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[60%, fill]5%";
 	public static final String TWO_CELL_GROW_FILL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[grow, fill]10[grow, fill]0";
 	public static final String TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT = "[15%, fill]150[15%, fill]";
@@ -230,7 +232,7 @@ public class GuiConfiguration
 	{
 		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("code"));
-		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("superCountry"));
 	}
 
@@ -238,7 +240,7 @@ public class GuiConfiguration
 	{
 		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
 		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("code"));
-		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 		CONFEDERATION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("superConfederation"));
 	}
@@ -246,7 +248,7 @@ public class GuiConfiguration
 	public static void initCompetitionTableColumnName()
 	{
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
-		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("teamType"));
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
@@ -256,7 +258,7 @@ public class GuiConfiguration
 	{
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("code"));
-		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 	}
 
@@ -269,7 +271,7 @@ public class GuiConfiguration
 	public static void initTeamParticipantTableColumnName()
 	{
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
-		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
 	}
 
@@ -336,7 +338,7 @@ public class GuiConfiguration
 	public static void initPlayerClubCareerTableColumnName()
 	{
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type"));
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 	}

@@ -15,11 +15,6 @@ public class LabelTextPanel
 				extends JPanel
 {
 
-	private static final ImageIcon ERROR = GuiConfiguration.createImageIcon("images/error.png");
-	private static final Border BORDER_ERROR = BorderFactory.createCompoundBorder(
-					BorderFactory.createEmptyBorder(-2,0,-2,10),
-					BorderFactory.createMatteBorder(0, 0,0, 30, ERROR)
-	);
 	private final JTextField textField;
 
 	public LabelTextPanel(String labelText,
@@ -36,7 +31,6 @@ public class LabelTextPanel
 	{
 		MigLayout migLayout;
 		JLabel label;
-		final Border border;
 
 
 		migLayout = new MigLayout(
@@ -53,7 +47,7 @@ public class LabelTextPanel
 
 		textField = new JTextField(GuiConfiguration.INPUT_COLUMN);
 		this.add(textField);
-		border = textField.getBorder();
+
 		textField.addCaretListener(new CaretListener() {
 			@Override
 			public void caretUpdate(CaretEvent e)
@@ -62,10 +56,8 @@ public class LabelTextPanel
 
 				if (pattern.matcher(text).find()) {
 					ctrlLabel.setText(text);
-					textField.setBorder(border);
 				} else {
 					ctrlLabel.setText(null);
-					textField.setBorder(BorderFactory.createCompoundBorder(border, BORDER_ERROR));
 				}
 			}
 		});
