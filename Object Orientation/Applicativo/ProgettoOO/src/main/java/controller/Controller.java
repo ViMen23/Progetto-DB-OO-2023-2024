@@ -1380,6 +1380,90 @@ public class Controller
 		setTeamPrizeTable(teamID, teamPrizeTableData);
 		setTeamTrophyTable(teamID, teamType, teamTrophyTableData);
 	}
+
+
+	private String insertClubTeam(Team team)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+
+		String countryID = null;
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		Country country = team.getCountry();
+		for (String ID : countryMap.keySet()) {
+			if (country == countryMap.get(ID)) {
+				countryID = ID;
+				break;
+			}
+		}
+
+		return teamDAO.newClubTeamDB(countryID, team.getLongName(), team.getShortName());
+	}
+
+	private String insertNationalTeam(Team team)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+
+		String countryID = null;
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		Country country = team.getCountry();
+		for (String ID : countryMap.keySet()) {
+			if (country == countryMap.get(ID)) {
+				countryID = ID;
+				break;
+			}
+		}
+
+		return teamDAO.newNationalTeamDB(countryID);
+	}
+
+
+	public String createTeam(String teamType,
+													 String teamLongName,
+													 String teamShortName,
+													 String countryID)
+	{
+		String message = null;
+		Map<String, Country> countryMap = newCountry().getCountryMap();
+		Country country = countryMap.get(countryID);
+		countryMap.clear();
+		countryMap.putIfAbsent(countryID, country);
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			if (!Regex.patternAlnum.matcher(teamLongName).find()) {
+				message = "errorMessageInput";
+				return message;
+			}
+
+			if (!Regex.patternCode.matcher(teamShortName).find()) {
+				message = "errorMessageInput";
+				return message;
+			}
+
+			Team team = newTeam(
+							teamType,
+							teamShortName,
+							teamLongName,
+							country,
+							null
+			);
+
+			message = insertClubTeam(team);
+
+		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			Team team = newTeam(
+							teamType,
+							null,
+							null,
+							country,
+							null
+			);
+
+			message = insertNationalTeam(team);
+
+		}
+		return message;
+	}
+
 	/*------------------------------------------------------------------------------------------------------*/
 
 

@@ -25,9 +25,6 @@ public class Main
 
 		MainFrame.getMainFrameInstance().pack();
 
-		String message = null;
-		TeamDAO teamDAO = new PostgresImplTeamDAO();
-		teamDAO.newNationalTeamDB("11", message);
 	}
 	
 	public static void main(String[] args)

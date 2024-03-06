@@ -191,9 +191,10 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void newNationalTeamDB(String countryID,
-																String message)
+	public String newNationalTeamDB(String countryID)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call new_national_team(?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -209,14 +210,16 @@ public class PostgresImplTeamDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
-	public void newClubTeamDB(String countryID,
-														String teamLongName,
-														String teamShortName,
-														String message)
+	public String newClubTeamDB(String countryID,
+															String teamLongName,
+															String teamShortName)
 	{
+		String message = null;
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call new_club_team(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -234,14 +237,17 @@ public class PostgresImplTeamDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
-	public void updateClubTeamDB(String teamID,
-															 String teamLongName,
-															 String teamShortName,
-															 String message)
+	public String updateClubTeamDB(String teamID,
+																 String teamLongName,
+																 String teamShortName)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call update_club_team(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -253,18 +259,22 @@ public class PostgresImplTeamDAO
 
 			message = cs.getString(1);
 
+
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
-	public void deleteTeamDB(String teamID,
-													 String message)
+	public String deleteTeamDB(String teamID)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call delete_team(?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -274,11 +284,14 @@ public class PostgresImplTeamDAO
 
 			message = cs.getString(1);
 
+
 			cs.close();
 			conn.close();
 
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 }

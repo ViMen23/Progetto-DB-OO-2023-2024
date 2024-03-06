@@ -34,19 +34,15 @@ public interface TeamDAO
 	void fetchTeamDB(String teamID,
 									 List<String> listTeamYear);
 
-	void newNationalTeamDB(String countryID,
-												 String message);
+	String newNationalTeamDB(String countryID);
 
-	void newClubTeamDB(String countryID,
-										 String teamLongName,
-										 String teamShortName,
-										 String message);
+	String newClubTeamDB(String countryID,
+											 String teamLongName,
+											 String teamShortName);
 
-	void updateClubTeamDB(String teamID,
-												String teamLongName,
-												String teamShortName,
-												String message);
+	String updateClubTeamDB(String teamID,
+													String teamLongName,
+													String teamShortName);
 
-	void deleteTeamDB(String teamID,
-										String message);
+	String deleteTeamDB(String teamID);
 }

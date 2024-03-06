@@ -19,7 +19,6 @@ import java.util.Vector;
 public class CreateTeam
 				extends JPanel
 {
-
 	public CreateTeam()
 	{
 		final JLabel ctrlTeamType = new JLabel((String) null);
@@ -27,6 +26,7 @@ public class CreateTeam
 		final JLabel ctrlShortName = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel((String) null);
 		final JLabel ctrlNationName = new JLabel((String) null);
+		final Boolean[] ctrlButton = {false, false, false};
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -117,6 +117,8 @@ public class CreateTeam
 
 		button = new JButton(GuiConfiguration.getMessage("confirm"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
+		button.setEnabled(false);
+
 
 		centerPanel.add(button);
 
@@ -124,7 +126,14 @@ public class CreateTeam
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				String message;
+				message = Controller.getInstance().createTeam(
+								ctrlTeamType.getText(),
+								ctrlLongName.getText(),
+								ctrlShortName.getText(),
+								nationNameMap.get(ctrlNationName.getText())
+				);
+				System.out.println(message);
 			}
 		});
 
@@ -133,15 +142,34 @@ public class CreateTeam
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				boolean bool = (0 != StringUtils.compareIgnoreCase(ctrlTeamType.getText(), Team.TEAM_TYPE.NATIONAL.toString()));
-
+				longNamePanel.getTextField().setEnabled(0 != StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL"));
 				longNamePanel.getTextField().setText(null);
-				longNamePanel.getTextField().setEnabled(bool);
-
+				shortNamePanel.getTextField().setEnabled(0 != StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL"));
 				shortNamePanel.getTextField().setText(null);
-				shortNamePanel.getTextField().setEnabled(bool);
+
+				button.setEnabled((0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "CLUB") && ctrlButton[0] && ctrlButton[1] && ctrlButton[2]) || (0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL") && ctrlButton[2]));
 			}
 		});
+
+
+		ctrlLongName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				ctrlButton[0] = (null != ctrlLongName.getText());
+				button.setEnabled((0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "CLUB") && ctrlButton[0] && ctrlButton[1] && ctrlButton[2]) || (0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL") && ctrlButton[2]));
+			}
+		});
+
+		ctrlShortName.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				ctrlButton[1] = (null != ctrlShortName.getText());
+				button.setEnabled((0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "CLUB") && ctrlButton[0] && ctrlButton[1] && ctrlButton[2]) || (0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL") && ctrlButton[2]));
+			}
+		});
+
 
 		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
@@ -191,6 +219,9 @@ public class CreateTeam
 						nationNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
+				} else {
+					ctrlButton[2] = (null != nationNameMap.get(ctrlNationName.getText()));
+					button.setEnabled((0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "CLUB") && ctrlButton[0] && ctrlButton[1] && ctrlButton[2]) || (0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL") && ctrlButton[2]));
 				}
 			}
 		});
