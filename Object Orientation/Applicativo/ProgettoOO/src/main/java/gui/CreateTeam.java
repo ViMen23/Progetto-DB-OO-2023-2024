@@ -133,7 +133,11 @@ public class CreateTeam
 								ctrlShortName.getText(),
 								nationNameMap.get(ctrlNationName.getText())
 				);
-				System.out.println(message);
+
+				JOptionPane.showMessageDialog(
+								null,
+								GuiConfiguration.getMessage(message)
+				);
 			}
 		});
 
@@ -146,6 +150,8 @@ public class CreateTeam
 				longNamePanel.getTextField().setText(null);
 				shortNamePanel.getTextField().setEnabled(0 != StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL"));
 				shortNamePanel.getTextField().setText(null);
+				continentNamePanel.getMyComboBox().setSelectedIndex(-1);
+				ctrlContinentName.setText(null);
 
 				button.setEnabled((0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "CLUB") && ctrlButton[0] && ctrlButton[1] && ctrlButton[2]) || (0 == StringUtils.compareIgnoreCase(ctrlTeamType.getText(), "NATIONAL") && ctrlButton[2]));
 			}
