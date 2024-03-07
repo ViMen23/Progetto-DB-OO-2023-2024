@@ -293,9 +293,9 @@ public class GuiConfiguration
 	{
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname").toUpperCase());
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name").toUpperCase());
-		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("dob"));
+		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("dob").toUpperCase());
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
-		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("foot"));
+		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("foot").toUpperCase());
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("position").toUpperCase());
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("retiredDate"));

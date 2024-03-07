@@ -219,7 +219,7 @@ public class SearchPlayerPanel
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("foot"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("foot").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
@@ -359,7 +359,7 @@ public class SearchPlayerPanel
 						string += "\n";
 					}
 
-					string += GuiConfiguration.getMessage("foot");
+					string += GuiConfiguration.getMessage("foot").toUpperCase();
 					string +=  ": ";
 					string += GuiConfiguration.getMessage(ctrlPlayerFoot.getText());
 				}

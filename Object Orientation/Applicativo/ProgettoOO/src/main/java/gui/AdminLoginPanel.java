@@ -122,7 +122,7 @@ public class AdminLoginPanel
 						}
 					}
 
-					container.add(new AdminNavigationPanel(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					//container.add(new AdminNavigationPanel(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
 
 					Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
 					window.dispose();
