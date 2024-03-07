@@ -108,7 +108,7 @@ public class PostgresImplPartecipationDAO
 	@Override
 	public void fetchPartecipation(String teamID,
 																 String competitionStartYear,
-																 Vector<Vector<String>> teamPartecipationTableData)
+																 Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -118,7 +118,7 @@ public class PostgresImplPartecipationDAO
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				Vector<String> vector = new Vector<>();
+				Vector<Object> vector = new Vector<>();
 
 				vector.add(rs.getString("comp_name"));
 				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));

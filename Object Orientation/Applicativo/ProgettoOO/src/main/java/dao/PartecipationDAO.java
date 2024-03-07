@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Vector;
 
 public interface PartecipationDAO
@@ -25,5 +26,5 @@ public interface PartecipationDAO
 
 	void fetchPartecipation(String teamID,
 													String competitionStartYear,
-													Vector<Vector<String>> teamPartecipationTableData);
+													Vector<Vector<Object>> teamPartecipationTableData);
 }

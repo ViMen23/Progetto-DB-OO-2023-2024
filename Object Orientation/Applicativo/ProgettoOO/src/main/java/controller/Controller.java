@@ -223,6 +223,17 @@ public class Controller
 						confederationTableData
 		);
 	}
+
+
+	public void setConfederationPartecipation(String teamID,
+																						Map<String, String> confederationMap)
+	{
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		confederationDAO.fetchConfederation(
+						teamID,
+						confederationMap
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -297,6 +308,21 @@ public class Controller
 						competitionID,
 						competitionEditionVector,
 						competitionEditionMap
+		);
+	}
+
+
+	public void setCompetitionConfederationComboBox(String confederationID,
+																									String teamType,
+																									Vector<String> competitionVector,
+																									Map<String, String> competitionMap)
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionConfederation(
+						confederationID,
+						teamType,
+						competitionVector,
+						competitionMap
 		);
 	}
 
@@ -457,7 +483,7 @@ public class Controller
 																Map<String, String> infoTeamMap,
 																Vector<Vector<String>> teamSquadTableData,
 																Map<Integer, Map<Integer, String>> teamSquadTableMap,
-																Vector<Vector<String>> teamPartecipationTableData)
+																Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		setTeamInfoMap(teamID, infoTeamMap);
 		setPartecipationTable(teamID, startYear, teamPartecipationTableData);
@@ -798,7 +824,7 @@ public class Controller
 
 	public void setPartecipationTable(String teamID,
 																		String competitionStartYear,
-																		Vector<Vector<String>> teamPartecipationTableData)
+																		Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
 		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData);
