@@ -2,10 +2,14 @@ package postgresImplDAO;
 
 import dao.PlayerDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
+import model.Team;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class PostgresImplPlayerDAO
 				implements PlayerDAO
@@ -226,6 +230,279 @@ public class PostgresImplPlayerDAO
 
 			while (rs.next()) {
 				startYearSeason.add(rs.getString("start_year"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayer(String playerID,
+													Map<String, String> infoPlayerMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call info_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				String role = "";
+
+				infoPlayerMap.put(GuiConfiguration.getMessage("name").toUpperCase(), rs.getString("player_name"));
+				infoPlayerMap.put(GuiConfiguration.getMessage("surname").toUpperCase(), rs.getString("player_surname"));
+				infoPlayerMap.put(GuiConfiguration.getMessage("dob").toUpperCase(), rs.getString("player_dob"));
+				infoPlayerMap.put(GuiConfiguration.getMessage("bornCountry"), rs.getString("country_name"));
+				infoPlayerMap.put(GuiConfiguration.getMessage("foot").toUpperCase(), GuiConfiguration.getMessage(rs.getString("player_foot")));
+				infoPlayerMap.put(GuiConfiguration.getMessage("mainPosition"), GuiConfiguration.getMessage(rs.getString("position_name")));
+
+				String[] keyPart = rs.getString("player_role").split("_");
+
+				for (String part : keyPart) {
+					role += "_";
+					role += GuiConfiguration.getMessage(part);
+				}
+
+				role = role.substring(1);
+
+				infoPlayerMap.put(GuiConfiguration.getMessage("role"), role);
+
+				if (null == rs.getString("player_retired_date")) {
+					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), "");
+				} else {
+					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), rs.getString("player_retired_date"));
+				}
+
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayer(String startYear,
+													String teamID,
+													Vector<String> playerInfoVector,
+													Map<String, String> playerInfoMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call filter_players(?, ?)}");
+			cs.setString(1, startYear);
+			cs.setString(2, teamID);
+
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				String playerInfo = "";
+				String role = "";
+
+				playerInfo += "[";
+
+				String[] keyPart = rs.getString("player_role").split("_");
+
+				for (String part : keyPart) {
+					role += "_";
+					role += GuiConfiguration.getMessage(part);
+				}
+
+				role = role.substring(1);
+
+				playerInfo += role;
+				playerInfo += "] ";
+				playerInfo += rs.getString("player_name");
+				playerInfo += " ";
+				playerInfo += rs.getString("player_surname");
+
+				playerInfoVector.add(playerInfo);
+				playerInfoMap.put(playerInfoVector.getLast(), rs.getString("player_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayer(String playerSubName,
+													String playerSubSurname,
+													String playerReferringYear,
+													String playerMinAge,
+													String playerMaxAge,
+													String playerContinentID,
+													String playerNationID,
+													String playerRole,
+													String playerPositionID,
+													String playerFoot,
+													Vector<Vector<String>> playerTableData,
+													Map<Integer, Map<Integer, String>> playerTableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_players(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.setString(1, playerSubName);
+			cs.setString(2, playerSubSurname);
+			cs.setString(3, playerReferringYear);
+			cs.setString(4, playerMinAge);
+			cs.setString(5, playerMaxAge);
+			cs.setString(6, playerContinentID);
+			cs.setString(7, playerNationID);
+			cs.setString(8, playerRole);
+			cs.setString(9, playerPositionID);
+			cs.setString(10, playerFoot);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> playerMap = new HashMap<>();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+				String role = "";
+
+
+				vector.add(rs.getString("player_surname"));
+				vector.add(rs.getString("player_name"));
+				vector.add(rs.getString("player_dob"));
+				vector.add(rs.getString("country_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
+
+				String[] keyPart = rs.getString("player_role").split("_");
+
+				for (String part : keyPart) {
+					role += "_";
+					role += GuiConfiguration.getMessage(part);
+				}
+
+				role = role.substring(1);
+
+				vector.add(role);
+				vector.add(GuiConfiguration.getMessage(rs.getString("position_name")));
+
+				if (null == rs.getString("player_retired_date")) {
+					vector.add("");
+				} else {
+					vector.add(rs.getString("player_retired_date"));
+				}
+
+
+				playerTableData.add(vector);
+				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+			}
+
+			playerTableMap.put(0, playerMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayer(String militancyPlayerTeamID,
+													String militancyPlayerStartYear,
+													String militancyPlayerEndYear,
+													Vector<Vector<String>> playerTableData,
+													Map<Integer, Map<Integer, String>> playerTableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_militancy_players(?, ?, ?)}");
+			cs.setString(1, militancyPlayerTeamID);
+			cs.setString(2, militancyPlayerStartYear);
+			cs.setString(3, militancyPlayerEndYear);
+
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> playerMap = new HashMap<>();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+				String role = "";
+
+
+				vector.add(rs.getString("player_surname"));
+				vector.add(rs.getString("player_name"));
+				vector.add(rs.getString("player_dob"));
+				vector.add(rs.getString("country_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
+
+				String[] keyPart = rs.getString("player_role").split("_");
+
+				for (String part : keyPart) {
+					role += "_";
+					role += GuiConfiguration.getMessage(part);
+				}
+
+				role = role.substring(1);
+
+				vector.add(role);
+				vector.add(GuiConfiguration.getMessage(rs.getString("position_name")));
+
+				if (null == rs.getString("player_retired_date")) {
+					vector.add("");
+				} else {
+					vector.add(rs.getString("player_retired_date"));
+				}
+
+
+				playerTableData.add(vector);
+				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+			}
+
+			playerTableMap.put(0, playerMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayerYear(String playerID,
+															String teamType,
+															Vector<String> seasonVector,
+															Map<String, String> seasonMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call season_play(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+				String season = null;
+				while (rs.next()) {
+					season = rs.getString("start_year");
+					season += "/";
+					season += (Integer.parseInt(rs.getString("start_year")) + 1);
+
+					seasonVector.add(season);
+					seasonMap.put(season, rs.getString("start_year"));
+				}
+			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+				while (rs.next()) {
+					seasonVector.add(rs.getString("start_year"));
+					seasonMap.put(seasonVector.getLast(), seasonVector.getLast());
+				}
 			}
 
 			rs.close();

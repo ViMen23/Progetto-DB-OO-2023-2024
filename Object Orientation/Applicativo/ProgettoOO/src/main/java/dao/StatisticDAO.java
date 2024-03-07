@@ -2,6 +2,8 @@ package dao;
 
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public interface StatisticDAO
 {
@@ -56,4 +58,23 @@ public interface StatisticDAO
 												List<String> listStatisticRedCard,
 												List<String> listStatisticGoalConceded,
 												List<String> listStatisticPenaltySaved);
+
+	void fetchStatisticPlayer(String playerID,
+														String teamType,
+														String teamID,
+														String competitionID,
+														String startYear,
+														String endYear,
+														Vector<Vector<String>> playerStatisticTableData,
+														Map<Integer, Map<Integer, String>> playerStatisticTableMap);
+
+	void fetchStatisticEdition(String competitionStartYear,
+														 String competitionID,
+														 Vector<Vector<String>> statisticTableData,
+														 Map<Integer, Map<Integer, String>> statisticTableMap);
+
+	void fetchStatisticTotal(String teamType,
+													 String playerRole,
+													 Vector<Vector<String>> statisticTableData,
+													 Map<Integer, Map<Integer, String>> statisticTableDataMap);
 }

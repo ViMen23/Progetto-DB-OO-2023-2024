@@ -23,7 +23,7 @@ VALUES
 		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Left Winger', 'id')::integer
+	get_column('@', 'fp_position@name@leftWinger', 'id')::integer
 ),
 (
 	get_column
@@ -34,7 +34,7 @@ VALUES
 		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Right Winger', 'id')::integer
+	get_column('@', 'fp_position@name@rightWinger', 'id')::integer
 ),
 (
 	get_column
@@ -45,7 +45,7 @@ VALUES
 		get_column('@', 'fp_country@name@Nigeria', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer
 ),
 (
 	get_column
@@ -56,7 +56,7 @@ VALUES
 		get_column('@', 'fp_country@name@Spain', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Attacking Midfield', 'id')::integer
+	get_column('@', 'fp_position@name@attackingMidfield', 'id')::integer
 ),
 (
 	get_column
@@ -67,7 +67,7 @@ VALUES
 		get_column('@', 'fp_country@name@Spain', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Defensive Midfield', 'id')::integer
+	get_column('@', 'fp_position@name@defensiveMidfield', 'id')::integer
 ),
 (
 	get_column
@@ -78,7 +78,7 @@ VALUES
 		get_column('@', 'fp_country@name@Spain', 'id')::text,
 		'id'
 	)::integer,
-	get_column('@', 'fp_position@name@Second Striker', 'id')::integer
+	get_column('@', 'fp_position@name@secondStriker', 'id')::integer
 );
 --------------------------------------------------------------------------------
 

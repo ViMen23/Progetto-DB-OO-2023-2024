@@ -2,9 +2,11 @@ package postgresImplDAO;
 
 import dao.PartecipationDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Vector;
 
 public class PostgresImplPartecipationDAO
 				implements PartecipationDAO
@@ -95,6 +97,37 @@ public class PostgresImplPartecipationDAO
 
 			message = cs.getString(1);
 
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPartecipation(String teamID,
+																 String competitionStartYear,
+																 Vector<Vector<String>> teamPartecipationTableData)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
+			cs.setString(1, teamID);
+			cs.setString(2, competitionStartYear);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("comp_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+				vector.add(rs.getString("conf_short_name"));
+
+				teamPartecipationTableData.add(vector);
+			}
+
+			rs.close();
 			cs.close();
 			conn.close();
 

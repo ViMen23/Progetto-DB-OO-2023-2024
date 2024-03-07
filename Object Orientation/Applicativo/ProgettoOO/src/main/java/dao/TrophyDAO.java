@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public interface TrophyDAO
 {
@@ -31,4 +33,13 @@ public interface TrophyDAO
 												String competitionID,
 												String competitionStartYear,
 												String message);
+
+	void fetchTrophy(String teamID,
+									 String teamType,
+									 Vector<Vector<String>> tableData);
+
+	void fetchTrophy(String playerID,
+									 String teamType,
+									 Vector<Vector<String>> tableData,
+									 Map<Integer, Map<Integer, String>> TableMap);
 }

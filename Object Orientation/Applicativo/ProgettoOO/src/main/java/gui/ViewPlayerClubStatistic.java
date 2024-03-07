@@ -314,8 +314,9 @@ public class ViewPlayerClubStatistic
 					initialSeasonVector.clear();
 					initialSeasonMap.clear();
 
-					Controller.getInstance().setPlayerComboBox(
+					Controller.getInstance().setPlayerComboBoxYear(
 									playerID,
+									Team.TEAM_TYPE.CLUB.toString(),
 									initialSeasonVector,
 									initialSeasonMap
 					);

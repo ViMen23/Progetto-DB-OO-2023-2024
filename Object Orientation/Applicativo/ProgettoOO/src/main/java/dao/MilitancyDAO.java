@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public interface MilitancyDAO
 {
@@ -23,4 +25,17 @@ public interface MilitancyDAO
 												List<String> listMilitancyYear,
 												List<String> listTeamID,
 												List<String> listTeamLongName);
+
+	void fetchMilitancy(String teamID,
+											String startYear,
+											Vector<Vector<String>> teamSquadTableData,
+											Map<Integer, Map<Integer, String>> teamSquadTableMap);
+
+	void fetchMilitancyNational(String playerID,
+															Vector<Vector<String>> tableData,
+															Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchMilitancyClub(String playerID,
+													Vector<Vector<String>> tableData,
+													Map<Integer, Map<Integer, String>> tableMap);
 }

@@ -3,6 +3,7 @@ package postgresImplDAO;
 import dao.TeamDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
+import model.Team;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -333,6 +334,158 @@ public class PostgresImplTeamDAO
 			}
 
 			teamTableMap.put(0, teamLongNameMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeam(String playerID,
+												Vector<String> teamLongNameVector,
+												Map<String, String> teamLongNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call club_team_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				teamLongNameVector.add(rs.getString("team_long_name"));
+				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeam(String teamID,
+												String teamType,
+												Vector<String> teamYearVector,
+												Map<String, String> teamYearMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call year_team(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+				String season = null;
+				while (rs.next()) {
+					season = rs.getString("start_year");
+					season += "/";
+					season += (Integer.parseInt(rs.getString("start_year")) + 1);
+
+					teamYearVector.add(season);
+					teamYearMap.put(season, rs.getString("start_year"));
+				}
+			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+				while (rs.next()) {
+					teamYearVector.add(rs.getString("start_year"));
+					teamYearMap.put(teamYearVector.getLast(), teamYearVector.getLast());
+				}
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeamCombo(String teamSubLongName,
+														 String teamSubShortName,
+														 String teamType,
+														 String teamContinentID,
+														 String teamNationID,
+														 Vector<String> teamLongNameVector,
+														 Map<String, String> teamLongNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
+			cs.setString(1, teamSubLongName);
+			cs.setString(2, teamSubShortName);
+			cs.setString(3, teamType);
+			cs.setString(4, teamContinentID);
+			cs.setString(5, teamNationID);
+
+			ResultSet rs = cs.executeQuery();
+
+
+			while (rs.next()) {
+				teamLongNameVector.add(rs.getString("team_long_name"));
+				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+			}
+
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeam(String teamID,
+												Map<String, String> infoTeamMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				infoTeamMap.put(GuiConfiguration.getMessage("team").toUpperCase(), rs.getString("team_long_name"));
+				infoTeamMap.put(GuiConfiguration.getMessage("code"), rs.getString("team_short_name"));
+				infoTeamMap.put(GuiConfiguration.getMessage("type").toUpperCase(), GuiConfiguration.getMessage(rs.getString("team_type")));
+				infoTeamMap.put(GuiConfiguration.getMessage("country"), rs.getString("country_name"));
+				infoTeamMap.put(GuiConfiguration.getMessage("confederation"), rs.getString("conf_short_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeamCompetition(String competitionStartYear,
+																	 String competitionID,
+																	 Vector<String> teamLongNameVector,
+																	 Map<String, String> teamLongNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call filter_teams(?, ?)}");
+			cs.setString(1, competitionStartYear);
+			cs.setString(2, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				teamLongNameVector.add(rs.getString("team_long_name"));
+				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+			}
 
 			rs.close();
 			cs.close();

@@ -54,4 +54,29 @@ public interface TeamDAO
 								 String teamNationID,
 								 Vector<Vector<String>> teamTableData,
 								 Map<Integer, Map<Integer, String>> teamTableMap);
+
+	void fetchTeam(String playerID,
+								 Vector<String> teamLongNameVector,
+								 Map<String, String> teamLongNameMap);
+
+	void fetchTeam(String teamID,
+								 String teamType,
+								 Vector<String> teamYearVector,
+								 Map<String, String> teamYearMap);
+
+	void fetchTeamCombo(String teamSubLongName,
+											String teamSubShortName,
+											String teamType,
+											String teamContinentID,
+											String teamNationID,
+											Vector<String> teamLongNameVector,
+											Map<String, String> teamLongNameMap);
+
+	void fetchTeam(String teamID,
+								 Map<String, String> infoTeamMap);
+
+	void fetchTeamCompetition(String competitionStartYear,
+														String competitionID,
+														Vector<String> teamLongNameVector,
+														Map<String, String> teamLongNameMap);
 }

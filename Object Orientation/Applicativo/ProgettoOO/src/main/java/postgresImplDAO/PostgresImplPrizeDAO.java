@@ -5,6 +5,7 @@ import database.DatabaseConnection;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Vector;
 
 public class PostgresImplPrizeDAO
 				implements PrizeDAO
@@ -117,6 +118,64 @@ public class PostgresImplPrizeDAO
 
 			message = cs.getString(1);
 
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPrize(String teamID,
+												 Vector<Vector<String>> tableData)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("prize_assign_year"));
+				vector.add(rs.getString("prize_name"));
+				vector.add(rs.getString("prize_given"));
+
+				tableData.add(vector);
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPrizePlayer(String playerID,
+															 Vector<Vector<String>> tableData)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("prize_year"));
+				vector.add(rs.getString("prize_name"));
+				vector.add(rs.getString("prize_given"));
+
+				tableData.add(vector);
+			}
+
+			rs.close();
 			cs.close();
 			conn.close();
 
