@@ -27,6 +27,7 @@ public class AdminViewDelParticipation
 		final Map<String, String> seasonMap = new HashMap<>();
 
 		final Vector<Vector<Object>> participationTableData = new Vector<>();
+		final Map<Integer, Map<Integer, String>> participationTableMap = new HashMap<>();
 
 
 		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
@@ -96,6 +97,28 @@ public class AdminViewDelParticipation
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				JOptionPane.showConfirmDialog(null, "ELIMINA PARTECIPAZIONI"); //TODO
+
+				for (int i = 0; i < participationTableData.size(); ++i) {
+					if ((Boolean) participationTableData.get(i).getFirst()) {
+						String message = Controller.getInstance().deletePartecipation(teamID, participationTableMap.get(1).get(i), seasonMap.get(ctrlSeason.getText()));
+
+
+						System.out.println(message);
+					}
+				}
+
+				try {
+					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+
+					AdminViewDelParticipation.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewDelParticipation.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					panel.setVisible(true);
+				} catch (Exception ex) {
+					System.out.println("ERRORE: " + ex.getMessage());
+				}
 
 			}
 		});
@@ -108,7 +131,7 @@ public class AdminViewDelParticipation
 					seasonVector.clear();
 					seasonMap.clear();
 
-					Controller.getInstance().setTeamYearComboBox(
+					Controller.getInstance().setPartecipationYearComboBox(
 									teamID,
 									teamType,
 									seasonVector,
@@ -133,16 +156,15 @@ public class AdminViewDelParticipation
 
 				infoTeamMap.clear();
 				participationTableData.clear();
+				participationTableMap.clear();
 
 				Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
-				Controller.getInstance().setPartecipationTable(
+				Controller.getInstance().setPartecipationTableAdmin(
 								teamID,
 								seasonMap.get(ctrlSeason.getText()),
 								participationTableData,
-								true
+								participationTableMap
 				);
-
-				System.out.println(participationTableData);
 
 				adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
 

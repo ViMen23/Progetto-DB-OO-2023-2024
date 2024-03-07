@@ -94,7 +94,25 @@ public class AdminViewGeneralInfo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//String message = Controller.getInstance().
+				String message = Controller.getInstance().updateTeam(
+								teamID,
+								teamType,
+								ctrlLongName.getText(),
+								ctrlShortName.getText()
+				);
+				System.out.println(message);
+
+				try {
+					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+
+					AdminViewGeneralInfo.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewGeneralInfo.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					panel.setVisible(true);
+				} catch (Exception ex) {
+					System.out.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

@@ -128,7 +128,11 @@ public class AdminViewAddParticipation
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+
+				String message = Controller.getInstance().createPartecipation(teamID, competitionNameMap.get(ctrlCompetition.getText()), seasonMap.get(ctrlSeason.getText()));
+
+				System.out.println(message);
 			}
 		});
 
