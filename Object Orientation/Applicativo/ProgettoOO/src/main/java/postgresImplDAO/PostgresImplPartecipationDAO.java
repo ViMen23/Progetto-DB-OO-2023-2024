@@ -191,4 +191,33 @@ public class PostgresImplPartecipationDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchPartecipation(String teamID,
+																 String competitionStartYear,
+																 Vector<String> partecipationNameVector,
+																 Map<String, String> partecipationNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
+			cs.setString(1, teamID);
+			cs.setString(2, competitionStartYear);
+
+			ResultSet rs = cs.executeQuery();
+
+
+			while (rs.next()) {
+				partecipationNameVector.add(rs.getString("comp_name"));
+				partecipationNameMap.put(partecipationNameVector.getLast(), rs.getString("comp_id"));
+			}
+
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

@@ -34,4 +34,9 @@ public interface PartecipationDAO
 															String teamType,
 															Vector<String> partecipationYearVector,
 															Map<String, String> partecipationYearMap);
+
+	void fetchPartecipation(String teamID,
+													String competitionStartYear,
+													Vector<String> partecipationNameVector,
+													Map<String, String> partecipationNameMap);
 }

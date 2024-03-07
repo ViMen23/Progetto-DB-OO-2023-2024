@@ -3586,7 +3586,7 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_team_confederation
+ * NAME : get_competition_confederation
  *
  * IN      : text
  * INOUT   : void
@@ -3595,15 +3595,15 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_team_confederation
+CREATE OR REPLACE FUNCTION get_competition_confederation
 (
-    IN  team_id text
+    IN  id_conf     text,
+    IN  type_team   text
 )
 RETURNS TABLE
         (
-            super_super_conf_id text,
-            super_conf_id       text,
-            conf_id             text
+            comp_id     text,
+            comp_name   text
         )
 AS
 $$
@@ -3611,26 +3611,55 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            conf2.super_id::text AS super_super_conf_id,
-            conf1.super_id::text AS super_conf_id,
-            conf1.id::text AS conf_id
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name
         FROM
-            fp_confederation AS conf1
-            JOIN
-            fp_confederation AS conf2
-                ON
-                conf1.super_id = conf2.id
-        WHERE conf1.id = (SELECT
-                                fp_confederation.id
-                            FROM
-                                fp_confederation
-                            WHERE
-                                fp_confederation.country_id = (SELECT
-                                                                    fp_team.country_id
-                                                                FROM
-                                                                    fp_team
-                                                                WHERE
-                                                                    fp_team.id = team_id::integer));
+            fp_competition
+        WHERE 
+            fp_competition.confederation_id = id_conf::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+        ORDER BY
+            fp_competition.name;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : partecipation_year_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION partecipation_year_team
+(
+    IN  id_team     text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition.start_year::text AS start_year
+        FROM
+            fp_partecipation
+        WHERE 
+            fp_partecipation.team_id = id_team::integer
+        ORDER BY
+            fp_partecipation.start_year DESC;
 END;
 $$
 LANGUAGE plpgsql;
