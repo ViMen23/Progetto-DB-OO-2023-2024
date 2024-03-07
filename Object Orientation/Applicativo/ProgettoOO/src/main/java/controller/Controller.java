@@ -486,7 +486,7 @@ public class Controller
 																Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		setTeamInfoMap(teamID, infoTeamMap);
-		setPartecipationTable(teamID, startYear, teamPartecipationTableData, false);
+		setPartecipationTable(teamID, startYear, teamPartecipationTableData);
 		setTeamSquadTable(teamID, startYear, teamSquadTableData, teamSquadTableMap);
 	}
 
@@ -531,6 +531,41 @@ public class Controller
 		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
 			TeamDAO teamDAO = new PostgresImplTeamDAO();
 			message = teamDAO.newNationalTeamDB(countryID);
+		}
+
+		return message;
+	}
+
+	public String updateTeam(String teamID,
+													 String teamType,
+													 String teamLongName,
+													 String teamShortName)
+	{
+		String message = null;
+
+		if (null == newAdmin().getAdminConnected()) {
+			message = "errorNoAdmin";
+			return message;
+		}
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+			message = "error";
+			return message;
+		}
+
+		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			if (!Regex.patternAlnum.matcher(teamLongName).find()) {
+				message = "errorMessageInput";
+				return message;
+			}
+
+			if (!Regex.patternCode.matcher(teamShortName).find()) {
+				message = "errorMessageInput";
+				return message;
+			}
+
+			TeamDAO teamDAO = new PostgresImplTeamDAO();
+			message = teamDAO.updateClubTeamDB(teamID, teamLongName, teamShortName);
 		}
 
 		return message;
@@ -838,15 +873,24 @@ public class Controller
 
 	public void setPartecipationTable(String teamID,
 																		String competitionStartYear,
-																		Vector<Vector<Object>> teamPartecipationTableData,
-																		boolean checkBox)
+																		Vector<Vector<Object>> teamPartecipationTableData)
 	{
-		if (null == newAdmin().getAdminConnected()) {
-			checkBox = false;
-		}
-
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData, checkBox);
+		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData);
+	}
+
+	public void setPartecipationTableAdmin(String teamID,
+																				 String competitionStartYear,
+																				 Vector<Vector<Object>> teamPartecipationTableData,
+																				 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipationAdmin(
+						teamID,
+						competitionStartYear,
+						teamPartecipationTableData,
+						tableMap
+		);
 	}
 
 	public void setPartecipationYearComboBox(String teamID,

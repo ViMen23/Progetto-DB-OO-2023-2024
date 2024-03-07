@@ -6,6 +6,7 @@ import gui.GuiConfiguration;
 import model.Team;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -116,8 +117,7 @@ public class PostgresImplPartecipationDAO
 	@Override
 	public void fetchPartecipation(String teamID,
 																 String competitionStartYear,
-																 Vector<Vector<Object>> teamPartecipationTableData,
-																 boolean checkBox)
+																 Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -126,27 +126,14 @@ public class PostgresImplPartecipationDAO
 
 			ResultSet rs = cs.executeQuery();
 
-			if (checkBox) {
-				while (rs.next()) {
-					Vector<Object> vector = new Vector<>();
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
 
-					vector.add(false);
-					vector.add(rs.getString("comp_name"));
-					vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
-					vector.add(rs.getString("conf_short_name"));
+				vector.add(rs.getString("comp_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+				vector.add(rs.getString("conf_short_name"));
 
-					teamPartecipationTableData.add(vector);
-				}
-			} else {
-				while (rs.next()) {
-					Vector<Object> vector = new Vector<>();
-
-					vector.add(rs.getString("comp_name"));
-					vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
-					vector.add(rs.getString("conf_short_name"));
-
-					teamPartecipationTableData.add(vector);
-				}
+				teamPartecipationTableData.add(vector);
 			}
 
 
@@ -216,6 +203,45 @@ public class PostgresImplPartecipationDAO
 				partecipationNameVector.add(rs.getString("comp_name"));
 				partecipationNameMap.put(partecipationNameVector.getLast(), rs.getString("comp_id"));
 			}
+
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPartecipationAdmin(String teamID,
+																			String competitionStartYear,
+																			Vector<Vector<Object>> teamPartecipationTableData,
+																			Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
+			cs.setString(1, teamID);
+			cs.setString(2, competitionStartYear);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> competitionMap = new HashMap<>();
+
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
+
+				vector.add(false);
+				vector.add(rs.getString("comp_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+				vector.add(rs.getString("conf_short_name"));
+
+				teamPartecipationTableData.add(vector);
+				competitionMap.put(rs.getRow() - 1, rs.getString("comp_id"));
+			}
+
+			tableMap.put(1, competitionMap);
 
 
 			rs.close();
