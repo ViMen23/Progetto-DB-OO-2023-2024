@@ -1,13 +1,12 @@
 package gui;
 
 import controller.Controller;
-import model.Country;
-import model.Team;
+
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -34,6 +33,8 @@ public class AdminViewAddTrophy
 		final Vector<String> competitionNameVector = new Vector<>();
 		final Map<String, String> competitionNameMap = new HashMap<>();
 
+		final Vector<String> trophyNameVector = new Vector<>();
+		final Map<String, String> trophyNameMap = new HashMap<>();
 
 		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
 
@@ -102,7 +103,21 @@ public class AdminViewAddTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				JOptionPane.showConfirmDialog(null, "SEI SICURO DI VOLER AGGIUNGERE IL TROFEO");
+
+				//String message = Controller.getInstance().creat;
+
+				try {
+					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+
+					AdminViewAddTrophy.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewAddTrophy.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					panel.setVisible(true);
+				} catch (Exception ex) {
+					System.out.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -114,7 +129,7 @@ public class AdminViewAddTrophy
 					seasonVector.clear();
 					seasonMap.clear();
 
-					Controller.getInstance().setTeamYearComboBox(
+					Controller.getInstance().setPartecipationYearComboBox(
 									teamID,
 									teamType,
 									seasonVector,
@@ -126,7 +141,7 @@ public class AdminViewAddTrophy
 					}
 					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
 				} else {
-					competitionNamePanel.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
+					competitionNamePanel.getMyComboBox().setEnabled(null != seasonMap.get(ctrlSeason.getText()));
 					competitionNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlCompetition.setText(null);
 				}
@@ -140,6 +155,12 @@ public class AdminViewAddTrophy
 					competitionNameVector.clear();
 					competitionNameMap.clear();
 
+					Controller.getInstance().setPartecipationComboBox(
+									teamID,
+									seasonMap.get(ctrlSeason.getText()),
+									competitionNameVector,
+									competitionNameMap
+					);
 
 					if (competitionNameVector.isEmpty()) {
 						competitionNameVector.add(GuiConfiguration.getMessage("noData"));
@@ -149,6 +170,31 @@ public class AdminViewAddTrophy
 					trophyNamePanel.getMyComboBox().setEnabled(null != competitionNameMap.get(ctrlCompetition.getText()));
 					trophyNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlTrophy.setText(null);
+				}
+			}
+		});
+
+		ctrlTrophy.addPropertyChangeListener("text", new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlTrophy.getText(), "@fill")) {
+					trophyNameVector.clear();
+					trophyNameMap.clear();
+
+//					Controller.getInstance().setPartecipationComboBox(
+//									teamID,
+//									seasonMap.get(ctrlSeason.getText()),
+//									competitionNameVector,
+//									competitionNameMap
+//					);
+
+					if (trophyNameVector.isEmpty()) {
+						trophyNameVector.add(GuiConfiguration.getMessage("noData"));
+					}
+					trophyNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(trophyNameVector));
+				} else {
+					confirmButton.setEnabled(null != trophyNameMap.get(ctrlTrophy.getText()));
 				}
 			}
 		});

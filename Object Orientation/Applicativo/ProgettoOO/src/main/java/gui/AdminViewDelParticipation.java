@@ -159,6 +159,7 @@ public class AdminViewDelParticipation
 				participationTableMap.clear();
 
 				Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
+
 				Controller.getInstance().setPartecipationTableAdmin(
 								teamID,
 								seasonMap.get(ctrlSeason.getText()),
@@ -173,9 +174,6 @@ public class AdminViewDelParticipation
 				string += ctrlSeason.getText();
 				participationPanel.getTitleLabel().setText(string);
 
-				for (Vector<Object> tmp : participationTableData) {
-					tmp.add(Boolean.FALSE);
-				}
 
 				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME, true));
 				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
