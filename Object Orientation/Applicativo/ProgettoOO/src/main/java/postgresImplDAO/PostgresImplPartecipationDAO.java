@@ -58,11 +58,12 @@ public class PostgresImplPartecipationDAO
 	}
 
 	@Override
-	public void newPartecipationDB(String teamID,
-																 String competitionID,
-																 String competitionStartYear,
-																 String message)
+	public String newPartecipationDB(String teamID,
+																	 String competitionID,
+																	 String competitionStartYear)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call new_partecipation(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -80,14 +81,17 @@ public class PostgresImplPartecipationDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
-	public void deletePartecipationDB(String teamID,
-																		String competitionID,
-																		String competitionStartYear,
-																		String message)
+	public String deletePartecipationDB(String teamID,
+																			String competitionID,
+																			String competitionStartYear)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call delete_partecipation(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -105,6 +109,8 @@ public class PostgresImplPartecipationDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override

@@ -3653,7 +3653,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
-            fp_competition.start_year::text AS start_year
+            fp_partecipation.start_year::text AS start_year
         FROM
             fp_partecipation
         WHERE 

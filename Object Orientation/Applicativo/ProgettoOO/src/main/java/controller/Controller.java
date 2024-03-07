@@ -877,6 +877,31 @@ public class Controller
 		);
 	}
 
+	public String deletePartecipation(String teamID,
+																		String competitionID,
+																		String competitionStartYear)
+	{
+		if (null == newAdmin().getAdminConnected()) {
+			return "errorNoAdmin";
+		}
+
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		return partecipationDAO.deletePartecipationDB(teamID, competitionID, competitionStartYear);
+	}
+
+
+	public String createPartecipation(String teamID,
+																		String competitionID,
+																		String competitionStartYear)
+	{
+		if (null == newAdmin().getAdminConnected()) {
+			return "errorNoAdmin";
+		}
+
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		return partecipationDAO.newPartecipationDB(teamID, competitionID, competitionStartYear);
+	}
+
 	/*------------------------------------------------------------------------------------------------------*/
 
 
