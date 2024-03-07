@@ -531,6 +531,11 @@ public class Controller
 		return message;
 	}
 
+	public String deleteTeam(String teamID)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		return teamDAO.deleteTeamDB(teamID);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
