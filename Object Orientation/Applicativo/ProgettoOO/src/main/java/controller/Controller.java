@@ -855,7 +855,26 @@ public class Controller
 																					 Map<String, String> partecipationYearMap)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipationYear(teamID, teamType, partecipationYearVector, partecipationYearMap);
+		partecipationDAO.fetchPartecipationYear(
+						teamID,
+						teamType,
+						partecipationYearVector,
+						partecipationYearMap
+		);
+	}
+
+	public void setPartecipationComboBox(String teamID,
+																			 String competitionStartYear,
+																			 Vector<String> partecipationNameVector,
+																			 Map<String, String> partecipationNameMap)
+	{
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipation(
+						teamID,
+						competitionStartYear,
+						partecipationNameVector,
+						partecipationNameMap
+		);
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
