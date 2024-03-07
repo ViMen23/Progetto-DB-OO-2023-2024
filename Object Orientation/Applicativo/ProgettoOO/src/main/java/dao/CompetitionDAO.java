@@ -58,4 +58,9 @@ public interface CompetitionDAO
 												Vector<String> competitionNameVector,
 												Map<String, String> competitionNameMap);
 
+	void fetchCompetitionConfederation(String confederationID,
+																		 String teamType,
+																		 Vector<String> competitionNameVector,
+																		 Map<String, String> competitionNameMap);
+
 }

@@ -3,6 +3,8 @@ package postgresImplDAO;
 import dao.ConfederationDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
+import model.Country;
+import model.Team;
 
 import java.sql.*;
 import java.util.List;
@@ -144,6 +146,31 @@ public class PostgresImplConfederationDAO
 		}
 
 		return count;
+	}
+
+	@Override
+	public void fetchConfederation(String teamID,
+																 Map<String, String> confederationMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_team_confederation(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				confederationMap.put(Country.COUNTRY_TYPE.WORLD.toString(), rs.getString("super_super_conf_id"));
+				confederationMap.put(Country.COUNTRY_TYPE.CONTINENT.toString(), rs.getString("super_conf_id"));
+				confederationMap.put(Country.COUNTRY_TYPE.NATION.toString(), rs.getString("conf_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
 	}
 
 }

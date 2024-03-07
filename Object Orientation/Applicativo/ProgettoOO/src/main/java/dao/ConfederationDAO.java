@@ -27,4 +27,7 @@ public interface ConfederationDAO
 													Map<String, String> confederationShortNameMap);
 
 	Integer countConfederationDB();
+
+	void fetchConfederation(String teamID,
+													Map<String, String> confederationMap);
 }

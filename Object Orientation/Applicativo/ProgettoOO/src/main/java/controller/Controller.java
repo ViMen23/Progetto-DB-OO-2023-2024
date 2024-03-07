@@ -477,16 +477,12 @@ public class Controller
 
 
 
-
-
 	public String createTeam(String teamType,
 													 String teamLongName,
 													 String teamShortName,
 													 String countryID)
 	{
 		String message = null;
-
-
 
 		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 			if (!Regex.patternAlnum.matcher(teamLongName).find()) {
@@ -499,16 +495,13 @@ public class Controller
 				return message;
 			}
 
-
-
-			//message = insertClubTeam(team);
-
+			TeamDAO teamDAO = new PostgresImplTeamDAO();
+			message = teamDAO.newClubTeamDB(countryID, teamLongName, teamShortName);
 		} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
-
-
-			//message = insertNationalTeam(team);
-
+			TeamDAO teamDAO = new PostgresImplTeamDAO();
+			message = teamDAO.newNationalTeamDB(countryID);
 		}
+
 		return message;
 	}
 

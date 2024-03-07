@@ -286,4 +286,31 @@ public class PostgresImplCompetitionDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchCompetitionConfederation(String confederationID,
+																						String teamType,
+																						Vector<String> competitionNameVector,
+																						Map<String, String> competitionNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_competition_confederation(?, ?)}");
+			cs.setString(1, confederationID);
+			cs.setString(2, teamType);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				competitionNameVector.add(rs.getString("comp_name"));
+				competitionNameMap.put(competitionNameVector.getLast(), rs.getString("comp_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }
