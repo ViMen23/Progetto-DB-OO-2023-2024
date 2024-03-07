@@ -7,14 +7,12 @@ import java.util.Vector;
 public class TableModel
 				extends DefaultTableModel
 {
-	private final int columnSize;
 	private boolean adminDelete = false;
 
 	public TableModel(Vector<? extends Vector> data,
 										Vector<?> columnNames)
 	{
 		super(data, columnNames);
-		columnSize = columnNames.size();
 	}
 
 	public TableModel(Vector<? extends Vector> data,
@@ -30,7 +28,7 @@ public class TableModel
 	public boolean isCellEditable(int row,
 																int column)
 	{
-		return (adminDelete && column == columnSize);
+		return (adminDelete && column == 0);
 	}
 
 	@Override

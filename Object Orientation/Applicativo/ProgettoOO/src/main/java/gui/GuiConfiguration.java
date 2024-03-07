@@ -86,6 +86,7 @@ public class GuiConfiguration
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
 	public static final String FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]10[]0";
+	public static final String SIX_CELL_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]0[]10[]0";
 	public static final String SEVEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String NINE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String THIRTEEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
@@ -282,12 +283,13 @@ public class GuiConfiguration
 	}
 	public static void initTeamParticipantTableColumnName()
 	{
+		ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
 
 		ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME.addAll(TEAM_PARTICIPATING_TABLE_COLUMN_NAME);
-		ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 	}
 
 	public static void initTeamTrophyTableColumnName()

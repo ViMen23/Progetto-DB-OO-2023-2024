@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
 
@@ -60,7 +61,7 @@ public class AdminTopViewTeam
 		panel.add(addParticipationButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		addTrophyButton = new JButton("INSERISCI TROFEI"); //TODO
+		addTrophyButton = new JButton(GuiConfiguration.getMessage("addTrophy"));
 		addTrophyButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(addTrophyButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
@@ -100,6 +101,110 @@ public class AdminTopViewTeam
 				container.remove(component);
 
 				container.add(new AdminViewGeneralInfo(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+
+		addParticipationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new AdminViewAddParticipation(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+		addTrophyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				//container.add(new AdminViewAddTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+		addPrizeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				//container.add(new AdminViewAddPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+		deleteTeamButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				JOptionPane.showConfirmDialog(null, GuiConfiguration.getMessage("msgDelete"));
+
+				String message = Controller.getInstance().deleteTeam(teamID);
+
+				System.out.println(message);
+
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new AdminViewDelParticipation(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+		deleteParticipationButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new AdminViewDelParticipation(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+		deleteTrophyButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				//container.add(new AdminViewDelTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+			}
+		});
+
+		deletePrizeButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				//container.add(new AdminViewDelPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 	}

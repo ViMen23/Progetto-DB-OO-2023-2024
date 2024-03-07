@@ -69,7 +69,7 @@ public class SearchConfederationPanel
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("confederationType"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("confederationType").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
@@ -132,7 +132,7 @@ public class SearchConfederationPanel
 				string = "";
 
 				if (ctrlCountryType.getText() != null) {
-					string += GuiConfiguration.getMessage("confederationType");
+					string += GuiConfiguration.getMessage("confederationType").toUpperCase();
 					string += ": ";
 					string += GuiConfiguration.getMessage(ctrlCountryType.getText());
 				}

@@ -1,8 +1,5 @@
 package gui;
 
-import dao.TeamDAO;
-import postgresImplDAO.PostgresImplTeamDAO;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -18,7 +15,7 @@ public class Main
 	{
 		GuiConfiguration.initGuiConfiguration();
 
-		MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+		MainFrame.getMainFrameInstance().add(new AdminViewDelParticipation("213", "CLUB"), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 		MainFrame.getMainFrameInstance().setMinimumSize(new Dimension(1600, 100));
 
 		MainFrame.getMainFrameInstance().setVisible(true);

@@ -301,7 +301,7 @@ public class AdminSearchTeam
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
 
-						JPanel panel = new AdminTopViewTeam(teamID, teamType);
+						JPanel panel = new AdminViewGeneralInfo(teamID, teamType);
 
 						AdminSearchTeam.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchTeam.this);

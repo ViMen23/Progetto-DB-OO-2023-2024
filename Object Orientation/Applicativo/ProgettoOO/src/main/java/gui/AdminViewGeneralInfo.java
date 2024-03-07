@@ -26,7 +26,7 @@ public class AdminViewGeneralInfo
 
 		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
 
-		final String prevLongName = infoTeamMap.get(GuiConfiguration.getMessage("team"));
+		final String prevLongName = infoTeamMap.get(GuiConfiguration.getMessage("team").toUpperCase());
 		final String prevShortName = infoTeamMap.get(GuiConfiguration.getMessage("code"));
 
 		MigLayout migLayout;

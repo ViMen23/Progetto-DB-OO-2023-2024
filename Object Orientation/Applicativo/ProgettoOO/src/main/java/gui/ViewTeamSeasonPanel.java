@@ -29,7 +29,7 @@ public class ViewTeamSeasonPanel
 		final Vector<Vector<String>> squadTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> squadTableMap = new HashMap<>();
 
-		final Vector<Vector<String>> participationTableData = new Vector<>();
+		final Vector<Vector<Object>> participationTableData = new Vector<>();
 
 
 		final MyTable squadTable;
