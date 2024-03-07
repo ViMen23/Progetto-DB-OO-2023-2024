@@ -26,14 +26,13 @@ public class CreateTeam
 		final JLabel ctrlShortName = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel((String) null);
 		final JLabel ctrlNationName = new JLabel((String) null);
-		final Boolean[] ctrlButton = {false, false, false};
+		final boolean[] ctrlButton = {false, false, false};
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
 
 		final Vector<String> nationNameVector = new Vector<>();
 		final Map<String, String> nationNameMap = new HashMap<>();
-
 
 		MigLayout migLayout;
 		TopSearchPanel topSearchPanel;

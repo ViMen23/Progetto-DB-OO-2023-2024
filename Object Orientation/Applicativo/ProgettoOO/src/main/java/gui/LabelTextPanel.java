@@ -3,12 +3,9 @@ package gui;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 import java.awt.*;
-import java.awt.image.ImageObserver;
-import java.text.AttributedCharacterIterator;
 import java.util.regex.Pattern;
 
 public class LabelTextPanel
@@ -56,8 +53,10 @@ public class LabelTextPanel
 
 				if (pattern.matcher(text).find()) {
 					ctrlLabel.setText(text);
+					textField.setFont(GuiConfiguration.outputFont);
 				} else {
 					ctrlLabel.setText(null);
+					textField.setFont(GuiConfiguration.outputRedFont);
 				}
 			}
 		});

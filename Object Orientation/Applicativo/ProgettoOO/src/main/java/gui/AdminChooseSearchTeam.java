@@ -27,7 +27,7 @@ public class AdminChooseSearchTeam
 		this.setLayout(migLayout);
 		this.setOpaque(false);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("manageTeam"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("editTeam"));
 
 		this.add(titleLabel, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 

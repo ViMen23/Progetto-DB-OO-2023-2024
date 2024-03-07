@@ -3,7 +3,11 @@ package gui;
 import database.DatabaseConnection;
 
 import javax.swing.*;
+import javax.swing.plaf.ButtonUI;
+import javax.swing.plaf.nimbus.AbstractRegionPainter;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
+import java.awt.font.TextAttribute;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -29,6 +33,7 @@ public class GuiConfiguration
 	public static final Vector<String> TEAM_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_SQUAD_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_PARTICIPATING_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
@@ -80,6 +85,7 @@ public class GuiConfiguration
 	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
+	public static final String FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]10[]0";
 	public static final String SEVEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String NINE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String THIRTEEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
@@ -95,6 +101,7 @@ public class GuiConfiguration
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 3, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT = "sgx first_column, gap bottom 0";
 	public static final String HGROUP_SECOND_COLUMN_ADD_CONSTRAINT = "sgx second_column";
+	public static final String HGROUP_ADD_CONSTRAINT = "sgx";
 	public static final String WIDTH_80P_ADD_CONSTRAINT = "width 80%";
 	public static final String SPAN_2_ADD_CONSTRAINT = "span 2";
 	public static final String TRAILING_ADD_CONSTRAINT = "trailing";
@@ -104,6 +111,7 @@ public class GuiConfiguration
 	public static Font outputFont;
 	public static  Font outputBoldFont;
 	public static Font outputSmallFont;
+	public static Font outputRedFont;
 
 
 	/**
@@ -170,6 +178,11 @@ public class GuiConfiguration
 		outputBoldFont = outputFont.deriveFont(Font.BOLD);
 		outputSmallFont = outputFont.deriveFont(13F);
 
+		Map<TextAttribute, Object> attribute = new HashMap<>();
+		attribute.put(TextAttribute.FOREGROUND, Color.red);
+
+		outputRedFont = outputFont.deriveFont(attribute);
+
 		//Configurazioni generali
 		UIManager.put("nimbusBase", new Color(130, 130, 130));
 		UIManager.put("nimbusBlueGrey", new Color(50, 100, 150));
@@ -227,7 +240,6 @@ public class GuiConfiguration
 		//configurazione text field
 		UIManager.put("TextArea.font", outputFont);
 	}
-
 	public static void initCountryTableColumnName()
 	{
 		COUNTRY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
@@ -273,6 +285,9 @@ public class GuiConfiguration
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("confederation"));
+
+		ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME.addAll(TEAM_PARTICIPATING_TABLE_COLUMN_NAME);
+		ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 	}
 
 	public static void initTeamTrophyTableColumnName()

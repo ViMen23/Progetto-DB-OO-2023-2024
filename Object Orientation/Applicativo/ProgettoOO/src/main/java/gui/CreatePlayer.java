@@ -45,7 +45,7 @@ public class CreatePlayer
 		final Vector<String> positionNameVector = new Vector<>();
 		final Map<String, String> positionNameMap = new HashMap<>();
 
-		final Boolean[] ctrlButton = {false, false, false, false, false, false};
+		final boolean[] ctrlButton = {false, false, false, false, false, false};
 
 
 		MigLayout migLayout;
@@ -170,6 +170,7 @@ public class CreatePlayer
 
 		button = new JButton(GuiConfiguration.getMessage("confirm"));
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
+		button.setEnabled(false);
 
 		centerPanel.add(button);
 
@@ -177,7 +178,21 @@ public class CreatePlayer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				String message = null;
 
+//				message = Controller.getInstance().createPlayer(
+//								ctrlName.getText(),
+//								ctrlSurname.getText(),
+//								datePicker.getDate().toString(),
+//								nationNameMap.get(ctrlNationName.getText()),
+//								ctrlFoot.getText(),
+//								positionNameMap.get(ctrlPositionName.getText())
+//				);
+
+				JOptionPane.showMessageDialog(
+								null,
+								GuiConfiguration.getMessage(message)
+				);
 			}
 		});
 

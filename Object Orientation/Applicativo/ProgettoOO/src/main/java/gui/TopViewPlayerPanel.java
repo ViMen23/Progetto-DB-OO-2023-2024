@@ -48,23 +48,23 @@ public class TopViewPlayerPanel
 
 		generalInfoButton = new JButton(GuiConfiguration.getMessage("general"));
 		generalInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(generalInfoButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(generalInfoButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		detailedInfoButton = new JButton(GuiConfiguration.getMessage("detailed"));
 		detailedInfoButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(detailedInfoButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(detailedInfoButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		careerButton = new JButton(GuiConfiguration.getMessage("career"));
 		careerButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(careerButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(careerButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		clubStatisticsButton = new JButton(GuiConfiguration.getMessage("clubStatistics"));
 		clubStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(clubStatisticsButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(clubStatisticsButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		nationalStatisticsButton = new JButton(GuiConfiguration.getMessage("nationalStatistics"));
 		nationalStatisticsButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(nationalStatisticsButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(nationalStatisticsButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
@@ -191,8 +191,8 @@ public class TopViewPlayerPanel
 		});
 	}
 
-	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
+	public void setGeneralInfoPanel(Map<String,String> infoPlayerMap)
 	{
-		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "playerInformation");
+		generalInfoPanel.createGeneralInfoPanel(infoPlayerMap, "playerInformation");
 	}
 }

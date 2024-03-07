@@ -16,15 +16,11 @@ import java.awt.event.ItemListener;
 /**
  * TYPE : class - gui package
  * NAME : AdminLogin
- *
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
 public class AdminLoginPanel
 				extends JPanel
 {
-	private final JButton okButton;
-	private Boolean username = false;
-	private Boolean password = false;
 
 	public AdminLoginPanel(JLabel ctrlLabel)
 	{
@@ -34,6 +30,8 @@ public class AdminLoginPanel
 		JLabel passwordLabel;
 		JPasswordField passwordField;
 		JCheckBox showPasswordCheckBox;
+		final JButton okButton;
+		final boolean[] ctrlButton = {false, false};
 
 
 		migLayout = new MigLayout(
@@ -53,15 +51,6 @@ public class AdminLoginPanel
 		usernameTextField = new JTextField(GuiConfiguration.INPUT_COLUMN);
 
 		this.add(usernameTextField);
-
-		usernameTextField.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e)
-			{
-				setUsername(Regex.patternUsername.matcher(usernameTextField.getText()).find());
-				tryActiveButton();
-			}
-		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 		passwordLabel = new JLabel(GuiConfiguration.getMessage("password"), SwingConstants.CENTER);
@@ -72,15 +61,6 @@ public class AdminLoginPanel
 		passwordField = new JPasswordField(GuiConfiguration.INPUT_COLUMN);
 
 		this.add(passwordField);
-
-		passwordField.addCaretListener(new CaretListener() {
-			@Override
-			public void caretUpdate(CaretEvent e)
-			{
-				setPassword(Regex.patternPassword.matcher(new String(passwordField.getPassword())).find());
-				tryActiveButton();
-			}
-		});
 		/*------------------------------------------------------------------------------------------------------*/
 
 		showPasswordCheckBox = new JCheckBox(GuiConfiguration.getMessage("showPassword"));
@@ -102,6 +82,7 @@ public class AdminLoginPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 		okButton = new JButton(GuiConfiguration.getMessage("next"));
+		okButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		okButton.setEnabled(false);
 
 		this.add(okButton, GuiConfiguration.TRAILING_ADD_CONSTRAINT);
@@ -122,44 +103,35 @@ public class AdminLoginPanel
 						}
 					}
 
-					//container.add(new AdminNavigationPanel(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					container.add(new AdminNavigationPanel(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+
+					ctrlLabel.setText("@login");
 
 					Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
 					window.dispose();
-
-					ctrlLabel.setText("@login");
 				} else {
 					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage("msgIncorrectLogin"));
 				}
 			}
 		});
+
+		usernameTextField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e)
+			{
+				ctrlButton[0] = Regex.patternUsername.matcher(usernameTextField.getText()).find();
+				okButton.setEnabled(ctrlButton[0] && ctrlButton[1]);
+			}
+		});
+
+		passwordField.addCaretListener(new CaretListener() {
+			@Override
+			public void caretUpdate(CaretEvent e)
+			{
+				ctrlButton[1] = Regex.patternPassword.matcher(new String(passwordField.getPassword())).find();
+				okButton.setEnabled(ctrlButton[0] && ctrlButton[1]);
+			}
+		});
 		/*------------------------------------------------------------------------------------------------------*/
 	}
-
-
-	private Boolean getUsername()
-	{
-		return username;
-	}
-
-	private Boolean getPassword()
-	{
-		return password;
-	}
-
-	private void setUsername(Boolean value)
-	{
-		username = value;
-	}
-
-	private void setPassword(Boolean value)
-	{
-		password = value;
-	}
-
-	private void tryActiveButton()
-	{
-		okButton.setEnabled(getUsername() && getPassword());
-	}
-
 }

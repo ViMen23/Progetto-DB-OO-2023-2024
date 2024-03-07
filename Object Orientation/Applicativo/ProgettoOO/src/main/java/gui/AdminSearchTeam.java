@@ -301,12 +301,12 @@ public class AdminSearchTeam
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
 
-						JPanel panel = new AdminViewTeam(teamID, teamType);
+						JPanel panel = new AdminTopViewTeam(teamID, teamType);
 
 						AdminSearchTeam.this.setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchTeam.this);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
