@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public interface TeamDAO
 {
@@ -45,4 +46,12 @@ public interface TeamDAO
 													String teamShortName);
 
 	String deleteTeamDB(String teamID);
+
+	void fetchTeam(String teamSubLongName,
+								 String teamSubShortName,
+								 String teamType,
+								 String teamContinentID,
+								 String teamNationID,
+								 Vector<Vector<String>> teamTableData,
+								 Map<Integer, Map<Integer, String>> teamTableMap);
 }

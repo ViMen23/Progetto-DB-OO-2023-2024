@@ -2,10 +2,13 @@ package postgresImplDAO;
 
 import dao.TeamDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 public class PostgresImplTeamDAO
 				implements TeamDAO
@@ -293,5 +296,50 @@ public class PostgresImplTeamDAO
 		}
 
 		return message;
+	}
+
+	@Override
+	public void fetchTeam(String teamSubLongName,
+												String teamSubShortName,
+												String teamType,
+												String teamContinentID,
+												String teamNationID,
+												Vector<Vector<String>> teamTableData,
+												Map<Integer, Map<Integer, String>> teamTableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
+			cs.setString(1, teamSubLongName);
+			cs.setString(2, teamSubShortName);
+			cs.setString(3, teamType);
+			cs.setString(4, teamContinentID);
+			cs.setString(5, teamNationID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> teamLongNameMap = new HashMap<>();
+
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("team_long_name"));
+				vector.add(rs.getString("team_short_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("team_type")));
+				vector.add(rs.getString("country_name"));
+
+				teamTableData.add(vector);
+				teamLongNameMap.put(rs.getRow() - 1, rs.getString("team_id"));
+			}
+
+			teamTableMap.put(0, teamLongNameMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
 	}
 }

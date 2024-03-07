@@ -2,9 +2,12 @@ package postgresImplDAO;
 
 import dao.ConfederationDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public class PostgresImplConfederationDAO
 				implements ConfederationDAO
@@ -49,6 +52,66 @@ public class PostgresImplConfederationDAO
 				listCountryType.add(rs.getString("country_type"));
 				listSuperConfederationID.add(rs.getString("super_conf_id"));
 				listSuperConfederationShortName.add(rs.getString("super_conf_short_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchConfederation(String countryType,
+																 String superConfederationID,
+																 Vector<Vector<String>> confederationTableData)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_confederations(?, ?)}");
+			cs.setString(1, countryType);
+			cs.setString(2, superConfederationID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("conf_long_name"));
+				vector.add(rs.getString("conf_short_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("country_type")));
+				vector.add(rs.getString("country_name"));
+				vector.add(rs.getString("super_conf_short_name"));
+
+				confederationTableData.add(vector);
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchConfederation(String countryType,
+																 String superConfederationID,
+																 Vector<String> confederationShortNameVector,
+																 Map<String, String> confederationShortNameMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_confederations(?, ?)}");
+			cs.setString(1, countryType);
+			cs.setString(2, superConfederationID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				confederationShortNameVector.add(rs.getString("conf_short_name"));
+				confederationShortNameMap.put(confederationShortNameVector.getLast(), rs.getString("conf_id"));
 			}
 
 			rs.close();

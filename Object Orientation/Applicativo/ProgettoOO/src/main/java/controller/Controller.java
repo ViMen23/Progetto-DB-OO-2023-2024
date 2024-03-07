@@ -166,8 +166,10 @@ public class Controller
 	 */
 	public Integer countCountries()
 	{
-		setTotalCountry();
-		return newCountry().getTotalCountries();
+//		setTotalCountry();
+//		return newCountry().getTotalCountries();
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+		return countryDAO.countCountryDB();
 	}
 
 	/**
@@ -298,6 +300,7 @@ public class Controller
 
 			tableData.add(vector);
 		}
+
 	}
 
 
@@ -313,8 +316,16 @@ public class Controller
 																 Vector<String> countryNameVector,
 																 Map<String, String> countryNameMap)
 	{
-		fetchCountry(countryType, superCountryID);
-		setCountryComboBoxDataMap(countryNameVector, countryNameMap);
+		//fetchCountry(countryType, superCountryID);
+		//setCountryComboBoxDataMap(countryNameVector, countryNameMap);
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+		countryDAO.fetchCountry(
+						countryType,
+						superCountryID,
+						countryNameVector,
+						countryNameMap
+		);
+
 	}
 
 	/**
@@ -327,8 +338,14 @@ public class Controller
 															String superCountryID,
 															Vector<Vector<String>> countryTableData)
 	{
-		fetchCountry(countryType, superCountryID);
-		setCountryTableData(countryTableData);
+		//fetchCountry(countryType, superCountryID);
+		//setCountryTableData(countryTableData);
+		CountryDAO countryDAO = new PostgresImplCountryDAO();
+		countryDAO.fetchCountry(
+						countryType,
+						superCountryID,
+						countryTableData
+		);
 	}
 
 
@@ -381,8 +398,10 @@ public class Controller
 	 */
 	public Integer countConfederations()
 	{
-		setTotalConfederation();
-		return newConfederation().getTotalConfederations();
+//		setTotalConfederation();
+//		return newConfederation().getTotalConfederations();
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		return confederationDAO.countConfederationDB();
 	}
 
 
@@ -551,13 +570,20 @@ public class Controller
 	 * @param confederationShortNameVector
 	 * @param confederationShortNameMap
 	 */
-	public void setConfederationComboBox(String typeCountry,
+	public void setConfederationComboBox(String countryType,
 																			 String superConfederationID,
 																			 Vector<String> confederationShortNameVector,
 																			 Map<String, String> confederationShortNameMap)
 	{
-		fetchConfederation(typeCountry, superConfederationID);
-		setConfederationComboBoxDataMap(confederationShortNameVector, confederationShortNameMap);
+		//fetchConfederation(typeCountry, superConfederationID);
+		//setConfederationComboBoxDataMap(confederationShortNameVector, confederationShortNameMap);
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		confederationDAO.fetchConfederation(
+						countryType,
+						superConfederationID,
+						confederationShortNameVector,
+						confederationShortNameMap
+		);
 	}
 
 
@@ -571,8 +597,14 @@ public class Controller
 																		String superConfederationID,
 																		Vector<Vector<String>> confederationTableData)
 	{
-		fetchConfederation(countryType, superConfederationID);
-		setConfederationTableData(confederationTableData);
+		//fetchConfederation(countryType, superConfederationID);
+		//setConfederationTableData(confederationTableData);
+		ConfederationDAO confederationDAO = new PostgresImplConfederationDAO();
+		confederationDAO.fetchConfederation(
+						countryType,
+						superConfederationID,
+						confederationTableData
+		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -865,8 +897,15 @@ public class Controller
 																		 Vector<String> competitionNameVector,
 																		 Map<String, String> competitionNameMap)
 	{
-		fetchCompetition(playerID, teamType);
-		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
+		//fetchCompetition(playerID, teamType);
+		//setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetition(
+						playerID,
+						teamType,
+						competitionNameVector,
+						competitionNameMap
+		);
 	}
 
 
@@ -879,16 +918,28 @@ public class Controller
 																		 Vector<String> competitionNameVector,
 																		 Map<String, String> competitionNameMap)
 	{
-		fetchCompetition(
+//		fetchCompetition(
+//						competitionSubName,
+//						competitionType,
+//						competitionTeamType,
+//						competitionCountryType,
+//						competitionContinentID,
+//						competitionNationID
+//		);
+//
+//		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetition(
 						competitionSubName,
 						competitionType,
 						competitionTeamType,
 						competitionCountryType,
 						competitionContinentID,
-						competitionNationID
+						competitionNationID,
+						competitionNameVector,
+						competitionNameMap
 		);
-
-		setCompetitionComboBoxDataMap(competitionNameVector, competitionNameMap);
 	}
 
 	public void setCompetitionEditionComboBox(String teamType,
@@ -896,8 +947,16 @@ public class Controller
 																						Vector<String> competitionEditionVector,
 																						Map<String, String> competitionEditionMap)
 	{
-		fetchCompetition(competitionID);
-		setCompetitionComboBoxDataMap(teamType, competitionID, competitionEditionVector, competitionEditionMap);
+//		fetchCompetition(competitionID);
+//		setCompetitionComboBoxDataMap(teamType, competitionID, competitionEditionVector, competitionEditionMap);
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionEdition(
+						teamType,
+						competitionID,
+						competitionEditionVector,
+						competitionEditionMap
+		);
 	}
 
 
@@ -910,16 +969,27 @@ public class Controller
 																	String competitionNationID,
 																	Vector<Vector<String>> competitionTableData)
 	{
-		fetchCompetition(
+//		fetchCompetition(
+//						competitionSubName,
+//						competitionType,
+//						competitionTeamType,
+//						competitionCountryType,
+//						competitionContinentID,
+//						competitionNationID
+//		);
+//
+//		setCompetitionTableData(competitionTableData);
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetition(
 						competitionSubName,
 						competitionType,
 						competitionTeamType,
 						competitionCountryType,
 						competitionContinentID,
-						competitionNationID
+						competitionNationID,
+						competitionTableData
 		);
-
-		setCompetitionTableData(competitionTableData);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -1311,15 +1381,26 @@ public class Controller
 													 Vector<Vector<String>> teamTableData,
 													 Map<Integer, Map<Integer, String>> teamTableMap)
 	{
-		fetchTeam(
+//		fetchTeam(
+//						teamSubLongName,
+//						teamSubShortName,
+//						teamType,
+//						teamContinentID,
+//						teamNationID
+//		);
+//
+//		setTeamTableDataMap(teamTableData, teamTableMap);
+
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeam(
 						teamSubLongName,
 						teamSubShortName,
 						teamType,
 						teamContinentID,
-						teamNationID
+						teamNationID,
+						teamTableData,
+						teamTableMap
 		);
-
-		setTeamTableDataMap(teamTableData, teamTableMap);
 	}
 
 	private void mapTeamInfoMap(String teamID,

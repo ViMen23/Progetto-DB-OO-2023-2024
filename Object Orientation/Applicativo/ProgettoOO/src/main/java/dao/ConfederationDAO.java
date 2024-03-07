@@ -1,6 +1,8 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Vector;
 
 public interface ConfederationDAO
 {
@@ -14,6 +16,15 @@ public interface ConfederationDAO
 														List<String> listCountryType,
 														List<String> listSuperConfederationID,
 														List<String> listSuperConfederationShortName);
+
+	void fetchConfederation(String countryType,
+													String superConfederationID,
+													Vector<Vector<String>> confederationTableData);
+
+	void fetchConfederation(String typeCountry,
+													String superConfederationID,
+													Vector<String> confederationShortNameVector,
+													Map<String, String> confederationShortNameMap);
 
 	Integer countConfederationDB();
 }
