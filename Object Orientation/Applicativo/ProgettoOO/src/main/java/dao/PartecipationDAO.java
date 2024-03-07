@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Vector;
 
@@ -28,4 +29,9 @@ public interface PartecipationDAO
 													String competitionStartYear,
 													Vector<Vector<Object>> teamPartecipationTableData,
 													boolean checkBox);
+
+	void fetchPartecipationYear(String teamID,
+															String teamType,
+															Vector<String> partecipationYearVector,
+															Map<String, String> partecipationYearMap);
 }

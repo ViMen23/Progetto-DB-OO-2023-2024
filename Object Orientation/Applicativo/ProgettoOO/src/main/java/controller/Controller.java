@@ -510,6 +510,11 @@ public class Controller
 	{
 		String message = null;
 
+		if (null == newAdmin().getAdminConnected()) {
+			message = "errorNoAdmin";
+			return message;
+		}
+
 		if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 			if (!Regex.patternAlnum.matcher(teamLongName).find()) {
 				message = "errorMessageInput";
@@ -533,6 +538,10 @@ public class Controller
 
 	public String deleteTeam(String teamID)
 	{
+		if (null == newAdmin().getAdminConnected()) {
+			return "errorNoAdmin";
+		}
+
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
 		return teamDAO.deleteTeamDB(teamID);
 	}
@@ -838,6 +847,15 @@ public class Controller
 
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
 		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData, checkBox);
+	}
+
+	public void setPartecipationYearComboBox(String teamID,
+																					 String teamType,
+																					 Vector<String> partecipationYearVector,
+																					 Map<String, String> partecipationYearMap)
+	{
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipationYear(teamID, teamType, partecipationYearVector, partecipationYearMap);
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
