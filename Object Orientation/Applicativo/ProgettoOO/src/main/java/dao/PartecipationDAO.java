@@ -26,5 +26,6 @@ public interface PartecipationDAO
 
 	void fetchPartecipation(String teamID,
 													String competitionStartYear,
-													Vector<Vector<Object>> teamPartecipationTableData);
+													Vector<Vector<Object>> teamPartecipationTableData,
+													boolean checkBox);
 }

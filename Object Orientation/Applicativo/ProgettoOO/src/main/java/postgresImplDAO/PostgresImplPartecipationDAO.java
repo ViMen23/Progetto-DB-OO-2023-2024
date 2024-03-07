@@ -108,7 +108,8 @@ public class PostgresImplPartecipationDAO
 	@Override
 	public void fetchPartecipation(String teamID,
 																 String competitionStartYear,
-																 Vector<Vector<Object>> teamPartecipationTableData)
+																 Vector<Vector<Object>> teamPartecipationTableData,
+																 boolean checkBox)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -117,15 +118,29 @@ public class PostgresImplPartecipationDAO
 
 			ResultSet rs = cs.executeQuery();
 
-			while (rs.next()) {
-				Vector<Object> vector = new Vector<>();
+			if (checkBox) {
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
 
-				vector.add(rs.getString("comp_name"));
-				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
-				vector.add(rs.getString("conf_short_name"));
+					vector.add(false);
+					vector.add(rs.getString("comp_name"));
+					vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+					vector.add(rs.getString("conf_short_name"));
 
-				teamPartecipationTableData.add(vector);
+					teamPartecipationTableData.add(vector);
+				}
+			} else {
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
+
+					vector.add(rs.getString("comp_name"));
+					vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+					vector.add(rs.getString("conf_short_name"));
+
+					teamPartecipationTableData.add(vector);
+				}
 			}
+
 
 			rs.close();
 			cs.close();

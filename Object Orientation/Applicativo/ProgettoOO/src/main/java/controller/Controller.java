@@ -486,7 +486,7 @@ public class Controller
 																Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		setTeamInfoMap(teamID, infoTeamMap);
-		setPartecipationTable(teamID, startYear, teamPartecipationTableData);
+		setPartecipationTable(teamID, startYear, teamPartecipationTableData, false);
 		setTeamSquadTable(teamID, startYear, teamSquadTableData, teamSquadTableMap);
 	}
 
@@ -824,11 +824,15 @@ public class Controller
 
 	public void setPartecipationTable(String teamID,
 																		String competitionStartYear,
-																		Vector<Vector<Object>> teamPartecipationTableData)
+																		Vector<Vector<Object>> teamPartecipationTableData,
+																		boolean checkBox)
 	{
-		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData);
+		if (null == newAdmin().getAdminConnected()) {
+			checkBox = false;
+		}
 
+		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
+		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData, checkBox);
 	}
 
 	/*------------------------------------------------------------------------------------------------------*/
