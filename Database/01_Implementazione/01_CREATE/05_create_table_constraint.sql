@@ -1643,7 +1643,6 @@ ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT pk_team_trophy_case
 PRIMARY KEY
 (
-	team_id,
 	trophy_id,
 	start_year,
 	competition_id
@@ -1898,7 +1897,6 @@ ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT pk_team_prize_case
 PRIMARY KEY
 (
-	team_id,
 	prize_id,
 	assign_year
 );
@@ -1974,7 +1972,6 @@ ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT pk_player_prize_case
 PRIMARY KEY
 (
-	player_id,
 	prize_id,
 	assign_year
 );

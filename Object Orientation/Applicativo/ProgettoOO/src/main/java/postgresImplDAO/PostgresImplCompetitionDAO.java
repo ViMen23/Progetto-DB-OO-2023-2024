@@ -426,4 +426,56 @@ public class PostgresImplCompetitionDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public String newCompetitionEdition(String competitionID,
+																			String competitionStartYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_competition_edition(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, competitionID);
+			cs.setString(3, competitionStartYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deleteCompetitionEdition(String competitionID,
+																				 String competitionStartYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_competition_edition(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, competitionID);
+			cs.setString(3, competitionStartYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
 }

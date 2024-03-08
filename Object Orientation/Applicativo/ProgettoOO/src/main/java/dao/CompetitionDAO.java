@@ -77,4 +77,11 @@ public interface CompetitionDAO
 																		Vector<Vector<Object>> tableData,
 																		Map<Integer, Map<Integer, String>> tableMap);
 
+
+	String newCompetitionEdition(String competitionID,
+															 String competitionStartYear);
+
+	String deleteCompetitionEdition(String competitionID,
+																	String competitionStartYear);
+
 }

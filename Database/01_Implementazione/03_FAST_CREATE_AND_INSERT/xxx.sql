@@ -42,6 +42,7 @@ CREATE EXTENSION hstore;
 --------------------------------------------------------------------------------
 
 
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -316,6 +317,7 @@ CHECK
 --------------------------------------------------------------------------------
 
 
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -463,6 +465,7 @@ CREATE TYPE en_team AS ENUM
 	'NATIONAL'
 );
 --------------------------------------------------------------------------------
+
 
 
 /******************************************************************************* 
@@ -1713,6 +1716,8 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
 
 
 /******************************************************************************* 
@@ -3360,7 +3365,6 @@ ALTER TABLE	fp_team_trophy_case
 ADD CONSTRAINT pk_team_trophy_case
 PRIMARY KEY
 (
-	team_id,
 	trophy_id,
 	start_year,
 	competition_id
@@ -3615,7 +3619,6 @@ ALTER TABLE fp_team_prize_case
 ADD CONSTRAINT pk_team_prize_case
 PRIMARY KEY
 (
-	team_id,
 	prize_id,
 	assign_year
 );
@@ -3691,7 +3694,6 @@ ALTER TABLE fp_player_prize_case
 ADD CONSTRAINT pk_player_prize_case
 PRIMARY KEY
 (
-	player_id,
 	prize_id,
 	assign_year
 );
@@ -3768,6 +3770,8 @@ PRIMARY KEY
 	username
 );
 --------------------------------------------------------------------------------
+
+
 
 
 /******************************************************************************* 
@@ -6992,6 +6996,8 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
+
+
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
@@ -9213,7 +9219,22 @@ BEGIN
 		
 		ELSIF ('PLAYER' = type_trophy) THEN
 
-			role_trophy = get_column
+			IF 
+			(
+				NOT row_exists
+					(
+						'@',
+						'fp_player_trophy_case'
+						'@trophy_id@' || NEW.trophy_id::text
+						||
+						'@start_year@' || NEW.start_year::text
+						||
+						'@competition_id@' || NEW.competition_id::text
+					)
+			)
+			THEN
+
+				role_trophy = get_column
 						  (
 								'@',
 								'fp_trophy'
@@ -9221,20 +9242,22 @@ BEGIN
 								'role'
 						  )::en_role;
 
-			IF (role_trophy IS NULL) THEN
-				RETURN NEW;
-			
-			ELSE
-
-				role_player = get_column
-							  (
-									'@',
-									'fp_player@id@' || NEW.player_id::text,
-									'role'
-							  )::en_role_mix;
-
-				IF (position(role_trophy::text in role_player::text) > 0) THEN
+				IF (role_trophy IS NULL) THEN
 					RETURN NEW;
+				
+				ELSE
+
+					role_player = get_column
+								(
+										'@',
+										'fp_player@id@' || NEW.player_id::text,
+										'role'
+								)::en_role_mix;
+
+					IF (position(role_trophy::text in role_player::text) > 0) THEN
+						RETURN NEW;
+					END IF;
+
 				END IF;
 
 			END IF;
@@ -9455,6 +9478,8 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
 
 
 /*******************************************************************************
@@ -11049,6 +11074,7 @@ ALTER TABLE
 DISABLE TRIGGER
     tg_bi_prize_refuse;
 --------------------------------------------------------------------------------
+
 
 
 /******************************************************************************* 
@@ -21119,6 +21145,28 @@ VALUES
 --------------------------------------------------------------------------------
 
 
+/******************************************************************************* 
+ * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
+ *                                                                            
+ * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
+ * FIELD        : COMPUTER SCIENCE                                            
+ * CLASS        : DATA BASES I                                                
+ * TEACHER      : SILVIO BARRA                                                
+ * YEAR         : 2023-2024                                                   
+ ******************************************************************************/
+
+
+/*******************************************************************************
+ * INSERT ADMIN
+ ******************************************************************************/
+INSERT INTO fp_admin (username, password)
+VALUES
+('gioele', 'Gio3leIlMagn!fico');
+--------------------------------------------------------------------------------
+
+
+
+
 /*******************************************************************************
  * PROJECT NAME : FOOTBALL PLAYER DATABASE
  *
@@ -21261,6 +21309,7 @@ ALTER TABLE
 ENABLE TRIGGER
     tg_bi_prize_refuse;
 --------------------------------------------------------------------------------
+
 
 
 /******************************************************************************* 
@@ -26837,6 +26886,7 @@ VALUES
 
 
 
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -26857,7 +26907,7 @@ VALUES
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_positions
+CREATE OR REPLACE VIEW vi_all_positions
 AS
 	SELECT
 		fp_position.id::text AS position_id,
@@ -26875,6 +26925,93 @@ AS
 --------------------------------------------------------------------------------
 
 
+/*******************************************************************************
+ * TYPE : VIEW
+ * NAME : vi_all_team_trophy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE VIEW vi_all_team_trophy
+AS
+	SELECT
+		fp_trophy.id::text AS trophy_id,
+		fp_trophy.name::text AS trophy_name
+	FROM
+		fp_trophy
+	WHERE
+		fp_trophy.type = 'TEAM'
+	ORDER BY
+		fp_trophy.name;
+
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : VIEW
+ * NAME : vi_all_player_trophy
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE VIEW vi_all_player_trophy
+AS
+	SELECT
+		fp_trophy.id::text AS trophy_id,
+		fp_trophy.role::text AS trophy_role,
+		fp_trophy.name::text AS trophy_name
+	FROM
+		fp_trophy
+	WHERE
+		fp_trophy.type = 'PLAYER'
+	ORDER BY
+		fp_trophy.name;
+
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : VIEW
+ * NAME : vi_all_team_prize
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE VIEW vi_all_team_prize
+AS
+	SELECT
+		fp_prize.id::text AS prize_id,
+		fp_prize.name::text AS prize_name
+	FROM
+		fp_prize
+	WHERE
+		fp_prize.type = 'TEAM'
+	ORDER BY
+		fp_prize.name;
+
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : VIEW
+ * NAME : vi_all_player_prize
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE VIEW vi_all_player_prize
+AS
+	SELECT
+		fp_prize.id::text AS prize_id,
+		fp_prize.role::text AS prize_role,
+		fp_prize.name::text AS prize_name
+	FROM
+		fp_prize
+	WHERE
+		fp_prize.type = 'PLAYER'
+	ORDER BY
+		fp_prize.name;
+
+--------------------------------------------------------------------------------
+
+
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -26886,7 +27023,7 @@ AS
  ******************************************************************************/
 
 /*******************************************************************************
- * JAVA FUNCTION
+ * JAVA FUNCTION OUTPUT
  ******************************************************************************/
 
 
@@ -29778,22 +29915,914 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-/******************************************************************************* 
- * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
- *                                                                            
- * UNIVERSITY   : FEDERICO II - NAPOLI - ITALY                                 
- * FIELD        : COMPUTER SCIENCE                                            
- * CLASS        : DATA BASES I                                                
- * TEACHER      : SILVIO BARRA                                                
- * YEAR         : 2023-2024                                                   
+
+/*******************************************************************************
+ * JAVA FUNCTION ADMIN
  ******************************************************************************/
 
 
 /*******************************************************************************
- * INSERT ADMIN
+ * TYPE : FUNCTION
+ * NAME : get_team_confederation
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
  ******************************************************************************/
-INSERT INTO fp_admin (username, password)
-VALUES
-('gioele', 'Gio3leIlMagn!fico');
+CREATE OR REPLACE FUNCTION get_team_confederation
+(
+    IN  team_id text
+)
+RETURNS TABLE
+        (
+            super_super_conf_id text,
+            super_conf_id       text,
+            conf_id             text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            conf2.super_id::text AS super_super_conf_id,
+            conf1.super_id::text AS super_conf_id,
+            conf1.id::text AS conf_id
+        FROM
+            fp_confederation AS conf1
+            JOIN
+            fp_confederation AS conf2
+                ON
+                conf1.super_id = conf2.id
+        WHERE conf1.id = (SELECT
+                                fp_confederation.id
+                            FROM
+                                fp_confederation
+                            WHERE
+                                fp_confederation.country_id = (SELECT
+                                                                    fp_team.country_id
+                                                                FROM
+                                                                    fp_team
+                                                                WHERE
+                                                                    fp_team.id = team_id::integer));
+END;
+$$
+LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_national_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_national_team
+(
+    IN  id_country  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+	name_country    text;
+    code_country    text;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	SELECT
+        fp_country.name::text,
+        fp_country.code::text
+    INTO
+        name_country,
+        code_country
+    FROM
+        fp_country
+    WHERE
+        fp_country.id = id_country::integer;
+
+
+
+	INSERT INTO
+		fp_team
+		(
+			type,
+			country_id,
+			long_name,
+			short_name
+		)
+	VALUES
+	(
+		'NATIONAL',
+		id_country::integer,
+		name_country::dm_alnum,
+		code_country::dm_code
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertNationalTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_club_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_club_team
+(
+    IN  id_country      text,
+    IN  long_name_team  text,
+    IN  short_name_team text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_team
+		(
+			type,
+			country_id,
+			long_name,
+			short_name
+		)
+	VALUES
+	(
+		'CLUB',
+		id_country::integer,
+		long_name_team::dm_alnum,
+		short_name_team::dm_code
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertClubTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_club_team
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_club_team
+(
+    IN  id_team         text,
+    IN  long_name_team  text,
+    IN  short_name_team text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    conflict        boolean;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    SELECT
+        count(*) >= 1
+    INTO
+        conflict
+    FROM
+        fp_team
+    WHERE
+        fp_team.type = 'CLUB'
+        AND
+        fp_team.long_name = long_name_team::dm_alnum;
+
+
+    IF (conflict) THEN
+        output_message = 'errorMessageUpdateClubTeamConflict';
+        RETURN output_message;
+    END IF;
+
+
+	UPDATE
+		fp_team
+	SET
+        long_name = long_name_team,
+        short_name = short_name_team
+	WHERE
+        id = id_team::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateClubTeam';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_team
+(
+    IN  id_team text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    partecipation   boolean;
+    militancy       boolean;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    SELECT
+        count(*) >= 1
+    INTO
+        partecipation
+    FROM
+        fp_partecipation
+    WHERE
+        fp_partecipation.team_id = id_team::integer;
+    
+
+    SELECT
+        count(*) >= 1
+    INTO
+        militancy
+    FROM
+        fp_militancy
+    WHERE
+        fp_militancy.team_id = id_team::integer;
+
+
+    IF (partecipation OR militancy) THEN
+        output_message = 'errorMessageDeleteTeamReference';
+        RETURN output_message;
+    END IF;
+
+
+
+	DELETE FROM
+		fp_team
+	WHERE
+        id = id_team::integer;	
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_partecipation
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_partecipation
+(
+    IN  id_team         text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_partecipation
+		(
+			start_year,
+            competition_id,
+            team_id
+		)
+	VALUES
+	(
+		start_year_comp::dm_year,
+		id_comp::integer,
+        id_team::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPartecipation';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_partecipation
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_partecipation
+(
+    IN  id_team         text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_partecipation
+	WHERE
+		fp_partecipation.start_year = start_year_comp::dm_year
+        AND
+		fp_partecipation.competition_id = id_comp::integer
+        AND
+        fp_partecipation.team_id = id_team::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePartecipation';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_trophy_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_trophy_team
+(
+    IN  id_team         text,
+    IN  id_trophy       text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_team_trophy_case
+		(
+			team_id,
+            trophy_id,
+            start_year,
+            competition_id
+		)
+	VALUES
+	(
+        id_team::integer,
+        id_trophy::integer,
+		start_year_comp::dm_year,
+		id_comp::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertTrophyTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_trophy_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_trophy_team
+(
+    IN  id_team         text,
+    IN  id_trophy       text,
+    IN  id_comp         text,
+    IN  start_year_comp text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_team_trophy_case
+	WHERE
+        fp_team_trophy_case.team_id = id_team::integer
+        AND
+        fp_team_trophy_case.trophy_id = id_trophy::integer
+        AND
+		fp_team_trophy_case.start_year = start_year_comp::dm_year
+        AND
+		fp_team_trophy_case.competition_id = id_comp::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteTrophyTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_prize_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_prize_team
+(
+    IN  id_team     text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_team_prize_case
+		(
+            team_id,
+            prize_id,
+            assign_year
+		)
+	VALUES
+	(
+        id_team::integer,
+        id_prize::integer,
+		a_year::dm_year
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPrizeTeam';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_prize_team
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_prize_team
+(
+    IN  id_team     text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_team_prize_case
+	WHERE
+        fp_team_prize_case.team_id = id_team::integer
+        AND
+        fp_team_prize_case.prize_id = id_prize::integer
+        AND
+		fp_team_prize_case.a_year = a_year::dm_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePrizeTeam';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_competition_confederation
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_competition_confederation
+(
+    IN  id_conf     text,
+    IN  type_team   text
+)
+RETURNS TABLE
+        (
+            comp_id     text,
+            comp_name   text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name
+        FROM
+            fp_competition
+        WHERE 
+            fp_competition.confederation_id = id_conf::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+        ORDER BY
+            fp_competition.name;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : partecipation_year_team
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION partecipation_year_team
+(
+    IN  id_team     text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_partecipation.start_year::text AS start_year
+        FROM
+            fp_partecipation
+        WHERE 
+            fp_partecipation.team_id = id_team::integer
+        ORDER BY
+            fp_partecipation.start_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : competition_year
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_year
+(
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition_edition.start_year::text AS start_year
+        FROM
+            fp_competition_edition
+        WHERE 
+            fp_competition_edition.competition_id = id_comp::integer
+        ORDER BY
+            fp_competition_edition.start_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_competition_edition
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_competition_edition
+(
+    IN  id_comp text,
+    IN  s_year  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_competition_edition
+		(
+            competition_id,
+            start_year
+		)
+	VALUES
+	(
+        id_comp::integer,
+		s_year::dm_year
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertCompetitionEdition';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_competition_edition
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_competition_edition
+(
+    IN  id_comp text,
+    IN  s_year  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_competition_edition
+	WHERE
+        fp_competition_edition.competition_id = id_comp::integer
+        AND
+        fp_competition_edition.start_year = s_year::dm_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteCompetitionEdition';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
 

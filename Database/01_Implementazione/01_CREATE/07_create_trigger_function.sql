@@ -2219,7 +2219,22 @@ BEGIN
 		
 		ELSIF ('PLAYER' = type_trophy) THEN
 
-			role_trophy = get_column
+			IF 
+			(
+				NOT row_exists
+					(
+						'@',
+						'fp_player_trophy_case'
+						'@trophy_id@' || NEW.trophy_id::text
+						||
+						'@start_year@' || NEW.start_year::text
+						||
+						'@competition_id@' || NEW.competition_id::text
+					)
+			)
+			THEN
+
+				role_trophy = get_column
 						  (
 								'@',
 								'fp_trophy'
@@ -2227,20 +2242,22 @@ BEGIN
 								'role'
 						  )::en_role;
 
-			IF (role_trophy IS NULL) THEN
-				RETURN NEW;
-			
-			ELSE
-
-				role_player = get_column
-							  (
-									'@',
-									'fp_player@id@' || NEW.player_id::text,
-									'role'
-							  )::en_role_mix;
-
-				IF (position(role_trophy::text in role_player::text) > 0) THEN
+				IF (role_trophy IS NULL) THEN
 					RETURN NEW;
+				
+				ELSE
+
+					role_player = get_column
+								(
+										'@',
+										'fp_player@id@' || NEW.player_id::text,
+										'role'
+								)::en_role_mix;
+
+					IF (position(role_trophy::text in role_player::text) > 0) THEN
+						RETURN NEW;
+					END IF;
+
 				END IF;
 
 			END IF;

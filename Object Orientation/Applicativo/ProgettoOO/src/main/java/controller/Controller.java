@@ -429,6 +429,48 @@ public class Controller
 						tableMap
 		);
 	}
+
+
+	/**
+	 * TODO
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
+	public String createCompetitionEdition(String competitionID,
+																				 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		return competitionDAO.newCompetitionEdition(
+						competitionID,
+						competitionStartYear
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
+	public String deleteCompetitionEdition(String competitionID,
+																				 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		return competitionDAO.deleteCompetitionEdition(
+						competitionID,
+						competitionStartYear
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
