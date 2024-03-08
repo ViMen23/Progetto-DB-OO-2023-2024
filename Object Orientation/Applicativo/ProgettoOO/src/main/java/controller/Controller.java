@@ -95,6 +95,12 @@ public class Controller
 	}
 
 
+	public boolean isAdminConnected()
+	{
+		return (null != adminConnected);
+	}
+
+
 	/*------------------------------------------------------------------------------------------------------*/
 
 
