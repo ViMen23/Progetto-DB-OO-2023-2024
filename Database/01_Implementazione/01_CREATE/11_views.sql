@@ -18,7 +18,7 @@
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_positions
+CREATE OR REPLACE VIEW vi_all_positions
 AS
 	SELECT
 		fp_position.id::text AS position_id,
@@ -42,7 +42,7 @@ AS
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_team_trophy
+CREATE OR REPLACE VIEW vi_all_team_trophy
 AS
 	SELECT
 		fp_trophy.id::text AS trophy_id,
@@ -63,7 +63,7 @@ AS
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_player_trophy
+CREATE OR REPLACE VIEW vi_all_player_trophy
 AS
 	SELECT
 		fp_trophy.id::text AS trophy_id,
@@ -85,7 +85,7 @@ AS
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_team_prize
+CREATE OR REPLACE VIEW vi_all_team_prize
 AS
 	SELECT
 		fp_prize.id::text AS prize_id,
@@ -106,11 +106,11 @@ AS
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE VIEW vi_all_player_prize
+CREATE OR REPLACE VIEW vi_all_player_prize
 AS
 	SELECT
 		fp_prize.id::text AS prize_id,
-		fp_prize.role::text AD prize_role,
+		fp_prize.role::text AS prize_role,
 		fp_prize.name::text AS prize_name
 	FROM
 		fp_prize

@@ -3705,6 +3705,107 @@ LANGUAGE plpgsql;
 
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_competition_edition
+ *
+ * IN      : text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_competition_edition
+(
+    IN  id_comp text,
+    IN  s_year  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_competition_edition
+		(
+            competition_id,
+            start_year
+		)
+	VALUES
+	(
+        id_comp::integer,
+		s_year::dm_year
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertCompetitionEdition';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
 
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_competition_edition
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_competition_edition
+(
+    IN  id_comp text,
+    IN  s_year  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_competition_edition
+	WHERE
+        fp_competition_edition.competition_id = id_comp::integer
+        AND
+        fp_competition_edition.start_year = s_year::dm_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteCompetitionEdition';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
