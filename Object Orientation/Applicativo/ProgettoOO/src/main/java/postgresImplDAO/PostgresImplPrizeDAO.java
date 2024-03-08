@@ -2,9 +2,12 @@ package postgresImplDAO;
 
 import dao.PrizeDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public class PostgresImplPrizeDAO
@@ -77,11 +80,12 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void newPrizeTeam(String teamID,
-													 String prizeID,
-													 String assignedYear,
-													 String message)
+	public String newPrizeTeam(String teamID,
+														 String prizeID,
+														 String assignedYear)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call new_prize_team(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -99,14 +103,17 @@ public class PostgresImplPrizeDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
-	public void deletePrizeTeam(String teamID,
-															String prizeID,
-															String assignedYear,
-															String message)
+	public String deletePrizeTeam(String teamID,
+																String prizeID,
+																String assignedYear)
 	{
+		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call delete_prize_team(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
@@ -124,6 +131,8 @@ public class PostgresImplPrizeDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return message;
 	}
 
 	@Override
@@ -180,6 +189,101 @@ public class PostgresImplPrizeDAO
 			conn.close();
 
 		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeamPrizeAdmin(String teamID,
+																	Vector<Vector<Object>> tableData,
+																	Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
+			cs.setString(1, teamID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> yearMap = new HashMap<>();
+			Map<Integer, String> prizeMap = new HashMap<>();
+
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
+
+				vector.add(false);
+				vector.add(rs.getString("prize_assign_year"));
+				vector.add(rs.getString("prize_name"));
+				vector.add(rs.getString("prize_given"));
+
+				tableData.add(vector);
+				yearMap.put(row, rs.getString("prize_assign_year"));
+				prizeMap.put(row, rs.getString("prize_id"));
+
+				++row;
+			}
+
+			tableMap.put(1, yearMap);
+			tableMap.put(2, prizeMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeamPrize(Vector<String> comboBoxData,
+														 Map<String, String> comboBoxMap)
+	{
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_team_prize");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				comboBoxData.add(GuiConfiguration.getMessage(rs.getString("prize_name")));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("prize_id"));
+			}
+
+			rs.close();
+			ps.close();
+			conn.close();
+
+		} catch (SQLException e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchPlayerPrize(Vector<String> comboBoxData,
+															 Map<String, String> comboBoxMap)
+	{
+		try {
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_player_trophy");
+
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				String data = "";
+				data += "[";
+				data += GuiConfiguration.getMessage(rs.getString("prize_role"));
+				data += "] ";
+				data += GuiConfiguration.getMessage(rs.getString("prize_name"));
+
+				comboBoxData.add(data);
+				comboBoxMap.put(data, rs.getString("prize_id"));
+			}
+
+			rs.close();
+			ps.close();
+			conn.close();
+
+		} catch (SQLException e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}

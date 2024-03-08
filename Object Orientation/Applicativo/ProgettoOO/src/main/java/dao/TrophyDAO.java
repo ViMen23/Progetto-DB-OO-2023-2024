@@ -22,17 +22,15 @@ public interface TrophyDAO
 										 List<String> listTeamLongName,
 										 List<String> listTrophyName);
 
-	void newTrophyTeam(String teamID,
-										 String trophyID,
-										 String competitionID,
-										 String competitionStartYear,
-										 String message);
+	String newTrophyTeam(String teamID,
+											 String trophyID,
+											 String competitionID,
+											 String competitionStartYear);
 
-	void deleteTrophyTeam(String teamID,
-												String trophyID,
-												String competitionID,
-												String competitionStartYear,
-												String message);
+	String deleteTrophyTeam(String teamID,
+													String trophyID,
+													String competitionID,
+													String competitionStartYear);
 
 	void fetchTrophy(String teamID,
 									 String teamType,
@@ -42,4 +40,15 @@ public interface TrophyDAO
 									 String teamType,
 									 Vector<Vector<String>> tableData,
 									 Map<Integer, Map<Integer, String>> TableMap);
+
+	void fetchTeamTrophyAdmin(String teamID,
+														String teamType,
+														Vector<Vector<Object>> tableData,
+														Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchTeamTrophy(Vector<String> comboBoxData,
+											 Map<String, String> comboBoxMap);
+
+	void fetchPlayerTrophy(Vector<String> comboBoxData,
+												 Map<String, String> comboBoxMap);
 }

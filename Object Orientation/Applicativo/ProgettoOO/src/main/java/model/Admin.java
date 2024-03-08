@@ -9,7 +9,6 @@ package model;
  */
 public class Admin
 {
-	private static Admin adminConnected = null; // amministratore connesso attualmente
 	private final String username;
 	private final String password;
 
@@ -32,14 +31,4 @@ public class Admin
 		return password;
 	}
 
-
-	public Admin getAdminConnected()
-	{
-		return adminConnected;
-	}
-
-	public void setAdminConnected(Admin adminConnected)
-	{
-		Admin.adminConnected = adminConnected;
-	}
 }

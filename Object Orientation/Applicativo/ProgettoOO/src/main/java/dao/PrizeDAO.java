@@ -1,6 +1,7 @@
 package dao;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 public interface PrizeDAO
@@ -16,19 +17,27 @@ public interface PrizeDAO
 													List<String> listPrizeName,
 													List<String> listPrizeGiven);
 
-	void newPrizeTeam(String teamID,
-										String prizeID,
-										String assignedYear,
-										String message);
+	String newPrizeTeam(String teamID,
+											String prizeID,
+											String assignedYear);
 
-	void deletePrizeTeam(String teamID,
-											 String prizeID,
-											 String assignedYear,
-											 String message);
+	String deletePrizeTeam(String teamID,
+												 String prizeID,
+												 String assignedYear);
 
 	void fetchPrize(String teamID,
 									Vector<Vector<String>> tableData);
 
 	void fetchPrizePlayer(String playerID,
 												Vector<Vector<String>> tableData);
+
+	void fetchTeamPrizeAdmin(String teamID,
+													 Vector<Vector<Object>> tableData,
+													 Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchTeamPrize(Vector<String> comboBoxData,
+											Map<String, String> comboBoxMap);
+
+	void fetchPlayerPrize(Vector<String> comboBoxData,
+												Map<String, String> comboBoxMap);
 }

@@ -63,4 +63,18 @@ public interface CompetitionDAO
 																		 Vector<String> competitionNameVector,
 																		 Map<String, String> competitionNameMap);
 
+	void fetchCompetitionAdmin(String competitionSubName,
+														 String competitionType,
+														 String competitionTeamType,
+														 String competitionCountryType,
+														 String competitionContinentID,
+														 String competitionNationID,
+														 Vector<Vector<String>> tableData,
+														 Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchCompetitionEditionAdmin(String competitionID,
+																		String teamType,
+																		Vector<Vector<Object>> tableData,
+																		Map<Integer, Map<Integer, String>> tableMap);
+
 }

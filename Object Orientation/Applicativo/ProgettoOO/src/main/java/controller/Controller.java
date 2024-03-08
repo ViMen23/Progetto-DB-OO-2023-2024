@@ -1,7 +1,6 @@
 package controller;
 
 import dao.*;
-import gui.GuiConfiguration;
 import gui.Regex;
 import model.*;
 import postgresImplDAO.*;
@@ -18,10 +17,10 @@ import java.util.*;
 public class Controller
 {
 	private static Controller controllerInstance = null;
+	private static Admin adminConnected = null;
 
 	private Controller()
 	{
-
 	}
 
 	/**
@@ -69,15 +68,13 @@ public class Controller
 			return false;
 		}
 
-		if (newAdmin().getAdminConnected() != null) {
+		if (adminConnected != null) {
 			return false;
 		}
 
-		Admin admin = newAdmin(username, password);
-
 		AdminDAO adminDAO = new PostgresImplAdminDAO();
-		if (adminDAO.isAdminDB(admin.getUsername(), admin.getPassword())) {
-			newAdmin().setAdminConnected(admin);
+		if (adminDAO.isAdminDB(username, password)) {
+			adminConnected = new Admin(username, password);
 			System.out.println("Connesso");
 			return true;
 		}
@@ -87,26 +84,16 @@ public class Controller
 
 
 	/**
-	 * Crea una nuova istanza della classe Admin
-	 * chiamando il costruttore della classe.
-	 * Restituisce l'istanza creata.
-	 * @param username
-	 * @param password
-	 * @return un'istanza della classe Admin
+	 * TODO
 	 */
-	private Admin newAdmin(String username, String password)
+	public void logoutAdmin()
 	{
-		return new Admin(username, password);
+		if (null != adminConnected) {
+			adminConnected = null;
+			System.out.println("Disconnesso");
+		}
 	}
 
-	/**
-	 * TODO
-	 * @return
-	 */
-	private Admin newAdmin()
-	{
-		return newAdmin(null, null);
-	}
 
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -225,6 +212,11 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param confederationMap
+	 */
 	public void setConfederationPartecipation(String teamID,
 																						Map<String, String> confederationMap)
 	{
@@ -275,6 +267,17 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
+	 * @param competitionNameVector
+	 * @param competitionNameMap
+	 */
 	public void setCompetitionComboBox(String competitionSubName,
 																		 String competitionType,
 																		 String competitionTeamType,
@@ -297,6 +300,13 @@ public class Controller
 		);
 	}
 
+	/**
+	 * TODO
+	 * @param teamType
+	 * @param competitionID
+	 * @param competitionEditionVector
+	 * @param competitionEditionMap
+	 */
 	public void setCompetitionEditionComboBox(String teamType,
 																						String competitionID,
 																						Vector<String> competitionEditionVector,
@@ -312,6 +322,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param confederationID
+	 * @param teamType
+	 * @param competitionVector
+	 * @param competitionMap
+	 */
 	public void setCompetitionConfederationComboBox(String confederationID,
 																									String teamType,
 																									Vector<String> competitionVector,
@@ -327,7 +344,16 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
+	 * @param competitionTableData
+	 */
 	public void setCompetitionTable(String competitionSubName,
 																	String competitionType,
 																	String competitionTeamType,
@@ -345,6 +371,62 @@ public class Controller
 						competitionContinentID,
 						competitionNationID,
 						competitionTableData
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param competitionSubName
+	 * @param competitionType
+	 * @param competitionTeamType
+	 * @param competitionCountryType
+	 * @param competitionContinentID
+	 * @param competitionNationID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setCompetitionTableAdmin(String competitionSubName,
+																			 String competitionType,
+																			 String competitionTeamType,
+																			 String competitionCountryType,
+																			 String competitionContinentID,
+																			 String competitionNationID,
+																			 Vector<Vector<String>> tableData,
+																			 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionAdmin(
+						competitionSubName,
+						competitionType,
+						competitionTeamType,
+						competitionCountryType,
+						competitionContinentID,
+						competitionNationID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param competitionID
+	 * @param teamType
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setCompetitionTableAdmin(String competitionID,
+																			 String teamType,
+																			 Vector<Vector<Object>> tableData,
+																			 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionEditionAdmin(
+						competitionID,
+						teamType,
+						tableData,
+						tableMap
 		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -397,6 +479,12 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamLongNameVector
+	 * @param teamLongNameMap
+	 */
 	public void setTeamComboBox(String playerID,
 															Vector<String> teamLongNameVector,
 															Map<String, String> teamLongNameMap)
@@ -410,6 +498,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param teamYearVector
+	 * @param teamYearMap
+	 */
 	public void setTeamYearComboBox(String teamID,
 																	String teamType,
 																	Vector<String> teamYearVector,
@@ -425,7 +520,16 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param teamSubLongName
+	 * @param teamSubShortName
+	 * @param teamType
+	 * @param teamContinentID
+	 * @param teamNationID
+	 * @param teamTableData
+	 * @param teamTableMap
+	 */
 	public void setTeamTable(String teamSubLongName,
 													 String teamSubShortName,
 													 String teamType,
@@ -447,6 +551,11 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param infoTeamMap
+	 */
 	public void setTeamInfoMap(String teamID,
 														 Map<String, String> infoTeamMap)
 	{
@@ -478,6 +587,16 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param startYear
+	 * @param infoTeamMap
+	 * @param teamSquadTableData
+	 * @param teamSquadTableMap
+	 * @param teamPartecipationTableData
+	 */
 	public void setTeamSeasonView(String teamID,
 																String startYear,
 																Map<String, String> infoTeamMap,
@@ -490,6 +609,15 @@ public class Controller
 		setTeamSquadTable(teamID, startYear, teamSquadTableData, teamSquadTableMap);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param infoTeamMap
+	 * @param teamTrophyTableData
+	 * @param teamPrizeTableData
+	 */
 	public void setTeamCaseView(String teamID,
 															String teamType,
 															Map<String, String> infoTeamMap,
@@ -502,7 +630,14 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param teamType
+	 * @param teamLongName
+	 * @param teamShortName
+	 * @param countryID
+	 * @return
+	 */
 	public String createTeam(String teamType,
 													 String teamLongName,
 													 String teamShortName,
@@ -510,7 +645,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (null == newAdmin().getAdminConnected()) {
+		if (null == adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -536,6 +671,15 @@ public class Controller
 		return message;
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param teamLongName
+	 * @param teamShortName
+	 * @return
+	 */
 	public String updateTeam(String teamID,
 													 String teamType,
 													 String teamLongName,
@@ -543,7 +687,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (null == newAdmin().getAdminConnected()) {
+		if (null == adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -573,7 +717,7 @@ public class Controller
 
 	public String deleteTeam(String teamID)
 	{
-		if (null == newAdmin().getAdminConnected()) {
+		if (null == adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -599,6 +743,11 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param infoPlayerMap
+	 */
 	public void setPlayerInfoMap(String playerID,
 															 Map<String, String> infoPlayerMap)
 	{
@@ -610,6 +759,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param startYear
+	 * @param teamID
+	 * @param playerInfoVector
+	 * @param playerInfoMap
+	 */
 	public void setPlayerComboBox(String startYear,
 																String teamID,
 																Vector<String> playerInfoVector,
@@ -624,6 +780,14 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param seasonVector
+	 * @param seasonMap
+	 */
 	public void setPlayerComboBoxYear(String playerID,
 																		String teamType,
 																		Vector<String> seasonVector,
@@ -638,6 +802,22 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerSubName
+	 * @param playerSubSurname
+	 * @param playerReferringYear
+	 * @param playerMinAge
+	 * @param playerMaxAge
+	 * @param playerContinentID
+	 * @param playerNationID
+	 * @param playerRole
+	 * @param playerPositionID
+	 * @param playerFoot
+	 * @param playerTableData
+	 * @param playerTableMap
+	 */
 	public void setPlayerTable(String playerSubName,
 														 String playerSubSurname,
 														 String playerReferringYear,
@@ -669,7 +849,14 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param militancyPlayerTeamID
+	 * @param militancyPlayerStartYear
+	 * @param militancyPlayerEndYear
+	 * @param playerTableData
+	 * @param playerTableMap
+	 */
 	public void setPlayerTable(String militancyPlayerTeamID,
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear,
@@ -687,6 +874,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param infoPlayerMap
+	 * @param playerPositionTableData
+	 * @param playerNationalityTableData
+	 */
 	public void setPlayerGeneralView(String playerID,
 																	 Map<String, String> infoPlayerMap,
 																	 Vector<Vector<String>> playerPositionTableData,
@@ -698,6 +892,16 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param infoPlayerMap
+	 * @param playerAttributeGoalkeepingTableData
+	 * @param playerAttributeMentalTableData
+	 * @param playerAttributePhysicalTableData
+	 * @param playerAttributeTechnicalTableData
+	 * @param playerTagTableData
+	 */
 	public void setPlayerDetailedView(String playerID,
 																		Map<String, String> infoPlayerMap,
 																		Vector<Vector<String>> playerAttributeGoalkeepingTableData,
@@ -715,6 +919,15 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param infoPlayerMap
+	 * @param playerClubCareerTableData
+	 * @param playerClubCareerTableMap
+	 * @param playerNationalCareerTableData
+	 * @param playerNationalCareerTableMap
+	 */
 	public void setPlayerCareerView(String playerID,
 																	Map<String, String> infoPlayerMap,
 																	Vector<Vector<String>> playerClubCareerTableData,
@@ -728,6 +941,18 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param teamID
+	 * @param competitionID
+	 * @param startYear
+	 * @param endYear
+	 * @param infoPlayerMap
+	 * @param playerStatisticTableData
+	 * @param playerStatisticTableMap
+	 */
 	public void setPlayerStatisticView(String playerID,
 																		 String teamType,
 																		 String teamID,
@@ -752,6 +977,16 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param infoPlayerMap
+	 * @param playerClubTrophyTableData
+	 * @param playerClubTrophyTableMap
+	 * @param playerNationalTrophyTableData
+	 * @param playerNationalTrophyTableMap
+	 * @param playerPrizeTableData
+	 */
 	public void setPlayerCaseView(String playerID,
 																Map<String, String> infoPlayerMap,
 																Vector<Vector<String>> playerClubTrophyTableData,
@@ -811,6 +1046,13 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * TODO
+	 * @param teamType
+	 * @param playerRole
+	 * @param statisticTableData
+	 * @param statisticTableDataMap
+	 */
 	public void setStatisticTable(String teamType,
 																String playerRole,
 																Vector<Vector<String>> statisticTableData,
@@ -826,6 +1068,13 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param competitionStartYear
+	 * @param competitionID
+	 * @param statisticTableData
+	 * @param statisticTableMap
+	 */
 	public void setStatisticCompetitionEditionTable(String competitionStartYear,
 																									String competitionID,
 																									Vector<Vector<String>> statisticTableData,
@@ -841,7 +1090,17 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param teamID
+	 * @param competitionID
+	 * @param startYear
+	 * @param endYear
+	 * @param playerStatisticTableData
+	 * @param playerStatisticTableMap
+	 */
 	public void setPlayerStatisticTable(String playerID,
 																			String teamType,
 																			String teamID,
@@ -871,6 +1130,12 @@ public class Controller
 	 * PARTECIPATION
 	 *------------------------------------------------------------------------------------------------------*/
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionStartYear
+	 * @param teamPartecipationTableData
+	 */
 	public void setPartecipationTable(String teamID,
 																		String competitionStartYear,
 																		Vector<Vector<Object>> teamPartecipationTableData)
@@ -879,6 +1144,14 @@ public class Controller
 		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionStartYear
+	 * @param teamPartecipationTableData
+	 * @param tableMap
+	 */
 	public void setPartecipationTableAdmin(String teamID,
 																				 String competitionStartYear,
 																				 Vector<Vector<Object>> teamPartecipationTableData,
@@ -893,6 +1166,14 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param partecipationYearVector
+	 * @param partecipationYearMap
+	 */
 	public void setPartecipationYearComboBox(String teamID,
 																					 String teamType,
 																					 Vector<String> partecipationYearVector,
@@ -907,6 +1188,14 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionStartYear
+	 * @param partecipationNameVector
+	 * @param partecipationNameMap
+	 */
 	public void setPartecipationComboBox(String teamID,
 																			 String competitionStartYear,
 																			 Vector<String> partecipationNameVector,
@@ -921,11 +1210,19 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
 	public String deletePartecipation(String teamID,
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (null == newAdmin().getAdminConnected()) {
+		if (null == adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -934,11 +1231,18 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
 	public String createPartecipation(String teamID,
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (null == newAdmin().getAdminConnected()) {
+		if (null == adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1007,7 +1311,38 @@ public class Controller
 	 * TROPHY
 	 *------------------------------------------------------------------------------------------------------*/
 
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setTeamTrophyComboBox(Vector<String> comboBoxData,
+																		Map<String, String> comboBoxMap)
+	{
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTeamTrophy(comboBoxData, comboBoxMap);
+	}
 
+
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setPlayerTrophyComboBox(Vector<String> comboBoxData,
+																			Map<String, String> comboBoxMap)
+	{
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchPlayerTrophy(comboBoxData, comboBoxMap);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param tableData
+	 */
 	public void setTeamTrophyTable(String teamID,
 																 String teamType,
 																 Vector<Vector<String>> tableData)
@@ -1020,17 +1355,101 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param teamType
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setTeamTrophyTableAdmin(String teamID,
+																			String teamType,
+																			Vector<Vector<Object>> tableData,
+																			Map<Integer, Map<Integer, String>> tableMap)
+	{
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTeamTrophyAdmin(
+						teamID,
+						teamType,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param tableData
+	 * @param tableMap
+	 */
 	public void setPlayerTrophyTable(String playerID,
 																	 String teamType,
 																	 Vector<Vector<String>> tableData,
-																	 Map<Integer, Map<Integer, String>> TableMap)
+																	 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
 		trophyDAO.fetchTrophy(
 						playerID,
 						teamType,
 						tableData,
-						TableMap
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param trophyID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
+	public String assignTrophyTeam(String teamID,
+																 String trophyID,
+																 String competitionID,
+																 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		return trophyDAO.newTrophyTeam(
+						teamID,
+						trophyID,
+						competitionID,
+						competitionStartYear
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param trophyID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
+	public String removeTrophyTeam(String teamID,
+																 String trophyID,
+																 String competitionID,
+																 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		return trophyDAO.deleteTrophyTeam(
+						teamID,
+						trophyID,
+						competitionID,
+						competitionStartYear
 		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
@@ -1040,7 +1459,43 @@ public class Controller
 	 * PRIZE
 	 *------------------------------------------------------------------------------------------------------*/
 
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setTeamPrizeComboBox(Vector<String> comboBoxData,
+																	 Map<String, String> comboBoxMap)
+	{
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchTeamPrize(
+						comboBoxData,
+						comboBoxMap
+		);
+	}
 
+
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setPlayerPrizeComboBox(Vector<String> comboBoxData,
+																		 Map<String, String> comboBoxMap)
+	{
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchPlayerPrize(
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param tableData
+	 */
 	public void setTeamPrizeTable(String teamID,
 																Vector<Vector<String>> tableData)
 	{
@@ -1049,11 +1504,83 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setTeamPrizeTableAdmin(String teamID,
+																		 Vector<Vector<Object>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchTeamPrizeAdmin(
+						teamID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 */
 	public void setPlayerPrizeTable(String playerID,
 																	Vector<Vector<String>> tableData)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
 		prizeDAO.fetchPrize(playerID, tableData);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param prizeID
+	 * @param assignedYear
+	 * @return
+	 */
+	public String assignPrizeTeam(String teamID,
+																String prizeID,
+																String assignedYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		return prizeDAO.newPrizeTeam(
+						teamID,
+						prizeID,
+						assignedYear
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @param prizeID
+	 * @param assignedYear
+	 * @return
+	 */
+	public String removePrizeTeam(String teamID,
+																String prizeID,
+																String assignedYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		return prizeDAO.deletePrizeTeam(
+						teamID,
+						prizeID,
+						assignedYear
+		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -1063,6 +1590,11 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 */
 	public void setNationalityTable(String playerID,
 																	Vector<Vector<String>> tableData)
 	{
@@ -1080,6 +1612,11 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param playerAttributeGoalkeepingTableData
+	 */
 	public void setAttributeGoalkeepingTable(String playerID,
 																					 Vector<Vector<String>> playerAttributeGoalkeepingTableData)
 	{
@@ -1087,6 +1624,12 @@ public class Controller
 		attributeGoalkeepingDAO.fetchAttributeGoalkeeping(playerID, playerAttributeGoalkeepingTableData);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param playerAttributeMentalTableData
+	 */
 	public void setAttributeMentalTable(String playerID,
 																			Vector<Vector<String>> playerAttributeMentalTableData)
 	{
@@ -1094,6 +1637,12 @@ public class Controller
 		attributeMentalDAO.fetchAttributeMental(playerID, playerAttributeMentalTableData);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param playerAttributePhysicalTableData
+	 */
 	public void setAttributePhysicalTable(String playerID,
 																				Vector<Vector<String>> playerAttributePhysicalTableData)
 	{
@@ -1101,6 +1650,12 @@ public class Controller
 		attributePhysicalDAO.fetchAttributePhysical(playerID, playerAttributePhysicalTableData);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param playerAttributeTechnicalTableData
+	 */
 	public void setAttributeTechnicalTable(String playerID,
 																				 Vector<Vector<String>> playerAttributeTechnicalTableData)
 	{
@@ -1115,6 +1670,11 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 */
 	public void setTagTable(String playerID,
 													Vector<Vector<String>> tableData)
 	{

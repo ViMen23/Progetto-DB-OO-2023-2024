@@ -3664,3 +3664,47 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : competition_year
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_year
+(
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            start_year  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition_edition.start_year::text AS start_year
+        FROM
+            fp_competition_edition
+        WHERE 
+            fp_competition_edition.competition_id = id_comp::integer
+        ORDER BY
+            fp_competition_edition.start_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+
+
+

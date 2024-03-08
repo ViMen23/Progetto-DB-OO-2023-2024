@@ -6,6 +6,7 @@ import gui.GuiConfiguration;
 import model.Team;
 
 import java.sql.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
@@ -304,6 +305,118 @@ public class PostgresImplCompetitionDAO
 				competitionNameVector.add(rs.getString("comp_name"));
 				competitionNameMap.put(competitionNameVector.getLast(), rs.getString("comp_id"));
 			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchCompetitionAdmin(String competitionSubName,
+																		String competitionType,
+																		String competitionTeamType,
+																		String competitionCountryType,
+																		String competitionContinentID,
+																		String competitionNationID,
+																		Vector<Vector<String>> tableData,
+																		Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call search_competitions(?, ?, ?, ?, ?, ?)}");
+			cs.setString(1, competitionSubName);
+			cs.setString(2, competitionType);
+			cs.setString(3, competitionTeamType);
+			cs.setString(4, competitionCountryType);
+			cs.setString(5, competitionContinentID);
+			cs.setString(6, competitionNationID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> competitonMap = new HashMap<>();
+			Map<Integer, String> teamTypeMap = new HashMap<>();
+
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("comp_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
+				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type_team")));
+				vector.add(rs.getString("conf_short_name"));
+				vector.add(rs.getString("country_name"));
+
+				tableData.add(vector);
+				competitonMap.put(row, rs.getString("comp_id"));
+				teamTypeMap.put(row, rs.getString("comp_type"));
+
+				++row;
+			}
+
+			tableMap.put(0, competitonMap);
+			tableMap.put(2, teamTypeMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchCompetitionEditionAdmin(String competitionID,
+																					 String teamType,
+																					 Vector<Vector<Object>> tableData,
+																					 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call competition_year(?)}");
+			cs.setString(1, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> seasonMap = new HashMap<>();
+
+			int row = 0;
+
+			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+				String season = null;
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
+
+					season = rs.getString("start_year");
+					season += "/";
+					season += (Integer.parseInt(rs.getString("start_year")) + 1);
+
+					vector.add(false);
+					vector.add(season);
+
+					tableData.add(vector);
+					seasonMap.put(row, rs.getString("start_year"));
+
+					++row;
+				}
+			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
+
+					vector.add(false);
+					vector.add(rs.getString("start_year"));
+
+					tableData.add(vector);
+					seasonMap.put(row, rs.getString("start_year"));
+
+					++row;
+				}
+			}
+
+			tableMap.put(1, seasonMap);
 
 			rs.close();
 			cs.close();
