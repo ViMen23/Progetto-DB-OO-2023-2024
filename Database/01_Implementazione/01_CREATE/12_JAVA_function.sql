@@ -3809,3 +3809,59 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : info_competition
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION info_competition
+(
+    IN  id_comp text
+)
+RETURNS TABLE
+        (
+            comp_name       text,
+            comp_type       text,
+            comp_team_type  text,
+            comp_freq       text,
+            conf_short_name text,
+            country_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition.name::text AS comp_name,
+            fp_competition.type::text AS comp_type,
+            fp_competition.team_type::text AS comp_team_type,
+            fp_competition.frequency::text AS comp_freq,
+            fp_confederation.short_name::text AS conf_short_name,
+            fp_country.name::text AS country_name
+        FROM
+            fp_competition
+            JOIN
+            fp_confederation
+                ON
+                fp_competition.confederation_id = fp_confederation.id
+            JOIN
+            fp_country
+                ON
+                fp_confederation.country_id = fp_country.id
+        WHERE
+            fp_competition.id = id_comp::integer;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------

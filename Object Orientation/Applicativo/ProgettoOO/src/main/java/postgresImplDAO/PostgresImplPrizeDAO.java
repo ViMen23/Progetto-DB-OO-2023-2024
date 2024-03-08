@@ -246,7 +246,7 @@ public class PostgresImplPrizeDAO
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				comboBoxData.add(GuiConfiguration.getMessage(rs.getString("prize_name")));
+				comboBoxData.add(rs.getString("prize_name"));
 				comboBoxMap.put(comboBoxData.getLast(), rs.getString("prize_id"));
 			}
 
@@ -273,7 +273,7 @@ public class PostgresImplPrizeDAO
 				data += "[";
 				data += GuiConfiguration.getMessage(rs.getString("prize_role"));
 				data += "] ";
-				data += GuiConfiguration.getMessage(rs.getString("prize_name"));
+				data += rs.getString("prize_name");
 
 				comboBoxData.add(data);
 				comboBoxMap.put(data, rs.getString("prize_id"));

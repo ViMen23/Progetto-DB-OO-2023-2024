@@ -478,4 +478,32 @@ public class PostgresImplCompetitionDAO
 
 		return message;
 	}
+
+	@Override
+	public void fetchCompetition(String competitionID,
+															 Map<String, String> infoMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call info_competition(?)}");
+			cs.setString(1, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				infoMap.put(GuiConfiguration.getMessage("competition").toUpperCase(), rs.getString("comp_name"));
+				infoMap.put(GuiConfiguration.getMessage("type"), GuiConfiguration.getMessage(rs.getString("comp_type")));
+				infoMap.put(GuiConfiguration.getMessage("teamType").toUpperCase(), GuiConfiguration.getMessage(rs.getString("comp_team_type")));
+				infoMap.put(GuiConfiguration.getMessage("frequency"), rs.getString("comp_freq"));
+				infoMap.put(GuiConfiguration.getMessage("confederation"), rs.getString("conf_short_name"));
+				infoMap.put(GuiConfiguration.getMessage("country"), rs.getString("country_name"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

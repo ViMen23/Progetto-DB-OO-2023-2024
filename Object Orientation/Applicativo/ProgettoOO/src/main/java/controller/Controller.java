@@ -245,6 +245,17 @@ public class Controller
 	}
 
 
+	public void setCompetitionInfoMap(String competitionID,
+																		Map<String, String> infoMap)
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetition(
+						competitionID,
+						infoMap
+		);
+	}
+
+
 	/**
 	 * TODO
 	 * @param playerID

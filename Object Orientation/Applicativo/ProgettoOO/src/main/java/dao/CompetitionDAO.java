@@ -84,4 +84,7 @@ public interface CompetitionDAO
 	String deleteCompetitionEdition(String competitionID,
 																	String competitionStartYear);
 
+	void fetchCompetition(String competitionID,
+												Map<String, String> infoMap);
+
 }
