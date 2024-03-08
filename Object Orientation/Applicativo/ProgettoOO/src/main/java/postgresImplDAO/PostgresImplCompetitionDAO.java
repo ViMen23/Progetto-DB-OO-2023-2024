@@ -352,7 +352,7 @@ public class PostgresImplCompetitionDAO
 
 				tableData.add(vector);
 				competitonMap.put(row, rs.getString("comp_id"));
-				teamTypeMap.put(row, rs.getString("comp_type"));
+				teamTypeMap.put(row, rs.getString("comp_type_team"));
 
 				++row;
 			}
