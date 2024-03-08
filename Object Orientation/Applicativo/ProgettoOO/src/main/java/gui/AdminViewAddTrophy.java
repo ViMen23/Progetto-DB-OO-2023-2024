@@ -103,12 +103,19 @@ public class AdminViewAddTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI VOLER AGGIUNGERE IL TROFEO");
+				JOptionPane.showConfirmDialog(null, "SEI SICURO DI VOLER AGGIUNGERE IL TROFEO"); //TODO
 
-				//String message = Controller.getInstance().creat;
+				String message = Controller.getInstance().assignTrophyTeam(
+								teamID,
+								trophyNameMap.get(ctrlTrophy.getText()),
+								competitionNameMap.get(ctrlCompetition.getText()),
+								seasonMap.get(ctrlSeason.getText())
+				);
+
+				System.out.println(message);
 
 				try {
-					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+					JPanel panel = new AdminViewAddTrophy(teamID, teamType);
 
 					AdminViewAddTrophy.this.setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewAddTrophy.this);
@@ -182,12 +189,10 @@ public class AdminViewAddTrophy
 					trophyNameVector.clear();
 					trophyNameMap.clear();
 
-//					Controller.getInstance().setPartecipationComboBox(
-//									teamID,
-//									seasonMap.get(ctrlSeason.getText()),
-//									competitionNameVector,
-//									competitionNameMap
-//					);
+					Controller.getInstance().setTeamTrophyComboBox(
+									trophyNameVector,
+									trophyNameMap
+					);
 
 					if (trophyNameVector.isEmpty()) {
 						trophyNameVector.add(GuiConfiguration.getMessage("noData"));

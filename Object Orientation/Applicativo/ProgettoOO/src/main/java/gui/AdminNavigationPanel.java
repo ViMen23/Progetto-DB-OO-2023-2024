@@ -30,7 +30,7 @@ public class AdminNavigationPanel
 
 
 
-		titleLabel = new TitleLabel("VISTA ADMIN"); //TODO
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("adminView"));
 		this.add(titleLabel, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -41,13 +41,19 @@ public class AdminNavigationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (MainFrame.getMainFrameInstance().getContentPane().getComponentCount() >= 3) {
-					Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-					component.setVisible(false);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
 
-					MainFrame.getMainFrameInstance().getContentPane().remove(component);
+				if (container.getComponentCount() < 3) {
+					container.add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					return;
 				}
-				MainFrame.getMainFrameInstance().add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new CreateTeam(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
 			}
 		});
 
@@ -62,16 +68,19 @@ public class AdminNavigationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (MainFrame.getMainFrameInstance().getContentPane().getComponentCount() >= 3) {
-					Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-					component.setVisible(false);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
 
-					MainFrame.getMainFrameInstance().getContentPane().remove(component);
+				if (container.getComponentCount() < 3) {
+					container.add(new AdminSearchTeam(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					return;
 				}
-				MainFrame.getMainFrameInstance().add(
-								new AdminSearchTeam(),
-								GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT
-				);
+
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new AdminSearchTeam(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
 			}
 		});
 
@@ -85,13 +94,19 @@ public class AdminNavigationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (MainFrame.getMainFrameInstance().getContentPane().getComponentCount() >= 3) {
-					Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-					component.setVisible(false);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
 
-					MainFrame.getMainFrameInstance().getContentPane().remove(component);
+				if (container.getComponentCount() < 3) {
+					container.add(new CreatePlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					return;
 				}
-				MainFrame.getMainFrameInstance().add(new CreatePlayer(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				container.add(new CreatePlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
 			}
 		});
 
@@ -106,13 +121,19 @@ public class AdminNavigationPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				if (MainFrame.getMainFrameInstance().getContentPane().getComponentCount() >= 3) {
-					Component component = MainFrame.getMainFrameInstance().getContentPane().getComponent(2);
-					component.setVisible(false);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
 
-					MainFrame.getMainFrameInstance().getContentPane().remove(component);
+				if (container.getComponentCount() < 3) {
+					//container.add(new AdminSearchPlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					return;
 				}
-				//MainFrame.getMainFrameInstance().add(new AdminSearchPlayer(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+
+				Component component = container.getComponent(container.getComponentCount() - 1);
+
+				component.setVisible(false);
+				container.remove(component);
+
+				//container.add(new AdminSearchPlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
 			}
 		});
 

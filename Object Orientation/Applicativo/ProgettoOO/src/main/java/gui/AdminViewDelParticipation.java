@@ -72,6 +72,8 @@ public class AdminViewDelParticipation
 
 		showButton = new JButton(GuiConfiguration.getMessage("show"));
 		showButton.setCursor(GuiConfiguration.HAND_CURSOR);
+		showButton.setEnabled(false);
+
 		showSeasonPanel.add(showButton);
 
 		this.add(showSeasonPanel);
@@ -90,6 +92,7 @@ public class AdminViewDelParticipation
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
 		deleteButton.setCursor(GuiConfiguration.HAND_CURSOR);
+		deleteButton.setEnabled(false);
 
 		this.add(deleteButton);
 
@@ -178,6 +181,7 @@ public class AdminViewDelParticipation
 				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME, true));
 				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
 
+				deleteButton.setEnabled(true);
 				revalidate();
 			}
 		});

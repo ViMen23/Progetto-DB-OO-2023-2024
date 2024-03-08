@@ -71,7 +71,7 @@ public class AdminTopViewTeam
 		panel.add(addPrizeButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		deleteTeamButton = new JButton("ELIMINA TEAM"); //TODO
+		deleteTeamButton = new JButton(GuiConfiguration.getMessage("delTeam")); //TODO
 		deleteTeamButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(deleteTeamButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
@@ -81,7 +81,7 @@ public class AdminTopViewTeam
 		panel.add(deleteParticipationButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		deleteTrophyButton = new JButton("ELIMINA TROFEI"); //TODO
+		deleteTrophyButton = new JButton(GuiConfiguration.getMessage("delTrophy"));
 		deleteTrophyButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(deleteTrophyButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
@@ -129,7 +129,7 @@ public class AdminTopViewTeam
 				component.setVisible(false);
 				container.remove(component);
 
-				//container.add(new AdminViewAddTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new AdminViewAddTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -190,7 +190,7 @@ public class AdminTopViewTeam
 				component.setVisible(false);
 				container.remove(component);
 
-				//container.add(new AdminViewDelTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new AdminViewDelTrophy(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 

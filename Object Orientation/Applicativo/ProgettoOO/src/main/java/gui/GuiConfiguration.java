@@ -36,6 +36,7 @@ public class GuiConfiguration
 	public static final Vector<String> ADMIN_TEAM_PARTICIPATING_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_POSITION_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONALITY_TABLE_COLUMN_NAME = new Vector<>();
@@ -294,9 +295,13 @@ public class GuiConfiguration
 
 	public static void initTeamTrophyTableColumnName()
 	{
+		ADMIN_TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
-		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
+		TEAM_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
+
+		ADMIN_TEAM_TROPHY_TABLE_COLUMN_NAME.addAll(TEAM_TROPHY_TABLE_COLUMN_NAME);
 	}
 
 	public static void initTeamPrizeTableColumnName()
@@ -386,7 +391,7 @@ public class GuiConfiguration
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
-		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
 	}
 
 	public static void initPlayerNationalTrophyTableColumnName()
@@ -394,7 +399,7 @@ public class GuiConfiguration
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
-		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy"));
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
 	}
 
 	public static void initPlayerPrizeTableColumnName()
