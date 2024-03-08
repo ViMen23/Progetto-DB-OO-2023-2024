@@ -86,8 +86,7 @@ public class StepFilterPanel
 		centralPanel.setLayout(migLayout);
 
 
-		string = GuiConfiguration.getMessage("stepFilter");
-		topSearchPanel = new TopSearchPanel(string);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("stepFilter"), this);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);

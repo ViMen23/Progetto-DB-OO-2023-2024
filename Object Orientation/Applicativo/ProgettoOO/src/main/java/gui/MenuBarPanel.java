@@ -352,7 +352,7 @@ public class MenuBarPanel
 				GuiConfiguration.switchPanel
 					(
 						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchTeamPanel(),
+						new SearchTeamPanel(false),
 						2,
 						"sgx frame"
 					);

@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -21,7 +22,7 @@ public class TopSearchPanel
 												JPanel toRemovePanel)
 	{
 
-		this(titleButtonString);
+		this(titleButtonString, rootPanel);
 
 		titleButton.setEnabled(true);
 		titleButton.setIcon(MAXIMIZE);
@@ -45,7 +46,7 @@ public class TopSearchPanel
 		});
 	}
 
-	public TopSearchPanel(String titleButtonString)
+	public TopSearchPanel(String titleButtonString, JPanel rootPanel)
 	{
 		MigLayout migLayout;
 		JButton resetButton;
@@ -76,16 +77,18 @@ public class TopSearchPanel
 			public void actionPerformed(ActionEvent e)
 			{
 				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
 
+				rootPanel.getParent().setVisible(false);
+				container.remove(rootPanel.getParent());
 				try {
-					Component newComponent = component.getClass().getDeclaredConstructor().newInstance();
+					Component newComponent = rootPanel.getParent().getClass().getDeclaredConstructor(JPanel.class).newInstance(
+									rootPanel.getClass().getDeclaredConstructor(Boolean.class)
+													.newInstance(Controller.getInstance().isAdminConnected())
+					);
 					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
 				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
+					System.err.println("Errore: " + ex.getMessage());
 				}
 			}
 		});

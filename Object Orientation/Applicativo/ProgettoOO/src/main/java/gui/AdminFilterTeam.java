@@ -181,7 +181,7 @@ public class AdminFilterTeam
 			{
 				JPanel panel;
 
-				panel = new AdminViewGeneralInfo(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText());
+				panel = new AdminViewTeamGeneralInfo(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText());
 
 
 				AdminFilterTeam.this.setVisible(false);

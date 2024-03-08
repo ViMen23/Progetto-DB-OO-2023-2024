@@ -12,10 +12,10 @@ import java.beans.PropertyChangeListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AdminViewGeneralInfo
+public class AdminViewTeamGeneralInfo
 				extends JPanel
 {
-	public AdminViewGeneralInfo(String teamID, String teamType)
+	public AdminViewTeamGeneralInfo(String teamID, String teamType)
 	{
 		final JLabel ctrlLongName = new JLabel((String) null);
 		final JLabel ctrlShortName = new JLabel((String) null);
@@ -105,8 +105,8 @@ public class AdminViewGeneralInfo
 				try {
 					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
 
-					AdminViewGeneralInfo.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewGeneralInfo.this);
+					AdminViewTeamGeneralInfo.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamGeneralInfo.this);
 
 					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					panel.setVisible(true);

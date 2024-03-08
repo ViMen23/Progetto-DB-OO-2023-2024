@@ -18,7 +18,7 @@ import java.util.Vector;
 public class SearchTeamPanel
 							extends JPanel
 {
-	public SearchTeamPanel()
+	public SearchTeamPanel(Boolean admin)
 	{
 		final JLabel ctrlTeamSubLongName = new JLabel((String) null);
 		final JLabel ctrlTeamSubShortName = new JLabel((String) null);
@@ -313,6 +313,7 @@ public class SearchTeamPanel
 					try {
 						String teamID;
 						String teamType;
+						JPanel panel;
 
 						teamID = teamTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
@@ -322,10 +323,16 @@ public class SearchTeamPanel
 							teamType = Team.TEAM_TYPE.NATIONAL.toString();
 						}
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, teamType);
+						if (admin) {
+							panel = new AdminNavigationPanel(new AdminViewTeamGeneralInfo(teamID, teamType));
+						}
+						else {
+							panel = new ViewTeamSeasonPanel(teamID, teamType);
+						}
 
-						SearchTeamPanel.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this);
+						System.out.println(SearchTeamPanel.this.getParent());
+						SearchTeamPanel.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);

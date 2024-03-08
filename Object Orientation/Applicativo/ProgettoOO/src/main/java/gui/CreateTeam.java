@@ -52,7 +52,7 @@ public class CreateTeam
 
 		this.setLayout(migLayout);
 
-		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("msgCreateTeam"));
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("msgCreateTeam"), this);
 
 		this.add(topSearchPanel);
 		/*------------------------------------------------------------------------------------------------------*/

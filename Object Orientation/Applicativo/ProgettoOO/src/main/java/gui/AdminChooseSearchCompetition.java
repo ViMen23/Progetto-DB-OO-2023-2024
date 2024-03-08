@@ -7,10 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class AdminChooseSearchTeam
+public class AdminChooseSearchCompetition
 				extends JPanel
 {
-	public AdminChooseSearchTeam() {
+	public AdminChooseSearchCompetition() {
 		MigLayout migLayout;
 		TitleLabel titleLabel;
 		JButton searchButton;
@@ -27,16 +27,16 @@ public class AdminChooseSearchTeam
 		this.setLayout(migLayout);
 		this.setOpaque(false);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("editTeam"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("editCompetition"));
 
 		this.add(titleLabel, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
-		searchButton = new JButton(GuiConfiguration.getMessage("searchTeam"));
+		searchButton = new JButton(GuiConfiguration.getMessage("searchCompetition"));
 		searchButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		this.add(searchButton);
 
-		filterButton = new JButton(GuiConfiguration.getMessage("filterTeam"));
+		filterButton = new JButton(GuiConfiguration.getMessage("filterCompetition"));
 		filterButton.setCursor(GuiConfiguration.HAND_CURSOR);
 
 		this.add(filterButton);
@@ -51,7 +51,7 @@ public class AdminChooseSearchTeam
 
 				MainFrame.getMainFrameInstance().getContentPane().remove(component);
 
-				//MainFrame.getMainFrameInstance().add(new AdminSearchTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				MainFrame.getMainFrameInstance().add(new AdminSearchCompetition(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -65,7 +65,7 @@ public class AdminChooseSearchTeam
 
 				MainFrame.getMainFrameInstance().getContentPane().remove(component);
 
-				MainFrame.getMainFrameInstance().add(new AdminFilterTeam(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				//MainFrame.getMainFrameInstance().add(new AdminFilterCompetition(), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 	}

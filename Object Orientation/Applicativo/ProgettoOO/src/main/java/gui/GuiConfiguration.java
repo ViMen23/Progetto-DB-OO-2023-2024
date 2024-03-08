@@ -3,9 +3,6 @@ package gui;
 import database.DatabaseConnection;
 
 import javax.swing.*;
-import javax.swing.plaf.ButtonUI;
-import javax.swing.plaf.nimbus.AbstractRegionPainter;
-import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.sql.SQLException;
@@ -21,7 +18,7 @@ import java.util.*;
 public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;
-	public static final int MIN_YEAR = 1810;
+	public static final int MIN_YEAR = 1860;
 	public static final int MIN_AGE = 15;
 	public static final int MAX_AGE = 50;
 
@@ -38,6 +35,7 @@ public class GuiConfiguration
 	public static final Vector<String> TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> ADMIN_TEAM_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_POSITION_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONALITY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_ATTRIBUTE_GOALKEEPING_TABLE_COLUMN_NAME = new Vector<>();
@@ -306,9 +304,13 @@ public class GuiConfiguration
 
 	public static void initTeamPrizeTableColumnName()
 	{
+		ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize"));
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("given"));
+
+		ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME.addAll(TEAM_PRIZE_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerTableColumnName()

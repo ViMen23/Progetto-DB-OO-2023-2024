@@ -66,12 +66,12 @@ public class AdminTopViewTeam
 		panel.add(addTrophyButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		addPrizeButton = new JButton("INSERISCI PREMI"); //TODO
+		addPrizeButton = new JButton(GuiConfiguration.getMessage("addPrize"));
 		addPrizeButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(addPrizeButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		deleteTeamButton = new JButton(GuiConfiguration.getMessage("delTeam")); //TODO
+		deleteTeamButton = new JButton(GuiConfiguration.getMessage("delTeam"));
 		deleteTeamButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(deleteTeamButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
@@ -86,7 +86,7 @@ public class AdminTopViewTeam
 		panel.add(deleteTrophyButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 
-		deletePrizeButton = new JButton("ELIMINA PREMI"); //TODO
+		deletePrizeButton = new JButton(GuiConfiguration.getMessage("delPrize"));
 		deletePrizeButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		panel.add(deletePrizeButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
@@ -100,7 +100,7 @@ public class AdminTopViewTeam
 				component.setVisible(false);
 				container.remove(component);
 
-				container.add(new AdminViewGeneralInfo(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new AdminViewTeamGeneralInfo(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -143,7 +143,7 @@ public class AdminTopViewTeam
 				component.setVisible(false);
 				container.remove(component);
 
-				//container.add(new AdminViewAddPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new AdminViewAddPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 
@@ -204,7 +204,7 @@ public class AdminTopViewTeam
 				component.setVisible(false);
 				container.remove(component);
 
-				//container.add(new AdminViewDelPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new AdminViewDelPrize(teamID, teamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 	}
