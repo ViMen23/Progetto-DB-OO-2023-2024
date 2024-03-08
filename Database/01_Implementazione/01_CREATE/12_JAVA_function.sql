@@ -3565,7 +3565,7 @@ BEGIN
         AND
         fp_team_prize_case.prize_id = id_prize::integer
         AND
-		fp_team_prize_case.a_year = a_year::dm_year;
+		fp_team_prize_case.assign_year = a_year::dm_year;
 	
 
     GET DIAGNOSTICS count_row = row_count;
