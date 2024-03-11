@@ -12,6 +12,7 @@ import java.util.*;
 public class Player
 {
 	public enum FOOT_TYPE {EITHER, LEFT, RIGHT}
+	public enum MILITANCY_TYPE {I_PART, II_PART, FULL}
 	private static final Map<String, Player> PLAYER_MAP = new LinkedHashMap<>();
 	private static Integer totalPlayers = 0;
 

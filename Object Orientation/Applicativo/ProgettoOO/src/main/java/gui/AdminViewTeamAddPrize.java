@@ -117,11 +117,10 @@ public class AdminViewTeamAddPrize
 				if (0 == StringUtils.compareIgnoreCase(ctrlYear.getText(), "@fill")) {
 
 					MyComboBox yearCombo = yearPanel.getMyComboBox();
-					int dYear = Year.now().getValue();
 
 					yearCombo.removeAllItems();
 
-					for (int i = GuiConfiguration.MIN_YEAR; i < dYear;  ++i) {
+					for (int i = Year.now().getValue(); i >= GuiConfiguration.MIN_YEAR;  --i) {
 						yearCombo.addItem(String.valueOf(i));
 					}
 				} else {

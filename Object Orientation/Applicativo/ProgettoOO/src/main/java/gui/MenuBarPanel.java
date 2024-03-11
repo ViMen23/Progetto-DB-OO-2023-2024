@@ -301,7 +301,7 @@ public class MenuBarPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-		button = new JButton(GuiConfiguration.filterIcon);
+		button = new JButton(GuiConfiguration.FILTER_ICON);
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 		menuPanel.add(button);
 
@@ -320,7 +320,7 @@ public class MenuBarPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-		button = new JButton(GuiConfiguration.diceIcon);
+		button = new JButton(GuiConfiguration.DICE_ICON);
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 		menuPanel.add(button);
 

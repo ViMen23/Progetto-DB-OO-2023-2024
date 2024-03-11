@@ -1,7 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -10,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.time.Year;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -77,10 +75,21 @@ public class AdminViewPlayerAddTag
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//TODO
-//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
+				String message = Controller.getInstance().addPlayerTag(playerID, tagNameMap.get(ctrlTagName.getText()));
+
+				System.out.println(message);
+
+				try {
+					AdminViewPlayerAddTag.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddTag.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddTag(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -92,7 +101,7 @@ public class AdminViewPlayerAddTag
 					tagNameVector.clear();
 					tagNameMap.clear();
 
-					//Controller.getInstance().setTagComboBox(tagNameVector, tagNameMap);
+					Controller.getInstance().setTagComboBox(tagNameVector, tagNameMap);
 
 					if (tagNameVector.isEmpty()) {
 						tagNameVector.add(GuiConfiguration.getMessage("noData"));

@@ -25,12 +25,12 @@ public class AdminViewPlayerDelNationality
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-//		Controller.getInstance().setPlayerPositionTable(
-//						playerID,
-//						playerPositionTableData,
-//						playerPositionTableMap
-//		);
-		//TODO
+		Controller.getInstance().setNationalityTable(
+						playerID,
+						nationalityTableData,
+						nationalityTableMap
+		);
+
 
 		final MyTable nationalityTable;
 
@@ -62,7 +62,7 @@ public class AdminViewPlayerDelNationality
 
 		nationalityTablePanel = new TablePanel(false);
 
-		nationalityTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
+		nationalityTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalities"));
 
 		nationalityTable = nationalityTablePanel.getMyTable();
 		nationalityTable.setModel(new TableModel(nationalityTableData, GuiConfiguration.ADMIN_PLAYER_NATIONALITY_TABLE_COLUMN_NAME, true));
@@ -79,19 +79,16 @@ public class AdminViewPlayerDelNationality
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA NAZIONALITA"); //TODO
 
 				for (int i = 0; i < nationalityTableData.size(); ++i) {
 					if ((Boolean) nationalityTableData.get(i).getFirst()) {
-//						String message = Controller.getInstance().remove(
-//										teamID,
-//										trophyTableMap.get(3).get(i),
-//										trophyTableMap.get(2).get(i),
-//										trophyTableMap.get(1).get(i)
-//						);
-//
-//						System.out.println(message);
-						//TODO
+						String message = Controller.getInstance().removeNationality(
+										playerID,
+										nationalityTableMap.get(1).get(i)
+						);
+
+						System.out.println(message);
 					}
 				}
 

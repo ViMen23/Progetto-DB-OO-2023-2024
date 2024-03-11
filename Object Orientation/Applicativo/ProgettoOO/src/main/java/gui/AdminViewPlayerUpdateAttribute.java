@@ -106,15 +106,6 @@ public class AdminViewPlayerUpdateAttribute
 		technicalTable.setPreferredScrollableViewportSize(technicalTable.getPreferredSize());
 
 		tablePanel.add(technicalAttributePanel);
-
-		tagPanel = new TablePanel(false);
-		tagPanel.getTitleLabel().setText(GuiConfiguration.getMessage("tag").toUpperCase());
-
-		tagTable = tagPanel.getMyTable();
-		tagTable.setModel(new TableModel(tagTableData, GuiConfiguration.PLAYER_TAG_TABLE_COLUMN_NAME));
-		tagTable.setPreferredScrollableViewportSize(tagTable.getPreferredSize());
-
-		tablePanel.add(tagPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 	}

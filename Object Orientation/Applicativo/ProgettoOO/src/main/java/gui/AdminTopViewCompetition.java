@@ -15,8 +15,9 @@ public class AdminTopViewCompetition
 	{
 		MigLayout migLayout;
 		JPanel panel;
-		JButton addCompetitionEdition;
-		JButton deleteCompetitionEdition;
+		JMenuBar menuBar;
+		JMenu menu;
+		JMenuItem menuItem;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
@@ -31,24 +32,43 @@ public class AdminTopViewCompetition
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						null,
+						null
 		);
 
 		panel = new JPanel(migLayout);
-
 		this.add(panel);
+		/*------------------------------------------------------------------------------------------------------*/
+		menuBar = new JMenuBar();
 
-		addCompetitionEdition = new JButton(GuiConfiguration.getMessage("addCompetitionEdition"));
-		addCompetitionEdition.setCursor(GuiConfiguration.HAND_CURSOR);
-		panel.add(addCompetitionEdition, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_50_LAYOUT_CONSTRAINT,
+						null
+		);
 
-		deleteCompetitionEdition = new JButton(GuiConfiguration.getMessage("delCompetitionEdition"));
-		deleteCompetitionEdition.setCursor(GuiConfiguration.HAND_CURSOR);
-		panel.add(deleteCompetitionEdition, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
+		menuBar.setLayout(migLayout);
+		panel.add(menuBar);
+		/*------------------------------------------------------------------------------------------------------*/
 
-		addCompetitionEdition.addActionListener(new ActionListener() {
+		menu = new JMenu(GuiConfiguration.getMessage("competitionEditions"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("addCompetitionEdition"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -65,8 +85,13 @@ public class AdminTopViewCompetition
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 
-		deleteCompetitionEdition.addActionListener(new ActionListener() {
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("delCompetitionEdition"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
@@ -83,6 +108,7 @@ public class AdminTopViewCompetition
 				}
 			}
 		});
+		/*------------------------------------------------------------------------------------------------------*/
 	}
 
 	public void setGeneralInfoPanel(Map<String,String> infoCompetitionMap)

@@ -2,13 +2,10 @@ package gui;
 
 import controller.Controller;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -19,12 +16,7 @@ public class AdminViewPlayerDelTrophy
 {
 	public AdminViewPlayerDelTrophy(String playerID)
 	{
-		final JLabel ctrlTeamName = new JLabel((String) null);
-
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
-
-		final Vector<String> teamNameVector = new Vector<>();
-		final Map<String, String> teamNameMap = new HashMap<>();
 
 		final Vector<Vector<Object>> trophyTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> trophyTableMap = new HashMap<>();
@@ -32,13 +24,13 @@ public class AdminViewPlayerDelTrophy
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
+		//TODO CALL TO CONTROLLER
+
 		final MyTable trophyTable;
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
-		LabelComboPanel showTeamPanel;
-		JButton showButton;
 		TablePanel trophyPanel;
 		JButton deleteButton;
 
@@ -62,29 +54,12 @@ public class AdminViewPlayerDelTrophy
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		showTeamPanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("team").toUpperCase(),
-						true,
-						GuiConfiguration.THREE_CELL_EXT_GAP_PUSH_PUSH_INT_GAP_20_20_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT,
-						ctrlTeamName
-		);
-
-		showButton = new JButton(GuiConfiguration.getMessage("show"));
-		showButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		showButton.setEnabled(false);
-
-		showTeamPanel.add(showButton);
-
-		this.add(showTeamPanel);
-		/*------------------------------------------------------------------------------------------------------*/
-
 		trophyPanel = new TablePanel(false);
 
 		trophyPanel.getTitleLabel().setText(GuiConfiguration.getMessage("trophies"));
 
 		trophyTable = trophyPanel.getMyTable();
-		trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME));
+		trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME));
 		trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
 
 		this.add(trophyPanel);
@@ -100,7 +75,7 @@ public class AdminViewPlayerDelTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA PARTECIPAZIONI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
 
 				for (int i = 0; i < trophyTableData.size(); ++i) {
 					if ((Boolean) trophyTableData.get(i).getFirst()) {
@@ -123,49 +98,6 @@ public class AdminViewPlayerDelTrophy
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
 
-			}
-		});
-
-		ctrlTeamName.addPropertyChangeListener("text", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt)
-			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlTeamName.getText(), "@fill")) {
-					teamNameVector.clear();
-					teamNameMap.clear();
-
-					//TODO CALL TO CONTROLLER
-
-					if (teamNameVector.isEmpty()) {
-						teamNameVector.add(GuiConfiguration.getMessage("noData"));
-					}
-					showTeamPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
-				} else {
-					showButton.setEnabled(null != teamNameMap.get(ctrlTeamName.getText()));
-				}
-			}
-		});
-
-		showButton.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				infoPlayerMap.clear();
-				trophyTableMap.clear();
-				trophyTableMap.clear();
-
-				Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
-
-				//TODO CALL TO CONTROLLER
-
-				adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
-
-
-				trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME, true));
-				trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
-
-				deleteButton.setEnabled(true);
-				revalidate();
 			}
 		});
 	}

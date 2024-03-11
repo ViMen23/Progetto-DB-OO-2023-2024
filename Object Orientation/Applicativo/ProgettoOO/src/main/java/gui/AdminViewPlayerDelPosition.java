@@ -25,19 +25,18 @@ public class AdminViewPlayerDelPosition
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-//		Controller.getInstance().setPlayerPositionTable(
-//						playerID,
-//						playerPositionTableData,
-//						playerPositionTableMap
-//		);
-		//TODO
+		Controller.getInstance().setPositionTable(
+						playerID,
+						playerPositionTableData,
+						playerPositionTableMap
+		);
 
 		final MyTable playerPositionTable;
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
-		TablePanel playerPositionPanel;
+		TablePanel playerPositionTablePanel;
 		JButton deleteButton;
 
 
@@ -60,15 +59,15 @@ public class AdminViewPlayerDelPosition
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		playerPositionPanel = new TablePanel(false);
+		playerPositionTablePanel = new TablePanel(false);
 
-		playerPositionPanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
+		playerPositionTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
 
-		playerPositionTable = playerPositionPanel.getMyTable();
+		playerPositionTable = playerPositionTablePanel.getMyTable();
 		playerPositionTable.setModel(new TableModel(playerPositionTableData, GuiConfiguration.ADMIN_PLAYER_POSITION_TABLE_COLUMN_NAME, true));
 		playerPositionTable.setPreferredScrollableViewportSize(playerPositionTable.getPreferredSize());
 
-		this.add(playerPositionTable);
+		this.add(playerPositionTablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
@@ -79,19 +78,16 @@ public class AdminViewPlayerDelPosition
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA POSIZIONI"); //TODO
 
 				for (int i = 0; i < playerPositionTableData.size(); ++i) {
 					if ((Boolean) playerPositionTableData.get(i).getFirst()) {
-//						String message = Controller.getInstance().remove(
-//										teamID,
-//										trophyTableMap.get(3).get(i),
-//										trophyTableMap.get(2).get(i),
-//										trophyTableMap.get(1).get(i)
-//						);
-//
-//						System.out.println(message);
-						//TODO
+						String message = Controller.getInstance().removePlayerPosition(
+										playerID,
+										playerPositionTableMap.get(3).get(i)
+						);
+
+						System.out.println(message);
 					}
 				}
 

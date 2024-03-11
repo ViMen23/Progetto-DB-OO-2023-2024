@@ -11,32 +11,31 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewPlayerDelTag
+public class AdminViewPlayerDelNationalMilitancy
 				extends JPanel
 {
-	public AdminViewPlayerDelTag(String playerID)
+	public AdminViewPlayerDelNationalMilitancy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
-
-		final Vector<Vector<Object>> playerTagTableData = new Vector<>();
-		final Map<Integer, Map<Integer, String>> playerTagTableMap = new HashMap<>();
-
+		final Vector<Vector<Object>> militancyTableData = new Vector<>();
+		final Map<Integer, Map<Integer, String>> militancyTableMap = new HashMap<>();
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-		Controller.getInstance().setTagTable(
-						playerID,
-						playerTagTableData,
-						playerTagTableMap
-		);
+//		Controller.getInstance().setPlayerPositionTable(
+//						playerID,
+//						playerPositionTableData,
+//						playerPositionTableMap
+//		);
+		//TODO
 
-		final MyTable playerTagTable;
+		final MyTable militancyTable;
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
-		TablePanel playerTagTablePanel;
+		TablePanel militancyTablePanel;
 		JButton deleteButton;
 
 
@@ -55,19 +54,19 @@ public class AdminViewPlayerDelTag
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delTag"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delNationalMilitancy"));
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		playerTagTablePanel = new TablePanel(false);
+		militancyTablePanel = new TablePanel(false);
 
-		playerTagTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
+		militancyTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalCareer"));
 
-		playerTagTable = playerTagTablePanel.getMyTable();
-		playerTagTable.setModel(new TableModel(playerTagTableData, GuiConfiguration.ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME, true));
-		playerTagTable.setPreferredScrollableViewportSize(playerTagTable.getPreferredSize());
+		militancyTable = militancyTablePanel.getMyTable();
+		militancyTable.setModel(new TableModel(militancyTableData, GuiConfiguration.ADMIN_PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME, true));
+		militancyTable.setPreferredScrollableViewportSize(militancyTable.getPreferredSize());
 
-		this.add(playerTagTablePanel);
+		this.add(militancyTablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
@@ -78,25 +77,28 @@ public class AdminViewPlayerDelTag
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TAG"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA MILITANZE NAZIONALI"); //TODO
 
-				for (int i = 0; i < playerTagTableData.size(); ++i) {
-					if ((Boolean) playerTagTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().removePlayerTag(
-										playerID,
-										playerTagTableMap.get(1).get(i)
-						);
-
-						System.out.println(message);
+				for (int i = 0; i < militancyTableData.size(); ++i) {
+					if ((Boolean) militancyTableData.get(i).getFirst()) {
+//						String message = Controller.getInstance().remove(
+//										teamID,
+//										trophyTableMap.get(3).get(i),
+//										trophyTableMap.get(2).get(i),
+//										trophyTableMap.get(1).get(i)
+//						);
+//
+//						System.out.println(message);
+						//TODO
 					}
 				}
 
 				try {
-					AdminViewPlayerDelTag.this.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelTag.this.getParent());
+					AdminViewPlayerDelNationalMilitancy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelNationalMilitancy.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelTag(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelNationalMilitancy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

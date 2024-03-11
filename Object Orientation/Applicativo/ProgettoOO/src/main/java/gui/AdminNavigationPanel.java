@@ -202,7 +202,7 @@ public class AdminNavigationPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-		button = new JButton(GuiConfiguration.filterIcon);
+		button = new JButton(GuiConfiguration.FILTER_ICON);
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 		navigationPanel.add(button);
 

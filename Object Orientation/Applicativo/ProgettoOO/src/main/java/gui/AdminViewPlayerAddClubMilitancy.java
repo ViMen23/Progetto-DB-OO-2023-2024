@@ -2,6 +2,7 @@ package gui;
 
 import controller.Controller;
 import model.Country;
+import model.Player;
 import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
@@ -12,28 +13,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
-public class AdminViewPlayerAddTrophy
+public class AdminViewPlayerAddClubMilitancy
 				extends JPanel
 {
-	public AdminViewPlayerAddTrophy(String playerID)
+	public AdminViewPlayerAddClubMilitancy(String playerID)
 	{
-		final JLabel ctrlTeamType = new JLabel((String) null);
-		final JLabel ctrlYear = new JLabel((String) null);
 		final JLabel ctrlContinentName = new JLabel((String) null);
 		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlTeamName = new JLabel((String) null);
-		final JLabel ctrlCompetitionName = new JLabel((String) null);
-		final JLabel ctrlTrophyName = new JLabel((String) null);
+		final JLabel ctrlSeason = new JLabel((String) null);
+		final JLabel ctrlMilitancyType = new JLabel((String) null);
+
 
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
-
-		final Vector<String> yearVector = new Vector<>();
-		final Map<String, String> yearMap = new HashMap<>();
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -44,11 +38,9 @@ public class AdminViewPlayerAddTrophy
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
 
-		final Vector<String> competitionNameVector = new Vector<>();
-		final Map<String, String> competitionNameMap = new HashMap<>();
+		final Vector<String> seasonVector = new Vector<>();
+		final Map<String, String> seasonMap = new HashMap<>();
 
-		final Vector<String> trophyNameVector = new Vector<>();
-		final Map<String, String> trophyNameMap = new HashMap<>();
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
@@ -57,17 +49,17 @@ public class AdminViewPlayerAddTrophy
 		TitleLabel titleLabel;
 		JPanel panel;
 		JLabel label;
-		RadioPanel teamTypePanel;
-		LabelComboPanel yearPanel;
 		LabelComboPanel continentNamePanel;
 		LabelComboPanel nationNamePanel;
 		LabelComboPanel teamNamePanel;
-		LabelComboPanel competitionNamePanel;
-		LabelComboPanel trophyNamePanel;
+		LabelComboPanel seasonPanel;
+		JPanel militancyTypePanel;
+		ButtonGroup buttonGroup;
+		JRadioButton firstPartRadioButton;
+		JRadioButton secondPartRadioButton;
+		JRadioButton fullRadioButton;
 		JButton confirmButton;
 
-
-		String string;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
@@ -84,36 +76,8 @@ public class AdminViewPlayerAddTrophy
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("addTrophy"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("addClubMilitancy"));
 		this.add(titleLabel);
-		/*------------------------------------------------------------------------------------------------------*/
-
-		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						null
-		);
-
-		panel = new JPanel(migLayout);
-		panel.setBackground(Color.white);
-
-		this.add(panel);
-
-		label = new JLabel(StringUtils.capitalize(GuiConfiguration.getMessage("teamType").toLowerCase()));
-
-		panel.add(label);
-
-		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
-		panel.add(teamTypePanel);
-		/*------------------------------------------------------------------------------------------------------*/
-
-		yearPanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("year"),
-						false,
-						ctrlYear
-		);
-
-		this.add(yearPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		continentNamePanel = new LabelComboPanel(
@@ -140,23 +104,58 @@ public class AdminViewPlayerAddTrophy
 		this.add(teamNamePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-		competitionNamePanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("competition"),
+		seasonPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("season"),
 						false,
-						ctrlCompetitionName
+						ctrlSeason
 		);
 
-		this.add(competitionNamePanel);
+		this.add(seasonPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		trophyNamePanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("trophy"),
-						false,
-						ctrlYear
+		migLayout = new MigLayout(
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
+						null
 		);
 
-		this.add(trophyNamePanel);
+		panel = new JPanel(migLayout);
+		panel.setBackground(Color.white);
+
+		this.add(panel);
+
+
+		label = new JLabel(GuiConfiguration.getMessage("militancyType"));
+
+		panel.add(label);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						GuiConfiguration.THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+		);
+
+		militancyTypePanel = new JPanel(migLayout);
+		militancyTypePanel.setBackground(Color.white);
+
+		panel.add(militancyTypePanel);
+
+		buttonGroup = new ButtonGroup();
+
+		firstPartRadioButton = new JRadioButton(GuiConfiguration.getMessage(Player.MILITANCY_TYPE.I_PART.toString()));
+		firstPartRadioButton.setEnabled(false);
+		buttonGroup.add(firstPartRadioButton);
+		militancyTypePanel.add(firstPartRadioButton);
+
+		secondPartRadioButton = new JRadioButton(GuiConfiguration.getMessage(Player.MILITANCY_TYPE.II_PART.toString()));
+		secondPartRadioButton.setEnabled(false);
+		buttonGroup.add(secondPartRadioButton);
+		militancyTypePanel.add(secondPartRadioButton);
+
+		fullRadioButton = new JRadioButton(GuiConfiguration.getMessage(Player.MILITANCY_TYPE.FULL.toString()));
+		fullRadioButton.setEnabled(false);
+		buttonGroup.add(fullRadioButton);
+		militancyTypePanel.add(fullRadioButton);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		confirmButton = new JButton(GuiConfiguration.getMessage("confirm"));
@@ -171,43 +170,20 @@ public class AdminViewPlayerAddTrophy
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//TODO
-//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
-			}
-		});
+				//String message = Controller.getInstance().addPlayerTag(playerID, continentNameMap.get(ctrlTagName.getText()));
 
-		ctrlTeamType.addPropertyChangeListener("text", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt)
-			{
-				yearPanel.getMyComboBox().setEnabled(null != ctrlTeamType.getText());
-				yearPanel.getMyComboBox().setSelectedIndex(-1);
-				ctrlYear.setText(null);
-			}
-		});
+				//System.out.println(message);
 
-		ctrlYear.addPropertyChangeListener("text", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt)
-			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlYear.getText(), "@fill")) {
-					yearVector.clear();
-					yearMap.clear();
+				try {
+					AdminViewPlayerAddClubMilitancy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddClubMilitancy.this.getParent());
 
-
-					//TODO Controller.getInstance()
-
-
-					if (yearVector.isEmpty()) {
-						yearVector.add(GuiConfiguration.getMessage("noData"));
-					}
-					yearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(yearVector));
-				} else {
-					continentNamePanel.getMyComboBox().setEnabled(null != yearMap.get(ctrlYear.getText()));
-					continentNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlContinentName.setText(null);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddClubMilitancy(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
 			}
 		});
@@ -268,6 +244,7 @@ public class AdminViewPlayerAddTrophy
 				}
 			}
 		});
+
 		ctrlTeamName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
@@ -276,10 +253,11 @@ public class AdminViewPlayerAddTrophy
 					teamNameVector.clear();
 					teamNameMap.clear();
 
+
 					Controller.getInstance().setTeamComboBox(
 									null,
 									null,
-									ctrlTeamType.getText(),
+									Team.TEAM_TYPE.CLUB.toString(),
 									continentNameMap.get(ctrlContinentName.getText()),
 									nationNameMap.get(ctrlNationName.getText()),
 									teamNameVector,
@@ -290,62 +268,77 @@ public class AdminViewPlayerAddTrophy
 						teamNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
-				} else {
-					competitionNamePanel.getMyComboBox().setEnabled(null != teamNameMap.get(ctrlTeamName.getText()));
-					competitionNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlCompetitionName.setText(null);
+				}
+				else {
+					seasonPanel.getMyComboBox().setSelectedIndex(-1);
+					seasonPanel.getMyComboBox().setEnabled(teamNameMap.get(ctrlTeamName.getText()) != null);
+					ctrlSeason.setText(null);
 				}
 			}
 		});
 
-		ctrlCompetitionName.addPropertyChangeListener("text", new PropertyChangeListener() {
+
+		ctrlSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlCompetitionName.getText(), "@fill")) {
-					competitionNameVector.clear();
-					competitionNameMap.clear();
+				if (0 == StringUtils.compareIgnoreCase(ctrlSeason.getText(), "@fill")) {
+					seasonVector.clear();
+					seasonMap.clear();
 
-					Controller.getInstance().setPartecipationComboBox(
-									teamNameMap.get(ctrlTeamName.getText()),
-									yearMap.get(ctrlYear.getText()),
-									competitionNameVector,
-									competitionNameMap
-					);
 
-					if (competitionNameVector.isEmpty()) {
-						competitionNameVector.add(GuiConfiguration.getMessage("noData"));
+//					Controller.getInstance().setTeamComboBox(
+//									null,
+//									null,
+//									Team.TEAM_TYPE.CLUB.toString(),
+//									continentNameMap.get(ctrlContinentName.getText()),
+//									nationNameMap.get(ctrlNationName.getText()),
+//									teamNameVector,
+//									teamNameMap
+//					);
+
+					if (seasonVector.isEmpty()) {
+						seasonVector.add(GuiConfiguration.getMessage("noData"));
 					}
-					competitionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(competitionNameVector));
-				} else {
-					trophyNamePanel.getMyComboBox().setEnabled(null != competitionNameMap.get(ctrlCompetitionName.getText()));
-					trophyNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlTrophyName.setText(null);
+					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
+				}
+				else {
+					buttonGroup.clearSelection();
+					firstPartRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
+					secondPartRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
+					fullRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
+					ctrlMilitancyType.setText(null);
 				}
 			}
 		});
-		ctrlTrophyName.addPropertyChangeListener("text", new PropertyChangeListener() {
+
+		firstPartRadioButton.addActionListener(new ActionListener() {
 			@Override
-			public void propertyChange(PropertyChangeEvent evt)
+			public void actionPerformed(ActionEvent e)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlTrophyName.getText(), "@fill")) {
-					trophyNameVector.clear();
-					trophyNameMap.clear();
-
-
-					Controller.getInstance().setPlayerTrophyComboBox(trophyNameVector, trophyNameMap);
-
-
-					if (trophyNameVector.isEmpty()) {
-						trophyNameVector.add(GuiConfiguration.getMessage("noData"));
-					}
-					trophyNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(trophyNameVector));
-				} else {
-					confirmButton.setEnabled(null != trophyNameMap.get(ctrlTrophyName.getText()));
-				}
+				confirmButton.setEnabled(true);
+				ctrlMilitancyType.setText(Player.MILITANCY_TYPE.I_PART.toString());
 			}
 		});
 
+		secondPartRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				confirmButton.setEnabled(true);
+				ctrlMilitancyType.setText(Player.MILITANCY_TYPE.II_PART.toString());
+			}
+		});
+
+		fullRadioButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				confirmButton.setEnabled(true);
+				ctrlMilitancyType.setText(Player.MILITANCY_TYPE.FULL.toString());
+			}
+		});
 	}
 
 }
+

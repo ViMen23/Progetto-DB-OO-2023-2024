@@ -79,7 +79,7 @@ public class AdminViewPlayerDelPrize
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA PREMI"); //TODO
 
 				for (int i = 0; i < prizeTableData.size(); ++i) {
 					if ((Boolean) prizeTableData.get(i).getFirst()) {

@@ -36,6 +36,8 @@ public class AdminViewCompetitionAddCompetitionEdition
 		LabelComboPanel yearPanel;
 		JButton confirmButton;
 
+		String string;
+
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
@@ -56,8 +58,15 @@ public class AdminViewCompetitionAddCompetitionEdition
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		if (competitionTeamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+			string = GuiConfiguration.getMessage("season");
+		}
+		else {
+			string = GuiConfiguration.getMessage("year");
+		}
+
 		yearPanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("year"),
+						string,
 						true,
 						ctrlYear
 		);
@@ -91,12 +100,11 @@ public class AdminViewCompetitionAddCompetitionEdition
 					yearVector.clear();
 					yearMap.clear();
 
-					int dYear = Year.now().getValue();
 					String string;
 
 					if (competitionTeamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 
-						for (int i = GuiConfiguration.MIN_YEAR; i < dYear; ++i) {
+						for (int i = Year.now().getValue(); i >= GuiConfiguration.MIN_YEAR; --i) {
 							string = String.valueOf(i);
 							string += "/";
 							string += String.valueOf(i + 1);
@@ -106,7 +114,7 @@ public class AdminViewCompetitionAddCompetitionEdition
 						}
 					} else {
 
-						for (int i = GuiConfiguration.MIN_YEAR; i < dYear; ++i) {
+						for (int i = Year.now().getValue(); i >= GuiConfiguration.MIN_YEAR; --i) {
 							yearVector.add(String.valueOf(i));
 							yearMap.put(String.valueOf(i), String.valueOf(i));
 						}

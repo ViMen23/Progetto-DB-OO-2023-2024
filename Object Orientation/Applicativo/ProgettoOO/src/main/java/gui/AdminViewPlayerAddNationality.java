@@ -88,10 +88,21 @@ public class AdminViewPlayerAddNationality
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//TODO
-//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
+				String message = Controller.getInstance().addNationality(playerID, nationNameMap.get(ctrlNationName.getText()));
+
+				System.out.println(message);
+
+				try {
+					AdminViewPlayerAddNationality.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddNationality.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddNationality(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

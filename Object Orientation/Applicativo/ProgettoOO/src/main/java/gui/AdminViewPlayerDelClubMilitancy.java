@@ -1,12 +1,9 @@
 package gui;
 
 import controller.Controller;
-import model.Team;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
@@ -14,18 +11,16 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewPlayerDelMilitancy
+public class AdminViewPlayerDelClubMilitancy
 				extends JPanel
 {
-	public AdminViewPlayerDelMilitancy(String playerID)
+	public AdminViewPlayerDelClubMilitancy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
 		final Vector<Vector<Object>> militancyTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> militancyTableMap = new HashMap<>();
 
-
-		//TODO MOSTREREMO O NO UN FILTRO PER FAR VEDERE SOLO MILTANZE CLUB O NAZIONALI E DI UNA DETERMINATA SQUADRA?
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
 //		Controller.getInstance().setPlayerPositionTable(
@@ -59,16 +54,16 @@ public class AdminViewPlayerDelMilitancy
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delMilitancy"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delClubMilitancy"));
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		militancyTablePanel = new TablePanel(false);
 
-		militancyTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("career"));
+		militancyTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("clubCareer"));
 
 		militancyTable = militancyTablePanel.getMyTable();
-		militancyTable.setModel(new TableModel(militancyTableData, GuiConfiguration.PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME, true));
+		militancyTable.setModel(new TableModel(militancyTableData, GuiConfiguration.ADMIN_PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME, true));
 		militancyTable.setPreferredScrollableViewportSize(militancyTable.getPreferredSize());
 
 		this.add(militancyTablePanel);
@@ -82,7 +77,7 @@ public class AdminViewPlayerDelMilitancy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA MILITANZE CLUB"); //TODO
 
 				for (int i = 0; i < militancyTableData.size(); ++i) {
 					if ((Boolean) militancyTableData.get(i).getFirst()) {
@@ -99,11 +94,11 @@ public class AdminViewPlayerDelMilitancy
 				}
 
 				try {
-					AdminViewPlayerDelMilitancy.this.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelMilitancy.this.getParent());
+					AdminViewPlayerDelClubMilitancy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelClubMilitancy.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelMilitancy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelClubMilitancy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

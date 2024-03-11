@@ -23,8 +23,9 @@ public class GuiConfiguration
 	public static final int MAX_AGE = 50;
 
 	public static final ImageIcon HOME_ICON = GuiConfiguration.createImageIcon("images/homy.png");
-	public static final ImageIcon filterIcon = GuiConfiguration.createImageIcon("images/filter.png");
-	public static final ImageIcon diceIcon = GuiConfiguration.createImageIcon("images/dice.png");
+	public static final ImageIcon FILTER_ICON = GuiConfiguration.createImageIcon("images/filter.png");
+	public static final ImageIcon DICE_ICON = GuiConfiguration.createImageIcon("images/dice.png");
+	public static final ImageIcon BIN_ICON = GuiConfiguration.createImageIcon("images/bin.png");
 
 	public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
@@ -52,11 +53,12 @@ public class GuiConfiguration
 	public static final Vector<String> PLAYER_TAG_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME = new Vector<>();
-	public static final Vector<String> ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
-	public static final Vector<String> ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
@@ -393,25 +395,29 @@ public class GuiConfiguration
 
 	public static void initPlayerClubCareerTableColumnName()
 	{
-		ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+		ADMIN_PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 
-		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 
-		ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME);
+		ADMIN_PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerNationalityCareerTableColumnName()
 	{
-		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		ADMIN_PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
+		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
+
+		ADMIN_PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME.addAll(PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerStatisticTableColumnName()
 	{
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
@@ -426,19 +432,19 @@ public class GuiConfiguration
 
 	public static void initPlayerClubTrophyTableColumnName()
 	{
-		ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+		ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 
-		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
 
-		ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME);
+		ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerNationalTrophyTableColumnName()
 	{
-		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
@@ -448,7 +454,7 @@ public class GuiConfiguration
 	{
 		ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 
-		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize").toUpperCase());
 		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("given"));
 
@@ -487,7 +493,7 @@ public class GuiConfiguration
 	}
 	public static void initStatisticTableColumnNameTableColumnName()
 	{
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
