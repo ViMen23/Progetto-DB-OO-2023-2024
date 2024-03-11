@@ -4194,3 +4194,84 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : player_year
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION player_year
+(
+    IN  id_player       text,
+    OUT start_player    text,
+    OUT end_player      text
+)
+RETURNS record
+AS
+$$
+DECLARE
+
+    dob_year        integer;
+    end_year        integer;
+    retired_player  boolean;
+   
+BEGIN
+
+	SELECT
+        extract(year from fp_player.dob)::integer
+    INTO
+        dob_year
+    FROM
+        fp_player
+    WHERE
+        fp_player.id = id_player::integer;
+
+    
+    SELECT
+        count(*) >= 1
+    INTO
+        retired_player
+    FROM
+        fp_player_retired
+    WHERE
+        fp_player_retired.player_id = id_player::integer;
+
+
+	IF (retired_player) THEN
+
+        SELECT
+            extract(year from fp_player_retired.retired_date)::integer
+        INTO
+            end_year
+        FROM
+            fp_player_retired
+        WHERE
+            fp_fp_player_retired.player_id = id_player::integer;
+
+        
+        end_player = end_year::text;
+    
+    ELSE
+
+        end_player = (dob_year + max_age())::text;
+
+    END IF;
+
+
+    start_player = (dob_year + min_age())::text;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+

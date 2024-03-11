@@ -1059,6 +1059,19 @@ public class Controller
 		setPlayerTrophyTable(playerID, "NATIONAL", playerNationalTrophyTableData, playerNationalTrophyTableMap);
 		setPlayerPrizeTable(playerID, playerPrizeTableData);
 	}
+
+
+	public void setPlayerYear(String playerID,
+														String playerStartYear,
+														String playerEndYear)
+	{
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		playerDAO.fetchPlayerYear(
+						playerID,
+						playerStartYear,
+						playerEndYear
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
