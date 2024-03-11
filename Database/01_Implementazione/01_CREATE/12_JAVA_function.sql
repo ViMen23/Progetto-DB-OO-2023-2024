@@ -4266,7 +4266,7 @@ BEGIN
     
     year_player = start_player::text;
     year_player = year_player || '@';
-    year_player = year_player || end_player;
+    year_player = year_player || end_player::text;
     
 
     RETURN year_player;

@@ -520,7 +520,7 @@ public class PostgresImplPlayerDAO
 		String playerYear = null;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = player_year(?)}");
+			CallableStatement cs = this.conn.prepareCall("{? = call player_year(?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, playerID);
 
