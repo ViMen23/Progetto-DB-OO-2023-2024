@@ -441,4 +441,79 @@ public class PostgresImplTrophyDAO
 
 		return message;
 	}
+
+	@Override
+	public void fetchTrophyPlayerAdmin(String playerID,
+																		 String teamType,
+																		 Vector<Vector<Object>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call player_trophy_player(?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, teamType);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> seasonMap = new HashMap<>();
+			Map<Integer, String> competitionMap = new HashMap<>();
+			Map<Integer, String> teamMap = new HashMap<>();
+			Map<Integer, String> trophyMap = new HashMap<>();
+
+			int row = 0;
+
+			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
+				String season = null;
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
+
+					season = rs.getString("comp_start_year");
+					season += "/";
+					season += (Integer.parseInt(rs.getString("comp_start_year")) + 1);
+
+					vector.add(false);
+					vector.add(season);
+					vector.add(rs.getString("comp_name"));
+					vector.add(GuiConfiguration.getMessage(rs.getString("trophy_name")));
+
+					tableData.add(vector);
+					seasonMap.put(row, rs.getString("comp_start_year"));
+					competitionMap.put(row, rs.getString("comp_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					trophyMap.put(row, rs.getString("trophy_id"));
+
+					++row;
+				}
+			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
+				while (rs.next()) {
+					Vector<Object> vector = new Vector<>();
+
+					vector.add(false);
+					vector.add(rs.getString("comp_start_year"));
+					vector.add(rs.getString("comp_name"));
+					vector.add(GuiConfiguration.getMessage(rs.getString("trophy_name")));
+
+					tableData.add(vector);
+					seasonMap.put(row, rs.getString("comp_start_year"));
+					competitionMap.put(row, rs.getString("comp_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					trophyMap.put(row, rs.getString("trophy_id"));
+
+					++row;
+				}
+			}
+
+			tableMap.put(1, seasonMap);
+			tableMap.put(2, competitionMap);
+			tableMap.put(3, teamMap);
+			tableMap.put(4, trophyMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

@@ -1563,6 +1563,28 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setPlayerTrophyTableAdmin(String playerID,
+																				String teamType,
+																				Vector<Vector<Object>> tableData,
+																				Map<Integer, Map<Integer, String>> tableMap)
+	{
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		trophyDAO.fetchTrophyPlayerAdmin(
+						playerID,
+						teamType,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
 	 * @param teamID
 	 * @param trophyID
 	 * @param competitionID

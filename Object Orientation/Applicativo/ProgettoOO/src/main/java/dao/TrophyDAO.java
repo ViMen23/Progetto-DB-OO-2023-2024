@@ -63,4 +63,9 @@ public interface TrophyDAO
 														String trophyID,
 														String competitionID,
 														String competitionStartYear);
+
+	void fetchTrophyPlayerAdmin(String playerID,
+															String teamType,
+															Vector<Vector<Object>> tableData,
+															Map<Integer, Map<Integer, String>> tableMap);
 }

@@ -4610,3 +4610,70 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : player_trophy_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION player_trophy_player
+(
+    IN  id_player   text,
+    IN  type_team   text
+)
+RETURNS TABLE
+        (
+            comp_start_year text,
+            comp_id         text,
+            comp_name       text,
+            team_id         text,
+            team_long_name  text,
+            trophy_id       text,
+            trophy_name     text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_player_trophy_case.start_year::text AS comp_start_year,
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name,
+            fp_team.id::text AS team_id,
+            fp_team.long_name::text AS team_long_name,
+            fp_trophy.id::text AS trophy_id,
+            fp_trophy.name::text AS trophy_name
+        FROM
+            fp_player_trophy_case
+            JOIN
+            fp_trophy
+                ON
+                fp_player_trophy_case.trophy_id = fp_trophy.id
+            JOIN
+            fp_team
+                ON
+                fp_player_trophy_case.team_id = fp_team.id
+            JOIN
+            fp_competition
+                ON
+                fp_player_trophy_case.competition_id = fp_competition.id
+        WHERE
+            fp_player_trophy_case.player_id = id_player::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+            AND
+            fp_trophy.type = 'PLAYER'
+        ORDER BY
+            fp_player_trophy_case.start_year DESC;
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
