@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -11,12 +12,13 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewPlayerDelTrophy
+public class AdminViewPlayerDelClubTrophy
 				extends JPanel
 {
-	public AdminViewPlayerDelTrophy(String playerID)
+	public AdminViewPlayerDelClubTrophy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
+
 
 		final Vector<Vector<Object>> trophyTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> trophyTableMap = new HashMap<>();
@@ -24,14 +26,19 @@ public class AdminViewPlayerDelTrophy
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-		//TODO CALL TO CONTROLLER
+		Controller.getInstance().setPlayerTrophyTableAdmin(
+						playerID,
+						Team.TEAM_TYPE.CLUB.toString(),
+						trophyTableData,
+						trophyTableMap
+		);
 
 		final MyTable trophyTable;
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
-		TablePanel trophyPanel;
+		TablePanel trophyTablePanel;
 		JButton deleteButton;
 
 
@@ -50,25 +57,23 @@ public class AdminViewPlayerDelTrophy
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delTrophy"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delClubTrophy"));
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		trophyPanel = new TablePanel(false);
+		trophyTablePanel = new TablePanel(false);
 
-		trophyPanel.getTitleLabel().setText(GuiConfiguration.getMessage("trophies"));
+		trophyTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("clubTrophies"));
 
-		trophyTable = trophyPanel.getMyTable();
-		trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME));
+		trophyTable = trophyTablePanel.getMyTable();
+		trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME, true));
 		trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
 
-		this.add(trophyPanel);
+		this.add(trophyTablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
 		deleteButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		deleteButton.setEnabled(false);
-
 		this.add(deleteButton);
 
 		deleteButton.addActionListener(new ActionListener() {
@@ -79,26 +84,31 @@ public class AdminViewPlayerDelTrophy
 
 				for (int i = 0; i < trophyTableData.size(); ++i) {
 					if ((Boolean) trophyTableData.get(i).getFirst()) {
-//						String message = Controller.getInstance().deletePartecipation(teamID, participationTableMap.get(1).get(i), seasonMap.get(ctrlSeason.getText()));
-//
-//
-//						System.out.println(message);
+						String message = Controller.getInstance().removeTrophyPlayer(
+										playerID,
+										trophyTableMap.get(3).get(i),
+										trophyTableMap.get(4).get(i),
+										trophyTableMap.get(2).get(i),
+										trophyTableMap.get(1).get(i)
+						);
+
+						System.out.println(message);
 					}
 				}
 
 				try {
-					AdminViewPlayerDelTrophy.this.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelTrophy.this.getParent());
+					AdminViewPlayerDelClubTrophy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelClubTrophy.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelTrophy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelClubTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
-
 			}
 		});
+
 	}
 }

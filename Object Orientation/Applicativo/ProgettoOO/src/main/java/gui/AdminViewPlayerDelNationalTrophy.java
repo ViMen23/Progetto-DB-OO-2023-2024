@@ -1,6 +1,7 @@
 package gui;
 
 import controller.Controller;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -11,32 +12,33 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewPlayerDelPrize
+public class AdminViewPlayerDelNationalTrophy
 				extends JPanel
 {
-	public AdminViewPlayerDelPrize(String playerID)
+	public AdminViewPlayerDelNationalTrophy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
 
-		final Vector<Vector<Object>> prizeTableData = new Vector<>();
-		final Map<Integer, Map<Integer, String>> prizeTableMap = new HashMap<>();
+		final Vector<Vector<Object>> trophyTableData = new Vector<>();
+		final Map<Integer, Map<Integer, String>> trophyTableMap = new HashMap<>();
 
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-		Controller.getInstance().setPlayerPrizeTable(
+		Controller.getInstance().setPlayerTrophyTableAdmin(
 						playerID,
-						prizeTableData,
-						prizeTableMap
+						Team.TEAM_TYPE.NATIONAL.toString(),
+						trophyTableData,
+						trophyTableMap
 		);
 
-		final MyTable prizeTable;
+		final MyTable trophyTable;
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
-		TablePanel prizeTablePanel;
+		TablePanel trophyTablePanel;
 		JButton deleteButton;
 
 
@@ -55,19 +57,19 @@ public class AdminViewPlayerDelPrize
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delPrize"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delNationalTrophy"));
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		prizeTablePanel = new TablePanel(false);
+		trophyTablePanel = new TablePanel(false);
 
-		prizeTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("prizes"));
+		trophyTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("nationalTrophies"));
 
-		prizeTable = prizeTablePanel.getMyTable();
-		prizeTable.setModel(new TableModel(prizeTableData, GuiConfiguration.ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME, true));
-		prizeTable.setPreferredScrollableViewportSize(prizeTable.getPreferredSize());
+		trophyTable = trophyTablePanel.getMyTable();
+		trophyTable.setModel(new TableModel(trophyTableData, GuiConfiguration.ADMIN_PLAYER_TROPHY_TABLE_COLUMN_NAME, true));
+		trophyTable.setPreferredScrollableViewportSize(trophyTable.getPreferredSize());
 
-		this.add(prizeTablePanel);
+		this.add(trophyTablePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
@@ -78,14 +80,16 @@ public class AdminViewPlayerDelPrize
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA PREMI"); //TODO
+				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
 
-				for (int i = 0; i < prizeTableData.size(); ++i) {
-					if ((Boolean) prizeTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().deletePlayerPrize(
+				for (int i = 0; i < trophyTableData.size(); ++i) {
+					if ((Boolean) trophyTableData.get(i).getFirst()) {
+						String message = Controller.getInstance().removeTrophyPlayer(
 										playerID,
-										prizeTableMap.get(2).get(i),
-										prizeTableMap.get(1).get(i)
+										trophyTableMap.get(3).get(i),
+										trophyTableMap.get(4).get(i),
+										trophyTableMap.get(2).get(i),
+										trophyTableMap.get(1).get(i)
 						);
 
 						System.out.println(message);
@@ -93,8 +97,8 @@ public class AdminViewPlayerDelPrize
 				}
 
 				try {
-					AdminViewPlayerDelPrize.this.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelPrize.this.getParent());
+					AdminViewPlayerDelNationalTrophy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerDelNationalTrophy.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelPrize(playerID)),

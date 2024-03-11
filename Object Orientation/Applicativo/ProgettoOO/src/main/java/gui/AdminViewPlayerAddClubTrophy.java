@@ -101,7 +101,7 @@ public class AdminViewPlayerAddClubTrophy
 		trophyNamePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("trophy"),
 						false,
-						ctrlSeason
+						ctrlTrophyName
 		);
 
 		this.add(trophyNamePanel);
@@ -119,10 +119,27 @@ public class AdminViewPlayerAddClubTrophy
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//TODO
-//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
+				String message = Controller.getInstance().assignTrophyPlayer(
+								playerID,
+								teamNameMap.get(ctrlTeamName.getText()),
+								trophyNameMap.get(ctrlTrophyName.getText()),
+								competitionNameMap.get(ctrlCompetitionName.getText()),
+								seasonMap.get(ctrlSeason.getText())
+				);
+
+				System.out.println(message);
+
+				try {
+					AdminViewPlayerAddClubTrophy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddClubTrophy.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddClubTrophy(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

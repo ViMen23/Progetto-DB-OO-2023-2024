@@ -92,7 +92,7 @@ public class AdminTopViewPlayer
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-		menuItem = new JMenuItem(GuiConfiguration.getMessage("addRetiredDate"));
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("updateRetiredDate"));
 		menu.getPopupMenu().add(menuItem);
 
 		menuItem.addActionListener(new ActionListener() {
@@ -490,7 +490,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelClubMilitancy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelClubTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 
@@ -531,7 +531,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerAddNationalMilitancy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerAddNationalTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -553,7 +553,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelNationalMilitancy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelNationalTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 
