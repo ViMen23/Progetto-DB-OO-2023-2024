@@ -51,4 +51,16 @@ public interface TrophyDAO
 
 	void fetchPlayerTrophy(Vector<String> comboBoxData,
 												 Map<String, String> comboBoxMap);
+
+	String newTrophyPlayer(String playerID,
+												 String teamID,
+												 String trophyID,
+												 String competitionID,
+												 String competitionStartYear);
+
+	String deleteTrophyPlayer(String playerID,
+														String teamID,
+														String trophyID,
+														String competitionID,
+														String competitionStartYear);
 }

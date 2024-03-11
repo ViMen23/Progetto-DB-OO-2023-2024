@@ -1613,6 +1613,49 @@ public class Controller
 						competitionStartYear
 		);
 	}
+
+
+	public String assignTrophyPlayer(String playerID,
+																	 String teamID,
+																	 String trophyID,
+																	 String competitionID,
+																	 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		return trophyDAO.newTrophyPlayer(
+						playerID,
+						teamID,
+						trophyID,
+						competitionID,
+						competitionStartYear
+		);
+	}
+
+
+
+	public String removeTrophyPlayer(String playerID,
+																	 String teamID,
+																	 String trophyID,
+																	 String competitionID,
+																	 String competitionStartYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
+		return trophyDAO.deleteTrophyPlayer(
+						playerID,
+						teamID,
+						trophyID,
+						competitionID,
+						competitionStartYear
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 

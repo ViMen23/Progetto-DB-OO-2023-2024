@@ -377,4 +377,68 @@ public class PostgresImplTrophyDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public String newTrophyPlayer(String playerID,
+																String teamID,
+																String trophyID,
+																String competitionID,
+																String competitionStartYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_player_trophy(?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, teamID);
+			cs.setString(3, competitionID);
+			cs.setString(4, competitionStartYear);
+			cs.setString(5, trophyID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deleteTrophyPlayer(String playerID,
+																	 String teamID,
+																	 String trophyID,
+																	 String competitionID,
+																	 String competitionStartYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_player_trophy(?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, teamID);
+			cs.setString(3, competitionID);
+			cs.setString(4, competitionStartYear);
+			cs.setString(5, trophyID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
 }

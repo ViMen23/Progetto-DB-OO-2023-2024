@@ -4485,3 +4485,128 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_player_trophy
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_player_trophy
+(
+    IN  id_player   text,
+    IN  id_team     text,
+    IN  id_comp     text,
+    IN  s_year_comp text,
+    IN  id_trophy   text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_player_trophy_case
+		(
+            player_id,
+            team_id,
+            trophy_id,
+            start_year,
+            competition_id
+		)
+	VALUES
+	(
+        id_player::integer,
+		id_team::integer,
+        id_trophy::integer,
+        s_year_comp::dm_year,
+        id_comp::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayerTrophy';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_player_trophy
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_player_trophy
+(
+    IN  id_player   text,
+    IN  id_team     text,
+    IN  id_comp     text,
+    IN  s_year_comp text,
+    IN  id_trophy   text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_player_trophy_case
+	WHERE
+        fp_player_trophy_case.player_id = id_player::integer
+        AND
+        fp_player_trophy_case.team_id = id_team::integer
+        AND
+        fp_player_trophy_case.trophy_id = id_trophy::integer
+        AND
+        fp_player_trophy_case.start_year = s_year_comp::dm_year
+        AND
+        fp_player_trophy_case.competition_id = id_comp::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayerTrophy';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
