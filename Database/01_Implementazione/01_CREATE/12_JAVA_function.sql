@@ -2249,6 +2249,7 @@ CREATE OR REPLACE FUNCTION get_prize_case
 )
 RETURNS TABLE
         (
+            prize_id    text,
             prize_year  text,
             prize_name  text,
             prize_given text
@@ -2259,6 +2260,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
+            fp_prize.id::text AS prize_id,
             fp_player_prize_case.assign_year::text AS prize_year,
             fp_prize.name::text AS prize_name,
             fp_prize.given::text AS prize_given
