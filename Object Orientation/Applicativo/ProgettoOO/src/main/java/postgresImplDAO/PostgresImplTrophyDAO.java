@@ -392,9 +392,9 @@ public class PostgresImplTrophyDAO
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, playerID);
 			cs.setString(3, teamID);
-			cs.setString(3, competitionID);
-			cs.setString(4, competitionStartYear);
-			cs.setString(5, trophyID);
+			cs.setString(4, competitionID);
+			cs.setString(5, competitionStartYear);
+			cs.setString(6, trophyID);
 
 			cs.execute();
 
@@ -424,9 +424,9 @@ public class PostgresImplTrophyDAO
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, playerID);
 			cs.setString(3, teamID);
-			cs.setString(3, competitionID);
-			cs.setString(4, competitionStartYear);
-			cs.setString(5, trophyID);
+			cs.setString(4, competitionID);
+			cs.setString(5, competitionStartYear);
+			cs.setString(6, trophyID);
 
 			cs.execute();
 
