@@ -4434,3 +4434,52 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : player_team_year
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION player_team_year
+(
+    IN  id_player   text,
+    IN  type_team   text,
+    IN  s_year      text
+)
+RETURNS TABLE
+        (
+            team_id         text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_team.id::text AS team_id, 
+            fp_team.long_name::text AS team_long_name
+        FROM
+            fp_militancy
+            JOIN
+            fp_team
+                ON
+                fp_militancy.team_id = fp_team.id
+        WHERE
+            fp_militancy.player_id = id_player::integer
+            AND
+            fp_militancy.team_type = type_team::en_team
+            AND
+            fp_militancy.start_year = s_year::dm_year;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
