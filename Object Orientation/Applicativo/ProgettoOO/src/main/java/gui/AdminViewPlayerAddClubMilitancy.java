@@ -13,6 +13,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.*;
 
 public class AdminViewPlayerAddClubMilitancy
@@ -38,7 +39,6 @@ public class AdminViewPlayerAddClubMilitancy
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
 
-		final Vector<String> seasonVector = new Vector<>();
 		final Map<String, String> seasonMap = new HashMap<>();
 
 
@@ -283,24 +283,35 @@ public class AdminViewPlayerAddClubMilitancy
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlSeason.getText(), "@fill")) {
-					seasonVector.clear();
-					seasonMap.clear();
+					int minYear;
+					int maxYear;
 
+					String string;
 
-//					Controller.getInstance().setTeamComboBox(
-//									null,
-//									null,
-//									Team.TEAM_TYPE.CLUB.toString(),
-//									continentNameMap.get(ctrlContinentName.getText()),
-//									nationNameMap.get(ctrlNationName.getText()),
-//									teamNameVector,
-//									teamNameMap
-//					);
+					string = Controller.getInstance().setPlayerYear(playerID);
 
-					if (seasonVector.isEmpty()) {
-						seasonVector.add(GuiConfiguration.getMessage("noData"));
+					String[] keyPart = string.split("@");
+
+					minYear = Integer.parseInt(keyPart[0]);
+					maxYear = Integer.parseInt(keyPart[1]);
+
+					if (maxYear > Year.now().getValue()) {
+						maxYear = Year.now().getValue();
 					}
-					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
+
+					MyComboBox seasonCombo = seasonPanel.getMyComboBox();
+
+					seasonCombo.removeAllItems();
+
+					for (int i = maxYear; i >= minYear; --i) {
+						string = String.valueOf(i);
+						string += "/";
+						string += String.valueOf(i + 1);
+
+						seasonCombo.addItem(string);
+
+						seasonMap.put(string, String.valueOf(i));
+					}
 				}
 				else {
 					buttonGroup.clearSelection();
@@ -308,6 +319,7 @@ public class AdminViewPlayerAddClubMilitancy
 					secondPartRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
 					fullRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
 					ctrlMilitancyType.setText(null);
+					confirmButton.setEnabled(false);
 				}
 			}
 		});

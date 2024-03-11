@@ -439,9 +439,25 @@ public class AdminTopViewPlayer
 		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		subMenu = new JMenu(GuiConfiguration.getMessage("clubTrophies"));
+		subMenu.setFont(GuiConfiguration.outputSmallFont);
+		subMenu.setForeground(Color.black);
 
-		menuItem = new JMenuItem(GuiConfiguration.getMessage("addTrophy"));
-		menu.getPopupMenu().add(menuItem);
+		subMenu.setCursor(GuiConfiguration.HAND_CURSOR);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		subMenu.getPopupMenu().setLayout(migLayout);
+		menu.add(subMenu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("addClubTrophy"));
+		subMenu.getPopupMenu().add(menuItem);
 
 		menuItem.addActionListener(new ActionListener() {
 			@Override
@@ -452,7 +468,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerAddTrophy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerAddClubTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -462,8 +478,8 @@ public class AdminTopViewPlayer
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-		menuItem = new JMenuItem(GuiConfiguration.getMessage("delTrophy"));
-		menu.getPopupMenu().add(menuItem);
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("delClubTrophy"));
+		subMenu.getPopupMenu().add(menuItem);
 
 		menuItem.addActionListener(new ActionListener() {
 			@Override
@@ -474,9 +490,73 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerDelTrophy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerDelClubMilitancy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
+
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		subMenu = new JMenu(GuiConfiguration.getMessage("nationalTrophies"));
+
+		subMenu.setCursor(GuiConfiguration.HAND_CURSOR);
+		subMenu.setFont(GuiConfiguration.outputSmallFont);
+		subMenu.setForeground(Color.black);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		subMenu.getPopupMenu().setLayout(migLayout);
+		menu.add(subMenu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("addNationalTrophy"));
+		subMenu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddNationalMilitancy(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("delNationalTrophy"));
+		subMenu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerDelNationalMilitancy(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
@@ -567,11 +647,10 @@ public class AdminTopViewPlayer
 					rootPanel.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-					//TODO
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdateAttribute(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}

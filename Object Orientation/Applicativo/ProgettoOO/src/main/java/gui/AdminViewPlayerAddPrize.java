@@ -1,13 +1,10 @@
 package gui;
 
 import controller.Controller;
-import model.Country;
-import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -90,10 +87,25 @@ public class AdminViewPlayerAddPrize
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//TODO
-//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
+				String message = Controller.getInstance().addPlayerPrize(
+								playerID,
+								prizeNameMap.get(ctrlPrizeName.getText()),
+								ctrlYear.getText()
+				);
+
+				System.out.println(message);
+
+				try {
+					AdminViewPlayerAddPrize.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddPrize.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerAddPrize(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -104,11 +116,10 @@ public class AdminViewPlayerAddPrize
 				if (0 == StringUtils.compareIgnoreCase(ctrlYear.getText(), "@fill")) {
 
 					MyComboBox yearCombo = yearPanel.getMyComboBox();
-					int dYear = Year.now().getValue();
 
 					yearCombo.removeAllItems();
 
-					for (int i = GuiConfiguration.MIN_YEAR; i < dYear;  ++i) {
+					for (int i = Year.now().getValue(); i >= GuiConfiguration.MIN_YEAR;  --i) {
 						yearCombo.addItem(String.valueOf(i));
 					}
 				} else {
@@ -127,9 +138,7 @@ public class AdminViewPlayerAddPrize
 					prizeNameVector.clear();
 					prizeNameMap.clear();
 
-
-					//TODO Controller.getInstance().
-
+					Controller.getInstance().setPlayerPrizeComboBox(prizeNameVector, prizeNameMap);
 
 					if (prizeNameVector.isEmpty()) {
 						prizeNameVector.add(GuiConfiguration.getMessage("noData"));

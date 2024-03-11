@@ -55,13 +55,13 @@ public class AdminViewPlayerDelTag
 		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delTag"));
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("delPlayerTag"));
 		this.add(titleLabel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		playerTagTablePanel = new TablePanel(false);
 
-		playerTagTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("positions"));
+		playerTagTablePanel.getTitleLabel().setText(GuiConfiguration.getMessage("tag").toUpperCase());
 
 		playerTagTable = playerTagTablePanel.getMyTable();
 		playerTagTable.setModel(new TableModel(playerTagTableData, GuiConfiguration.ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME, true));

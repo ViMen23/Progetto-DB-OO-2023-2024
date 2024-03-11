@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.*;
 
 public class AdminViewPlayerAddNationalMilitancy
@@ -23,10 +24,6 @@ public class AdminViewPlayerAddNationalMilitancy
 
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
-
-		final Vector<String> yearVector = new Vector<>();
-		final Map<String, String> yearMap = new HashMap<>();
-
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
@@ -58,7 +55,7 @@ public class AdminViewPlayerAddNationalMilitancy
 		/*------------------------------------------------------------------------------------------------------*/
 
 		teamNamePanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("nationalTeams"),
+						GuiConfiguration.getMessage("nationalTeam"),
 						true,
 						ctrlTeamName
 		);
@@ -114,7 +111,7 @@ public class AdminViewPlayerAddNationalMilitancy
 					teamNameMap.clear();
 
 
-					//TODO
+					Controller.getInstance().setNationalTeamComboBox(playerID,teamNameVector, teamNameMap);
 
 					if (teamNameVector.isEmpty()) {
 						teamNameVector.add(GuiConfiguration.getMessage("noData"));
@@ -135,27 +132,32 @@ public class AdminViewPlayerAddNationalMilitancy
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlYear.getText(), "@fill")) {
-					yearVector.clear();
-					yearMap.clear();
+					int minYear;
+					int maxYear;
 
+					String string;
 
-//					Controller.getInstance().setTeamComboBox(
-//									null,
-//									null,
-//									Team.TEAM_TYPE.CLUB.toString(),
-//									continentNameMap.get(ctrlContinentName.getText()),
-//									nationNameMap.get(ctrlNationName.getText()),
-//									teamNameVector,
-//									teamNameMap
-//					);
+					string = Controller.getInstance().setPlayerYear(playerID);
 
-					if (yearVector.isEmpty()) {
-						yearVector.add(GuiConfiguration.getMessage("noData"));
+					String[] keyPart = string.split("@");
+
+					minYear = Integer.parseInt(keyPart[0]);
+					maxYear = Integer.parseInt(keyPart[1]);
+
+					if (maxYear > Year.now().getValue()) {
+						maxYear = Year.now().getValue();
 					}
-					yearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(yearVector));
+
+					MyComboBox yearCombo = yearPanel.getMyComboBox();
+
+					yearCombo.removeAllItems();
+
+					for (int i = maxYear; i >= minYear; --i) {
+						yearCombo.addItem(String.valueOf(i));
+					}
 				}
 				else {
-					confirmButton.setEnabled(null != yearMap.get(ctrlYear.getText()));
+					confirmButton.setEnabled(null != ctrlYear.getText());
 				}
 			}
 		});

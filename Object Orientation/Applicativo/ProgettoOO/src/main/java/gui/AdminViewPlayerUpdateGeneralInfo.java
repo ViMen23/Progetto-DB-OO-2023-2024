@@ -442,13 +442,13 @@ public class AdminViewPlayerUpdateGeneralInfo
 			}
 		});
 
-		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
-		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
-		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
-
-		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
-		positionNamePanel.getMyComboBox().setSelectedItem(prevMainPosition);
-		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
+//		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
+//		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
+//		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
+//
+//		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
+//		positionNamePanel.getMyComboBox().setSelectedItem(prevMainPosition);
+//		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
 
 
 		confirmButton.setEnabled(false);
