@@ -515,17 +515,18 @@ public class PostgresImplPlayerDAO
 	}
 
 	@Override
-	public void fetchPlayerYear(String playerID,
-															String playerStartYear,
-															String playerEndYear)
+	public String fetchPlayerYear(String playerID)
 	{
+		String playerYear = null;
+
 		try {
-			CallableStatement cs = this.conn.prepareCall("{SELECT * INTO ?, ? FROM player_year(?)}");
-			cs.setString(1, playerStartYear);
-			cs.setString(2, playerEndYear);
-			cs.setString(3, playerID);
+			CallableStatement cs = this.conn.prepareCall("{? = player_year(?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
 
 			cs.execute();
+
+			playerYear = cs.getString(1);
 
 			cs.close();
 			conn.close();
@@ -533,5 +534,7 @@ public class PostgresImplPlayerDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return playerYear;
 	}
 }

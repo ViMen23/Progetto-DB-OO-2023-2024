@@ -90,7 +90,5 @@ public interface PlayerDAO
 											 Vector<String> seasonVector,
 											 Map<String, String> seasonMap);
 
-	void fetchPlayerYear(String playerID,
-											 String playerStartYear,
-											 String playerEndYear);
+	String fetchPlayerYear(String playerID);
 }

@@ -1061,16 +1061,10 @@ public class Controller
 	}
 
 
-	public void setPlayerYear(String playerID,
-														String playerStartYear,
-														String playerEndYear)
+	public String setPlayerYear(String playerID)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayerYear(
-						playerID,
-						playerStartYear,
-						playerEndYear
-		);
+		return playerDAO.fetchPlayerYear(playerID);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 

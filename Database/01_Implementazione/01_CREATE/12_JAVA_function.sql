@@ -4210,25 +4210,24 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION player_year
 (
-    IN  id_player       text,
-    OUT start_player    text,
-    OUT end_player      text
+    IN  id_player   text
 )
-RETURNS record
+RETURNS text
 AS
 $$
 DECLARE
 
-    dob_year        integer;
-    end_year        integer;
+    year_player     text;
+    start_player    integer;
     retired_player  boolean;
-   
+    end_player      integer; 
+
 BEGIN
 
 	SELECT
         extract(year from fp_player.dob)::integer
     INTO
-        dob_year
+        start_player
     FROM
         fp_player
     WHERE
@@ -4250,23 +4249,27 @@ BEGIN
         SELECT
             extract(year from fp_player_retired.retired_date)::integer
         INTO
-            end_year
+            retired_player
         FROM
             fp_player_retired
         WHERE
             fp_fp_player_retired.player_id = id_player::integer;
-
-        
-        end_player = end_year::text;
     
     ELSE
 
-        end_player = (dob_year + max_age())::text;
+        end_player = start_player + max_age();
 
     END IF;
 
+    start_player = start_player + min_age();
 
-    start_player = (dob_year + min_age())::text;
+    
+    year_player = start_player::text;
+    year_player = year_player || '@';
+    year_player = year_player || end_player;
+    
+
+    RETURN year_player;
 
 END;
 $$
