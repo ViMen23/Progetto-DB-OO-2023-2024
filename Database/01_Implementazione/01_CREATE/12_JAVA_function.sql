@@ -1739,6 +1739,7 @@ CREATE OR REPLACE FUNCTION position_player
 )
 RETURNS TABLE
         (
+            position_id     text,
             position_role   text,
             position_code   text,
             position_name   text
@@ -1749,6 +1750,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
+            fp_position.id::text AS position_id,
             fp_position.role::text AS position_role,
             fp_position.code::text AS position_code,
             fp_position.name::text AS position_name
@@ -4071,6 +4073,113 @@ BEGIN
 	
 	IF (0 = count_row) THEN
         output_message = 'errorMessageDeleteNationality';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_player_tag
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_player_tag
+(
+    IN  id_player   text,
+    IN  id_tag      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_player_tag
+		(
+            player_id,
+            tag_id
+		)
+	VALUES
+	(
+        id_player::integer,
+		id_tag::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayerTag';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_player_tag
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_player_tag
+(
+    IN  id_player   text,
+    IN  id_tag      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_player_tag
+	WHERE
+        fp_player_tag.player_id = id_player::integer
+        AND
+        fp_player_tag.tag_id = id_tag::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayerTag';
     ELSE
         output_message = 'okDelete';
     END IF;

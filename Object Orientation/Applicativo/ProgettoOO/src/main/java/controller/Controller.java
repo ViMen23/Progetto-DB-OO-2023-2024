@@ -1909,5 +1909,47 @@ public class Controller
 						comboBoxMap
 		);
 	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tagID
+	 * @return
+	 */
+	public String addPlayerTag(String playerID,
+														 String tagID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TagDAO tagDAO = new PostgresImplTagDAO();
+		return tagDAO.newPlayerTag(
+						playerID,
+						tagID
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tagID
+	 * @return
+	 */
+	public String removePlayerTag(String playerID,
+																String tagID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		TagDAO tagDAO = new PostgresImplTagDAO();
+		return tagDAO.deletePlayerTag(
+						playerID,
+						tagID
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 }

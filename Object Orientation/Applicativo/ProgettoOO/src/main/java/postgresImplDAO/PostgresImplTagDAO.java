@@ -131,4 +131,56 @@ public class PostgresImplTagDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public String newPlayerTag(String playerID,
+														 String tagID)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_player_tag(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, tagID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deletePlayerTag(String playerID,
+																String tagID)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_player_tag(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, tagID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
 }

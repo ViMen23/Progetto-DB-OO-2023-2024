@@ -18,4 +18,10 @@ public interface TagDAO
 	void fetchTag(String playerID,
 								Vector<Vector<Object>> tableData,
 								Map<Integer, Map<Integer, String>> tableMap);
+
+	String newPlayerTag(String playerID,
+											String tagID);
+
+	String deletePlayerTag(String playerID,
+												 String tagID);
 }
