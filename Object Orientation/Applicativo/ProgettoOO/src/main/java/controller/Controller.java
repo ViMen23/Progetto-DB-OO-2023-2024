@@ -1465,6 +1465,96 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setNationalCareerAdmin(String playerID,
+																		 Vector<Vector<Object>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyNationalAdmin(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setClubCareerAdmin(String playerID,
+																 Vector<Vector<Object>> tableData,
+																 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		militancyDAO.fetchMilitancyClubAdmin(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamID
+	 * @param teamType
+	 * @param startYear
+	 * @param seasonType
+	 * @return
+	 */
+	public String newMilitancy(String playerID,
+														 String teamID,
+														 String teamType,
+														 String startYear,
+														 String seasonType)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		return militancyDAO.newMilitancy(
+						playerID,
+						teamID,
+						teamType,
+						startYear,
+						seasonType
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamID
+	 * @param startYear
+	 * @return
+	 */
+	public String deleteMilitancy(String playerID,
+																String teamID,
+																String startYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
+		return militancyDAO.deleteMilitancy(
+						playerID,
+						teamID,
+						startYear
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 

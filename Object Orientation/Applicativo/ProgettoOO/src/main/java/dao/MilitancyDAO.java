@@ -38,4 +38,22 @@ public interface MilitancyDAO
 	void fetchMilitancyClub(String playerID,
 													Vector<Vector<String>> tableData,
 													Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchMilitancyNationalAdmin(String playerID,
+																	 Vector<Vector<Object>> tableData,
+																	 Map<Integer, Map<Integer, String>> tableMap);
+
+	void fetchMilitancyClubAdmin(String playerID,
+															 Vector<Vector<Object>> tableData,
+															 Map<Integer, Map<Integer, String>> tableMap);
+
+	String newMilitancy(String playerID,
+											String teamID,
+											String teamType,
+											String startYear,
+											String seasonType);
+
+	String deleteMilitancy(String playerID,
+												 String teamID,
+												 String startYear);
 }

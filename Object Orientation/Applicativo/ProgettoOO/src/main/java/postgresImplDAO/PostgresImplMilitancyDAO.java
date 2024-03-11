@@ -4,10 +4,7 @@ import dao.MilitancyDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -177,6 +174,7 @@ public class PostgresImplMilitancyDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
@@ -185,7 +183,8 @@ public class PostgresImplMilitancyDAO
 				vector.add(rs.getString("team_long_name"));
 
 				tableData.add(vector);
-				teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+				teamMap.put(row, rs.getString("team_id"));
+				++row;
 			}
 
 			tableMap.put(1, teamMap);
@@ -211,6 +210,7 @@ public class PostgresImplMilitancyDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
@@ -226,7 +226,8 @@ public class PostgresImplMilitancyDAO
 				vector.add(rs.getString("country_name"));
 
 				tableData.add(vector);
-				teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+				teamMap.put(row, rs.getString("team_id"));
+				++row;
 			}
 
 			tableMap.put(2, teamMap);
@@ -238,5 +239,154 @@ public class PostgresImplMilitancyDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public void fetchMilitancyNationalAdmin(String playerID,
+																					Vector<Vector<Object>> tableData,
+																					Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_national_career_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> seasonMap = new HashMap<>();
+			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
+
+				vector.add(false);
+				vector.add(rs.getString("militancy_year"));
+				vector.add(rs.getString("team_long_name"));
+
+				tableData.add(vector);
+				seasonMap.put(row, rs.getString("militancy_year"));
+				teamMap.put(row, rs.getString("team_id"));
+				++row;
+			}
+
+			tableMap.put(1, seasonMap);
+			tableMap.put(2, teamMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchMilitancyClubAdmin(String playerID,
+																			Vector<Vector<Object>> tableData,
+																			Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_club_career_player(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> seasonMap = new HashMap<>();
+			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
+				String season = null;
+
+				season = rs.getString("militancy_year");
+				season += "/";
+				season += (Integer.parseInt(rs.getString("militancy_year")) + 1);
+
+				vector.add(false);
+				vector.add(season);
+				vector.add(GuiConfiguration.getMessage(rs.getString("militancy_type")));
+				vector.add(rs.getString("team_long_name"));
+				vector.add(rs.getString("country_name"));
+
+				tableData.add(vector);
+				seasonMap.put(row, rs.getString("militancy_year"));
+				teamMap.put(row, rs.getString("team_id"));
+				++row;
+			}
+
+			tableMap.put(1, seasonMap);
+			tableMap.put(3, teamMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public String newMilitancy(String playerID,
+														 String teamID,
+														 String teamType,
+														 String startYear,
+														 String seasonType)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_militancy(?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, teamID);
+			cs.setString(4, teamType);
+			cs.setString(5, startYear);
+			cs.setString(6, seasonType);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deleteMilitancy(String playerID,
+																String teamID,
+																String startYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_militancy(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, teamID);
+			cs.setString(4, startYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

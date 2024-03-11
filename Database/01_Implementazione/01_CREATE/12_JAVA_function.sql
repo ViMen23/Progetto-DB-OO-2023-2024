@@ -4677,3 +4677,126 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_militancy
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_militancy
+(
+    IN  id_player       text,
+    IN  id_team         text,
+    IN  type_team       text,
+    IN  s_year          text,
+    IN  type_militancy  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    IF ('NATIONAL' = type_team::en_team) THEN
+        type_militancy = 'FULL';
+    END IF;
+
+
+	INSERT INTO
+		fp_militancy
+		(
+            team_type,
+            team_id,
+            player_id,
+            start_year,
+            type
+		)
+	VALUES
+	(
+        type_team::en_team,
+		id_team::integer,
+        id_player::integer,
+        s_year::dm_year,
+        type_militancy::en_season
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayerTrophy';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_militancy
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_militancy
+(
+    IN  id_player   text,
+    IN  id_team     text,
+    IN  s_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_militancy
+	WHERE
+        fp_militancy.player_id = id_player::integer
+        AND
+        fp_militancy.team_id = id_team::integer
+        AND
+        fp_militancy.start_year = s_year::end_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayerTrophy';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
