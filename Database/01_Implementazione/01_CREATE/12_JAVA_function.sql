@@ -1790,6 +1790,7 @@ CREATE OR REPLACE FUNCTION nationality_player
 )
 RETURNS TABLE
         (
+            country_id      text,
             country_name    text
         )
 AS
@@ -1798,6 +1799,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
+        fp_country.id::text AS country_id,
             fp_country.name::text AS country_name
         FROM
             fp_nationality
