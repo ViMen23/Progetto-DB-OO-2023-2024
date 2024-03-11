@@ -649,6 +649,50 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @param playerID
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setNationalTeamComboBox(String playerID,
+																			Vector<String> comboBoxData,
+																			Map<String, String> comboBoxMap)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamComboBox(
+						playerID,
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamType
+	 * @param startYear
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setTeamComboBox(String playerID,
+															String teamType,
+															String startYear,
+															Vector<String> comboBoxData,
+															Map<String, String> comboBoxMap)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeam(
+						playerID,
+						teamType,
+						startYear,
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
+
+	/**
+	 * TODO
 	 * @param teamID
 	 * @param startYear
 	 * @param infoTeamMap
@@ -1695,6 +1739,73 @@ public class Controller
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
 		return prizeDAO.deletePrizeTeam(
 						teamID,
+						prizeID,
+						assignedYear
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setPlayerPrizeTable(String playerID,
+																	Vector<Vector<Object>> tableData,
+																	Map<Integer, Map<Integer, String>> tableMap)
+	{
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		prizeDAO.fetchPlayerPrize(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param prizeID
+	 * @param assignedYear
+	 * @return
+	 */
+	public String addPlayerPrize(String playerID,
+															 String prizeID,
+															 String assignedYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		return prizeDAO.newPlayerPrize(
+						playerID,
+						prizeID,
+						assignedYear
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param prizeID
+	 * @param assignedYear
+	 * @return
+	 */
+	public String deletePlayerPrize(String playerID,
+																	String prizeID,
+																	String assignedYear)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
+		return prizeDAO.deletePlayerPrize(
+						playerID,
 						prizeID,
 						assignedYear
 		);

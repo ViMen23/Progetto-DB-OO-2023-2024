@@ -80,4 +80,14 @@ public interface TeamDAO
 														Vector<String> teamLongNameVector,
 														Map<String, String> teamLongNameMap);
 
+	void fetchTeamComboBox(String playerID,
+												 Vector<String> comboBoxData,
+												 Map<String, String> comboBoxMap);
+
+
+	void fetchTeam(String playerID,
+								 String teamType,
+								 String startYear,
+								 Vector<String> comboBoxData,
+								 Map<String, String> comboBoxMap);
 }

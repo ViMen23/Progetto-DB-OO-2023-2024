@@ -287,4 +287,98 @@ public class PostgresImplPrizeDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchPlayerPrize(String playerID,
+															 Vector<Vector<Object>> tableData,
+															 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> prizeMap = new HashMap<>();
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<Object> vector = new Vector<>();
+
+				vector.add(false);
+				vector.add(rs.getString("prize_year"));
+				vector.add(rs.getString("prize_name"));
+				vector.add(rs.getString("prize_given"));
+
+				tableData.add(vector);
+				prizeMap.put(row, rs.getString("prize_id"));
+				++row;
+			}
+
+			tableMap.put(2, prizeMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public String newPlayerPrize(String playerID,
+															 String prizeID,
+															 String assignedYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_player_prize(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, prizeID);
+			cs.setString(4, assignedYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deletePlayerPrize(String playerID,
+																	String prizeID,
+																	String assignedYear)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_player_prize(?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, prizeID);
+			cs.setString(4, assignedYear);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
 }

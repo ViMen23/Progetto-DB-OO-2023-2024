@@ -4278,3 +4278,159 @@ LANGUAGE plpgsql;
 
 
 
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_player_prize
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_player_prize
+(
+    IN  id_player   text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_player_prize_case
+		(
+            player_id,
+            prize_id,
+            assign_year
+		)
+	VALUES
+	(
+        id_player::integer,
+		id_prize::integer,
+        a_year::dm_year
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayerPrize';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_player_prize
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_player_prize
+(
+    IN  id_player   text,
+    IN  id_prize    text,
+    IN  a_year      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_player_prize_case
+	WHERE
+        fp_player_prize_case.player_id = id_player::integer
+        AND
+        fp_player_prize_case.prize_id = id_prize::integer
+        AND
+        fp_player_prize_case.assign_year = a_year::dm_year;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayerPrize';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : player_national_team
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE(text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION player_national_team
+(
+    IN  id_player   text
+)
+RETURNS TABLE
+        (
+            team_id         text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_team.id::text AS team_id, 
+            fp_team.long_name::text AS team_long_name
+        FROM
+            fp_nationality
+            JOIN
+            fp_team
+                ON
+                fp_nationality.country_id = fp_team.country_id
+        WHERE
+            fp_nationality.player_id = id_player::integer
+            AND
+            fp_team.type = 'NATIONAL';
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------

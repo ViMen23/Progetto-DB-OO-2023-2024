@@ -496,4 +496,58 @@ public class PostgresImplTeamDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchTeamComboBox(String playerID,
+																Vector<String> comboBoxData,
+																Map<String, String> comboBoxMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call player_national_team(?)}");
+			cs.setString(1, playerID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public void fetchTeam(String playerID,
+												String teamType,
+												String startYear,
+												Vector<String> comboBoxData,
+												Map<String, String> comboBoxMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call player_team_year(?, ?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, teamType);
+			cs.setString(3, startYear);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

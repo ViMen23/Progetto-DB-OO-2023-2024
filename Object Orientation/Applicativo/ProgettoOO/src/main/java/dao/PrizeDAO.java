@@ -40,4 +40,16 @@ public interface PrizeDAO
 
 	void fetchPlayerPrize(Vector<String> comboBoxData,
 												Map<String, String> comboBoxMap);
+
+	void fetchPlayerPrize(String playerID,
+												Vector<Vector<Object>> tableData,
+												Map<Integer, Map<Integer, String>> tableMap);
+
+	String newPlayerPrize(String playerID,
+												String prizeID,
+												String assignedYear);
+
+	String deletePlayerPrize(String playerID,
+													 String prizeID,
+													 String assignedYear);
 }
