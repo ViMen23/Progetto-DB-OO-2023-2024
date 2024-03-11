@@ -8,10 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class ViewPlayerDetailedInfo
+public class AdminViewPlayerUpdateAttribute
 				extends JPanel
 {
-	public ViewPlayerDetailedInfo(String playerID)
+	public AdminViewPlayerUpdateAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
@@ -118,5 +118,4 @@ public class ViewPlayerDetailedInfo
 		/*------------------------------------------------------------------------------------------------------*/
 
 	}
-
 }

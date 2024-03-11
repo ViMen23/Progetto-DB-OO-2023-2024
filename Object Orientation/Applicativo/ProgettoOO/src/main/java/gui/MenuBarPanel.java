@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -10,71 +11,43 @@ import java.awt.event.ActionListener;
 public class MenuBarPanel
 				extends  JPanel
 {
-	private final ImageIcon homeIcon = GuiConfiguration.createImageIcon("images/homy.png");
-	private final ImageIcon filterIcon = GuiConfiguration.createImageIcon("images/filter.png");
-	private final ImageIcon diceIcon = GuiConfiguration.createImageIcon("images/dice.png");
 
-	private final JButton homeButton;
-	private final JMenuBar menuBar;
-	private final JMenu countryMenu;
-	private final JMenuItem generalResearchCountryMenuItem;
-	private final JMenu confederationMenu;
-	private final JMenuItem generalResearchConfederationMenuItem;
-	private final JMenu competitionMenu;
-	private final JMenuItem generalResearchCompetitionMenuItem;
-	private final JMenu teamMenu;
-	private final JMenuItem generalResearchTeamMenuItem;
-	private final JMenu playerMenu;
-	private final JMenuItem generalResearchPlayerMenuItem;
-	private final JMenuItem militancyResearchPlayerMenuItem;
-	private final JMenu statisticMenu;
-	private final JMenuItem researchTotalStatisticMenuItem;
-	private final JMenuItem filterCompetitionEditionStatisticMenuItem;
-	private final JButton filterButton;
-	private final JButton diceButton;
-
-
-
-	public MenuBarPanel()
+	public MenuBarPanel(JPanel panel)
 	{
-		String string;
+		JPanel menuPanel;
+		JButton button;
+		JMenuBar menuBar;
+		JMenu menu;
+		JMenuItem menuItem;
+
 		MigLayout migLayout;
 
-		migLayout = new MigLayout
-						(
-										"debug",
-										"2%[]5%[]5%[]3%[]2%",
-										""
-						);
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
+						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT
+		);
 
-		setLayout(migLayout);
-		setBackground(Color.white);
+
+		this.setLayout(migLayout);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.FOUR_CELL_EXT_GAP_2P_INT_GAP_5P_5P_3P_LAYOUT_CONSTRAINT,
+						null
+		);
+
+		menuPanel = new JPanel(migLayout);
+		menuPanel.setBackground(Color.white);
+		this.add(menuPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON HOMEPAGE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		homeButton = new JButton(homeIcon);
-		homeButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
-
-		add(homeButton);
+		button = new JButton(GuiConfiguration.HOME_ICON);
+		button.setCursor(GuiConfiguration.HAND_CURSOR);
+		menuPanel.add(button);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON HOMEPAGE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		homeButton.addActionListener(new ActionListener() {
+		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				GuiConfiguration.resetHomeFrame();
@@ -82,546 +55,290 @@ public class MenuBarPanel
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUBAR
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
 		menuBar = new JMenuBar();
 
-		migLayout = new MigLayout
-						(
-										"debug",
-										"50[]50[]50[]50[]50[]50[]50",
-										""
-						);
+		migLayout = new MigLayout(
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_50_LAYOUT_CONSTRAINT,
+						null
+		);
 
 		menuBar.setLayout(migLayout);
-
-		add(menuBar);
+		menuPanel.add(menuBar);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("countries"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU PAESI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("countries");
-		string = string.toUpperCase();
-
-		countryMenu = new JMenu(string);
-		countryMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[]"
-						);
-
-		countryMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(countryMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("generalResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA GENERALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("generalResearch");
-		string = string.toUpperCase();
-
-		generalResearchCountryMenuItem = new JMenuItem(string);
-
-		countryMenu.getPopupMenu().add(generalResearchCountryMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		generalResearchCountryMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchCountryPanel(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new SearchCountryPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("confederations"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU CONFEDERAZIONI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("confederations");
-		string = string.toUpperCase();
-
-		confederationMenu = new JMenu(string);
-		confederationMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[]"
-						);
-
-		confederationMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(confederationMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("generalResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA GENERALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("generalResearch");
-		string = string.toUpperCase();
-
-		generalResearchConfederationMenuItem = new JMenuItem(string);
-
-		confederationMenu.getPopupMenu().add(generalResearchConfederationMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		generalResearchConfederationMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchConfederationPanel(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new SearchConfederationPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("competitions"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU COMPETIZIONI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("competitions");
-		string = string.toUpperCase();
-
-		competitionMenu = new JMenu(string);
-		competitionMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[][]"
-						);
-
-		competitionMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(competitionMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("generalResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA GENERALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("generalResearch");
-		string = string.toUpperCase();
-
-		generalResearchCompetitionMenuItem = new JMenuItem(string);
-
-		competitionMenu.getPopupMenu().add(generalResearchCompetitionMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		generalResearchCompetitionMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchCompetitionPanel(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new SearchCompetitionPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("teams"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU SQUADRE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("teams");
-		string = string.toUpperCase();
-
-		teamMenu = new JMenu(string);
-		teamMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[][]"
-						);
-
-		teamMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(teamMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("generalResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA GENERALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("generalResearch");
-		string = string.toUpperCase();
-
-		generalResearchTeamMenuItem = new JMenuItem(string);
-
-		teamMenu.getPopupMenu().add(generalResearchTeamMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		generalResearchTeamMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchTeamPanel(false),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(
+								new MenuBarPanel(
+												new SearchTeamPanel(
+																Controller.getInstance().isAdminConnected()
+												)
+								), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+				);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("players"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU CALCIATORI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("players");
-		string = string.toUpperCase();
-
-		playerMenu = new JMenu(string);
-		playerMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[][][]"
-						);
-
-		playerMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(playerMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("generalResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA GENERALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("generalResearch");
-		string = string.toUpperCase();
-
-		generalResearchPlayerMenuItem = new JMenuItem(string);
-
-		playerMenu.getPopupMenu().add(generalResearchPlayerMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		generalResearchPlayerMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel(
-									MainFrame.getMainFrameInstance().getContentPane(),
-									new SearchPlayerPanel(),
-									2,
-									"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(
+								new MenuBarPanel(
+												new SearchPlayerPanel(
+																Controller.getInstance().isAdminConnected()
+												)
+								), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+				);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("militancyResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA PER MILITANZA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("militancyResearch");
-		string = string.toUpperCase();
-
-		militancyResearchPlayerMenuItem = new JMenuItem(string);
-
-		playerMenu.getPopupMenu().add(militancyResearchPlayerMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		militancyResearchPlayerMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-									MainFrame.getMainFrameInstance().getContentPane(),
-									new MilitancyFilterPanel(),
-									2,
-									"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new MilitancyFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menu = new JMenu(GuiConfiguration.getMessage("statistics"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
 
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENU STATISTICHE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("statistics");
-		string = string.toUpperCase();
-
-		statisticMenu = new JMenu(string);
-		statisticMenu.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		migLayout = new MigLayout
-						(
-										"debug, flowy",
-										"",
-										"[][]"
-						);
-
-		statisticMenu.getPopupMenu().setLayout(migLayout);
-
-		menuBar.add(statisticMenu);
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("totalStatisticsResearch"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA STATISTICHE TOTALI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-		string = GuiConfiguration.getMessage("totalStatisticsResearch");
-		researchTotalStatisticMenuItem = new JMenuItem(string);
-
-		statisticMenu.getPopupMenu().add(researchTotalStatisticMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		researchTotalStatisticMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new SearchTotalStatistics(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new SearchTotalStatistics()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("competitionEditionFilter"));
+		menu.getPopupMenu().add(menuItem);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * MENUITEM RICERCA STATISTICHE PER EDIZIONE COMPETIZIONE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = GuiConfiguration.getMessage("competitionEditionFilter");
-		string = string.toUpperCase();
-
-		filterCompetitionEditionStatisticMenuItem = new JMenuItem(string);
-
-		statisticMenu.getPopupMenu().add(filterCompetitionEditionStatisticMenuItem);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		filterCompetitionEditionStatisticMenuItem.addActionListener(new ActionListener() {
+		menuItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new CompetitionEditionFilterPanel(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new CompetitionEditionFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		button = new JButton(GuiConfiguration.filterIcon);
+		button.setCursor(GuiConfiguration.HAND_CURSOR);
+		menuPanel.add(button);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON FILTRO PER PASSI
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		filterButton = new JButton(filterIcon);
-		filterButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		add(filterButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		filterButton.addActionListener(new ActionListener() {
+		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				GuiConfiguration.switchPanel
-					(
-						MainFrame.getMainFrameInstance().getContentPane(),
-						new StepFilterPanel(),
-						2,
-						"sgx frame"
-					);
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				container.add(new MenuBarPanel(new StepFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+		button = new JButton(GuiConfiguration.diceIcon);
+		button.setCursor(GuiConfiguration.HAND_CURSOR);
+		menuPanel.add(button);
 
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * BUTTON CALCIATORE CASUALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-		diceButton = new JButton(diceIcon);
-		diceButton.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		add(diceButton);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		diceButton.addActionListener(new ActionListener() {
+		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
+				Container container = MainFrame.getMainFrameInstance().getContentPane();
+
+				MenuBarPanel.this.setVisible(false);
+
+				container.remove(MenuBarPanel.this);
+
+				//container.add(new MenuBarPanel(new ViewPlayerGeneralInfo(Controller.getInstance().playerRandom), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
+
+		this.add(panel);
 	}
 }

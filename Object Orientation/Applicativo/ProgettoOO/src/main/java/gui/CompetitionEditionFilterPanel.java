@@ -388,10 +388,10 @@ public class CompetitionEditionFilterPanel
 
 							teamID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-							JPanel panel = new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText());
+							JPanel panel = new MenuBarPanel(new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText()));
 
-							CompetitionEditionFilterPanel.this.setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
+							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
+							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
 
 							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 							panel.setVisible(true);
@@ -400,10 +400,10 @@ public class CompetitionEditionFilterPanel
 
 							playerID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-							JPanel panel = new ViewPlayerGeneralInfo(playerID);
+							JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
 
-							CompetitionEditionFilterPanel.this.setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this);
+							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
+							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
 
 							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 							panel.setVisible(true);

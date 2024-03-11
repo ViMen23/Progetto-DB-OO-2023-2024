@@ -81,7 +81,7 @@ public class SearchTeamPanel
 		string += " ";
 		string += Controller.getInstance().countTeams().toString();
 
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel, true);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -324,18 +324,16 @@ public class SearchTeamPanel
 						}
 
 						if (admin) {
-							panel = new AdminNavigationPanel(new AdminViewTeamGeneralInfo(teamID, teamType));
+							panel = new AdminNavigationPanel(new AdminViewTeamUpdateGeneralInfo(teamID, teamType));
 						}
 						else {
-							panel = new ViewTeamSeasonPanel(teamID, teamType);
+							panel = new MenuBarPanel(new ViewTeamSeasonPanel(teamID, teamType));
 						}
 
-						System.out.println(SearchTeamPanel.this.getParent());
 						SearchTeamPanel.this.getParent().setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

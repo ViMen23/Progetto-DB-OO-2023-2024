@@ -6,6 +6,7 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -43,35 +44,24 @@ public class ViewPlayerNationalStatistic
 		final Integer[] tableIndex = {-1, -1};
 		final JLabel ctrlMouseTable = new JLabel((String) null);
 
-		Controller.getInstance().setPlayerStatisticView(
+		Controller.getInstance().setPlayerInfoMap(
 						playerID,
-						Team.TEAM_TYPE.NATIONAL.toString(),
-						null,
-						null,
-						null,
-						null,
-						infoPlayerMap,
-						playerStatisticTableData,
-						playerStatisticTableMap
+						infoPlayerMap
 		);
 
 		final MyTable statisticTable;
 
 		MigLayout migLayout;
 		TopViewPlayerPanel topViewPlayerPanel;
-		JPanel statisticFilterPanel;
 		TopSearchPanel topFilterPanel;
 		JPanel centralPanel;
 		InfoPanel infoPanel;
 		TitleLabel titleLabel;
-		LabelComboPanel teamNamePanel;
 		LabelComboPanel competitionNamePanel;
 		LabelComboPanel initialSeasonPanel;
 		LabelComboPanel finalSeasonPanel;
 		TablePanel playerStatisticTablePanel;
 		JButton button;
-
-		String rowConstraint;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
@@ -82,21 +72,10 @@ public class ViewPlayerNationalStatistic
 		this.setLayout(migLayout);
 
 
-		topViewPlayerPanel = new TopViewPlayerPanel(playerID);
+		topViewPlayerPanel = new TopViewPlayerPanel(playerID, this);
 		this.add(topViewPlayerPanel);
 		topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
-
-		migLayout = new MigLayout(
-						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT
-		);
-
-		statisticFilterPanel = new JPanel(migLayout);
-		statisticFilterPanel.setOpaque(false);
-		this.add(statisticFilterPanel);
-
 
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
@@ -108,12 +87,39 @@ public class ViewPlayerNationalStatistic
 
 		topFilterPanel = new TopSearchPanel(
 						GuiConfiguration.getMessage("filterNationalStatistics"),
-						statisticFilterPanel,
+						this,
 						centralPanel
 		);
 
-		statisticFilterPanel.add(topFilterPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
-		statisticFilterPanel.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
+		JButton resetButton = topFilterPanel.getResetButton();
+
+		for(ActionListener actionListener: resetButton.getActionListeners()) {
+			resetButton.removeActionListener(actionListener);
+		}
+
+		resetButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				Container contentPane = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					Component newComponent;
+
+					ViewPlayerNationalStatistic.this.getParent().setVisible(false);
+					contentPane.remove(ViewPlayerNationalStatistic.this.getParent());
+
+					newComponent = new MenuBarPanel(new ViewPlayerNationalStatistic(playerID));
+					contentPane.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					newComponent.setVisible(true);
+
+				} catch (Exception ex) {
+					System.err.println("Errore: " + ex.getMessage());
+				}
+			}
+		});
+
+		this.add(topFilterPanel);
+		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -160,7 +166,7 @@ public class ViewPlayerNationalStatistic
 		statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
 		statisticTable.setPreferredScrollableViewportSize(statisticTable.getPreferredSize());
 
-		statisticFilterPanel.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		this.add(playerStatisticTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
 
 
 		button = new JButton(GuiConfiguration.getMessage("search"));

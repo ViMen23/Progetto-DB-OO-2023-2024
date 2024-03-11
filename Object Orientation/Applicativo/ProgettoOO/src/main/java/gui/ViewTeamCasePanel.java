@@ -43,7 +43,7 @@ public class ViewTeamCasePanel
 		this.setLayout(migLayout);
 
 
-		topViewTeamPanel = new TopViewTeamPanel(teamID, teamType);
+		topViewTeamPanel = new TopViewTeamPanel(teamID, teamType, this);
 		this.add(topViewTeamPanel);
 		topViewTeamPanel.setGeneralInfoPanel(infoTeamMap);
 		/*------------------------------------------------------------------------------------------------------*/

@@ -16,10 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewAddTrophy
+public class AdminViewTeamAddTrophy
 				extends JPanel
 {
-	public AdminViewAddTrophy(String teamID,String teamType)
+	public AdminViewTeamAddTrophy(String teamID, String teamType)
 	{
 		final JLabel ctrlSeason = new JLabel((String) null);
 		final JLabel ctrlCompetition = new JLabel((String) null);
@@ -50,14 +50,14 @@ public class AdminViewAddTrophy
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.SIX_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -115,15 +115,15 @@ public class AdminViewAddTrophy
 				System.out.println(message);
 
 				try {
-					JPanel panel = new AdminViewAddTrophy(teamID, teamType);
+					AdminViewTeamAddTrophy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamAddTrophy.this.getParent());
 
-					AdminViewAddTrophy.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewAddTrophy.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamAddTrophy(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
 			}
 		});

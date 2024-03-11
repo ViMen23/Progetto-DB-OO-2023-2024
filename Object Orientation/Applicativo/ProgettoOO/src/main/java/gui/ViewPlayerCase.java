@@ -64,7 +64,7 @@ public class ViewPlayerCase
 		this.setLayout(migLayout);
 
 
-		topViewPlayerPanel = new TopViewPlayerPanel(playerID);
+		topViewPlayerPanel = new TopViewPlayerPanel(playerID, this);
 		this.add(topViewPlayerPanel);
 		topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/

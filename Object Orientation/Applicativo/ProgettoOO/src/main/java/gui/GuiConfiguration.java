@@ -22,11 +22,16 @@ public class GuiConfiguration
 	public static final int MIN_AGE = 15;
 	public static final int MAX_AGE = 50;
 
+	public static final ImageIcon HOME_ICON = GuiConfiguration.createImageIcon("images/homy.png");
+	public static final ImageIcon filterIcon = GuiConfiguration.createImageIcon("images/filter.png");
+	public static final ImageIcon diceIcon = GuiConfiguration.createImageIcon("images/dice.png");
+
 	public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
 
 	public static final Vector<String> COUNTRY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> CONFEDERATION_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> COMPETITION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_COMPETITION_EDITION_TABLE_COLUM_NAME = new Vector<>();
 	public static final Vector<String> TEAM_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_SQUAD_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> TEAM_PARTICIPATING_TABLE_COLUMN_NAME = new Vector<>();
@@ -37,18 +42,24 @@ public class GuiConfiguration
 	public static final Vector<String> TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_POSITION_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_POSITION_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONALITY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_NATIONALITY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_ATTRIBUTE_GOALKEEPING_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_ATTRIBUTE_MENTAL_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_ATTRIBUTE_PHYSICAL_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_ATTRIBUTE_TECHNICAL_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_TAG_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> PLAYER_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
+	public static final Vector<String> ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> STATISTIC_TOTAL_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> STATISTIC_EDITION_TABLE_COLUMN_NAME = new Vector<>();
 	public static final Vector<String> STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
@@ -59,23 +70,25 @@ public class GuiConfiguration
 	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
 
 	public static final String WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
-	public static final String WRAP_3_LAYOUT_CONSTRAINT = "debug, wrap 3";
+	public static final String WRAP_4_LAYOUT_CONSTRAINT = "debug, wrap 4";
 	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
 	public static final String CENTER_VLAYOUT_CONSTRAINT = "debug, flowy, center";
 
 	public static final String ONE_CELL_LAYOUT_CONSTRAINT = "[]";
 	public static final String ONE_CELL_GAP_0_10 = "0[]10";
 	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
+	public static final String ONE_CELL_GAP_50_LAYOUT_CONSTRAINT = "50[]50";
 	public static final String ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT = "10[top]0";
 	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";
 	public static final String ONE_GROW_FILL_GAP_0_0_CELL = "0[grow, fill]0";
-	public static final String ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT = "[70%, fill]";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[]10[]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
+	public static final String TWO_CELL_FILL_SIZE_55P_INT_GAP_6P_LAYOUT_CONSTRAITN = "[55%, fill]6%[]";
 	public static final String TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT = "20[59%, fill]50[35%, fill]20";
 	public static final String TWO_CELL_FILL_SIZE_20P_30P_EXT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%][30%, fill]5%";
 	public static final String TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT = "5%[20%]10:push[60%, fill]5%";
 	public static final String TWO_CELL_GROW_FILL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[grow, fill]10[grow, fill]0";
+	public static final String TWO_CELL_GROW_FILL_EXT_GAP_10_INT_GAP_40_LAYOUT_CONSTRAINT = "10[grow, fill]40[grow, fill]10";
 	public static final String TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT = "[15%, fill]150[15%, fill]";
 	public static final String THREE_CELL_EXT_GAP_10_0_LAYOUT_CONSTRAINT = "10[][][]";
 	public static final String THREE_CELL_EXT_GAP_0_INT_GAP_10_0_LAYOUT_CONSTRAINT = "0[]10[]0[]0";
@@ -83,6 +96,7 @@ public class GuiConfiguration
 	public static final String THREE_CELL_EXT_GAP_PUSH_PUSH_INT_GAP_20_20_LAYOUT_CONSTRAINT = "20:push[]20[]20[]20:push";
 	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
+	public static final String FOUR_CELL_EXT_GAP_2P_INT_GAP_5P_5P_3P_LAYOUT_CONSTRAINT = "2%[]5%[]5%[]3%[]2%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
 	public static final String FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]10[]0";
 	public static final String SIX_CELL_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]0[]10[]0";
@@ -105,6 +119,7 @@ public class GuiConfiguration
 	public static final String WIDTH_80P_ADD_CONSTRAINT = "width 80%";
 	public static final String SPAN_2_ADD_CONSTRAINT = "span 2";
 	public static final String TRAILING_ADD_CONSTRAINT = "trailing";
+	public static final String TOP_GAP_10_ADD_CONSTRAINT = "gap top 10";
 
 	private static ResourceBundle currentResourceBundle;
 
@@ -139,8 +154,8 @@ public class GuiConfiguration
 		JFrame mainFrame = MainFrame.getMainFrameInstance();
 		TopPanel topPanel = new TopPanel();
 		mainFrame.add(topPanel, HGROUP_FRAME_ADD_CONSTRAINT);
-		MenuBarPanel menuBarPanel = new MenuBarPanel();
-		mainFrame.add(menuBarPanel, HGROUP_FRAME_ADD_CONSTRAINT);
+		AdminNavigationPanel adminNavigationPanel = new AdminNavigationPanel(new AdminViewPlayerUpdateGeneralInfo("3"));
+		mainFrame.add(adminNavigationPanel, HGROUP_FRAME_ADD_CONSTRAINT);
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}
@@ -266,6 +281,11 @@ public class GuiConfiguration
 		COMPETITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
 	}
 
+	public static void initCompetitionEditionTableColumnName()
+	{
+		ADMIN_COMPETITION_EDITION_TABLE_COLUM_NAME.add(GuiConfiguration.getMessage("select"));
+		ADMIN_COMPETITION_EDITION_TABLE_COLUM_NAME.add(GuiConfiguration.getMessage("year").toUpperCase());
+	}
 	public static void initTeamTableColumnName()
 	{
 		TEAM_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
@@ -307,7 +327,7 @@ public class GuiConfiguration
 		ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
 
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
-		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize"));
+		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize").toUpperCase());
 		TEAM_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("given"));
 
 		ADMIN_TEAM_PRIZE_TABLE_COLUMN_NAME.addAll(TEAM_PRIZE_TABLE_COLUMN_NAME);
@@ -322,19 +342,27 @@ public class GuiConfiguration
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("foot").toUpperCase());
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
 		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("position").toUpperCase());
-		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("retiredDate"));
+		PLAYER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("retiredDate").toUpperCase());
 	}
 
 	public static void initPlayerPositionTableColumnName()
 	{
+		ADMIN_PLAYER_POSITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		PLAYER_POSITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
 		PLAYER_POSITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("code"));
 		PLAYER_POSITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("position"));
+
+		ADMIN_PLAYER_POSITION_TABLE_COLUMN_NAME.addAll(PLAYER_POSITION_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerNationalityTableColumnName()
 	{
+		ADMIN_PLAYER_NATIONALITY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		PLAYER_NATIONALITY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
+
+		ADMIN_PLAYER_NATIONALITY_TABLE_COLUMN_NAME.addAll(PLAYER_NATIONALITY_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerAttributeTableColumnName()
@@ -356,15 +384,23 @@ public class GuiConfiguration
 
 	public static void initPlayerTagTableColumnName()
 	{
-		PLAYER_TAG_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("tag"));
+		ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
+		PLAYER_TAG_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("tag").toUpperCase());
+
+		ADMIN_PLAYER_TAG_TABLE_COLUMN_NAME.addAll(PLAYER_TAG_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerClubCareerTableColumnName()
 	{
+		ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("type").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("country"));
+
+		ADMIN_PLAYER_CAREER_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerNationalityCareerTableColumnName()
@@ -390,10 +426,14 @@ public class GuiConfiguration
 
 	public static void initPlayerClubTrophyTableColumnName()
 	{
+		ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("trophy").toUpperCase());
+
+		ADMIN_PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME.addAll(PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME);
 	}
 
 	public static void initPlayerNationalTrophyTableColumnName()
@@ -406,9 +446,13 @@ public class GuiConfiguration
 
 	public static void initPlayerPrizeTableColumnName()
 	{
+		ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("select"));
+
 		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season"));
-		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize"));
+		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("prize").toUpperCase());
 		PLAYER_PRIZE_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("given"));
+
+		ADMIN_PLAYER_PRIZE_TABLE_COLUMN_NAME.addAll(PLAYER_PRIZE_TABLE_COLUMN_NAME);
 	}
 
 	public static void initStatisticTotalTableColumnName()
@@ -461,6 +505,7 @@ public class GuiConfiguration
 		initCountryTableColumnName();
 		initConfederationTableColumnName();
 		initCompetitionTableColumnName();
+		initCompetitionEditionTableColumnName();
 		initTeamTableColumnName();
 		initTeamSquadTableColumnName();
 		initTeamParticipantTableColumnName();

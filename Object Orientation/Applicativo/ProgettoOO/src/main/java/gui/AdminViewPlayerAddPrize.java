@@ -1,12 +1,13 @@
 package gui;
 
 import controller.Controller;
-
+import model.Country;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
@@ -17,24 +18,23 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewAddPrize
+public class AdminViewPlayerAddPrize
 				extends JPanel
 {
-	public AdminViewAddPrize(String teamID,String teamType)
+	public AdminViewPlayerAddPrize(String playerID)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);
-		final JLabel ctrlPrize = new JLabel((String) null);
+		final JLabel ctrlPrizeName = new JLabel((String) null);
 
-		final Map<String, String> infoTeamMap = new LinkedHashMap<>();
+		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
 		final Vector<String> prizeNameVector = new Vector<>();
 		final Map<String, String> prizeNameMap = new HashMap<>();
 
-		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
-
+		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
 		MigLayout migLayout;
-		AdminTopViewTeam adminTopViewTeam;
+		AdminTopViewPlayer adminTopViewPlayer;
 		TitleLabel titleLabel;
 		LabelComboPanel yearPanel;
 		LabelComboPanel prizeNamePanel;
@@ -43,17 +43,17 @@ public class AdminViewAddPrize
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.SIX_CELL_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewPlayer = new AdminTopViewPlayer(playerID, this);
 
-		this.add(adminTopViewTeam);
-		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
+		this.add(adminTopViewPlayer);
+		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("addPrize"));
@@ -65,14 +65,16 @@ public class AdminViewAddPrize
 						true,
 						ctrlYear
 		);
+
 		this.add(yearPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		prizeNamePanel = new LabelComboPanel(
 						GuiConfiguration.getMessage("prize"),
 						false,
-						ctrlPrize
+						ctrlPrizeName
 		);
+
 		this.add(prizeNamePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -80,33 +82,18 @@ public class AdminViewAddPrize
 		confirmButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		confirmButton.setEnabled(false);
 
-		this.add(confirmButton);
+		this.add(confirmButton, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
 		confirmButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI VOLER AGGIUNGERE IL PREMIO"); //TODO
+				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				String message = Controller.getInstance().assignPrizeTeam(
-								teamID,
-								prizeNameMap.get(ctrlPrize.getText()),
-								ctrlYear.getText()
-				);
-
-				System.out.println(message);
-
-				try {
-					JPanel panel = new AdminViewAddPrize(teamID, teamType);
-
-					AdminViewAddPrize.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewAddPrize.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
-				}
+				//TODO
+//				String message = Controller.getInstance().createPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
+//
+//				System.out.println(message);
 			}
 		});
 
@@ -127,33 +114,33 @@ public class AdminViewAddPrize
 				} else {
 					prizeNamePanel.getMyComboBox().setEnabled(null != ctrlYear.getText());
 					prizeNamePanel.getMyComboBox().setSelectedIndex(-1);
-					ctrlPrize.setText(null);
+					ctrlPrizeName.setText(null);
 				}
 			}
 		});
 
-		ctrlPrize.addPropertyChangeListener("text", new PropertyChangeListener() {
+		ctrlPrizeName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlPrize.getText(), "@fill")) {
+				if (0 == StringUtils.compareIgnoreCase(ctrlPrizeName.getText(), "@fill")) {
 					prizeNameVector.clear();
 					prizeNameMap.clear();
 
-					Controller.getInstance().setTeamPrizeComboBox(
-									prizeNameVector,
-									prizeNameMap
-					);
+
+					//TODO Controller.getInstance().
+
 
 					if (prizeNameVector.isEmpty()) {
 						prizeNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
 					prizeNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(prizeNameVector));
 				} else {
-					confirmButton.setEnabled(null != prizeNameMap.get(ctrlPrize.getText()));
+					confirmButton.setEnabled(null != prizeNameMap.get(ctrlPrizeName.getText()));
 				}
 			}
 		});
 
 	}
+
 }

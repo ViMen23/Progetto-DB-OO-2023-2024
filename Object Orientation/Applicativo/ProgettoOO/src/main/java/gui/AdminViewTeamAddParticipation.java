@@ -17,10 +17,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewAddParticipation
+public class AdminViewTeamAddParticipation
 				extends JPanel
 {
-	public AdminViewAddParticipation(String teamID, String teamType)
+	public AdminViewTeamAddParticipation(String teamID, String teamType)
 	{
 		final JLabel ctrlCountryType = new JLabel((String) null);
 		final JLabel ctrlSeason = new JLabel((String) null);
@@ -50,21 +50,20 @@ public class AdminViewAddParticipation
 		JLabel label;
 		RadioPanel countryTypePanel;
 		LabelComboPanel seasonPanel;
-
 		LabelComboPanel competitionNamePanel;
 		JButton confirmButton;
 
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.SIX_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -133,6 +132,18 @@ public class AdminViewAddParticipation
 				String message = Controller.getInstance().createPartecipation(teamID, competitionNameMap.get(ctrlCompetition.getText()), seasonMap.get(ctrlSeason.getText()));
 
 				System.out.println(message);
+
+				try {
+					AdminViewTeamAddParticipation.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamAddParticipation.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamAddParticipation(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

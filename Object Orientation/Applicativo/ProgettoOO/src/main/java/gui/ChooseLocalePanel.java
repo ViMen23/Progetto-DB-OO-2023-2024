@@ -138,7 +138,6 @@ public class ChooseLocalePanel
 
 				GuiConfiguration.setLocale(getChoosedLocale());
 				GuiConfiguration.resetHomeFrame();
-				MainFrame.getMainFrameInstance().add(new SearchPlayerPanel(), "sgx frame, growy"); //TODO REMOVE IN THE END
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

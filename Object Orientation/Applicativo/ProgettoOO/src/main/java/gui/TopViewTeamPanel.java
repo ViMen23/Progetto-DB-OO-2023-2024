@@ -11,9 +11,9 @@ import java.util.Map;
 public class TopViewTeamPanel
 				extends JPanel
 {
-	private final GeneralInfoPanel generalInfoPanel;
 
-	public TopViewTeamPanel(String teamID, String teamType)
+	private final GeneralInfoPanel generalInfoPanel;
+	public TopViewTeamPanel(String teamID, String teamType, JPanel rootPanel)
 	{
 
 		MigLayout migLayout;
@@ -24,11 +24,11 @@ public class TopViewTeamPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT
+						GuiConfiguration.THREE_CELL_EXT_GAP_0_INT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 
-		setLayout(migLayout);
-		setOpaque(false);
+		this.setLayout(migLayout);
+		this.setOpaque(false);
 
 		generalInfoPanel = new GeneralInfoPanel();
 		this.add(generalInfoPanel);
@@ -58,38 +58,27 @@ public class TopViewTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
+				rootPanel.getParent().setVisible(false);
+				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-				try {
-					Component newComponent = new ViewTeamSeasonPanel(teamID, teamType);
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
+				MainFrame.getMainFrameInstance().getContentPane().add(
+								new MenuBarPanel(new ViewTeamSeasonPanel(teamID, teamType)),
+								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+				);
 			}
 		});
-
 
 		caseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(2);
-				component.setVisible(false);
-				container.remove(component);
+				rootPanel.getParent().setVisible(false);
+				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-				try {
-					Component newComponent = new ViewTeamCasePanel(teamID, teamType);
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println(ex.getMessage());
-				}
+				MainFrame.getMainFrameInstance().getContentPane().add(
+								new MenuBarPanel(new ViewTeamCasePanel(teamID, teamType)),
+								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+				);
 			}
 		});
 	}

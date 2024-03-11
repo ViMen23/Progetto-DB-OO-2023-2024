@@ -173,10 +173,10 @@ public class SearchTotalStatistics
 
 						playerID = totalStatisticsTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+						JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
 
-						SearchTotalStatistics.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTotalStatistics.this);
+						SearchTotalStatistics.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTotalStatistics.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);

@@ -16,10 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewAddCompetitionEdition
+public class AdminViewCompetitionAddCompetitionEdition
 				extends JPanel
 {
-	public AdminViewAddCompetitionEdition(String competitionID, String competitionTeamType)
+	public AdminViewCompetitionAddCompetitionEdition(String competitionID, String competitionTeamType)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);
 
@@ -28,30 +28,25 @@ public class AdminViewAddCompetitionEdition
 		final Vector<String> yearVector = new Vector<>();
 		final Map<String, String> yearMap = new HashMap<>();
 
-
-		System.out.println(competitionTeamType);
-
 		Controller.getInstance().setCompetitionInfoMap(competitionID, infoCompetitionMap);
-
 
 		MigLayout migLayout;
 		AdminTopViewCompetition adminTopViewCompetition;
 		TitleLabel titleLabel;
-
 		LabelComboPanel yearPanel;
 		JButton confirmButton;
 
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.SIX_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewCompetition = new AdminTopViewCompetition(competitionID, competitionTeamType);
+		adminTopViewCompetition = new AdminTopViewCompetition(competitionID, competitionTeamType, this);
 
 		this.add(adminTopViewCompetition);
 		adminTopViewCompetition.setGeneralInfoPanel(infoCompetitionMap);
@@ -110,11 +105,13 @@ public class AdminViewAddCompetitionEdition
 							yearMap.put(string, String.valueOf(i));
 						}
 					} else {
+
 						for (int i = GuiConfiguration.MIN_YEAR; i < dYear; ++i) {
 							yearVector.add(String.valueOf(i));
 							yearMap.put(String.valueOf(i), String.valueOf(i));
 						}
 					}
+
 					yearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(yearVector));
 				} else {
 					confirmButton.setEnabled(null != ctrlYear.getText());

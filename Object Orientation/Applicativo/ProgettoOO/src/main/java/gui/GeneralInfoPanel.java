@@ -13,12 +13,11 @@ public class GeneralInfoPanel
 	{
 		MigLayout migLayout;
 
-		migLayout = new MigLayout
-						(
-										GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
-										"10[grow, fill]40[grow, fill]10",//TODO
-										null
-						);
+		migLayout = new MigLayout(
+						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_GROW_FILL_EXT_GAP_10_INT_GAP_40_LAYOUT_CONSTRAINT,
+						null
+		);
 
 		this.setLayout(migLayout);
 		this.setBackground(Color.white);

@@ -397,10 +397,10 @@ public class MilitancyFilterPanel
 
 						playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+						JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
 
-						MilitancyFilterPanel.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(MilitancyFilterPanel.this);
+						MilitancyFilterPanel.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(MilitancyFilterPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);

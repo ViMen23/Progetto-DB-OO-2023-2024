@@ -16,13 +16,15 @@ public class TopSearchPanel
 	private static final ImageIcon MAXIMIZE = GuiConfiguration.createImageIcon("images/maximize.png");
 
 	private final JButton titleButton;
+	private final JButton resetButton;
 
 	public TopSearchPanel(String titleButtonString,
 												JPanel rootPanel,
-												JPanel toRemovePanel)
+												JPanel toRemovePanel,
+												Boolean viewAdmin)
 	{
 
-		this(titleButtonString, rootPanel);
+		this(titleButtonString, rootPanel, viewAdmin);
 
 		titleButton.setEnabled(true);
 		titleButton.setIcon(MAXIMIZE);
@@ -46,10 +48,11 @@ public class TopSearchPanel
 		});
 	}
 
-	public TopSearchPanel(String titleButtonString, JPanel rootPanel)
+	public TopSearchPanel(String titleButtonString,
+												JPanel rootPanel,
+												Boolean viewAdmin)
 	{
 		MigLayout migLayout;
-		JButton resetButton;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
@@ -76,17 +79,26 @@ public class TopSearchPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-
-				rootPanel.getParent().setVisible(false);
-				container.remove(rootPanel.getParent());
+				Container contentPane = MainFrame.getMainFrameInstance().getContentPane();
 				try {
-					Component newComponent = rootPanel.getParent().getClass().getDeclaredConstructor(JPanel.class).newInstance(
+					Component newComponent;
+
+					rootPanel.getParent().setVisible(false);
+					contentPane.remove(rootPanel.getParent());
+
+					if (viewAdmin) {
+					newComponent = rootPanel.getParent().getClass().getDeclaredConstructor(JPanel.class).newInstance(
 									rootPanel.getClass().getDeclaredConstructor(Boolean.class)
-													.newInstance(Controller.getInstance().isAdminConnected())
-					);
-					container.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+													.newInstance(Controller.getInstance().isAdminConnected()));
+					}
+					else {
+						newComponent = rootPanel.getParent().getClass().getDeclaredConstructor(JPanel.class).newInstance(
+										rootPanel.getClass().getDeclaredConstructor().newInstance());
+					}
+
+					contentPane.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 					newComponent.setVisible(true);
+
 				} catch (Exception ex) {
 					System.err.println("Errore: " + ex.getMessage());
 				}
@@ -96,9 +108,17 @@ public class TopSearchPanel
 		this.add(resetButton);
 	}
 
+	public TopSearchPanel(String titleButtonString,
+												JPanel rootPanel,
+												JPanel toRemovePanel)
+	{
+		this(titleButtonString, rootPanel,  toRemovePanel,false);
+	}
+
 
 	public JButton getTitleButton()
 	{
 		return titleButton;
 	}
+	public JButton getResetButton(){ return resetButton; }
 }

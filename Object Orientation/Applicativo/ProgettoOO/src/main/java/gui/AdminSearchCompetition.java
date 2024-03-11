@@ -1,7 +1,6 @@
 package gui;
 
 import controller.Controller;
-import model.Admin;
 import model.Competition;
 import model.Country;
 import model.Team;
@@ -43,13 +42,12 @@ public class AdminSearchCompetition
 		final ButtonGroup buttonGroup = new ButtonGroup();
 
 		MigLayout migLayout;
-		AdminChooseSearchCompetition adminChooseSearchCompetition;
-		AdminTopSearchPanel topSearchPanel;
+		TopSearchPanel topSearchPanel;
 		TitleLabel titleLabel;
+		InfoPanel infoPanel;
 		LabelTextPanel competitionNamePanel;
 		RadioPanel competitionTypePanel;
 		RadioPanel teamTypePanel;
-		InfoPanel infoPanel;
 		RadioComboPanel worldTypePanel;
 		RadioComboPanel continentTypeNamePanel;
 		RadioComboPanel nationTypeNamePanel;
@@ -66,17 +64,13 @@ public class AdminSearchCompetition
 		);
 
 		this.setLayout(migLayout);
-		this.setOpaque(false);
-
-		adminChooseSearchCompetition = new AdminChooseSearchCompetition();
-		this.add(adminChooseSearchCompetition, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 
 		JPanel centralPanel = new JPanel();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
 						GuiConfiguration.NINE_CELL_LAYOUT_CONSTRAINT
 		);
 
@@ -89,14 +83,20 @@ public class AdminSearchCompetition
 		string += " ";
 		string += Controller.getInstance().countCompetitions();
 
-		topSearchPanel = new AdminTopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
+
+
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("name").toUpperCase());
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
 
 		competitionNamePanel = new LabelTextPanel(
 						GuiConfiguration.getMessage("name"),
@@ -104,24 +104,47 @@ public class AdminSearchCompetition
 						Regex.patternAlnum
 		);
 		centralPanel.add(competitionNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("nameInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("competitionType"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
 		competitionTypePanel = new RadioPanel(Competition.COMPETITION_TYPE.values(), ctrlCompetitionType);
 		centralPanel.add(competitionTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("competitionTypeInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("teamType"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
 		teamTypePanel = new RadioPanel(Team.TEAM_TYPE.values(), ctrlTeamType);
 		centralPanel.add(teamTypePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamTypeInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("country"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
 
 		worldTypePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.WORLD.toString(),
@@ -154,10 +177,16 @@ public class AdminSearchCompetition
 
 		buttonGroup.add(nationTypeNamePanel.getRadioButton());
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("countryInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
+
 
 		competitionTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
 		this.add(competitionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+
+
 
 		button = new JButton(GuiConfiguration.getMessage("search"));
 
@@ -168,6 +197,7 @@ public class AdminSearchCompetition
 				MyTable competitionTable = competitionTablePanel.getMyTable();
 				String string;
 
+				competitionTableData.clear();
 				competitionTableData.clear();
 
 				Controller.getInstance().setCompetitionTableAdmin(
@@ -295,7 +325,6 @@ public class AdminSearchCompetition
 			}
 		});
 
-
 		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
@@ -336,10 +365,10 @@ public class AdminSearchCompetition
 
 						competitionTeamType = competitionTableDataMap.get(2).get(tableIndex[0]);
 
-						JPanel panel = new AdminViewAddCompetitionEdition(competitionID, competitionTeamType);
+						JPanel panel = new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType));
 
-						AdminSearchCompetition.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchCompetition.this);
+						AdminSearchCompetition.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchCompetition.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
 						panel.setVisible(true);

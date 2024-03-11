@@ -46,4 +46,44 @@ public class RadioPanel
 			});
 		}
 	}
+	public RadioPanel(Enum[] enumArray,
+										JLabel ctrlLabel,
+										String selectedButton)
+	{
+		MigLayout migLayout;
+		ButtonGroup buttonGroup = new ButtonGroup();
+
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						GuiConfiguration.THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+		);
+
+		this.setLayout(migLayout);
+		this.setBackground(Color.white);
+
+		if (2 == enumArray.length) {
+			this.add(new JLabel());
+		}
+
+		for (int i = 0; i < enumArray.length; ++i) {
+			JRadioButton radioButton;
+			int j = i;
+
+			radioButton = new JRadioButton(GuiConfiguration.getMessage(enumArray[i].toString()));
+			buttonGroup.add(radioButton);
+			this.add(radioButton);
+
+			if (GuiConfiguration.getMessage(enumArray[i].toString()).equalsIgnoreCase(selectedButton)) {
+				radioButton.setSelected(true);
+			}
+
+			radioButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					ctrlLabel.setText(enumArray[j].toString());
+				}
+			});
+		}
+	}
 }

@@ -52,14 +52,14 @@ public class CreateTeam
 
 		this.setLayout(migLayout);
 
-		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("msgCreateTeam"), this);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("msgCreateTeam"), this, false);
 
 		this.add(topSearchPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 

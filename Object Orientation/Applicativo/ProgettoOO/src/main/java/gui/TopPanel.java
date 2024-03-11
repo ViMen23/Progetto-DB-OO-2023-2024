@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -27,14 +28,14 @@ public class TopPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						"debug",
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
 						"5%[]50%[]5%[]5%",//TODO
-						"[]"
+						null
 		);
 
 		setLayout(migLayout);
 		setBackground(Color.white);
-		setPreferredSize(new Dimension(1400, 0));
+		setPreferredSize(new Dimension(1500, 0));
 		/*------------------------------------------------------------------------------------------------------*/
 
 		logoLabel = new JLabel(logoIcon);
@@ -95,8 +96,10 @@ public class TopPanel
 					}
 				}
 				else {
+					Controller.getInstance().logoutAdmin();
 					loginButton.setText(GuiConfiguration.getMessage("login"));
 					ctrlLabel.setText(null);
+					GuiConfiguration.resetHomeFrame();
 				}
 			}
 		});

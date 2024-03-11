@@ -12,10 +12,10 @@ import java.beans.PropertyChangeListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class AdminViewTeamGeneralInfo
+public class AdminViewTeamUpdateGeneralInfo
 				extends JPanel
 {
-	public AdminViewTeamGeneralInfo(String teamID, String teamType)
+	public AdminViewTeamUpdateGeneralInfo(String teamID, String teamType)
 	{
 		final JLabel ctrlLongName = new JLabel((String) null);
 		final JLabel ctrlShortName = new JLabel((String) null);
@@ -39,14 +39,14 @@ public class AdminViewTeamGeneralInfo
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -103,15 +103,15 @@ public class AdminViewTeamGeneralInfo
 				System.out.println(message);
 
 				try {
-					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+					AdminViewTeamUpdateGeneralInfo.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamUpdateGeneralInfo.this.getParent());
 
-					AdminViewTeamGeneralInfo.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamGeneralInfo.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamUpdateGeneralInfo(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
 				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
 			}
 		});

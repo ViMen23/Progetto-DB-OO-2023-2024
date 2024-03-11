@@ -20,7 +20,7 @@ public class SearchPlayerPanel
 							extends JPanel
 {
 
-	public SearchPlayerPanel()
+	public SearchPlayerPanel(Boolean admin)
 	{
 		final JLabel ctrlPlayerSubName = new JLabel((String) null);
 		final JLabel ctrlPlayerSubSurname = new JLabel((String) null);
@@ -93,7 +93,7 @@ public class SearchPlayerPanel
 		string += GuiConfiguration.getMessage("availablePlayers");
 		string += " ";
 		string += Controller.getInstance().countPlayers().toString();
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(string, this, centralPanel, true);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -532,13 +532,20 @@ public class SearchPlayerPanel
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
 					try {
 						String playerID;
+						JPanel panel;
 
 						playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewPlayerGeneralInfo(playerID);
 
-						SearchPlayerPanel.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(SearchPlayerPanel.this);
+						if (admin) {
+							panel = new AdminNavigationPanel(new AdminViewPlayerUpdateGeneralInfo(playerID));
+						}
+						else {
+							panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
+						}
+
+						SearchPlayerPanel.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(SearchPlayerPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 						panel.setVisible(true);

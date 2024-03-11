@@ -14,10 +14,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewDelParticipation
+public class AdminViewTeamDelParticipation
 				extends JPanel
 {
-	public AdminViewDelParticipation(String teamID, String teamType)
+	public AdminViewTeamDelParticipation(String teamID, String teamType)
 	{
 		final JLabel ctrlSeason = new JLabel((String) null);
 
@@ -45,14 +45,14 @@ public class AdminViewDelParticipation
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -112,15 +112,15 @@ public class AdminViewDelParticipation
 				}
 
 				try {
-					JPanel panel = new AdminViewDelParticipation(teamID, teamType);
+					AdminViewTeamDelParticipation.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamDelParticipation.this.getParent());
 
-					AdminViewDelParticipation.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewDelParticipation.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamDelParticipation(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
 
 			}

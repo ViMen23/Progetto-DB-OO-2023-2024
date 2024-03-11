@@ -103,7 +103,7 @@ public class AdminLoginPanel
 						}
 					}
 
-					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
+					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 
 					ctrlLabel.setText("@login");
 

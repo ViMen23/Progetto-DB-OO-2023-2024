@@ -35,6 +35,7 @@ public class CreatePlayer
 		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlFoot = new JLabel((String) null);
 		final JLabel ctrlPositionName = new JLabel((String) null);
+		final boolean[] ctrlButton = {false, false, false, false, false, false};
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -45,11 +46,9 @@ public class CreatePlayer
 		final Vector<String> positionNameVector = new Vector<>();
 		final Map<String, String> positionNameMap = new HashMap<>();
 
-		final boolean[] ctrlButton = {false, false, false, false, false, false};
-
 
 		MigLayout migLayout;
-		TitleLabel titleLabel;
+		TopSearchPanel topSearchPanel;
 		JPanel centerPanel;
 		LabelTextPanel namePanel;
 		LabelTextPanel surnamePanel;
@@ -71,14 +70,14 @@ public class CreatePlayer
 
 		this.setLayout(migLayout);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("msgCreatePlayer"));
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("msgCreatePlayer"), this, false);
 
-		this.add(titleLabel);
+		this.add(topSearchPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
@@ -98,9 +97,9 @@ public class CreatePlayer
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		panel = new JPanel(migLayout);
@@ -143,9 +142,9 @@ public class CreatePlayer
 		centerPanel.add(nationNamePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 		migLayout = new MigLayout(
-						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		panel = new JPanel(migLayout);
@@ -188,6 +187,7 @@ public class CreatePlayer
 //								ctrlFoot.getText(),
 //								positionNameMap.get(ctrlPositionName.getText())
 //				);
+				//TODO REMOVE WHEN FUNCTION DONE
 
 				JOptionPane.showMessageDialog(
 								null,

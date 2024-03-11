@@ -86,7 +86,7 @@ public class StepFilterPanel
 		centralPanel.setLayout(migLayout);
 
 
-		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("stepFilter"), this);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("stepFilter"), this, false);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -224,12 +224,12 @@ public class StepFilterPanel
 			{
 				JPanel panel;
 				if (null == ctrlPlayerInfo.getText()) {
-					panel = new ViewTeamSeasonPanel(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText());
+					panel = new MenuBarPanel(new ViewTeamSeasonPanel(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText()));
 				} else {
-					panel = new ViewPlayerGeneralInfo(playerInfoMap.get(ctrlPlayerInfo.getText()));
+					panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerInfoMap.get(ctrlPlayerInfo.getText())));
 				}
-				StepFilterPanel.this.setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this);
+				StepFilterPanel.this.getParent().setVisible(false);
+				MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this.getParent());
 
 				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 				panel.setVisible(true);

@@ -16,147 +16,214 @@ public class AdminNavigationPanel
 	{
 		MigLayout migLayout;
 		JPanel navigationPanel;
-		TitleLabel titleLabel;
+		JMenuBar menuBar;
+		JMenu menu;
+		JMenuItem menuItem;
 		JButton button;
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
-		this.setBackground(Color.white);
 
 
 		migLayout = new MigLayout(
-						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						GuiConfiguration.TWO_CELL_FILL_SIZE_55P_INT_GAP_6P_LAYOUT_CONSTRAITN,
+						null
 		);
 
 		navigationPanel = new JPanel(migLayout);
-
+		navigationPanel.setBackground(Color.white);
 		this.add(navigationPanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		menuBar = new JMenuBar();
 
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_50_LAYOUT_CONSTRAINT,
+						null
+		);
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("adminView"));
-		navigationPanel.add(titleLabel, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
+		menuBar.setLayout(migLayout);
+		navigationPanel.add(menuBar);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		JLabel label = new JLabel();
-		navigationPanel.add(label);
+		menu = new JMenu(GuiConfiguration.getMessage("competitions"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
 
-		button = new JButton("MODIFICA COMPETIZIONE EDIZIONE");
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("editCompetitionEdition"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminSearchCompetition()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menu = new JMenu(GuiConfiguration.getMessage("teams"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("addTeam"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new CreateTeam()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("editTeam"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new SearchTeamPanel(Controller.getInstance().isAdminConnected())),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menu = new JMenu(GuiConfiguration.getMessage("players"));
+		menu.setCursor(GuiConfiguration.HAND_CURSOR);
+
+		migLayout = new MigLayout(
+						GuiConfiguration.VLAYOUT_CONSTRAINT,
+						null,
+						null
+		);
+
+		menu.getPopupMenu().setLayout(migLayout);
+		menuBar.add(menu);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("addPlayer"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new CreatePlayer()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("editPlayer"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new SearchPlayerPanel(Controller.getInstance().isAdminConnected())),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
+
+		button = new JButton(GuiConfiguration.filterIcon);
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
+		navigationPanel.add(button);
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					AdminNavigationPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
 
-				AdminNavigationPanel.this.setVisible(false);
-
-				container.remove(AdminNavigationPanel.this);
-
-				container.add(new AdminNavigationPanel(new AdminSearchCompetition()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+//					MainFrame.getMainFrameInstance().getContentPane().add(
+//									new AdminNavigationPanel(new AdminStepFilter(),
+//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+//					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
-
-		navigationPanel.add(button);
-
-		button = new JButton(GuiConfiguration.getMessage("addTeam"));
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-
-				AdminNavigationPanel.this.setVisible(false);
-
-				container.remove(AdminNavigationPanel.this);
-
-				container.add(new AdminNavigationPanel(new CreateTeam()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-			}
-		});
-
-		navigationPanel.add(button);
 		/*------------------------------------------------------------------------------------------------------*/
-
-
-		button = new JButton(GuiConfiguration.getMessage("editTeam"));
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-
-				AdminNavigationPanel.this.setVisible(false);
-
-				container.remove(AdminNavigationPanel.this);
-
-				container.add(new AdminNavigationPanel(new SearchTeamPanel(Controller.getInstance().isAdminConnected())), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-			}
-		});
-
-		navigationPanel.add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
-		button = new JButton(GuiConfiguration.getMessage("addPlayer"));
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-
-				AdminNavigationPanel.this.setVisible(false);
-
-				container.remove(AdminNavigationPanel.this);
-
-				container.add(new AdminNavigationPanel(new CreatePlayer()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-			}
-		});
-
-		navigationPanel.add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-		button = new JButton(GuiConfiguration.getMessage("editPlayer"));
-		button.setCursor(GuiConfiguration.HAND_CURSOR);
-
-		button.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e)
-			{
-//				Container container = MainFrame.getMainFrameInstance().getContentPane();
-//
-//				if (container.getComponentCount() < 3) {
-//					//container.add(new AdminSearchPlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
-//					return;
-//				}
-//
-//				Component component = container.getComponent(container.getComponentCount() - 1);
-//
-//				component.setVisible(false);
-//				container.remove(component);
-//
-//				//container.add(new AdminSearchPlayer(), GuiConfiguration.HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT);
-			}
-		});
-
-		navigationPanel.add(button);
-		/*------------------------------------------------------------------------------------------------------*/
-
 
 		this.add(panel);
 	}

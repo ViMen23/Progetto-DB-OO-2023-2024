@@ -11,10 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewDelPrize
+public class AdminViewTeamDelPrize
 				extends JPanel
 {
-	public AdminViewDelPrize(String teamID, String teamType)
+	public AdminViewTeamDelPrize(String teamID, String teamType)
 	{
 		final Map<String, String> infoTeamMap = new LinkedHashMap<>();
 
@@ -42,14 +42,14 @@ public class AdminViewDelPrize
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -93,15 +93,15 @@ public class AdminViewDelPrize
 				}
 
 				try {
-					JPanel panel = new AdminViewDelPrize(teamID, teamType);
+					AdminViewTeamDelPrize.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamDelPrize.this.getParent());
 
-					AdminViewDelPrize.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewDelPrize.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamDelPrize(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
 
 			}

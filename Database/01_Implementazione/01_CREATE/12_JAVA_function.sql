@@ -3133,7 +3133,9 @@ BEGIN
     WHERE
         fp_team.type = 'CLUB'
         AND
-        fp_team.long_name = long_name_team::dm_alnum;
+        fp_team.long_name = long_name_team::dm_alnum
+        AND
+        fp_team.id <> id_team::integer;
 
 
     IF (conflict) THEN

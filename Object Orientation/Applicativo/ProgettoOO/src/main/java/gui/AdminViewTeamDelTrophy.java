@@ -2,7 +2,6 @@ package gui;
 
 import controller.Controller;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -12,10 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-public class AdminViewDelTrophy
+public class AdminViewTeamDelTrophy
 				extends JPanel
 {
-	public AdminViewDelTrophy(String teamID, String teamType)
+	public AdminViewTeamDelTrophy(String teamID, String teamType)
 	{
 		final Map<String, String> infoTeamMap = new LinkedHashMap<>();
 
@@ -44,14 +43,14 @@ public class AdminViewDelTrophy
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						GuiConfiguration.FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
 
 
-		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType);
+		adminTopViewTeam = new AdminTopViewTeam(teamID, teamType, this);
 
 		this.add(adminTopViewTeam);
 		adminTopViewTeam.setGeneralInfoPanel(infoTeamMap);
@@ -96,17 +95,16 @@ public class AdminViewDelTrophy
 				}
 
 				try {
-					JPanel panel = new AdminViewDelTrophy(teamID, teamType);
+					AdminViewTeamDelTrophy.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewTeamDelTrophy.this.getParent());
 
-					AdminViewDelTrophy.this.setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewDelTrophy.this);
-
-					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					panel.setVisible(true);
-				} catch (Exception ex) {
-					System.out.println("ERRORE: " + ex.getMessage());
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewTeamDelTrophy(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
 				}
-
 			}
 		});
 

@@ -273,9 +273,9 @@ public class PostgresImplPlayerDAO
 				infoPlayerMap.put(GuiConfiguration.getMessage("role"), role);
 
 				if (null == rs.getString("player_retired_date")) {
-					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), "");
+					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate").toUpperCase(), "");
 				} else {
-					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate"), rs.getString("player_retired_date"));
+					infoPlayerMap.put(GuiConfiguration.getMessage("retiredDate").toUpperCase(), rs.getString("player_retired_date"));
 				}
 
 			}

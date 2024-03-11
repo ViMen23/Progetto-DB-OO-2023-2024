@@ -3,7 +3,6 @@ package gui;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
@@ -12,7 +11,8 @@ public class AdminTopViewCompetition
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
-	public AdminTopViewCompetition(String competitionID, String competitionTeamType) {
+	public AdminTopViewCompetition(String competitionID, String competitionTeamType, JPanel rootPanel)
+	{
 		MigLayout migLayout;
 		JPanel panel;
 		JButton addCompetitionEdition;
@@ -20,16 +20,15 @@ public class AdminTopViewCompetition
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_FILL_SIZE_70P_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
 						null
 		);
-		setLayout(migLayout);
+		this.setLayout(migLayout);
 
 
 		generalInfoPanel = new GeneralInfoPanel();
 		this.add(generalInfoPanel);
 		/*------------------------------------------------------------------------------------------------------*/
-
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
@@ -43,9 +42,7 @@ public class AdminTopViewCompetition
 
 		addCompetitionEdition = new JButton(GuiConfiguration.getMessage("addCompetitionEdition"));
 		addCompetitionEdition.setCursor(GuiConfiguration.HAND_CURSOR);
-
 		panel.add(addCompetitionEdition, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
-
 
 		deleteCompetitionEdition = new JButton(GuiConfiguration.getMessage("delCompetitionEdition"));
 		deleteCompetitionEdition.setCursor(GuiConfiguration.HAND_CURSOR);
@@ -53,27 +50,37 @@ public class AdminTopViewCompetition
 
 		addCompetitionEdition.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(container.getComponentCount() - 1);
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-				component.setVisible(false);
-				container.remove(component);
-
-				container.add(new AdminViewAddCompetitionEdition(competitionID, competitionTeamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
 		deleteCompetitionEdition.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
-				Component component = container.getComponent(container.getComponentCount() - 1);
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-				component.setVisible(false);
-				container.remove(component);
-
-				//container.add(new AdminViewDelCompetitonEdition(competitionID, competitionTeamType), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewCompetitionDelCompetitionEdition(competitionID, competitionTeamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 	}
