@@ -1799,7 +1799,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
-        fp_country.id::text AS country_id,
+            fp_country.id::text AS country_id,
             fp_country.name::text AS country_name
         FROM
             fp_nationality
@@ -2598,6 +2598,7 @@ CREATE OR REPLACE FUNCTION get_tag_player
 )
 RETURNS TABLE
         (
+            tag_id      text,
             tag_name    text
         )
 AS
@@ -2606,6 +2607,7 @@ BEGIN
 
     RETURN QUERY
         SELECT
+            fp_tag.id::text AS tag_id,
             fp_tag.name::text AS tag_name
         FROM
             fp_player_tag
