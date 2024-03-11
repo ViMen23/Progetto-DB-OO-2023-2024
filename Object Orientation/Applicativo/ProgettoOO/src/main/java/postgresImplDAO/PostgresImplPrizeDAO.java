@@ -264,7 +264,7 @@ public class PostgresImplPrizeDAO
 															 Map<String, String> comboBoxMap)
 	{
 		try {
-			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_player_trophy");
+			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_player_prize");
 
 			ResultSet rs = ps.executeQuery();
 
