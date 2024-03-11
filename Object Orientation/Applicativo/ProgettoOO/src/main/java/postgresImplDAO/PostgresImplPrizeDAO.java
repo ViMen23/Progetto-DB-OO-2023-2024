@@ -299,6 +299,7 @@ public class PostgresImplPrizeDAO
 
 			ResultSet rs = cs.executeQuery();
 
+			Map<Integer, String> assignYearMap = new HashMap<>();
 			Map<Integer, String> prizeMap = new HashMap<>();
 			int row = 0;
 
@@ -311,10 +312,12 @@ public class PostgresImplPrizeDAO
 				vector.add(rs.getString("prize_given"));
 
 				tableData.add(vector);
+				assignYearMap.put(row, rs.getString("prize_year"));
 				prizeMap.put(row, rs.getString("prize_id"));
 				++row;
 			}
 
+			tableMap.put(1, assignYearMap);
 			tableMap.put(2, prizeMap);
 
 			rs.close();
