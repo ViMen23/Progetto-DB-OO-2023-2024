@@ -521,9 +521,9 @@ public class PostgresImplPlayerDAO
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{SELECT * INTO ?, ? FROM player_year(?)}");
-			cs.setString(1, playerID);
-			cs.setString(2, playerStartYear);
-			cs.setString(3, playerEndYear);
+			cs.setString(1, playerStartYear);
+			cs.setString(2, playerEndYear);
+			cs.setString(3, playerID);
 
 			cs.execute();
 
