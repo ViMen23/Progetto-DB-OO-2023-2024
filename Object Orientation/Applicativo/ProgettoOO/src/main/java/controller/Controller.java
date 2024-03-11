@@ -1097,6 +1097,57 @@ public class Controller
 						playerPositionTableData
 		);
 	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setPositionTable(String playerID,
+															 Vector<Vector<Object>> tableData,
+															 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		PositionDAO positionDAO = new PostgresImplPositionDAO();
+		positionDAO.fetchPosition(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+
+	public String addPlayerPosition(String playerID,
+																	String positionID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PositionDAO positionDAO = new PostgresImplPositionDAO();
+		return positionDAO.newPlayerPosition(
+						playerID,
+						positionID
+		);
+	}
+
+
+
+	public String removePlayerPosition(String playerID,
+																		 String positionID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PositionDAO positionDAO = new PostgresImplPositionDAO();
+		return positionDAO.deletePlayerPosition(
+						playerID,
+						positionID
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1663,6 +1714,86 @@ public class Controller
 						tableData
 		);
 	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setNationalityTable(String playerID,
+																	Vector<Vector<Object>> tableData,
+																	Map<Integer, Map<Integer, String>> tableMap)
+	{
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		nationalityDAO.fetchNationality(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setNationalityComboBox(String playerID,
+																		 Vector<String> comboBoxData,
+																		 Map<String, String> comboBoxMap)
+	{
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		nationalityDAO.fetchNationalityComboBox(
+						playerID,
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param countryID
+	 * @return
+	 */
+	public String addNationality(String playerID,
+															 String countryID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		return nationalityDAO.newNationality(
+						playerID,
+						countryID
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param countryID
+	 * @return
+	 */
+	public String removeNationality(String playerID,
+																	String countryID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
+		return nationalityDAO.deleteNationality(
+						playerID,
+						countryID
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
@@ -1741,6 +1872,41 @@ public class Controller
 		tagDAO.fetchTag(
 						playerID,
 						tableData
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setTagTable(String playerID,
+													Vector<Vector<Object>> tableData,
+													Map<Integer, Map<Integer, String>> tableMap)
+	{
+		TagDAO tagDAO = new PostgresImplTagDAO();
+		tagDAO.fetchTag(
+						playerID,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
+	public void setTagComboBox(Vector<String> comboBoxData,
+														 Map<String, String> comboBoxMap)
+	{
+		TagDAO tagDAO = new PostgresImplTagDAO();
+		tagDAO.fetchTag(
+						comboBoxData,
+						comboBoxMap
 		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/

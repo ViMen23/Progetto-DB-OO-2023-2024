@@ -224,6 +224,7 @@ public class PostgresImplTeamDAO
 															String teamShortName)
 	{
 		String message = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{? = call new_club_team(?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);

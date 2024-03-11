@@ -21,4 +21,14 @@ public interface PositionDAO
 
 	void fetchPosition(Vector<String> positionNameVector,
 										 Map<String, String> positionNameMap);
+
+	void fetchPosition(String playerID,
+										 Vector<Vector<Object>> tableData,
+										 Map<Integer, Map<Integer, String>> tableMap);
+
+	String newPlayerPosition(String playerID,
+													 String positionID);
+
+	String deletePlayerPosition(String playerID,
+															String positionID);
 }

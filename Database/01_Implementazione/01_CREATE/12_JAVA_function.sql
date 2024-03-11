@@ -3867,3 +3867,217 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_player_position
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_player_position
+(
+    IN  id_player   text,
+    IN  id_position text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_player_position
+		(
+            player_id,
+            position_id
+		)
+	VALUES
+	(
+        id_player::integer,
+		id_position::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayerPosition';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_player_position
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_player_position
+(
+    IN  id_player   text,
+    IN  id_position text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_player_position
+	WHERE
+        fp_player_position.player_id = id_player::integer
+        AND
+        fp_player_position.position_id = id_position::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayerPosition';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_nationality
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_nationality
+(
+    IN  id_player   text,
+    IN  id_country  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_nationality
+		(
+            player_id,
+            country_id
+		)
+	VALUES
+	(
+        id_player::integer,
+		id_country::integer
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertNationality';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_nationality
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_nationality
+(
+    IN  id_player   text,
+    IN  id_country  text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_nationality
+	WHERE
+        fp_nationality.player_id = id_player::integer
+        AND
+        fp_nationality.country_id = id_country::integer;
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteNationality';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
