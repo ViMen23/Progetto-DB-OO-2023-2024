@@ -4800,3 +4800,576 @@ END;
 $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_attribute_goalkeeping
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_attribute_goalkeeping
+(
+    IN  id_player                   text,
+    IN  new_aerial_reach            text,
+    IN  new_command_of_area         text,
+    IN  new_communication           text,
+    IN  new_eccentricity            text,
+    IN  new_first_touch_gk          text,
+    IN  new_handling                text,
+    IN  new_kicking                 text,
+    IN  new_one_on_ones             text,
+    IN  new_passing_gk              text,
+    IN  new_punching_tendency       text,        
+    IN  new_reflexes                text,
+    IN  new_rushing_out_tendency    text,             
+    IN  new_throwing                text
+)   
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+	UPDATE
+		fp_attribute_goalkeeping
+	SET
+        aerial_reach = new_aerial_reach::dm_attribute,
+        command_of_area = new_command_of_area::dm_attribute,
+        communication = new_communication::dm_attribute,
+        eccentricity = new_eccentricity::dm_attribute,
+        first_touch_gk = new_first_touch_gk::dm_attribute,
+        handling = new_handling::dm_attribute,
+        kicking = new_kicking::dm_attribute,
+        one_on_ones = new_one_on_ones::dm_attribute,
+        passing_gk = new_passing_gk::dm_attribute,
+        punching_tendency = new_punching_tendency::dm_attribute,
+        reflexes = new_reflexes::dm_attribute,
+        rushing_out_tendency = new_rushing_out_tendency::dm_attribute,
+        throwing = new_throwing::dm_attribute
+	WHERE
+        player_id = id_player::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateAttributeGoalkeeping';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_attribute_mental
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_attribute_mental
+(
+    IN  id_player           text,
+    IN  new_aggression      text,
+    IN  new_anticipation    text,
+    IN  new_bravery         text,
+    IN  new_composure       text,
+    IN  new_concentration   text,
+    IN  new_decision        text,
+    IN  new_determination   text,
+    IN  new_flair           text,
+    IN  new_leadership      text,
+    IN  new_off_the_ball    text,
+    IN  new_positioning     text,
+    IN  new_teamwork        text,
+    IN  new_vision          text,
+    IN  new_work_rate       text,
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+	UPDATE
+		fp_attribute_mental
+	SET
+        aggression = new_aggression::dm_attribute,
+        anticipation = new_anticipation::dm_attribute,
+        bravery = new_bravery::dm_attribute,
+        composure = new_composure::dm_attribute,
+        concentration = new_concentration::dm_attribute,
+        decision = new_decision::dm_attribute,
+        determination = new_determination::dm_attribute,
+        flair = new_flair::dm_attribute,
+        leadership = new_leadership::dm_attribute,
+        off_the_ball = new_off_the_ball::dm_attribute,
+        positioning = new_positioning::dm_attribute,
+        teamwork = new_teamwork::dm_attribute,
+        vision = new_vision::dm_attribute,
+        work_rate = new_work_rate::dm_attribute
+	WHERE
+        player_id = id_player::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateAttributeMental';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_attribute_physical
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_attribute_physical
+(
+    IN  id_player           text,
+    IN  new_acceleration    text,
+    IN  new_agility         text,
+    IN  new_balance         text,
+    IN  new_jumping_reach   text,
+    IN  new_natural_fitness text,
+    IN  new_pace            text,
+    IN  new_stamina         text,
+    IN  new_strength        text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+	UPDATE
+		fp_attribute_physical
+	SET
+        acceleration = new_acceleration::dm_attribute,
+        agility = new_agility::dm_attribute,
+        balance = new_balance::dm_attribute,
+        jumping_reach = new_jumping_reach::dm_attribute,
+        natural_fitness = new_natural_fitness::dm_attribute,
+        pace = new_pace::dm_attribute,
+        stamina = new_stamina::dm_attribute,
+        strength = new_strength::dm_attribute
+	WHERE
+        player_id = id_player::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateAttributePhysical';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_attribute_technical
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_attribute_technical
+(
+    IN  id_player               text,
+    IN  new_corners				text,
+    IN  new_crossing			text,
+    IN  new_dribbling			text,
+    IN  new_finishing			text,
+    IN  new_first_touch			text,
+    IN  new_free_kick_taking    text,	
+    IN  new_heading				text,
+    IN  new_long_shots			text,
+    IN  new_long_throws			text,
+    IN  new_marking				text,
+    IN  new_passing				text,
+    IN  new_penalty_taking		text,
+    IN  new_tackling			text,
+    IN  new_technique			text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+	UPDATE
+		fp_attribute_technical
+	SET
+        corners = new_corners::dm_attribute,
+        crossing = new_crossing::dm_attribute,
+        dribbling = new_dribbling::dm_attribute,
+        finishing = new_finishing::dm_attribute,
+        first_touch = new_first_touch::dm_attribute,
+        free_kick_taking = new_free_kick_taking::dm_attribute,
+        heading = new_heading::dm_attribute,
+        long_shots = new_long_shots::dm_attribute,
+        long_throws = new_long_throws::dm_attribute,
+        marking = new_marking::dm_attribute,
+        passing = new_passing::dm_attribute,
+        penalty_taking = new_penalty_taking::dm_attribute,
+        tackling = new_tackling::dm_attribute,
+        technique = new_technique::dm_attribute
+	WHERE
+        player_id = id_player::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateAttributeTechnical';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_match
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_match
+(
+    IN  id_play     text,
+    IN  new_match   text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+	UPDATE
+		fp_play
+	SET
+        match = new_match::dm_usint
+	WHERE
+        id = id_play::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateMatch';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_statistic_general
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_statistic_general
+(
+    IN  id_play             text,
+    IN  new_goal_scored     text,
+    IN  new_assist          text,
+    IN  new_yellow_card     text,
+    IN  new_red_card        text,
+    IN  new_penalty_scored  text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+    UPDATE
+        fp_statistic_general
+    SET
+        goal_scored = new_goal_scored::dm_usint,
+        assist = new_assist::dm_usint,
+        yellow_card = new_yellow_card::dm_usint,
+        red_card = new_red_card::dm_usint,
+        penalty_scored = new_penalty_scored::dm_usint
+    WHERE
+        play_id = id_play::integer;
+
+
+    UPDATE
+        fp_statistic_goalkeeper
+    SET
+        goal_conceded = new_goal_conceded::dm_usint,
+        penalty_saved = new_penalty_saved::dm_usint
+    WHERE
+        play_id = id_play;
+
+    
+    IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateStatisticGeneral';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_statistic_goalkeeper
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_statistic_goalkeeper
+(
+    IN  id_play             text,
+    IN  new_goal_conceded   text,
+    IN  new_penalty_saved   text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE 
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+
+    UPDATE
+        fp_statistic_goalkeeper
+    SET
+        goal_conceded = new_goal_conceded::dm_usint,
+        penalty_saved = new_penalty_saved::dm_usint
+    WHERE
+        play_id = id_play::integer;
+
+    
+    IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateStatisticGoalkeeper';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_statistic
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_statistic
+(
+    IN  id_play             text,
+    IN  new_match           text,
+    IN  new_goal_scored     text,
+    IN  new_assist          text,
+    IN  new_yellow_card     text,
+    IN  new_red_card        text,
+    IN  new_penalty_scored  text,
+    IN  new_goal_conceded   text,
+    IN  new_penalty_saved   text
+)       
+RETURNS text    
+AS  
+$$  
+DECLARE
+
+    goalkeeper                  boolean;
+
+    output_message              text;
+    match_update_msg            text;
+    statistic_general_msg       text;
+    statistic_goalkeeper_msg    text;
+
+BEGIN
+
+
+    match_update_msg = update_match(
+        id_play, 
+        new_match
+    );
+
+    output_message = match_update_msg;
+
+    IF (match_update_msg = 'okUpdate') THEN
+
+        statistic_general_msg = update_statistic_general(
+            id_play, 
+            new_goal_scored, 
+            new_assist,
+            new_yellow_card,
+            new_red_card
+        );
+
+        output_message = output_message || '@';
+        output_message = statistic_general_msg;
+
+
+        SELECT
+            count(*) >= 1
+        INTO
+            goalkeeper
+        FROM
+            fp_statistic_goalkeeper
+        WHERE
+            play_id = id_player::integer;
+
+
+        IF (goalkeeper) THEN
+
+            statistic_goalkeeper_msg = update_statistic_goalkeeper(
+                id_play, 
+                new_goal_conceded, 
+                new_penalty_saved
+            );
+            
+            
+            output_message = output_message || '@';
+            output_message = statistic_goalkeeper_msg;
+        
+        END IF;
+
+    END IF;
+    
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+

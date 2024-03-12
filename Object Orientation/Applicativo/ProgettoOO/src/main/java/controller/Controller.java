@@ -818,6 +818,12 @@ public class Controller
 		return message;
 	}
 
+
+	/**
+	 * TODO
+	 * @param teamID
+	 * @return
+	 */
 	public String deleteTeam(String teamID)
 	{
 		if (null == adminConnected) {
@@ -1169,7 +1175,12 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param positionID
+	 * @return
+	 */
 	public String addPlayerPosition(String playerID,
 																	String positionID)
 	{
@@ -1185,7 +1196,12 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param positionID
+	 * @return
+	 */
 	public String removePlayerPosition(String playerID,
 																		 String positionID)
 	{
@@ -1727,6 +1743,15 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamID
+	 * @param trophyID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
 	public String assignTrophyPlayer(String playerID,
 																	 String teamID,
 																	 String trophyID,
@@ -1748,7 +1773,15 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamID
+	 * @param trophyID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @return
+	 */
 	public String removeTrophyPlayer(String playerID,
 																	 String teamID,
 																	 String trophyID,
