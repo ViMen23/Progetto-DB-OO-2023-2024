@@ -13,6 +13,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Vector;
 
 public class CompetitionEditionFilterPanel
@@ -43,7 +44,7 @@ public class CompetitionEditionFilterPanel
 		final Vector<String> seasonVector = new Vector<>();
 		final Map<String, String> seasonMap = new HashMap<>();
 
-		final Vector<Vector<String>> competitionEditionTableData = new Vector<>();
+		final Vector<Vector<Object>> competitionEditionTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> competitionEditionTableDataMap = new HashMap<>();
 
 		final ButtonGroup buttonGroup = new ButtonGroup();

@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -103,11 +104,11 @@ public class AdminTopViewPlayer
 					rootPanel.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-					//TODO
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminViewPlayerAddRetiredDate(playerID)),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdateRetiredDate(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
@@ -795,7 +796,22 @@ public class AdminTopViewPlayer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				JOptionPane.showMessageDialog(null, "SEI SICURO DI VOLER ELIMINARE NON POTRAI TORNARE INDIETRO");//TODO
+				String message = Controller.getInstance().deletePlayer(playerID);
 
+				System.out.println(message);
+
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new CreatePlayer()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 	}

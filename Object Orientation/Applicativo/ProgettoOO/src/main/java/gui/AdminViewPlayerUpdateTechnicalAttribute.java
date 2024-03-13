@@ -101,8 +101,8 @@ public class AdminViewPlayerUpdateTechnicalAttribute
 				{
 					ctrlButton[j] = !((String) e.getItem()).equalsIgnoreCase(attributeTableData.get(j).getLast());
 
-					for (int i = 0; i < attributeTableData.size(); ++i) {
-						if (ctrlButton[i]) {
+					for (boolean bool: ctrlButton) {
+						if (bool) {
 							confirmButton.setEnabled(true);
 							return;
 						}

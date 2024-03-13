@@ -182,6 +182,7 @@ public class AdminViewPlayerUpdateNationalStatistic
 
 					Controller.getInstance().setCompetitionPlayComboBox(
 									playerID,
+									Team.TEAM_TYPE.NATIONAL.toString(),
 									yearMap.get(ctrlYear.getText()),
 									competitionNameVector,
 									competitionNameMap

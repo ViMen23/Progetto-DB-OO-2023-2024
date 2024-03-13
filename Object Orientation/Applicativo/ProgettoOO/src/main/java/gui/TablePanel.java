@@ -36,7 +36,6 @@ public class TablePanel
 		this.textArea = new JTextArea(description);
 		textArea.setBorder(BorderFactory.createEmptyBorder(2,20,2,0));
 		textArea.setEditable(false);
-		textArea.getCaret().deinstall(textArea);
 		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 		this.add(textArea);
@@ -70,7 +69,6 @@ public class TablePanel
 		this.textArea = new JTextArea(description);
 		textArea.setBorder(BorderFactory.createEmptyBorder(2,20,2,0));
 		textArea.setEditable(false);
-		textArea.getCaret().deinstall(textArea);
 		textArea.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 
 		this.add(textArea);

@@ -74,16 +74,17 @@ public class RadioPanel
 			buttonGroup.add(radioButton);
 			this.add(radioButton);
 
-			if (GuiConfiguration.getMessage(enumArray[i].toString()).equalsIgnoreCase(selectedButton)) {
-				radioButton.setSelected(true);
-			}
-
 			radioButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					ctrlLabel.setText(enumArray[j].toString());
 				}
 			});
+
+			if (GuiConfiguration.getMessage(enumArray[i].toString()).equalsIgnoreCase(selectedButton)) {
+				radioButton.setSelected(true);
+				radioButton.doClick();
+			}
 		}
 	}
 }

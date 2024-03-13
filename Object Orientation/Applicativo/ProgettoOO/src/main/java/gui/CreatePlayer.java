@@ -117,11 +117,11 @@ public class CreatePlayer
 
 		datePickerSettings.setDateRangeLimits(
 						LocalDate.of(GuiConfiguration.MIN_YEAR, 1, 1),
-						LocalDate.of(Year.now().getValue(), 12, 31)
+						LocalDate.of(Year.now().getValue(), 12, 31).minusYears(GuiConfiguration.MIN_AGE)
 		);
 		datePickerSettings.setAllowKeyboardEditing(false);
 
-		datePicker.getComponentDateTextField().getCaret().deinstall(datePicker.getComponentDateTextField());
+		datePicker.getComponentDateTextField().setEditable(false);
 		datePicker.getComponentToggleCalendarButton().setText(GuiConfiguration.getMessage("chooseDate"));
 
 		panel.add(datePicker);
@@ -171,7 +171,7 @@ public class CreatePlayer
 		button.setCursor(GuiConfiguration.HAND_CURSOR);
 		button.setEnabled(false);
 
-		centerPanel.add(button);
+		centerPanel.add(button, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
 		button.addActionListener(new ActionListener() {
 			@Override
@@ -179,15 +179,15 @@ public class CreatePlayer
 			{
 				String message = null;
 
-//				message = Controller.getInstance().createPlayer(
-//								ctrlName.getText(),
-//								ctrlSurname.getText(),
-//								datePicker.getDate().toString(),
-//								nationNameMap.get(ctrlNationName.getText()),
-//								ctrlFoot.getText(),
-//								positionNameMap.get(ctrlPositionName.getText())
-//				);
-				//TODO REMOVE WHEN FUNCTION DONE
+
+				message = Controller.getInstance().newPlayer(
+								ctrlName.getText(),
+								ctrlSurname.getText(),
+								datePicker.getDateStringOrEmptyString(),
+								nationNameMap.get(ctrlNationName.getText()),
+								ctrlFoot.getText(),
+								positionNameMap.get(ctrlPositionName.getText())
+				);
 
 				JOptionPane.showMessageDialog(
 								null,
@@ -202,7 +202,14 @@ public class CreatePlayer
 			{
 				ctrlButton[0] = (null != ctrlName.getText());
 
-				button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+				for (boolean bool: ctrlButton) {
+					if (!bool) {
+						button.setEnabled(false);
+						return;
+					}
+				}
+
+				button.setEnabled(true);
 			}
 		});
 
@@ -211,7 +218,15 @@ public class CreatePlayer
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				ctrlButton[1] = (null != ctrlSurname.getText());
-				button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+
+				for (boolean bool: ctrlButton) {
+					if (!bool) {
+						button.setEnabled(false);
+						return;
+					}
+				}
+
+				button.setEnabled(true);
 			}
 		});
 
@@ -220,7 +235,15 @@ public class CreatePlayer
 			public void dateChanged(DateChangeEvent dateChangeEvent)
 			{
 				ctrlButton[2] = (null != dateChangeEvent.getNewDate());
-				button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+
+				for (boolean bool: ctrlButton) {
+					if (!bool) {
+						button.setEnabled(false);
+						return;
+					}
+				}
+
+				button.setEnabled(true);
 			}
 		});
 
@@ -275,7 +298,15 @@ public class CreatePlayer
 				}
 				else {
 					ctrlButton[3] = (null != nationNameMap.get(ctrlNationName.getText()));
-					button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+
+					for (boolean bool: ctrlButton) {
+						if (!bool) {
+							button.setEnabled(false);
+							return;
+						}
+					}
+
+					button.setEnabled(true);
 				}
 			}
 		});
@@ -285,7 +316,15 @@ public class CreatePlayer
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				ctrlButton[4] = (null != ctrlFoot.getText());
-				button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+
+				for (boolean bool: ctrlButton) {
+					if (!bool) {
+						button.setEnabled(false);
+						return;
+					}
+				}
+
+				button.setEnabled(true);
 			}
 		});
 		ctrlPositionName.addPropertyChangeListener(new PropertyChangeListener() {
@@ -306,7 +345,15 @@ public class CreatePlayer
 				}
 				else {
 					ctrlButton[5] = (null != positionNameMap.get(ctrlPositionName.getText()));
-					button.setEnabled(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]);
+
+					for (boolean bool: ctrlButton) {
+						if (!bool) {
+							button.setEnabled(false);
+							return;
+						}
+					}
+
+					button.setEnabled(true);
 				}
 			}
 		});

@@ -182,6 +182,7 @@ public class AdminViewPlayerUpdateClubStatistic
 
 					Controller.getInstance().setCompetitionPlayComboBox(
 									playerID,
+									Team.TEAM_TYPE.CLUB.toString(),
 									seasonMap.get(ctrlSeason.getText()),
 									competitionNameVector,
 									competitionNameMap

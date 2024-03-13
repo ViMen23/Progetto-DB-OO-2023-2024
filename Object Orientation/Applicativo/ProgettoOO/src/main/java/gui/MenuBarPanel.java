@@ -334,7 +334,7 @@ public class MenuBarPanel
 
 				container.remove(MenuBarPanel.this);
 
-				//container.add(new MenuBarPanel(new ViewPlayerGeneralInfo(Controller.getInstance().playerRandom), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				container.add(new MenuBarPanel(new ViewPlayerGeneralInfo(Controller.getInstance().getRandomPlayer())), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

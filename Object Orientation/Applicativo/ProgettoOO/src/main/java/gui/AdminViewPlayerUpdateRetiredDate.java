@@ -25,7 +25,15 @@ public class AdminViewPlayerUpdateRetiredDate
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-		final String prevRetiredDate = infoPlayerMap.get(GuiConfiguration.getMessage("retiredDate"));
+		final LocalDate bornDate = LocalDate.parse(infoPlayerMap.get(GuiConfiguration.getMessage("dob").toUpperCase()));
+
+		final LocalDate prevRetiredDate;
+
+		if (null != infoPlayerMap.get(GuiConfiguration.getMessage("retiredDate").toUpperCase())) {
+			prevRetiredDate = LocalDate.parse(infoPlayerMap.get(GuiConfiguration.getMessage("retiredDate").toUpperCase()));
+		} else {
+			prevRetiredDate = null;
+		}
 
 		MigLayout migLayout;
 		AdminTopViewPlayer adminTopViewPlayer;
@@ -36,6 +44,8 @@ public class AdminViewPlayerUpdateRetiredDate
 		DatePicker datePicker;
 		JButton confirmButton;
 
+
+		LocalDate lastAllowedDate = LocalDate.of(Year.now().getValue(), 12, 31);
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
@@ -75,20 +85,30 @@ public class AdminViewPlayerUpdateRetiredDate
 
 		datePicker = new DatePicker(datePickerSettings);
 
-		datePickerSettings.setDateRangeLimits(
-						LocalDate.parse(infoPlayerMap.get(GuiConfiguration.getMessage("dob"))),
-						LocalDate.of(Year.now().getValue(), 12, 31)
-		);
+
+		if (bornDate.plusYears(GuiConfiguration.MIN_AGE).isAfter(lastAllowedDate)) {
+			datePicker.setEnabled(false);
+			JOptionPane.showMessageDialog(null, "NON PUOI INSERIRE UNA DATA DI RITIRO AL SEGUENTE CALCIATORE"); //TODO
+		}
+		else {
+
+			if (bornDate.plusYears(GuiConfiguration.MAX_AGE).isBefore(lastAllowedDate)) {
+				lastAllowedDate = bornDate.plusYears(GuiConfiguration.MAX_AGE);
+			}
+
+			datePickerSettings.setDateRangeLimits(
+							bornDate.plusYears(GuiConfiguration.MIN_AGE),
+							lastAllowedDate
+			);
+		}
+
 		datePickerSettings.setAllowKeyboardEditing(false);
+		datePicker.setDate(prevRetiredDate);
 
-		datePicker.setDate(LocalDate.parse(prevRetiredDate));
-
-		datePicker.getComponentDateTextField().getCaret().deinstall(datePicker.getComponentDateTextField());
+		datePicker.getComponentDateTextField().setEditable(false);
 		datePicker.getComponentToggleCalendarButton().setText(GuiConfiguration.getMessage("chooseDate"));
 
 		panel.add(datePicker);
-		/*------------------------------------------------------------------------------------------------------*/
-
 		/*------------------------------------------------------------------------------------------------------*/
 
 		confirmButton = new JButton(GuiConfiguration.getMessage("confirm"));
@@ -103,9 +123,9 @@ public class AdminViewPlayerUpdateRetiredDate
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-//				String message = Controller.getInstance().addPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
-//
-//				System.out.println(message);
+				String message = Controller.getInstance().setRetiredDate(playerID, datePicker.getDateStringOrSuppliedString(null));
+
+				System.out.println(message);
 
 				try {
 					AdminViewPlayerUpdateRetiredDate.this.getParent().setVisible(false);
@@ -125,7 +145,11 @@ public class AdminViewPlayerUpdateRetiredDate
 			@Override
 			public void dateChanged(DateChangeEvent dateChangeEvent)
 			{
-				confirmButton.setEnabled(null != dateChangeEvent.getNewDate() && !(dateChangeEvent.getNewDate().isEqual(LocalDate.parse(prevRetiredDate))));
+				confirmButton.setEnabled(
+								(null == dateChangeEvent.getNewDate() && null != prevRetiredDate) ||
+								(null != dateChangeEvent.getNewDate() && null == prevRetiredDate) ||
+								(null != dateChangeEvent.getNewDate() && null != prevRetiredDate && !(dateChangeEvent.getNewDate().isEqual(prevRetiredDate)))
+				);
 			}
 		});
 	}

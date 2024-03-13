@@ -38,7 +38,7 @@ public class ViewPlayerNationalStatistic
 		final Vector<String> finalYearVector = new Vector<>();
 		final Map<String, String> finalYearMap = new HashMap<>();
 
-		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
+		final Vector<Vector<Object>> playerStatisticTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
 
 		final Integer[] tableIndex = {-1, -1};

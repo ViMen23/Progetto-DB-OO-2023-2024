@@ -41,7 +41,7 @@ public class ViewPlayerClubStatistic
 		final Vector<String> finalSeasonVector = new Vector<>();
 		final Map<String, String> finalSeasonMap = new HashMap<>();
 
-		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
+		final Vector<Vector<Object>> playerStatisticTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
 
 		final Integer[] tableIndex = {-1, -1};

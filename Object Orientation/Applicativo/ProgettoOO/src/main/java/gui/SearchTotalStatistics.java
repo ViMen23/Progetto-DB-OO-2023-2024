@@ -25,7 +25,7 @@ public class SearchTotalStatistics
 		final Integer[] tableIndex = {-1, -1};
 		final JLabel ctrlMouseTable = new JLabel((String) null);
 
-		final Vector<Vector<String>> totalStatisticsTableData = new Vector<>();
+		final Vector<Vector<Object>> totalStatisticsTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> totalStatisticsTableDataMap = new HashMap<>();
 
 		MigLayout migLayout;

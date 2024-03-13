@@ -19,7 +19,7 @@ public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;
 	public static final int MIN_YEAR = 1860;
-	public static final int MIN_AGE = 15;
+	public static final int MIN_AGE = 14;
 	public static final int MAX_AGE = 50;
 
 	public static final ImageIcon HOME_ICON = GuiConfiguration.createImageIcon("images/homy.png");
@@ -112,7 +112,6 @@ public class GuiConfiguration
 	public static final String HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT = "sgx general, dock center,";
 	public static final String HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT = "sgx general, dock south";
 	public static final String HGROUP_FIRST_COLUMN_ADD_CONSTRAINT = "sgx first_column";
-	public static final String HGROUP_FRAME_TGAP_20_ADD_CONSTRAINT = "sgx frame, gap top 20";
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 2, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_THREE_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 3, flowy, gap bottom 0";
 	public static final String HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT = "sgx first_column, gap bottom 0";
@@ -156,8 +155,8 @@ public class GuiConfiguration
 		JFrame mainFrame = MainFrame.getMainFrameInstance();
 		TopPanel topPanel = new TopPanel();
 		mainFrame.add(topPanel, HGROUP_FRAME_ADD_CONSTRAINT);
-		AdminNavigationPanel adminNavigationPanel = new AdminNavigationPanel(new AdminViewPlayerUpdateGeneralInfo("3"));
-		mainFrame.add(adminNavigationPanel, HGROUP_FRAME_ADD_CONSTRAINT);
+		MenuBarPanel menuBarPanel = new MenuBarPanel(new StepFilterPanel());
+		mainFrame.add(menuBarPanel, HGROUP_FRAME_ADD_CONSTRAINT);
 		mainFrame.pack();
 		mainFrame.setVisible(true);
 	}

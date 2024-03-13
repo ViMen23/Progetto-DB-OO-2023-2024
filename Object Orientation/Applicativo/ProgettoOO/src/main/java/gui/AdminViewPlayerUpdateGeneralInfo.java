@@ -35,7 +35,6 @@ public class AdminViewPlayerUpdateGeneralInfo
 		final String prevBornCountry = infoPlayerMap.get(GuiConfiguration.getMessage("bornCountry"));
 		final String prevFoot = infoPlayerMap.get(GuiConfiguration.getMessage("foot").toUpperCase());
 		final String prevMainPosition = infoPlayerMap.get(GuiConfiguration.getMessage("mainPosition"));
-		final String prevRetiredDate = infoPlayerMap.get(GuiConfiguration.getMessage("retiredDate").toUpperCase());
 
 		final JLabel ctrlName = new JLabel(prevName);
 		final JLabel ctrlSurname = new JLabel(prevSurname);
@@ -44,7 +43,7 @@ public class AdminViewPlayerUpdateGeneralInfo
 		final JLabel ctrlFoot = new JLabel((String) null);
 		final JLabel ctrlPositionName = new JLabel((String) null);
 
-		final boolean[] ctrlButton = {true, true, true, true, true};
+		final boolean[] ctrlButton = {false, false, false, false, false, false};
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -69,8 +68,6 @@ public class AdminViewPlayerUpdateGeneralInfo
 		LabelComboPanel nationNamePanel;
 		RadioPanel radioPanel;
 		LabelComboPanel positionNamePanel;
-		DatePickerSettings datePickerSettingsRetiredDate;
-		DatePicker datePickerRetiredDate;
 		JButton confirmButton;
 
 
@@ -124,12 +121,12 @@ public class AdminViewPlayerUpdateGeneralInfo
 
 		datePickerSettingsDob.setDateRangeLimits(
 						LocalDate.of(GuiConfiguration.MIN_YEAR, 1, 1),
-						LocalDate.of(Year.now().getValue(), 12, 31)
+						LocalDate.of(Year.now().getValue(), 12, 31).minusYears(GuiConfiguration.MIN_AGE)
 		);
 		datePickerSettingsDob.setAllowKeyboardEditing(false);
 
 		datePickerDob.setDate(LocalDate.parse(prevDob));
-		datePickerDob.getComponentDateTextField().getCaret().deinstall(datePickerDob.getComponentDateTextField());
+		datePickerDob.getComponentDateTextField().setEditable(false);
 		datePickerDob.getComponentToggleCalendarButton().setText(GuiConfiguration.getMessage("chooseDate"));
 
 		panel.add(datePickerDob);
@@ -177,42 +174,6 @@ public class AdminViewPlayerUpdateGeneralInfo
 		this.add(positionNamePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						null
-		);
-
-		panel = new JPanel(migLayout);
-		panel.setBackground(Color.white);
-
-		this.add(panel);
-
-		label = new JLabel(GuiConfiguration.getMessage("retiredDate"), SwingConstants.LEADING);
-
-		panel.add(label);
-
-		datePickerSettingsRetiredDate = new DatePickerSettings();
-
-		datePickerRetiredDate = new DatePicker(datePickerSettingsRetiredDate);
-
-		datePickerSettingsRetiredDate.setDateRangeLimits(
-						LocalDate.parse(prevDob),
-						LocalDate.of(Year.now().getValue(), 12, 31)
-		);
-		datePickerSettingsRetiredDate.setAllowKeyboardEditing(false);
-
-
-		datePickerRetiredDate.getComponentDateTextField().getCaret().deinstall(datePickerRetiredDate.getComponentDateTextField());
-		datePickerRetiredDate.getComponentToggleCalendarButton().setText(GuiConfiguration.getMessage("chooseDate"));
-
-		if (!prevRetiredDate.isEmpty()) {
-			datePickerRetiredDate.setDate(LocalDate.parse(prevRetiredDate));
-		}
-
-		panel.add(datePickerRetiredDate);
-		/*------------------------------------------------------------------------------------------------------*/
-
 		confirmButton = new JButton(GuiConfiguration.getMessage("confirm"));
 		this.add(confirmButton, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
@@ -220,14 +181,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				//TODO
-//				String message = Controller.getInstance().updatePlayer(
-//								teamID,
-//								teamType,
-//								ctrlName.getText(),
-//								ctrlSurname.getText()
-//				);
-//				System.out.println(message);
+
+				String message = Controller.getInstance().updatePlayer(
+								playerID,
+								ctrlName.getText(),
+								ctrlSurname.getText(),
+								datePickerDob.getDateStringOrEmptyString(),
+								nationNameMap.get(ctrlNationName.getText()),
+								ctrlFoot.getText(),
+								positionNameMap.get(ctrlPositionName.getText())
+				);
+
+				System.out.println(message);
 
 				try {
 					AdminViewPlayerUpdateGeneralInfo.this.getParent().setVisible(false);
@@ -248,18 +213,15 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				ctrlButton[0] = (null != ctrlName.getText());
-				confirmButton.setEnabled(
-								ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-												(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-												(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-												( 0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-								)
-				);
+				ctrlButton[0] = !(null == ctrlName.getText() || ctrlName.getText().equalsIgnoreCase(prevName));
+
+				for(boolean bool: ctrlButton) {
+					if (bool) {
+						confirmButton.setEnabled(true);
+						return;
+					}
+				}
+				confirmButton.setEnabled(false);
 			}
 		});
 
@@ -267,19 +229,15 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				ctrlButton[1] = (null != ctrlSurname.getText());
+				ctrlButton[1] = !(null == ctrlSurname.getText() || ctrlSurname.getText().equalsIgnoreCase(prevSurname));
 
-				confirmButton.setEnabled(
-								ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-												(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-												(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-												( 0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-								)
-				);
+				for(boolean bool: ctrlButton) {
+					if (bool) {
+						confirmButton.setEnabled(true);
+						return;
+					}
+				}
+				confirmButton.setEnabled(false);
 
 			}
 		});
@@ -288,19 +246,15 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void dateChanged(DateChangeEvent dateChangeEvent)
 			{
-				ctrlButton[2] = (null != dateChangeEvent.getNewDate());
+				ctrlButton[2] = !(null == dateChangeEvent.getNewDate() || datePickerDob.getDateStringOrEmptyString().equalsIgnoreCase(prevDob));
 
-				confirmButton.setEnabled(
-								ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-												(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-												(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-												( 0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-								)
-				);
+				for(boolean bool: ctrlButton) {
+					if (bool) {
+						confirmButton.setEnabled(true);
+						return;
+					}
+				}
+				confirmButton.setEnabled(false);
 			}
 		});
 
@@ -354,20 +308,15 @@ public class AdminViewPlayerUpdateGeneralInfo
 					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}
 				else {
-					ctrlButton[3] = (null != nationNameMap.get(ctrlNationName.getText()));
+					ctrlButton[3] = !(null == nationNameMap.get(ctrlNationName.getText()) || ctrlNationName.getText().equalsIgnoreCase(prevBornCountry));
 
-					confirmButton.setEnabled(
-									ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-													(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-													(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-													(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-													(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-													(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-													(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-													(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-									)
-					);
-
+					for(boolean bool: ctrlButton) {
+						if (bool) {
+							confirmButton.setEnabled(true);
+							return;
+						}
+					}
+					confirmButton.setEnabled(false);
 				}
 			}
 		});
@@ -376,17 +325,15 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				confirmButton.setEnabled(
-								ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-												(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-																(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-																(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-																(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-																(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-																( 0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-																(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-								)
-				);
+				ctrlButton[4] = !(null == ctrlFoot.getText() || GuiConfiguration.getMessage(ctrlFoot.getText()).equalsIgnoreCase(prevFoot));
+
+				for(boolean bool: ctrlButton) {
+					if (bool) {
+						confirmButton.setEnabled(true);
+						return;
+					}
+				}
+				confirmButton.setEnabled(false);
 			}
 		});
 		ctrlPositionName.addPropertyChangeListener("text", new PropertyChangeListener() {
@@ -406,50 +353,35 @@ public class AdminViewPlayerUpdateGeneralInfo
 					positionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
 				}
 				else {
-					ctrlButton[4] = (null != positionNameMap.get(ctrlPositionName.getText()));
+					String[] keyPart = ctrlPositionName.getText().split("]");
+					ctrlButton[5] = (null != positionNameMap.get(ctrlPositionName.getText())  && prevMainPosition.contains(keyPart[1]));
 
-					confirmButton.setEnabled(
-									ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-													(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-													(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-													(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-													(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-													(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-													(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-													(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-									)
-					);
+					for(boolean bool: ctrlButton) {
+						if (bool) {
+							confirmButton.setEnabled(true);
+							return;
+						}
+					}
+					confirmButton.setEnabled(false);
 
 				}
 			}
 		});
 
-		datePickerRetiredDate.addDateChangeListener(new DateChangeListener() {
-			@Override
-			public void dateChanged(DateChangeEvent dateChangeEvent)
-			{
-				confirmButton.setEnabled(
-								ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && (
-												(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
-												(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
-												(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
-												( 0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(positionNameMap.get(ctrlPositionName.getText())), prevMainPosition)) ||
-												(0 != StringUtils.compareIgnoreCase(datePickerRetiredDate.getDateStringOrEmptyString(), prevRetiredDate))
-								)
-				);
+		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
+		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
+		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
+
+		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
+
+		int size = positionNamePanel.getMyComboBox().getItemCount();
+		for (int i = 0; i < size; ++i) {
+			if (positionNamePanel.getMyComboBox().getItemAt(i).contains(prevMainPosition)) {
+				positionNamePanel.getMyComboBox().setSelectedIndex(i);
 			}
-		});
+		}
 
-//		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
-//		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
-//		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
-//
-//		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
-//		positionNamePanel.getMyComboBox().setSelectedItem(prevMainPosition);
-//		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
-
+		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
 
 		confirmButton.setEnabled(false);
 	}
