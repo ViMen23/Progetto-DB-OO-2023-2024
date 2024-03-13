@@ -205,7 +205,7 @@ public class PostgresImplTrophyDAO
 													Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_trophy_case(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call trophy_player(?, ?)}");
 			cs.setString(1, playerID);
 			cs.setString(2, teamType);
 

@@ -1122,7 +1122,7 @@ public class Controller
 																		 String startYear,
 																		 String endYear,
 																		 Map<String, String> infoPlayerMap,
-																		 Vector<Vector<String>> playerStatisticTableData,
+																		 Vector<Vector<Object>> playerStatisticTableData,
 																		 Map<Integer, Map<Integer, String>> playerStatisticTableMap)
 	{
 		setPlayerInfoMap(playerID, infoPlayerMap);
@@ -1270,7 +1270,7 @@ public class Controller
 	 * @param retiredDate
 	 * @return
 	 */
-	public String addRetiredDate(String playerID,
+	public String setRetiredDate(String playerID,
 															 String retiredDate)
 	{
 		if (null == adminConnected) {
@@ -1278,46 +1278,7 @@ public class Controller
 		}
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.newRetiredDate(
-						playerID,
-						retiredDate
-		);
-	}
-
-
-	/**
-	 * TODO
-	 * @param playerID
-	 * @return
-	 */
-	public String removeRetiredDate(String playerID)
-	{
-		if (null == adminConnected) {
-			return "errorNoAdmin";
-		}
-
-		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.deleteRetiredDate(
-						playerID
-		);
-	}
-
-
-	/**
-	 * TODO
-	 * @param playerID
-	 * @param retiredDate
-	 * @return
-	 */
-	public String updateRetiredDate(String playerID,
-																	String retiredDate)
-	{
-		if (null == adminConnected) {
-			return "errorNoAdmin";
-		}
-
-		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.updateRetiredDate(
+		return playerDAO.setRetiredDate(
 						playerID,
 						retiredDate
 		);

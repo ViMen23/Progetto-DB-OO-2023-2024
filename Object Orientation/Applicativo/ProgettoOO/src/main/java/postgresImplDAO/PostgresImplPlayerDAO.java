@@ -456,13 +456,13 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String newRetiredDate(String playerID,
+	public String setRetiredDate(String playerID,
 															 String retiredDate)
 	{
 		String message = null;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call new_retired_date(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{? = call set_retired_date(?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, playerID);
 			cs.setString(3, retiredDate);
@@ -483,59 +483,4 @@ public class PostgresImplPlayerDAO
 		return message;
 	}
 
-
-	@Override
-	public String deleteRetiredDate(String playerID)
-	{
-		String message = null;
-
-		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call delete_retired_date(?)}");
-			cs.registerOutParameter(1, Types.VARCHAR);
-			cs.setString(2, playerID);
-
-
-			cs.execute();
-
-			message = cs.getString(1);
-
-
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-
-		return message;
-	}
-
-
-	@Override
-	public String updateRetiredDate(String playerID,
-																	String retiredDate)
-	{
-		String message = null;
-
-		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call update_retired_date(?, ?)}");
-			cs.registerOutParameter(1, Types.VARCHAR);
-			cs.setString(2, playerID);
-			cs.setString(3, retiredDate);
-
-
-			cs.execute();
-
-			message = cs.getString(1);
-
-
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-
-		return message;
-	}
 }

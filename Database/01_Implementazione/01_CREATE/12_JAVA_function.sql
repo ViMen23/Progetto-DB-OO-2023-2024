@@ -2192,16 +2192,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_prize_case
+ * NAME : prize_player
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text)
+ * RETURNS : TABLE (text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo i premi calcistici vinti da
+ *        un calciatore in input
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_prize_case
+CREATE OR REPLACE FUNCTION prize_player
 (
     IN  id_player   text
 )
@@ -2240,16 +2241,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_trophy_case
+ * NAME : trophy_player
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo i trofei calcistici vinti da
+ *        un calciatore in input
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_trophy_case
+CREATE OR REPLACE FUNCTION trophy_player
 (
     IN  id_player   text,
     IN  type_team   text
@@ -5660,10 +5662,9 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : new_retired_date
+ * NAME : set_retired_date
  *
  * IN      : text
  * INOUT   : void
@@ -5672,110 +5673,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION new_retired_date
-(
-    IN  id_player   text,
-    IN  r_date      text
-)
-RETURNS text
-AS
-$$
-DECLARE
-
-    count_row       integer;
-    output_message  text;
-
-BEGIN
-
-    INSERT INTO
-        fp_player_retired
-        (
-            player_id,
-            retired_date
-        )
-    VALUES
-    (
-        id_player::integer,
-        r_date::dm_date
-    )
-    ON CONFLICT DO NOTHING;
-
-    GET DIAGNOSTICS count_row = row_count;
-    
-    IF (0 = count_row) THEN
-        output_message = 'errorMessageInsertRetiredDate';
-    ELSE
-        output_message = 'okInsert';
-    END IF;
-
-    RETURN output_message;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : delete_retired_date
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION delete_retired_date
-(
-    IN  id_player   text
-)
-RETURNS text
-AS
-$$
-DECLARE
-
-    count_row       integer;
-    output_message  text;
-
-BEGIN
-
-    DELETE FROM
-        fp_player_retired
-    WHERE
-        player_id = id_player::integer;
-
-    
-    GET DIAGNOSTICS count_row = row_count;
-
-    IF (0 = count_row) THEN
-        output_message = 'errorMessageDeleteRetiredDate';
-    ELSE
-        output_message = 'okDelete';
-    END IF;
-
-    RETURN output_message;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : update_retired_date
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : text
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION update_retired_date
+CREATE OR REPLACE FUNCTION set_retired_date
 (
     IN  id_player   text,
     IN  r_date      text
@@ -5802,29 +5700,81 @@ BEGIN
         player_id = id_player::integer;
 
     
-    IF (NOT retired) THEN
-        output_message = 'errorMessagePlayerNotRetired';
+    IF ((retired) AND (r_date IS NOT NULL)) THEN
+
+
+        UPDATE
+            fp_player_retired
+        SET
+            retired_date = r_date::dm_date
+        WHERE
+            player_id = id_player::integer;
+
+        
+        GET DIAGNOSTICS count_row = row_count;
+
+        IF (0 = count_row) THEN
+            output_message = 'errorMessageUpdateRetiredDate';
+        ELSE
+            output_message = 'okUpdate';
+        END IF;
+
         RETURN output_message;
-    END IF;
 
 
-    UPDATE
-        fp_player_retired
-    SET
-        retired_date = r_date::dm_date
-    WHERE
-        player_id = id_player::integer;
+    ELSIF ((retired) AND (r_date IS NULL)) THEN
 
-    
-    GET DIAGNOSTICS count_row = row_count;
 
-    IF (0 = count_row) THEN
-        output_message = 'errorMessageUpdateRetiredDate';
+        DELETE FROM
+            fp_player_retired
+        WHERE
+            player_id = id_player::integer;
+
+        
+        GET DIAGNOSTICS count_row = row_count;
+
+        IF (0 = count_row) THEN
+            output_message = 'errorMessageDeleteRetiredDate';
+        ELSE
+            output_message = 'okDelete';
+        END IF;
+
+        RETURN output_message;
+
+
+    ELSIF ((NOT retired) AND (r_date IS NOT NULL)) THEN
+
+
+        INSERT INTO
+            fp_player_retired
+            (
+                player_id,
+                retired_date
+            )
+        VALUES
+        (
+            id_player::integer,
+            r_date::dm_date
+        )
+        ON CONFLICT DO NOTHING;
+
+        GET DIAGNOSTICS count_row = row_count;
+        
+        IF (0 = count_row) THEN
+            output_message = 'errorMessageInsertRetiredDate';
+        ELSE
+            output_message = 'okInsert';
+        END IF;
+
+        RETURN output_message;
+
+
     ELSE
-        output_message = 'okUpdate';
+   
+        output_message = 'errorMessageRetiredDate';
+        RETURN output_message;
+  
     END IF;
-
-    RETURN output_message;
 
 
 END;

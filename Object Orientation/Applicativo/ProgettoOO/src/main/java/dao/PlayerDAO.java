@@ -60,11 +60,7 @@ public interface PlayerDAO
 											String positionID);
 
 
-	String newRetiredDate(String playerID,
+	String setRetiredDate(String playerID,
 												String retiredDate);
 
-	String deleteRetiredDate(String playerID);
-
-	String updateRetiredDate(String playerID,
-													 String retiredDate);
 }
