@@ -66,9 +66,6 @@ public class AdminViewPlayerAddTrophy
 		LabelComboPanel trophyNamePanel;
 		JButton confirmButton;
 
-
-		String string;
-
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,

@@ -29,6 +29,9 @@ public class AdminViewPlayerAddNationalTrophy
 
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
+		final Vector<String> yearVector = new Vector<>();
+		final Map<String, String> yearMap = new HashMap<>();
+
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
 
@@ -122,7 +125,7 @@ public class AdminViewPlayerAddNationalTrophy
 								teamNameMap.get(ctrlTeamName.getText()),
 								trophyNameMap.get(ctrlTrophyName.getText()),
 								competitionNameMap.get(ctrlCompetitionName.getText()),
-								ctrlYear.getText()
+								yearMap.get(ctrlYear.getText())
 				);
 
 				System.out.println(message);
@@ -146,31 +149,17 @@ public class AdminViewPlayerAddNationalTrophy
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (0 == StringUtils.compareIgnoreCase(ctrlYear.getText(), "@fill")) {
-					int minYear;
-					int maxYear;
+					yearVector.clear();
+					yearMap.clear();
 
-					String string;
+					Controller.getInstance().setPlayerComboBoxYear(playerID, Team.TEAM_TYPE.NATIONAL.toString(), yearVector, yearMap);
 
-					string = Controller.getInstance().setPlayerYear(playerID);
-
-					String[] keyPart = string.split("@");
-
-					minYear = Integer.parseInt(keyPart[0]);
-					maxYear = Integer.parseInt(keyPart[1]);
-
-					if (maxYear > Year.now().getValue()) {
-						maxYear = Year.now().getValue();
+					if (yearVector.isEmpty()) {
+						yearVector.add(GuiConfiguration.getMessage("noData"));
 					}
-
-					MyComboBox yearCombo = yearPanel.getMyComboBox();
-
-					yearCombo.removeAllItems();
-
-					for (int i = maxYear; i >= minYear; --i) {
-						yearCombo.addItem(String.valueOf(i));
-					}
+					yearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(yearVector));
 				} else {
-					teamNamePanel.getMyComboBox().setEnabled(null != ctrlYear.getText());
+					teamNamePanel.getMyComboBox().setEnabled(null != yearMap.get(ctrlYear.getText()));
 					teamNamePanel.getMyComboBox().setSelectedIndex(-1);
 					ctrlTeamName.setText(null);
 				}
@@ -187,7 +176,7 @@ public class AdminViewPlayerAddNationalTrophy
 					Controller.getInstance().setTeamComboBox(
 									playerID,
 									Team.TEAM_TYPE.NATIONAL.toString(),
-									ctrlYear.getText(),
+									yearMap.get(ctrlYear.getText()),
 									teamNameVector,
 									teamNameMap
 					);
@@ -213,7 +202,7 @@ public class AdminViewPlayerAddNationalTrophy
 
 					Controller.getInstance().setPartecipationComboBox(
 									teamNameMap.get(ctrlTeamName.getText()),
-									ctrlYear.getText(),
+									yearMap.get(ctrlYear.getText()),
 									competitionNameVector,
 									competitionNameMap
 					);

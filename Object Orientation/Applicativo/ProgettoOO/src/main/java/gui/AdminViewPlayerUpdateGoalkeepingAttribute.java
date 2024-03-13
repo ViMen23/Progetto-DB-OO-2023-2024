@@ -10,33 +10,46 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
-public class AdminViewPlayerUpdateStatistic
+public class AdminViewPlayerUpdateGoalkeepingAttribute
 				extends JPanel
 {
-	public AdminViewPlayerUpdateStatistic(String playerID,
-																				String playID,
-																				Map<String, String> statisticTableMap)
+	public AdminViewPlayerUpdateGoalkeepingAttribute(String playerID)
 	{
-		final Vector<String> statisticValueVector = new Vector<>();
+		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
-		for (int i = 0; i <= 1000; ++i) {
-			statisticValueVector.add(String.valueOf(i));
-		}
+		final Vector<Vector<String>> attributeTableData = new Vector<>();
 
-		final boolean[] ctrlButton = {false, false, false, false, false, false, false, false};
+		final Vector<String> attributeValueVector = new Vector<>(List.of(
+						String.valueOf(1),
+						String.valueOf(2),
+						String.valueOf(3),
+						String.valueOf(4),
+						String.valueOf(5),
+						String.valueOf(6),
+						String.valueOf(7),
+						String.valueOf(8),
+						String.valueOf(9),
+						String.valueOf(10)
+		));
+
+		final boolean[] ctrlButton = {false, false, false, false, false, false, false, false, false, false, false, false, false, false};
 		final ArrayList<JComboBox<String>> arrayList = new ArrayList<>();
 
+		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
+
+		Controller.getInstance().setAttributeGoalkeepingTable(playerID, attributeTableData);
+
 		MigLayout migLayout;
+		AdminTopViewPlayer adminTopViewPlayer;
 		JPanel panel;
 		JLabel label;
 		JComboBox<String> comboBox;
 		JButton confirmButton;
-
-		int index = 0;
 
 
 		migLayout = new MigLayout(
@@ -46,6 +59,11 @@ public class AdminViewPlayerUpdateStatistic
 		);
 
 		this.setLayout(migLayout);
+
+
+		adminTopViewPlayer = new AdminTopViewPlayer(playerID, this);
+		this.add(adminTopViewPlayer);
+		adminTopViewPlayer.setGeneralInfoPanel(infoPlayerMap);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
@@ -72,8 +90,8 @@ public class AdminViewPlayerUpdateStatistic
 			{
 				JOptionPane.showConfirmDialog(null, "BOH"); //TODO
 
-				String message = Controller.getInstance().updateStatistic(
-								playID,
+				String message = Controller.getInstance().updateAttributeGoalkeeping(
+								playerID,
 								(String) arrayList.get(0).getSelectedItem(),
 								(String) arrayList.get(1).getSelectedItem(),
 								(String) arrayList.get(2).getSelectedItem(),
@@ -81,17 +99,22 @@ public class AdminViewPlayerUpdateStatistic
 								(String) arrayList.get(4).getSelectedItem(),
 								(String) arrayList.get(5).getSelectedItem(),
 								(String) arrayList.get(6).getSelectedItem(),
-								(String) arrayList.get(7).getSelectedItem()
+								(String) arrayList.get(7).getSelectedItem(),
+								(String) arrayList.get(8).getSelectedItem(),
+								(String) arrayList.get(9).getSelectedItem(),
+								(String) arrayList.get(10).getSelectedItem(),
+								(String) arrayList.get(11).getSelectedItem(),
+								(String) arrayList.get(12).getSelectedItem()
 				);
 
 				System.out.println(message);
 
 				try {
-					AdminViewPlayerUpdateStatistic.this.getParent().getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerUpdateStatistic.this.getParent().getParent());
+					AdminViewPlayerUpdateGoalkeepingAttribute.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerUpdateGoalkeepingAttribute.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerUpdateClubStatistic(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -102,26 +125,27 @@ public class AdminViewPlayerUpdateStatistic
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		for (String key: statisticTableMap.keySet()) {
-			final int j = index;
-			label = new JLabel(key);
+		for (int i = 0; i< attributeTableData.size(); ++i) {
+			final int j = i;
+			label = new JLabel(attributeTableData.get(i).getFirst());
 
 			panel.add(label);
 
-			comboBox = new JComboBox<>(statisticValueVector);
+			comboBox = new JComboBox<>(attributeValueVector);
 
 			comboBox.setCursor(GuiConfiguration.HAND_CURSOR);
 			comboBox.setPrototypeDisplayValue("xxxxx");
 			comboBox.setMaximumRowCount(7);
+			comboBox.setSelectedItem(attributeTableData.get(i).getLast());
 
 			comboBox.addItemListener(new ItemListener() {
 				@Override
 				public void itemStateChanged(ItemEvent e)
 				{
-					ctrlButton[j] = !((String) e.getItem()).equalsIgnoreCase(statisticTableMap.get(key));
+					ctrlButton[j] = !((String) e.getItem()).equalsIgnoreCase(attributeTableData.get(j).getLast());
 
-					for (boolean bool: ctrlButton) {
-						if (bool) {
+					for (int i = 0; i < attributeTableData.size(); ++i) {
+						if (ctrlButton[i]) {
 							confirmButton.setEnabled(true);
 							return;
 						}
@@ -131,34 +155,10 @@ public class AdminViewPlayerUpdateStatistic
 				}
 			});
 
-			comboBox.setSelectedItem(statisticTableMap.get(key));
 			arrayList.add(comboBox);
 			panel.add(comboBox);
-			++index;
 		}
 		/*------------------------------------------------------------------------------------------------------*/
 
-		arrayList.getFirst().addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getItem().equals(String.valueOf(0))) {
-
-					if (e.getStateChange() == ItemEvent.SELECTED) {
-
-						for (int i = 1; i < arrayList.size(); ++i) {
-							arrayList.get(i).setEnabled(false);
-						}
-					} else {
-
-						for (int i = 1; i < arrayList.size(); ++i) {
-							arrayList.get(i).setEnabled(true);
-						}
-					}
-				}
-			}
-		});
-
-		arrayList.getFirst().setSelectedIndex(-1);
-		arrayList.getFirst().setSelectedItem(statisticTableMap.get("match"));
 	}
 }

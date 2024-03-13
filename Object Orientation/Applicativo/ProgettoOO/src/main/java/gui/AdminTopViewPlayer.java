@@ -648,7 +648,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerUpdateAttribute(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -670,11 +670,11 @@ public class AdminTopViewPlayer
 					rootPanel.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-					//TODO
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminViewPlayerUpdateMentalAttribute(playerID)),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdateMentalAttribute(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
@@ -693,11 +693,11 @@ public class AdminTopViewPlayer
 					rootPanel.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-					//TODO
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminViewPlayerUpdatePhysicalAttribute(playerID)),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdatePhysicalAttribute(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
@@ -716,11 +716,11 @@ public class AdminTopViewPlayer
 					rootPanel.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
-					//TODO
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminViewPlayerUpdateTechnicalAttribute(playerID)),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdateTechnicalAttribute(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
@@ -741,7 +741,7 @@ public class AdminTopViewPlayer
 		menuBar.add(menu);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		menuItem = new JMenuItem(GuiConfiguration.getMessage("updateStatistics"));
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("updateClubStatistics"));
 		menu.getPopupMenu().add(menuItem);
 
 		menuItem.addActionListener(new ActionListener() {
@@ -753,7 +753,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerUpdateStatistic(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerUpdateClubStatistic(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -763,6 +763,28 @@ public class AdminTopViewPlayer
 		});
 		/*------------------------------------------------------------------------------------------------------*/
 
+
+		menuItem = new JMenuItem(GuiConfiguration.getMessage("updateNationalStatistics"));
+		menu.getPopupMenu().add(menuItem);
+
+		menuItem.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e)
+			{
+				try {
+					rootPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewPlayerUpdateNationalStatistic(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
+			}
+		});
+		/*------------------------------------------------------------------------------------------------------*/
 
 		button = new JButton(GuiConfiguration.BIN_ICON);
 		button.setCursor(GuiConfiguration.HAND_CURSOR);

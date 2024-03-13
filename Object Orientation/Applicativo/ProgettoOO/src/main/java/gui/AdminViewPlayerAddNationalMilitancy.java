@@ -27,6 +27,8 @@ public class AdminViewPlayerAddNationalMilitancy
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
 
+		final Map<String, String> yearMap = new HashMap<>();
+
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
 		MigLayout migLayout;
@@ -90,7 +92,7 @@ public class AdminViewPlayerAddNationalMilitancy
 								playerID,
 								teamNameMap.get(ctrlTeamName.getText()),
 								Team.TEAM_TYPE.NATIONAL.toString(),
-								ctrlYear.getText(),
+								yearMap.get(ctrlYear.getText()),
 								Player.MILITANCY_TYPE.FULL.toString()
 				);
 
@@ -158,13 +160,18 @@ public class AdminViewPlayerAddNationalMilitancy
 					MyComboBox yearCombo = yearPanel.getMyComboBox();
 
 					yearCombo.removeAllItems();
+					yearMap.clear();
 
 					for (int i = maxYear; i >= minYear; --i) {
 						yearCombo.addItem(String.valueOf(i));
+						yearMap.put(String.valueOf(i), String.valueOf(i));
 					}
-				}
-				else {
-					confirmButton.setEnabled(null != ctrlYear.getText());
+
+					if (0 == yearCombo.getItemCount() ) {
+						yearCombo.addItem(GuiConfiguration.getMessage("noData"));
+					}
+				} else {
+					confirmButton.setEnabled(null != yearMap.get(ctrlYear.getText()));
 				}
 			}
 		});

@@ -23,8 +23,8 @@ public class ViewPlayerNationalStatistic
 	public ViewPlayerNationalStatistic(String playerID)
 	{
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
-		final JLabel ctrlInitialSeason = new JLabel((String) null);
-		final JLabel ctrlFinalSeason = new JLabel((String) null);
+		final JLabel ctrlInitialYear = new JLabel((String) null);
+		final JLabel ctrlFinalYear = new JLabel((String) null);
 
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
 
@@ -32,11 +32,11 @@ public class ViewPlayerNationalStatistic
 		final Vector<String> competitionNameVector = new Vector<>();
 		final Map<String, String> competitionNameMap = new HashMap<>();
 
-		final Vector<String> initialSeasonVector = new Vector<>();
-		final Map<String, String> initialSeasonMap = new HashMap<>();
+		final Vector<String> initialYearVector = new Vector<>();
+		final Map<String, String> initialYearMap = new HashMap<>();
 
-		final Vector<String> finalSeasonVector = new Vector<>();
-		final Map<String, String> finalSeasonMap = new HashMap<>();
+		final Vector<String> finalYearVector = new Vector<>();
+		final Map<String, String> finalYearMap = new HashMap<>();
 
 		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
 		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
@@ -58,8 +58,8 @@ public class ViewPlayerNationalStatistic
 		InfoPanel infoPanel;
 		TitleLabel titleLabel;
 		LabelComboPanel competitionNamePanel;
-		LabelComboPanel initialSeasonPanel;
-		LabelComboPanel finalSeasonPanel;
+		LabelComboPanel initialYearPanel;
+		LabelComboPanel finalYearPanel;
 		TablePanel playerStatisticTablePanel;
 		JButton button;
 
@@ -137,26 +137,26 @@ public class ViewPlayerNationalStatistic
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		titleLabel = new TitleLabel(GuiConfiguration.getMessage("seasonRange").toUpperCase());
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("yearsRange"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
 		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
 		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		initialSeasonPanel = new LabelComboPanel(GuiConfiguration.getMessage("initialSeason"), true,ctrlInitialSeason);
-		centralPanel.add(initialSeasonPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
+		initialYearPanel = new LabelComboPanel(GuiConfiguration.getMessage("initialYear"), true,ctrlInitialYear);
+		centralPanel.add(initialYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
-		finalSeasonPanel = new LabelComboPanel(
-						GuiConfiguration.getMessage("finalSeason"),
+		finalYearPanel = new LabelComboPanel(
+						GuiConfiguration.getMessage("finalYear"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_10,
-						ctrlFinalSeason
+						ctrlFinalYear
 		);
-		centralPanel.add(finalSeasonPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
+		centralPanel.add(finalYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);
 
 
-		infoPanel = new InfoPanel(GuiConfiguration.getMessage("seasonInfo"));
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("yearsRangeInfo"));
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
@@ -188,8 +188,8 @@ public class ViewPlayerNationalStatistic
 								Team.TEAM_TYPE.NATIONAL.toString(),
 								null,
 								competitionNameMap.get(ctrlCompetitionName.getText()),
-								initialSeasonMap.get(ctrlInitialSeason.getText()),
-								finalSeasonMap.get(ctrlFinalSeason.getText()),
+								initialYearMap.get(ctrlInitialYear.getText()),
+								finalYearMap.get(ctrlFinalYear.getText()),
 								infoPlayerMap,
 								playerStatisticTableData,
 								playerStatisticTableMap
@@ -217,17 +217,17 @@ public class ViewPlayerNationalStatistic
 					string += ctrlCompetitionName.getText();
 				}
 
-				if (ctrlInitialSeason.getText() != null) {
+				if (ctrlInitialYear.getText() != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
-					string += GuiConfiguration.getMessage("seasonsRange");
+					string += GuiConfiguration.getMessage("yearsRange");
 					string += ": ";
-					string += ctrlInitialSeason.getText();
+					string += ctrlInitialYear.getText();
 
-					if (ctrlFinalSeason.getText() != null) {
+					if (ctrlFinalYear.getText() != null) {
 						string += " - ";
-						string += ctrlFinalSeason.getText();
+						string += ctrlFinalYear.getText();
 					}
 				}
 
@@ -265,51 +265,51 @@ public class ViewPlayerNationalStatistic
 			}
 		});
 
-		ctrlInitialSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlInitialYear.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlInitialSeason.getText(), "@fill")) {
-					initialSeasonVector.clear();
-					initialSeasonMap.clear();
+				if (0 == StringUtils.compareIgnoreCase(ctrlInitialYear.getText(), "@fill")) {
+					initialYearVector.clear();
+					initialYearMap.clear();
 
 					Controller.getInstance().setPlayerComboBoxYear(
 									playerID,
 									Team.TEAM_TYPE.NATIONAL.toString(),
-									initialSeasonVector,
-									initialSeasonMap
+									initialYearVector,
+									initialYearMap
 					);
 
-					if (initialSeasonVector.isEmpty()) {
-						initialSeasonVector.add(GuiConfiguration.getMessage("noData"));
+					if (initialYearVector.isEmpty()) {
+						initialYearVector.add(GuiConfiguration.getMessage("noData"));
 					}
 
-					initialSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(initialSeasonVector));
+					initialYearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(initialYearVector));
 				} else {
-					finalSeasonPanel.getMyComboBox().setSelectedIndex(-1);
-					finalSeasonPanel.getMyComboBox().setEnabled(null != initialSeasonMap.get(ctrlInitialSeason.getText()));
-					ctrlFinalSeason.setText(null);
+					finalYearPanel.getMyComboBox().setSelectedIndex(-1);
+					finalYearPanel.getMyComboBox().setEnabled(null != initialYearMap.get(ctrlInitialYear.getText()));
+					ctrlFinalYear.setText(null);
 				}
 			}
 		});
 
-		ctrlFinalSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlFinalYear.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (0 == StringUtils.compareIgnoreCase(ctrlFinalSeason.getText(), "@fill")) {
-					finalSeasonVector.clear();
-					finalSeasonMap.clear();
+				if (0 == StringUtils.compareIgnoreCase(ctrlFinalYear.getText(), "@fill")) {
+					finalYearVector.clear();
+					finalYearMap.clear();
 
-					for (String season : initialSeasonVector) {
-						finalSeasonVector.add(season);
-						finalSeasonMap.put(season, initialSeasonMap.get(season));
-						if (season.equalsIgnoreCase(ctrlInitialSeason.getText())) {
+					for (String season : initialYearVector) {
+						finalYearVector.add(season);
+						finalYearMap.put(season, initialYearMap.get(season));
+						if (season.equalsIgnoreCase(ctrlInitialYear.getText())) {
 							break;
 						}
 					}
 
-					finalSeasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(finalSeasonVector));
+					finalYearPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(finalYearVector));
 				}
 			}
 		});

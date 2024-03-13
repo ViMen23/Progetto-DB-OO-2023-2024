@@ -308,6 +308,7 @@ public class AdminViewPlayerAddClubMilitancy
 					MyComboBox seasonCombo = seasonPanel.getMyComboBox();
 
 					seasonCombo.removeAllItems();
+					seasonMap.clear();
 
 					for (int i = maxYear; i >= minYear; --i) {
 						string = String.valueOf(i);
@@ -318,12 +319,20 @@ public class AdminViewPlayerAddClubMilitancy
 
 						seasonMap.put(string, String.valueOf(i));
 					}
+
+					if (0 == seasonCombo.getItemCount() ) {
+						seasonCombo.addItem(GuiConfiguration.getMessage("noData"));
+					}
 				}
 				else {
 					buttonGroup.clearSelection();
-					firstPartRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
-					secondPartRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
-					fullRadioButton.setEnabled(null != seasonMap.get(ctrlSeason.getText()));
+
+					boolean bool  = null != seasonMap.get(ctrlSeason.getText());
+
+					firstPartRadioButton.setEnabled(bool);
+					secondPartRadioButton.setEnabled(bool);
+					fullRadioButton.setEnabled(bool);
+
 					ctrlMilitancyType.setText(null);
 					confirmButton.setEnabled(false);
 				}
