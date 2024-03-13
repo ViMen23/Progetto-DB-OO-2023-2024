@@ -95,6 +95,10 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @return
+	 */
 	public boolean isAdminConnected()
 	{
 		return (null != adminConnected);
@@ -447,6 +451,14 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param startYear
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
 	public void setCompetitionPlayComboBox(String playerID,
 																				 String startYear,
 																				 Vector<String> comboBoxData,
@@ -705,7 +717,14 @@ public class Controller
 	}
 
 
-
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param competitionStartYear
+	 * @param competitionID
+	 * @param comboBoxData
+	 * @param comboBoxMap
+	 */
 	public void setTeamPlayComboBox(String playerID,
 																	String competitionStartYear,
 																	String competitionID,
@@ -2573,6 +2592,25 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param corners
+	 * @param crossing
+	 * @param dribbling
+	 * @param finishing
+	 * @param firstTouch
+	 * @param freeKickTaking
+	 * @param heading
+	 * @param longShots
+	 * @param longThrows
+	 * @param marking
+	 * @param passing
+	 * @param penaltyTaking
+	 * @param tackling
+	 * @param technique
+	 * @return
+	 */
 	public String updateAttributeTechnical(String playerID,
 																				 String corners,
 																				 String crossing,
