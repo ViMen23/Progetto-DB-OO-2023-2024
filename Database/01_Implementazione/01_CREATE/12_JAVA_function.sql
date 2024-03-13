@@ -234,7 +234,7 @@ LANGUAGE plpgsql;
  * IN      : en_team, integer
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text)
+ * RETURNS : TABLE (integer, en_country, dm_code, dm_string, integer, dm_string)
  *
  * DESC : Restituisce informazioni riguardanti i paesi.
  *        I paesi in output possono essere cercati per:
@@ -248,12 +248,12 @@ CREATE OR REPLACE FUNCTION search_country
 )
 RETURNS TABLE
         (
-            country_id          text,
-            country_type        text,
-            country_code        text,
-            country_name        text,
-            super_country_id    text,
-            super_country_name  text
+            country_id          integer,
+            country_type        en_country,
+            country_code        dm_code,
+            country_name        dm_string,
+            super_country_id    integer,
+            super_country_name  dm_string
         )
 AS
 $$
@@ -263,23 +263,23 @@ BEGIN
 
 	CREATE TEMPORARY TABLE output_table
     (
-        country_id          text    NOT NULL,
-        country_type        text    NOT NULL,
-        country_code        text    NOT NULL,
-        country_name        text    NOT NULL,
-        super_country_id    text            ,
-        super_country_name  text
+        country_id          integer     NOT NULL,
+        country_type        en_country  NOT NULL,
+        country_code        dm_code     NOT NULL,
+        country_name        dm_string   NOT NULL,
+        super_country_id    integer             ,
+        super_country_name  dm_string
     );
 
     INSERT INTO
         output_table
     SELECT
-        inner_country.id::text,
-        inner_country.type::text,
-        inner_country.code::text,
-        inner_country.name::text,
-        super_country.id::text,
-        super_country.name::text
+        inner_country.id,
+        inner_country.type,
+        inner_country.code,
+        inner_country.name,
+        super_country.id,
+        super_country.name
     FROM
         fp_country AS inner_country
         LEFT OUTER JOIN
