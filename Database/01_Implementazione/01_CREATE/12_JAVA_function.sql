@@ -5391,11 +5391,11 @@ CREATE OR REPLACE FUNCTION get_statistic_player_admin
     IN  id_player   text,
     IN  id_team     text,
     IN  id_comp     text,
-    IN  s_year      text,
+    IN  s_year      text
 )
 RETURNS TABLE
         (
-            play_id         text
+            play_id         text,
             match           text,
             goal_scored     text,
             penalty_scored  text,
@@ -5491,12 +5491,12 @@ BEGIN
 		)
 	VALUES
 	(
-        new_name::dm_string
-        new_surname::dm_string
-        new_dob::dm_date
-        new_country_id::integer
-        new_foot::en_foot
-        new_position_id::integer
+        new_name::dm_string,
+        new_surname::dm_string,
+        new_dob::dm_date,
+        new_country_id::integer,
+        new_foot::en_foot,
+        new_position_id::integer,
         new_role::en_role
 	)
 	ON CONFLICT DO NOTHING;
@@ -5594,7 +5594,7 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_competition.id::text AS competition_id,
-            fp_competition.name::text AS competition_name,
+            fp_competition.name::text AS competition_name
         FROM
             fp_play
             JOIN
@@ -5645,7 +5645,7 @@ BEGIN
     RETURN QUERY
         SELECT
             fp_team.id::text AS team_id,
-            fp_team.long_name::text AS team_long_name,
+            fp_team.long_name::text AS team_long_name
         FROM
             fp_play
             JOIN
