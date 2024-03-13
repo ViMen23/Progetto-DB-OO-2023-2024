@@ -4,10 +4,7 @@ import dao.AttributeTechnicalDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
@@ -94,5 +91,59 @@ public class PostgresImplAttributeTechnicalDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String updateAttributeTechnical(String playerID,
+																				 String corners,
+																				 String crossing,
+																				 String dribbling,
+																				 String finishing,
+																				 String firstTouch,
+																				 String freeKickTaking,
+																				 String heading,
+																				 String longShots,
+																				 String longThrows,
+																				 String marking,
+																				 String passing,
+																				 String penaltyTaking,
+																				 String tackling,
+																				 String technique)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_attribute_technical(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, corners);
+			cs.setString(4, crossing);
+			cs.setString(5, dribbling);
+			cs.setString(6, finishing);
+			cs.setString(7, firstTouch);
+			cs.setString(8, freeKickTaking);
+			cs.setString(9, heading);
+			cs.setString(10, longShots);
+			cs.setString(11, longThrows);
+			cs.setString(12, marking);
+			cs.setString(13, passing);
+			cs.setString(14, penaltyTaking);
+			cs.setString(15, tackling);
+			cs.setString(16, technique);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

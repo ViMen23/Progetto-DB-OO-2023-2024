@@ -4,10 +4,7 @@ import dao.AttributePhysicalDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
@@ -82,5 +79,47 @@ public class PostgresImplAttributePhysicalDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String updateAttributePhysical(String playerID,
+																				String acceleration,
+																				String agility,
+																				String balance,
+																				String jumpingReach,
+																				String naturalFitness,
+																				String pace,
+																				String stamina,
+																				String strength)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_attribute_physical(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, acceleration);
+			cs.setString(4, agility);
+			cs.setString(5, balance);
+			cs.setString(6, jumpingReach);
+			cs.setString(7, naturalFitness);
+			cs.setString(8, pace);
+			cs.setString(9, stamina);
+			cs.setString(10, strength);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

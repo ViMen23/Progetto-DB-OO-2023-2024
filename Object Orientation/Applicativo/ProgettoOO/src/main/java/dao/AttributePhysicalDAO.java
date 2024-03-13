@@ -10,4 +10,14 @@ public interface AttributePhysicalDAO
 
 	void fetchAttributePhysical(String playerID,
 															Vector<Vector<String>> playerAttributePhysicalTableData);
+
+	String updateAttributePhysical(String playerID,
+																 String acceleration,
+																 String agility,
+																 String balance,
+																 String jumpingReach,
+																 String naturalFitness,
+																 String pace,
+																 String stamina,
+																 String strength);
 }

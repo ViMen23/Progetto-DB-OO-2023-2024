@@ -2193,6 +2193,10 @@ public class Controller
 																					 String rushingOutTendency,
 																					 String throwing)
 	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
 		AttributeGoalkeepingDAO attributeGoalkeepingDAO = new PostgresImplAttributeGoalkeepingDAO();
 		return attributeGoalkeepingDAO.updateAttributeGoalkeeping(
 						playerID,
@@ -2248,6 +2252,10 @@ public class Controller
 																			String vision,
 																			String workRate)
 	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
 		AttributeMentalDAO attributeMentalDAO = new PostgresImplAttributeMentalDAO();
 		return attributeMentalDAO.updateAttributeMental(
 						playerID,
@@ -2269,7 +2277,87 @@ public class Controller
 	}
 
 
-	//public String updateAttributePhysical
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param acceleration
+	 * @param agility
+	 * @param balance
+	 * @param jumpingReach
+	 * @param naturalFitness
+	 * @param pace
+	 * @param stamina
+	 * @param strength
+	 * @return
+	 */
+	public String updateAttributePhysical(String playerID,
+																				String acceleration,
+																				String agility,
+																				String balance,
+																				String jumpingReach,
+																				String naturalFitness,
+																				String pace,
+																				String stamina,
+																				String strength)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		AttributePhysicalDAO attributePhysicalDAO = new PostgresImplAttributePhysicalDAO();
+		return attributePhysicalDAO.updateAttributePhysical(
+						playerID,
+						acceleration,
+						agility,
+						balance,
+						jumpingReach,
+						naturalFitness,
+						pace,
+						stamina,
+						strength
+		);
+	}
+
+
+	public String updateAttributeTechnical(String playerID,
+																				 String corners,
+																				 String crossing,
+																				 String dribbling,
+																				 String finishing,
+																				 String firstTouch,
+																				 String freeKickTaking,
+																				 String heading,
+																				 String longShots,
+																				 String longThrows,
+																				 String marking,
+																				 String passing,
+																				 String penaltyTaking,
+																				 String tackling,
+																				 String technique)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
+		return attributeTechnicalDAO.updateAttributeTechnical(
+						playerID,
+						corners,
+						crossing,
+						dribbling,
+						finishing,
+						firstTouch,
+						freeKickTaking,
+						heading,
+						longShots,
+						longThrows,
+						marking,
+						passing,
+						penaltyTaking,
+						tackling,
+						technique
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 
