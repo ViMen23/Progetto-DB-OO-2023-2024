@@ -5202,14 +5202,6 @@ BEGIN
         play_id = id_play::integer;
 
 
-    UPDATE
-        fp_statistic_goalkeeper
-    SET
-        goal_conceded = new_goal_conceded::dm_usint,
-        penalty_saved = new_penalty_saved::dm_usint
-    WHERE
-        play_id = id_play::integer;
-
     
     IF (0 = count_row) THEN
         output_message = 'errorMessageUpdateStatisticGeneral';
