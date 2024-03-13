@@ -5696,7 +5696,7 @@ BEGIN
     VALUES
     (
         id_player::integer,
-        r_date::dm_year
+        r_date::dm_date
     )
     ON CONFLICT DO NOTHING;
 
