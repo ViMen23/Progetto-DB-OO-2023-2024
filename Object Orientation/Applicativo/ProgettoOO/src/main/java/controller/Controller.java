@@ -150,8 +150,8 @@ public class Controller
 	 * @param countryTableData
 	 */
 	public void setCountryTable(String countryType,
-															Integer superCountryID,
-															Vector<Vector<Object>> countryTableData)
+															String superCountryID,
+															Vector<Vector<String>> countryTableData)
 	{
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
 		countryDAO.fetchCountryDB(

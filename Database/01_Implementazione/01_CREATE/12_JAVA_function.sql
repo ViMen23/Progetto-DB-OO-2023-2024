@@ -26,8 +26,8 @@
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_admin
 (
-    IN  username_admin  dm_username,
-    IN  password_admin  dm_password
+    IN  username_admin  text,
+    IN  password_admin  text
 )
 RETURNS boolean
 AS
@@ -41,9 +41,9 @@ BEGIN
 		FROM
 			fp_admin
 		WHERE
-			fp_admin.username = username_admin
+			fp_admin.username = username_admin::dm_username
             AND
-            fp_admin.password = password_admin
+            fp_admin.password = password_admin::dm_password
 	);
 
 END;
@@ -231,10 +231,10 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_country
  *
- * IN      : en_team, integer
+ * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (integer, en_country, dm_code, dm_string, integer, dm_string)
+ * RETURNS : TABLE (text, text, text, text, text, text)
  *
  * DESC : Restituisce informazioni riguardanti i paesi.
  *        I paesi in output possono essere cercati per:
@@ -243,17 +243,17 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION search_country
 (
-    IN  type_country        en_team,
-    IN  id_super_country    integer
+    IN  type_country        text,
+    IN  id_super_country    text
 )
 RETURNS TABLE
         (
-            country_id          integer,
-            country_type        en_country,
-            country_code        dm_code,
-            country_name        dm_string,
-            super_country_id    integer,
-            super_country_name  dm_string
+            country_id          text,
+            country_type        text,
+            country_code        text,
+            country_name        text,
+            super_country_id    text,
+            super_country_name  text
         )
 AS
 $$
@@ -263,23 +263,23 @@ BEGIN
 
 	CREATE TEMPORARY TABLE output_table
     (
-        country_id          integer     NOT NULL,
-        country_type        en_country  NOT NULL,
-        country_code        dm_code     NOT NULL,
-        country_name        dm_string   NOT NULL,
-        super_country_id    integer             ,
-        super_country_name  dm_string
+        country_id          text    NOT NULL,
+        country_type        text    NOT NULL,
+        country_code        text    NOT NULL,
+        country_name        text    NOT NULL,
+        super_country_id    text            ,
+        super_country_name  text
     );
 
     INSERT INTO
         output_table
     SELECT
-        inner_country.id,
-        inner_country.type,
-        inner_country.code,
-        inner_country.name,
-        super_country.id,
-        super_country.name
+        inner_country.id::text,
+        inner_country.type::text,
+        inner_country.code::text,
+        inner_country.name::text,
+        super_country.id::text,
+        super_country.name::text
     FROM
         fp_country AS inner_country
         LEFT OUTER JOIN
@@ -295,7 +295,7 @@ BEGIN
         DELETE FROM
             output_table
         WHERE
-            output_table.country_type <> type_country;
+            output_table.country_type <> type_country::en_country;
 
     END IF;
 
@@ -305,7 +305,7 @@ BEGIN
         DELETE FROM
             output_table
         WHERE
-            output_table.super_country_id <> id_super_country;
+            output_table.super_country_id <> id_super_country::integer;
 
     END IF;
 

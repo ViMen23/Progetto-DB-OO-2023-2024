@@ -13,6 +13,6 @@ public interface CountryDAO
 											Map<String, String> comboBoxMap);
 
 	void fetchCountryDB(String countryType,
-											Integer superCountryID,
-											Vector<Vector<Object>> tableData);
+											String superCountryID,
+											Vector<Vector<String>> tableData);
 }
