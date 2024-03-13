@@ -326,7 +326,7 @@ public class ViewPlayerNationalStatistic
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerNationalStatistic.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(
-										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString()),
+										new MenuBarPanel(new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString())),
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 

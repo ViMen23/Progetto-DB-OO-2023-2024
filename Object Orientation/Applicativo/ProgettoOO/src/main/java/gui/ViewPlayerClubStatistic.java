@@ -377,7 +377,7 @@ public class ViewPlayerClubStatistic
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerClubStatistic.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(
-										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString()),
+										new MenuBarPanel(new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString())),
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 

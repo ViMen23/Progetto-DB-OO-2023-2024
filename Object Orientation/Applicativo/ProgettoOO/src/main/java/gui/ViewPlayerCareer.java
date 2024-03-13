@@ -107,7 +107,7 @@ public class ViewPlayerCareer
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCareer.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(
-										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString()),
+										new MenuBarPanel(new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString())),
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 
@@ -134,7 +134,7 @@ public class ViewPlayerCareer
 						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCareer.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(
-										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString()),
+										new MenuBarPanel(new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString())),
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 

@@ -365,12 +365,13 @@ public class AdminSearchCompetition
 
 						competitionTeamType = competitionTableDataMap.get(2).get(tableIndex[0]);
 
-						JPanel panel = new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType));
-
 						AdminSearchCompetition.this.getParent().setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchCompetition.this.getParent());
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType)),
+										GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT
+						);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");
