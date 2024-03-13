@@ -5332,7 +5332,8 @@ BEGIN
             new_goal_scored, 
             new_assist,
             new_yellow_card,
-            new_red_card
+            new_red_card,
+            new_penalty_scored
         );
 
         output_message = output_message || '@';
