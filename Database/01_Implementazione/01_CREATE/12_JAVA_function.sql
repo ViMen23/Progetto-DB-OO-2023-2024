@@ -26,8 +26,8 @@
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION is_admin
 (
-    IN  username_admin  text,
-    IN  password_admin  text
+    IN  username_admin  dm_username,
+    IN  password_admin  dm_password
 )
 RETURNS boolean
 AS
@@ -41,9 +41,9 @@ BEGIN
 		FROM
 			fp_admin
 		WHERE
-			fp_admin.username = username_admin::dm_username
+			fp_admin.username = username_admin
             AND
-            fp_admin.password = password_admin::dm_password
+            fp_admin.password = password_admin
 	);
 
 END;
@@ -231,7 +231,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : search_country
  *
- * IN      : text, text
+ * IN      : en_team, integer
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text)
@@ -243,8 +243,8 @@ LANGUAGE plpgsql;
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION search_country
 (
-    IN  type_country        text,
-    IN  id_super_country    text
+    IN  type_country        en_team,
+    IN  id_super_country    integer
 )
 RETURNS TABLE
         (
