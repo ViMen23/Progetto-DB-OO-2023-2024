@@ -541,6 +541,21 @@ UNIQUE
 --------------------------------------------------------------------------------
 
 /*******************************************************************************
+ * TYPE : CHECK CONSTRAINT - fp_player TABLE
+ * NAME : ck_player
+ *
+ * DESC : Non possono esistere calciatori con un eta' riferita all'anno corrente
+ *        minore dell'eta' minima
+ ******************************************************************************/
+ALTER TABLE	fp_player
+ADD CONSTRAINT ck_player
+CHECK
+(
+	(extract(year from current_date) - extract(year from dob)) >= 14
+);
+--------------------------------------------------------------------------------
+
+/*******************************************************************************
  * TYPE : FOREIGN KEY CONSTRAINT - fp_player TABLE
  * NAME : player_fk_country
  *

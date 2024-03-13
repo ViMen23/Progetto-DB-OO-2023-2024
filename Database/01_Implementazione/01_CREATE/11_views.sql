@@ -16,7 +16,7 @@
  * TYPE : VIEW
  * NAME : vi_all_positions
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutte le posizioni di gioco
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_positions
 AS
@@ -40,7 +40,7 @@ AS
  * TYPE : VIEW
  * NAME : vi_all_team_trophy
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutti i trofei calcistici di tipo squadra
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_team_trophy
 AS
@@ -61,7 +61,7 @@ AS
  * TYPE : VIEW
  * NAME : vi_all_player_trophy
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutti i trofei calcistici di tipo giocatore
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_player_trophy
 AS
@@ -83,7 +83,7 @@ AS
  * TYPE : VIEW
  * NAME : vi_all_team_prize
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutti i premi calcistici di tipo squadra
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_team_prize
 AS
@@ -104,7 +104,7 @@ AS
  * TYPE : VIEW
  * NAME : vi_all_player_prize
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutti i premi calcistici di tipo calciatore
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_player_prize
 AS
@@ -126,7 +126,7 @@ AS
  * TYPE : VIEW
  * NAME : vi_all_tag
  *
- * DESC : TODO
+ * DESC : Mostra informazioni riguardo tutti i tag
  ******************************************************************************/
 CREATE OR REPLACE VIEW vi_all_tag
 AS

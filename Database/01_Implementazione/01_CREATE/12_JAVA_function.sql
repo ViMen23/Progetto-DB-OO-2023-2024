@@ -5427,7 +5427,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : new_player
  *
- * IN      : text, text
+ * IN      : text, text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : text
@@ -5548,7 +5548,7 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : update_player
  *
- * IN      : text
+ * IN      : text, text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
@@ -5635,12 +5635,14 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : team_play
  *
- * IN      : text
+ * IN      : text, text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text)
+ * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo tutti le squadre di calcio
+ *        nelle quali un calciatore ha giocato durante una specifica edizione
+ *        di una competizione calcistica
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION team_play
 (
@@ -5692,7 +5694,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Aggiunge, aggiorna o elimina la data di ritiro di un calciatore.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION set_retired_date
 (
