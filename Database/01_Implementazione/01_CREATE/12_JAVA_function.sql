@@ -41,9 +41,9 @@ BEGIN
 		FROM
 			fp_admin
 		WHERE
-			fp_admin.username = username_admin
+			fp_admin.username = username_admin::dm_username
             AND
-            fp_admin.password = password_admin
+            fp_admin.password = password_admin::dm_password
 	);
 
 END;
@@ -1962,16 +1962,19 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : all_total_statistics
+ * NAME : total_statistic
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce le statistiche totali di calciatori.
+ *        Le statistiche possono essere filtrate per:
+ *         - tipologia di squadra di calcio
+ *         - ruolo del calciatore
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION all_total_statistics
+CREATE OR REPLACE FUNCTION total_statistic
 (
     IN  type_team   text,
     IN  role_player text
@@ -2104,16 +2107,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : competition_edition_statistics
+ * NAME : competition_edition_statistic
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO TODO
+ * DESC : Restituisce le statistiche di gioco riferite ad una specifica
+ *        edizione di una competizione calcistica
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION competition_edition_statistics
+CREATE OR REPLACE FUNCTION competition_edition_statistic
 (
     IN  s_year  text,
     IN  id_comp text
@@ -2179,101 +2183,6 @@ BEGIN
             fp_play.competition_id = id_comp::integer
         ORDER BY
             fp_player.surname;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_nationality
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE (text, text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_nationality
-(
-    IN  id_player text
-)
-RETURNS TABLE
-        (
-            country_id      text,
-            country_name    text
-        )
-AS
-$$
-BEGIN
-
-    RETURN QUERY
-        SELECT
-            fp_country.id::text AS country_id,
-            fp_country.name::text AS country_name
-        FROM
-            fp_nationality
-            JOIN
-            fp_country
-                ON
-                fp_nationality.country_id = fp_country.id
-        WHERE
-            fp_nationality.player_id = id_player::integer
-        ORDER BY
-            fp_country.name;
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : get_position
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE (text, text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_position
-(
-    IN  id_player text
-)
-RETURNS TABLE
-        (
-            position_id     text,
-            position_code   text,
-            position_role   text,
-            position_name   text
-        )
-AS
-$$
-BEGIN
-
-    RETURN QUERY
-        SELECT
-            fp_position.id::text AS position_id,
-            fp_position.role::text AS position_role,
-            fp_position.code::text AS position_code,
-            fp_position.name::text AS position_name
-        FROM
-            fp_player_position
-            JOIN
-            fp_position
-                ON
-                fp_player_position.position_id = fp_position.id
-        WHERE
-            fp_position.player_id = id_player::integer
-        ORDER BY
-            fp_position.role,
-            fp_position.name;
 
 END;
 $$
