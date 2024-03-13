@@ -12,9 +12,6 @@ import java.util.Map;
  */
 public class Trophy
 {
-	public enum AWARD_TYPE {PLAYER, TEAM}
-	private static final Map<String, Trophy> TROPHY_MAP = new LinkedHashMap<>();
-
 	private final String type;
 	private final String role;
 	private final String name;
@@ -75,10 +72,5 @@ public class Trophy
 	public String getCompetitionStartYear()
 	{
 		return competitionStartYear;
-	}
-
-	public Map<String, Trophy> getTrophyMap()
-	{
-		return TROPHY_MAP;
 	}
 }
