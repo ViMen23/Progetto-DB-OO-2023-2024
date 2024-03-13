@@ -5679,7 +5679,7 @@ $$
 BEGIN
 
     RETURN QUERY
-        SELECT
+        SELECT DISTINCT
             fp_competition.id::text AS competition_id,
             fp_competition.name::text AS competition_name
         FROM
@@ -5730,7 +5730,7 @@ $$
 BEGIN
 
     RETURN QUERY
-        SELECT
+        SELECT DISTINCT
             fp_team.id::text AS team_id,
             fp_team.long_name::text AS team_long_name
         FROM
@@ -5870,7 +5870,7 @@ LANGUAGE plpgsql;
  *
  * DESC : TODO
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION set_retired_date
+CREATE OR REPLACE FUNCTION update_retired_date
 (
     IN  id_player   text,
     IN  r_date      text
