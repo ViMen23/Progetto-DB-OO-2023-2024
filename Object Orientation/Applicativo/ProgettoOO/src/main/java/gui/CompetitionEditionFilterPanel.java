@@ -389,28 +389,28 @@ public class CompetitionEditionFilterPanel
 
 							teamID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-							JPanel panel = new MenuBarPanel(new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText()));
-
 							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
 							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
 
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-							panel.setVisible(true);
+							MainFrame.getMainFrameInstance().getContentPane().add(
+											new MenuBarPanel(new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText())),
+											GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+							);
 						} else if (3 == tableIndex[1]) {
 							String playerID;
 
 							playerID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-							JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
-
 							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
 							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
 
-							MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-							panel.setVisible(true);
+							MainFrame.getMainFrameInstance().getContentPane().add(
+											new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)),
+											GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+							);
 						}
-
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("ERRORE: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

@@ -392,19 +392,20 @@ public class MilitancyFilterPanel
 			public void propertyChange(PropertyChangeEvent evt)
 			{
 				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
+					String playerID;
+
+					playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+
 					try {
-						String playerID;
-
-						playerID = playerTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-
-						JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
-
 						MilitancyFilterPanel.this.getParent().setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(MilitancyFilterPanel.this.getParent());
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
+					} catch(Exception ex) {
+						System.err.println("ERRORE: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

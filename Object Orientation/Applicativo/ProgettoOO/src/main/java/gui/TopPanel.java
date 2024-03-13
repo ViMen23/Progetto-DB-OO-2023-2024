@@ -8,8 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 
 public class TopPanel
 				extends JPanel
@@ -29,7 +27,7 @@ public class TopPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
-						"5%[]50%[]5%[]5%",//TODO
+						GuiConfiguration.THREE_CELL_EXT_GAP_5P_INT_GAP_50P_5P_LAYOUT_CONSTRAINT,
 						null
 		);
 

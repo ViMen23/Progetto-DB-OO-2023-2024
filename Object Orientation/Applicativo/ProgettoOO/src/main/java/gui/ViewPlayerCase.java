@@ -118,15 +118,16 @@ public class ViewPlayerCase
 
 						teamID = clubTrophyTableMap.get(clubTableIndex[1]).get(clubTableIndex[0]);
 
+						ViewPlayerCase.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this.getParent());
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString());
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString()),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
 
-						ViewPlayerCase.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
-
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("Errore: " + ex.getMessage());
 					} finally {
 						ctrlClubMouseTable.setText("@null");
 					}
@@ -144,15 +145,15 @@ public class ViewPlayerCase
 
 						teamID = nationalTrophyTableMap.get(nationalTableIndex[1]).get(nationalTableIndex[0]);
 
+						ViewPlayerCase.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this.getParent());
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString());
-
-						ViewPlayerCase.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerCase.this);
-
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString()),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
+					} catch (Exception ex) {
+						System.err.println("Errore: " + ex.getMessage());
 					} finally {
 						ctrlNationalMouseTable.setText("@null");
 					}

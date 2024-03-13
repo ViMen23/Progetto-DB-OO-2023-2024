@@ -177,7 +177,7 @@ public class CreatePlayer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String message = null;
+				String message;
 
 
 				message = Controller.getInstance().newPlayer(
@@ -193,6 +193,18 @@ public class CreatePlayer
 								null,
 								GuiConfiguration.getMessage(message)
 				);
+
+				try {
+					CreatePlayer.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(CreatePlayer.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new CreatePlayer()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

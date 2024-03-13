@@ -97,8 +97,6 @@ public class TopSearchPanel
 					}
 
 					contentPane.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
-
 				} catch (Exception ex) {
 					System.err.println("Errore: " + ex.getMessage());
 				}

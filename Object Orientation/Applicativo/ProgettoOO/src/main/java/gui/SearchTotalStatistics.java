@@ -173,14 +173,12 @@ public class SearchTotalStatistics
 
 						playerID = totalStatisticsTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerID));
-
 						SearchTotalStatistics.this.getParent().setVisible(false);
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTotalStatistics.this.getParent());
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+						MainFrame.getMainFrameInstance().getContentPane().add(new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					} catch (Exception ex) {
+						System.err.println("ERRORE: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

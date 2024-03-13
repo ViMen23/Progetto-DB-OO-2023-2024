@@ -13,7 +13,7 @@ public class TopViewPlayerPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
 
-	public TopViewPlayerPanel(String playerID, JPanel rootPanel)
+	public TopViewPlayerPanel(String playerID, JPanel parentPanel)
 	{
 		MigLayout migLayout;
 		JPanel navigationPanel;
@@ -74,13 +74,17 @@ public class TopViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				TopViewPlayerPanel.this.getParent().getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(TopViewPlayerPanel.this.getParent().getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -88,13 +92,17 @@ public class TopViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerDetailedInfo(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerDetailedInfo(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -102,13 +110,17 @@ public class TopViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerCareer(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerCareer(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -116,13 +128,17 @@ public class TopViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerClubStatistic(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerClubStatistic(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -130,26 +146,34 @@ public class TopViewPlayerPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerNationalStatistic(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerNationalStatistic(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		caseButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewPlayerCase(playerID)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerCase(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 	}

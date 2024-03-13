@@ -138,17 +138,17 @@ public class CreateTeam
 								GuiConfiguration.getMessage(message)
 				);
 
-//				try {
-//					JPanel panel = new CreateTeam();
-//
-//					CreateTeam.this.setVisible(false);
-//					MainFrame.getMainFrameInstance().getContentPane().remove(CreateTeam.this);
-//
-//					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-//					panel.setVisible(true);
-//				} catch (Exception ex) {
-//					System.out.println("ERRORE: " + ex.getMessage());
-//				}
+				try {
+					CreateTeam.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(CreateTeam.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new CreateTeam()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

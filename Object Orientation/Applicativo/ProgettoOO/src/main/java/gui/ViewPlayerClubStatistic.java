@@ -107,14 +107,13 @@ public class ViewPlayerClubStatistic
 			{
 				Container contentPane = MainFrame.getMainFrameInstance().getContentPane();
 				try {
-					Component newComponent;
-
 					ViewPlayerClubStatistic.this.getParent().setVisible(false);
 					contentPane.remove(ViewPlayerClubStatistic.this.getParent());
 
-					newComponent = new MenuBarPanel(new ViewPlayerClubStatistic(playerID));
-					contentPane.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
+					contentPane.add(new MenuBarPanel(
+									new ViewPlayerClubStatistic(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
 
 				} catch (Exception ex) {
 					System.err.println("Errore: " + ex.getMessage());
@@ -374,18 +373,19 @@ public class ViewPlayerClubStatistic
 
 						teamID = playerStatisticTableMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString());
+						ViewPlayerClubStatistic.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerClubStatistic.this.getParent());
 
-						ViewPlayerClubStatistic.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerClubStatistic.this);
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.CLUB.toString()),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("Errore: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}
-
 				}
 			}
 		});

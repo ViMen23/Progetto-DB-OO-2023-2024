@@ -101,16 +101,14 @@ public class ViewPlayerNationalStatistic
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container contentPane = MainFrame.getMainFrameInstance().getContentPane();
 				try {
-					Component newComponent;
-
 					ViewPlayerNationalStatistic.this.getParent().setVisible(false);
-					contentPane.remove(ViewPlayerNationalStatistic.this.getParent());
+					MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerNationalStatistic.this.getParent());
 
-					newComponent = new MenuBarPanel(new ViewPlayerNationalStatistic(playerID));
-					contentPane.add(newComponent, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					newComponent.setVisible(true);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerNationalStatistic(playerID)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
 
 				} catch (Exception ex) {
 					System.err.println("Errore: " + ex.getMessage());
@@ -324,14 +322,16 @@ public class ViewPlayerNationalStatistic
 
 						teamID = playerStatisticTableMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString());
+						ViewPlayerNationalStatistic.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerNationalStatistic.this.getParent());
 
-						ViewPlayerNationalStatistic.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(ViewPlayerNationalStatistic.this);
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString()),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("Errore: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

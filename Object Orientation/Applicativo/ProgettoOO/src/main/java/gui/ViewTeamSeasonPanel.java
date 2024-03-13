@@ -68,6 +68,7 @@ public class ViewTeamSeasonPanel
 		);
 
 		showButton = new JButton(GuiConfiguration.getMessage("show"));
+		showButton.setEnabled(false);
 		showSeasonPanel.add(showButton);
 
 		this.add(showSeasonPanel);
@@ -170,7 +171,7 @@ public class ViewTeamSeasonPanel
 				participationTable.setModel(new TableModel(participationTableData, GuiConfiguration.TEAM_PARTICIPATING_TABLE_COLUMN_NAME));
 				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
 
-				revalidate();
+				ViewTeamSeasonPanel.this.revalidate();
 			}
 		});
 
@@ -183,14 +184,16 @@ public class ViewTeamSeasonPanel
 
 						playerID = squadTableMap.get(tableIndex[1]).get(tableIndex[0]);
 
-						JPanel panel = new ViewPlayerGeneralInfo(playerID);
+						ViewTeamSeasonPanel.this.getParent().setVisible(false);
+						MainFrame.getMainFrameInstance().getContentPane().remove(ViewTeamSeasonPanel.this.getParent());
 
-						ViewTeamSeasonPanel.this.setVisible(false);
-						MainFrame.getMainFrameInstance().getContentPane().remove(ViewTeamSeasonPanel.this);
+						MainFrame.getMainFrameInstance().getContentPane().add(
+										new ViewPlayerGeneralInfo(playerID),
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+						);
 
-						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-						panel.setVisible(true);
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("Errore: " + ex.getMessage());
 					} finally {
 						ctrlMouseSquadTable.setText("@null");
 					}

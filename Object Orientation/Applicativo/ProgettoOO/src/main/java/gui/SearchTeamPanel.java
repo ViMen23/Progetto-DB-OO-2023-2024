@@ -334,7 +334,8 @@ public class SearchTeamPanel
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchTeamPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					} catch (Exception ignored) {
+					} catch (Exception ex) {
+						System.err.println("ERRORE: " + ex.getMessage());
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

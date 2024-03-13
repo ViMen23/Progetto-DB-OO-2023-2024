@@ -87,13 +87,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new SearchCountryPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchCountryPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -118,13 +122,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new SearchConfederationPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchConfederationPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -149,13 +157,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new SearchCompetitionPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchCompetitionPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -180,19 +192,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(
-								new MenuBarPanel(
-												new SearchTeamPanel(
-																Controller.getInstance().isAdminConnected()
-												)
-								), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchTeamPanel(Controller.getInstance().isAdminConnected())),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -217,19 +227,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(
-								new MenuBarPanel(
-												new SearchPlayerPanel(
-																Controller.getInstance().isAdminConnected()
-												)
-								), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchPlayerPanel(Controller.getInstance().isAdminConnected())),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -241,13 +249,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new MilitancyFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new MilitancyFilterPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -272,13 +284,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new SearchTotalStatistics()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new SearchTotalStatistics()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -290,13 +306,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new CompetitionEditionFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new CompetitionEditionFilterPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -309,13 +329,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new StepFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new StepFilterPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/
@@ -328,13 +352,17 @@ public class MenuBarPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				Container container = MainFrame.getMainFrameInstance().getContentPane();
+				try {
+					MenuBarPanel.this.setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(MenuBarPanel.this);
 
-				MenuBarPanel.this.setVisible(false);
-
-				container.remove(MenuBarPanel.this);
-
-				container.add(new MenuBarPanel(new ViewPlayerGeneralInfo(Controller.getInstance().getRandomPlayer())), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewPlayerGeneralInfo(Controller.getInstance().getRandomPlayer())),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

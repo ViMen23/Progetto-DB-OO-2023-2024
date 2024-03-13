@@ -371,7 +371,6 @@ public class AdminSearchCompetition
 						MainFrame.getMainFrameInstance().getContentPane().remove(AdminSearchCompetition.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
-						panel.setVisible(true);
 					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");

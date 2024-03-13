@@ -228,11 +228,15 @@ public class StepFilterPanel
 				} else {
 					panel = new MenuBarPanel(new ViewPlayerGeneralInfo(playerInfoMap.get(ctrlPlayerInfo.getText())));
 				}
-				StepFilterPanel.this.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-				panel.setVisible(true);
+				try {
+					StepFilterPanel.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(StepFilterPanel.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

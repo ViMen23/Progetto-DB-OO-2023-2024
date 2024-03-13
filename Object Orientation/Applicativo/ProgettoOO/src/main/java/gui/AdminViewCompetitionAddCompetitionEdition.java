@@ -89,6 +89,18 @@ public class AdminViewCompetitionAddCompetitionEdition
 				String message = Controller.getInstance().createCompetitionEdition(competitionID, yearMap.get(ctrlYear.getText()));
 
 				System.out.println(message);
+
+				try {
+					AdminViewCompetitionAddCompetitionEdition.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewCompetitionAddCompetitionEdition.this.getParent());
+
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 

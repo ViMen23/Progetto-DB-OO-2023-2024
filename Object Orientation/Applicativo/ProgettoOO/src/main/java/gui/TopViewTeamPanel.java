@@ -13,7 +13,7 @@ public class TopViewTeamPanel
 {
 
 	private final GeneralInfoPanel generalInfoPanel;
-	public TopViewTeamPanel(String teamID, String teamType, JPanel rootPanel)
+	public TopViewTeamPanel(String teamID, String teamType, JPanel parentPanel)
 	{
 
 		MigLayout migLayout;
@@ -58,13 +58,17 @@ public class TopViewTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewTeamSeasonPanel(teamID, teamType)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewTeamSeasonPanel(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -72,14 +76,17 @@ public class TopViewTeamPanel
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				rootPanel.getParent().setVisible(false);
-				MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+				try {
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
-				MainFrame.getMainFrameInstance().getContentPane().add(
-								new MenuBarPanel(new ViewTeamCasePanel(teamID, teamType)),
-								GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-				);
-			}
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new MenuBarPanel(new ViewTeamCasePanel(teamID, teamType)),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}			}
 		});
 	}
 
