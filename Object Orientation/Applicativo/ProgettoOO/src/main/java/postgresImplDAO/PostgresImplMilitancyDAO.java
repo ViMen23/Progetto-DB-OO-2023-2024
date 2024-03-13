@@ -168,7 +168,7 @@ public class PostgresImplMilitancyDAO
 																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_national_career_player(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call national_career(?)}");
 			cs.setString(1, playerID);
 
 			ResultSet rs = cs.executeQuery();
@@ -204,7 +204,7 @@ public class PostgresImplMilitancyDAO
 																 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_club_career_player(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call club_career(?)}");
 			cs.setString(1, playerID);
 
 			ResultSet rs = cs.executeQuery();
