@@ -5339,7 +5339,7 @@ BEGIN
         FROM
             fp_statistic_goalkeeper
         WHERE
-            play_id = id_player::integer;
+            play_id = id_play::integer;
 
 
         IF (goalkeeper) THEN
