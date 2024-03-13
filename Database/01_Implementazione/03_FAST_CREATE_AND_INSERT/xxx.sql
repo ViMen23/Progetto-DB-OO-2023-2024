@@ -28643,6 +28643,50 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : random_player
+ *
+ * IN      : void
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : Restituisce informazioni riguardanti un calciatore scelto casualmente
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION random_player
+(
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    random_id   text;
+
+BEGIN
+
+    
+        SELECT
+            id::text
+        INTO
+            random_id
+        FROM
+            fp_player
+        ORDER BY
+            random();
+        LIMIT
+            1;
+        
+
+        RETURN random_id;
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : filter_player
  *
  * IN      : text, text, text
@@ -32496,7 +32540,7 @@ AS
 $$
 DECLARE
 
-    new_role        en_role;
+    new_role        text;
 
     count_row       integer;
     output_message  text;
@@ -32504,7 +32548,7 @@ DECLARE
 BEGIN
 
     SELECT
-        role
+        role::text
     INTO
         new_role
     FROM
@@ -32531,7 +32575,7 @@ BEGIN
         new_country_id::integer,
         new_foot::en_foot,
         new_position_id::integer,
-        new_role
+        new_role::en_role_mix
 	)
 	ON CONFLICT DO NOTHING;
 
