@@ -5693,7 +5693,7 @@ BEGIN
             AND
             fp_play.start_year = s_year::dm_year
         ORDER BY
-            fp_competition.name;
+            competition_name;
         
 
 END;
@@ -5746,7 +5746,7 @@ BEGIN
             AND
             fp_play.competition_id = id_comp::integer
         ORDER BY
-            fp_team.long_name;
+            team_long_name;
         
 
 END;
