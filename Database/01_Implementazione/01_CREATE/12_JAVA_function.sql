@@ -1625,7 +1625,7 @@ BEGIN
         FROM
             fp_player
         ORDER BY
-            random();
+            random()
         LIMIT
             1;
         
