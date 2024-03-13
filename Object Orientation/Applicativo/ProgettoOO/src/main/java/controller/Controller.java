@@ -1166,6 +1166,17 @@ public class Controller
 
 	/**
 	 * TODO
+	 * @return
+	 */
+	public String getRandomPlayer()
+	{
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.randomPlayerDB();
+	}
+
+
+	/**
+	 * TODO
 	 * @param playerID
 	 * @return
 	 */

@@ -62,4 +62,6 @@ public interface PlayerDAO
 	String setRetiredDate(String playerID,
 												String retiredDate);
 
+	String randomPlayerDB();
+
 }

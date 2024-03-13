@@ -474,4 +474,29 @@ public class PostgresImplPlayerDAO
 		return message;
 	}
 
+
+	@Override
+	public String randomPlayerDB()
+	{
+		String randomID = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call random_player()}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+
+			cs.execute();
+
+			randomID = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return randomID;
+	}
+
 }
