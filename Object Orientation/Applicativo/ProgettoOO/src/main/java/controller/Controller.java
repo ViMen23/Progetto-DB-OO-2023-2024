@@ -1241,6 +1241,66 @@ public class Controller
 						positionID
 		);
 	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param retiredDate
+	 * @return
+	 */
+	public String addRetiredDate(String playerID,
+															 String retiredDate)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.newRetiredDate(
+						playerID,
+						retiredDate
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @return
+	 */
+	public String removeRetiredDate(String playerID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.deleteRetiredDate(
+						playerID
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param retiredDate
+	 * @return
+	 */
+	public String updateRetiredDate(String playerID,
+																	String retiredDate)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.updateRetiredDate(
+						playerID,
+						retiredDate
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 

@@ -109,4 +109,13 @@ public interface PlayerDAO
 											String countryID,
 											String foot,
 											String positionID);
+
+
+	String newRetiredDate(String playerID,
+												String retiredDate);
+
+	String deleteRetiredDate(String playerID);
+
+	String updateRetiredDate(String playerID,
+													 String retiredDate);
 }

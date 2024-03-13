@@ -601,7 +601,122 @@ public class PostgresImplPlayerDAO
 	}
 
 	@Override
-	public String updatePlayer(String playerID, String name, String surname, String dob, String countryID, String foot, String positionID) {
-		return null;
+	public String updatePlayer(String playerID,
+														 String name,
+														 String surname,
+														 String dob,
+														 String countryID,
+														 String foot,
+														 String positionID)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_player(?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, name);
+			cs.setString(4, surname);
+			cs.setString(5, dob);
+			cs.setString(6, countryID);
+			cs.setString(7, foot);
+			cs.setString(8, positionID);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String newRetiredDate(String playerID,
+															 String retiredDate)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_retired_date(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, retiredDate);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deleteRetiredDate(String playerID)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_retired_date(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String updateRetiredDate(String playerID,
+																	String retiredDate)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_retired_date(?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, retiredDate);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }
