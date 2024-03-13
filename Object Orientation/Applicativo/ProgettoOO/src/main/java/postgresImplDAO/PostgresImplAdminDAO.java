@@ -21,13 +21,13 @@ public class PostgresImplAdminDAO
 
 
 	@Override
-	public Boolean isAdminDB(String username,
+	public boolean isAdminDB(String username,
 													 String password)
 	{
-		Boolean valid = false;
+		boolean valid = false;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call is_admin_valid(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{? = call is_admin(?, ?)}");
 			cs.registerOutParameter(1, Types.BOOLEAN);
 			cs.setString(2, username);
 			cs.setString(3, password);

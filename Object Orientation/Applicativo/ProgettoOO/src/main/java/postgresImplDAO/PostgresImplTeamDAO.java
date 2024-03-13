@@ -25,54 +25,14 @@ public class PostgresImplTeamDAO
 		}
 	}
 
-	@Override
-	public void fetchTeamDB(String teamSubLongName,
-													String teamSubShortName,
-													String teamType,
-													String teamContinentID,
-													String teamNationID,
-													List<String> listTeamID,
-													List<String> listTeamType,
-													List<String> listTeamShortName,
-													List<String> listTeamLongName,
-													List<String> listCountryID,
-													List<String> listCountryName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
-			cs.setString(1, teamSubLongName);
-			cs.setString(2, teamSubShortName);
-			cs.setString(3, teamType);
-			cs.setString(4, teamContinentID);
-			cs.setString(5, teamNationID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTeamID.add(rs.getString("team_id"));
-				listTeamType.add(rs.getString("team_type"));
-				listTeamShortName.add(rs.getString("team_short_name"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-				listCountryID.add(rs.getString("country_id"));
-				listCountryName.add(rs.getString("country_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
-	public Integer countTeamDB()
+	public int countTeamDB()
 	{
-		Integer count = 0;
+		int count = 0;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call count_teams()}");
+			CallableStatement cs = this.conn.prepareCall("{? = call count_team()}");
 			cs.registerOutParameter(1, Types.INTEGER);
 
 			cs.execute();
@@ -89,110 +49,7 @@ public class PostgresImplTeamDAO
 		return count;
 	}
 
-	@Override
-	public void fetchTeamDB(String competitionStartYear,
-													String competitionID,
-													List<String> listTeamID,
-													List<String> listTeamLongName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call filter_teams(?, ?)}");
-			cs.setString(1, competitionStartYear);
-			cs.setString(2, competitionID);
 
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTeamID.add(rs.getString("team_id"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchTeamDB(String teamID,
-													Map<String, String> mapTeamInfo)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
-			cs.setString(1, teamID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				mapTeamInfo.put("teamID", rs.getString("team_id"));
-				mapTeamInfo.put("teamType", rs.getString("team_type"));
-				mapTeamInfo.put("teamShortName", rs.getString("team_short_name"));
-				mapTeamInfo.put("teamLongName", rs.getString("team_long_name"));
-				mapTeamInfo.put("countryID", rs.getString("country_id"));
-				mapTeamInfo.put("countryName", rs.getString("country_name"));
-				mapTeamInfo.put("confederationID", rs.getString("conf_id"));
-				mapTeamInfo.put("confederationShortName", rs.getString("conf_short_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchTeamDB(String playerID,
-													List<String> listTeamID,
-													List<String> listTeamLongName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call club_team_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTeamID.add(rs.getString("team_id"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchTeamDB(String teamID,
-													List<String> listTeamYear)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call year_team(?)}");
-			cs.setString(1, teamID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTeamYear.add(rs.getString("start_year"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
 	public String newNationalTeamDB(String countryID)
@@ -301,16 +158,16 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeam(String teamSubLongName,
-												String teamSubShortName,
-												String teamType,
-												String teamContinentID,
-												String teamNationID,
-												Vector<Vector<String>> teamTableData,
-												Map<Integer, Map<Integer, String>> teamTableMap)
+	public void fetchTeamDB(String teamSubLongName,
+													String teamSubShortName,
+													String teamType,
+													String teamContinentID,
+													String teamNationID,
+													Vector<Vector<String>> tableData,
+													Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_team(?, ?, ?, ?, ?)}");
 			cs.setString(1, teamSubLongName);
 			cs.setString(2, teamSubShortName);
 			cs.setString(3, teamType);
@@ -330,11 +187,11 @@ public class PostgresImplTeamDAO
 				vector.add(GuiConfiguration.getMessage(rs.getString("team_type")));
 				vector.add(rs.getString("country_name"));
 
-				teamTableData.add(vector);
+				tableData.add(vector);
 				teamLongNameMap.put(rs.getRow() - 1, rs.getString("team_id"));
 			}
 
-			teamTableMap.put(0, teamLongNameMap);
+			tableMap.put(0, teamLongNameMap);
 
 			rs.close();
 			cs.close();
@@ -346,9 +203,9 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeam(String playerID,
-												Vector<String> teamLongNameVector,
-												Map<String, String> teamLongNameMap)
+	public void fetchTeamDB(String playerID,
+													Vector<String> comboBoxData,
+													Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call club_team_player(?)}");
@@ -357,8 +214,8 @@ public class PostgresImplTeamDAO
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				teamLongNameVector.add(rs.getString("team_long_name"));
-				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
 			}
 
 			rs.close();
@@ -371,10 +228,10 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeam(String teamID,
-												String teamType,
-												Vector<String> teamYearVector,
-												Map<String, String> teamYearMap)
+	public void fetchTeamDB(String teamID,
+													String teamType,
+													Vector<String> comboBoxData,
+													Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call year_team(?)}");
@@ -389,13 +246,13 @@ public class PostgresImplTeamDAO
 					season += "/";
 					season += (Integer.parseInt(rs.getString("start_year")) + 1);
 
-					teamYearVector.add(season);
-					teamYearMap.put(season, rs.getString("start_year"));
+					comboBoxData.add(season);
+					comboBoxMap.put(season, rs.getString("start_year"));
 				}
 			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
 				while (rs.next()) {
-					teamYearVector.add(rs.getString("start_year"));
-					teamYearMap.put(teamYearVector.getLast(), teamYearVector.getLast());
+					comboBoxData.add(rs.getString("start_year"));
+					comboBoxMap.put(comboBoxData.getLast(), comboBoxData.getLast());
 				}
 			}
 
@@ -409,16 +266,16 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeamCombo(String teamSubLongName,
-														 String teamSubShortName,
-														 String teamType,
-														 String teamContinentID,
-														 String teamNationID,
-														 Vector<String> teamLongNameVector,
-														 Map<String, String> teamLongNameMap)
+	public void fetchTeamComboDB(String teamSubLongName,
+															 String teamSubShortName,
+															 String teamType,
+															 String teamContinentID,
+															 String teamNationID,
+															 Vector<String> comboBoxData,
+															 Map<String, String> comboBoxMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call search_teams(?, ?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_team(?, ?, ?, ?, ?)}");
 			cs.setString(1, teamSubLongName);
 			cs.setString(2, teamSubShortName);
 			cs.setString(3, teamType);
@@ -429,8 +286,8 @@ public class PostgresImplTeamDAO
 
 
 			while (rs.next()) {
-				teamLongNameVector.add(rs.getString("team_long_name"));
-				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
 			}
 
 
@@ -444,8 +301,8 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeam(String teamID,
-												Map<String, String> infoTeamMap)
+	public void fetchTeamDB(String teamID,
+													Map<String, String> infoTeamMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call info_team(?)}");
@@ -471,21 +328,21 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeamCompetition(String competitionStartYear,
-																	 String competitionID,
-																	 Vector<String> teamLongNameVector,
-																	 Map<String, String> teamLongNameMap)
+	public void fetchTeamCompetitionDB(String competitionStartYear,
+																		 String competitionID,
+																		 Vector<String> comboBoxData,
+																		 Map<String, String> comboBoxMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call filter_teams(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call filter_team(?, ?)}");
 			cs.setString(1, competitionStartYear);
 			cs.setString(2, competitionID);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				teamLongNameVector.add(rs.getString("team_long_name"));
-				teamLongNameMap.put(teamLongNameVector.getLast(), rs.getString("team_id"));
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
 			}
 
 			rs.close();
@@ -498,9 +355,9 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeamComboBox(String playerID,
-																Vector<String> comboBoxData,
-																Map<String, String> comboBoxMap)
+	public void fetchTeamComboBoxDB(String playerID,
+																	Vector<String> comboBoxData,
+																	Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call player_national_team(?)}");
@@ -523,11 +380,11 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeam(String playerID,
-												String teamType,
-												String startYear,
-												Vector<String> comboBoxData,
-												Map<String, String> comboBoxMap)
+	public void fetchTeamDB(String playerID,
+													String teamType,
+													String startYear,
+													Vector<String> comboBoxData,
+													Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call player_team_year(?, ?, ?)}");
@@ -552,11 +409,11 @@ public class PostgresImplTeamDAO
 	}
 
 	@Override
-	public void fetchTeamPlay(String playerID,
-														String competitionStartYear,
-														String competitionID,
-														Vector<String> comboBoxData,
-														Map<String, String> comboBoxMap)
+	public void fetchTeamPlayDB(String playerID,
+															String competitionStartYear,
+															String competitionID,
+															Vector<String> comboBoxData,
+															Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call team_play(?, ?, ?)}");

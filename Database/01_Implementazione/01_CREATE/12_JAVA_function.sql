@@ -15,16 +15,16 @@
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : is_admin_valid
+ * NAME : is_admin
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : boolean
  *
- * DESC : TODO
+ * DESC : Valuta se l'username e password in ingresso sono di un admin
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION is_admin_valid
+CREATE OR REPLACE FUNCTION is_admin
 (
     IN  username_admin  text,
     IN  password_admin  text
@@ -54,16 +54,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : count_countries
+ * NAME : count_country
  *
  * IN      : void
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Restituisce il numero totale di paesi
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION count_countries
+CREATE OR REPLACE FUNCTION count_country
 (
 )
 RETURNS integer
@@ -89,16 +89,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : count_confederations
+ * NAME : count_confederation
  *
  * IN      : void
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Restituisce il numero totale di confederazioni calcistiche
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION count_confederations
+CREATE OR REPLACE FUNCTION count_confederation
 (
 )
 RETURNS integer
@@ -124,16 +124,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : count_competitions
+ * NAME : count_competition
  *
  * IN      : void
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Restituisce il numero totale di competizioni calcistiche
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION count_competitions
+CREATE OR REPLACE FUNCTION count_competition
 (
 )
 RETURNS integer
@@ -159,16 +159,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : count_teams
+ * NAME : count_team
  *
  * IN      : void
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Restituisce il numero totale di squadre di calcio
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION count_teams
+CREATE OR REPLACE FUNCTION count_team
 (
 )
 RETURNS integer
@@ -194,16 +194,16 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : count_players
+ * NAME : count_player
  *
  * IN      : void
  * INOUT   : void
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Restituisce il numero totale di calciatori
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION count_players
+CREATE OR REPLACE FUNCTION count_player
 (
 )
 RETURNS integer
@@ -229,16 +229,19 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_countries
+ * NAME : search_country
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti i paesi.
+ *        I paesi in output possono essere cercati per:
+ *         - tipologia
+ *         - paese superiore
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_countries
+CREATE OR REPLACE FUNCTION search_country
 (
     IN  type_country        text,
     IN  id_super_country    text
@@ -329,23 +332,21 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_confederations
+ * NAME : search_confederation
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti le confederazioni calcistiche.
+ *        Le confederazioni in output possono essere cercate per:
+ *         - tipologia
+ *         - confederazione superiore
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_confederations
+CREATE OR REPLACE FUNCTION search_confederation
 (
     IN  type_country    text,
     IN  id_super_conf   text
@@ -448,16 +449,23 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : search_competitions
+ * NAME : search_competition
  *
  * IN      : text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti le competizioni calcistiche.
+ *        Le competizioni in output possono essere cercate per:
+ *         - sottostringa del nome
+ *         - tipologia
+ *         - tipologia squadra di calcio che puo' parteciparvi
+ *         - tipologia paese
+ *         - continente di appartenenza
+ *         - nazione di appartenenza
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION search_competitions
+CREATE OR REPLACE FUNCTION search_competition
 (
     IN  sub_name_comp   text,
     IN  type_comp       text,
@@ -616,61 +624,6 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : filter_competitions
- *
- * IN      : text, text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE (text, text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION filter_competitions
-(
-    IN  type_team   text,
-    IN  id_country  text
-)
-RETURNS TABLE
-        (
-            comp_id         text,
-            comp_name       text
-        )
-AS
-$$
-BEGIN
-
-    RETURN QUERY
-        SELECT
-            fp_competition.id::text AS comp_id,
-            fp_competition.name::text AS comp_name
-        FROM
-            fp_competition_edition
-            JOIN
-            fp_competition
-                ON
-                fp_competition_edition.competition_id = fp_competition.id
-            JOIN
-            fp_confederation
-                ON
-                fp_competition.confederation_id = fp_confederation.id
-        WHERE
-            fp_competition.team_type = type_team::en_team
-            AND
-            fp_confederation.country_id = id_country::integer
-        ORDER BY
-            fp_competition.name;
-
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
-
-
-
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : filter_competition_edition
@@ -680,7 +633,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutte le edizioni di una competizione calcistica in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION filter_competition_edition
 (
@@ -720,7 +673,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo le competizioni per squadre club
+ *        o per squadre nazionali giocate da un calciatore
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION competition_player
 (
@@ -762,16 +716,76 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : search_teams
+ * NAME : competition_player_season
+ *
+ * IN      : text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text)
+ *
+ * DESC : Restituisce informazioni riguardo le competizioni per squadre club
+ *        o per squadre nazionali giocate da un calciatore in una stagione
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_player_season
+(
+    IN  id_player   text,
+    IN  type_team   text,
+    IN  s_year      text
+)
+RETURNS TABLE
+        (
+            comp_id     text,
+            comp_name   text
+        )
+AS
+$$
+BEGIN
+
+    
+    RETURN QUERY
+        SELECT DISTINCT
+            fp_competition.id::text AS comp_id,
+            fp_competition.name::text AS comp_name
+        FROM
+            fp_play
+            JOIN
+            fp_competition
+                ON
+                fp_play.competition_id = fp_competition.id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_competition.team_type = type_team::en_team
+            AND
+            fp_play.start_year = s_year::dm_year
+        ORDER BY
+            comp_name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : search_team
  *
  * IN      : text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti le squadre di calcio.
+ *        Le squadre in output possono essere cercate per:
+ *         - sottostringa del nome esteso
+ *         - sottostringa del nome abbreviato
+ *         - tipologia
+ *         - continente di appartenenza
+ *         - nazione di appartenenza
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION search_teams
+CREATE OR REPLACE FUNCTION search_team
 (
     IN  sub_long_name_team  text,
     IN  sub_short_name_team text,
@@ -900,16 +914,19 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : filter_teams
+ * NAME : filter_team
  *
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti le squadre di calcio.
+ *        Le squadre in output devono essere filtrate per:
+ *         - stagione
+ *         - competizione cui partecipano
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION filter_teams
+CREATE OR REPLACE FUNCTION filter_team
 (
     IN  s_year  text,
     IN  id_comp text
@@ -955,12 +972,13 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : club_team_player
  *
- * IN      : text, text
+ * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutte le squadre di calcio di tipo club in cui il
+ *        calciatore in input ha giocato effettivamente
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION club_team_player
 (
@@ -1008,7 +1026,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutti gli anni nei quali una squadra di calcio ha militanze
+ *        di calciatori o partecipazioni a competizioni calcistiche
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION year_team
 (
@@ -1063,7 +1082,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutte le informazioni riguardanti una squadra di calcio
+ *        in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION info_team
 (
@@ -1123,7 +1143,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo le competizioni calcistiche
+ *        cui partecipa una squadra di calcio in una specifica stagione
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION partecipation_team
 (
@@ -1180,7 +1201,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo i trofei calcistici vinti da
+ *        una squadra di calcio in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION trophy_team
 (
@@ -1235,9 +1257,10 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo i premi calcistici vinti da
+ *        una squadra di calcio in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION prize_team
 (
@@ -1278,6 +1301,7 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
 /*******************************************************************************
  * TYPE : FUNCTION
  * NAME : squad_team
@@ -1285,9 +1309,10 @@ LANGUAGE plpgsql;
  * IN      : text, text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo la rosa di una squadra di calcio
+ *        in una specifica stagione calcistica
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION squad_team
 (
@@ -1331,19 +1356,27 @@ LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
 
-
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : search_players
+ * NAME : search_player
  *
  * IN      : text, text, text, text, text, text, text, text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti i calciatori.
+ *        I calciatori in output possono essere cercati per:
+ *         - sottostringa del nome
+ *         - sottostringa del cognome
+ *         - range eta
+ *         - continente di nascita
+ *         - nazione di nascita
+ *         - ruolo
+ *         - posizione principale
+ *         - piede preferito
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION search_players
+CREATE OR REPLACE FUNCTION search_player
 (
     IN  sub_name_player     text,
     IN  sub_surname_player  text,
@@ -1563,16 +1596,19 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : filter_players
+ * NAME : filter_player
  *
  * IN      : text, text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti i calciatori.
+ *        I calciatori in output devono essere filtrati per:
+ *         - anno militanza
+ *         - squadra di calcio in cui militano
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION filter_players
+CREATE OR REPLACE FUNCTION filter_player
 (
     IN  s_year  text,
     IN  id_team text
@@ -1619,16 +1655,18 @@ LANGUAGE plpgsql;
  * TYPE : FUNCTION
  * NAME : season_play
  *
- * IN      : text
+ * IN      : text, text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutte le stagioni calcistiche in cui il calciatore
+ *        ha giocato in una squadra di calcio club o nazionale
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION season_play
 (
-    IN  id_player   text
+    IN  id_player   text,
+    IN  type_team   text
 )
 RETURNS TABLE
         (
@@ -1643,8 +1681,14 @@ BEGIN
             fp_play.start_year::text AS start_year
         FROM
             fp_play
+            JOIN
+            fp_team
+                ON
+                fp_play.team_id = fp_team.id
         WHERE
             fp_play.player_id = id_player::integer
+            AND
+            fp_team.type = type_team::en_team
         ORDER BY
             start_year DESC;
         
@@ -1663,9 +1707,9 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutte le informazioni riferite ad un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION info_player
 (
@@ -1729,9 +1773,10 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo tutte le posizioni di gioco
+ *        associate ad un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION position_player
 (
@@ -1780,9 +1825,10 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text)
+ * RETURNS : TABLE (text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo tutte le nazionalita'
+ *        associate ad un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION nationality_player
 (
@@ -1821,15 +1867,18 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : search_militancy_players
+ * NAME : search_militancy_player
  *
  * IN      : text, text, text
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardanti i calciatori.
+ *        I calciatori in output possono essere cercati per:
+ *         - squadra in cui hanno militato
+ *         - range di militanza
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION search_militancy_players
+CREATE OR REPLACE FUNCTION search_militancy_player
 (
     IN  id_team_militancy   text,
     IN  s_year_militancy    text,
@@ -5646,53 +5695,7 @@ LANGUAGE plpgsql;
 
 
 
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : competition_play
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE (text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION competition_play
-(
-    IN  id_player   text,
-    IN  s_year      text
-)
-RETURNS TABLE
-        (
-            comp_id     text,
-            comp_name   text
-        )
-AS
-$$
-BEGIN
 
-    RETURN QUERY
-        SELECT DISTINCT
-            fp_competition.id::text AS competition_id,
-            fp_competition.name::text AS competition_name
-        FROM
-            fp_play
-            JOIN
-            fp_competition
-                ON
-                fp_play.competition_id = fp_competition.id
-        WHERE
-            fp_play.player_id = id_player::integer
-            AND
-            fp_play.start_year = s_year::dm_year
-        ORDER BY
-            competition_name;
-        
-
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
 
 
 

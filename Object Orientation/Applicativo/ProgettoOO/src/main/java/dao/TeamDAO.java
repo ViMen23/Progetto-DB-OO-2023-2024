@@ -1,39 +1,11 @@
 package dao;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 public interface TeamDAO
 {
-	void fetchTeamDB(String teamSubLongName,
-									 String teamSubShortName,
-									 String teamType,
-									 String teamContinentID,
-									 String teamNationID,
-									 List<String> listTeamID,
-									 List<String> listTeamType,
-									 List<String> listTeamShortName,
-									 List<String> listTeamLongName,
-									 List<String> listCountryID,
-									 List<String> listCountryName);
-
-	Integer countTeamDB();
-
-	void fetchTeamDB(String competitionStartYear,
-									 String competitionID,
-									 List<String> listTeamID,
-									 List<String> listTeamLongName);
-
-	void fetchTeamDB(String teamID,
-									 Map<String, String> mapTeamInfo);
-
-	void fetchTeamDB(String playerID,
-									 List<String> listTeamID,
-									 List<String> listTeamLongName);
-
-	void fetchTeamDB(String teamID,
-									 List<String> listTeamYear);
+	int countTeamDB();
 
 	String newNationalTeamDB(String countryID);
 
@@ -47,54 +19,54 @@ public interface TeamDAO
 
 	String deleteTeamDB(String teamID);
 
-	void fetchTeam(String teamSubLongName,
-								 String teamSubShortName,
-								 String teamType,
-								 String teamContinentID,
-								 String teamNationID,
-								 Vector<Vector<String>> teamTableData,
-								 Map<Integer, Map<Integer, String>> teamTableMap);
+	void fetchTeamDB(String teamSubLongName,
+									 String teamSubShortName,
+									 String teamType,
+									 String teamContinentID,
+									 String teamNationID,
+									 Vector<Vector<String>> tableData,
+									 Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchTeam(String playerID,
-								 Vector<String> teamLongNameVector,
-								 Map<String, String> teamLongNameMap);
+	void fetchTeamDB(String playerID,
+									 Vector<String> comboBoxData,
+									 Map<String, String> comboBoxMap);
 
-	void fetchTeam(String teamID,
-								 String teamType,
-								 Vector<String> teamYearVector,
-								 Map<String, String> teamYearMap);
+	void fetchTeamDB(String teamID,
+									 String teamType,
+									 Vector<String> comboBoxData,
+									 Map<String, String> comboBoxMap);
 
-	void fetchTeamCombo(String teamSubLongName,
-											String teamSubShortName,
-											String teamType,
-											String teamContinentID,
-											String teamNationID,
-											Vector<String> teamLongNameVector,
-											Map<String, String> teamLongNameMap);
+	void fetchTeamComboDB(String teamSubLongName,
+												String teamSubShortName,
+												String teamType,
+												String teamContinentID,
+												String teamNationID,
+												Vector<String> comboBoxData,
+												Map<String, String> comboBoxMap);
 
-	void fetchTeam(String teamID,
-								 Map<String, String> infoTeamMap);
+	void fetchTeamDB(String teamID,
+									 Map<String, String> infoTeamMap);
 
-	void fetchTeamCompetition(String competitionStartYear,
-														String competitionID,
-														Vector<String> teamLongNameVector,
-														Map<String, String> teamLongNameMap);
+	void fetchTeamCompetitionDB(String competitionStartYear,
+															String competitionID,
+															Vector<String> comboBoxData,
+															Map<String, String> comboBoxMap);
 
-	void fetchTeamComboBox(String playerID,
-												 Vector<String> comboBoxData,
-												 Map<String, String> comboBoxMap);
-
-
-	void fetchTeam(String playerID,
-								 String teamType,
-								 String startYear,
-								 Vector<String> comboBoxData,
-								 Map<String, String> comboBoxMap);
+	void fetchTeamComboBoxDB(String playerID,
+													 Vector<String> comboBoxData,
+													 Map<String, String> comboBoxMap);
 
 
-	void fetchTeamPlay(String playerID,
-										 String competitionStartYear,
-										 String competitionID,
-										 Vector<String> comboBoxData,
-										 Map<String, String> comboBoxMap);
+	void fetchTeamDB(String playerID,
+									 String teamType,
+									 String startYear,
+									 Vector<String> comboBoxData,
+									 Map<String, String> comboBoxMap);
+
+
+	void fetchTeamPlayDB(String playerID,
+											 String competitionStartYear,
+											 String competitionID,
+											 Vector<String> comboBoxData,
+											 Map<String, String> comboBoxMap);
 }
