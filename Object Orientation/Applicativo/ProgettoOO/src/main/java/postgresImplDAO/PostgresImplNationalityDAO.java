@@ -21,32 +21,11 @@ public class PostgresImplNationalityDAO
 			e.printStackTrace();
 		}
 	}
+
+
 	@Override
 	public void fetchNationalityDB(String playerID,
-																 List<String> listCountryName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call nationality_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listCountryName.add(rs.getString("country_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchNationality(String playerID,
-															 Vector<Vector<String>> tableData)
+																 Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call nationality_player(?)}");
@@ -71,10 +50,11 @@ public class PostgresImplNationalityDAO
 		}
 	}
 
+
 	@Override
-	public void fetchNationality(String playerID,
-															 Vector<Vector<Object>> tableData,
-															 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchNationalityDB(String playerID,
+																 Vector<Vector<Object>> tableData,
+																 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call nationality_player(?)}");
@@ -107,10 +87,11 @@ public class PostgresImplNationalityDAO
 		}
 	}
 
+
 	@Override
-	public void fetchNationalityComboBox(String playerID,
-																			 Vector<String> comboBoxData,
-																			 Map<String, String> comboBoxMap)
+	public void fetchNationalityComboBoxDB(String playerID,
+																				 Vector<String> comboBoxData,
+																				 Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call nationality_player(?)}");
@@ -132,9 +113,10 @@ public class PostgresImplNationalityDAO
 		}
 	}
 
+
 	@Override
-	public String newNationality(String playerID,
-															 String countryID)
+	public String newNationalityDB(String playerID,
+																 String countryID)
 	{
 		String message = null;
 
@@ -158,9 +140,10 @@ public class PostgresImplNationalityDAO
 		return message;
 	}
 
+
 	@Override
-	public String deleteNationality(String playerID,
-																	String countryID)
+	public String deleteNationalityDB(String playerID,
+																		String countryID)
 	{
 		String message = null;
 

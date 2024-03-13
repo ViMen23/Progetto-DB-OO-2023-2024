@@ -1,28 +1,24 @@
 package dao;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 public interface NationalityDAO
 {
 	void fetchNationalityDB(String playerID,
-													List<String> listCountryName);
+													Vector<Vector<String>> tableData);
 
-	void fetchNationality(String playerID,
-												Vector<Vector<String>> tableData);
+	void fetchNationalityDB(String playerID,
+													Vector<Vector<Object>> tableData,
+													Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchNationality(String playerID,
-												Vector<Vector<Object>> tableData,
-												Map<Integer, Map<Integer, String>> tableMap);
+	void fetchNationalityComboBoxDB(String playerID,
+																	Vector<String> comboBoxData,
+																	Map<String, String> comboBoxMap);
 
-	void fetchNationalityComboBox(String playerID,
-																Vector<String> comboBoxData,
-																Map<String, String> comboBoxMap);
+	String newNationalityDB(String playerID,
+													String countryID);
 
-	String newNationality(String playerID,
-												String countryID);
-
-	String deleteNationality(String playerID,
-													 String countryID);
+	String deleteNationalityDB(String playerID,
+														 String countryID);
 }

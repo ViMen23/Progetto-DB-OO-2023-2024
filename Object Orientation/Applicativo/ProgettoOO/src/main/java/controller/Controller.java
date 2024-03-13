@@ -2290,7 +2290,7 @@ public class Controller
 																	Vector<Vector<String>> tableData)
 	{
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		nationalityDAO.fetchNationality(
+		nationalityDAO.fetchNationalityDB(
 						playerID,
 						tableData
 		);
@@ -2308,7 +2308,7 @@ public class Controller
 																	Map<Integer, Map<Integer, String>> tableMap)
 	{
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		nationalityDAO.fetchNationality(
+		nationalityDAO.fetchNationalityDB(
 						playerID,
 						tableData,
 						tableMap
@@ -2327,7 +2327,7 @@ public class Controller
 																		 Map<String, String> comboBoxMap)
 	{
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		nationalityDAO.fetchNationalityComboBox(
+		nationalityDAO.fetchNationalityComboBoxDB(
 						playerID,
 						comboBoxData,
 						comboBoxMap
@@ -2349,7 +2349,7 @@ public class Controller
 		}
 
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		return nationalityDAO.newNationality(
+		return nationalityDAO.newNationalityDB(
 						playerID,
 						countryID
 		);
@@ -2370,7 +2370,7 @@ public class Controller
 		}
 
 		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		return nationalityDAO.deleteNationality(
+		return nationalityDAO.deleteNationalityDB(
 						playerID,
 						countryID
 		);
