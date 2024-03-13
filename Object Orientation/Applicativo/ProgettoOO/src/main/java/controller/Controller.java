@@ -1184,7 +1184,6 @@ public class Controller
 	 * @param countryID
 	 * @param foot
 	 * @param positionID
-	 * @param role
 	 * @return
 	 */
 	public String newPlayer(String name,
@@ -1192,8 +1191,7 @@ public class Controller
 													String dob,
 													String countryID,
 													String foot,
-													String positionID,
-													String role)
+													String positionID)
 	{
 		if (null == adminConnected) {
 			return "errorNoAdmin";
@@ -1206,8 +1204,7 @@ public class Controller
 						dob,
 						countryID,
 						foot,
-						positionID,
-						role
+						positionID
 		);
 	}
 

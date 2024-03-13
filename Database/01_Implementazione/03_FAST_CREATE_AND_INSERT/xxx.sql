@@ -32489,18 +32489,28 @@ CREATE OR REPLACE FUNCTION new_player
     IN  new_dob         text,
     IN  new_country_id  text,
     IN  new_foot        text,
-    IN  new_position_id text,
-    IN  new_role        text
+    IN  new_position_id text
 )
 RETURNS text
 AS
 $$
 DECLARE
 
+    new_role        en_role;
+
     count_row       integer;
     output_message  text;
 
 BEGIN
+
+    SELECT
+        role
+    INTO
+        new_role
+    FROM
+        fp_position
+    WHERE
+        id = new_position_id::integer;
 
 	INSERT INTO
 		fp_player
@@ -32521,7 +32531,7 @@ BEGIN
         new_country_id::integer,
         new_foot::en_foot,
         new_position_id::integer,
-        new_role::en_role
+        new_role
 	)
 	ON CONFLICT DO NOTHING;
 

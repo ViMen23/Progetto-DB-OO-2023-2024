@@ -351,13 +351,12 @@ public class PostgresImplPlayerDAO
 													String dob,
 													String countryID,
 													String foot,
-													String positionID,
-													String role)
+													String positionID)
 	{
 		String message = null;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call new_player(?, ?, ?, ?, ?, ?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{? = call new_player(?, ?, ?, ?, ?, ?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, name);
 			cs.setString(3, surname);
@@ -365,7 +364,6 @@ public class PostgresImplPlayerDAO
 			cs.setString(5, countryID);
 			cs.setString(6, foot);
 			cs.setString(7, positionID);
-			cs.setString(8, role);
 
 			cs.execute();
 

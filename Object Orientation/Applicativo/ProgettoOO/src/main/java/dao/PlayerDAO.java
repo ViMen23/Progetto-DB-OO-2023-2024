@@ -46,8 +46,7 @@ public interface PlayerDAO
 									 String dob,
 									 String countryID,
 									 String foot,
-									 String positionID,
-									 String role);
+									 String positionID);
 
 	String deletePlayer(String playerID);
 
