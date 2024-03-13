@@ -550,4 +550,33 @@ public class PostgresImplTeamDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchTeamPlay(String playerID,
+														String competitionStartYear,
+														String competitionID,
+														Vector<String> comboBoxData,
+														Map<String, String> comboBoxMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call team_play(?, ?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, competitionStartYear);
+			cs.setString(3, competitionID);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				comboBoxData.add(rs.getString("team_long_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("team_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

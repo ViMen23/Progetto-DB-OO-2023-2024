@@ -91,4 +91,14 @@ public interface PlayerDAO
 											 Map<String, String> seasonMap);
 
 	String fetchPlayerYear(String playerID);
+
+	String newPlayer(String name,
+									 String surname,
+									 String dob,
+									 String countryID,
+									 String foot,
+									 String positionID,
+									 String role);
+
+	String deletePlayer(String playerID);
 }

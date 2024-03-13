@@ -90,4 +90,11 @@ public interface TeamDAO
 								 String startYear,
 								 Vector<String> comboBoxData,
 								 Map<String, String> comboBoxMap);
+
+
+	void fetchTeamPlay(String playerID,
+										 String competitionStartYear,
+										 String competitionID,
+										 Vector<String> comboBoxData,
+										 Map<String, String> comboBoxMap);
 }

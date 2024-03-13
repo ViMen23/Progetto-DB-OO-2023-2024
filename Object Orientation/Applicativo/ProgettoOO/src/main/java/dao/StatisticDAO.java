@@ -77,4 +77,21 @@ public interface StatisticDAO
 													 String playerRole,
 													 Vector<Vector<String>> statisticTableData,
 													 Map<Integer, Map<Integer, String>> statisticTableDataMap);
+
+	void fetchStatisticAdmin(String playerID,
+													 String teamID,
+													 String competitionID,
+													 String competitionStartYear,
+													 Vector<Vector<String>> tableData,
+													 Map<Integer, Map<Integer, String>> tableMap);
+
+	String updateStatistic(String playID,
+												 String match,
+												 String goalScored,
+												 String assist,
+												 String yellowCard,
+												 String redCard,
+												 String penaltyScored,
+												 String goalConceded,
+												 String penaltySaved);
 }

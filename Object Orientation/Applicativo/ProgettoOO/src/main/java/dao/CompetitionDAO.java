@@ -87,4 +87,9 @@ public interface CompetitionDAO
 	void fetchCompetition(String competitionID,
 												Map<String, String> infoMap);
 
+	void fetchCompetitionPlay(String playerID,
+														String startYear,
+														Vector<String> comboBoxData,
+														Map<String, String> comboBoxMap);
+
 }

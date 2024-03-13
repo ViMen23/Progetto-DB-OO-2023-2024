@@ -5,10 +5,7 @@ import database.DatabaseConnection;
 import gui.GuiConfiguration;
 import model.Team;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -377,5 +374,94 @@ public class PostgresImplStatisticDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public void fetchStatisticAdmin(String playerID,
+																	String teamID,
+																	String competitionID,
+																	String competitionStartYear,
+																	Vector<Vector<String>> tableData,
+																	Map<Integer, Map<Integer, String>> tableMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call get_statistic_player_admin(?, ?, ?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, teamID);
+			cs.setString(3, competitionID);
+			cs.setString(4, competitionStartYear);
+
+			ResultSet rs = cs.executeQuery();
+
+			Map<Integer, String> playMap = new HashMap<>();
+			int row = 0;
+
+			while (rs.next()) {
+				Vector<String> vector = new Vector<>();
+
+				vector.add(rs.getString("match"));
+				vector.add(rs.getString("goal_scored"));
+				vector.add(rs.getString("penalty_scored"));
+				vector.add(rs.getString("assist"));
+				vector.add(rs.getString("yellow_card"));
+				vector.add(rs.getString("red_card"));
+				vector.add(rs.getString("goal_conceded"));
+				vector.add(rs.getString("penalty_saved"));
+
+				tableData.add(vector);
+				playMap.put(row, rs.getString("play_id"));
+				++row;
+			}
+
+			tableMap.put(0, playMap);
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
+
+	@Override
+	public String updateStatistic(String playID,
+																String match,
+																String goalScored,
+																String assist,
+																String yellowCard,
+																String redCard,
+																String penaltyScored,
+																String goalConceded,
+																String penaltySaved)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_statistic(?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playID);
+			cs.setString(3, match);
+			cs.setString(4, goalScored);
+			cs.setString(5, assist);
+			cs.setString(6, yellowCard);
+			cs.setString(7, redCard);
+			cs.setString(8, penaltyScored);
+			cs.setString(9, goalConceded);
+			cs.setString(10, penaltySaved);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

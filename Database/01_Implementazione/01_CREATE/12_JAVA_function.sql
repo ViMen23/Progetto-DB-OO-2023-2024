@@ -5373,3 +5373,296 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : get_statistic_player_admin
+ *
+ * IN      : text, text, text, text, text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION get_statistic_player_admin
+(
+    IN  id_player   text,
+    IN  id_team     text,
+    IN  id_comp     text,
+    IN  s_year      text,
+)
+RETURNS TABLE
+        (
+            play_id         text
+            match           text,
+            goal_scored     text,
+            penalty_scored  text,
+            assist          text,
+            yellow_card     text,
+            red_card        text,
+            goal_conceded   text,
+            penalty_saved   text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_play.id::text AS play_id,
+            fp_play.match::text AS match,
+            fp_statistic_general.goal_scored::text AS goal_scored,
+            fp_statistic_general.penalty_scored::text AS penalty_scored,
+            fp_statistic_general.assist::text AS assist,
+            fp_statistic_general.yellow_card::text AS yellow_card,
+            fp_statistic_general.red_card::text AS red_card,
+            fp_statistic_goalkeeper.goal_conceded::text AS goal_conceded,
+            fp_statistic_goalkeeper.penalty_saved::text AS penalty_saved
+        FROM
+            fp_play
+            JOIN
+            fp_statistic_general
+                ON
+                fp_play.id = fp_statistic_general.play_id
+            LEFT OUTER JOIN
+            fp_statistic_goalkeeper
+                ON
+                fp_play.id = fp_statistic_goalkeeper.play_id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_play.start_year = s_year::dm_year
+            AND
+            fp_play.competition_id = id_comp::integer
+            AND
+            fp_play.team_id = id_team::integer;
+
+        
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_player
+ *
+ * IN      : text, text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_player
+(
+    IN  new_name        text,
+    IN  new_surname     text,
+    IN  new_dob         text,
+    IN  new_country_id  text,
+    IN  new_foot        text,
+    IN  new_position_id text,
+    IN  new_role        text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	INSERT INTO
+		fp_player
+		(
+            name,
+            surname,
+            dob,
+            country_id,
+            foot,
+            position_id,
+            role
+		)
+	VALUES
+	(
+        new_name::dm_string
+        new_surname::dm_string
+        new_dob::dm_date
+        new_country_id::integer
+        new_foot::en_foot
+        new_position_id::integer
+        new_role::en_role
+	)
+	ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertPlayer';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_player
+(
+    IN  id_player   text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	DELETE FROM
+		fp_player
+	WHERE
+        id = id_player::integer;	
+	
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageDeletePlayer';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : competition_play
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION competition_play
+(
+    IN  id_player   text,
+    IN  s_year      text
+)
+RETURNS TABLE
+        (
+            competition_id      text,
+            competition_name    text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_competition.id::text AS competition_id,
+            fp_competition.name::text AS competition_name,
+        FROM
+            fp_play
+            JOIN
+            fp_competition
+                ON
+                fp_play.competition_id = fp_competition.id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_play.start_year = s_year::dm_year
+        ORDER BY
+            fp_competition.name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : team_play
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : TABLE (text)
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION team_play
+(
+    IN  id_player   text,
+    IN  s_year      text,
+    IN  id_comp     text
+)
+RETURNS TABLE
+        (
+            team_id         text,
+            team_long_name  text
+        )
+AS
+$$
+BEGIN
+
+    RETURN QUERY
+        SELECT
+            fp_team.id::text AS team_id,
+            fp_team.long_name::text AS team_long_name,
+        FROM
+            fp_play
+            JOIN
+            fp_team
+                ON
+                fp_play.team_id = fp_team.id
+        WHERE
+            fp_play.player_id = id_player::integer
+            AND
+            fp_play.start_year = s_year::dm_year
+            AND
+            fp_play.competition_id = id_comp::integer
+        ORDER BY
+            fp_team.long_name;
+        
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------

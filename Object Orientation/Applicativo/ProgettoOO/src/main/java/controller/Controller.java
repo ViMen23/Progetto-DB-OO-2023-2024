@@ -447,6 +447,20 @@ public class Controller
 		);
 	}
 
+	public void setCompetitionPlayComboBox(String playerID,
+																				 String startYear,
+																				 Vector<String> comboBoxData,
+																				 Map<String, String> comboBoxMap)
+	{
+		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
+		competitionDAO.fetchCompetitionPlay(
+						playerID,
+						startYear,
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
 
 	/**
 	 * TODO
@@ -685,6 +699,24 @@ public class Controller
 						playerID,
 						teamType,
 						startYear,
+						comboBoxData,
+						comboBoxMap
+		);
+	}
+
+
+
+	public void setTeamPlayComboBox(String playerID,
+																	String competitionStartYear,
+																	String competitionID,
+																	Vector<String> comboBoxData,
+																	Map<String, String> comboBoxMap)
+	{
+		TeamDAO teamDAO = new PostgresImplTeamDAO();
+		teamDAO.fetchTeamPlay(
+						playerID,
+						competitionStartYear,
+						competitionID,
 						comboBoxData,
 						comboBoxMap
 		);
@@ -1111,10 +1143,62 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @return
+	 */
 	public String setPlayerYear(String playerID)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		return playerDAO.fetchPlayerYear(playerID);
+	}
+
+
+	/**
+	 * TODO
+	 * @param name
+	 * @param surname
+	 * @param dob
+	 * @param countryID
+	 * @param foot
+	 * @param positionID
+	 * @param role
+	 * @return
+	 */
+	public String newPlayer(String name,
+													String surname,
+													String dob,
+													String countryID,
+													String foot,
+													String positionID,
+													String role)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.newPlayer(
+						name,
+						surname,
+						dob,
+						countryID,
+						foot,
+						positionID,
+						role
+		);
+	}
+
+
+	public String deletePlayer(String playerID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.deletePlayer(playerID);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 
@@ -1300,6 +1384,75 @@ public class Controller
 		);
 	}
 
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param teamID
+	 * @param competitionID
+	 * @param competitionStartYear
+	 * @param tableData
+	 * @param tableMap
+	 */
+	public void setStatisticTableAdmin(String playerID,
+																		 String teamID,
+																		 String competitionID,
+																		 String competitionStartYear,
+																		 Vector<Vector<String>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
+	{
+		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
+		statisticDAO.fetchStatisticAdmin(
+						playerID,
+						teamID,
+						competitionID,
+						competitionStartYear,
+						tableData,
+						tableMap
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playID
+	 * @param match
+	 * @param goalScored
+	 * @param assist
+	 * @param yellowCard
+	 * @param redCard
+	 * @param penaltyScored
+	 * @param goalConceded
+	 * @param penaltySaved
+	 * @return
+	 */
+	public String updateStatistic(String playID,
+																String match,
+																String goalScored,
+																String assist,
+																String yellowCard,
+																String redCard,
+																String penaltyScored,
+																String goalConceded,
+																String penaltySaved)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
+		return statisticDAO.updateStatistic(
+						playID,
+						match,
+						goalScored,
+						assist,
+						yellowCard,
+						redCard,
+						penaltyScored,
+						goalConceded,
+						penaltySaved
+		);
+	}
 	/*------------------------------------------------------------------------------------------------------*/
 
 

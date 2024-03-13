@@ -506,4 +506,31 @@ public class PostgresImplCompetitionDAO
 			System.out.println("Errore: " + e.getMessage());
 		}
 	}
+
+	@Override
+	public void fetchCompetitionPlay(String playerID,
+																	 String startYear,
+																	 Vector<String> comboBoxData,
+																	 Map<String, String> comboBoxMap)
+	{
+		try {
+			CallableStatement cs = this.conn.prepareCall("{call competition_play(?, ?)}");
+			cs.setString(1, playerID);
+			cs.setString(2, startYear);
+
+			ResultSet rs = cs.executeQuery();
+
+			while (rs.next()) {
+				comboBoxData.add(rs.getString("comp_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("comp_id"));
+			}
+
+			rs.close();
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+	}
 }

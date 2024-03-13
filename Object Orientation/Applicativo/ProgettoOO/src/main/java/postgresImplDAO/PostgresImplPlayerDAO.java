@@ -537,4 +537,66 @@ public class PostgresImplPlayerDAO
 
 		return playerYear;
 	}
+
+	@Override
+	public String newPlayer(String name,
+													String surname,
+													String dob,
+													String countryID,
+													String foot,
+													String positionID,
+													String role)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call new_player(?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, name);
+			cs.setString(3, surname);
+			cs.setString(4, dob);
+			cs.setString(5, countryID);
+			cs.setString(6, foot);
+			cs.setString(7, positionID);
+			cs.setString(8, role);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
+
+	@Override
+	public String deletePlayer(String playerID)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_player(?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
+	}
 }
