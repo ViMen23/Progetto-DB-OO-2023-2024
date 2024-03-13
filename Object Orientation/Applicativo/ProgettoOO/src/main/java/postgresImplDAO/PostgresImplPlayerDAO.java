@@ -61,13 +61,6 @@ public class PostgresImplPlayerDAO
 			while (rs.next()) {
 				String role = "";
 
-				infoMap.put(GuiConfiguration.getMessage("name").toUpperCase(), rs.getString("player_name"));
-				infoMap.put(GuiConfiguration.getMessage("surname").toUpperCase(), rs.getString("player_surname"));
-				infoMap.put(GuiConfiguration.getMessage("dob").toUpperCase(), rs.getString("player_dob"));
-				infoMap.put(GuiConfiguration.getMessage("bornCountry"), rs.getString("country_name"));
-				infoMap.put(GuiConfiguration.getMessage("foot").toUpperCase(), GuiConfiguration.getMessage(rs.getString("player_foot")));
-				infoMap.put(GuiConfiguration.getMessage("mainPosition"), GuiConfiguration.getMessage(rs.getString("position_name")));
-
 				String[] keyPart = rs.getString("player_role").split("_");
 
 				for (String part : keyPart) {
@@ -77,14 +70,14 @@ public class PostgresImplPlayerDAO
 
 				role = role.substring(1);
 
+				infoMap.put(GuiConfiguration.getMessage("name").toUpperCase(), rs.getString("player_name"));
+				infoMap.put(GuiConfiguration.getMessage("surname").toUpperCase(), rs.getString("player_surname"));
+				infoMap.put(GuiConfiguration.getMessage("dob").toUpperCase(), rs.getString("player_dob"));
+				infoMap.put(GuiConfiguration.getMessage("bornCountry"), rs.getString("country_name"));
+				infoMap.put(GuiConfiguration.getMessage("foot").toUpperCase(), GuiConfiguration.getMessage(rs.getString("player_foot")));
+				infoMap.put(GuiConfiguration.getMessage("mainPosition"), GuiConfiguration.getMessage(rs.getString("position_name")));
 				infoMap.put(GuiConfiguration.getMessage("role"), role);
-
-				if (null == rs.getString("player_retired_date")) {
-					infoMap.put(GuiConfiguration.getMessage("retiredDate").toUpperCase(), "");
-				} else {
-					infoMap.put(GuiConfiguration.getMessage("retiredDate").toUpperCase(), rs.getString("player_retired_date"));
-				}
-
+				infoMap.put(GuiConfiguration.getMessage("retiredDate").toUpperCase(), rs.getString("player_retired_date"));
 			}
 
 			rs.close();

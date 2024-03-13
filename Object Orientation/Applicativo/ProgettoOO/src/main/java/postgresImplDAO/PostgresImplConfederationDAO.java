@@ -115,7 +115,7 @@ public class PostgresImplConfederationDAO
 																	 Map<String, String> confederationMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_team_confederation(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call team_confederation(?)}");
 			cs.setString(1, teamID);
 
 			ResultSet rs = cs.executeQuery();

@@ -153,7 +153,7 @@ public class PostgresImplPartecipationDAO
 																		 Map<String, String> partecipationYearMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call partecipation_year_team(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call partecipation_year(?)}");
 			cs.setString(1, teamID);
 
 			ResultSet rs = cs.executeQuery();

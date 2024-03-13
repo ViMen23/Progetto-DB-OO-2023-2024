@@ -202,7 +202,7 @@ public class PostgresImplCompetitionDAO
 																							Map<String, String> comboBoxMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_competition_confederation(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call competition_confederation(?, ?)}");
 			cs.setString(1, confederationID);
 			cs.setString(2, teamType);
 
@@ -285,7 +285,7 @@ public class PostgresImplCompetitionDAO
 																						 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call competition_year(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call filter_competition_edition(?)}");
 			cs.setString(1, competitionID);
 
 			ResultSet rs = cs.executeQuery();

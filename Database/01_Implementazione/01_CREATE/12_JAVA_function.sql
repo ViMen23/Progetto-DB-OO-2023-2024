@@ -2310,9 +2310,10 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restutuisce informazioni riguardo gli attributi di portiere
+ *        di un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_goalkeeping
 (
@@ -2371,9 +2372,10 @@ LANGUAGE plpgsql;
  * IN      : text
  * INOUT   : void
  * OUT     : void
- * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text)
+ * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restutuisce informazioni riguardo gli attributi mentali
+ *        di un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_mental
 (
@@ -2436,7 +2438,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restutuisce informazioni riguardo gli attributi fisici
+ *        di un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_physical
 (
@@ -2489,7 +2492,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restutuisce informazioni riguardo gli attributi tecnici
+ *        di un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_attribute_technical
 (
@@ -2552,7 +2556,7 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo i tag associati ad un calciatore in input
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_tag_player
 (
@@ -2590,16 +2594,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_club_career_player
+ * NAME : club_career
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo la carriera nelle squadre di calcio
+ *        di tipo club di un calciatore in input
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_club_career_player
+CREATE OR REPLACE FUNCTION club_career
 (
     IN  id_player text
 )
@@ -2650,16 +2655,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_national_career_player
+ * NAME : national_career
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE (text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo la carriera nelle squadre di calcio
+ *        di tipo nazionle di un calciatore in input
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_national_career_player
+CREATE OR REPLACE FUNCTION national_career
 (
     IN  id_player text
 )
@@ -2706,7 +2712,12 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : TABLE (text, text, text, text, text, text, text, text, text, text, text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo le statistiche di gioco riferite
+ *        ad un calciatore in input.
+ *        Le statistiche possono essere filtrate per:
+ *         - tipo di squadra
+ *         - competizione calcistica
+ *         - intervallo di stagioni calcistiche
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION get_statistic_player
 (
@@ -2877,16 +2888,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_team_confederation
+ * NAME : team_confederation
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE(text, text, text)
  *
- * DESC : TODO
+ * DESC : Restitiusce le confederazioni calcistiche di cui una squadra di calcio
+ *        e' mebro direttamente o indirettamente
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_team_confederation
+CREATE OR REPLACE FUNCTION team_confederation
 (
     IN  team_id text
 )
@@ -2939,7 +2951,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Crea una nuova squadra di calcio di tipo nazionale a partire da un paese.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_national_team
 (
@@ -3013,7 +3026,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Crea una nuova squadra di calcio di tipo club dato un nome esteso
+ *        ed un nome abbreviato.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_club_team
 (
@@ -3073,7 +3088,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Aggiorna il nome esteso e/o il nome abbreviato di una squadra di calcio
+ *        di tipo club.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION update_club_team
 (
@@ -3148,7 +3165,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : integer
  *
- * DESC : TODO
+ * DESC : Elimina una squadra di calcio.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_team
 (
@@ -3224,7 +3242,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Aggiunge una partecipazione di una squadra di calcio ad una edizione
+ *        di una competizione calcistica.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_partecipation
 (
@@ -3282,7 +3302,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Elimina una partecipazione di una squadra di calcio ad una edizione
+ *        di una competizione calcistica.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_partecipation
 (
@@ -3335,7 +3357,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Aggiunge un trofeo calcistico associato ad una edizione di una
+ *        competizione calcistica ad una squadra di calcio.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_trophy_team
 (
@@ -3396,7 +3420,9 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Elimina un trofeo calcistico associato ad una edizione di una
+ *        competizione calcistica ad una squadra di calcio.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_trophy_team
 (
@@ -3452,7 +3478,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Aggiunge un premio calcistico ad una squadra di calcio.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION new_prize_team
 (
@@ -3510,7 +3537,8 @@ LANGUAGE plpgsql;
  * OUT     : void
  * RETURNS : text
  *
- * DESC : TODO
+ * DESC : Elimina un premio calcistico ad una squadra di calcio.
+ *        Restituisce un messaggio di errore o buona riuscita
  ******************************************************************************/
 CREATE OR REPLACE FUNCTION delete_prize_team
 (
@@ -3556,16 +3584,17 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : get_competition_confederation
+ * NAME : competition_confederation
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE(text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce informazioni riguardo le competizioni appartenenti
+ *        ad una confederazione calcistica e per una certa tipologia di squadra di calcio 
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION get_competition_confederation
+CREATE OR REPLACE FUNCTION competition_confederation
 (
     IN  id_conf     text,
     IN  type_team   text
@@ -3600,16 +3629,18 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
- * NAME : partecipation_year_team
+ * NAME : partecipation_year
  *
  * IN      : text
  * INOUT   : void
  * OUT     : void
  * RETURNS : TABLE(text, text, text)
  *
- * DESC : TODO
+ * DESC : Restituisce tutti le stagioni calcistiche nelle quali una squadra
+ *        di calcio ha una partecipazione ad una edizione di una competizione
+ *        calcistica
  ******************************************************************************/
-CREATE OR REPLACE FUNCTION partecipation_year_team
+CREATE OR REPLACE FUNCTION partecipation_year
 (
     IN  id_team     text
 )
@@ -3635,43 +3666,6 @@ $$
 LANGUAGE plpgsql;
 --------------------------------------------------------------------------------
 
-
-/*******************************************************************************
- * TYPE : FUNCTION
- * NAME : competition_year
- *
- * IN      : text
- * INOUT   : void
- * OUT     : void
- * RETURNS : TABLE(text, text, text)
- *
- * DESC : TODO
- ******************************************************************************/
-CREATE OR REPLACE FUNCTION competition_year
-(
-    IN  id_comp text
-)
-RETURNS TABLE
-        (
-            start_year  text
-        )
-AS
-$$
-BEGIN
-
-    RETURN QUERY
-        SELECT
-            fp_competition_edition.start_year::text AS start_year
-        FROM
-            fp_competition_edition
-        WHERE 
-            fp_competition_edition.competition_id = id_comp::integer
-        ORDER BY
-            fp_competition_edition.start_year DESC;
-END;
-$$
-LANGUAGE plpgsql;
---------------------------------------------------------------------------------
 
 
 
