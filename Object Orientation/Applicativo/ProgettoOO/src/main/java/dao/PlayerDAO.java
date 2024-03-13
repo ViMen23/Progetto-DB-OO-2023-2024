@@ -101,4 +101,12 @@ public interface PlayerDAO
 									 String role);
 
 	String deletePlayer(String playerID);
+
+	String updatePlayer(String playerID,
+											String name,
+											String surname,
+											String dob,
+											String countryID,
+											String foot,
+											String positionID);
 }

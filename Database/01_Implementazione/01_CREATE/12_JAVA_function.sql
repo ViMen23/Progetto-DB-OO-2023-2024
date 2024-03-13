@@ -5568,6 +5568,93 @@ LANGUAGE plpgsql;
 
 /*******************************************************************************
  * TYPE : FUNCTION
+ * NAME : update_player
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : integer
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION update_player
+(
+    IN  id_player       text,
+    IN  new_name        text,
+    IN  new_surname     text,
+    IN  new_dob         text,
+    IN  new_country_id  text,
+    IN  new_foot        text,
+    IN  new_position_id text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    conflict        boolean;
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+	SELECT
+        count(*) >= 1
+    INTO
+        conflict
+    FROM
+        fp_player
+    WHERE
+        fp_player.name = new_name::dm_string
+        AND
+        fp_player.surname = new_surname::dm_string
+        AND
+        fp_player.dob = new_dob::dm_date
+        AND
+        fp_player.country_id = new_country_id::integer
+        AND
+        fp_player.id <> id_player::integer;
+
+
+    IF (conflict) THEN
+        output_message = 'errorMessageUpdatePlayerConflict';
+        RETURN output_message;
+    END IF;
+
+
+	UPDATE
+		fp_player
+	SET
+        name = new_name::dm_string,
+        surname = new_surname::dm_string,
+        dob = new_dob::dm_date,
+        country_id = new_country_id::integer,
+        foot = new_foot::en_foot,
+        position_id = new_position_id::integer
+	WHERE
+        id = id_player::integer;
+
+
+    GET DIAGNOSTICS count_row = row_count;
+	
+
+	IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdatePlayer';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
  * NAME : competition_play
  *
  * IN      : text
@@ -5584,8 +5671,8 @@ CREATE OR REPLACE FUNCTION competition_play
 )
 RETURNS TABLE
         (
-            competition_id      text,
-            competition_name    text
+            comp_id     text,
+            comp_name   text
         )
 AS
 $$
@@ -5661,6 +5748,179 @@ BEGIN
         ORDER BY
             fp_team.long_name;
         
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : new_retired_date
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION new_retired_date
+(
+    IN  id_player   text,
+    IN  r_date      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    INSERT INTO
+        fp_player_retired
+        (
+            player_id,
+            retired_date
+        )
+    VALUES
+    (
+        id_player::integer,
+        r_date::dm_year
+    )
+    ON CONFLICT DO NOTHING;
+
+    GET DIAGNOSTICS count_row = row_count;
+    
+    IF (0 = count_row) THEN
+        output_message = 'errorMessageInsertRetiredDate';
+    ELSE
+        output_message = 'okInsert';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : delete_retired_date
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION delete_retired_date
+(
+    IN  id_player   text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    DELETE FROM
+        fp_player_retired
+    WHERE
+        player_id = id_player::integer;
+
+    
+    GET DIAGNOSTICS count_row = row_count;
+
+    IF (0 = count_row) THEN
+        output_message = 'errorMessageDeleteRetiredDate';
+    ELSE
+        output_message = 'okDelete';
+    END IF;
+
+    RETURN output_message;
+
+END;
+$$
+LANGUAGE plpgsql;
+--------------------------------------------------------------------------------
+
+
+
+/*******************************************************************************
+ * TYPE : FUNCTION
+ * NAME : update_retired_date
+ *
+ * IN      : text
+ * INOUT   : void
+ * OUT     : void
+ * RETURNS : text
+ *
+ * DESC : TODO
+ ******************************************************************************/
+CREATE OR REPLACE FUNCTION set_retired_date
+(
+    IN  id_player   text,
+    IN  r_date      text
+)
+RETURNS text
+AS
+$$
+DECLARE
+
+    retired         boolean;
+
+    count_row       integer;
+    output_message  text;
+
+BEGIN
+
+    SELECT
+        count(*) >= 1
+    INTO
+        retired
+    FROM
+        fp_player_retired
+    WHERE
+        player_id = id_player::integer;
+
+    
+    IF (NOT retired) THEN
+        output_message = 'errorMessagePlayerNotRetired';
+        RETURN output_message;
+    END IF;
+
+
+    UPDATE
+        fp_player_retired
+    SET
+        retired_date = r_date::dm_date
+    WHERE
+        player_id = id_player::integer;
+
+    
+    GET DIAGNOSTICS count_row = row_count;
+
+    IF (0 = count_row) THEN
+        output_message = 'errorMessageUpdateRetiredDate';
+    ELSE
+        output_message = 'okUpdate';
+    END IF;
+
+    RETURN output_message;
+
 
 END;
 $$

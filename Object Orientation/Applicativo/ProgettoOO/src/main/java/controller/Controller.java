@@ -1191,6 +1191,11 @@ public class Controller
 	}
 
 
+	/**
+	 * TODO
+	 * @param playerID
+	 * @return
+	 */
 	public String deletePlayer(String playerID)
 	{
 		if (null == adminConnected) {
@@ -1199,6 +1204,42 @@ public class Controller
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
 		return playerDAO.deletePlayer(playerID);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param name
+	 * @param surname
+	 * @param dob
+	 * @param countryID
+	 * @param foot
+	 * @param positionID
+	 * @return
+	 */
+	public String updatePlayer(String playerID,
+														 String name,
+														 String surname,
+														 String dob,
+														 String countryID,
+														 String foot,
+														 String positionID)
+	{
+		if (null == adminConnected) {
+			return "errorNoAdmin";
+		}
+
+		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
+		return playerDAO.updatePlayer(
+						playerID,
+						name,
+						surname,
+						dob,
+						countryID,
+						foot,
+						positionID
+		);
 	}
 	/*------------------------------------------------------------------------------------------------------*/
 

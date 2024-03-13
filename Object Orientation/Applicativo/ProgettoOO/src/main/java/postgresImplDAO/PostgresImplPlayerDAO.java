@@ -599,4 +599,9 @@ public class PostgresImplPlayerDAO
 
 		return message;
 	}
+
+	@Override
+	public String updatePlayer(String playerID, String name, String surname, String dob, String countryID, String foot, String positionID) {
+		return null;
+	}
 }
