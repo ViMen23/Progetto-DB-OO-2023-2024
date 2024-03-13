@@ -295,7 +295,7 @@ BEGIN
         DELETE FROM
             output_table
         WHERE
-            output_table.country_type <> type_country::en_country;
+            output_table.country_type <> type_country;
 
     END IF;
 
@@ -305,7 +305,7 @@ BEGIN
         DELETE FROM
             output_table
         WHERE
-            output_table.super_country_id <> id_super_country::integer;
+            output_table.super_country_id <> id_super_country;
 
     END IF;
 
