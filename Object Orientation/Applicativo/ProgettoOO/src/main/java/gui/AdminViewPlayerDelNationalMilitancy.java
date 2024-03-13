@@ -23,12 +23,11 @@ public class AdminViewPlayerDelNationalMilitancy
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
 
-//		Controller.getInstance().setPlayerPositionTable(
-//						playerID,
-//						playerPositionTableData,
-//						playerPositionTableMap
-//		);
-		//TODO
+		Controller.getInstance().setNationalCareerAdmin(
+						playerID,
+						militancyTableData,
+						militancyTableMap
+		);
 
 		final MyTable militancyTable;
 
@@ -81,15 +80,13 @@ public class AdminViewPlayerDelNationalMilitancy
 
 				for (int i = 0; i < militancyTableData.size(); ++i) {
 					if ((Boolean) militancyTableData.get(i).getFirst()) {
-//						String message = Controller.getInstance().remove(
-//										teamID,
-//										trophyTableMap.get(3).get(i),
-//										trophyTableMap.get(2).get(i),
-//										trophyTableMap.get(1).get(i)
-//						);
-//
-//						System.out.println(message);
-						//TODO
+						String message = Controller.getInstance().deleteMilitancy(
+										playerID,
+										militancyTableMap.get(2).get(i),
+										militancyTableMap.get(1).get(i)
+						);
+
+						System.out.println(message);
 					}
 				}
 
@@ -106,6 +103,5 @@ public class AdminViewPlayerDelNationalMilitancy
 				}
 			}
 		});
-
 	}
 }

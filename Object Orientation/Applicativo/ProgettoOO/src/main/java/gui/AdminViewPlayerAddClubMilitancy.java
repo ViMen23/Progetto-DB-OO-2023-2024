@@ -170,9 +170,15 @@ public class AdminViewPlayerAddClubMilitancy
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//String message = Controller.getInstance().addPlayerTag(playerID, continentNameMap.get(ctrlTagName.getText()));
+				String message = Controller.getInstance().newMilitancy(
+								playerID,
+								teamNameMap.get(ctrlTeamName.getText()),
+								Team.TEAM_TYPE.CLUB.toString(),
+								seasonMap.get(ctrlSeason.getText()),
+								ctrlMilitancyType.getText()
+				);
 
-				//System.out.println(message);
+				System.out.println(message);
 
 				try {
 					AdminViewPlayerAddClubMilitancy.this.getParent().setVisible(false);

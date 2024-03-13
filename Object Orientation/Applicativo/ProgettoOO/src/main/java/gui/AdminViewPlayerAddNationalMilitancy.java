@@ -1,6 +1,8 @@
 package gui;
 
 import controller.Controller;
+import model.Player;
+import model.Team;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -84,10 +86,15 @@ public class AdminViewPlayerAddNationalMilitancy
 			{
 				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
 
-				//String message = Controller.getInstance().addPlayerTag(playerID, continentNameMap.get(ctrlTagName.getText()));
+				String message = Controller.getInstance().newMilitancy(
+								playerID,
+								teamNameMap.get(ctrlTeamName.getText()),
+								Team.TEAM_TYPE.NATIONAL.toString(),
+								ctrlYear.getText(),
+								Player.MILITANCY_TYPE.FULL.toString()
+				);
 
-				//System.out.println(message);
-
+				System.out.println(message);
 				try {
 					AdminViewPlayerAddNationalMilitancy.this.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddNationalMilitancy.this.getParent());

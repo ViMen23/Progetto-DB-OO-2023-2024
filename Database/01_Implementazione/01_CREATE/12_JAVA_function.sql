@@ -4783,7 +4783,7 @@ BEGIN
         AND
         fp_militancy.team_id = id_team::integer
         AND
-        fp_militancy.start_year = s_year::end_year;
+        fp_militancy.start_year = s_year::dm_year;
 	
 
     GET DIAGNOSTICS count_row = row_count;
@@ -4907,7 +4907,7 @@ CREATE OR REPLACE FUNCTION update_attribute_mental
     IN  new_positioning     text,
     IN  new_teamwork        text,
     IN  new_vision          text,
-    IN  new_work_rate       text,
+    IN  new_work_rate       text
 )       
 RETURNS text    
 AS  
