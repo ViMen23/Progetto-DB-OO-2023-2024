@@ -77,18 +77,18 @@ public class PostgresImplCountryDAO
 
 	@Override
 	public void fetchCountryDB(String countryType,
-														 String superCountryID,
-														 Vector<Vector<String>> tableData)
+														 Integer superCountryID,
+														 Vector<Vector<Object>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_country(?, ?)}");
 			cs.setString(1, countryType);
-			cs.setString(2, superCountryID);
+			cs.setInt(2, superCountryID);
 
 			ResultSet rs = cs.executeQuery();
 
 			while (rs.next()) {
-				Vector<String> vector = new Vector<>();
+				Vector<Object> vector = new Vector<>();
 
 				vector.add(rs.getString("country_name"));
 				vector.add(rs.getString("country_code"));
