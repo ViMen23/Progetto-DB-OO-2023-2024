@@ -54,7 +54,7 @@ public class PostgresImplCountryDAO
 														 Map<String, String> comboBoxMap)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_country(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{call search_country(?, ?)}");
 			cs.setString(1, countryType);
 			cs.setString(2, superCountryID);
 

@@ -403,9 +403,9 @@ public class PostgresImplCompetitionDAO
 
 			while (rs.next()) {
 				infoMap.put(GuiConfiguration.getMessage("competition").toUpperCase(), rs.getString("comp_name"));
-				infoMap.put(GuiConfiguration.getMessage("type"), GuiConfiguration.getMessage(rs.getString("comp_type")));
+				infoMap.put(GuiConfiguration.getMessage("type").toUpperCase(), GuiConfiguration.getMessage(rs.getString("comp_type")));
 				infoMap.put(GuiConfiguration.getMessage("teamType").toUpperCase(), GuiConfiguration.getMessage(rs.getString("comp_team_type")));
-				infoMap.put(GuiConfiguration.getMessage("frequency"), rs.getString("comp_freq"));
+				infoMap.put(GuiConfiguration.getMessage("frequency").toUpperCase(), rs.getString("comp_freq"));
 				infoMap.put(GuiConfiguration.getMessage("confederation"), rs.getString("conf_short_name"));
 				infoMap.put(GuiConfiguration.getMessage("country"), rs.getString("country_name"));
 			}
