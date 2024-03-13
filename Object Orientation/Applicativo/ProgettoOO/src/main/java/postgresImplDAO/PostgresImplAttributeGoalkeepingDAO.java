@@ -4,10 +4,7 @@ import dao.AttributeGoalkeepingDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
@@ -92,5 +89,57 @@ public class PostgresImplAttributeGoalkeepingDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String updateAttributeGoalkeeping(String playerID,
+																					 String aerialReach,
+																					 String commandOfArea,
+																					 String communication,
+																					 String eccentricity,
+																					 String firstTouchGk,
+																					 String handling,
+																					 String kicking,
+																					 String oneOnOnes,
+																					 String passingGk,
+																					 String punchingTendency,
+																					 String reflexes,
+																					 String rushingOutTendency,
+																					 String throwing)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_attribute_goalkeeping(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, aerialReach);
+			cs.setString(4, commandOfArea);
+			cs.setString(5, communication);
+			cs.setString(6, eccentricity);
+			cs.setString(7, firstTouchGk);
+			cs.setString(8, handling);
+			cs.setString(9, kicking);
+			cs.setString(10, oneOnOnes);
+			cs.setString(11, passingGk);
+			cs.setString(12, punchingTendency);
+			cs.setString(13, reflexes);
+			cs.setString(14, rushingOutTendency);
+			cs.setString(15, throwing);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

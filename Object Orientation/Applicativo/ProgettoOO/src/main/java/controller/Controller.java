@@ -2158,6 +2158,118 @@ public class Controller
 		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
 		attributeTechnicalDAO.fetchAttributeTechnical(playerID, playerAttributeTechnicalTableData);
 	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param aerialReach
+	 * @param commandOfArea
+	 * @param communication
+	 * @param eccentricity
+	 * @param firstTouchGk
+	 * @param handling
+	 * @param kicking
+	 * @param oneOnOnes
+	 * @param passingGk
+	 * @param punchingTendency
+	 * @param reflexes
+	 * @param rushingOutTendency
+	 * @param throwing
+	 * @return
+	 */
+	public String updateAttributeGoalkeeping(String playerID,
+																					 String aerialReach,
+																					 String commandOfArea,
+																					 String communication,
+																					 String eccentricity,
+																					 String firstTouchGk,
+																					 String handling,
+																					 String kicking,
+																					 String oneOnOnes,
+																					 String passingGk,
+																					 String punchingTendency,
+																					 String reflexes,
+																					 String rushingOutTendency,
+																					 String throwing)
+	{
+		AttributeGoalkeepingDAO attributeGoalkeepingDAO = new PostgresImplAttributeGoalkeepingDAO();
+		return attributeGoalkeepingDAO.updateAttributeGoalkeeping(
+						playerID,
+						aerialReach,
+						commandOfArea,
+						communication,
+						eccentricity,
+						firstTouchGk,
+						handling,
+						kicking,
+						oneOnOnes,
+						passingGk,
+						punchingTendency,
+						reflexes,
+						rushingOutTendency,
+						throwing
+		);
+	}
+
+
+	/**
+	 * TODO
+	 * @param playerID
+	 * @param aggression
+	 * @param anticipation
+	 * @param bravery
+	 * @param composure
+	 * @param concentration
+	 * @param decision
+	 * @param determination
+	 * @param flair
+	 * @param leadership
+	 * @param offTheBall
+	 * @param positioning
+	 * @param teamwork
+	 * @param vision
+	 * @param workRate
+	 * @return
+	 */
+	public String updateAttributeMental(String playerID,
+																			String aggression,
+																			String anticipation,
+																			String bravery,
+																			String composure,
+																			String concentration,
+																			String decision,
+																			String determination,
+																			String flair,
+																			String leadership,
+																			String offTheBall,
+																			String positioning,
+																			String teamwork,
+																			String vision,
+																			String workRate)
+	{
+		AttributeMentalDAO attributeMentalDAO = new PostgresImplAttributeMentalDAO();
+		return attributeMentalDAO.updateAttributeMental(
+						playerID,
+						aggression,
+						anticipation,
+						bravery,
+						composure,
+						concentration,
+						decision,
+						determination,
+						flair,
+						leadership,
+						offTheBall,
+						positioning,
+						teamwork,
+						vision,
+						workRate
+		);
+	}
+
+
+	//public String updateAttributePhysical
 	/*------------------------------------------------------------------------------------------------------*/
 
 

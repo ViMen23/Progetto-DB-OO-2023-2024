@@ -4,10 +4,7 @@ import dao.AttributeMentalDAO;
 import database.DatabaseConnection;
 import gui.GuiConfiguration;
 
-import java.sql.CallableStatement;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
@@ -94,5 +91,59 @@ public class PostgresImplAttributeMentalDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+	}
+
+	@Override
+	public String updateAttributeMental(String playerID,
+																			String aggression,
+																			String anticipation,
+																			String bravery,
+																			String composure,
+																			String concentration,
+																			String decision,
+																			String determination,
+																			String flair,
+																			String leadership,
+																			String offTheBall,
+																			String positioning,
+																			String teamwork,
+																			String vision,
+																			String workRate)
+	{
+		String message = null;
+
+		try {
+			CallableStatement cs = this.conn.prepareCall("{? = call update_attribute_mental(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
+			cs.registerOutParameter(1, Types.VARCHAR);
+			cs.setString(2, playerID);
+			cs.setString(3, aggression);
+			cs.setString(4, anticipation);
+			cs.setString(5, bravery);
+			cs.setString(6, composure);
+			cs.setString(7, concentration);
+			cs.setString(8, decision);
+			cs.setString(9, determination);
+			cs.setString(10, flair);
+			cs.setString(11, leadership);
+			cs.setString(12, offTheBall);
+			cs.setString(13, positioning);
+			cs.setString(14, teamwork);
+			cs.setString(15, vision);
+			cs.setString(16, workRate);
+
+
+			cs.execute();
+
+			message = cs.getString(1);
+
+
+			cs.close();
+			conn.close();
+
+		} catch (Exception e) {
+			System.out.println("Errore: " + e.getMessage());
+		}
+
+		return message;
 	}
 }

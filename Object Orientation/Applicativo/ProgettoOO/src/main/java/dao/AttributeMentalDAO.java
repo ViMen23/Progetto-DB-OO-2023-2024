@@ -10,4 +10,20 @@ public interface AttributeMentalDAO
 
 	void fetchAttributeMental(String playerID,
 														Vector<Vector<String>> playerAttributeMentalTableData);
+
+	String updateAttributeMental(String playerID,
+															 String aggression,
+															 String anticipation,
+															 String bravery,
+															 String composure,
+															 String concentration,
+															 String decision,
+															 String determination,
+															 String flair,
+															 String leadership,
+															 String offTheBall,
+															 String positioning,
+															 String teamwork,
+															 String vision,
+															 String workRate);
 }
