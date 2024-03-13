@@ -490,7 +490,7 @@ public class PostgresImplPlayerDAO
 		String message = null;
 
 		try {
-			CallableStatement cs = this.conn.prepareCall("{? = call delete_retired_date(?, ?)}");
+			CallableStatement cs = this.conn.prepareCall("{? = call delete_retired_date(?)}");
 			cs.registerOutParameter(1, Types.VARCHAR);
 			cs.setString(2, playerID);
 

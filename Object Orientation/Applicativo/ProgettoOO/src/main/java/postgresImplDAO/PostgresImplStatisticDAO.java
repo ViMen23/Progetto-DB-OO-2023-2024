@@ -32,7 +32,7 @@ public class PostgresImplStatisticDAO
 																	 String competitionID,
 																	 String startYear,
 																	 String endYear,
-																	 Vector<Vector<String>> tableData,
+																	 Vector<Vector<Object>> tableData,
 																	 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
@@ -48,11 +48,12 @@ public class PostgresImplStatisticDAO
 
 
 			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
 
 			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 				String season = null;
 				while (rs.next()) {
-					Vector<String> vector = new Vector<>();
+					Vector<Object> vector = new Vector<>();
 
 					season = rs.getString("start_year");
 					season += "/";
@@ -61,36 +62,38 @@ public class PostgresImplStatisticDAO
 					vector.add(season);
 					vector.add(rs.getString("comp_name"));
 					vector.add(rs.getString("team_long_name"));
-					vector.add(rs.getString("match"));
-					vector.add(rs.getString("goal_scored"));
-					vector.add(rs.getString("penalty_scored"));
-					vector.add(rs.getString("assist"));
-					vector.add(rs.getString("yellow_card"));
-					vector.add(rs.getString("red_card"));
-					vector.add(rs.getString("goal_conceded"));
-					vector.add(rs.getString("penalty_saved"));
+					vector.add(rs.getInt("match"));
+					vector.add(rs.getInt("goal_scored"));
+					vector.add(rs.getInt("penalty_scored"));
+					vector.add(rs.getInt("assist"));
+					vector.add(rs.getInt("yellow_card"));
+					vector.add(rs.getInt("red_card"));
+					vector.add(rs.getInt("goal_conceded"));
+					vector.add(rs.getInt("penalty_saved"));
 
 					tableData.add(vector);
-					teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					++row;
 				}
 			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
 				while (rs.next()) {
-					Vector<String> vector = new Vector<>();
+					Vector<Object> vector = new Vector<>();
 
 					vector.add(rs.getString("start_year"));
 					vector.add(rs.getString("comp_name"));
 					vector.add(rs.getString("team_long_name"));
-					vector.add(rs.getString("match"));
-					vector.add(rs.getString("goal_scored"));
-					vector.add(rs.getString("penalty_scored"));
-					vector.add(rs.getString("assist"));
-					vector.add(rs.getString("yellow_card"));
-					vector.add(rs.getString("red_card"));
-					vector.add(rs.getString("goal_conceded"));
-					vector.add(rs.getString("penalty_saved"));
+					vector.add(rs.getInt("match"));
+					vector.add(rs.getInt("goal_scored"));
+					vector.add(rs.getInt("penalty_scored"));
+					vector.add(rs.getInt("assist"));
+					vector.add(rs.getInt("yellow_card"));
+					vector.add(rs.getInt("red_card"));
+					vector.add(rs.getInt("goal_conceded"));
+					vector.add(rs.getInt("penalty_saved"));
 
 					tableData.add(vector);
-					teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					++row;
 				}
 			}
 
@@ -109,7 +112,7 @@ public class PostgresImplStatisticDAO
 	@Override
 	public void fetchStatisticEdition(String competitionStartYear,
 																		String competitionID,
-																		Vector<Vector<String>> tableData,
+																		Vector<Vector<Object>> tableData,
 																		Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
@@ -121,9 +124,10 @@ public class PostgresImplStatisticDAO
 
 			Map<Integer, String> teamMap = new HashMap<>();
 			Map<Integer, String> playerMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
-				Vector<String> vector = new Vector<>();
+				Vector<Object> vector = new Vector<>();
 				String role = "";
 
 				String[] keyPart = rs.getString("player_role").split("_");
@@ -140,18 +144,19 @@ public class PostgresImplStatisticDAO
 				vector.add(role);
 				vector.add(rs.getString("player_name"));
 				vector.add(rs.getString("player_surname"));
-				vector.add(rs.getString("match"));
-				vector.add(rs.getString("goal_scored"));
-				vector.add(rs.getString("penalty_scored"));
-				vector.add(rs.getString("assist"));
-				vector.add(rs.getString("yellow_card"));
-				vector.add(rs.getString("red_card"));
-				vector.add(rs.getString("goal_conceded"));
-				vector.add(rs.getString("penalty_saved"));
+				vector.add(rs.getInt("match"));
+				vector.add(rs.getInt("goal_scored"));
+				vector.add(rs.getInt("penalty_scored"));
+				vector.add(rs.getInt("assist"));
+				vector.add(rs.getInt("yellow_card"));
+				vector.add(rs.getInt("red_card"));
+				vector.add(rs.getInt("goal_conceded"));
+				vector.add(rs.getInt("penalty_saved"));
 
 				tableData.add(vector);
-				teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
-				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+				teamMap.put(row, rs.getString("team_id"));
+				playerMap.put(row, rs.getString("player_id"));
+				++row;
 			}
 
 			tableMap.put(0, teamMap);
@@ -170,7 +175,7 @@ public class PostgresImplStatisticDAO
 	@Override
 	public void fetchStatisticTotal(String teamType,
 																	String playerRole,
-																	Vector<Vector<String>> tableData,
+																	Vector<Vector<Object>> tableData,
 																	Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
@@ -181,9 +186,10 @@ public class PostgresImplStatisticDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> playerMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
-				Vector<String> vector = new Vector<>();
+				Vector<Object> vector = new Vector<>();
 				String role = "";
 
 				String[] keyPart = rs.getString("player_role").split("_");
@@ -199,17 +205,18 @@ public class PostgresImplStatisticDAO
 				vector.add(role);
 				vector.add(rs.getString("player_name"));
 				vector.add(rs.getString("player_surname"));
-				vector.add(rs.getString("match"));
-				vector.add(rs.getString("goal_scored"));
-				vector.add(rs.getString("penalty_scored"));
-				vector.add(rs.getString("assist"));
-				vector.add(rs.getString("yellow_card"));
-				vector.add(rs.getString("red_card"));
-				vector.add(rs.getString("goal_conceded"));
-				vector.add(rs.getString("penalty_saved"));
+				vector.add(rs.getInt("match"));
+				vector.add(rs.getInt("goal_scored"));
+				vector.add(rs.getInt("penalty_scored"));
+				vector.add(rs.getInt("assist"));
+				vector.add(rs.getInt("yellow_card"));
+				vector.add(rs.getInt("red_card"));
+				vector.add(rs.getInt("goal_conceded"));
+				vector.add(rs.getInt("penalty_saved"));
 
 				tableData.add(vector);
-				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+				playerMap.put(row, rs.getString("player_id"));
+				++row;
 			}
 
 			tableMap.put(2, playerMap);

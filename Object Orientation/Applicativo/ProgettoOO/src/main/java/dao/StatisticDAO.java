@@ -11,17 +11,17 @@ public interface StatisticDAO
 														String competitionID,
 														String startYear,
 														String endYear,
-														Vector<Vector<String>> tableData,
+														Vector<Vector<Object>> tableData,
 														Map<Integer, Map<Integer, String>> tableMap);
 
 	void fetchStatisticEdition(String competitionStartYear,
 														 String competitionID,
-														 Vector<Vector<String>> tableData,
+														 Vector<Vector<Object>> tableData,
 														 Map<Integer, Map<Integer, String>> tableMap);
 
 	void fetchStatisticTotal(String teamType,
 													 String playerRole,
-													 Vector<Vector<String>> tableData,
+													 Vector<Vector<Object>> tableData,
 													 Map<Integer, Map<Integer, String>> tableMap);
 
 	void fetchStatisticAdmin(String playerID,

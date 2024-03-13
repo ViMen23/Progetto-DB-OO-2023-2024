@@ -1438,7 +1438,7 @@ public class Controller
 	 */
 	public void setStatisticTable(String teamType,
 																String playerRole,
-																Vector<Vector<String>> statisticTableData,
+																Vector<Vector<Object>> statisticTableData,
 																Map<Integer, Map<Integer, String>> statisticTableDataMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
@@ -1460,7 +1460,7 @@ public class Controller
 	 */
 	public void setStatisticCompetitionEditionTable(String competitionStartYear,
 																									String competitionID,
-																									Vector<Vector<String>> statisticTableData,
+																									Vector<Vector<Object>> statisticTableData,
 																									Map<Integer, Map<Integer, String>> statisticTableMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
@@ -1490,7 +1490,7 @@ public class Controller
 																			String competitionID,
 																			String startYear,
 																			String endYear,
-																			Vector<Vector<String>> playerStatisticTableData,
+																			Vector<Vector<Object>> playerStatisticTableData,
 																			Map<Integer, Map<Integer, String>> playerStatisticTableMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
