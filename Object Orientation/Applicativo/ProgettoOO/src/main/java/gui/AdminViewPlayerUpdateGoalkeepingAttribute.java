@@ -67,8 +67,8 @@ public class AdminViewPlayerUpdateGoalkeepingAttribute
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
+						GuiConfiguration.CENTER_WRAP_2_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_14P_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 

@@ -14,8 +14,8 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 /**
- * TYPE : class - gui package
- * NAME : AdminLogin
+ * TYPE: class - gui package
+ * NAME: AdminLogin
  * DESC: Classe per l'interfaccia grafica che permette il login di un amministratore dell'applicativo
  */
 public class AdminLoginPanel
@@ -105,7 +105,7 @@ public class AdminLoginPanel
 
 					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 
-					ctrlLabel.setText("@login");
+					ctrlLabel.setText(usernameTextField.getText());
 
 					Window window = SwingUtilities.getWindowAncestor((Component) e.getSource());
 					window.dispose();

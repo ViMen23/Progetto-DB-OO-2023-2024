@@ -15,7 +15,7 @@ public class GeneralInfoPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
-						GuiConfiguration.TWO_CELL_GROW_FILL_EXT_GAP_10_INT_GAP_40_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL,
 						null
 		);
 

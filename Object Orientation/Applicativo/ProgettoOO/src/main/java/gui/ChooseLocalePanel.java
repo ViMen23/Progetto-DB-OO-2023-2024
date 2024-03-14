@@ -1,5 +1,6 @@
 package gui;
 
+import controller.Controller;
 import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
@@ -13,56 +14,31 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
-//TODO
+
 public class ChooseLocalePanel
 				extends JPanel
 {
-	private final JLabel messageLabel;
-	private final JComboBox<String> localeComboBox;
-	private final JButton okButton;
-
 	private Locale choosedLocale;
 
 	public ChooseLocalePanel()
 	{
-		String string;
 		MigLayout migLayout;
+		JLabel messageLabel;
+		JComboBox<String> localeComboBox;
+		JButton okButton;
 
-		migLayout = new MigLayout
-						(
-										"debug, flowy, center",
-										"[center]",
-										"30:push[]20[]20[]30:push"
-						);
+		migLayout = new MigLayout(
+						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
+						null,
+						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT
+		);
 
-		setLayout(migLayout);
+		this.setLayout(migLayout);
 		/*------------------------------------------------------------------------------------------------------*/
 
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * LABEL SCEGLI LOCALE
-		 *------------------------------------------------------------------------------------------------------*/
-
-
-
-		string = "";
-		string += GuiConfiguration.getMessage("choose");
-		string += " ";
-		string += GuiConfiguration.getMessage("locale");
-		string = StringUtils.capitalize(string);
-
-		messageLabel = new JLabel(string);
-
-		add(messageLabel);
+		messageLabel = new JLabel(GuiConfiguration.getMessage("chooseLocale"));
+		this.add(messageLabel, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * COMBOBOX LOCALE
-		 *------------------------------------------------------------------------------------------------------*/
-
 
 		Set<Locale> localeSet = new HashSet<>();
 		for (Locale locale : Locale.getAvailableLocales()) {
@@ -78,23 +54,9 @@ public class ChooseLocalePanel
 			System.out.println(GuiConfiguration.getMessage(locale.toString()));
 		}
 
-
-
 		localeComboBox = new JComboBox<>();
 
-		localeComboBox.addItem("Italiano");
-		localeComboBox.addItem("Inglese");
-		localeComboBox.setSelectedIndex(-1);
-
-		add(localeComboBox);
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
+		this.add(localeComboBox, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		localeComboBox.addItemListener(new ItemListener() {
 			@Override
@@ -113,21 +75,13 @@ public class ChooseLocalePanel
 				}
 			}
 		});
-		/*------------------------------------------------------------------------------------------------------*/
 
+		localeComboBox.addItem("Italiano");
+		localeComboBox.addItem("Inglese");
+		/*------------------------------------------------------------------------------------------------------*/
 
 		okButton = new JButton(GuiConfiguration.getMessage("confirm"));
-
-		add(okButton);
-		/*------------------------------------------------------------------------------------------------------*/
-
-
-
-		/*--------------------------------------------------------------------------------------------------------
-		 * IMPLEMENTAZIONE LOGICA
-		 *------------------------------------------------------------------------------------------------------*/
-
-
+		this.add(okButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		okButton.addActionListener(new ActionListener() {
 			@Override
@@ -137,7 +91,24 @@ public class ChooseLocalePanel
 				window.dispose();
 
 				GuiConfiguration.setLocale(getChoosedLocale());
-				GuiConfiguration.resetHomeFrame();
+
+				if (Controller.getInstance().isAdminConnected()) {
+
+					Container container = MainFrame.getMainFrameInstance().getContentPane();
+					for (Component component: container.getComponents()) {
+						if (!(component instanceof TopPanel)) {
+							component.setVisible(false);
+							container.remove(component);
+						}
+					}
+
+
+					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+
+				}
+				else {
+					GuiConfiguration.resetHomeFrame();
+				}
 			}
 		});
 		/*------------------------------------------------------------------------------------------------------*/

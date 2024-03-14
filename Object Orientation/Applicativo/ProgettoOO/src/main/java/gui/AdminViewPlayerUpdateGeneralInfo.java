@@ -215,13 +215,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 			{
 				ctrlButton[0] = !(null == ctrlName.getText() || ctrlName.getText().equalsIgnoreCase(prevName));
 
-				for(boolean bool: ctrlButton) {
-					if (bool) {
-						confirmButton.setEnabled(true);
-						return;
-					}
-				}
-				confirmButton.setEnabled(false);
+				confirmButton.setEnabled(
+								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+												ctrlNationName.getText() != null
+				);
 			}
 		});
 
@@ -231,14 +229,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 			{
 				ctrlButton[1] = !(null == ctrlSurname.getText() || ctrlSurname.getText().equalsIgnoreCase(prevSurname));
 
-				for(boolean bool: ctrlButton) {
-					if (bool) {
-						confirmButton.setEnabled(true);
-						return;
-					}
-				}
-				confirmButton.setEnabled(false);
-
+				confirmButton.setEnabled(
+								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+												ctrlNationName.getText() != null
+				);
 			}
 		});
 
@@ -248,13 +243,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 			{
 				ctrlButton[2] = !(null == dateChangeEvent.getNewDate() || datePickerDob.getDateStringOrEmptyString().equalsIgnoreCase(prevDob));
 
-				for(boolean bool: ctrlButton) {
-					if (bool) {
-						confirmButton.setEnabled(true);
-						return;
-					}
-				}
-				confirmButton.setEnabled(false);
+				confirmButton.setEnabled(
+								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+												ctrlNationName.getText() != null
+				);
 			}
 		});
 
@@ -310,13 +303,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 				else {
 					ctrlButton[3] = !(null == nationNameMap.get(ctrlNationName.getText()) || ctrlNationName.getText().equalsIgnoreCase(prevBornCountry));
 
-					for(boolean bool: ctrlButton) {
-						if (bool) {
-							confirmButton.setEnabled(true);
-							return;
-						}
-					}
-					confirmButton.setEnabled(false);
+					confirmButton.setEnabled(
+									(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+													ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+													ctrlNationName.getText() != null
+					);
 				}
 			}
 		});
@@ -327,13 +318,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 			{
 				ctrlButton[4] = !(null == ctrlFoot.getText() || GuiConfiguration.getMessage(ctrlFoot.getText()).equalsIgnoreCase(prevFoot));
 
-				for(boolean bool: ctrlButton) {
-					if (bool) {
-						confirmButton.setEnabled(true);
-						return;
-					}
-				}
-				confirmButton.setEnabled(false);
+				confirmButton.setEnabled(
+								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+												ctrlNationName.getText() != null
+				);
 			}
 		});
 		ctrlPositionName.addPropertyChangeListener("text", new PropertyChangeListener() {
@@ -356,14 +345,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 					String[] keyPart = ctrlPositionName.getText().split("]");
 					ctrlButton[5] = (null != positionNameMap.get(ctrlPositionName.getText())  && prevMainPosition.contains(keyPart[1]));
 
-					for(boolean bool: ctrlButton) {
-						if (bool) {
-							confirmButton.setEnabled(true);
-							return;
-						}
-					}
-					confirmButton.setEnabled(false);
-
+					confirmButton.setEnabled(
+									(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
+													ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
+													ctrlNationName.getText() != null
+					);
 				}
 			}
 		});

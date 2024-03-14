@@ -90,7 +90,7 @@ public class TopPanel
 					);
 
 					if(null != ctrlLabel.getText()) {
-						loginButton.setText(GuiConfiguration.getMessage("logout"));
+						loginButton.setText(ctrlLabel.getText());
 					}
 				}
 				else {

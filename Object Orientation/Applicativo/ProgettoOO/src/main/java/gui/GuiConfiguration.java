@@ -24,7 +24,7 @@ public class GuiConfiguration
 
 	public static final ImageIcon HOME_ICON = GuiConfiguration.createImageIcon("images/homy.png");
 	public static final ImageIcon FILTER_ICON = GuiConfiguration.createImageIcon("images/filter.png");
-	public static final ImageIcon DICE_ICON = GuiConfiguration.createImageIcon("images/dice.png");
+	public static final ImageIcon DICE_ICON = GuiConfiguration.createImageIcon("images/dice5.png");
 	public static final ImageIcon BIN_ICON = GuiConfiguration.createImageIcon("images/bin.png");
 
 	public static final Cursor HAND_CURSOR = new Cursor(Cursor.HAND_CURSOR);
@@ -70,6 +70,7 @@ public class GuiConfiguration
 	public static final String VLAYOUT_CONSTRAINT = "flowy";
 	public static final String VFILL_LAYOUT_CONSTRAINT = "flowy, fill";
 	public static final String WRAP_2_LAYOUT_CONSTRAINT = "wrap 2";
+	public static final String CENTER_WRAP_2_LAYOUT_CONSTRAINT = "center, wrap 2";
 	public static final String CENTER_LAYOUT_CONSTRAINT = "center";
 	public static final String CENTER_VLAYOUT_CONSTRAINT = "flowy, center";
 
@@ -415,14 +416,14 @@ public class GuiConfiguration
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded"));
-		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved"));
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded").toUpperCase());
+		PLAYER_STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved").toUpperCase());
 	}
 
 	public static void initPlayerClubTrophyTableColumnName()
@@ -459,31 +460,31 @@ public class GuiConfiguration
 	public static void initStatisticTotalTableColumnName()
 	{
 		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded"));
-		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved"));
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded").toUpperCase());
+		STATISTIC_TOTAL_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved").toUpperCase());
 	}
 	public static void initStatisticEditionTableColumnName()
 	{
 		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
 		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("role"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded"));
-		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved"));
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("name").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("surname").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded").toUpperCase());
+		STATISTIC_EDITION_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved").toUpperCase());
 
 	}
 	public static void initStatisticTableColumnNameTableColumnName()
@@ -491,14 +492,14 @@ public class GuiConfiguration
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("season").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("competition").toUpperCase());
 		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("team").toUpperCase());
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded"));
-		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved"));
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("match").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalScored").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltyScored").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("assist").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("yellowCard").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("redCard").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("goalConceded").toUpperCase());
+		STATISTIC_TABLE_COLUMN_NAME.add(GuiConfiguration.getMessage("penaltySaved").toUpperCase());
 	}
 
 	public static void initTableColumn()

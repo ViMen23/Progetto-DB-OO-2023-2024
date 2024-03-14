@@ -182,7 +182,7 @@ public class AdminViewTeamDelParticipation
 				participationTable.setPreferredScrollableViewportSize(participationTable.getPreferredSize());
 
 				deleteButton.setEnabled(true);
-				revalidate();
+				AdminViewTeamDelParticipation.this.revalidate();
 			}
 		});
 	}
