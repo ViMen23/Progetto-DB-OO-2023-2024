@@ -37,7 +37,7 @@ public class TopViewTeamPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_SIZE_15P_INT_GAP_150_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		navigationPanel = new JPanel(migLayout);
@@ -47,11 +47,11 @@ public class TopViewTeamPanel
 
 		squadParticipationButton = new JButton(GuiConfiguration.getMessage("seasonDetails"));
 		squadParticipationButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(squadParticipationButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
 		squadParticipationButton.addActionListener(new ActionListener() {

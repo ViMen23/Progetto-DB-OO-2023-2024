@@ -32,7 +32,7 @@ public class MenuBarPanel
 		this.setLayout(migLayout);
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						null,
 						GuiConfiguration.FOUR_CELL_EXT_GAP_2P_INT_GAP_5P_5P_3P_LAYOUT_CONSTRAINT,
 						null
 		);
@@ -58,7 +58,7 @@ public class MenuBarPanel
 		menuBar = new JMenuBar();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						null,
 						GuiConfiguration.ONE_CELL_GAP_50_LAYOUT_CONSTRAINT,
 						null
 		);

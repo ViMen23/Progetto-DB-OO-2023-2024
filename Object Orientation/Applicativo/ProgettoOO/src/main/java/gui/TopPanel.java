@@ -26,7 +26,7 @@ public class TopPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						null,
 						GuiConfiguration.THREE_CELL_EXT_GAP_5P_INT_GAP_50P_5P_LAYOUT_CONSTRAINT,
 						null
 		);

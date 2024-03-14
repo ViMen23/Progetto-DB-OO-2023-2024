@@ -19,7 +19,7 @@ public class RadioPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
 						GuiConfiguration.THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);
@@ -56,7 +56,7 @@ public class RadioPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
 						GuiConfiguration.THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);

@@ -18,7 +18,7 @@ public class RadioComboPanel
 												 JLabel ctrlLabelCombo,
 												 Boolean combo)
 	{
-		this(field, GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT, ctrlLabelRadio, ctrlLabelCombo, combo);
+		this(field, null, ctrlLabelRadio, ctrlLabelCombo, combo);
 	}
 
 	public RadioComboPanel(String field,

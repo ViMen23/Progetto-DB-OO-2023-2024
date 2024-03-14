@@ -18,7 +18,7 @@ public class LabelTextPanel
 												JLabel ctrlLabel,
 												Pattern pattern)
 	{
-		this(labelText, GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT, ctrlLabel, pattern);
+		this(labelText, null, ctrlLabel, pattern);
 	}
 
 	public LabelTextPanel(String labelText,

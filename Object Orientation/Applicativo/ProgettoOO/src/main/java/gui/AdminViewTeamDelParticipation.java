@@ -66,7 +66,7 @@ public class AdminViewTeamDelParticipation
 						GuiConfiguration.getMessage("season").toUpperCase(),
 						true,
 						GuiConfiguration.THREE_CELL_EXT_GAP_PUSH_PUSH_INT_GAP_20_20_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT,
+						null,
 						ctrlSeason
 		);
 

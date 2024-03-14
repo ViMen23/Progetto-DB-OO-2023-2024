@@ -67,16 +67,12 @@ public class GuiConfiguration
 	public static final Vector<String> STATISTIC_TABLE_COLUMN_NAME = new Vector<>();
 
 
-	public static final String DEBUG_LAYOUT_CONSTRAINT = "debug";
-	public static final String VLAYOUT_CONSTRAINT = "debug, flowy";
-	public static final String VFILL_LAYOUT_CONSTRAINT = "debug, flowy, fill";
+	public static final String VLAYOUT_CONSTRAINT = "flowy";
+	public static final String VFILL_LAYOUT_CONSTRAINT = "flowy, fill";
+	public static final String WRAP_2_LAYOUT_CONSTRAINT = "wrap 2";
+	public static final String CENTER_LAYOUT_CONSTRAINT = "center";
+	public static final String CENTER_VLAYOUT_CONSTRAINT = "flowy, center";
 
-	public static final String WRAP_2_LAYOUT_CONSTRAINT = "debug, wrap 2";
-	public static final String WRAP_4_LAYOUT_CONSTRAINT = "debug, wrap 4";
-	public static final String CENTER_LAYOUT_CONSTRAINT = "debug, center";
-	public static final String CENTER_VLAYOUT_CONSTRAINT = "debug, flowy, center";
-
-	public static final String ONE_CELL_LAYOUT_CONSTRAINT = "[]";
 	public static final String ONE_CELL_GAP_0_10 = "0[]10";
 	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
 	public static final String ONE_CELL_GAP_50_LAYOUT_CONSTRAINT = "50[]50";
@@ -101,8 +97,6 @@ public class GuiConfiguration
 	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FOUR_CELL_EXT_GAP_2P_INT_GAP_5P_5P_3P_LAYOUT_CONSTRAINT = "2%[]5%[]5%[]3%[]2%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
-	public static final String FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]10[]0";
-	public static final String SIX_CELL_LAYOUT_CONSTRAINT = "10[]10[]0[]0[]0[]10[]0";
 	public static final String SEVEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String NINE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill]20[]0";
 	public static final String THIRTEEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill][]0[fill][]0[fill][]0[fill]20[]0";

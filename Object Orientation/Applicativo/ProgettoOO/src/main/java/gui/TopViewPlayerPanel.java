@@ -68,7 +68,7 @@ public class TopViewPlayerPanel
 
 		caseButton = new JButton(GuiConfiguration.getMessage("caseAwards"));
 		caseButton.setCursor(GuiConfiguration.HAND_CURSOR);
-		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT);
+		navigationPanel.add(caseButton, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 		generalInfoButton.addActionListener(new ActionListener() {
 			@Override

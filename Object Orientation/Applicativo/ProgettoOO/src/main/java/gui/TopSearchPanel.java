@@ -55,9 +55,9 @@ public class TopSearchPanel
 		MigLayout migLayout;
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						null,
 						GuiConfiguration.TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);

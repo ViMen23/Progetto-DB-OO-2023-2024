@@ -114,7 +114,7 @@ public class AdminViewPlayerAddClubMilitancy
 		/*------------------------------------------------------------------------------------------------------*/
 
 		migLayout = new MigLayout(
-						GuiConfiguration.DEBUG_LAYOUT_CONSTRAINT,
+						null,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
 						null
 		);
@@ -132,7 +132,7 @@ public class AdminViewPlayerAddClubMilitancy
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
 						GuiConfiguration.THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		militancyTypePanel = new JPanel(migLayout);

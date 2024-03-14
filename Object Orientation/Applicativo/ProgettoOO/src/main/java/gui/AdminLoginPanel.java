@@ -37,7 +37,7 @@ public class AdminLoginPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
 						null,
-						GuiConfiguration.ONE_CELL_LAYOUT_CONSTRAINT
+						null
 		);
 
 		this.setLayout(migLayout);

@@ -370,7 +370,7 @@ public class AdminSearchCompetition
 
 						MainFrame.getMainFrameInstance().getContentPane().add(
 										new AdminNavigationPanel(new AdminViewCompetitionAddCompetitionEdition(competitionID, competitionTeamType)),
-										GuiConfiguration.HGROUP_FRAME_ADD_CONSTRAINT
+										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 					} catch (Exception ignored) {
 					} finally {
