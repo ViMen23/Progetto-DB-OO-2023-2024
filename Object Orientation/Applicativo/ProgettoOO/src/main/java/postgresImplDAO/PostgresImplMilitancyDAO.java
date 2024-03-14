@@ -6,7 +6,6 @@ import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -23,102 +22,13 @@ public class PostgresImplMilitancyDAO
 			e.printStackTrace();
 		}
 	}
+
+
 	@Override
 	public void fetchMilitancyDB(String teamID,
 															 String startYear,
-															 List<String> listPlayerID,
-															 List<String> listPlayerName,
-															 List<String> listPlayerSurname,
-															 List<String> listPlayerRole)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call squad_team(?, ?)}");
-			cs.setString(1, teamID);
-			cs.setString(2, startYear);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listPlayerID.add(rs.getString("player_id"));
-				listPlayerName.add(rs.getString("player_name"));
-				listPlayerSurname.add(rs.getString("player_surname"));
-				listPlayerRole.add(rs.getString("player_role"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchMilitancyDB(String playerID,
-															 List<String> listMilitancyYear,
-															 List<String> listMilitancyType,
-															 List<String> listTeamID,
-															 List<String> listTeamLongName,
-															 List<String> listCountryID,
-															 List<String> listCountryName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_club_career_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listMilitancyYear.add(rs.getString("militancy_year"));
-				listMilitancyType.add(rs.getString("militancy_type"));
-				listTeamID.add(rs.getString("team_id"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-				listCountryID.add(rs.getString("country_id"));
-				listCountryName.add(rs.getString("country_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchMilitancyDB(String playerID,
-															 List<String> listMilitancyYear,
-															 List<String> listTeamID,
-															 List<String> listTeamLongName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_national_career_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listMilitancyYear.add(rs.getString("militancy_year"));
-				listTeamID.add(rs.getString("team_id"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchMilitancy(String teamID,
-														 String startYear,
-														 Vector<Vector<String>> teamSquadTableData,
-														 Map<Integer, Map<Integer, String>> teamSquadTableMap)
+															 Vector<Vector<String>> tableData,
+															 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call squad_team(?, ?)}");
@@ -128,6 +38,7 @@ public class PostgresImplMilitancyDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> playerMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
@@ -146,12 +57,12 @@ public class PostgresImplMilitancyDAO
 				vector.add(rs.getString("player_name"));
 				vector.add(rs.getString("player_surname"));
 
-				teamSquadTableData.add(vector);
-				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
-
+				tableData.add(vector);
+				playerMap.put(row, rs.getString("player_id"));
+				++row;
 			}
 
-			teamSquadTableMap.put(2, playerMap);
+			tableMap.put(2, playerMap);
 
 			rs.close();
 			cs.close();
@@ -162,10 +73,11 @@ public class PostgresImplMilitancyDAO
 		}
 	}
 
+
 	@Override
-	public void fetchMilitancyNational(String playerID,
-																		 Vector<Vector<String>> tableData,
-																		 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchMilitancyNationalDB(String playerID,
+																			 Vector<Vector<String>> tableData,
+																			 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call national_career(?)}");
@@ -198,10 +110,11 @@ public class PostgresImplMilitancyDAO
 		}
 	}
 
+
 	@Override
-	public void fetchMilitancyClub(String playerID,
-																 Vector<Vector<String>> tableData,
-																 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchMilitancyClubDB(String playerID,
+																	 Vector<Vector<String>> tableData,
+																	 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call club_career(?)}");
@@ -241,10 +154,11 @@ public class PostgresImplMilitancyDAO
 		}
 	}
 
+
 	@Override
-	public void fetchMilitancyNationalAdmin(String playerID,
-																					Vector<Vector<Object>> tableData,
-																					Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchMilitancyNationalAdminDB(String playerID,
+																						Vector<Vector<Object>> tableData,
+																						Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call national_career(?)}");
@@ -281,10 +195,11 @@ public class PostgresImplMilitancyDAO
 		}
 	}
 
+
 	@Override
-	public void fetchMilitancyClubAdmin(String playerID,
-																			Vector<Vector<Object>> tableData,
-																			Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchMilitancyClubAdminDB(String playerID,
+																				Vector<Vector<Object>> tableData,
+																				Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call club_career(?)}");
@@ -328,12 +243,13 @@ public class PostgresImplMilitancyDAO
 		}
 	}
 
+
 	@Override
-	public String newMilitancy(String playerID,
-														 String teamID,
-														 String teamType,
-														 String startYear,
-														 String seasonType)
+	public String newMilitancyDB(String playerID,
+															 String teamID,
+															 String teamType,
+															 String startYear,
+															 String seasonType)
 	{
 		String message = null;
 
@@ -361,10 +277,11 @@ public class PostgresImplMilitancyDAO
 		return message;
 	}
 
+
 	@Override
-	public String deleteMilitancy(String playerID,
-																String teamID,
-																String startYear)
+	public String deleteMilitancyDB(String playerID,
+																	String teamID,
+																	String startYear)
 	{
 		String message = null;
 

@@ -7,7 +7,6 @@ import model.Team;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -24,77 +23,13 @@ public class PostgresImplTrophyDAO
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public void fetchTrophyDB(String teamID,
-														List<String> listTrophyID,
-														List<String> listTrophyName,
-														List<String> listCompetitionID,
-														List<String> listCompetitionStartYear,
-														List<String> listCompetitionName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call trophy_team(?)}");
-			cs.setString(1, teamID);
 
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTrophyID.add(rs.getString("trophy_id"));
-				listTrophyName.add(rs.getString("trophy_name"));
-				listCompetitionID.add(rs.getString("comp_id"));
-				listCompetitionStartYear.add(rs.getString("comp_start_year"));
-				listCompetitionName.add(rs.getString("comp_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
-	public void fetchTrophyDB(String playerID,
-														String teamType,
-														List<String> listCompetitionStartYear,
-														List<String> listCompetitionID,
-														List<String> listCompetitionName,
-														List<String> listTeamID,
-														List<String> listTeamLongName,
-														List<String> listTrophyName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_trophy_case(?, ?)}");
-			cs.setString(1, playerID);
-			cs.setString(2, teamType);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listCompetitionStartYear.add(rs.getString("comp_start_year"));
-				listCompetitionID.add(rs.getString("comp_id"));
-				listCompetitionName.add(rs.getString("comp_name"));
-				listTeamID.add(rs.getString("team_id"));
-				listTeamLongName.add(rs.getString("team_long_name"));
-				listTrophyName.add(rs.getString("trophy_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public String newTrophyTeam(String teamID,
-															String trophyID,
-															String competitionID,
-															String competitionStartYear)
+	public String newTrophyTeamDB(String teamID,
+																String trophyID,
+																String competitionID,
+																String competitionStartYear)
 	{
 		String message = null;
 
@@ -121,10 +56,10 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public String deleteTrophyTeam(String teamID,
-																 String trophyID,
-																 String competitionID,
-																 String competitionStartYear)
+	public String deleteTrophyTeamDB(String teamID,
+																	 String trophyID,
+																	 String competitionID,
+																	 String competitionStartYear)
 	{
 		String message = null;
 
@@ -151,9 +86,9 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchTrophy(String teamID,
-													String teamType,
-													Vector<Vector<String>> tableData)
+	public void fetchTrophyDB(String teamID,
+														String teamType,
+														Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call trophy_team(?)}");
@@ -199,10 +134,10 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchTrophy(String playerID,
-													String teamType,
-													Vector<Vector<String>> tableData,
-													Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchTrophyDB(String playerID,
+														String teamType,
+														Vector<Vector<String>> tableData,
+														Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call trophy_player(?, ?)}");
@@ -213,6 +148,7 @@ public class PostgresImplTrophyDAO
 
 
 			Map<Integer, String> teamMap = new HashMap<>();
+			int row = 0;
 
 			if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.CLUB.toString())) {
 				String season = null;
@@ -229,7 +165,8 @@ public class PostgresImplTrophyDAO
 					vector.add(GuiConfiguration.getMessage(rs.getString("trophy_name")));
 
 					tableData.add(vector);
-					teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					++row;
 				}
 			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
 				while (rs.next()) {
@@ -241,7 +178,8 @@ public class PostgresImplTrophyDAO
 					vector.add(GuiConfiguration.getMessage(rs.getString("trophy_name")));
 
 					tableData.add(vector);
-					teamMap.put(rs.getRow() - 1, rs.getString("team_id"));
+					teamMap.put(row, rs.getString("team_id"));
+					++row;
 				}
 			}
 
@@ -257,10 +195,10 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchTeamTrophyAdmin(String teamID,
-																	 String teamType,
-																	 Vector<Vector<Object>> tableData,
-																	 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchTeamTrophyAdminDB(String teamID,
+																		 String teamType,
+																		 Vector<Vector<Object>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call trophy_team(?)}");
@@ -327,8 +265,8 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchTeamTrophy(Vector<String> comboBoxData,
-															Map<String, String> comboBoxMap)
+	public void fetchTeamTrophyDB(Vector<String> comboBoxData,
+																Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_team_trophy");
@@ -350,8 +288,8 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchPlayerTrophy(Vector<String> comboBoxData,
-																Map<String, String> comboBoxMap)
+	public void fetchPlayerTrophyDB(Vector<String> comboBoxData,
+																	Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_player_trophy");
@@ -379,11 +317,11 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public String newTrophyPlayer(String playerID,
-																String teamID,
-																String trophyID,
-																String competitionID,
-																String competitionStartYear)
+	public String newTrophyPlayerDB(String playerID,
+																	String teamID,
+																	String trophyID,
+																	String competitionID,
+																	String competitionStartYear)
 	{
 		String message = null;
 
@@ -411,11 +349,11 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public String deleteTrophyPlayer(String playerID,
-																	 String teamID,
-																	 String trophyID,
-																	 String competitionID,
-																	 String competitionStartYear)
+	public String deleteTrophyPlayerDB(String playerID,
+																		 String teamID,
+																		 String trophyID,
+																		 String competitionID,
+																		 String competitionStartYear)
 	{
 		String message = null;
 
@@ -443,10 +381,10 @@ public class PostgresImplTrophyDAO
 	}
 
 	@Override
-	public void fetchTrophyPlayerAdmin(String playerID,
-																		 String teamType,
-																		 Vector<Vector<Object>> tableData,
-																		 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchTrophyPlayerAdminDB(String playerID,
+																			 String teamType,
+																			 Vector<Vector<Object>> tableData,
+																			 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call player_trophy_player(?, ?)}");

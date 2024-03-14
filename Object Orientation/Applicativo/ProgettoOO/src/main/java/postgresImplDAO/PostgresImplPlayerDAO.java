@@ -49,8 +49,8 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public void fetchPlayer(String playerID,
-													Map<String, String> infoMap)
+	public void fetchPlayerDB(String playerID,
+														Map<String, String> infoMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call info_player(?)}");
@@ -91,10 +91,10 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public void fetchPlayer(String startYear,
-													String teamID,
-													Vector<String> comboBoxData,
-													Map<String, String> comboBoxMap)
+	public void fetchPlayerDB(String startYear,
+														String teamID,
+														Vector<String> comboBoxData,
+														Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call filter_player(?, ?)}");
@@ -108,8 +108,6 @@ public class PostgresImplPlayerDAO
 				String playerInfo = "";
 				String role = "";
 
-				playerInfo += "[";
-
 				String[] keyPart = rs.getString("player_role").split("_");
 
 				for (String part : keyPart) {
@@ -119,6 +117,7 @@ public class PostgresImplPlayerDAO
 
 				role = role.substring(1);
 
+				playerInfo += "[";
 				playerInfo += role;
 				playerInfo += "] ";
 				playerInfo += rs.getString("player_name");
@@ -140,18 +139,18 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public void fetchPlayer(String playerSubName,
-													String playerSubSurname,
-													String playerReferringYear,
-													String playerMinAge,
-													String playerMaxAge,
-													String playerContinentID,
-													String playerNationID,
-													String playerRole,
-													String playerPositionID,
-													String playerFoot,
-													Vector<Vector<String>> tableData,
-													Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchPlayerDB(String playerSubName,
+														String playerSubSurname,
+														String playerReferringYear,
+														String playerMinAge,
+														String playerMaxAge,
+														String playerContinentID,
+														String playerNationID,
+														String playerRole,
+														String playerPositionID,
+														String playerFoot,
+														Vector<Vector<String>> tableData,
+														Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_player(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}");
@@ -169,17 +168,11 @@ public class PostgresImplPlayerDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> playerMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
 				String role = "";
-
-
-				vector.add(rs.getString("player_surname"));
-				vector.add(rs.getString("player_name"));
-				vector.add(rs.getString("player_dob"));
-				vector.add(rs.getString("country_name"));
-				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
 
 				String[] keyPart = rs.getString("player_role").split("_");
 
@@ -190,18 +183,19 @@ public class PostgresImplPlayerDAO
 
 				role = role.substring(1);
 
+				vector.add(rs.getString("player_surname"));
+				vector.add(rs.getString("player_name"));
+				vector.add(rs.getString("player_dob"));
+				vector.add(rs.getString("country_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
 				vector.add(role);
 				vector.add(GuiConfiguration.getMessage(rs.getString("position_name")));
-
-				if (null == rs.getString("player_retired_date")) {
-					vector.add("");
-				} else {
-					vector.add(rs.getString("player_retired_date"));
-				}
+				vector.add(rs.getString("player_retired_date"));
 
 
 				tableData.add(vector);
-				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+				playerMap.put(row, rs.getString("player_id"));
+				++row;
 			}
 
 			tableMap.put(0, playerMap);
@@ -217,11 +211,11 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public void fetchPlayer(String militancyPlayerTeamID,
-													String militancyPlayerStartYear,
-													String militancyPlayerEndYear,
-													Vector<Vector<String>> tableData,
-													Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchPlayerDB(String militancyPlayerTeamID,
+														String militancyPlayerStartYear,
+														String militancyPlayerEndYear,
+														Vector<Vector<String>> tableData,
+														Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call search_militancy_player(?, ?, ?)}");
@@ -233,17 +227,11 @@ public class PostgresImplPlayerDAO
 			ResultSet rs = cs.executeQuery();
 
 			Map<Integer, String> playerMap = new HashMap<>();
+			int row = 0;
 
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
 				String role = "";
-
-
-				vector.add(rs.getString("player_surname"));
-				vector.add(rs.getString("player_name"));
-				vector.add(rs.getString("player_dob"));
-				vector.add(rs.getString("country_name"));
-				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
 
 				String[] keyPart = rs.getString("player_role").split("_");
 
@@ -254,18 +242,18 @@ public class PostgresImplPlayerDAO
 
 				role = role.substring(1);
 
+				vector.add(rs.getString("player_surname"));
+				vector.add(rs.getString("player_name"));
+				vector.add(rs.getString("player_dob"));
+				vector.add(rs.getString("country_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("player_foot")));
 				vector.add(role);
 				vector.add(GuiConfiguration.getMessage(rs.getString("position_name")));
-
-				if (null == rs.getString("player_retired_date")) {
-					vector.add("");
-				} else {
-					vector.add(rs.getString("player_retired_date"));
-				}
-
+				vector.add(rs.getString("player_retired_date"));
 
 				tableData.add(vector);
-				playerMap.put(rs.getRow() - 1, rs.getString("player_id"));
+				playerMap.put(row, rs.getString("player_id"));
+				++row;
 			}
 
 			tableMap.put(0, playerMap);
@@ -281,10 +269,10 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public void fetchPlayerYear(String playerID,
-															String teamType,
-															Vector<String> comboBoxData,
-															Map<String, String> comboBoxMap)
+	public void fetchPlayerYearDB(String playerID,
+																String teamType,
+																Vector<String> comboBoxData,
+																Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call season_play(?, ?)}");
@@ -321,7 +309,7 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String fetchPlayerYear(String playerID)
+	public String fetchPlayerYearDB(String playerID)
 	{
 		String playerYear = null;
 
@@ -346,12 +334,12 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String newPlayer(String name,
-													String surname,
-													String dob,
-													String countryID,
-													String foot,
-													String positionID)
+	public String newPlayerDB(String name,
+														String surname,
+														String dob,
+														String countryID,
+														String foot,
+														String positionID)
 	{
 		String message = null;
 
@@ -382,7 +370,7 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String deletePlayer(String playerID)
+	public String deletePlayerDB(String playerID)
 	{
 		String message = null;
 
@@ -408,13 +396,13 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String updatePlayer(String playerID,
-														 String name,
-														 String surname,
-														 String dob,
-														 String countryID,
-														 String foot,
-														 String positionID)
+	public String updatePlayerDB(String playerID,
+															 String name,
+															 String surname,
+															 String dob,
+															 String countryID,
+															 String foot,
+															 String positionID)
 	{
 		String message = null;
 
@@ -447,8 +435,8 @@ public class PostgresImplPlayerDAO
 
 
 	@Override
-	public String setRetiredDate(String playerID,
-															 String retiredDate)
+	public String setRetiredDateDB(String playerID,
+																 String retiredDate)
 	{
 		String message = null;
 

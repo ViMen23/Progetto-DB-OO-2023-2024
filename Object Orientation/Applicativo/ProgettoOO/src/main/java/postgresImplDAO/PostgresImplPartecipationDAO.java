@@ -25,38 +25,6 @@ public class PostgresImplPartecipationDAO
 		}
 	}
 
-	@Override
-	public void fetchPartecipationDB(String teamID,
-																	 String competitionStartYear,
-																	 List<String> listCompetitionID,
-																	 List<String> listCompetitionType,
-																	 List<String> listCompetitionName,
-																	 List<String> listConfederationID,
-																	 List<String> listConfederationShortName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
-			cs.setString(1, teamID);
-			cs.setString(2, competitionStartYear);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listCompetitionID.add(rs.getString("comp_id"));
-				listCompetitionType.add(rs.getString("comp_type"));
-				listCompetitionName.add(rs.getString("comp_name"));
-				listConfederationID.add(rs.getString("conf_id"));
-				listConfederationShortName.add(rs.getString("conf_short_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
 	public String newPartecipationDB(String teamID,
@@ -115,9 +83,9 @@ public class PostgresImplPartecipationDAO
 	}
 
 	@Override
-	public void fetchPartecipation(String teamID,
-																 String competitionStartYear,
-																 Vector<Vector<Object>> teamPartecipationTableData)
+	public void fetchPartecipationDB(String teamID,
+																	 String competitionStartYear,
+																	 Vector<Vector<Object>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -133,7 +101,7 @@ public class PostgresImplPartecipationDAO
 				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
 				vector.add(rs.getString("conf_short_name"));
 
-				teamPartecipationTableData.add(vector);
+				tableData.add(vector);
 			}
 
 
@@ -147,10 +115,10 @@ public class PostgresImplPartecipationDAO
 	}
 
 	@Override
-	public void fetchPartecipationYear(String teamID,
-																		 String teamType,
-																		 Vector<String> partecipationYearVector,
-																		 Map<String, String> partecipationYearMap)
+	public void fetchPartecipationYearDB(String teamID,
+																			 String teamType,
+																			 Vector<String> comboBoxData,
+																			 Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_year(?)}");
@@ -165,13 +133,13 @@ public class PostgresImplPartecipationDAO
 					season += "/";
 					season += (Integer.parseInt(rs.getString("start_year")) + 1);
 
-					partecipationYearVector.add(season);
-					partecipationYearMap.put(season, rs.getString("start_year"));
+					comboBoxData.add(season);
+					comboBoxMap.put(season, rs.getString("start_year"));
 				}
 			} else if (teamType.equalsIgnoreCase(Team.TEAM_TYPE.NATIONAL.toString())) {
 				while (rs.next()) {
-					partecipationYearVector.add(rs.getString("start_year"));
-					partecipationYearMap.put(partecipationYearVector.getLast(), partecipationYearVector.getLast());
+					comboBoxData.add(rs.getString("start_year"));
+					comboBoxMap.put(comboBoxData.getLast(), comboBoxData.getLast());
 				}
 			}
 
@@ -186,10 +154,10 @@ public class PostgresImplPartecipationDAO
 	}
 
 	@Override
-	public void fetchPartecipation(String teamID,
-																 String competitionStartYear,
-																 Vector<String> partecipationNameVector,
-																 Map<String, String> partecipationNameMap)
+	public void fetchPartecipationDB(String teamID,
+																	 String competitionStartYear,
+																	 Vector<String> comboBoxData,
+																	 Map<String, String> comboBoxMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -200,8 +168,8 @@ public class PostgresImplPartecipationDAO
 
 
 			while (rs.next()) {
-				partecipationNameVector.add(rs.getString("comp_name"));
-				partecipationNameMap.put(partecipationNameVector.getLast(), rs.getString("comp_id"));
+				comboBoxData.add(rs.getString("comp_name"));
+				comboBoxMap.put(comboBoxData.getLast(), rs.getString("comp_id"));
 			}
 
 
@@ -215,10 +183,10 @@ public class PostgresImplPartecipationDAO
 	}
 
 	@Override
-	public void fetchPartecipationAdmin(String teamID,
-																			String competitionStartYear,
-																			Vector<Vector<Object>> teamPartecipationTableData,
-																			Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchPartecipationAdminDB(String teamID,
+																				String competitionStartYear,
+																				Vector<Vector<Object>> tableData,
+																				Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call partecipation_team(?, ?)}");
@@ -237,7 +205,7 @@ public class PostgresImplPartecipationDAO
 				vector.add(GuiConfiguration.getMessage(rs.getString("comp_type")));
 				vector.add(rs.getString("conf_short_name"));
 
-				teamPartecipationTableData.add(vector);
+				tableData.add(vector);
 				competitionMap.put(rs.getRow() - 1, rs.getString("comp_id"));
 			}
 

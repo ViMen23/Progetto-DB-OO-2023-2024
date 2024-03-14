@@ -2,11 +2,9 @@ package postgresImplDAO;
 
 import dao.TagDAO;
 import database.DatabaseConnection;
-import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -23,32 +21,10 @@ public class PostgresImplTagDAO
 		}
 	}
 
+
 	@Override
 	public void fetchTagDB(String playerID,
-												 List<String> listTagName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_tag_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listTagName.add(rs.getString("tag_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchTag(String playerID,
-											 Vector<Vector<String>> tableData)
+												 Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_tag_player(?)}");
@@ -74,8 +50,8 @@ public class PostgresImplTagDAO
 	}
 
 	@Override
-	public void fetchTag(Vector<String> comboBoxData,
-											 Map<String, String> comboBoxMap)
+	public void fetchTagDB(Vector<String> comboBoxData,
+												 Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_tag");
@@ -97,9 +73,9 @@ public class PostgresImplTagDAO
 	}
 
 	@Override
-	public void fetchTag(String playerID,
-											 Vector<Vector<Object>> tableData,
-											 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchTagDB(String playerID,
+												 Vector<Vector<Object>> tableData,
+												 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_tag_player(?)}");
@@ -133,8 +109,8 @@ public class PostgresImplTagDAO
 	}
 
 	@Override
-	public String newPlayerTag(String playerID,
-														 String tagID)
+	public String newPlayerTagDB(String playerID,
+															 String tagID)
 	{
 		String message = null;
 
@@ -159,8 +135,8 @@ public class PostgresImplTagDAO
 	}
 
 	@Override
-	public String deletePlayerTag(String playerID,
-																String tagID)
+	public String deletePlayerTagDB(String playerID,
+																	String tagID)
 	{
 		String message = null;
 

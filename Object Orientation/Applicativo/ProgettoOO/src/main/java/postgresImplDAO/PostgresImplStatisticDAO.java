@@ -26,14 +26,14 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void fetchStatisticPlayer(String playerID,
-																	 String teamType,
-																	 String teamID,
-																	 String competitionID,
-																	 String startYear,
-																	 String endYear,
-																	 Vector<Vector<Object>> tableData,
-																	 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchStatisticPlayerDB(String playerID,
+																		 String teamType,
+																		 String teamID,
+																		 String competitionID,
+																		 String startYear,
+																		 String endYear,
+																		 Vector<Vector<Object>> tableData,
+																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_statistic_player(?, ?, ?, ?, ?, ?)}");
@@ -110,10 +110,10 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void fetchStatisticEdition(String competitionStartYear,
-																		String competitionID,
-																		Vector<Vector<Object>> tableData,
-																		Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchStatisticEditionDB(String competitionStartYear,
+																			String competitionID,
+																			Vector<Vector<Object>> tableData,
+																			Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call competition_edition_statistic(?, ?)}");
@@ -173,10 +173,10 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void fetchStatisticTotal(String teamType,
-																	String playerRole,
-																	Vector<Vector<Object>> tableData,
-																	Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchStatisticTotalDB(String teamType,
+																		String playerRole,
+																		Vector<Vector<Object>> tableData,
+																		Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call total_statistic(?, ?)}");
@@ -232,12 +232,12 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void fetchStatisticAdmin(String playerID,
-																	String teamID,
-																	String competitionID,
-																	String competitionStartYear,
-																	Vector<Vector<String>> tableData,
-																	Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchStatisticAdminDB(String playerID,
+																		String teamID,
+																		String competitionID,
+																		String competitionStartYear,
+																		Vector<Vector<String>> tableData,
+																		Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_statistic_player_admin(?, ?, ?, ?)}");
@@ -281,15 +281,15 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public String updateStatistic(String playID,
-																String match,
-																String goalScored,
-																String assist,
-																String yellowCard,
-																String redCard,
-																String penaltyScored,
-																String goalConceded,
-																String penaltySaved)
+	public String updateStatisticDB(String playID,
+																	String match,
+																	String goalScored,
+																	String assist,
+																	String yellowCard,
+																	String redCard,
+																	String penaltyScored,
+																	String goalConceded,
+																	String penaltySaved)
 	{
 		String message = null;
 

@@ -6,7 +6,6 @@ import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -23,66 +22,12 @@ public class PostgresImplPrizeDAO
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public void fetchTeamPrizeDB(String teamID,
-															 List<String> listPrizeID,
-															 List<String> listPrizeAssignYear,
-															 List<String> listPrizeName,
-															 List<String> listPrizeGiven)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
-			cs.setString(1, teamID);
 
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listPrizeID.add(rs.getString("prize_id"));
-				listPrizeAssignYear.add(rs.getString("prize_assign_year"));
-				listPrizeName.add(rs.getString("prize_name"));
-				listPrizeGiven.add(rs.getString("prize_given"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
-	public void fetchPlayerPrizeDB(String playerID,
-																 List<String> listPrizeAssignYear,
-																 List<String> listPrizeName,
-																 List<String> listPrizeGiven)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listPrizeAssignYear.add(rs.getString("prize_year"));
-				listPrizeName.add(rs.getString("prize_name"));
-				listPrizeGiven.add(rs.getString("prize_given"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (Exception e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public String newPrizeTeam(String teamID,
-														 String prizeID,
-														 String assignedYear)
+	public String newPrizeTeamDB(String teamID,
+															 String prizeID,
+															 String assignedYear)
 	{
 		String message = null;
 
@@ -108,9 +53,9 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public String deletePrizeTeam(String teamID,
-																String prizeID,
-																String assignedYear)
+	public String deletePrizeTeamDB(String teamID,
+																	String prizeID,
+																	String assignedYear)
 	{
 		String message = null;
 
@@ -136,8 +81,8 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchPrize(String teamID,
-												 Vector<Vector<String>> tableData)
+	public void fetchPrizeDB(String teamID,
+													 Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
@@ -165,8 +110,8 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchPrizePlayer(String playerID,
-															 Vector<Vector<String>> tableData)
+	public void fetchPrizePlayerDB(String playerID,
+																 Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
@@ -194,9 +139,9 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchTeamPrizeAdmin(String teamID,
-																	Vector<Vector<Object>> tableData,
-																	Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchTeamPrizeAdminDB(String teamID,
+																		Vector<Vector<Object>> tableData,
+																		Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call prize_team(?)}");
@@ -237,8 +182,8 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchTeamPrize(Vector<String> comboBoxData,
-														 Map<String, String> comboBoxMap)
+	public void fetchTeamPrizeDB(Vector<String> comboBoxData,
+															 Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_team_prize");
@@ -260,8 +205,8 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchPlayerPrize(Vector<String> comboBoxData,
-															 Map<String, String> comboBoxMap)
+	public void fetchPlayerPrizeDB(Vector<String> comboBoxData,
+																 Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_player_prize");
@@ -289,9 +234,9 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public void fetchPlayerPrize(String playerID,
-															 Vector<Vector<Object>> tableData,
-															 Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchPlayerPrizeDB(String playerID,
+																 Vector<Vector<Object>> tableData,
+																 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call prize_player(?)}");
@@ -330,9 +275,9 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public String newPlayerPrize(String playerID,
-															 String prizeID,
-															 String assignedYear)
+	public String newPlayerPrizeDB(String playerID,
+																 String prizeID,
+																 String assignedYear)
 	{
 		String message = null;
 
@@ -358,9 +303,9 @@ public class PostgresImplPrizeDAO
 	}
 
 	@Override
-	public String deletePlayerPrize(String playerID,
-																	String prizeID,
-																	String assignedYear)
+	public String deletePlayerPrizeDB(String playerID,
+																		String prizeID,
+																		String assignedYear)
 	{
 		String message = null;
 

@@ -7,60 +7,60 @@ public interface PlayerDAO
 {
 	int countPlayerDB();
 
-	void fetchPlayer(String playerID,
-									 Map<String, String> infoMap);
+	void fetchPlayerDB(String playerID,
+										 Map<String, String> infoMap);
 
-	void fetchPlayer(String startYear,
-									 String teamID,
-									 Vector<String> comboBoxData,
-									 Map<String, String> comboBoxMap);
+	void fetchPlayerDB(String startYear,
+										 String teamID,
+										 Vector<String> comboBoxData,
+										 Map<String, String> comboBoxMap);
 
-	void fetchPlayer(String playerSubName,
-									 String playerSubSurname,
-									 String playerReferringYear,
-									 String playerMinAge,
-									 String playerMaxAge,
-									 String playerContinentID,
-									 String playerNationID,
-									 String playerRole,
-									 String playerPositionID,
-									 String playerFoot,
-									 Vector<Vector<String>> tableData,
-									 Map<Integer, Map<Integer, String>> tableMap);
+	void fetchPlayerDB(String playerSubName,
+										 String playerSubSurname,
+										 String playerReferringYear,
+										 String playerMinAge,
+										 String playerMaxAge,
+										 String playerContinentID,
+										 String playerNationID,
+										 String playerRole,
+										 String playerPositionID,
+										 String playerFoot,
+										 Vector<Vector<String>> tableData,
+										 Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchPlayer(String militancyPlayerTeamID,
-									 String militancyPlayerStartYear,
-									 String militancyPlayerEndYear,
-									 Vector<Vector<String>> tableData,
-									 Map<Integer, Map<Integer, String>> tableMap);
+	void fetchPlayerDB(String militancyPlayerTeamID,
+										 String militancyPlayerStartYear,
+										 String militancyPlayerEndYear,
+										 Vector<Vector<String>> tableData,
+										 Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchPlayerYear(String playerID,
-											 String teamType,
-											 Vector<String> comboBoxData,
-											 Map<String, String> comboBoxMap);
+	void fetchPlayerYearDB(String playerID,
+												 String teamType,
+												 Vector<String> comboBoxData,
+												 Map<String, String> comboBoxMap);
 
-	String fetchPlayerYear(String playerID);
+	String fetchPlayerYearDB(String playerID);
 
-	String newPlayer(String name,
-									 String surname,
-									 String dob,
-									 String countryID,
-									 String foot,
-									 String positionID);
+	String newPlayerDB(String name,
+										 String surname,
+										 String dob,
+										 String countryID,
+										 String foot,
+										 String positionID);
 
-	String deletePlayer(String playerID);
+	String deletePlayerDB(String playerID);
 
-	String updatePlayer(String playerID,
-											String name,
-											String surname,
-											String dob,
-											String countryID,
-											String foot,
-											String positionID);
+	String updatePlayerDB(String playerID,
+												String name,
+												String surname,
+												String dob,
+												String countryID,
+												String foot,
+												String positionID);
 
 
-	String setRetiredDate(String playerID,
-												String retiredDate);
+	String setRetiredDateDB(String playerID,
+													String retiredDate);
 
 	String randomPlayerDB();
 

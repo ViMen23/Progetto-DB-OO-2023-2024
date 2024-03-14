@@ -17,7 +17,7 @@ import java.util.*;
 public class Controller
 {
 	private static Controller controllerInstance = null;
-	private static Admin adminConnected = null;
+	private static boolean adminConnected = false;
 
 	private Controller()
 	{
@@ -68,18 +68,12 @@ public class Controller
 			return false;
 		}
 
-		if (adminConnected != null) {
+		if (adminConnected) {
 			return false;
 		}
 
 		AdminDAO adminDAO = new PostgresImplAdminDAO();
-		if (adminDAO.isAdminDB(username, password)) {
-			adminConnected = new Admin(username, password);
-			System.out.println("Connesso");
-			return true;
-		}
-
-		return false;
+		return adminDAO.isAdminDB(username, password);
 	}
 
 
@@ -88,9 +82,8 @@ public class Controller
 	 */
 	public void logoutAdmin()
 	{
-		if (null != adminConnected) {
-			adminConnected = null;
-			System.out.println("Disconnesso");
+		if (adminConnected) {
+			adminConnected = false;
 		}
 	}
 
@@ -101,7 +94,7 @@ public class Controller
 	 */
 	public boolean isAdminConnected()
 	{
-		return (null != adminConnected);
+		return adminConnected;
 	}
 
 
@@ -485,7 +478,7 @@ public class Controller
 	public String createCompetitionEdition(String competitionID,
 																				 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -506,7 +499,7 @@ public class Controller
 	public String deleteCompetitionEdition(String competitionID,
 																				 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -801,7 +794,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (null == adminConnected) {
+		if (adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -843,7 +836,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (null == adminConnected) {
+		if (adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -879,7 +872,7 @@ public class Controller
 	 */
 	public String deleteTeam(String teamID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -914,7 +907,7 @@ public class Controller
 															 Map<String, String> infoPlayerMap)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayer(
+		playerDAO.fetchPlayerDB(
 						playerID,
 						infoPlayerMap
 		);
@@ -934,7 +927,7 @@ public class Controller
 																Map<String, String> playerInfoMap)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayer(
+		playerDAO.fetchPlayerDB(
 						startYear,
 						teamID,
 						playerInfoVector,
@@ -956,7 +949,7 @@ public class Controller
 																		Map<String, String> seasonMap)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayerYear(
+		playerDAO.fetchPlayerYearDB(
 						playerID,
 						teamType,
 						seasonVector,
@@ -994,7 +987,7 @@ public class Controller
 														 Map<Integer, Map<Integer, String>> playerTableMap)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayer(
+		playerDAO.fetchPlayerDB(
 						playerSubName,
 						playerSubSurname,
 						playerReferringYear,
@@ -1026,7 +1019,7 @@ public class Controller
 														 Map<Integer, Map<Integer, String>> playerTableMap)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		playerDAO.fetchPlayer(
+		playerDAO.fetchPlayerDB(
 						militancyPlayerTeamID,
 						militancyPlayerStartYear,
 						militancyPlayerEndYear,
@@ -1183,7 +1176,7 @@ public class Controller
 	public String setPlayerYear(String playerID)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.fetchPlayerYear(playerID);
+		return playerDAO.fetchPlayerYearDB(playerID);
 	}
 
 
@@ -1204,12 +1197,12 @@ public class Controller
 													String foot,
 													String positionID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.newPlayer(
+		return playerDAO.newPlayerDB(
 						name,
 						surname,
 						dob,
@@ -1227,12 +1220,12 @@ public class Controller
 	 */
 	public String deletePlayer(String playerID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.deletePlayer(playerID);
+		return playerDAO.deletePlayerDB(playerID);
 	}
 
 
@@ -1255,12 +1248,12 @@ public class Controller
 														 String foot,
 														 String positionID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.updatePlayer(
+		return playerDAO.updatePlayerDB(
 						playerID,
 						name,
 						surname,
@@ -1281,12 +1274,12 @@ public class Controller
 	public String setRetiredDate(String playerID,
 															 String retiredDate)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
-		return playerDAO.setRetiredDate(
+		return playerDAO.setRetiredDateDB(
 						playerID,
 						retiredDate
 		);
@@ -1308,7 +1301,7 @@ public class Controller
 																	Map<String, String> positionNameMap)
 	{
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.fetchPosition(
+		positionDAO.fetchPositionDB(
 						positionNameVector,
 						positionNameMap
 		);
@@ -1324,7 +1317,7 @@ public class Controller
 															 Vector<Vector<String>> playerPositionTableData)
 	{
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.fetchPosition(
+		positionDAO.fetchPositionDB(
 						playerID,
 						playerPositionTableData
 		);
@@ -1342,7 +1335,7 @@ public class Controller
 															 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		positionDAO.fetchPosition(
+		positionDAO.fetchPositionDB(
 						playerID,
 						tableData,
 						tableMap
@@ -1359,12 +1352,12 @@ public class Controller
 	public String addPlayerPosition(String playerID,
 																	String positionID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		return positionDAO.newPlayerPosition(
+		return positionDAO.newPlayerPositionDB(
 						playerID,
 						positionID
 		);
@@ -1380,12 +1373,12 @@ public class Controller
 	public String removePlayerPosition(String playerID,
 																		 String positionID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PositionDAO positionDAO = new PostgresImplPositionDAO();
-		return positionDAO.deletePlayerPosition(
+		return positionDAO.deletePlayerPositionDB(
 						playerID,
 						positionID
 		);
@@ -1411,7 +1404,7 @@ public class Controller
 																Map<Integer, Map<Integer, String>> statisticTableDataMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticTotal(
+		statisticDAO.fetchStatisticTotalDB(
 						teamType,
 						playerRole,
 						statisticTableData,
@@ -1433,7 +1426,7 @@ public class Controller
 																									Map<Integer, Map<Integer, String>> statisticTableMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticEdition(
+		statisticDAO.fetchStatisticEditionDB(
 						competitionStartYear,
 						competitionID,
 						statisticTableData,
@@ -1463,7 +1456,7 @@ public class Controller
 																			Map<Integer, Map<Integer, String>> playerStatisticTableMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticPlayer(
+		statisticDAO.fetchStatisticPlayerDB(
 						playerID,
 						teamType,
 						teamID,
@@ -1493,7 +1486,7 @@ public class Controller
 																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticAdmin(
+		statisticDAO.fetchStatisticAdminDB(
 						playerID,
 						teamID,
 						competitionID,
@@ -1527,12 +1520,12 @@ public class Controller
 																String goalConceded,
 																String penaltySaved)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		return statisticDAO.updateStatistic(
+		return statisticDAO.updateStatisticDB(
 						playID,
 						match,
 						goalScored,
@@ -1562,7 +1555,7 @@ public class Controller
 																		Vector<Vector<Object>> teamPartecipationTableData)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipation(teamID, competitionStartYear, teamPartecipationTableData);
+		partecipationDAO.fetchPartecipationDB(teamID, competitionStartYear, teamPartecipationTableData);
 	}
 
 
@@ -1579,7 +1572,7 @@ public class Controller
 																				 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipationAdmin(
+		partecipationDAO.fetchPartecipationAdminDB(
 						teamID,
 						competitionStartYear,
 						teamPartecipationTableData,
@@ -1601,7 +1594,7 @@ public class Controller
 																					 Map<String, String> partecipationYearMap)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipationYear(
+		partecipationDAO.fetchPartecipationYearDB(
 						teamID,
 						teamType,
 						partecipationYearVector,
@@ -1623,7 +1616,7 @@ public class Controller
 																			 Map<String, String> partecipationNameMap)
 	{
 		PartecipationDAO partecipationDAO = new PostgresImplPartecipationDAO();
-		partecipationDAO.fetchPartecipation(
+		partecipationDAO.fetchPartecipationDB(
 						teamID,
 						competitionStartYear,
 						partecipationNameVector,
@@ -1643,7 +1636,7 @@ public class Controller
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1663,7 +1656,7 @@ public class Controller
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1692,7 +1685,7 @@ public class Controller
 																Map<Integer, Map<Integer, String>> teamSquadTableMap)
 	{
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancy(teamID, startYear, teamSquadTableData, teamSquadTableMap);
+		militancyDAO.fetchMilitancyDB(teamID, startYear, teamSquadTableData, teamSquadTableMap);
 	}
 
 
@@ -1707,7 +1700,7 @@ public class Controller
 																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyNational(playerID, tableData, tableMap);
+		militancyDAO.fetchMilitancyNationalDB(playerID, tableData, tableMap);
 	}
 
 	/**
@@ -1721,7 +1714,7 @@ public class Controller
 																 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyClub(playerID, tableData, tableMap);
+		militancyDAO.fetchMilitancyClubDB(playerID, tableData, tableMap);
 	}
 
 
@@ -1736,7 +1729,7 @@ public class Controller
 																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyNationalAdmin(
+		militancyDAO.fetchMilitancyNationalAdminDB(
 						playerID,
 						tableData,
 						tableMap
@@ -1755,7 +1748,7 @@ public class Controller
 																 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		militancyDAO.fetchMilitancyClubAdmin(
+		militancyDAO.fetchMilitancyClubAdminDB(
 						playerID,
 						tableData,
 						tableMap
@@ -1778,12 +1771,12 @@ public class Controller
 														 String startYear,
 														 String seasonType)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		return militancyDAO.newMilitancy(
+		return militancyDAO.newMilitancyDB(
 						playerID,
 						teamID,
 						teamType,
@@ -1804,12 +1797,12 @@ public class Controller
 																String teamID,
 																String startYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		MilitancyDAO militancyDAO = new PostgresImplMilitancyDAO();
-		return militancyDAO.deleteMilitancy(
+		return militancyDAO.deleteMilitancyDB(
 						playerID,
 						teamID,
 						startYear
@@ -1831,7 +1824,7 @@ public class Controller
 																		Map<String, String> comboBoxMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTeamTrophy(comboBoxData, comboBoxMap);
+		trophyDAO.fetchTeamTrophyDB(comboBoxData, comboBoxMap);
 	}
 
 
@@ -1844,7 +1837,7 @@ public class Controller
 																			Map<String, String> comboBoxMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchPlayerTrophy(comboBoxData, comboBoxMap);
+		trophyDAO.fetchPlayerTrophyDB(comboBoxData, comboBoxMap);
 	}
 
 
@@ -1859,7 +1852,7 @@ public class Controller
 																 Vector<Vector<String>> tableData)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTrophy(
+		trophyDAO.fetchTrophyDB(
 						teamID,
 						teamType,
 						tableData
@@ -1880,7 +1873,7 @@ public class Controller
 																			Map<Integer, Map<Integer, String>> tableMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTeamTrophyAdmin(
+		trophyDAO.fetchTeamTrophyAdminDB(
 						teamID,
 						teamType,
 						tableData,
@@ -1902,7 +1895,7 @@ public class Controller
 																	 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTrophy(
+		trophyDAO.fetchTrophyDB(
 						playerID,
 						teamType,
 						tableData,
@@ -1924,7 +1917,7 @@ public class Controller
 																				Map<Integer, Map<Integer, String>> tableMap)
 	{
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		trophyDAO.fetchTrophyPlayerAdmin(
+		trophyDAO.fetchTrophyPlayerAdminDB(
 						playerID,
 						teamType,
 						tableData,
@@ -1946,12 +1939,12 @@ public class Controller
 																 String competitionID,
 																 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		return trophyDAO.newTrophyTeam(
+		return trophyDAO.newTrophyTeamDB(
 						teamID,
 						trophyID,
 						competitionID,
@@ -1973,12 +1966,12 @@ public class Controller
 																 String competitionID,
 																 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		return trophyDAO.deleteTrophyTeam(
+		return trophyDAO.deleteTrophyTeamDB(
 						teamID,
 						trophyID,
 						competitionID,
@@ -2002,12 +1995,12 @@ public class Controller
 																	 String competitionID,
 																	 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		return trophyDAO.newTrophyPlayer(
+		return trophyDAO.newTrophyPlayerDB(
 						playerID,
 						teamID,
 						trophyID,
@@ -2032,12 +2025,12 @@ public class Controller
 																	 String competitionID,
 																	 String competitionStartYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TrophyDAO trophyDAO = new PostgresImplTrophyDAO();
-		return trophyDAO.deleteTrophyPlayer(
+		return trophyDAO.deleteTrophyPlayerDB(
 						playerID,
 						teamID,
 						trophyID,
@@ -2061,7 +2054,7 @@ public class Controller
 																	 Map<String, String> comboBoxMap)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchTeamPrize(
+		prizeDAO.fetchTeamPrizeDB(
 						comboBoxData,
 						comboBoxMap
 		);
@@ -2077,7 +2070,7 @@ public class Controller
 																		 Map<String, String> comboBoxMap)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPlayerPrize(
+		prizeDAO.fetchPlayerPrizeDB(
 						comboBoxData,
 						comboBoxMap
 		);
@@ -2093,7 +2086,7 @@ public class Controller
 																Vector<Vector<String>> tableData)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPrize(teamID, tableData);
+		prizeDAO.fetchPrizeDB(teamID, tableData);
 	}
 
 
@@ -2108,7 +2101,7 @@ public class Controller
 																		 Map<Integer, Map<Integer, String>> tableMap)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchTeamPrizeAdmin(
+		prizeDAO.fetchTeamPrizeAdminDB(
 						teamID,
 						tableData,
 						tableMap
@@ -2125,7 +2118,7 @@ public class Controller
 																	Vector<Vector<String>> tableData)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPrize(playerID, tableData);
+		prizeDAO.fetchPrizePlayerDB(playerID, tableData);
 	}
 
 
@@ -2140,12 +2133,12 @@ public class Controller
 																String prizeID,
 																String assignedYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		return prizeDAO.newPrizeTeam(
+		return prizeDAO.newPrizeTeamDB(
 						teamID,
 						prizeID,
 						assignedYear
@@ -2164,12 +2157,12 @@ public class Controller
 																String prizeID,
 																String assignedYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		return prizeDAO.deletePrizeTeam(
+		return prizeDAO.deletePrizeTeamDB(
 						teamID,
 						prizeID,
 						assignedYear
@@ -2188,7 +2181,7 @@ public class Controller
 																	Map<Integer, Map<Integer, String>> tableMap)
 	{
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		prizeDAO.fetchPlayerPrize(
+		prizeDAO.fetchPlayerPrizeDB(
 						playerID,
 						tableData,
 						tableMap
@@ -2207,12 +2200,12 @@ public class Controller
 															 String prizeID,
 															 String assignedYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		return prizeDAO.newPlayerPrize(
+		return prizeDAO.newPlayerPrizeDB(
 						playerID,
 						prizeID,
 						assignedYear
@@ -2231,12 +2224,12 @@ public class Controller
 																	String prizeID,
 																	String assignedYear)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		PrizeDAO prizeDAO = new PostgresImplPrizeDAO();
-		return prizeDAO.deletePlayerPrize(
+		return prizeDAO.deletePlayerPrizeDB(
 						playerID,
 						prizeID,
 						assignedYear
@@ -2313,7 +2306,7 @@ public class Controller
 	public String addNationality(String playerID,
 															 String countryID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2334,7 +2327,7 @@ public class Controller
 	public String removeNationality(String playerID,
 																	String countryID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2361,7 +2354,7 @@ public class Controller
 																					 Vector<Vector<String>> playerAttributeGoalkeepingTableData)
 	{
 		AttributeGoalkeepingDAO attributeGoalkeepingDAO = new PostgresImplAttributeGoalkeepingDAO();
-		attributeGoalkeepingDAO.fetchAttributeGoalkeeping(playerID, playerAttributeGoalkeepingTableData);
+		attributeGoalkeepingDAO.fetchAttributeGoalkeepingDB(playerID, playerAttributeGoalkeepingTableData);
 	}
 
 
@@ -2374,7 +2367,7 @@ public class Controller
 																			Vector<Vector<String>> playerAttributeMentalTableData)
 	{
 		AttributeMentalDAO attributeMentalDAO = new PostgresImplAttributeMentalDAO();
-		attributeMentalDAO.fetchAttributeMental(playerID, playerAttributeMentalTableData);
+		attributeMentalDAO.fetchAttributeMentalDB(playerID, playerAttributeMentalTableData);
 	}
 
 
@@ -2387,7 +2380,7 @@ public class Controller
 																				Vector<Vector<String>> playerAttributePhysicalTableData)
 	{
 		AttributePhysicalDAO attributePhysicalDAO = new PostgresImplAttributePhysicalDAO();
-		attributePhysicalDAO.fetchAttributePhysical(playerID, playerAttributePhysicalTableData);
+		attributePhysicalDAO.fetchAttributePhysicalDB(playerID, playerAttributePhysicalTableData);
 	}
 
 
@@ -2400,7 +2393,7 @@ public class Controller
 																				 Vector<Vector<String>> playerAttributeTechnicalTableData)
 	{
 		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
-		attributeTechnicalDAO.fetchAttributeTechnical(playerID, playerAttributeTechnicalTableData);
+		attributeTechnicalDAO.fetchAttributeTechnicalDB(playerID, playerAttributeTechnicalTableData);
 	}
 
 
@@ -2437,12 +2430,12 @@ public class Controller
 																					 String rushingOutTendency,
 																					 String throwing)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		AttributeGoalkeepingDAO attributeGoalkeepingDAO = new PostgresImplAttributeGoalkeepingDAO();
-		return attributeGoalkeepingDAO.updateAttributeGoalkeeping(
+		return attributeGoalkeepingDAO.updateAttributeGoalkeepingDB(
 						playerID,
 						aerialReach,
 						commandOfArea,
@@ -2496,12 +2489,12 @@ public class Controller
 																			String vision,
 																			String workRate)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		AttributeMentalDAO attributeMentalDAO = new PostgresImplAttributeMentalDAO();
-		return attributeMentalDAO.updateAttributeMental(
+		return attributeMentalDAO.updateAttributeMentalDB(
 						playerID,
 						aggression,
 						anticipation,
@@ -2544,12 +2537,12 @@ public class Controller
 																				String stamina,
 																				String strength)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		AttributePhysicalDAO attributePhysicalDAO = new PostgresImplAttributePhysicalDAO();
-		return attributePhysicalDAO.updateAttributePhysical(
+		return attributePhysicalDAO.updateAttributePhysicalDB(
 						playerID,
 						acceleration,
 						agility,
@@ -2598,12 +2591,12 @@ public class Controller
 																				 String tackling,
 																				 String technique)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		AttributeTechnicalDAO attributeTechnicalDAO = new PostgresImplAttributeTechnicalDAO();
-		return attributeTechnicalDAO.updateAttributeTechnical(
+		return attributeTechnicalDAO.updateAttributeTechnicalDB(
 						playerID,
 						corners,
 						crossing,
@@ -2638,7 +2631,7 @@ public class Controller
 													Vector<Vector<String>> tableData)
 	{
 		TagDAO tagDAO = new PostgresImplTagDAO();
-		tagDAO.fetchTag(
+		tagDAO.fetchTagDB(
 						playerID,
 						tableData
 		);
@@ -2656,7 +2649,7 @@ public class Controller
 													Map<Integer, Map<Integer, String>> tableMap)
 	{
 		TagDAO tagDAO = new PostgresImplTagDAO();
-		tagDAO.fetchTag(
+		tagDAO.fetchTagDB(
 						playerID,
 						tableData,
 						tableMap
@@ -2673,7 +2666,7 @@ public class Controller
 														 Map<String, String> comboBoxMap)
 	{
 		TagDAO tagDAO = new PostgresImplTagDAO();
-		tagDAO.fetchTag(
+		tagDAO.fetchTagDB(
 						comboBoxData,
 						comboBoxMap
 		);
@@ -2689,12 +2682,12 @@ public class Controller
 	public String addPlayerTag(String playerID,
 														 String tagID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TagDAO tagDAO = new PostgresImplTagDAO();
-		return tagDAO.newPlayerTag(
+		return tagDAO.newPlayerTagDB(
 						playerID,
 						tagID
 		);
@@ -2710,12 +2703,12 @@ public class Controller
 	public String removePlayerTag(String playerID,
 																String tagID)
 	{
-		if (null == adminConnected) {
+		if (adminConnected) {
 			return "errorNoAdmin";
 		}
 
 		TagDAO tagDAO = new PostgresImplTagDAO();
-		return tagDAO.deletePlayerTag(
+		return tagDAO.deletePlayerTagDB(
 						playerID,
 						tagID
 		);

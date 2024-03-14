@@ -6,7 +6,6 @@ import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -22,63 +21,11 @@ public class PostgresImplPositionDAO
 			e.printStackTrace();
 		}
 	}
-	@Override
-	public void fetchPositionDB(List<String> listPositionID,
-															List<String> listPositionRole,
-															List<String> listPositionCode,
-															List<String> listPositionName)
-	{
-		try {
-			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_positions");
 
-			ResultSet rs = ps.executeQuery();
-
-			while (rs.next()) {
-				listPositionID.add(rs.getString("position_id"));
-				listPositionRole.add(rs.getString("position_role"));
-				listPositionCode.add(rs.getString("position_code"));
-				listPositionName.add(rs.getString("position_name"));
-			}
-
-			rs.close();
-			ps.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
 
 	@Override
 	public void fetchPositionDB(String playerID,
-															List<String> listPositionRole,
-															List<String> listPositionCode,
-															List<String> listPositionName)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call position_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				listPositionRole.add(rs.getString("position_role"));
-				listPositionCode.add(rs.getString("position_code"));
-				listPositionName.add(rs.getString("position_name"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-	@Override
-	public void fetchPosition(String playerID,
-														Vector<Vector<String>> playerPositionTableData)
+															Vector<Vector<String>> tableData)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call position_player(?)}");
@@ -93,7 +40,7 @@ public class PostgresImplPositionDAO
 				vector.add(rs.getString("position_code"));
 				vector.add(GuiConfiguration.getMessage(rs.getString("position_name")));
 
-				playerPositionTableData.add(vector);
+				tableData.add(vector);
 			}
 
 			rs.close();
@@ -106,8 +53,8 @@ public class PostgresImplPositionDAO
 	}
 
 	@Override
-	public void fetchPosition(Vector<String> positionNameVector,
-														Map<String, String> positionNameMap)
+	public void fetchPositionDB(Vector<String> comboBoxData,
+															Map<String, String> comboBoxMap)
 	{
 		try {
 			PreparedStatement ps = this.conn.prepareStatement("SELECT * FROM vi_all_positions");
@@ -121,8 +68,8 @@ public class PostgresImplPositionDAO
 				positionInfo += "] ";
 				positionInfo += GuiConfiguration.getMessage(rs.getString("position_name"));
 
-				positionNameVector.add(positionInfo);
-				positionNameMap.put(positionInfo, rs.getString("position_id"));
+				comboBoxData.add(positionInfo);
+				comboBoxMap.put(positionInfo, rs.getString("position_id"));
 			}
 
 			rs.close();
@@ -135,9 +82,9 @@ public class PostgresImplPositionDAO
 	}
 
 	@Override
-	public void fetchPosition(String playerID,
-														Vector<Vector<Object>> tableData,
-														Map<Integer, Map<Integer, String>> tableMap)
+	public void fetchPositionDB(String playerID,
+															Vector<Vector<Object>> tableData,
+															Map<Integer, Map<Integer, String>> tableMap)
 	{
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call position_player(?)}");
@@ -173,8 +120,8 @@ public class PostgresImplPositionDAO
 	}
 
 	@Override
-	public String newPlayerPosition(String playerID,
-																	String positionID)
+	public String newPlayerPositionDB(String playerID,
+																		String positionID)
 	{
 		String message = null;
 
@@ -199,8 +146,8 @@ public class PostgresImplPositionDAO
 	}
 
 	@Override
-	public String deletePlayerPosition(String playerID,
-																		 String positionID)
+	public String deletePlayerPositionDB(String playerID,
+																			 String positionID)
 	{
 		String message = null;
 

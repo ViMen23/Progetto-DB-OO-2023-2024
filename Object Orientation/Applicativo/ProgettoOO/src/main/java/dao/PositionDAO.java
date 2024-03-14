@@ -1,34 +1,23 @@
 package dao;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 public interface PositionDAO
 {
-	void fetchPositionDB(List<String> listPositionID,
-											 List<String> listPositionRole,
-											 List<String> listPositionCode,
-											 List<String> listPositionName);
+	void fetchPositionDB(String playerID,
+											 Vector<Vector<String>> tableData);
+
+	void fetchPositionDB(Vector<String> comboBoxData,
+											 Map<String, String> comboBoxMap);
 
 	void fetchPositionDB(String playerID,
-											 List<String> listPositionRole,
-											 List<String> listPositionCode,
-											 List<String> listPositionName);
+											 Vector<Vector<Object>> tableData,
+											 Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchPosition(String playerID,
-										 Vector<Vector<String>> playerPositionTableData);
+	String newPlayerPositionDB(String playerID,
+														 String positionID);
 
-	void fetchPosition(Vector<String> positionNameVector,
-										 Map<String, String> positionNameMap);
-
-	void fetchPosition(String playerID,
-										 Vector<Vector<Object>> tableData,
-										 Map<Integer, Map<Integer, String>> tableMap);
-
-	String newPlayerPosition(String playerID,
-													 String positionID);
-
-	String deletePlayerPosition(String playerID,
-															String positionID);
+	String deletePlayerPositionDB(String playerID,
+																String positionID);
 }
