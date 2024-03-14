@@ -57,7 +57,7 @@ public class AdminViewTeamAddParticipation
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.SIX_CELL_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -121,7 +121,7 @@ public class AdminViewTeamAddParticipation
 		confirmButton.setCursor(GuiConfiguration.HAND_CURSOR);
 		confirmButton.setEnabled(false);
 
-		this.add(confirmButton);
+		this.add(confirmButton, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
 		confirmButton.addActionListener(new ActionListener() {
 			@Override

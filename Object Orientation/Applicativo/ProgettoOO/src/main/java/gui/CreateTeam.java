@@ -119,7 +119,7 @@ public class CreateTeam
 		button.setEnabled(false);
 
 
-		centerPanel.add(button);
+		centerPanel.add(button, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
 		button.addActionListener(new ActionListener() {
 			@Override

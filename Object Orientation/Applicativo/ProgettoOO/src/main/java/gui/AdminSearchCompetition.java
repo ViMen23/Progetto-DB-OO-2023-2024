@@ -198,7 +198,7 @@ public class AdminSearchCompetition
 				String string;
 
 				competitionTableData.clear();
-				competitionTableData.clear();
+				competitionTableDataMap.clear();
 
 				Controller.getInstance().setCompetitionTableAdmin(
 								ctrlCompetitionSubName.getText(),

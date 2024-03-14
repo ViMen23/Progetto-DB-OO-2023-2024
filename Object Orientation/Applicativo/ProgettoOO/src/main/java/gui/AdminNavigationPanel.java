@@ -214,10 +214,10 @@ public class AdminNavigationPanel
 					AdminNavigationPanel.this.setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminNavigationPanel.this);
 
-//					MainFrame.getMainFrameInstance().getContentPane().add(
-//									new AdminNavigationPanel(new AdminStepFilter(),
-//									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-//					);
+					MainFrame.getMainFrameInstance().getContentPane().add(
+									new AdminNavigationPanel(new AdminStepFilterPanel()),
+									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
+					);
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}

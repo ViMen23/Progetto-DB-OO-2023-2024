@@ -548,8 +548,7 @@ public class SearchPlayerPanel
 						MainFrame.getMainFrameInstance().getContentPane().remove(SearchPlayerPanel.this.getParent());
 
 						MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
-					} catch (Exception ex) {
-						System.err.println("ERRORE: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseTable.setText("@null");
 					}

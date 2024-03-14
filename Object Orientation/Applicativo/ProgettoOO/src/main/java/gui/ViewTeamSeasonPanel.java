@@ -192,8 +192,7 @@ public class ViewTeamSeasonPanel
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 
-					} catch (Exception ex) {
-						System.err.println("Errore: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlMouseSquadTable.setText("@null");
 					}

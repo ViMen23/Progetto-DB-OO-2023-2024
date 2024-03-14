@@ -40,7 +40,7 @@ public class AdminViewTeamUpdateGeneralInfo
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
-						GuiConfiguration.FIVE_CELL_EXT_GAP_10_0_INT_GAP_10_0_0_10_LAYOUT_CONSTRAINT
+						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -71,25 +71,8 @@ public class AdminViewTeamUpdateGeneralInfo
 
 		confirmButton.setOpaque(true);
 
-		this.add(confirmButton);
+		this.add(confirmButton, GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT);
 
-		confirmButton.addPropertyChangeListener("enable", new PropertyChangeListener() {
-			@Override
-			public void propertyChange(PropertyChangeEvent evt)
-			{
-				/*
-				 if ((boolean) evt.getNewValue()) {
-					 confirmButton.setBackground(UIManager.getColor("Button.background"));
-				 }
-				 else {
-					 confirmButton.setForeground(Color.gray);
-					 confirmButton.setBackground(Color.gray);
-					 confirmButton.setOpaque(true);
-				 }
-
-				 */
-			}
-		});
 		confirmButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)

@@ -13,14 +13,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Vector;
 
-public class CompetitionEditionFilterPanel
+public class AdminStepFilterPanel
 				extends JPanel
 {
-
-	public CompetitionEditionFilterPanel()
+	public AdminStepFilterPanel()
 	{
 		final JLabel ctrlTeamType = new JLabel((String) null);
 		final JLabel ctrlCountryType = new JLabel((String) null);
@@ -28,9 +26,8 @@ public class CompetitionEditionFilterPanel
 		final JLabel ctrlNationName = new JLabel((String) null);
 		final JLabel ctrlCompetitionName = new JLabel((String) null);
 		final JLabel ctrlSeason = new JLabel((String) null);
-
-		final Integer[] tableIndex = {-1, -1};
-		final JLabel ctrlMouseTable = new JLabel((String) null);
+		final JLabel ctrlTeamName = new JLabel((String) null);
+		final JLabel ctrlPlayerInfo = new JLabel((String) null);
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -44,8 +41,11 @@ public class CompetitionEditionFilterPanel
 		final Vector<String> seasonVector = new Vector<>();
 		final Map<String, String> seasonMap = new HashMap<>();
 
-		final Vector<Vector<Object>> competitionEditionTableData = new Vector<>();
-		final Map<Integer, Map<Integer, String>> competitionEditionTableDataMap = new HashMap<>();
+		final Vector<String> teamNameVector = new Vector<>();
+		final Map<String, String> teamNameMap = new HashMap<>();
+
+		final Vector<String> playerInfoVector = new Vector<>();
+		final Map<String, String> playerInfoMap = new HashMap<>();
 
 		final ButtonGroup buttonGroup = new ButtonGroup();
 
@@ -59,7 +59,8 @@ public class CompetitionEditionFilterPanel
 		RadioComboPanel nationTypeNamePanel;
 		LabelComboPanel competitionNamePanel;
 		LabelComboPanel seasonPanel;
-		TablePanel competitionEditionTablePanel;
+		LabelComboPanel teamNamePanel;
+		LabelComboPanel playerInfoPanel;
 		JButton button;
 
 		String string;
@@ -79,14 +80,13 @@ public class CompetitionEditionFilterPanel
 		migLayout = new MigLayout(
 						GuiConfiguration.WRAP_2_LAYOUT_CONSTRAINT,
 						GuiConfiguration.TWO_CELL_FILL_SIZE_59P_35P_INT_GAP_50_LAYOUT_CONSTRAINT,
-						GuiConfiguration.NINE_CELL_LAYOUT_CONSTRAINT
+						GuiConfiguration.THIRTEEN_CELL_LAYOUT_CONSTRAINT
 		);
 
 		centralPanel.setLayout(migLayout);
 
 
-		string = GuiConfiguration.getMessage("competitionEditionFilter");
-		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
+		topSearchPanel = new TopSearchPanel(GuiConfiguration.getMessage("stepFilter"), this, false);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);
 
 		this.add(centralPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT);
@@ -185,48 +185,70 @@ public class CompetitionEditionFilterPanel
 		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
+		string = "5. ";
+		string += GuiConfiguration.getMessage("team").toUpperCase();
+		titleLabel = new TitleLabel(string);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
 
-		competitionEditionTablePanel = new TablePanel(true, null, tableIndex, ctrlMouseTable);
-		this.add(competitionEditionTablePanel, GuiConfiguration.HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT);
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
 
-		button = new JButton(GuiConfiguration.getMessage("search"));
+		teamNamePanel = new LabelComboPanel(GuiConfiguration.getMessage("team"), false, ctrlTeamName);
+		centralPanel.add(teamNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("teamInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		string = "6. ";
+		string += GuiConfiguration.getMessage("player").toUpperCase();
+		titleLabel = new TitleLabel(string);
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		titleLabel = new TitleLabel(GuiConfiguration.getMessage("info"));
+		centralPanel.add(titleLabel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+
+		playerInfoPanel = new LabelComboPanel(GuiConfiguration.getMessage("player"), false, ctrlPlayerInfo);
+		centralPanel.add(playerInfoPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
+
+		infoPanel = new InfoPanel(GuiConfiguration.getMessage("playerInfo"));
+		centralPanel.add(infoPanel, GuiConfiguration.HGROUP_SECOND_COLUMN_ADD_CONSTRAINT);
+		/*------------------------------------------------------------------------------------------------------*/
+
+		button = new JButton(GuiConfiguration.getMessage("go"));
 		button.setEnabled(false);
 
 		button.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				MyTable competitionEditionStatisticsTable = competitionEditionTablePanel.getMyTable();
-				String string;
+				JPanel panel;
 
-				competitionEditionTableData.clear();
-				competitionEditionTableDataMap.clear();
+				if (null == ctrlTeamName.getText()) {
+					panel = new AdminNavigationPanel(
+									new AdminViewCompetitionAddCompetitionEdition(competitionNameMap.get(ctrlCompetitionName.getText()),
+													ctrlTeamType.getText()
+									)
+					);
+				}
+				else if (null == ctrlPlayerInfo.getText()) {
+					panel = new AdminNavigationPanel(
+									new AdminViewTeamUpdateGeneralInfo(teamNameMap.get(ctrlTeamName.getText()), ctrlTeamType.getText())
+					);
+				} else {
+					panel = new AdminNavigationPanel(
+									new AdminViewPlayerUpdateGeneralInfo(playerInfoMap.get(ctrlPlayerInfo.getText()))
+					);
+				}
 
+				try {
+					AdminStepFilterPanel.this.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(AdminStepFilterPanel.this.getParent());
 
-				Controller.getInstance().setStatisticCompetitionEditionTable(
-								seasonMap.get(ctrlSeason.getText()),
-								competitionNameMap.get(ctrlCompetitionName.getText()),
-								competitionEditionTableData,
-								competitionEditionTableDataMap
-				);
-
-
-				competitionEditionStatisticsTable.setModel(
-								new TableModel(competitionEditionTableData, GuiConfiguration.STATISTIC_EDITION_TABLE_COLUMN_NAME)
-				);
-				competitionEditionStatisticsTable.setPreferredScrollableViewportSize(competitionEditionStatisticsTable.getPreferredSize());
-
-				// messaggio ricerca effettuata
-				string = GuiConfiguration.getMessage("doneSearch");
-				string += " - ";
-				string += GuiConfiguration.getMessage("statistics");
-				string += " ";
-				string += competitionEditionTableData.size();
-
-				competitionEditionTablePanel.getTitleLabel().setText(string);
-
-				topSearchPanel.getTitleButton().doClick();
-				CompetitionEditionFilterPanel.this.revalidate();
+					MainFrame.getMainFrameInstance().getContentPane().add(panel, GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+				} catch(Exception ex) {
+					System.err.println("ERRORE: " + ex.getMessage());
+				}
 			}
 		});
 
@@ -312,8 +334,8 @@ public class CompetitionEditionFilterPanel
 					competitionNamePanel.getMyComboBox().setSelectedIndex(-1);
 					competitionNamePanel.getMyComboBox().setEnabled(
 									(nationNameMap.get(ctrlNationName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.NATION.toString()))
-									|| (continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString()))
-									|| (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString()))
+													|| (continentNameMap.get(ctrlContinentName.getText()) != null && 0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.CONTINENT.toString()))
+													|| (0 == StringUtils.compareIgnoreCase(ctrlCountryType.getText(), Country.COUNTRY_TYPE.WORLD.toString()))
 					);
 					ctrlCompetitionName.setText(null);
 				}
@@ -348,6 +370,7 @@ public class CompetitionEditionFilterPanel
 					seasonPanel.getMyComboBox().setSelectedIndex(-1);
 					seasonPanel.getMyComboBox().setEnabled(competitionNameMap.get(ctrlCompetitionName.getText()) != null);
 					ctrlSeason.setText(null);
+					button.setEnabled(competitionNameMap.get(ctrlCompetitionName.getText()) != null);
 				}
 			}
 		});
@@ -373,48 +396,65 @@ public class CompetitionEditionFilterPanel
 
 					seasonPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(seasonVector));
 				} else {
-					button.setEnabled(seasonMap.get(ctrlSeason.getText()) != null);
+					teamNamePanel.getMyComboBox().setSelectedIndex(-1);
+					teamNamePanel.getMyComboBox().setEnabled(seasonMap.get(ctrlSeason.getText()) != null);
+					ctrlTeamName.setText(null);
 				}
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				if (ctrlMouseTable.getText().equalsIgnoreCase("@click")) {
-					try {
-						if (0 == tableIndex[1]) {
-							String teamID;
+				if (0 == StringUtils.compareIgnoreCase(ctrlTeamName.getText(), "@fill")) {
+					teamNameVector.clear();
+					teamNameMap.clear();
 
-							teamID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
+					Controller.getInstance().setTeamComboBox(
+									seasonMap.get(ctrlSeason.getText()),
+									competitionNameMap.get(ctrlCompetitionName.getText()),
+									teamNameVector,
+									teamNameMap
+					);
 
-							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
-
-							MainFrame.getMainFrameInstance().getContentPane().add(
-											new MenuBarPanel(new ViewTeamSeasonPanel(teamID, ctrlTeamType.getText())),
-											GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-							);
-						} else if (3 == tableIndex[1]) {
-							String playerID;
-
-							playerID = competitionEditionTableDataMap.get(tableIndex[1]).get(tableIndex[0]);
-
-							CompetitionEditionFilterPanel.this.getParent().setVisible(false);
-							MainFrame.getMainFrameInstance().getContentPane().remove(CompetitionEditionFilterPanel.this.getParent());
-
-							MainFrame.getMainFrameInstance().getContentPane().add(
-											new MenuBarPanel(new ViewPlayerGeneralInfo(playerID)),
-											GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
-							);
-						}
-					} catch (Exception ignored) {
-					} finally {
-						ctrlMouseTable.setText("@null");
+					if (teamNameVector.isEmpty()) {
+						teamNameVector.add(GuiConfiguration.getMessage("noData"));
 					}
+
+					teamNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(teamNameVector));
+				} else {
+					playerInfoPanel.getMyComboBox().setSelectedIndex(-1);
+					playerInfoPanel.getMyComboBox().setEnabled(teamNameMap.get(ctrlTeamName.getText()) != null);
+					ctrlPlayerInfo.setText(null);
 				}
 			}
 		});
+
+		ctrlPlayerInfo.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt)
+			{
+				if (0 == StringUtils.compareIgnoreCase(ctrlPlayerInfo.getText(), "@fill")) {
+					playerInfoVector.clear();
+					playerInfoMap.clear();
+
+					Controller.getInstance().setPlayerComboBox(
+									seasonMap.get(ctrlSeason.getText()),
+									teamNameMap.get(ctrlTeamName.getText()),
+									playerInfoVector,
+									playerInfoMap
+					);
+
+					if (playerInfoVector.isEmpty()) {
+						playerInfoVector.add(GuiConfiguration.getMessage("noData"));
+					}
+
+					playerInfoPanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(playerInfoVector));
+				}
+			}
+		});
+
+
 	}
 }

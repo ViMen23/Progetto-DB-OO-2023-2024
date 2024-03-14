@@ -111,8 +111,7 @@ public class ViewPlayerCareer
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 
-					} catch (Exception ex) {
-						System.err.println("Errore: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlClubMouseTable.setText("@null");
 					}
@@ -138,8 +137,7 @@ public class ViewPlayerCareer
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 
-					} catch (Exception ex) {
-						System.err.println("Errore: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlNationalMouseTable.setText("@null");
 					}

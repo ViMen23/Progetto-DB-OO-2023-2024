@@ -126,8 +126,7 @@ public class ViewPlayerCase
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
 
-					} catch (Exception ex) {
-						System.err.println("Errore: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlClubMouseTable.setText("@null");
 					}
@@ -152,8 +151,7 @@ public class ViewPlayerCase
 										new MenuBarPanel(new ViewTeamSeasonPanel(teamID, Team.TEAM_TYPE.NATIONAL.toString())),
 										GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 						);
-					} catch (Exception ex) {
-						System.err.println("Errore: " + ex.getMessage());
+					} catch (Exception ignored) {
 					} finally {
 						ctrlNationalMouseTable.setText("@null");
 					}
