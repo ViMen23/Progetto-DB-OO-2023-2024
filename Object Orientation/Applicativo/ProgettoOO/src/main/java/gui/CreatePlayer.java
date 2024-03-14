@@ -208,7 +208,7 @@ public class CreatePlayer
 			}
 		});
 
-		ctrlName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -225,7 +225,7 @@ public class CreatePlayer
 			}
 		});
 
-		ctrlSurname.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlSurname.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -259,7 +259,7 @@ public class CreatePlayer
 			}
 		});
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -287,7 +287,7 @@ public class CreatePlayer
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -323,7 +323,7 @@ public class CreatePlayer
 			}
 		});
 
-		ctrlFoot.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlFoot.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -339,7 +339,7 @@ public class CreatePlayer
 				button.setEnabled(true);
 			}
 		});
-		ctrlPositionName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlPositionName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

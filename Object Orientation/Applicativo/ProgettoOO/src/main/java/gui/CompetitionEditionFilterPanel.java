@@ -13,7 +13,6 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Vector;
 
 public class CompetitionEditionFilterPanel
@@ -225,6 +224,26 @@ public class CompetitionEditionFilterPanel
 
 				competitionEditionTablePanel.getTitleLabel().setText(string);
 
+				// messaggio informazioni ricerca effettuata
+				string = "";
+
+				if (competitionNameMap.get(ctrlCompetitionName.getText()) != null) {
+					string += GuiConfiguration.getMessage("competition").toUpperCase();
+					string += ": ";
+					string += ctrlCompetitionName.getText();
+				}
+
+				if (seasonMap.get(ctrlSeason.getText()) != null) {
+					if (!string.isEmpty()) {
+						string += "\n";
+					}
+					string += GuiConfiguration.getMessage("season").toUpperCase();
+					string += ": ";
+					string += ctrlSeason.getText();
+				}
+
+				competitionEditionTablePanel.getTextArea().setText(string);
+
 				topSearchPanel.getTitleButton().doClick();
 				CompetitionEditionFilterPanel.this.revalidate();
 			}
@@ -232,7 +251,7 @@ public class CompetitionEditionFilterPanel
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
-		ctrlTeamType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -247,7 +266,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCountryType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -259,7 +278,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -289,7 +308,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -320,7 +339,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlCompetitionName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCompetitionName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -352,7 +371,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -378,7 +397,7 @@ public class CompetitionEditionFilterPanel
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

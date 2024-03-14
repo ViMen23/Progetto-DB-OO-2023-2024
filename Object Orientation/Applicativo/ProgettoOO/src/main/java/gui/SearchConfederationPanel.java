@@ -156,7 +156,7 @@ public class SearchConfederationPanel
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 
-		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCountryType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -168,7 +168,7 @@ public class SearchConfederationPanel
 			}
 		});
 
-		ctrlConfederationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlConfederationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

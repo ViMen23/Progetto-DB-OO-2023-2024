@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -228,13 +229,13 @@ public class ViewPlayerClubStatistic
 				// messaggio informazioni ricerca effettuata
 				string = "";
 
-				if (ctrlTeamName.getText() != null) {
+				if (teamNameMap.get(ctrlTeamName.getText()) != null) {
 					string += GuiConfiguration.getMessage("team").toUpperCase();
 					string += ": ";
 					string += ctrlTeamName.getText();
 				}
 
-				if (ctrlCompetitionName.getText() != null) {
+				if (competitionNameMap.get(ctrlCompetitionName.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
@@ -243,17 +244,22 @@ public class ViewPlayerClubStatistic
 					string += ctrlCompetitionName.getText();
 				}
 
-				if (ctrlInitialSeason.getText() != null) {
+				if (initialSeasonMap.get(ctrlInitialSeason.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
 					string += GuiConfiguration.getMessage("seasonsRange");
 					string += ": ";
 					string += ctrlInitialSeason.getText();
+					string += " - ";
 
-					if (ctrlFinalSeason.getText() != null) {
-						string += " - ";
+					if (finalSeasonMap.get(ctrlFinalSeason.getText()) != null) {
 						string += ctrlFinalSeason.getText();
+					}
+					else {
+						string += Year.now().toString();
+						string += "/";
+						string += Year.now().plusYears(1).toString();
 					}
 				}
 
@@ -267,7 +273,7 @@ public class ViewPlayerClubStatistic
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -290,7 +296,7 @@ public class ViewPlayerClubStatistic
 			}
 		});
 
-		ctrlCompetitionName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCompetitionName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -314,7 +320,7 @@ public class ViewPlayerClubStatistic
 			}
 		});
 
-		ctrlInitialSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlInitialSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -342,7 +348,7 @@ public class ViewPlayerClubStatistic
 			}
 		});
 
-		ctrlFinalSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlFinalSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -363,7 +369,7 @@ public class ViewPlayerClubStatistic
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

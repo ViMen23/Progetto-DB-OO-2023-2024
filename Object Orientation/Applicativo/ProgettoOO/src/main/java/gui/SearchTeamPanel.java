@@ -248,7 +248,7 @@ public class SearchTeamPanel
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -279,7 +279,7 @@ public class SearchTeamPanel
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -305,7 +305,7 @@ public class SearchTeamPanel
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

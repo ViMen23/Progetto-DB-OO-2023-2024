@@ -597,23 +597,4 @@ public class GuiConfiguration
 
 		return null;
 	}
-
-	/**
-	 *
-	 * @param container
-	 * @param panelToAdd
-	 * @param index
-	 * @param constraint
-	 */
-	public static void switchPanel(Container container,
-																 JPanel panelToAdd,
-																 Integer index,
-																 String constraint)
-	{
-		Component component = container.getComponent(index);
-		component.setVisible(false);
-		container.remove(component);
-		container.add(panelToAdd, constraint);
-		panelToAdd.setVisible(true);
-	}
 }

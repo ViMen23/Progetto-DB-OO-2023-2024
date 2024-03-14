@@ -276,7 +276,7 @@ public class AdminSearchCompetition
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
-		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCountryType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -289,7 +289,7 @@ public class AdminSearchCompetition
 		});
 
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -325,7 +325,7 @@ public class AdminSearchCompetition
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -352,7 +352,7 @@ public class AdminSearchCompetition
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

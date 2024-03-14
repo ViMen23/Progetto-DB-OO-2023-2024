@@ -6,11 +6,11 @@ import net.miginfocom.swing.MigLayout;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.time.Year;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -209,23 +209,26 @@ public class ViewPlayerNationalStatistic
 				// messaggio informazioni ricerca effettuata
 				string = "";
 
-				if (ctrlCompetitionName.getText() != null) {
+				if (competitionNameMap.get(ctrlCompetitionName.getText())!= null) {
 					string += GuiConfiguration.getMessage("competition").toUpperCase();
 					string += ": ";
 					string += ctrlCompetitionName.getText();
 				}
 
-				if (ctrlInitialYear.getText() != null) {
+				if (initialYearMap.get(ctrlInitialYear.getText()) != null) {
 					if (!string.isEmpty()) {
 						string += "\n";
 					}
 					string += GuiConfiguration.getMessage("yearsRange");
 					string += ": ";
 					string += ctrlInitialYear.getText();
+					string += " - ";
 
-					if (ctrlFinalYear.getText() != null) {
-						string += " - ";
+					if (finalYearMap.get(ctrlFinalYear.getText()) != null) {
 						string += ctrlFinalYear.getText();
+					}
+					else {
+						string += Year.now().toString();
 					}
 				}
 
@@ -239,7 +242,7 @@ public class ViewPlayerNationalStatistic
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		ctrlCompetitionName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCompetitionName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -263,7 +266,7 @@ public class ViewPlayerNationalStatistic
 			}
 		});
 
-		ctrlInitialYear.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlInitialYear.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -291,7 +294,7 @@ public class ViewPlayerNationalStatistic
 			}
 		});
 
-		ctrlFinalYear.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlFinalYear.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -312,7 +315,7 @@ public class ViewPlayerNationalStatistic
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

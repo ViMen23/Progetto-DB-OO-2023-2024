@@ -93,7 +93,7 @@ public class ViewPlayerCareer
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		ctrlClubMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlClubMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -119,7 +119,7 @@ public class ViewPlayerCareer
 			}
 		});
 
-		ctrlNationalMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationalMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

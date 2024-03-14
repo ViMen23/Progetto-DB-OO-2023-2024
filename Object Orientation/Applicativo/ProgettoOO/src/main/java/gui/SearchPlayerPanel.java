@@ -374,7 +374,7 @@ public class SearchPlayerPanel
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 
-		ctrlReferenceYear.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlReferenceYear.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -402,7 +402,7 @@ public class SearchPlayerPanel
 		});
 
 
-		ctrlPlayerMinAge.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlPlayerMinAge.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -426,7 +426,7 @@ public class SearchPlayerPanel
 		});
 
 
-		ctrlPlayerMaxAge.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlPlayerMaxAge.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -445,7 +445,7 @@ public class SearchPlayerPanel
 			}
 		});
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -476,7 +476,7 @@ public class SearchPlayerPanel
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -503,7 +503,7 @@ public class SearchPlayerPanel
 			}
 		});
 
-		ctrlPlayerPosition.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlPlayerPosition.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -525,7 +525,7 @@ public class SearchPlayerPanel
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

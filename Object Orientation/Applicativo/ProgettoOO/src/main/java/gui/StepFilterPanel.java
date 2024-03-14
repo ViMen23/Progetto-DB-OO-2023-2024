@@ -242,7 +242,7 @@ public class StepFilterPanel
 
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
-		ctrlTeamType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -257,7 +257,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlCountryType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCountryType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -269,7 +269,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -299,7 +299,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -330,7 +330,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlCompetitionName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlCompetitionName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -362,7 +362,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -390,7 +390,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -419,7 +419,7 @@ public class StepFilterPanel
 			}
 		});
 
-		ctrlPlayerInfo.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlPlayerInfo.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

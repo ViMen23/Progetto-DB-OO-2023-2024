@@ -108,7 +108,7 @@ public class ViewTeamSeasonPanel
 		/*------------------------------------------------------------------------------------------------------*/
 
 
-		ctrlSeason.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlSeason.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -175,7 +175,7 @@ public class ViewTeamSeasonPanel
 			}
 		});
 
-		ctrlMouseSquadTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseSquadTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt) {
 				if (ctrlMouseSquadTable.getText().equalsIgnoreCase("@click")) {

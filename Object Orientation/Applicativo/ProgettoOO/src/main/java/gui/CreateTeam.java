@@ -153,7 +153,7 @@ public class CreateTeam
 		});
 
 
-		ctrlTeamType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -169,7 +169,7 @@ public class CreateTeam
 		});
 
 
-		ctrlLongName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlLongName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -178,7 +178,7 @@ public class CreateTeam
 			}
 		});
 
-		ctrlShortName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlShortName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -188,7 +188,7 @@ public class CreateTeam
 		});
 
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -216,7 +216,7 @@ public class CreateTeam
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

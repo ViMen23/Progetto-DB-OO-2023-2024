@@ -244,7 +244,7 @@ public class MilitancyFilterPanel
 		centralPanel.add(button, GuiConfiguration.SPAN_2_ADD_CONSTRAINT);
 
 
-		ctrlTeamType.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamType.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -254,7 +254,7 @@ public class MilitancyFilterPanel
 			}
 		});
 
-		ctrlContinentName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlContinentName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -282,7 +282,7 @@ public class MilitancyFilterPanel
 			}
 		});
 
-		ctrlNationName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -311,7 +311,7 @@ public class MilitancyFilterPanel
 		});
 
 
-		ctrlTeamName.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlTeamName.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -344,7 +344,7 @@ public class MilitancyFilterPanel
 		});
 
 
-		ctrlFromYear.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlFromYear.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -368,7 +368,7 @@ public class MilitancyFilterPanel
 		});
 
 
-		ctrlToYear.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlToYear.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -387,7 +387,7 @@ public class MilitancyFilterPanel
 			}
 		});
 
-		ctrlMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{

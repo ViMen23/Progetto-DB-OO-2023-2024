@@ -108,7 +108,7 @@ public class ViewPlayerCase
 		tablePanel.add(prizePanel);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		ctrlClubMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlClubMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
@@ -134,7 +134,7 @@ public class ViewPlayerCase
 			}
 		});
 
-		ctrlNationalMouseTable.addPropertyChangeListener(new PropertyChangeListener() {
+		ctrlNationalMouseTable.addPropertyChangeListener("text", new PropertyChangeListener() {
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
