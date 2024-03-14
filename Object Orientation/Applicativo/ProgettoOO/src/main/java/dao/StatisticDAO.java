@@ -24,12 +24,11 @@ public interface StatisticDAO
 														 Vector<Vector<Object>> tableData,
 														 Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchStatisticAdminDB(String playerID,
-														 String teamID,
-														 String competitionID,
-														 String competitionStartYear,
-														 Vector<Vector<String>> tableData,
-														 Map<Integer, Map<Integer, String>> tableMap);
+	String fetchStatisticAdminDB(String playerID,
+															 String teamID,
+															 String competitionID,
+															 String competitionStartYear,
+															 Map<String, String> dataMap);
 
 	String updateStatisticDB(String playID,
 													 String match,

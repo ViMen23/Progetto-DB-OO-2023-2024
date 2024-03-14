@@ -88,32 +88,6 @@ public class PostgresImplNationalityDAO
 
 
 	@Override
-	public void fetchNationalityComboBoxDB(String playerID,
-																				 Vector<String> comboBoxData,
-																				 Map<String, String> comboBoxMap)
-	{
-		try {
-			CallableStatement cs = this.conn.prepareCall("{call nationality_player(?)}");
-			cs.setString(1, playerID);
-
-			ResultSet rs = cs.executeQuery();
-
-			while (rs.next()) {
-				comboBoxData.add(rs.getString("country_name"));
-				comboBoxMap.put(comboBoxData.getLast(), rs.getString("country_id"));
-			}
-
-			rs.close();
-			cs.close();
-			conn.close();
-
-		} catch (SQLException e) {
-			System.out.println("Errore: " + e.getMessage());
-		}
-	}
-
-
-	@Override
 	public String newNationalityDB(String playerID,
 																 String countryID)
 	{

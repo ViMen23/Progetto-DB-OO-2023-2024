@@ -7,9 +7,6 @@ import postgresImplDAO.*;
 
 import java.util.*;
 
-/**
- * The type Controller.
- */
 public class Controller
 {
 	private static Controller controllerInstance = null;
@@ -19,11 +16,6 @@ public class Controller
 	{
 	}
 
-	/**
-	 * Gets instance.
-	 *
-	 * @return the instance
-	 */
 	public static Controller getInstance()
 	{
 		if (null == controllerInstance) {
@@ -38,13 +30,6 @@ public class Controller
 	 * ADMIN
 	 *------------------------------------------------------------------------------------------------------*/
 
-	/**
-	 * Is admin boolean.
-	 *
-	 * @param username the username
-	 * @param password the password
-	 * @return the boolean
-	 */
 	public Boolean isAdmin(String username,
 												 String password)
 	{
@@ -64,17 +49,16 @@ public class Controller
 		//return adminDAO.isAdminDB(username, password);
 		if (adminDAO.isAdminDB(username, password)) {
 			System.out.println("Connesso");
+			adminConnected = true;
 			return true;
 		} else {
 			System.out.println("Non Connesso");
+			adminConnected = false;
 			return false;
 		}
 	}
 
 
-	/**
-	 * Logout admin.
-	 */
 	public void logoutAdmin()
 	{
 		if (adminConnected) {
@@ -83,11 +67,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Is admin connected boolean.
-	 *
-	 * @return the boolean
-	 */
 	public boolean isAdminConnected()
 	{
 		return adminConnected;
@@ -102,11 +81,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Count countries integer.
-	 *
-	 * @return the integer
-	 */
 	public Integer countCountries()
 	{
 		CountryDAO countryDAO = new PostgresImplCountryDAO();
@@ -114,14 +88,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets country combo box.
-	 *
-	 * @param countryType       the country type
-	 * @param superCountryID    the super country id
-	 * @param countryNameVector the country name vector
-	 * @param countryNameMap    the country name map
-	 */
 	public void setCountryComboBox(String countryType,
 																 String superCountryID,
 																 Vector<String> countryNameVector,
@@ -137,13 +103,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets country table.
-	 *
-	 * @param countryType      the country type
-	 * @param superCountryID   the super country id
-	 * @param countryTableData the country table data
-	 */
 	public void setCountryTable(String countryType,
 															String superCountryID,
 															Vector<Vector<String>> countryTableData)
@@ -172,14 +131,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets confederation combo box.
-	 *
-	 * @param countryType                  the country type
-	 * @param superConfederationID         the super confederation id
-	 * @param confederationShortNameVector the confederation short name vector
-	 * @param confederationShortNameMap    the confederation short name map
-	 */
 	public void setConfederationComboBox(String countryType,
 																			 String superConfederationID,
 																			 Vector<String> confederationShortNameVector,
@@ -195,13 +146,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets confederation table.
-	 *
-	 * @param countryType            the country type
-	 * @param superConfederationID   the super confederation id
-	 * @param confederationTableData the confederation table data
-	 */
 	public void setConfederationTable(String countryType,
 																		String superConfederationID,
 																		Vector<Vector<String>> confederationTableData)
@@ -215,12 +159,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets confederation partecipation.
-	 *
-	 * @param teamID           the team id
-	 * @param confederationMap the confederation map
-	 */
 	public void setConfederationPartecipation(String teamID,
 																						Map<String, String> confederationMap)
 	{
@@ -238,11 +176,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Count competitions integer.
-	 *
-	 * @return the integer
-	 */
 	public Integer countCompetitions()
 	{
 		CompetitionDAO competitionDAO = new PostgresImplCompetitionDAO();
@@ -250,12 +183,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition info map.
-	 *
-	 * @param competitionID the competition id
-	 * @param infoMap       the info map
-	 */
 	public void setCompetitionInfoMap(String competitionID,
 																		Map<String, String> infoMap)
 	{
@@ -267,14 +194,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition combo box.
-	 *
-	 * @param playerID              the player id
-	 * @param teamType              the team type
-	 * @param competitionNameVector the competition name vector
-	 * @param competitionNameMap    the competition name map
-	 */
 	public void setCompetitionComboBox(String playerID,
 																		 String teamType,
 																		 Vector<String> competitionNameVector,
@@ -290,18 +209,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition combo box.
-	 *
-	 * @param competitionSubName     the competition sub name
-	 * @param competitionType        the competition type
-	 * @param competitionTeamType    the competition team type
-	 * @param competitionCountryType the competition country type
-	 * @param competitionContinentID the competition continent id
-	 * @param competitionNationID    the competition nation id
-	 * @param competitionNameVector  the competition name vector
-	 * @param competitionNameMap     the competition name map
-	 */
 	public void setCompetitionComboBox(String competitionSubName,
 																		 String competitionType,
 																		 String competitionTeamType,
@@ -324,14 +231,6 @@ public class Controller
 		);
 	}
 
-	/**
-	 * Sets competition edition combo box.
-	 *
-	 * @param teamType                 the team type
-	 * @param competitionID            the competition id
-	 * @param competitionEditionVector the competition edition vector
-	 * @param competitionEditionMap    the competition edition map
-	 */
 	public void setCompetitionEditionComboBox(String teamType,
 																						String competitionID,
 																						Vector<String> competitionEditionVector,
@@ -347,14 +246,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition confederation combo box.
-	 *
-	 * @param confederationID   the confederation id
-	 * @param teamType          the team type
-	 * @param competitionVector the competition vector
-	 * @param competitionMap    the competition map
-	 */
 	public void setCompetitionConfederationComboBox(String confederationID,
 																									String teamType,
 																									Vector<String> competitionVector,
@@ -370,17 +261,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition table.
-	 *
-	 * @param competitionSubName     the competition sub name
-	 * @param competitionType        the competition type
-	 * @param competitionTeamType    the competition team type
-	 * @param competitionCountryType the competition country type
-	 * @param competitionContinentID the competition continent id
-	 * @param competitionNationID    the competition nation id
-	 * @param competitionTableData   the competition table data
-	 */
 	public void setCompetitionTable(String competitionSubName,
 																	String competitionType,
 																	String competitionTeamType,
@@ -402,18 +282,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition table admin.
-	 *
-	 * @param competitionSubName     the competition sub name
-	 * @param competitionType        the competition type
-	 * @param competitionTeamType    the competition team type
-	 * @param competitionCountryType the competition country type
-	 * @param competitionContinentID the competition continent id
-	 * @param competitionNationID    the competition nation id
-	 * @param tableData              the table data
-	 * @param tableMap               the table map
-	 */
 	public void setCompetitionTableAdmin(String competitionSubName,
 																			 String competitionType,
 																			 String competitionTeamType,
@@ -437,14 +305,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition table admin.
-	 *
-	 * @param competitionID the competition id
-	 * @param teamType      the team type
-	 * @param tableData     the table data
-	 * @param tableMap      the table map
-	 */
 	public void setCompetitionTableAdmin(String competitionID,
 																			 String teamType,
 																			 Vector<Vector<Object>> tableData,
@@ -460,15 +320,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets competition play combo box.
-	 *
-	 * @param playerID     the player id
-	 * @param teamType     the team type
-	 * @param startYear    the start year
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setCompetitionPlayComboBox(String playerID,
 																				 String teamType,
 																				 String startYear,
@@ -486,17 +337,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Create competition edition string.
-	 *
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String createCompetitionEdition(String competitionID,
 																				 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -508,17 +352,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete competition edition string.
-	 *
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String deleteCompetitionEdition(String competitionID,
 																				 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -536,11 +373,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Count teams integer.
-	 *
-	 * @return the integer
-	 */
 	public Integer countTeams()
 	{
 		TeamDAO teamDAO = new PostgresImplTeamDAO();
@@ -548,17 +380,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team combo box.
-	 *
-	 * @param teamSubLongName    the team sub long name
-	 * @param teamSubShortName   the team sub short name
-	 * @param teamType           the team type
-	 * @param teamContinentID    the team continent id
-	 * @param teamNationID       the team nation id
-	 * @param teamLongNameVector the team long name vector
-	 * @param teamLongNameMap    the team long name map
-	 */
 	public void setTeamComboBox(String teamSubLongName,
 															String teamSubShortName,
 															String teamType,
@@ -580,13 +401,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team combo box.
-	 *
-	 * @param playerID           the player id
-	 * @param teamLongNameVector the team long name vector
-	 * @param teamLongNameMap    the team long name map
-	 */
 	public void setTeamComboBox(String playerID,
 															Vector<String> teamLongNameVector,
 															Map<String, String> teamLongNameMap)
@@ -600,14 +414,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team year combo box.
-	 *
-	 * @param teamID         the team id
-	 * @param teamType       the team type
-	 * @param teamYearVector the team year vector
-	 * @param teamYearMap    the team year map
-	 */
 	public void setTeamYearComboBox(String teamID,
 																	String teamType,
 																	Vector<String> teamYearVector,
@@ -623,17 +429,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team table.
-	 *
-	 * @param teamSubLongName  the team sub long name
-	 * @param teamSubShortName the team sub short name
-	 * @param teamType         the team type
-	 * @param teamContinentID  the team continent id
-	 * @param teamNationID     the team nation id
-	 * @param teamTableData    the team table data
-	 * @param teamTableMap     the team table map
-	 */
 	public void setTeamTable(String teamSubLongName,
 													 String teamSubShortName,
 													 String teamType,
@@ -655,12 +450,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team info map.
-	 *
-	 * @param teamID      the team id
-	 * @param infoTeamMap the info team map
-	 */
 	public void setTeamInfoMap(String teamID,
 														 Map<String, String> infoTeamMap)
 	{
@@ -671,14 +460,6 @@ public class Controller
 		);
 	}
 
-	/**
-	 * Sets team combo box.
-	 *
-	 * @param competitionStartYear the competition start year
-	 * @param competitionID        the competition id
-	 * @param teamLongNameVector   the team long name vector
-	 * @param teamLongNameMap      the team long name map
-	 */
 	public void setTeamComboBox(String competitionStartYear,
 															String competitionID,
 															Vector<String> teamLongNameVector,
@@ -694,13 +475,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets national team combo box.
-	 *
-	 * @param playerID     the player id
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setNationalTeamComboBox(String playerID,
 																			Vector<String> comboBoxData,
 																			Map<String, String> comboBoxMap)
@@ -714,15 +488,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team combo box.
-	 *
-	 * @param playerID     the player id
-	 * @param teamType     the team type
-	 * @param startYear    the start year
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setTeamComboBox(String playerID,
 															String teamType,
 															String startYear,
@@ -740,15 +505,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team play combo box.
-	 *
-	 * @param playerID             the player id
-	 * @param competitionStartYear the competition start year
-	 * @param competitionID        the competition id
-	 * @param comboBoxData         the combo box data
-	 * @param comboBoxMap          the combo box map
-	 */
 	public void setTeamPlayComboBox(String playerID,
 																	String competitionStartYear,
 																	String competitionID,
@@ -766,16 +522,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team season view.
-	 *
-	 * @param teamID                     the team id
-	 * @param startYear                  the start year
-	 * @param infoTeamMap                the info team map
-	 * @param teamSquadTableData         the team squad table data
-	 * @param teamSquadTableMap          the team squad table map
-	 * @param teamPartecipationTableData the team partecipation table data
-	 */
 	public void setTeamSeasonView(String teamID,
 																String startYear,
 																Map<String, String> infoTeamMap,
@@ -789,15 +535,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team case view.
-	 *
-	 * @param teamID              the team id
-	 * @param teamType            the team type
-	 * @param infoTeamMap         the info team map
-	 * @param teamTrophyTableData the team trophy table data
-	 * @param teamPrizeTableData  the team prize table data
-	 */
 	public void setTeamCaseView(String teamID,
 															String teamType,
 															Map<String, String> infoTeamMap,
@@ -810,15 +547,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Create team string.
-	 *
-	 * @param teamType      the team type
-	 * @param teamLongName  the team long name
-	 * @param teamShortName the team short name
-	 * @param countryID     the country id
-	 * @return the string
-	 */
 	public String createTeam(String teamType,
 													 String teamLongName,
 													 String teamShortName,
@@ -826,7 +554,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (adminConnected) {
+		if (!adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -853,15 +581,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update team string.
-	 *
-	 * @param teamID        the team id
-	 * @param teamType      the team type
-	 * @param teamLongName  the team long name
-	 * @param teamShortName the team short name
-	 * @return the string
-	 */
 	public String updateTeam(String teamID,
 													 String teamType,
 													 String teamLongName,
@@ -869,7 +588,7 @@ public class Controller
 	{
 		String message = null;
 
-		if (adminConnected) {
+		if (!adminConnected) {
 			message = "errorNoAdmin";
 			return message;
 		}
@@ -898,15 +617,9 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete team string.
-	 *
-	 * @param teamID the team id
-	 * @return the string
-	 */
 	public String deleteTeam(String teamID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -921,11 +634,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Count players integer.
-	 *
-	 * @return the integer
-	 */
 	public Integer countPlayers()
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
@@ -933,12 +641,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player info map.
-	 *
-	 * @param playerID      the player id
-	 * @param infoPlayerMap the info player map
-	 */
 	public void setPlayerInfoMap(String playerID,
 															 Map<String, String> infoPlayerMap)
 	{
@@ -950,14 +652,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player combo box.
-	 *
-	 * @param startYear        the start year
-	 * @param teamID           the team id
-	 * @param playerInfoVector the player info vector
-	 * @param playerInfoMap    the player info map
-	 */
 	public void setPlayerComboBox(String startYear,
 																String teamID,
 																Vector<String> playerInfoVector,
@@ -973,14 +667,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player combo box year.
-	 *
-	 * @param playerID     the player id
-	 * @param teamType     the team type
-	 * @param seasonVector the season vector
-	 * @param seasonMap    the season map
-	 */
 	public void setPlayerComboBoxYear(String playerID,
 																		String teamType,
 																		Vector<String> seasonVector,
@@ -996,22 +682,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player table.
-	 *
-	 * @param playerSubName       the player sub name
-	 * @param playerSubSurname    the player sub surname
-	 * @param playerReferringYear the player referring year
-	 * @param playerMinAge        the player min age
-	 * @param playerMaxAge        the player max age
-	 * @param playerContinentID   the player continent id
-	 * @param playerNationID      the player nation id
-	 * @param playerRole          the player role
-	 * @param playerPositionID    the player position id
-	 * @param playerFoot          the player foot
-	 * @param playerTableData     the player table data
-	 * @param playerTableMap      the player table map
-	 */
 	public void setPlayerTable(String playerSubName,
 														 String playerSubSurname,
 														 String playerReferringYear,
@@ -1043,15 +713,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player table.
-	 *
-	 * @param militancyPlayerTeamID    the militancy player team id
-	 * @param militancyPlayerStartYear the militancy player start year
-	 * @param militancyPlayerEndYear   the militancy player end year
-	 * @param playerTableData          the player table data
-	 * @param playerTableMap           the player table map
-	 */
 	public void setPlayerTable(String militancyPlayerTeamID,
 														 String militancyPlayerStartYear,
 														 String militancyPlayerEndYear,
@@ -1069,14 +730,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player general view.
-	 *
-	 * @param playerID                   the player id
-	 * @param infoPlayerMap              the info player map
-	 * @param playerPositionTableData    the player position table data
-	 * @param playerNationalityTableData the player nationality table data
-	 */
 	public void setPlayerGeneralView(String playerID,
 																	 Map<String, String> infoPlayerMap,
 																	 Vector<Vector<String>> playerPositionTableData,
@@ -1088,17 +741,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player detailed view.
-	 *
-	 * @param playerID                            the player id
-	 * @param infoPlayerMap                       the info player map
-	 * @param playerAttributeGoalkeepingTableData the player attribute goalkeeping table data
-	 * @param playerAttributeMentalTableData      the player attribute mental table data
-	 * @param playerAttributePhysicalTableData    the player attribute physical table data
-	 * @param playerAttributeTechnicalTableData   the player attribute technical table data
-	 * @param playerTagTableData                  the player tag table data
-	 */
 	public void setPlayerDetailedView(String playerID,
 																		Map<String, String> infoPlayerMap,
 																		Vector<Vector<String>> playerAttributeGoalkeepingTableData,
@@ -1116,16 +758,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player career view.
-	 *
-	 * @param playerID                      the player id
-	 * @param infoPlayerMap                 the info player map
-	 * @param playerClubCareerTableData     the player club career table data
-	 * @param playerClubCareerTableMap      the player club career table map
-	 * @param playerNationalCareerTableData the player national career table data
-	 * @param playerNationalCareerTableMap  the player national career table map
-	 */
 	public void setPlayerCareerView(String playerID,
 																	Map<String, String> infoPlayerMap,
 																	Vector<Vector<String>> playerClubCareerTableData,
@@ -1139,19 +771,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player statistic view.
-	 *
-	 * @param playerID                 the player id
-	 * @param teamType                 the team type
-	 * @param teamID                   the team id
-	 * @param competitionID            the competition id
-	 * @param startYear                the start year
-	 * @param endYear                  the end year
-	 * @param infoPlayerMap            the info player map
-	 * @param playerStatisticTableData the player statistic table data
-	 * @param playerStatisticTableMap  the player statistic table map
-	 */
 	public void setPlayerStatisticView(String playerID,
 																		 String teamType,
 																		 String teamID,
@@ -1176,17 +795,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player case view.
-	 *
-	 * @param playerID                      the player id
-	 * @param infoPlayerMap                 the info player map
-	 * @param playerClubTrophyTableData     the player club trophy table data
-	 * @param playerClubTrophyTableMap      the player club trophy table map
-	 * @param playerNationalTrophyTableData the player national trophy table data
-	 * @param playerNationalTrophyTableMap  the player national trophy table map
-	 * @param playerPrizeTableData          the player prize table data
-	 */
 	public void setPlayerCaseView(String playerID,
 																Map<String, String> infoPlayerMap,
 																Vector<Vector<String>> playerClubTrophyTableData,
@@ -1202,11 +810,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Gets random player.
-	 *
-	 * @return the random player
-	 */
 	public String getRandomPlayer()
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
@@ -1214,12 +817,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player year.
-	 *
-	 * @param playerID the player id
-	 * @return the player year
-	 */
 	public String setPlayerYear(String playerID)
 	{
 		PlayerDAO playerDAO = new PostgresImplPlayerDAO();
@@ -1227,17 +824,6 @@ public class Controller
 	}
 
 
-	/**
-	 * New player string.
-	 *
-	 * @param name       the name
-	 * @param surname    the surname
-	 * @param dob        the dob
-	 * @param countryID  the country id
-	 * @param foot       the foot
-	 * @param positionID the position id
-	 * @return the string
-	 */
 	public String newPlayer(String name,
 													String surname,
 													String dob,
@@ -1245,7 +831,7 @@ public class Controller
 													String foot,
 													String positionID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1261,15 +847,9 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete player string.
-	 *
-	 * @param playerID the player id
-	 * @return the string
-	 */
 	public String deletePlayer(String playerID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1278,18 +858,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update player string.
-	 *
-	 * @param playerID   the player id
-	 * @param name       the name
-	 * @param surname    the surname
-	 * @param dob        the dob
-	 * @param countryID  the country id
-	 * @param foot       the foot
-	 * @param positionID the position id
-	 * @return the string
-	 */
 	public String updatePlayer(String playerID,
 														 String name,
 														 String surname,
@@ -1298,7 +866,7 @@ public class Controller
 														 String foot,
 														 String positionID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1315,17 +883,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets retired date.
-	 *
-	 * @param playerID    the player id
-	 * @param retiredDate the retired date
-	 * @return the retired date
-	 */
 	public String setRetiredDate(String playerID,
 															 String retiredDate)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1343,12 +904,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets position combo box.
-	 *
-	 * @param positionNameVector the position name vector
-	 * @param positionNameMap    the position name map
-	 */
 	public void setPositionComboBox(Vector<String> positionNameVector,
 																	Map<String, String> positionNameMap)
 	{
@@ -1360,12 +915,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets position table.
-	 *
-	 * @param playerID                the player id
-	 * @param playerPositionTableData the player position table data
-	 */
 	public void setPositionTable(String playerID,
 															 Vector<Vector<String>> playerPositionTableData)
 	{
@@ -1377,13 +926,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets position table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setPositionTable(String playerID,
 															 Vector<Vector<Object>> tableData,
 															 Map<Integer, Map<Integer, String>> tableMap)
@@ -1397,17 +939,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Add player position string.
-	 *
-	 * @param playerID   the player id
-	 * @param positionID the position id
-	 * @return the string
-	 */
 	public String addPlayerPosition(String playerID,
 																	String positionID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1419,17 +954,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove player position string.
-	 *
-	 * @param playerID   the player id
-	 * @param positionID the position id
-	 * @return the string
-	 */
 	public String removePlayerPosition(String playerID,
 																		 String positionID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1447,14 +975,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets statistic table.
-	 *
-	 * @param teamType              the team type
-	 * @param playerRole            the player role
-	 * @param statisticTableData    the statistic table data
-	 * @param statisticTableDataMap the statistic table data map
-	 */
 	public void setStatisticTable(String teamType,
 																String playerRole,
 																Vector<Vector<Object>> statisticTableData,
@@ -1470,14 +990,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets statistic competition edition table.
-	 *
-	 * @param competitionStartYear the competition start year
-	 * @param competitionID        the competition id
-	 * @param statisticTableData   the statistic table data
-	 * @param statisticTableMap    the statistic table map
-	 */
 	public void setStatisticCompetitionEditionTable(String competitionStartYear,
 																									String competitionID,
 																									Vector<Vector<Object>> statisticTableData,
@@ -1493,18 +1005,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player statistic table.
-	 *
-	 * @param playerID                 the player id
-	 * @param teamType                 the team type
-	 * @param teamID                   the team id
-	 * @param competitionID            the competition id
-	 * @param startYear                the start year
-	 * @param endYear                  the end year
-	 * @param playerStatisticTableData the player statistic table data
-	 * @param playerStatisticTableMap  the player statistic table map
-	 */
 	public void setPlayerStatisticTable(String playerID,
 																			String teamType,
 																			String teamID,
@@ -1528,49 +1028,23 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets statistic table admin.
-	 *
-	 * @param playerID             the player id
-	 * @param teamID               the team id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @param tableData            the table data
-	 * @param tableMap             the table map
-	 */
-	public void setStatisticTableAdmin(String playerID,
+	public String setStatisticMapAdmin(String playerID,
 																		 String teamID,
 																		 String competitionID,
 																		 String competitionStartYear,
-																		 Vector<Vector<String>> tableData,
-																		 Map<Integer, Map<Integer, String>> tableMap)
+																		 Map<String, String> dataMap)
 	{
 		StatisticDAO statisticDAO = new PostgresImplStatisticDAO();
-		statisticDAO.fetchStatisticAdminDB(
+		return statisticDAO.fetchStatisticAdminDB(
 						playerID,
 						teamID,
 						competitionID,
 						competitionStartYear,
-						tableData,
-						tableMap
+						dataMap
 		);
 	}
 
 
-	/**
-	 * Update statistic string.
-	 *
-	 * @param playID        the play id
-	 * @param match         the match
-	 * @param goalScored    the goal scored
-	 * @param assist        the assist
-	 * @param yellowCard    the yellow card
-	 * @param redCard       the red card
-	 * @param penaltyScored the penalty scored
-	 * @param goalConceded  the goal conceded
-	 * @param penaltySaved  the penalty saved
-	 * @return the string
-	 */
 	public String updateStatistic(String playID,
 																String match,
 																String goalScored,
@@ -1581,7 +1055,7 @@ public class Controller
 																String goalConceded,
 																String penaltySaved)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1605,13 +1079,6 @@ public class Controller
 	 * PARTECIPATION
 	 *------------------------------------------------------------------------------------------------------*/
 
-	/**
-	 * Sets partecipation table.
-	 *
-	 * @param teamID                     the team id
-	 * @param competitionStartYear       the competition start year
-	 * @param teamPartecipationTableData the team partecipation table data
-	 */
 	public void setPartecipationTable(String teamID,
 																		String competitionStartYear,
 																		Vector<Vector<Object>> teamPartecipationTableData)
@@ -1621,14 +1088,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets partecipation table admin.
-	 *
-	 * @param teamID                     the team id
-	 * @param competitionStartYear       the competition start year
-	 * @param teamPartecipationTableData the team partecipation table data
-	 * @param tableMap                   the table map
-	 */
 	public void setPartecipationTableAdmin(String teamID,
 																				 String competitionStartYear,
 																				 Vector<Vector<Object>> teamPartecipationTableData,
@@ -1644,14 +1103,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets partecipation year combo box.
-	 *
-	 * @param teamID                  the team id
-	 * @param teamType                the team type
-	 * @param partecipationYearVector the partecipation year vector
-	 * @param partecipationYearMap    the partecipation year map
-	 */
 	public void setPartecipationYearComboBox(String teamID,
 																					 String teamType,
 																					 Vector<String> partecipationYearVector,
@@ -1667,14 +1118,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets partecipation combo box.
-	 *
-	 * @param teamID                  the team id
-	 * @param competitionStartYear    the competition start year
-	 * @param partecipationNameVector the partecipation name vector
-	 * @param partecipationNameMap    the partecipation name map
-	 */
 	public void setPartecipationComboBox(String teamID,
 																			 String competitionStartYear,
 																			 Vector<String> partecipationNameVector,
@@ -1690,19 +1133,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete partecipation string.
-	 *
-	 * @param teamID               the team id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String deletePartecipation(String teamID,
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1711,19 +1146,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Create partecipation string.
-	 *
-	 * @param teamID               the team id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String createPartecipation(String teamID,
 																		String competitionID,
 																		String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1739,14 +1166,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets team squad table.
-	 *
-	 * @param teamID             the team id
-	 * @param startYear          the start year
-	 * @param teamSquadTableData the team squad table data
-	 * @param teamSquadTableMap  the team squad table map
-	 */
 	public void setTeamSquadTable(String teamID,
 																String startYear,
 																Vector<Vector<String>> teamSquadTableData,
@@ -1757,13 +1176,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets national career table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setNationalCareerTable(String playerID,
 																		 Vector<Vector<String>> tableData,
 																		 Map<Integer, Map<Integer, String>> tableMap)
@@ -1772,13 +1184,6 @@ public class Controller
 		militancyDAO.fetchMilitancyNationalDB(playerID, tableData, tableMap);
 	}
 
-	/**
-	 * Sets club career table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setClubCareerTable(String playerID,
 																 Vector<Vector<String>> tableData,
 																 Map<Integer, Map<Integer, String>> tableMap)
@@ -1788,13 +1193,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets national career admin.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setNationalCareerAdmin(String playerID,
 																		 Vector<Vector<Object>> tableData,
 																		 Map<Integer, Map<Integer, String>> tableMap)
@@ -1808,13 +1206,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets club career admin.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setClubCareerAdmin(String playerID,
 																 Vector<Vector<Object>> tableData,
 																 Map<Integer, Map<Integer, String>> tableMap)
@@ -1828,23 +1219,13 @@ public class Controller
 	}
 
 
-	/**
-	 * New militancy string.
-	 *
-	 * @param playerID   the player id
-	 * @param teamID     the team id
-	 * @param teamType   the team type
-	 * @param startYear  the start year
-	 * @param seasonType the season type
-	 * @return the string
-	 */
 	public String newMilitancy(String playerID,
 														 String teamID,
 														 String teamType,
 														 String startYear,
 														 String seasonType)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1859,19 +1240,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete militancy string.
-	 *
-	 * @param playerID  the player id
-	 * @param teamID    the team id
-	 * @param startYear the start year
-	 * @return the string
-	 */
 	public String deleteMilitancy(String playerID,
 																String teamID,
 																String startYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -1889,12 +1262,6 @@ public class Controller
 	 * TROPHY
 	 *------------------------------------------------------------------------------------------------------*/
 
-	/**
-	 * Sets team trophy combo box.
-	 *
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setTeamTrophyComboBox(Vector<String> comboBoxData,
 																		Map<String, String> comboBoxMap)
 	{
@@ -1903,12 +1270,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player trophy combo box.
-	 *
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setPlayerTrophyComboBox(Vector<String> comboBoxData,
 																			Map<String, String> comboBoxMap)
 	{
@@ -1917,13 +1278,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team trophy table.
-	 *
-	 * @param teamID    the team id
-	 * @param teamType  the team type
-	 * @param tableData the table data
-	 */
 	public void setTeamTrophyTable(String teamID,
 																 String teamType,
 																 Vector<Vector<String>> tableData)
@@ -1937,14 +1291,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team trophy table admin.
-	 *
-	 * @param teamID    the team id
-	 * @param teamType  the team type
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setTeamTrophyTableAdmin(String teamID,
 																			String teamType,
 																			Vector<Vector<Object>> tableData,
@@ -1960,14 +1306,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player trophy table.
-	 *
-	 * @param playerID  the player id
-	 * @param teamType  the team type
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setPlayerTrophyTable(String playerID,
 																	 String teamType,
 																	 Vector<Vector<String>> tableData,
@@ -1983,14 +1321,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player trophy table admin.
-	 *
-	 * @param playerID  the player id
-	 * @param teamType  the team type
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setPlayerTrophyTableAdmin(String playerID,
 																				String teamType,
 																				Vector<Vector<Object>> tableData,
@@ -2006,21 +1336,12 @@ public class Controller
 	}
 
 
-	/**
-	 * Assign trophy team string.
-	 *
-	 * @param teamID               the team id
-	 * @param trophyID             the trophy id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String assignTrophyTeam(String teamID,
 																 String trophyID,
 																 String competitionID,
 																 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2034,21 +1355,12 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove trophy team string.
-	 *
-	 * @param teamID               the team id
-	 * @param trophyID             the trophy id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String removeTrophyTeam(String teamID,
 																 String trophyID,
 																 String competitionID,
 																 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2062,23 +1374,13 @@ public class Controller
 	}
 
 
-	/**
-	 * Assign trophy player string.
-	 *
-	 * @param playerID             the player id
-	 * @param teamID               the team id
-	 * @param trophyID             the trophy id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String assignTrophyPlayer(String playerID,
 																	 String teamID,
 																	 String trophyID,
 																	 String competitionID,
 																	 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2093,23 +1395,13 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove trophy player string.
-	 *
-	 * @param playerID             the player id
-	 * @param teamID               the team id
-	 * @param trophyID             the trophy id
-	 * @param competitionID        the competition id
-	 * @param competitionStartYear the competition start year
-	 * @return the string
-	 */
 	public String removeTrophyPlayer(String playerID,
 																	 String teamID,
 																	 String trophyID,
 																	 String competitionID,
 																	 String competitionStartYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2129,12 +1421,6 @@ public class Controller
 	 * PRIZE
 	 *------------------------------------------------------------------------------------------------------*/
 
-	/**
-	 * Sets team prize combo box.
-	 *
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setTeamPrizeComboBox(Vector<String> comboBoxData,
 																	 Map<String, String> comboBoxMap)
 	{
@@ -2146,12 +1432,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player prize combo box.
-	 *
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setPlayerPrizeComboBox(Vector<String> comboBoxData,
 																		 Map<String, String> comboBoxMap)
 	{
@@ -2163,12 +1443,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team prize table.
-	 *
-	 * @param teamID    the team id
-	 * @param tableData the table data
-	 */
 	public void setTeamPrizeTable(String teamID,
 																Vector<Vector<String>> tableData)
 	{
@@ -2177,13 +1451,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets team prize table admin.
-	 *
-	 * @param teamID    the team id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setTeamPrizeTableAdmin(String teamID,
 																		 Vector<Vector<Object>> tableData,
 																		 Map<Integer, Map<Integer, String>> tableMap)
@@ -2197,12 +1464,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player prize table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 */
 	public void setPlayerPrizeTable(String playerID,
 																	Vector<Vector<String>> tableData)
 	{
@@ -2211,19 +1472,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Assign prize team string.
-	 *
-	 * @param teamID       the team id
-	 * @param prizeID      the prize id
-	 * @param assignedYear the assigned year
-	 * @return the string
-	 */
 	public String assignPrizeTeam(String teamID,
 																String prizeID,
 																String assignedYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2236,19 +1489,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove prize team string.
-	 *
-	 * @param teamID       the team id
-	 * @param prizeID      the prize id
-	 * @param assignedYear the assigned year
-	 * @return the string
-	 */
 	public String removePrizeTeam(String teamID,
 																String prizeID,
 																String assignedYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2261,13 +1506,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets player prize table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setPlayerPrizeTable(String playerID,
 																	Vector<Vector<Object>> tableData,
 																	Map<Integer, Map<Integer, String>> tableMap)
@@ -2281,19 +1519,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Add player prize string.
-	 *
-	 * @param playerID     the player id
-	 * @param prizeID      the prize id
-	 * @param assignedYear the assigned year
-	 * @return the string
-	 */
 	public String addPlayerPrize(String playerID,
 															 String prizeID,
 															 String assignedYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2306,19 +1536,11 @@ public class Controller
 	}
 
 
-	/**
-	 * Delete player prize string.
-	 *
-	 * @param playerID     the player id
-	 * @param prizeID      the prize id
-	 * @param assignedYear the assigned year
-	 * @return the string
-	 */
 	public String deletePlayerPrize(String playerID,
 																	String prizeID,
 																	String assignedYear)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2337,12 +1559,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets nationality table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 */
 	public void setNationalityTable(String playerID,
 																	Vector<Vector<String>> tableData)
 	{
@@ -2354,13 +1570,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets nationality table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setNationalityTable(String playerID,
 																	Vector<Vector<Object>> tableData,
 																	Map<Integer, Map<Integer, String>> tableMap)
@@ -2374,37 +1583,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets nationality combo box.
-	 *
-	 * @param playerID     the player id
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
-	public void setNationalityComboBox(String playerID,
-																		 Vector<String> comboBoxData,
-																		 Map<String, String> comboBoxMap)
-	{
-		NationalityDAO nationalityDAO = new PostgresImplNationalityDAO();
-		nationalityDAO.fetchNationalityComboBoxDB(
-						playerID,
-						comboBoxData,
-						comboBoxMap
-		);
-	}
-
-
-	/**
-	 * Add nationality string.
-	 *
-	 * @param playerID  the player id
-	 * @param countryID the country id
-	 * @return the string
-	 */
 	public String addNationality(String playerID,
 															 String countryID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2416,17 +1598,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove nationality string.
-	 *
-	 * @param playerID  the player id
-	 * @param countryID the country id
-	 * @return the string
-	 */
 	public String removeNationality(String playerID,
 																	String countryID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2444,12 +1619,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets attribute goalkeeping table.
-	 *
-	 * @param playerID                            the player id
-	 * @param playerAttributeGoalkeepingTableData the player attribute goalkeeping table data
-	 */
 	public void setAttributeGoalkeepingTable(String playerID,
 																					 Vector<Vector<String>> playerAttributeGoalkeepingTableData)
 	{
@@ -2458,12 +1627,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets attribute mental table.
-	 *
-	 * @param playerID                       the player id
-	 * @param playerAttributeMentalTableData the player attribute mental table data
-	 */
 	public void setAttributeMentalTable(String playerID,
 																			Vector<Vector<String>> playerAttributeMentalTableData)
 	{
@@ -2472,12 +1635,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets attribute physical table.
-	 *
-	 * @param playerID                         the player id
-	 * @param playerAttributePhysicalTableData the player attribute physical table data
-	 */
 	public void setAttributePhysicalTable(String playerID,
 																				Vector<Vector<String>> playerAttributePhysicalTableData)
 	{
@@ -2486,12 +1643,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets attribute technical table.
-	 *
-	 * @param playerID                          the player id
-	 * @param playerAttributeTechnicalTableData the player attribute technical table data
-	 */
 	public void setAttributeTechnicalTable(String playerID,
 																				 Vector<Vector<String>> playerAttributeTechnicalTableData)
 	{
@@ -2500,25 +1651,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update attribute goalkeeping string.
-	 *
-	 * @param playerID           the player id
-	 * @param aerialReach        the aerial reach
-	 * @param commandOfArea      the command of area
-	 * @param communication      the communication
-	 * @param eccentricity       the eccentricity
-	 * @param firstTouchGk       the first touch gk
-	 * @param handling           the handling
-	 * @param kicking            the kicking
-	 * @param oneOnOnes          the one on ones
-	 * @param passingGk          the passing gk
-	 * @param punchingTendency   the punching tendency
-	 * @param reflexes           the reflexes
-	 * @param rushingOutTendency the rushing out tendency
-	 * @param throwing           the throwing
-	 * @return the string
-	 */
 	public String updateAttributeGoalkeeping(String playerID,
 																					 String aerialReach,
 																					 String commandOfArea,
@@ -2534,7 +1666,7 @@ public class Controller
 																					 String rushingOutTendency,
 																					 String throwing)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2558,26 +1690,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update attribute mental string.
-	 *
-	 * @param playerID      the player id
-	 * @param aggression    the aggression
-	 * @param anticipation  the anticipation
-	 * @param bravery       the bravery
-	 * @param composure     the composure
-	 * @param concentration the concentration
-	 * @param decision      the decision
-	 * @param determination the determination
-	 * @param flair         the flair
-	 * @param leadership    the leadership
-	 * @param offTheBall    the off the ball
-	 * @param positioning   the positioning
-	 * @param teamwork      the teamwork
-	 * @param vision        the vision
-	 * @param workRate      the work rate
-	 * @return the string
-	 */
 	public String updateAttributeMental(String playerID,
 																			String aggression,
 																			String anticipation,
@@ -2594,7 +1706,7 @@ public class Controller
 																			String vision,
 																			String workRate)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2619,20 +1731,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update attribute physical string.
-	 *
-	 * @param playerID       the player id
-	 * @param acceleration   the acceleration
-	 * @param agility        the agility
-	 * @param balance        the balance
-	 * @param jumpingReach   the jumping reach
-	 * @param naturalFitness the natural fitness
-	 * @param pace           the pace
-	 * @param stamina        the stamina
-	 * @param strength       the strength
-	 * @return the string
-	 */
 	public String updateAttributePhysical(String playerID,
 																				String acceleration,
 																				String agility,
@@ -2643,7 +1741,7 @@ public class Controller
 																				String stamina,
 																				String strength)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2662,26 +1760,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Update attribute technical string.
-	 *
-	 * @param playerID       the player id
-	 * @param corners        the corners
-	 * @param crossing       the crossing
-	 * @param dribbling      the dribbling
-	 * @param finishing      the finishing
-	 * @param firstTouch     the first touch
-	 * @param freeKickTaking the free kick taking
-	 * @param heading        the heading
-	 * @param longShots      the long shots
-	 * @param longThrows     the long throws
-	 * @param marking        the marking
-	 * @param passing        the passing
-	 * @param penaltyTaking  the penalty taking
-	 * @param tackling       the tackling
-	 * @param technique      the technique
-	 * @return the string
-	 */
 	public String updateAttributeTechnical(String playerID,
 																				 String corners,
 																				 String crossing,
@@ -2698,7 +1776,7 @@ public class Controller
 																				 String tackling,
 																				 String technique)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2729,12 +1807,6 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
-	/**
-	 * Sets tag table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 */
 	public void setTagTable(String playerID,
 													Vector<Vector<String>> tableData)
 	{
@@ -2746,13 +1818,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets tag table.
-	 *
-	 * @param playerID  the player id
-	 * @param tableData the table data
-	 * @param tableMap  the table map
-	 */
 	public void setTagTable(String playerID,
 													Vector<Vector<Object>> tableData,
 													Map<Integer, Map<Integer, String>> tableMap)
@@ -2766,12 +1831,6 @@ public class Controller
 	}
 
 
-	/**
-	 * Sets tag combo box.
-	 *
-	 * @param comboBoxData the combo box data
-	 * @param comboBoxMap  the combo box map
-	 */
 	public void setTagComboBox(Vector<String> comboBoxData,
 														 Map<String, String> comboBoxMap)
 	{
@@ -2783,17 +1842,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Add player tag string.
-	 *
-	 * @param playerID the player id
-	 * @param tagID    the tag id
-	 * @return the string
-	 */
 	public String addPlayerTag(String playerID,
 														 String tagID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 
@@ -2805,17 +1857,10 @@ public class Controller
 	}
 
 
-	/**
-	 * Remove player tag string.
-	 *
-	 * @param playerID the player id
-	 * @param tagID    the tag id
-	 * @return the string
-	 */
 	public String removePlayerTag(String playerID,
 																String tagID)
 	{
-		if (adminConnected) {
+		if (!adminConnected) {
 			return "errorNoAdmin";
 		}
 

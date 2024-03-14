@@ -12,10 +12,6 @@ public interface NationalityDAO
 													Vector<Vector<Object>> tableData,
 													Map<Integer, Map<Integer, String>> tableMap);
 
-	void fetchNationalityComboBoxDB(String playerID,
-																	Vector<String> comboBoxData,
-																	Map<String, String> comboBoxMap);
-
 	String newNationalityDB(String playerID,
 													String countryID);
 

@@ -232,13 +232,14 @@ public class PostgresImplStatisticDAO
 
 
 	@Override
-	public void fetchStatisticAdminDB(String playerID,
-																		String teamID,
-																		String competitionID,
-																		String competitionStartYear,
-																		Vector<Vector<String>> tableData,
-																		Map<Integer, Map<Integer, String>> tableMap)
+	public String fetchStatisticAdminDB(String playerID,
+																			String teamID,
+																			String competitionID,
+																			String competitionStartYear,
+																			Map<String, String> dataMap)
 	{
+		String playID = null;
+
 		try {
 			CallableStatement cs = this.conn.prepareCall("{call get_statistic_player_admin(?, ?, ?, ?)}");
 			cs.setString(1, playerID);
@@ -248,27 +249,18 @@ public class PostgresImplStatisticDAO
 
 			ResultSet rs = cs.executeQuery();
 
-			Map<Integer, String> playMap = new HashMap<>();
-			int row = 0;
-
 			while (rs.next()) {
-				Vector<String> vector = new Vector<>();
+				dataMap.put(GuiConfiguration.getMessage("match"), rs.getString("match"));
+				dataMap.put(GuiConfiguration.getMessage("goalScored"), rs.getString("goal_scored"));
+				dataMap.put(GuiConfiguration.getMessage("penaltyScored"), rs.getString("penalty_scored"));
+				dataMap.put(GuiConfiguration.getMessage("assist"), rs.getString("assist"));
+				dataMap.put(GuiConfiguration.getMessage("yellowCard"), rs.getString("yellow_card"));
+				dataMap.put(GuiConfiguration.getMessage("redCard"), rs.getString("red_card"));
+				dataMap.put(GuiConfiguration.getMessage("goalConceded"), rs.getString("goal_conceded"));
+				dataMap.put(GuiConfiguration.getMessage("penaltySaved"), rs.getString("penalty_saved"));
 
-				vector.add(rs.getString("match"));
-				vector.add(rs.getString("goal_scored"));
-				vector.add(rs.getString("penalty_scored"));
-				vector.add(rs.getString("assist"));
-				vector.add(rs.getString("yellow_card"));
-				vector.add(rs.getString("red_card"));
-				vector.add(rs.getString("goal_conceded"));
-				vector.add(rs.getString("penalty_saved"));
-
-				tableData.add(vector);
-				playMap.put(row, rs.getString("play_id"));
-				++row;
+				playID = rs.getString("play_id");
 			}
-
-			tableMap.put(0, playMap);
 
 			rs.close();
 			cs.close();
@@ -277,6 +269,8 @@ public class PostgresImplStatisticDAO
 		} catch (Exception e) {
 			System.out.println("Errore: " + e.getMessage());
 		}
+
+		return playID;
 	}
 
 
