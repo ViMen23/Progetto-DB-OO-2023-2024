@@ -17,23 +17,21 @@ public class TableRenderer
 
 
 	@Override
-	public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-
-
-
+	public Component getTableCellRendererComponent(JTable table,
+																								 Object value,
+																								 boolean isSelected,
+																								 boolean hasFocus,
+																								 int row,
+																								 int column)
+	{
 		if (table == null) {
 			return this;
 		}
 
-
 		if (isSelected) {
 			super.setForeground(table.getSelectionForeground() );
-
 			super.setBackground(table.getSelectionBackground());
-
-
 		} else {
-
 			Color background = table.getBackground();
 
 			if (background == null || background instanceof javax.swing.plaf.UIResource) {
@@ -46,7 +44,6 @@ public class TableRenderer
 
 			super.setBackground(background);
 		}
-
 		setFont(table.getFont());
 
 		if (hasFocus) {
@@ -70,11 +67,9 @@ public class TableRenderer
 					super.setBackground(col);
 				}
 			}
-		}
-		else {
+		} else {
 			setBorder(null);
 		}
-
 		setValue(value);
 		setForeground(Color.blue);
 

@@ -120,6 +120,8 @@ public class SearchTotalStatistics
 				);
 				totalStatisticsTable.setPreferredScrollableViewportSize(totalStatisticsTable.getPreferredSize());
 
+				totalStatisticsTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
+
 				// messaggio ricerca effettuata
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";

@@ -215,6 +215,9 @@ public class CompetitionEditionFilterPanel
 				);
 				competitionEditionStatisticsTable.setPreferredScrollableViewportSize(competitionEditionStatisticsTable.getPreferredSize());
 
+				competitionEditionStatisticsTable.getColumnModel().getColumn(0).setCellRenderer(new TableRenderer());
+				competitionEditionStatisticsTable.getColumnModel().getColumn(3).setCellRenderer(new TableRenderer());
+
 				// messaggio ricerca effettuata
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";

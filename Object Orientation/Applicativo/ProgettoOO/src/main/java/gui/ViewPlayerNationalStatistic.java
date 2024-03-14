@@ -174,7 +174,6 @@ public class ViewPlayerNationalStatistic
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				MyTable playerStatisticTable = playerStatisticTablePanel.getMyTable();
 				String string;
 
 				infoPlayerMap.clear();
@@ -195,8 +194,10 @@ public class ViewPlayerNationalStatistic
 
 				topViewPlayerPanel.setGeneralInfoPanel(infoPlayerMap);
 
-				playerStatisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
-				playerStatisticTable.setPreferredScrollableViewportSize(playerStatisticTable.getPreferredSize());
+				statisticTable.setModel(new TableModel(playerStatisticTableData, GuiConfiguration.PLAYER_STATISTIC_TABLE_COLUMN_NAME));
+				statisticTable.setPreferredScrollableViewportSize(statisticTable.getPreferredSize());
+
+				statisticTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
 
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";

@@ -214,6 +214,8 @@ public class AdminSearchCompetition
 				competitionTable.setModel(new TableModel(competitionTableData, GuiConfiguration.COMPETITION_TABLE_COLUMN_NAME));
 				competitionTable.setPreferredScrollableViewportSize(competitionTable.getPreferredSize());
 
+				competitionTable.getColumnModel().getColumn(0).setCellRenderer(new TableRenderer());
+
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
 				string += GuiConfiguration.getMessage("competitions");

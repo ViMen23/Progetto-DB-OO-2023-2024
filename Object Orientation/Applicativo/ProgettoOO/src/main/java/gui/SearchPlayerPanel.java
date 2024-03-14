@@ -267,6 +267,8 @@ public class SearchPlayerPanel
 				playerTable.setModel(new TableModel(playerTableData, GuiConfiguration.PLAYER_TABLE_COLUMN_NAME));
 				playerTable.setPreferredScrollableViewportSize(playerTable.getPreferredSize());
 
+				playerTable.getColumnModel().getColumn(0).setCellRenderer(new TableRenderer());
+
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
 				string += GuiConfiguration.getMessage("players");

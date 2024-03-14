@@ -87,6 +87,8 @@ public class ViewPlayerCase
 		clubTrophyTable.setModel(new TableModel(clubTrophyTableData, GuiConfiguration.PLAYER_CLUB_TROPHY_TABLE_COLUMN_NAME));
 		clubTrophyTable.setPreferredScrollableViewportSize(clubTrophyTable.getPreferredSize());
 
+		clubTrophyTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
+
 		tablePanel.add(clubTrophyPanel);
 
 		nationalTrophyPanel = new TablePanel(false, nationalTableIndex, ctrlNationalMouseTable);
@@ -95,6 +97,8 @@ public class ViewPlayerCase
 		nationalTrophyTable = nationalTrophyPanel.getMyTable();
 		nationalTrophyTable.setModel(new TableModel(nationalTrophyTableData, GuiConfiguration.PLAYER_NATIONAL_TROPHY_TABLE_COLUMN_NAME));
 		nationalTrophyTable.setPreferredScrollableViewportSize(nationalTrophyTable.getPreferredSize());
+
+		nationalTrophyTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
 
 		tablePanel.add(nationalTrophyPanel);
 

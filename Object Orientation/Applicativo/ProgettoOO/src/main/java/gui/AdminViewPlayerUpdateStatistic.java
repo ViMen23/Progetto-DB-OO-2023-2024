@@ -12,7 +12,6 @@ import java.awt.event.ItemListener;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
-import java.util.List;
 
 public class AdminViewPlayerUpdateStatistic
 				extends JPanel
@@ -147,6 +146,7 @@ public class AdminViewPlayerUpdateStatistic
 
 						for (int i = 1; i < arrayList.size(); ++i) {
 							arrayList.get(i).setEnabled(false);
+							arrayList.get(i).setSelectedItem(String.valueOf(0));
 						}
 					} else {
 
@@ -159,6 +159,6 @@ public class AdminViewPlayerUpdateStatistic
 		});
 
 		arrayList.getFirst().setSelectedIndex(-1);
-		arrayList.getFirst().setSelectedItem(statisticTableMap.get("match"));
+		arrayList.getFirst().setSelectedItem(statisticTableMap.get(GuiConfiguration.getMessage("match")));
 	}
 }

@@ -34,8 +34,7 @@ public class AdminViewPlayerUpdateClubStatistic
 		final Vector<String> teamNameVector = new Vector<>();
 		final Map<String, String> teamNameMap = new HashMap<>();
 
-		final Vector<Vector<String>> playerStatisticTableData = new Vector<>();
-		final Map<Integer, Map<Integer, String>> playerStatisticTableMap = new HashMap<>();
+		final Map<String, String> playerStatisticTableMap = new LinkedHashMap<>();
 
 
 		Controller.getInstance().setPlayerInfoMap(playerID, infoPlayerMap);
@@ -108,15 +107,15 @@ public class AdminViewPlayerUpdateClubStatistic
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				playerStatisticTableData.clear();
+				String playID;
+
 				playerStatisticTableMap.clear();
 
-				Controller.getInstance().setStatisticTableAdmin(
+				playID = Controller.getInstance().setStatisticMapAdmin(
 								playerID,
 								teamNameMap.get(ctrlTeamName.getText()),
 								competitionNameMap.get(ctrlCompetitionName.getText()),
 								seasonMap.get(ctrlSeason.getText()),
-								playerStatisticTableData,
 								playerStatisticTableMap
 				);
 
@@ -126,22 +125,10 @@ public class AdminViewPlayerUpdateClubStatistic
 					component.setVisible(false);
 					AdminViewPlayerUpdateClubStatistic.this.remove(component);
 
-
-					Map<String, String> playerStatisticMap = new LinkedHashMap<>();
-
-					playerStatisticMap.put("match", playerStatisticTableData.getFirst().get(0));
-					playerStatisticMap.put("goal_scored", playerStatisticTableData.getFirst().get(1));
-					playerStatisticMap.put("penalty_scored", playerStatisticTableData.getFirst().get(2));
-					playerStatisticMap.put("assist", playerStatisticTableData.getFirst().get(3));
-					playerStatisticMap.put("yellow_card", playerStatisticTableData.getFirst().get(4));
-					playerStatisticMap.put("red_card", playerStatisticTableData.getFirst().get(5));
-					playerStatisticMap.put("goal_conceded", playerStatisticTableData.getFirst().get(6));
-					playerStatisticMap.put("penalty_saved", playerStatisticTableData.getFirst().get(7));
-
 					AdminViewPlayerUpdateClubStatistic.this.add(new AdminViewPlayerUpdateStatistic(
 										playerID,
-										playerStatisticTableMap.get(0).get(0),
-										playerStatisticMap
+										playID,
+										playerStatisticTableMap
 									), GuiConfiguration.TOP_GAP_10_ADD_CONSTRAINT
 					);
 				} catch (Exception ex) {

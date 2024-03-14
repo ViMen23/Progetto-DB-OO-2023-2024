@@ -44,8 +44,8 @@ public class AdminNavigationPanel
 		menuBar = new JMenuBar();
 
 		migLayout = new MigLayout(
-						GuiConfiguration.CENTER_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_50_LAYOUT_CONSTRAINT,
+						null,
+						GuiConfiguration.ONE_CELL_GAP_14P_LAYOUT_CONSTRAINT,
 						null
 		);
 

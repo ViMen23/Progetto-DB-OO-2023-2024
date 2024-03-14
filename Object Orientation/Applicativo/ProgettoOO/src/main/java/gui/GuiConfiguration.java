@@ -77,6 +77,7 @@ public class GuiConfiguration
 	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
 	public static final String ONE_CELL_GAP_50_LAYOUT_CONSTRAINT = "50[]50";
 	public static final String ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT = "10[top]0";
+	public static final String ONE_CELL_GAP_14P_LAYOUT_CONSTRAINT = "14%[]14%";
 	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";
 	public static final String ONE_GROW_FILL_GAP_0_0_CELL = "0[grow, fill]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[]10[]0";

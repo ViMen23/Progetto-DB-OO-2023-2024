@@ -189,6 +189,8 @@ public class SearchTeamPanel
 				teamTable.setModel(new TableModel(teamTableData, GuiConfiguration.TEAM_TABLE_COLUMN_NAME));
 				teamTable.setPreferredScrollableViewportSize(teamTable.getPreferredSize());
 
+				teamTable.getColumnModel().getColumn(0).setCellRenderer(new TableRenderer());
+
 				string = GuiConfiguration.getMessage("doneSearch");
 				string += " - ";
 				string += GuiConfiguration.getMessage("teams");

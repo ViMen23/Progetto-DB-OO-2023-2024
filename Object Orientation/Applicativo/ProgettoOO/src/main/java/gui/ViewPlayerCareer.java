@@ -80,6 +80,8 @@ public class ViewPlayerCareer
 		clubCareerTable.setModel(new TableModel(clubCareerTableData, GuiConfiguration.PLAYER_CLUB_CAREER_TABLE_COLUMN_NAME));
 		clubCareerTable.setPreferredScrollableViewportSize(clubCareerTable.getPreferredSize());
 
+		clubCareerTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
+
 		tablePanel.add(clubCareerPanel);
 
 		nationalCareerPanel = new TablePanel(false, nationalTableIndex, ctrlNationalMouseTable);
@@ -88,6 +90,8 @@ public class ViewPlayerCareer
 		nationalCareerTable = nationalCareerPanel.getMyTable();
 		nationalCareerTable.setModel(new TableModel(nationalCareerTableData, GuiConfiguration.PLAYER_NATIONAL_CAREER_TABLE_COLUMN_NAME));
 		nationalCareerTable.setPreferredScrollableViewportSize(nationalCareerTable.getPreferredSize());
+
+		nationalCareerTable.getColumnModel().getColumn(1).setCellRenderer(new TableRenderer());
 
 		tablePanel.add(nationalCareerPanel);
 		/*------------------------------------------------------------------------------------------------------*/
