@@ -114,7 +114,7 @@ public class PostgresImplPrizeDAO
 																 Vector<Vector<String>> tableData)
 	{
 		try {
-			CallableStatement cs = this.conn.prepareCall("{call get_prize_case(?)}");
+			CallableStatement cs = this.conn.prepareCall("{call prize_player(?)}");
 			cs.setString(1, playerID);
 
 			ResultSet rs = cs.executeQuery();
