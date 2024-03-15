@@ -149,7 +149,7 @@ public class CreateTeam
 					MainFrame.getMainFrameInstance().getContentPane().remove(CreateTeam.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new MenuBarPanel(new CreateTeam()),
+									new AdminNavigationPanel(new CreateTeam()),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

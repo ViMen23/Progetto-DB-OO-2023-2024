@@ -204,7 +204,7 @@ public class CreatePlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(CreatePlayer.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new MenuBarPanel(new CreatePlayer()),
+									new AdminNavigationPanel(new CreatePlayer()),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

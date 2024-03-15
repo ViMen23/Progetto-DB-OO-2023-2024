@@ -2,7 +2,6 @@ package gui;
 
 import controller.Controller;
 import net.miginfocom.swing.MigLayout;
-import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;

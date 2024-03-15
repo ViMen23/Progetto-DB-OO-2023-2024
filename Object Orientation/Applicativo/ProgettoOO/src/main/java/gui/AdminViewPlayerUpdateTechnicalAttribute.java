@@ -135,7 +135,7 @@ public class AdminViewPlayerUpdateTechnicalAttribute
 
 				if (chosenOption == JOptionPane.YES_OPTION) {
 
-					String message = Controller.getInstance().updateAttributeMental(
+					String message = Controller.getInstance().updateAttributeTechnical(
 									playerID,
 									(String) arrayList.get(0).getSelectedItem(),
 									(String) arrayList.get(1).getSelectedItem(),
