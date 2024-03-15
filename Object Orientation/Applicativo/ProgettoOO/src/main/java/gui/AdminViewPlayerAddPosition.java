@@ -14,9 +14,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere una posizione
+ * a un calciatore.
+ */
 public class AdminViewPlayerAddPosition
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere la posizione.
+	 */
 	public AdminViewPlayerAddPosition(String playerID)
 	{
 		final JLabel ctrlPositionName = new JLabel((String) null);
@@ -73,11 +83,19 @@ public class AdminViewPlayerAddPosition
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().addPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addPlayerPosition"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().addPlayerPosition(playerID, positionNameMap.get(ctrlPositionName.getText()));
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddPosition.this.getParent().setVisible(false);

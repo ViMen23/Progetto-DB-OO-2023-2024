@@ -4753,7 +4753,7 @@ BEGIN
     GET DIAGNOSTICS count_row = row_count;
 	
 	IF (0 = count_row) THEN
-        output_message = 'errorMessageInsertPlayerTrophy';
+        output_message = 'errorMessageInsertMilitancy';
     ELSE
         output_message = 'okInsert';
     END IF;
@@ -4807,7 +4807,7 @@ BEGIN
     GET DIAGNOSTICS count_row = row_count;
 	
 	IF (0 = count_row) THEN
-        output_message = 'errorMessageDeletePlayerTrophy';
+        output_message = 'errorMessageDeleteMilitancy';
     ELSE
         output_message = 'okDelete';
     END IF;

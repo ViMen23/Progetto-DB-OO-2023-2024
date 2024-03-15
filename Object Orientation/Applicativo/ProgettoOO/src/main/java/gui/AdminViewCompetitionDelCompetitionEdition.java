@@ -11,9 +11,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per eliminare edizioni
+ * di una competizione calcistica esistente.
+ */
 public class AdminViewCompetitionDelCompetitionEdition
 				extends JPanel
 {
+
+	/**
+	 * Costruttore della classe.
+	 *
+	 * @param competitionID Identificativo della competizione a cui aggiungere l'edizione.
+	 * @param competitionTeamType Il tipo di squadra che partecipa alla competizione (club o nazionale).
+	 */
 	public AdminViewCompetitionDelCompetitionEdition(String competitionID, String competitionTeamType)
 	{
 		final Map<String, String> infoCompetitionMap = new LinkedHashMap<>();
@@ -79,22 +90,33 @@ public class AdminViewCompetitionDelCompetitionEdition
 
 		deleteButton = new JButton(GuiConfiguration.getMessage("delAllSelected"));
 		deleteButton.setCursor(GuiConfiguration.HAND_CURSOR);
+		deleteButton.setEnabled(!competitionEditionTableData.isEmpty());
 		this.add(deleteButton);
 
 		deleteButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA COMPETIZIONE EDIZIONE"); //TODO
+				int chosenOption;
 
-				for (int i = 0; i < competitionEditionTableData.size(); ++i) {
-					if ((Boolean) competitionEditionTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().deleteCompetitionEdition(
-										competitionID,
-										competitionEditionTableMap.get(1).get(i)
-						);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgDeleteSelected"),
+								GuiConfiguration.getMessage("delCompetitionEdition"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-						System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message;
+
+					for (int i = 0; i < competitionEditionTableData.size(); ++i) {
+						if ((Boolean) competitionEditionTableData.get(i).getFirst()) {
+							message = Controller.getInstance().deleteCompetitionEdition(
+											competitionID,
+											competitionEditionTableMap.get(1).get(i)
+							);
+
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 

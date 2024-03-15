@@ -15,9 +15,18 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiornare gli attributi portiere
+ * di un calciatore.
+ */
 public class AdminViewPlayerUpdateGoalkeepingAttribute
 				extends JPanel
 {
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi portiere.
+	 */
 	public AdminViewPlayerUpdateGoalkeepingAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -88,26 +97,35 @@ public class AdminViewPlayerUpdateGoalkeepingAttribute
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "BOH"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().updateAttributeGoalkeeping(
-								playerID,
-								(String) arrayList.get(0).getSelectedItem(),
-								(String) arrayList.get(1).getSelectedItem(),
-								(String) arrayList.get(2).getSelectedItem(),
-								(String) arrayList.get(3).getSelectedItem(),
-								(String) arrayList.get(4).getSelectedItem(),
-								(String) arrayList.get(5).getSelectedItem(),
-								(String) arrayList.get(6).getSelectedItem(),
-								(String) arrayList.get(7).getSelectedItem(),
-								(String) arrayList.get(8).getSelectedItem(),
-								(String) arrayList.get(9).getSelectedItem(),
-								(String) arrayList.get(10).getSelectedItem(),
-								(String) arrayList.get(11).getSelectedItem(),
-								(String) arrayList.get(12).getSelectedItem()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("updateGoalkeepingAttribute"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().updateAttributeGoalkeeping(
+									playerID,
+									(String) arrayList.get(0).getSelectedItem(),
+									(String) arrayList.get(1).getSelectedItem(),
+									(String) arrayList.get(2).getSelectedItem(),
+									(String) arrayList.get(3).getSelectedItem(),
+									(String) arrayList.get(4).getSelectedItem(),
+									(String) arrayList.get(5).getSelectedItem(),
+									(String) arrayList.get(6).getSelectedItem(),
+									(String) arrayList.get(7).getSelectedItem(),
+									(String) arrayList.get(8).getSelectedItem(),
+									(String) arrayList.get(9).getSelectedItem(),
+									(String) arrayList.get(10).getSelectedItem(),
+									(String) arrayList.get(11).getSelectedItem(),
+									(String) arrayList.get(12).getSelectedItem()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerUpdateGoalkeepingAttribute.this.getParent().setVisible(false);

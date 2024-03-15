@@ -20,9 +20,19 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiornare le informazioni generali
+ * di un calciatore.
+ */
 public class AdminViewPlayerUpdateGeneralInfo
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere, eliminare o aggiornare la daa di ritiro.
+	 */
 	public AdminViewPlayerUpdateGeneralInfo(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -43,7 +53,7 @@ public class AdminViewPlayerUpdateGeneralInfo
 		final JLabel ctrlFoot = new JLabel((String) null);
 		final JLabel ctrlPositionName = new JLabel((String) null);
 
-		final boolean[] ctrlButton = {false, false, false, false, false, false};
+		final boolean[] ctrlButton = {true, true, true, true, true, true};
 
 		final Vector<String> continentNameVector = new Vector<>();
 		final Map<String, String> continentNameMap = new HashMap<>();
@@ -181,18 +191,28 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
+				int chosenOption;
 
-				String message = Controller.getInstance().updatePlayer(
-								playerID,
-								ctrlName.getText(),
-								ctrlSurname.getText(),
-								datePickerDob.getDateStringOrEmptyString(),
-								nationNameMap.get(ctrlNationName.getText()),
-								ctrlFoot.getText(),
-								positionNameMap.get(ctrlPositionName.getText())
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("editGeneralInfo"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().updatePlayer(
+									playerID,
+									ctrlName.getText(),
+									ctrlSurname.getText(),
+									datePickerDob.getDateStringOrEmptyString(),
+									nationNameMap.get(ctrlNationName.getText()),
+									ctrlFoot.getText(),
+									positionNameMap.get(ctrlPositionName.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerUpdateGeneralInfo.this.getParent().setVisible(false);
@@ -213,12 +233,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				ctrlButton[0] = !(null == ctrlName.getText() || ctrlName.getText().equalsIgnoreCase(prevName));
+				ctrlButton[0] = null != ctrlName.getText();
 
 				confirmButton.setEnabled(
-								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-												ctrlNationName.getText() != null
+								(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+												(
+																(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																!(ctrlPositionName.getText().contains(prevMainPosition))
+												)
 				);
 			}
 		});
@@ -227,12 +253,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				ctrlButton[1] = !(null == ctrlSurname.getText() || ctrlSurname.getText().equalsIgnoreCase(prevSurname));
+				ctrlButton[1] = null != ctrlSurname.getText();
 
 				confirmButton.setEnabled(
-								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-												ctrlNationName.getText() != null
+								(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+												(
+																(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																!(ctrlPositionName.getText().contains(prevMainPosition))
+												)
 				);
 			}
 		});
@@ -241,12 +273,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void dateChanged(DateChangeEvent dateChangeEvent)
 			{
-				ctrlButton[2] = !(null == dateChangeEvent.getNewDate() || datePickerDob.getDateStringOrEmptyString().equalsIgnoreCase(prevDob));
+				ctrlButton[2] = null != dateChangeEvent.getNewDate();
 
 				confirmButton.setEnabled(
-								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-												ctrlNationName.getText() != null
+								(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+												(
+																(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																!(ctrlPositionName.getText().contains(prevMainPosition))
+												)
 				);
 			}
 		});
@@ -301,12 +339,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 					nationNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(nationNameVector));
 				}
 				else {
-					ctrlButton[3] = !(null == nationNameMap.get(ctrlNationName.getText()) || ctrlNationName.getText().equalsIgnoreCase(prevBornCountry));
+					ctrlButton[3] = null != nationNameMap.get(ctrlNationName.getText());
 
 					confirmButton.setEnabled(
-									(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-													ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-													ctrlNationName.getText() != null
+									(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+													(
+																	(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																	(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																	(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																	(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																	(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																	!(ctrlPositionName.getText().contains(prevMainPosition))
+													)
 					);
 				}
 			}
@@ -316,12 +360,18 @@ public class AdminViewPlayerUpdateGeneralInfo
 			@Override
 			public void propertyChange(PropertyChangeEvent evt)
 			{
-				ctrlButton[4] = !(null == ctrlFoot.getText() || GuiConfiguration.getMessage(ctrlFoot.getText()).equalsIgnoreCase(prevFoot));
+				ctrlButton[4] = null != ctrlFoot.getText();
 
 				confirmButton.setEnabled(
-								(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-												ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-												ctrlNationName.getText() != null
+								(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+												(
+																(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																!(ctrlPositionName.getText().contains(prevMainPosition))
+												)
 				);
 			}
 		});
@@ -342,21 +392,23 @@ public class AdminViewPlayerUpdateGeneralInfo
 					positionNamePanel.getMyComboBox().setModel(new DefaultComboBoxModel<>(positionNameVector));
 				}
 				else {
-					String[] keyPart = ctrlPositionName.getText().split("]");
-					ctrlButton[5] = (null != positionNameMap.get(ctrlPositionName.getText())  && prevMainPosition.contains(keyPart[1]));
+					ctrlButton[5] = null != positionNameMap.get(ctrlPositionName.getText());
 
 					confirmButton.setEnabled(
-									(ctrlButton[0] || ctrlButton[1] || ctrlButton[2] || ctrlButton[3] || ctrlButton[4] || ctrlButton[5]) &&
-													ctrlName.getText() != null && ctrlSurname.getText() != null && datePickerDob.getDate() != null &&
-													ctrlNationName.getText() != null
+									(ctrlButton[0] && ctrlButton[1] && ctrlButton[2] && ctrlButton[3] && ctrlButton[4] && ctrlButton[5]) &&
+													(
+																	(0 != StringUtils.compareIgnoreCase(ctrlName.getText(), prevName)) ||
+																	(0 != StringUtils.compareIgnoreCase(ctrlSurname.getText(), prevSurname)) ||
+																	(0 != StringUtils.compareIgnoreCase(datePickerDob.getDateStringOrEmptyString(), prevDob)) ||
+																	(0 != StringUtils.compareIgnoreCase(ctrlNationName.getText(), prevBornCountry)) ||
+																	(0 != StringUtils.compareIgnoreCase(GuiConfiguration.getMessage(ctrlFoot.getText()), prevFoot)) ||
+																	!(ctrlPositionName.getText().contains(prevMainPosition))
+													)
 					);
 				}
 			}
 		});
 
-		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
-		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
-		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
 
 		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
 
@@ -368,6 +420,11 @@ public class AdminViewPlayerUpdateGeneralInfo
 		}
 
 		positionNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
+
+		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeVisible();
+		nationNamePanel.getMyComboBox().setSelectedItem(prevBornCountry);
+		nationNamePanel.getMyComboBox().firePopupMenuWillBecomeInvisible();
+
 
 		confirmButton.setEnabled(false);
 	}

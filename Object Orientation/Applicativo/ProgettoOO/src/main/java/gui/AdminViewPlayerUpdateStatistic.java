@@ -13,16 +13,30 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiornare le statistiche
+ * di un calciatore.
+ * <p>
+ * Le statistiche sono relative alle partecipazioni del calciatore a competizioni con squadre di tipo club.
+ */
 public class AdminViewPlayerUpdateStatistic
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiornare le statistiche.
+	 * @param playID Identificato del gioco a cui sono associate le statistiche
+	 * @param statisticTableMap Mappa che contiene le informazioni sulle statistiche
+	 */
 	public AdminViewPlayerUpdateStatistic(String playerID,
 																				String playID,
 																				Map<String, String> statisticTableMap)
 	{
 		final Vector<String> statisticValueVector = new Vector<>();
 
-		for (int i = 0; i <= 1000; ++i) {
+		for (int i = 0; i <= 100; ++i) {
 			statisticValueVector.add(String.valueOf(i));
 		}
 
@@ -70,21 +84,34 @@ public class AdminViewPlayerUpdateStatistic
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "BOH"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().updateStatistic(
-								playID,
-								(String) arrayList.get(0).getSelectedItem(),
-								(String) arrayList.get(1).getSelectedItem(),
-								(String) arrayList.get(2).getSelectedItem(),
-								(String) arrayList.get(3).getSelectedItem(),
-								(String) arrayList.get(4).getSelectedItem(),
-								(String) arrayList.get(5).getSelectedItem(),
-								(String) arrayList.get(6).getSelectedItem(),
-								(String) arrayList.get(7).getSelectedItem()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("updateStatistics"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().updateStatistic(
+									playID,
+									(String) arrayList.get(0).getSelectedItem(),
+									(String) arrayList.get(1).getSelectedItem(),
+									(String) arrayList.get(2).getSelectedItem(),
+									(String) arrayList.get(3).getSelectedItem(),
+									(String) arrayList.get(4).getSelectedItem(),
+									(String) arrayList.get(5).getSelectedItem(),
+									(String) arrayList.get(6).getSelectedItem(),
+									(String) arrayList.get(7).getSelectedItem()
+					);
+
+					String[] keyPart = message.split("@");
+
+					for(String string: keyPart) {
+						JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(string));
+					}
+				}
 
 				try {
 					AdminViewPlayerUpdateStatistic.this.getParent().getParent().setVisible(false);

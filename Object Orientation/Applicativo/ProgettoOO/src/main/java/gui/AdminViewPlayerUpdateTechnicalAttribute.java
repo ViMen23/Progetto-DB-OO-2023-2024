@@ -15,9 +15,19 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiornare gli attributi tecnici
+ * di un calciatore.
+ */
 public class AdminViewPlayerUpdateTechnicalAttribute
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi tecnici.
+	 */
 	public AdminViewPlayerUpdateTechnicalAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -124,27 +134,36 @@ public class AdminViewPlayerUpdateTechnicalAttribute
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "BOH"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().updateAttributeTechnical(
-								playerID,
-								(String) arrayList.get(0).getSelectedItem(),
-								(String) arrayList.get(1).getSelectedItem(),
-								(String) arrayList.get(2).getSelectedItem(),
-								(String) arrayList.get(3).getSelectedItem(),
-								(String) arrayList.get(4).getSelectedItem(),
-								(String) arrayList.get(5).getSelectedItem(),
-								(String) arrayList.get(6).getSelectedItem(),
-								(String) arrayList.get(7).getSelectedItem(),
-								(String) arrayList.get(8).getSelectedItem(),
-								(String) arrayList.get(9).getSelectedItem(),
-								(String) arrayList.get(10).getSelectedItem(),
-								(String) arrayList.get(11).getSelectedItem(),
-								(String) arrayList.get(12).getSelectedItem(),
-								(String) arrayList.get(13).getSelectedItem()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("updateTechnicalAttribute"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().updateAttributeMental(
+									playerID,
+									(String) arrayList.get(0).getSelectedItem(),
+									(String) arrayList.get(1).getSelectedItem(),
+									(String) arrayList.get(2).getSelectedItem(),
+									(String) arrayList.get(3).getSelectedItem(),
+									(String) arrayList.get(4).getSelectedItem(),
+									(String) arrayList.get(5).getSelectedItem(),
+									(String) arrayList.get(6).getSelectedItem(),
+									(String) arrayList.get(7).getSelectedItem(),
+									(String) arrayList.get(8).getSelectedItem(),
+									(String) arrayList.get(9).getSelectedItem(),
+									(String) arrayList.get(10).getSelectedItem(),
+									(String) arrayList.get(11).getSelectedItem(),
+									(String) arrayList.get(12).getSelectedItem(),
+									(String) arrayList.get(13).getSelectedItem()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerUpdateTechnicalAttribute.this.getParent().setVisible(false);

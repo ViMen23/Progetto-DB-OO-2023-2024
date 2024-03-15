@@ -14,9 +14,20 @@ import java.beans.PropertyChangeListener;
 import java.time.Year;
 import java.util.*;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere un nuovo periodo
+ * di militanza in una nazionale a un calciatore.
+ */
+
 public class AdminViewPlayerAddNationalMilitancy
 				extends JPanel
 {
+
+	/**
+	 * Costruttore della classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere la militanza nazionale.
+	 */
 	public AdminViewPlayerAddNationalMilitancy(String playerID)
 	{
 		final JLabel ctrlTeamName = new JLabel((String) null);
@@ -86,17 +97,26 @@ public class AdminViewPlayerAddNationalMilitancy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().newMilitancy(
-								playerID,
-								teamNameMap.get(ctrlTeamName.getText()),
-								Team.TEAM_TYPE.NATIONAL.toString(),
-								yearMap.get(ctrlYear.getText()),
-								Player.MILITANCY_TYPE.FULL.toString()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addNationalMilitancy"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().newMilitancy(
+									playerID,
+									teamNameMap.get(ctrlTeamName.getText()),
+									Team.TEAM_TYPE.NATIONAL.toString(),
+									yearMap.get(ctrlYear.getText()),
+									Player.MILITANCY_TYPE.FULL.toString()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
+
 				try {
 					AdminViewPlayerAddNationalMilitancy.this.getParent().setVisible(false);
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddNationalMilitancy.this.getParent());

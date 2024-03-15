@@ -16,9 +16,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per assegnare un trofeo
+ * di una competizione di tipo club a un calciatore.
+ */
 public class AdminViewPlayerAddClubTrophy
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui assegnare il trofeo club.
+	 */
 	public AdminViewPlayerAddClubTrophy(String playerID)
 	{
 		final JLabel ctrlSeason = new JLabel((String) null);
@@ -117,17 +127,25 @@ public class AdminViewPlayerAddClubTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().assignTrophyPlayer(
-								playerID,
-								teamNameMap.get(ctrlTeamName.getText()),
-								trophyNameMap.get(ctrlTrophyName.getText()),
-								competitionNameMap.get(ctrlCompetitionName.getText()),
-								seasonMap.get(ctrlSeason.getText())
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addClubTrophy"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().assignTrophyPlayer(
+									playerID,
+									teamNameMap.get(ctrlTeamName.getText()),
+									trophyNameMap.get(ctrlTrophyName.getText()),
+									competitionNameMap.get(ctrlCompetitionName.getText()),
+									seasonMap.get(ctrlSeason.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddClubTrophy.this.getParent().setVisible(false);

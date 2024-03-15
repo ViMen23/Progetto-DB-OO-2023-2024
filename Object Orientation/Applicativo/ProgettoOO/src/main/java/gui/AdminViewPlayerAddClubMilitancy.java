@@ -16,9 +16,18 @@ import java.beans.PropertyChangeListener;
 import java.time.Year;
 import java.util.*;
 
-public class AdminViewPlayerAddClubMilitancy
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere un nuovo periodo
+ * di militanza in un club a un calciatore.
+ */
+ public class AdminViewPlayerAddClubMilitancy
 				extends JPanel
 {
+	/**
+	 * Costruttore della classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere la militanza club.
+	 */
 	public AdminViewPlayerAddClubMilitancy(String playerID)
 	{
 		final JLabel ctrlContinentName = new JLabel((String) null);
@@ -168,17 +177,25 @@ public class AdminViewPlayerAddClubMilitancy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().newMilitancy(
-								playerID,
-								teamNameMap.get(ctrlTeamName.getText()),
-								Team.TEAM_TYPE.CLUB.toString(),
-								seasonMap.get(ctrlSeason.getText()),
-								ctrlMilitancyType.getText()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addClubMilitancy"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().newMilitancy(
+									playerID,
+									teamNameMap.get(ctrlTeamName.getText()),
+									Team.TEAM_TYPE.CLUB.toString(),
+									seasonMap.get(ctrlSeason.getText()),
+									ctrlMilitancyType.getText()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddClubMilitancy.this.getParent().setVisible(false);

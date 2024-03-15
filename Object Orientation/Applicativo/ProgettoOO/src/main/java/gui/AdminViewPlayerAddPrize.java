@@ -15,9 +15,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per assegnare un premio
+ * a un calciatore.
+ */
 public class AdminViewPlayerAddPrize
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui assegnare il premio.
+	 */
 	public AdminViewPlayerAddPrize(String playerID)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);
@@ -85,15 +95,23 @@ public class AdminViewPlayerAddPrize
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().addPlayerPrize(
-								playerID,
-								prizeNameMap.get(ctrlPrizeName.getText()),
-								ctrlYear.getText()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addPrize"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().addPlayerPrize(
+									playerID,
+									prizeNameMap.get(ctrlPrizeName.getText()),
+									ctrlYear.getText()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddPrize.this.getParent().setVisible(false);

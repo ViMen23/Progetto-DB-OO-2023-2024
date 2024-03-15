@@ -16,9 +16,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per assegnare un trofeo
+ * di una competizione di tipo nazionale a un calciatore.
+ */
 public class AdminViewPlayerAddNationalTrophy
 				extends JPanel
 {
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui assegnare il trofeo nazionale.
+	 */
 	public AdminViewPlayerAddNationalTrophy(String playerID)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);
@@ -117,17 +126,25 @@ public class AdminViewPlayerAddNationalTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().assignTrophyPlayer(
-								playerID,
-								teamNameMap.get(ctrlTeamName.getText()),
-								trophyNameMap.get(ctrlTrophyName.getText()),
-								competitionNameMap.get(ctrlCompetitionName.getText()),
-								yearMap.get(ctrlYear.getText())
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addNationalTrophy"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().assignTrophyPlayer(
+									playerID,
+									teamNameMap.get(ctrlTeamName.getText()),
+									trophyNameMap.get(ctrlTrophyName.getText()),
+									competitionNameMap.get(ctrlCompetitionName.getText()),
+									yearMap.get(ctrlYear.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddNationalTrophy.this.getParent().setVisible(false);

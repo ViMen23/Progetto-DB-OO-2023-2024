@@ -15,9 +15,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere una nazionalità
+ * a un calciatore.
+ */
 public class AdminViewPlayerAddNationality
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere la nazionalità.
+	 */
 	public AdminViewPlayerAddNationality(String playerID)
 	{
 		final JLabel ctrlContinentName = new JLabel((String) null);
@@ -86,11 +96,19 @@ public class AdminViewPlayerAddNationality
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().addNationality(playerID, nationNameMap.get(ctrlNationName.getText()));
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addNationality"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().addNationality(playerID, nationNameMap.get(ctrlNationName.getText()));
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddNationality.this.getParent().setVisible(false);

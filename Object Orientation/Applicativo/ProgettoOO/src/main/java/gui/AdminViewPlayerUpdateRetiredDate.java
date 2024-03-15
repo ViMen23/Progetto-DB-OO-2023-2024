@@ -16,9 +16,19 @@ import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere, eliminare o aggiornare la data di ritiro
+ * di un calciatore.
+ */
 public class AdminViewPlayerUpdateRetiredDate
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere, eliminare o aggiornare la daa di ritiro.
+	 */
 	public AdminViewPlayerUpdateRetiredDate(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -88,7 +98,7 @@ public class AdminViewPlayerUpdateRetiredDate
 
 		if (bornDate.plusYears(GuiConfiguration.MIN_AGE).isAfter(lastAllowedDate)) {
 			datePicker.setEnabled(false);
-			JOptionPane.showMessageDialog(null, "NON PUOI INSERIRE UNA DATA DI RITIRO AL SEGUENTE CALCIATORE"); //TODO
+			JOptionPane.showMessageDialog(null,  GuiConfiguration.getMessage("msgNoRetiredDate"));
 		}
 		else {
 
@@ -121,11 +131,19 @@ public class AdminViewPlayerUpdateRetiredDate
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().setRetiredDate(playerID, datePicker.getDateStringOrSuppliedString(null));
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("updateRetiredDate"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().setRetiredDate(playerID, datePicker.getDateStringOrSuppliedString(null));
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerUpdateRetiredDate.this.getParent().setVisible(false);

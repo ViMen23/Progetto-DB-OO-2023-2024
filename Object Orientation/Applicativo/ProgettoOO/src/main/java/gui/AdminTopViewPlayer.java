@@ -9,11 +9,25 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Questa classe fornisce una vista agli amministratori per gestire le informazioni sui calciatori.
+ * <p>
+ * Visualizza i dettagli generali del calciatore e offre vari menu per modificare sezioni di dati specifici
+ * come ruoli, nazionalità, tag, cronologia della carriera, trofei, premi e attributi
+ * Inoltre, consente di eliminare il calciatore e con esso tutte le sue informazioni.
+ */
 public class AdminTopViewPlayer
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
-	public AdminTopViewPlayer(String playerID, JPanel rootPanel)
+
+	/**
+	 * Costruttore della classe.
+	 *
+	 * @param playerID Identificativo del calciatore.
+	 * @param parentPanel Pannello padre nella gerarchia dell'interfaccia.
+	 */
+	public AdminTopViewPlayer(String playerID, JPanel parentPanel)
 	{
 		MigLayout migLayout;
 		JPanel panel;
@@ -79,8 +93,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateGeneralInfo(playerID)),
@@ -101,8 +115,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateRetiredDate(playerID)),
@@ -137,8 +151,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddPosition(playerID)),
@@ -160,8 +174,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelPosition(playerID)),
@@ -195,8 +209,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddNationality(playerID)),
@@ -217,8 +231,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelNationality(playerID)),
@@ -252,8 +266,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddTag(playerID)),
@@ -274,8 +288,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelTag(playerID)),
@@ -327,8 +341,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddClubMilitancy(playerID)),
@@ -349,8 +363,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelClubMilitancy(playerID)),
@@ -390,8 +404,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddNationalMilitancy(playerID)),
@@ -412,8 +426,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelNationalMilitancy(playerID)),
@@ -465,8 +479,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddClubTrophy(playerID)),
@@ -487,8 +501,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelClubTrophy(playerID)),
@@ -528,8 +542,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddNationalTrophy(playerID)),
@@ -550,8 +564,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelNationalTrophy(playerID)),
@@ -587,8 +601,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerAddPrize(playerID)),
@@ -609,8 +623,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerDelPrize(playerID)),
@@ -645,8 +659,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
@@ -668,8 +682,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateMentalAttribute(playerID)),
@@ -691,8 +705,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdatePhysicalAttribute(playerID)),
@@ -714,8 +728,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateTechnicalAttribute(playerID)),
@@ -750,8 +764,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateClubStatistic(playerID)),
@@ -773,8 +787,8 @@ public class AdminTopViewPlayer
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewPlayerUpdateNationalStatistic(playerID)),
@@ -796,17 +810,26 @@ public class AdminTopViewPlayer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showMessageDialog(null, "SEI SICURO DI VOLER ELIMINARE NON POTRAI TORNARE INDIETRO");//TODO
-				String message = Controller.getInstance().deletePlayer(playerID);
+				int chosenOption;
 
-				System.out.println(message);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmDelete"),
+								GuiConfiguration.getMessage("deletePlayer"),
+								JOptionPane.YES_NO_OPTION
+				);
+
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().deletePlayer(playerID);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new CreatePlayer()),
+									new AdminNavigationPanel(new JPanel()),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
@@ -815,8 +838,14 @@ public class AdminTopViewPlayer
 			}
 		});
 	}
-	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
+
+	/**
+	 * Imposta le informazioni generali sui calciatori nel pannello dedicato.
+	 *
+	 * @param infoPlayerMap Mappa contenente le informazioni sui calciatori.
+	 */
+	public void setGeneralInfoPanel(Map<String,String> infoPlayerMap)
 	{
-		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "playerInformation");
+		generalInfoPanel.createGeneralInfoPanel(infoPlayerMap, "playerInformation");
 	}
 }

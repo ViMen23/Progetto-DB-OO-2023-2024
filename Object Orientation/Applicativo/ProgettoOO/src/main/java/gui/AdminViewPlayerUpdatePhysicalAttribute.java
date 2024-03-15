@@ -15,9 +15,19 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiornare gli attributi fisici
+ * di un calciatore.
+ */
 public class AdminViewPlayerUpdatePhysicalAttribute
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi fisici.
+	 */
 	public AdminViewPlayerUpdatePhysicalAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -124,21 +134,30 @@ public class AdminViewPlayerUpdatePhysicalAttribute
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "BOH"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().updateAttributePhysical(
-								playerID,
-								(String) arrayList.get(0).getSelectedItem(),
-								(String) arrayList.get(1).getSelectedItem(),
-								(String) arrayList.get(2).getSelectedItem(),
-								(String) arrayList.get(3).getSelectedItem(),
-								(String) arrayList.get(4).getSelectedItem(),
-								(String) arrayList.get(5).getSelectedItem(),
-								(String) arrayList.get(6).getSelectedItem(),
-								(String) arrayList.get(7).getSelectedItem()
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("updatePhysicalAttribute"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().updateAttributePhysical(
+									playerID,
+									(String) arrayList.get(0).getSelectedItem(),
+									(String) arrayList.get(1).getSelectedItem(),
+									(String) arrayList.get(2).getSelectedItem(),
+									(String) arrayList.get(3).getSelectedItem(),
+									(String) arrayList.get(4).getSelectedItem(),
+									(String) arrayList.get(5).getSelectedItem(),
+									(String) arrayList.get(6).getSelectedItem(),
+									(String) arrayList.get(7).getSelectedItem()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerUpdatePhysicalAttribute.this.getParent().setVisible(false);

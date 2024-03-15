@@ -8,11 +8,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Questa classe fornisce una vista agli amministratori per gestire le informazioni sulle squadre.
+ * <p>
+ * Visualizza le informazioni generali della squadra e offre menu per varie funzionalità di modifica
+ * come aggiornare le informazioni generali, aggiungere/eliminare partecipazioni, trofei e premi.
+ * Inoltre, consente di eliminare l'intera squadra e con essa tutte le sue informazioni.
+ */
+
 public class AdminTopViewTeam
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
-	public AdminTopViewTeam(String teamID, String teamType, JPanel rootPanel)
+
+	/**
+	 * Costruttore della classe.
+	 *
+	 * @param teamID Identificativo della squadra.
+	 * @param teamType Tipo di squadra (Nazionale o Club).
+	 * @param parentPanel Pannello padre nella gerarchia dell'interfaccia.
+	 */
+	public AdminTopViewTeam(String teamID, String teamType, JPanel parentPanel)
 	{
 		MigLayout migLayout;
 		JPanel panel;
@@ -75,8 +91,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamUpdateGeneralInfo(teamID, teamType)),
@@ -110,8 +126,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamAddParticipation(teamID, teamType)),
@@ -133,8 +149,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamDelParticipation(teamID, teamType)),
@@ -170,8 +186,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamAddTrophy(teamID, teamType)),
@@ -192,8 +208,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamDelTrophy(teamID, teamType)),
@@ -229,8 +245,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamAddPrize(teamID, teamType)),
@@ -251,8 +267,8 @@ public class AdminTopViewTeam
 			public void actionPerformed(ActionEvent e)
 			{
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
 									new AdminNavigationPanel(new AdminViewTeamDelPrize(teamID, teamType)),
@@ -273,19 +289,28 @@ public class AdminTopViewTeam
 
 		button.addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
-				JOptionPane.showConfirmDialog(null, GuiConfiguration.getMessage("msgDelete"));
+			public void actionPerformed(ActionEvent e)
+			{
+				int chosenOption;
 
-				String message = Controller.getInstance().deleteTeam(teamID);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmDelete"),
+								GuiConfiguration.getMessage("deleteTeam"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().deleteTeam(teamID);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
-					rootPanel.getParent().setVisible(false);
-					MainFrame.getMainFrameInstance().getContentPane().remove(rootPanel.getParent());
+					parentPanel.getParent().setVisible(false);
+					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new CreateTeam()),
+									new AdminNavigationPanel(new JPanel()),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch (Exception ex) {
@@ -294,6 +319,12 @@ public class AdminTopViewTeam
 			}
 		});
 	}
+
+	/**
+	 * Imposta le informazioni generali sui calciatori nel pannello dedicato.
+	 *
+	 * @param infoTeamMap Mappa contenente le informazioni sulle squadre.
+	 */
 	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
 	{
 		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");

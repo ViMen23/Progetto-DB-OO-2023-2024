@@ -14,9 +14,18 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per aggiungere un tag
+ * a un calciatore.
+ */
 public class AdminViewPlayerAddTag
 				extends JPanel
 {
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui aggiungere il tag.
+	 */
 	public AdminViewPlayerAddTag(String playerID)
 	{
 		final JLabel ctrlTagName = new JLabel((String) null);
@@ -73,11 +82,19 @@ public class AdminViewPlayerAddTag
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
 
-				String message = Controller.getInstance().addPlayerTag(playerID, tagNameMap.get(ctrlTagName.getText()));
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addPlayerTag"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().addPlayerTag(playerID, tagNameMap.get(ctrlTagName.getText()));
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewPlayerAddTag.this.getParent().setVisible(false);

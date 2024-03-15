@@ -11,9 +11,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per eliminare i premi
+ * a un calciatore
+ */
 public class AdminViewPlayerDelPrize
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui eliminare i premi.
+	 */
 	public AdminViewPlayerDelPrize(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -78,17 +88,27 @@ public class AdminViewPlayerDelPrize
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA PREMI"); //TODO
+				int chosenOption;
 
-				for (int i = 0; i < prizeTableData.size(); ++i) {
-					if ((Boolean) prizeTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().deletePlayerPrize(
-										playerID,
-										prizeTableMap.get(2).get(i),
-										prizeTableMap.get(1).get(i)
-						);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgDeleteSelected"),
+								GuiConfiguration.getMessage("delPrize"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-						System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message;
+
+					for (int i = 0; i < prizeTableData.size(); ++i) {
+						if ((Boolean) prizeTableData.get(i).getFirst()) {
+							message = Controller.getInstance().deletePlayerPrize(
+											playerID,
+											prizeTableMap.get(2).get(i),
+											prizeTableMap.get(1).get(i)
+							);
+
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 

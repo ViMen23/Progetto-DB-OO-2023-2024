@@ -11,9 +11,20 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+
+/**
+ * Questa classe crea una vista per gli amministratori per eliminare le posizioni
+ * a un calciatore
+ */
 public class AdminViewPlayerDelPosition
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui eliminare le posizioni.
+	 */
 	public AdminViewPlayerDelPosition(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -78,16 +89,26 @@ public class AdminViewPlayerDelPosition
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA POSIZIONI"); //TODO
+				int chosenOption;
 
-				for (int i = 0; i < playerPositionTableData.size(); ++i) {
-					if ((Boolean) playerPositionTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().removePlayerPosition(
-										playerID,
-										playerPositionTableMap.get(3).get(i)
-						);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgDeleteSelected"),
+								GuiConfiguration.getMessage("delPlayerPosition"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-						System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message;
+
+					for (int i = 0; i < playerPositionTableData.size(); ++i) {
+						if ((Boolean) playerPositionTableData.get(i).getFirst()) {
+							message = Controller.getInstance().removePlayerPosition(
+											playerID,
+											playerPositionTableMap.get(3).get(i)
+							);
+
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 

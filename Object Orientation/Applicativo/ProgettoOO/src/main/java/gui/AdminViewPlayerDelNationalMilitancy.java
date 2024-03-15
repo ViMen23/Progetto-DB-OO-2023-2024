@@ -11,9 +11,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per eliminare militanze nazionali
+ * a un calciatore
+ */
 public class AdminViewPlayerDelNationalMilitancy
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui eliminare le militanze nazionali.
+	 */
 	public AdminViewPlayerDelNationalMilitancy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -76,17 +86,27 @@ public class AdminViewPlayerDelNationalMilitancy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA MILITANZE NAZIONALI"); //TODO
+				int chosenOption;
 
-				for (int i = 0; i < militancyTableData.size(); ++i) {
-					if ((Boolean) militancyTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().deleteMilitancy(
-										playerID,
-										militancyTableMap.get(2).get(i),
-										militancyTableMap.get(1).get(i)
-						);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgDeleteSelected"),
+								GuiConfiguration.getMessage("delNationalMilitancy"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-						System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message;
+
+					for (int i = 0; i < militancyTableData.size(); ++i) {
+						if ((Boolean) militancyTableData.get(i).getFirst()) {
+							message = Controller.getInstance().deleteMilitancy(
+											playerID,
+											militancyTableMap.get(2).get(i),
+											militancyTableMap.get(1).get(i)
+							);
+
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 

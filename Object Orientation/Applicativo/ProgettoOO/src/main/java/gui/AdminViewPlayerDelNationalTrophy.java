@@ -12,9 +12,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe crea una vista per gli amministratori per eliminare trofei
+ * di una competizione di tipo nazionale a un calciatore
+ */
 public class AdminViewPlayerDelNationalTrophy
 				extends JPanel
 {
+
+	/**
+	 * Costruttore per la classe.
+	 *
+	 * @param playerID Identificativo del calciatore a cui eliminare i trofei nazionali.
+	 */
 	public AdminViewPlayerDelNationalTrophy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();
@@ -80,19 +90,29 @@ public class AdminViewPlayerDelNationalTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				int chosenOption;
 
-				for (int i = 0; i < trophyTableData.size(); ++i) {
-					if ((Boolean) trophyTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().removeTrophyPlayer(
-										playerID,
-										trophyTableMap.get(3).get(i),
-										trophyTableMap.get(4).get(i),
-										trophyTableMap.get(2).get(i),
-										trophyTableMap.get(1).get(i)
-						);
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgDeleteSelected"),
+								GuiConfiguration.getMessage("delNationalTrophy"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-						System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message;
+
+					for (int i = 0; i < trophyTableData.size(); ++i) {
+						if ((Boolean) trophyTableData.get(i).getFirst()) {
+							message = Controller.getInstance().removeTrophyPlayer(
+											playerID,
+											trophyTableMap.get(3).get(i),
+											trophyTableMap.get(4).get(i),
+											trophyTableMap.get(2).get(i),
+											trophyTableMap.get(1).get(i)
+							);
+
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 
