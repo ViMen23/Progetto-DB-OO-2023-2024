@@ -14,20 +14,10 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 //TODO PER IL MOMENTO NELLA LABEL C'È IL NOME UTENTE CAPIRE SE SERVE E NEL CASO TOGLIERE
-/**
- * Questa classe rappresenta il pannello di login per l'amministratore dell'applicazione.
- * <p>
- * Esso consente agli utenti di inserire il proprio nome utente e password e tentare di accedere.
- */
 public class AdminLoginPanel
 				extends JPanel
 {
 
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param ctrlLabel La label che restituisce l'informazione dell'eventuale riuscito login al `TopPanel`.
-	 */
 	public AdminLoginPanel(JLabel ctrlLabel)
 	{
 		MigLayout migLayout;

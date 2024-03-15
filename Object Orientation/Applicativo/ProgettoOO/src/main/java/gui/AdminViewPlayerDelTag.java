@@ -11,18 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per eliminare i tag
- * a un calciatore
- */
 public class AdminViewPlayerDelTag
 				extends JPanel
 {
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui eliminare i tag.
-	 */
 	public AdminViewPlayerDelTag(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

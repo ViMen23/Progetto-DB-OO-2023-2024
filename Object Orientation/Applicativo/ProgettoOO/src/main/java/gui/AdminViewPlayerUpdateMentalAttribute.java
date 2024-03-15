@@ -16,19 +16,10 @@ import java.util.Vector;
 import java.util.List;
 
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiornare gli attributi mentali
- * di un calciatore.
- */
 public class AdminViewPlayerUpdateMentalAttribute
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi mentali.
-	 */
 	public AdminViewPlayerUpdateMentalAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

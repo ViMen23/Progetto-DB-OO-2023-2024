@@ -13,23 +13,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiornare le statistiche
- * di un calciatore.
- * <p>
- * Le statistiche sono relative alle partecipazioni del calciatore a competizioni con squadre di tipo club.
- */
 public class AdminViewPlayerUpdateStatistic
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiornare le statistiche.
-	 * @param playID Identificato del gioco a cui sono associate le statistiche
-	 * @param statisticTableMap Mappa che contiene le informazioni sulle statistiche
-	 */
 	public AdminViewPlayerUpdateStatistic(String playerID,
 																				String playID,
 																				Map<String, String> statisticTableMap)

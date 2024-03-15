@@ -8,26 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-/**
- * Questa classe fornisce una vista agli amministratori per gestire le informazioni sulle squadre.
- * <p>
- * Visualizza le informazioni generali della squadra e offre menu per varie funzionalità di modifica
- * come aggiornare le informazioni generali, aggiungere/eliminare partecipazioni, trofei e premi.
- * Inoltre, consente di eliminare l'intera squadra e con essa tutte le sue informazioni.
- */
-
 public class AdminTopViewTeam
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
 
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param teamID Identificativo della squadra.
-	 * @param teamType Tipo di squadra (Nazionale o Club).
-	 * @param parentPanel Pannello padre nella gerarchia dell'interfaccia.
-	 */
 	public AdminTopViewTeam(String teamID, String teamType, JPanel parentPanel)
 	{
 		MigLayout migLayout;
@@ -320,11 +305,6 @@ public class AdminTopViewTeam
 		});
 	}
 
-	/**
-	 * Imposta le informazioni generali sui calciatori nel pannello dedicato.
-	 *
-	 * @param infoTeamMap Mappa contenente le informazioni sulle squadre.
-	 */
 	public void setGeneralInfoPanel(Map<String,String> infoTeamMap)
 	{
 		generalInfoPanel.createGeneralInfoPanel(infoTeamMap, "teamInformation");

@@ -15,19 +15,10 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiornare gli attributi tecnici
- * di un calciatore.
- */
 public class AdminViewPlayerUpdateTechnicalAttribute
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi tecnici.
-	 */
 	public AdminViewPlayerUpdateTechnicalAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

@@ -8,13 +8,6 @@ import java.awt.font.TextAttribute;
 import java.sql.SQLException;
 import java.util.*;
 
-/**
- * TYPE : class - gui package
- * <p>
- * NAME : GuiConfiguration
- * <p>
- * DESC: TODO
- */
 public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;
@@ -126,11 +119,6 @@ public class GuiConfiguration
 	public static Font outputRedFont;
 
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : initGuiConfiguration
-	 * DESC: TODO
-	 */
 	public static void initGuiConfiguration()
 	{
 		// creazione del locale di default come italiano
@@ -167,11 +155,6 @@ public class GuiConfiguration
 	}
 
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : initGuiConfiguration
-	 * DESC: TODO
-	 */
 	public static void initUIManager()
 	{
 		try {
@@ -575,11 +558,6 @@ public class GuiConfiguration
 	}
 
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : getMessage
-	 * DESC: TODO
-	 */
 	public static String getMessage(String key)
 	{
 		try {
@@ -590,11 +568,6 @@ public class GuiConfiguration
 		}
 	}
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : setResourceBundle
-	 * DESC: TODO
-	 */
 	public static boolean setResourceBundle(Locale locale)
 	{
 		try {
@@ -607,22 +580,12 @@ public class GuiConfiguration
 		return true;
 	}
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : createImageIcon
-	 * DESC: TODO
-	 */
 	public static ImageIcon createImageIcon(String imagePath)
 	{
 		return createImageIcon(imagePath, 30, 30);
 	}
 
 
-	/**
-	 * TYPE : static method - gui package
-	 * NAME : createImageIcon
-	 * DESC: TODO
-	 */
 	public static ImageIcon createImageIcon(String imagePath,
 																					int width,
 																					int height)

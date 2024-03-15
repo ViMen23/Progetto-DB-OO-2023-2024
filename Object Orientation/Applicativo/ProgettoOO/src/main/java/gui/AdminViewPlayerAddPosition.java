@@ -14,19 +14,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere una posizione
- * a un calciatore.
- */
 public class AdminViewPlayerAddPosition
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere la posizione.
-	 */
 	public AdminViewPlayerAddPosition(String playerID)
 	{
 		final JLabel ctrlPositionName = new JLabel((String) null);

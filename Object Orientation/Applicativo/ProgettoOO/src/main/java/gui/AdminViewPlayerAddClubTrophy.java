@@ -16,19 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per assegnare un trofeo
- * di una competizione di tipo club a un calciatore.
- */
 public class AdminViewPlayerAddClubTrophy
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui assegnare il trofeo club.
-	 */
 	public AdminViewPlayerAddClubTrophy(String playerID)
 	{
 		final JLabel ctrlSeason = new JLabel((String) null);

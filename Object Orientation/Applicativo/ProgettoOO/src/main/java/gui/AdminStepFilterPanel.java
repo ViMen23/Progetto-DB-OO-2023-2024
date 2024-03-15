@@ -15,19 +15,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe rappresenta il pannello di filtro a step utilizzato nell'interfaccia amministratore
- * per la ricerca di entità (competizioni, squadre, giocatori).
- * <p>
- * Permette agli utenti di specificare criteri di ricerca progressivi e visualizzare i risultati filtrati.
- */
 public class AdminStepFilterPanel
 				extends JPanel
 {
 
-	/**
-	 * Costruttore della classe.
-	 */
 	public AdminStepFilterPanel()
 	{
 		final JLabel ctrlTeamType = new JLabel((String) null);

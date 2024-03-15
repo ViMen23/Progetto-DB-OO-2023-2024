@@ -14,18 +14,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-/**
- * Questa classe rappresenta il pannello di ricerca delle competizioni nella vista amministratore.
- * <p>
- * Permette agli utenti di specificare i criteri di ricerca e visualizzare una tabella delle competizioni corrispondenti.
- */
 public class AdminSearchCompetition
 				extends JPanel
 {
 
-	/**
-	 * Costruttore della classe.
-	 */
 	public AdminSearchCompetition()
 	{
 		final JLabel ctrlCompetitionSubName = new JLabel((String) null);

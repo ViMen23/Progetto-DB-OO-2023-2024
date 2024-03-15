@@ -14,18 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere un tag
- * a un calciatore.
- */
 public class AdminViewPlayerAddTag
 				extends JPanel
 {
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere il tag.
-	 */
 	public AdminViewPlayerAddTag(String playerID)
 	{
 		final JLabel ctrlTagName = new JLabel((String) null);

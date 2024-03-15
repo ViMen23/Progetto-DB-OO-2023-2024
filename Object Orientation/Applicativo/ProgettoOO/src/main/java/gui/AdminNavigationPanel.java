@@ -8,20 +8,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-/**
- * Questa classe rappresenta il pannello di navigazione per la vista amministratore dell'applicazione.
- * <p>
- * Fornisce una barra dei menu con opzioni per la gestione di competizioni, squadre e giocatori.
- */
 public class AdminNavigationPanel
 				extends  JPanel
 {
 
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param panel Il panel da visualizzare nell'area sottostante alla barra dei menu.
-	 */
 	public AdminNavigationPanel(JPanel panel)
 	{
 		MigLayout migLayout;

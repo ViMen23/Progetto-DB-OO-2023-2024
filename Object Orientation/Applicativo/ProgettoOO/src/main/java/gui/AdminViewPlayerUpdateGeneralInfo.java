@@ -20,19 +20,10 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiornare le informazioni generali
- * di un calciatore.
- */
 public class AdminViewPlayerUpdateGeneralInfo
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere, eliminare o aggiornare la daa di ritiro.
-	 */
 	public AdminViewPlayerUpdateGeneralInfo(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

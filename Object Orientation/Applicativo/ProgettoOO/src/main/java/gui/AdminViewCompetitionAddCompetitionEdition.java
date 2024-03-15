@@ -16,19 +16,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere una nuova edizione
- * a una competizione calcistica esistente.
- */
 public class AdminViewCompetitionAddCompetitionEdition
 				extends JPanel
 {
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param competitionID Identificativo della competizione a cui aggiungere l'edizione.
-	 * @param competitionTeamType Il tipo di squadra che partecipa alla competizione (club o nazionale).
-	 */
 	public AdminViewCompetitionAddCompetitionEdition(String competitionID, String competitionTeamType)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);
@@ -103,7 +93,7 @@ public class AdminViewCompetitionAddCompetitionEdition
 				);
 
 				if (chosenOption == JOptionPane.YES_OPTION) {
-					String message = Controller.getInstance().createCompetitionEdition(competitionID, yearMap.get(ctrlYear.getText()));
+					String message = Controller.getInstance().newCompetitionEdition(competitionID, yearMap.get(ctrlYear.getText()));
 
 					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
 				}

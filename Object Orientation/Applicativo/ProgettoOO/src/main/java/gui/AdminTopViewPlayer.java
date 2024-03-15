@@ -9,24 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
-/**
- * Questa classe fornisce una vista agli amministratori per gestire le informazioni sui calciatori.
- * <p>
- * Visualizza i dettagli generali del calciatore e offre vari menu per modificare sezioni di dati specifici
- * come ruoli, nazionalità, tag, cronologia della carriera, trofei, premi e attributi
- * Inoltre, consente di eliminare il calciatore e con esso tutte le sue informazioni.
- */
 public class AdminTopViewPlayer
 				extends JPanel
 {
 	private final GeneralInfoPanel generalInfoPanel;
 
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param playerID Identificativo del calciatore.
-	 * @param parentPanel Pannello padre nella gerarchia dell'interfaccia.
-	 */
 	public AdminTopViewPlayer(String playerID, JPanel parentPanel)
 	{
 		MigLayout migLayout;
@@ -839,11 +826,6 @@ public class AdminTopViewPlayer
 		});
 	}
 
-	/**
-	 * Imposta le informazioni generali sui calciatori nel pannello dedicato.
-	 *
-	 * @param infoPlayerMap Mappa contenente le informazioni sui calciatori.
-	 */
 	public void setGeneralInfoPanel(Map<String,String> infoPlayerMap)
 	{
 		generalInfoPanel.createGeneralInfoPanel(infoPlayerMap, "playerInformation");

@@ -14,20 +14,10 @@ import java.beans.PropertyChangeListener;
 import java.time.Year;
 import java.util.*;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere un nuovo periodo
- * di militanza in una nazionale a un calciatore.
- */
-
 public class AdminViewPlayerAddNationalMilitancy
 				extends JPanel
 {
 
-	/**
-	 * Costruttore della classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere la militanza nazionale.
-	 */
 	public AdminViewPlayerAddNationalMilitancy(String playerID)
 	{
 		final JLabel ctrlTeamName = new JLabel((String) null);

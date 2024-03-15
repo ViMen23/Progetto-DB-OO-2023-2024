@@ -12,19 +12,10 @@ import java.util.Map;
 import java.util.Vector;
 
 
-/**
- * Questa classe crea una vista per gli amministratori per eliminare le posizioni
- * a un calciatore
- */
 public class AdminViewPlayerDelPosition
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui eliminare le posizioni.
-	 */
 	public AdminViewPlayerDelPosition(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

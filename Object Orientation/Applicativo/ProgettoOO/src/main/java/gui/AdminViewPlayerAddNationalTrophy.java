@@ -16,18 +16,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per assegnare un trofeo
- * di una competizione di tipo nazionale a un calciatore.
- */
 public class AdminViewPlayerAddNationalTrophy
 				extends JPanel
 {
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui assegnare il trofeo nazionale.
-	 */
 	public AdminViewPlayerAddNationalTrophy(String playerID)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);

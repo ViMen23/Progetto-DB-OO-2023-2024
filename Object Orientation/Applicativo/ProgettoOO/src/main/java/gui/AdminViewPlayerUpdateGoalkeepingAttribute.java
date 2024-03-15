@@ -15,18 +15,9 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiornare gli attributi portiere
- * di un calciatore.
- */
 public class AdminViewPlayerUpdateGoalkeepingAttribute
 				extends JPanel
 {
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiornare gli attributi portiere.
-	 */
 	public AdminViewPlayerUpdateGoalkeepingAttribute(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

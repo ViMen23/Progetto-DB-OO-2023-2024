@@ -15,19 +15,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere una nazionalità
- * a un calciatore.
- */
 public class AdminViewPlayerAddNationality
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere la nazionalità.
-	 */
 	public AdminViewPlayerAddNationality(String playerID)
 	{
 		final JLabel ctrlContinentName = new JLabel((String) null);

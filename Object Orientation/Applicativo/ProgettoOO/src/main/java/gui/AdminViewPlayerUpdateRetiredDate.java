@@ -16,19 +16,10 @@ import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Questa classe crea una vista per gli amministratori per aggiungere, eliminare o aggiornare la data di ritiro
- * di un calciatore.
- */
 public class AdminViewPlayerUpdateRetiredDate
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiungere, eliminare o aggiornare la daa di ritiro.
-	 */
 	public AdminViewPlayerUpdateRetiredDate(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

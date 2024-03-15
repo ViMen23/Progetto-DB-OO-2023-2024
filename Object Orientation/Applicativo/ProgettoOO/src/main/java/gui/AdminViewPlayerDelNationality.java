@@ -11,19 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per eliminare nazionalità
- * a un calciatore
- */
 public class AdminViewPlayerDelNationality
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui eliminare le nazionalità.
-	 */
 	public AdminViewPlayerDelNationality(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

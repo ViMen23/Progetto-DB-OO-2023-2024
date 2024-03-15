@@ -39,7 +39,7 @@ public class AdminViewTeamAddParticipation
 		final Enum[] enumCountryType;
 
 		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
-		Controller.getInstance().setConfederationPartecipation(teamID, confederationTypeMap);
+		Controller.getInstance().setConfederationMap(teamID, confederationTypeMap);
 
 
 		MigLayout migLayout;

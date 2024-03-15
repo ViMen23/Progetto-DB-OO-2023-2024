@@ -13,21 +13,10 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
-/**
- * Questa classe crea una vista per gli amministratori per cercare le statistiche
- * di un calciatore.
- * <p>
- * Le statistiche sono relative alle partecipazioni del calciatore a competizioni con squadre di tipo nazionale.
- */
 public class AdminViewPlayerUpdateNationalStatistic
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui aggiornare le statistiche.
-	 */
 	public AdminViewPlayerUpdateNationalStatistic(String playerID)
 	{
 		final JLabel ctrlYear = new JLabel((String) null);

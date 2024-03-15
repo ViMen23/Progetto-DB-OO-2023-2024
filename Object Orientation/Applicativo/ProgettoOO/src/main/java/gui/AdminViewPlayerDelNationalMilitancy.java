@@ -11,19 +11,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-/**
- * Questa classe crea una vista per gli amministratori per eliminare militanze nazionali
- * a un calciatore
- */
 public class AdminViewPlayerDelNationalMilitancy
 				extends JPanel
 {
 
-	/**
-	 * Costruttore per la classe.
-	 *
-	 * @param playerID Identificativo del calciatore a cui eliminare le militanze nazionali.
-	 */
 	public AdminViewPlayerDelNationalMilitancy(String playerID)
 	{
 		final Map<String, String> infoPlayerMap = new LinkedHashMap<>();

@@ -60,7 +60,7 @@ public class SearchCountryPanel
 		string += " - ";
 		string += GuiConfiguration.getMessage("availableCountries");
 		string += " ";
-		string += Controller.getInstance().countCountries();
+		string += Controller.getInstance().countCountry();
 
 		topSearchPanel = new TopSearchPanel(string, this, centralPanel);
 		this.add(topSearchPanel, GuiConfiguration.HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT);

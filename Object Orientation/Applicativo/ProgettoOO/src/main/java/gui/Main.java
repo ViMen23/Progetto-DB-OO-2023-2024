@@ -3,12 +3,6 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * TYPE : class - gui package
- * NAME : Main
- *
- * DESC: TODO
- */
 public class Main
 {
 	private static void createAndShowGUI()
