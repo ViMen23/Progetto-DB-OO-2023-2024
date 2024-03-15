@@ -177,22 +177,27 @@ public class CreatePlayer
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String message;
 
-
-				message = Controller.getInstance().newPlayer(
-								ctrlName.getText(),
-								ctrlSurname.getText(),
-								datePicker.getDateStringOrEmptyString(),
-								nationNameMap.get(ctrlNationName.getText()),
-								ctrlFoot.getText(),
-								positionNameMap.get(ctrlPositionName.getText())
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("msgCreatePlayer"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				JOptionPane.showMessageDialog(
-								null,
-								GuiConfiguration.getMessage(message)
-				);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+
+					String message = Controller.getInstance().newPlayer(
+									ctrlName.getText(),
+									ctrlSurname.getText(),
+									datePicker.getDateStringOrEmptyString(),
+									nationNameMap.get(ctrlNationName.getText()),
+									ctrlFoot.getText(),
+									positionNameMap.get(ctrlPositionName.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					CreatePlayer.this.getParent().setVisible(false);

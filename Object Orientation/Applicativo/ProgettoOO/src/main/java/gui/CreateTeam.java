@@ -125,18 +125,24 @@ public class CreateTeam
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String message;
-				message = Controller.getInstance().createTeam(
-								ctrlTeamType.getText(),
-								ctrlLongName.getText(),
-								ctrlShortName.getText(),
-								nationNameMap.get(ctrlNationName.getText())
+				int chosenOption;
+
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("editGeneralInfo"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				JOptionPane.showMessageDialog(
-								null,
-								GuiConfiguration.getMessage(message)
-				);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().createTeam(
+									ctrlTeamType.getText(),
+									ctrlLongName.getText(),
+									ctrlShortName.getText(),
+									nationNameMap.get(ctrlNationName.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					CreateTeam.this.getParent().setVisible(false);

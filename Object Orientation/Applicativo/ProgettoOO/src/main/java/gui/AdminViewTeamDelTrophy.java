@@ -79,18 +79,25 @@ public class AdminViewTeamDelTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA TROFEI"); //TODO
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmDelete"),
+								GuiConfiguration.getMessage("delTrophy"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				for (int i = 0; i < trophyTableData.size(); ++i) {
-					if ((Boolean) trophyTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().removeTrophyTeam(
-										teamID,
-										trophyTableMap.get(3).get(i),
-										trophyTableMap.get(2).get(i),
-										trophyTableMap.get(1).get(i)
-						);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					for (int i = 0; i < trophyTableData.size(); ++i) {
+						if ((Boolean) trophyTableData.get(i).getFirst()) {
+							String message = Controller.getInstance().removeTrophyTeam(
+											teamID,
+											trophyTableMap.get(3).get(i),
+											trophyTableMap.get(2).get(i),
+											trophyTableMap.get(1).get(i)
+							);
 
-						System.out.println(message);
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 

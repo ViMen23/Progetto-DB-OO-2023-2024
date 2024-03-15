@@ -38,7 +38,6 @@ public class AdminViewTeamAddParticipation
 
 		final Enum[] enumCountryType;
 
-
 		Controller.getInstance().setTeamInfoMap(teamID, infoTeamMap);
 		Controller.getInstance().setConfederationPartecipation(teamID, confederationTypeMap);
 
@@ -127,11 +126,18 @@ public class AdminViewTeamAddParticipation
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI AVER INSERITO I DATI CORRETTAMENTE"); //TODO
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addParticipation"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				String message = Controller.getInstance().createPartecipation(teamID, competitionNameMap.get(ctrlCompetition.getText()), seasonMap.get(ctrlSeason.getText()));
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().createPartecipation(teamID, competitionNameMap.get(ctrlCompetition.getText()), seasonMap.get(ctrlSeason.getText()));
 
-				System.out.println(message);
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewTeamAddParticipation.this.getParent().setVisible(false);

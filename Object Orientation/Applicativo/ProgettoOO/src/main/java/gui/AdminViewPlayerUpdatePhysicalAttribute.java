@@ -135,7 +135,6 @@ public class AdminViewPlayerUpdatePhysicalAttribute
 			public void actionPerformed(ActionEvent e)
 			{
 				int chosenOption;
-
 				chosenOption = JOptionPane.showConfirmDialog(null,
 								GuiConfiguration.getMessage("msgConfirmData"),
 								GuiConfiguration.getMessage("updatePhysicalAttribute"),

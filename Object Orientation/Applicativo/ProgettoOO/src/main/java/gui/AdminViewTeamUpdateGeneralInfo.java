@@ -77,13 +77,24 @@ public class AdminViewTeamUpdateGeneralInfo
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				String message = Controller.getInstance().updateTeam(
-								teamID,
-								teamType,
-								ctrlLongName.getText(),
-								ctrlShortName.getText()
+				int chosenOption;
+
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("editGeneralInfo"),
+								JOptionPane.YES_NO_OPTION
 				);
-				System.out.println(message);
+
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().updateTeam(
+									teamID,
+									teamType,
+									ctrlLongName.getText(),
+									ctrlShortName.getText()
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewTeamUpdateGeneralInfo.this.getParent().setVisible(false);

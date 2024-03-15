@@ -78,17 +78,24 @@ public class AdminViewTeamDelPrize
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA PREMI"); //TODO
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmDelete"),
+								GuiConfiguration.getMessage("delPrize"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				for (int i = 0; i < prizeTableData.size(); ++i) {
-					if ((Boolean) prizeTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().removePrizeTeam(
-										teamID,
-										prizeTableMap.get(2).get(i),
-										prizeTableMap.get(1).get(i)
-						);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					for (int i = 0; i < prizeTableData.size(); ++i) {
+						if ((Boolean) prizeTableData.get(i).getFirst()) {
+							String message = Controller.getInstance().removePrizeTeam(
+											teamID,
+											prizeTableMap.get(2).get(i),
+											prizeTableMap.get(1).get(i)
+							);
 
-						System.out.println(message);
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 
@@ -103,7 +110,6 @@ public class AdminViewTeamDelPrize
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
-
 			}
 		});
 

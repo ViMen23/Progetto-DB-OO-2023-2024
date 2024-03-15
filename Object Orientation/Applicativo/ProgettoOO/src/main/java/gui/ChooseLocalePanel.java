@@ -92,6 +92,8 @@ public class ChooseLocalePanel
 
 				GuiConfiguration.setLocale(getChoosedLocale());
 
+				GuiConfiguration.resetTableColumn();
+				GuiConfiguration.initTableColumn();
 				if (Controller.getInstance().isAdminConnected()) {
 
 					Container container = MainFrame.getMainFrameInstance().getContentPane();
@@ -101,8 +103,6 @@ public class ChooseLocalePanel
 							container.remove(component);
 						}
 					}
-
-
 					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 
 				}

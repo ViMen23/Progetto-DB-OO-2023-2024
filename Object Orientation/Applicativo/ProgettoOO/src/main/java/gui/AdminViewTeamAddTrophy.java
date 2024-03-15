@@ -103,16 +103,23 @@ public class AdminViewTeamAddTrophy
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "SEI SICURO DI VOLER AGGIUNGERE IL TROFEO"); //TODO
-
-				String message = Controller.getInstance().assignTrophyTeam(
-								teamID,
-								trophyNameMap.get(ctrlTrophy.getText()),
-								competitionNameMap.get(ctrlCompetition.getText()),
-								seasonMap.get(ctrlSeason.getText())
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmData"),
+								GuiConfiguration.getMessage("addTrophy"),
+								JOptionPane.YES_NO_OPTION
 				);
 
-				System.out.println(message);
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					String message = Controller.getInstance().assignTrophyTeam(
+									teamID,
+									trophyNameMap.get(ctrlTrophy.getText()),
+									competitionNameMap.get(ctrlCompetition.getText()),
+									seasonMap.get(ctrlSeason.getText())
+					);
+
+					JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+				}
 
 				try {
 					AdminViewTeamAddTrophy.this.getParent().setVisible(false);

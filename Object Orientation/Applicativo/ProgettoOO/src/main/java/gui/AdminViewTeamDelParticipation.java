@@ -100,14 +100,20 @@ public class AdminViewTeamDelParticipation
 			@Override
 			public void actionPerformed(ActionEvent e)
 			{
-				JOptionPane.showConfirmDialog(null, "ELIMINA PARTECIPAZIONI"); //TODO
+				int chosenOption;
+				chosenOption = JOptionPane.showConfirmDialog(null,
+								GuiConfiguration.getMessage("msgConfirmDelete"),
+								GuiConfiguration.getMessage("delParticipation"),
+								JOptionPane.YES_NO_OPTION
+				);
 
-				for (int i = 0; i < participationTableData.size(); ++i) {
-					if ((Boolean) participationTableData.get(i).getFirst()) {
-						String message = Controller.getInstance().deletePartecipation(teamID, participationTableMap.get(1).get(i), seasonMap.get(ctrlSeason.getText()));
+				if (chosenOption == JOptionPane.YES_OPTION) {
+					for (int i = 0; i < participationTableData.size(); ++i) {
+						if ((Boolean) participationTableData.get(i).getFirst()) {
+							String message = Controller.getInstance().deletePartecipation(teamID, participationTableMap.get(1).get(i), seasonMap.get(ctrlSeason.getText()));
 
-
-						System.out.println(message);
+							JOptionPane.showMessageDialog(null, GuiConfiguration.getMessage(message));
+						}
 					}
 				}
 
@@ -122,7 +128,6 @@ public class AdminViewTeamDelParticipation
 				} catch(Exception ex) {
 					System.err.println("ERRORE: " + ex.getMessage());
 				}
-
 			}
 		});
 
