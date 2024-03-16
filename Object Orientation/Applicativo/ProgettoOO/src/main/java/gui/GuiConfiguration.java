@@ -12,9 +12,6 @@ public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;
 	public static final int MIN_YEAR = 1860;
-	public static final int MIN_AGE = 14;
-	public static final int MAX_AGE = 50;
-
 	public static final ImageIcon HOME_ICON = GuiConfiguration.createImageIcon("images/homy.png");
 	public static final ImageIcon FILTER_ICON = GuiConfiguration.createImageIcon("images/filter.png");
 	public static final ImageIcon DICE_ICON = GuiConfiguration.createImageIcon("images/dice5.png");

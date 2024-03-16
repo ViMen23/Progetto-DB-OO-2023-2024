@@ -162,7 +162,7 @@ public class AdminViewPlayerUpdateMentalAttribute
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerUpdateMentalAttribute.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerUpdateMentalAttribute(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

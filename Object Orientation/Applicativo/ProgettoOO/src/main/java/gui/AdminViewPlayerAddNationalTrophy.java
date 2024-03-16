@@ -142,7 +142,7 @@ public class AdminViewPlayerAddNationalTrophy
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerAddNationalTrophy.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerAddClubTrophy(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerAddNationalTrophy(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

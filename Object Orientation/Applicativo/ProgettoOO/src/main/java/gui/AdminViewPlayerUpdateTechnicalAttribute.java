@@ -161,7 +161,7 @@ public class AdminViewPlayerUpdateTechnicalAttribute
 					MainFrame.getMainFrameInstance().getContentPane().remove(AdminViewPlayerUpdateTechnicalAttribute.this.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new AdminViewPlayerUpdateGoalkeepingAttribute(playerID)),
+									new AdminNavigationPanel(new AdminViewPlayerUpdateTechnicalAttribute(playerID)),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {
