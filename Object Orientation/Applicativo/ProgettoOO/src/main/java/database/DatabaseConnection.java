@@ -17,10 +17,9 @@ public class DatabaseConnection
 	private String url = "jdbc:postgresql://localhost:5432/fpdb";
 	private String user = "postgres";
 	private String password = "qwerty1234!";
-
 	private String driver = "org.postgresql.Driver";
 
-	// COSTRUTTORE
+
 	private DatabaseConnection() throws SQLException
 	{
 		try {
