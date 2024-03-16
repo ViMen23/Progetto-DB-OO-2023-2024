@@ -311,7 +311,7 @@ public class SearchPlayerPanel
 					if (ctrlPlayerMaxAge.getText() != null) {
 						string += ctrlPlayerMaxAge.getText();
 					} else {
-						string += GuiConfiguration.MAX_AGE;
+						string += Player.MAX_AGE;
 					}
 				}
 
@@ -413,8 +413,8 @@ public class SearchPlayerPanel
 
 					comboBox.removeAllItems();
 
-					int minAge = GuiConfiguration.MIN_AGE;
-					int maxAge = GuiConfiguration.MAX_AGE;
+					int minAge = Player.MIN_AGE;
+					int maxAge = Player.MAX_AGE;
 
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));
@@ -438,7 +438,7 @@ public class SearchPlayerPanel
 					comboBox.removeAllItems();
 
 					int minAge = Integer.parseInt(ctrlPlayerMinAge.getText());
-					int maxAge = GuiConfiguration.MAX_AGE;
+					int maxAge = Player.MAX_AGE;
 
 					for (int i = minAge; i <= maxAge; ++i) {
 						comboBox.addItem(String.valueOf(i));

@@ -5,6 +5,7 @@ import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import controller.Controller;
+import model.Player;
 import net.miginfocom.swing.MigLayout;
 
 import javax.swing.*;
@@ -87,18 +88,18 @@ public class AdminViewPlayerUpdateRetiredDate
 		datePicker = new DatePicker(datePickerSettings);
 
 
-		if (bornDate.plusYears(GuiConfiguration.MIN_AGE).isAfter(lastAllowedDate)) {
+		if (bornDate.plusYears(Player.MIN_AGE).isAfter(lastAllowedDate)) {
 			datePicker.setEnabled(false);
 			JOptionPane.showMessageDialog(null,  GuiConfiguration.getMessage("msgNoRetiredDate"));
 		}
 		else {
 
-			if (bornDate.plusYears(GuiConfiguration.MAX_AGE).isBefore(lastAllowedDate)) {
-				lastAllowedDate = bornDate.plusYears(GuiConfiguration.MAX_AGE);
+			if (bornDate.plusYears(Player.MAX_AGE).isBefore(lastAllowedDate)) {
+				lastAllowedDate = bornDate.plusYears(Player.MAX_AGE);
 			}
 
 			datePickerSettings.setDateRangeLimits(
-							bornDate.plusYears(GuiConfiguration.MIN_AGE),
+							bornDate.plusYears(Player.MIN_AGE),
 							lastAllowedDate
 			);
 		}

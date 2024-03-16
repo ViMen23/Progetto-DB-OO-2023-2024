@@ -122,7 +122,7 @@ public class AdminViewPlayerUpdateGeneralInfo
 
 		datePickerSettingsDob.setDateRangeLimits(
 						LocalDate.of(GuiConfiguration.MIN_YEAR, 1, 1),
-						LocalDate.of(Year.now().getValue(), 12, 31).minusYears(GuiConfiguration.MIN_AGE)
+						LocalDate.of(Year.now().getValue(), 12, 31).minusYears(Player.MIN_AGE)
 		);
 		datePickerSettingsDob.setAllowKeyboardEditing(false);
 
