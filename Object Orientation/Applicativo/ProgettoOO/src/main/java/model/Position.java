@@ -1,24 +1,35 @@
 package model;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 /**
- * TYPE : class
+ * Questa classe rappresenta una posizione di gioco.
  * <p>
- * NAME : Position
- * <p>
- * DESC: Classe che rappresenta il concetto astratto di posizione nel campo di gioco
+ * Una posizione è caratterizzata da:
+ *  <li> `role`: Ruolo principale associato alla posizione.
+ *  <li> `code`: Codice identificativo della posizione.
+ *  <li> `name`: Nome descrittivo della posizione.
  */
 public class Position
 {
+	/**
+	 * Enumerazione che rappresenta i possibili ruoli di gioco.
+	 */
 	public enum ROLE_TYPE {GK, DF, MF, FW}
-	private static final Map<String, Position> POSITION_MAP = new LinkedHashMap<>();
+
 
 	private final String role;
 	private final String code;
 	private final String name;
 
+
+	/**
+	 * Costruttore della classe `Position`.
+	 * <p>
+	 * Crea una nuova istanza di posizione con i parametri specificati.
+	 * <p>
+	 * @param role Il ruolo principale associato alla posizione.
+	 * @param code Il codice identificativo della posizione.
+	 * @param name Il nome descrittivo della posizione.
+	 */
 	public Position(String role,
 									String code,
 									String name)
@@ -29,23 +40,34 @@ public class Position
 	}
 
 
+	/**
+	 * Restituisce il ruolo principale associato alla posizione.
+	 * <p>
+	 * @return Il ruolo principale associato alla posizione.
+	 */
 	public String getRole()
 	{
 		return role;
 	}
 
+	/**
+	 * Restituisce il codice identificativo della posizione.
+	 * <p>
+	 * @return Il codice identificativo della posizione.
+	 */
 	public String getCode()
 	{
 		return code;
 	}
 
+	/**
+	 * Restituisce il nome descrittivo della posizione.
+	 * <p>
+	 * @return Il nome descrittivo della posizione.
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
-	public Map<String, Position> getPositionMap()
-	{
-		return POSITION_MAP;
-	}
 }

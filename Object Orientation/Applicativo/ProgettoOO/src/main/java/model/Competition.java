@@ -3,17 +3,22 @@ package model;
 import java.util.*;
 
 /**
- * TYPE : class
+ * Questa classe rappresenta una competizione calcistica.
  * <p>
- * NAME : Competition
- * <p>
- * DESC: Classe che rappresenta il concetto astratto di competizione calcistica
+ * Una competizione è caratterizzata da:
+ *  <li> `type`: Tipo di competizione.
+ *  <li> `teamType`: Tipo di squadra che partecipa alla competizione.
+ *  <li> `name`: Nome della competizione.
+ *  <li> `confederation`: Confederazione sportiva di riferimento.
+ *  <li> `editionSet`: Insieme di edizioni della competizione.
  */
 public class Competition
 {
+	/**
+	 * Enumerazione che rappresenta i possibili tipi di competizione.
+	 */
 	public enum COMPETITION_TYPE {CUP, LEAGUE, SUPER_CUP}
-	private static final Map<String, Competition> COMPETITION_MAP = new LinkedHashMap<>();
-	private static Integer totalCompetitions = 0;
+
 
 	private final String type;
 	private final String teamType;
@@ -22,9 +27,16 @@ public class Competition
 	private final Set<String> editionSet;
 
 
-	private final Map<String, Team> teamMap;
-
-
+	/**
+	 * Costruttore della classe `Competition`.
+	 * <p>
+	 * Crea una nuova competizione con i parametri specificati.
+	 * <p>
+	 * @param type Tipo di competizione.
+	 * @param teamType Tipo di squadra che partecipa alla competizione.
+	 * @param name Nome della competizione.
+	 * @param confederation Confederazione sportiva di riferimento.
+	 */
 	public Competition(String type,
 										 String teamType,
 										 String name,
@@ -36,52 +48,56 @@ public class Competition
 		this.confederation = confederation;
 
 		this.editionSet = new LinkedHashSet<>();
-		this.teamMap = new LinkedHashMap<>();
 	}
 
 
-	public Integer getTotalCompetitions()
-	{
-		return totalCompetitions;
-	}
-
-	public void setTotalCompetitions(Integer totalCompetitions)
-	{
-		Competition.totalCompetitions = totalCompetitions;
-	}
-
+	/**
+	 * Restituisce il tipo di competizione.
+	 * <p>
+	 * @return Il tipo di competizione.
+	 */
 	public String getType()
 	{
 		return type;
 	}
 
+	/**
+	 * Restituisce il tipo di squadra che partecipa alla competizione.
+	 * <p>
+	 * @return Il tipo di squadra.
+	 */
 	public String getTeamType()
 	{
 		return teamType;
 	}
 
+	/**
+	 * Restituisce il nome della competizione.
+	 * <p>
+	 * @return Il nome della competizione.
+	 */
 	public String getName()
 	{
 		return name;
 	}
 
+	/**
+	 * Restituisce la confederazione sportiva di riferimento.
+	 * <p>
+	 * @return La confederazione sportiva di riferimento.
+	 */
 	public Confederation getConfederation()
 	{
 		return confederation;
 	}
 
+	/**
+	 * Restituisce l'insieme delle edizioni della competizione.
+	 * <p>
+	 * @return Un insieme contenente le edizioni della competizione.
+	 */
 	public Set<String> getEditionSet()
 	{
 		return editionSet;
-	}
-
-	public Map<String, Competition> getCompetitionMap()
-	{
-		return COMPETITION_MAP;
-	}
-
-	public Map<String, Team> getTeamMap()
-	{
-		return teamMap;
 	}
 }

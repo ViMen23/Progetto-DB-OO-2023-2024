@@ -7,7 +7,6 @@ import model.Team;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
@@ -32,6 +31,18 @@ public class PostgresImplStatisticDAO
 	}
 
 
+	/**
+	 * Recupera le statistiche di un giocatore specifico in base ai parametri forniti e popola una tabella con i risultati.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare le statistiche.
+	 * @param teamType Il tipo di squadra.
+	 * @param teamID L'ID della squadra del giocatore.
+	 * @param competitionID L'ID della competizione.
+	 * @param startYear L'anno di inizio del periodo di riferimento.
+	 * @param endYear L'anno di fine del periodo di riferimento.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con le statistiche recuperate.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchStatisticPlayerDB(String playerID,
 																		 String teamType,
@@ -116,6 +127,14 @@ public class PostgresImplStatisticDAO
 	}
 
 
+	/**
+	 * Recupera le statistiche di un'edizione specifica di una competizione e popola una tabella con i risultati.
+	 * <p>
+	 * @param competitionStartYear L'anno di inizio della competizione.
+	 * @param competitionID L'ID della competizione.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con le statistiche recuperate.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchStatisticEditionDB(String competitionStartYear,
 																			String competitionID,
@@ -179,6 +198,14 @@ public class PostgresImplStatisticDAO
 	}
 
 
+	/**
+	 * Recupera le statistiche totali, raggruppate per tipo di squadra e ruolo del giocatore, e popola una tabella con i risultati.
+	 * <p>
+	 * @param teamType Il tipo di squadra.
+	 * @param playerRole Il ruolo del giocatore.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con le statistiche recuperate.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchStatisticTotalDB(String teamType,
 																		String playerRole,
@@ -238,6 +265,15 @@ public class PostgresImplStatisticDAO
 	}
 
 
+	/**
+	 * Recupera le statistiche per la visualizzazione nell'area amministrativa.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare le statistiche.
+	 * @param teamID L'ID della squadra del giocatore.
+	 * @param competitionID L'ID della competizione.
+	 * @param competitionStartYear L'anno di inizio della competizione.
+	 * @param dataMap Una mappa per memorizzare le statistiche recuperate, associando nomi di chiavi a valori.
+	 */
 	@Override
 	public String fetchStatisticAdminDB(String playerID,
 																			String teamID,
@@ -281,6 +317,20 @@ public class PostgresImplStatisticDAO
 	}
 
 
+	/**
+	 * Aggiorna le statistiche di un giocatore nel database.
+	 * <p>
+	 * @param playID L'ID univoco della giocata da aggiornare.
+	 * @param match Il numero di partite a cui si riferiscono le statistiche.
+	 * @param goalScored Il numero di gol segnati dal giocatore.
+	 * @param assist Il numero di assist forniti dal giocatore.
+	 * @param yellowCard Il numero di cartellini gialli.
+	 * @param redCard Il numero di cartellini rossi.
+	 * @param penaltyScored Il numero di rigori realizzati dal giocatore.
+	 * @param goalConceded Il numero di gol subiti dal giocatore.
+	 * @param penaltySaved Il numero di rigori parati dal giocatore.
+	 * @return Una stringa di conferma dell'aggiornamento.
+	 */
 	@Override
 	public String updateStatisticDB(String playID,
 																	String match,

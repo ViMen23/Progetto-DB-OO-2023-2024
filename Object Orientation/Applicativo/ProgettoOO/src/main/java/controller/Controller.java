@@ -7,6 +7,9 @@ import postgresImplDAO.*;
 
 import java.util.*;
 
+/**
+ * Contiene metodi per l'interazione tra i package gui, model e il database.
+ */
 public class Controller
 {
 	private static Controller controllerInstance = null;
@@ -2610,7 +2613,7 @@ public class Controller
 	 * @param communication Il nuovo valore da assegnare all'attributo "Communication".
 	 * @param eccentricity Il nuovo valore da assegnare all'attributo "Eccentricity".
 	 * @param firstTouchGk Il nuovo valore da assegnare all'attributo "First Touch Gk".
-	 * @param handling Il nuovo valore da assegnare all'attributo " Handling".
+	 * @param handling Il nuovo valore da assegnare all'attributo "Handling".
 	 * @param kicking Il nuovo valore da assegnare all'attributo "Kicking".
 	 * @param oneOnOnes Il nuovo valore da assegnare all'attributo "One on Ones".
 	 * @param passingGk Il nuovo valore da assegnare all'attributo "Passing Gk".
@@ -2830,6 +2833,12 @@ public class Controller
 	 *------------------------------------------------------------------------------------------------------*/
 
 
+	/**
+	 * Imposta la tabella dei tag associata a un giocatore.
+	 * <p>
+	 * @param playerID L'ID del giocatore per cui impostare la tabella dei tag.
+	 * @param tableData I dati della tabella dei tag.
+	 */
 	public void setTagTable(String playerID,
 													Vector<Vector<String>> tableData)
 	{
@@ -2841,6 +2850,13 @@ public class Controller
 	}
 
 
+	/**
+	 * Imposta la tabella dei tag associata a un giocatore.
+	 * <p>
+	 * @param playerID L'ID del giocatore per cui impostare la tabella dei tag.
+	 * @param tableData I dati della tabella dei tag.
+	 * @param tableMap Una mappa che fornisce informazioni aggiuntive per le celle della tabella.
+	 */
 	public void setTagTable(String playerID,
 													Vector<Vector<Object>> tableData,
 													Map<Integer, Map<Integer, String>> tableMap)
@@ -2854,6 +2870,12 @@ public class Controller
 	}
 
 
+	/**
+	 * Imposta i dati per una combobox di tag.
+	 * <p>
+	 * @param comboBoxData I dati per la combobox.
+	 * @param comboBoxMap Una mappa che fornisce informazioni aggiuntive per le voci della combobox.
+	 */
 	public void setTagComboBox(Vector<String> comboBoxData,
 														 Map<String, String> comboBoxMap)
 	{
@@ -2865,6 +2887,13 @@ public class Controller
 	}
 
 
+	/**
+	 * Aggiunge un tag a un giocatore (per amministratori).
+	 * <p>
+	 * @param playerID L'ID del giocatore a cui aggiungere il tag.
+	 * @param tagID L'ID del tag da aggiungere.
+	 * @return Una stringa che indica il risultato dell'operazione.
+	 */
 	public String addPlayerTag(String playerID,
 														 String tagID)
 	{
@@ -2880,6 +2909,13 @@ public class Controller
 	}
 
 
+	/**
+	 * Rimuove un tag da un giocatore (per amministratori).
+	 * <p>
+	 * @param playerID L'ID del giocatore da cui rimuovere il tag.
+	 * @param tagID L'ID del tag da rimuovere.
+	 * @return Una stringa che indica il risultato dell'operazione.
+	 */
 	public String removePlayerTag(String playerID,
 																String tagID)
 	{

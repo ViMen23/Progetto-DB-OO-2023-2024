@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia TagDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia TagDAO.
  */
 public class PostgresImplTagDAO
 				implements TagDAO
@@ -29,6 +29,12 @@ public class PostgresImplTagDAO
 	}
 
 
+	/**
+	 * Recupera i tag associati a un giocatore specifico e popola una tabella con i risultati.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare i tag.
+	 * @param tableData Un vettore di vettori di stringhe per popolare la tabella con i tag recuperati.
+	 */
 	@Override
 	public void fetchTagDB(String playerID,
 												 Vector<Vector<String>> tableData)
@@ -56,6 +62,13 @@ public class PostgresImplTagDAO
 		}
 	}
 
+
+	/**
+	 * Recupera tutti i tag disponibili nel database e popola una combobox per la selezione dei tag.
+	 * <p>
+	 * @param comboBoxData Un vettore di stringhe per popolare la combobox con i tag recuperati.
+	 * @param comboBoxMap Una mappa per associare i valori visualizzati nella combobox agli ID dei tag nel database.
+	 */
 	@Override
 	public void fetchTagDB(Vector<String> comboBoxData,
 												 Map<String, String> comboBoxMap)
@@ -79,6 +92,14 @@ public class PostgresImplTagDAO
 		}
 	}
 
+
+	/**
+	 * Recupera i tag associati a un giocatore specifico, fornendo dati aggiuntivi in formato tabella nidificata.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare i tag.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con i tag recuperati e i dati aggiuntivi.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchTagDB(String playerID,
 												 Vector<Vector<Object>> tableData,
@@ -115,6 +136,14 @@ public class PostgresImplTagDAO
 		}
 	}
 
+
+	/**
+	 * Assegna un tag a un giocatore nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore a cui assegnare il tag.
+	 * @param tagID L'ID del tag da assegnare.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newPlayerTagDB(String playerID,
 															 String tagID)
@@ -141,6 +170,14 @@ public class PostgresImplTagDAO
 		return message;
 	}
 
+
+	/**
+	 * Rimuove un tag assegnato a un giocatore nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore da cui rimuovere il tag.
+	 * @param tagID L'ID del tag da rimuovere.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deletePlayerTagDB(String playerID,
 																	String tagID)

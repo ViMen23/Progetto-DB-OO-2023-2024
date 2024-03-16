@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia CountryDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia CountryDAO.
  */
 public class PostgresImplCountryDAO
 				implements CountryDAO
@@ -29,6 +29,11 @@ public class PostgresImplCountryDAO
 	}
 
 
+	/**
+	 * Conta il numero di paesi nel database.
+	 * <p>
+	 * @return Il numero di paesi.
+	 */
 	@Override
 	public int countCountryDB()
 	{
@@ -53,6 +58,14 @@ public class PostgresImplCountryDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sui paesi dal database per popolare una combo box.
+	 * <p>
+	 * @param countryType Il tipo di paese.
+	 * @param superCountryID L'ID del super paese.
+	 * @param comboBoxData Un vettore di stringhe per popolare la combo box con i nomi dei paesi.
+	 * @param comboBoxMap Una mappa per associare i nomi dei paesi agli ID nel database.
+	 */
 	@Override
 	public void fetchCountryDB(String countryType,
 														 String superCountryID,
@@ -81,6 +94,13 @@ public class PostgresImplCountryDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sui paesi dal database per la visualizzazione in una tabella.
+	 * <p>
+	 * @param countryType Il tipo di paese.
+	 * @param superCountryID L'ID del super paese.
+	 * @param tableData Un vettore di vettori di stringhe per popolare la tabella con i dati recuperati.
+	 */
 	@Override
 	public void fetchCountryDB(String countryType,
 														 String superCountryID,

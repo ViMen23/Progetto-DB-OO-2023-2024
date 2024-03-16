@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia ConfederationDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia ConfederationDAO.
  */
 public class PostgresImplConfederationDAO
 				implements ConfederationDAO
@@ -30,6 +30,11 @@ public class PostgresImplConfederationDAO
 	}
 
 
+	/**
+	 * Conta il numero di confederazioni nel database.
+	 * <p>
+	 * @return Il numero di confederazioni.
+	 */
 	@Override
 	public int countConfederationDB()
 	{
@@ -54,6 +59,13 @@ public class PostgresImplConfederationDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulle confederazioni dal database per la visualizzazione in una tabella.
+	 * <p>
+	 * @param countryType Il tipo di paese.
+	 * @param superConfederationID L'ID della super confederazione.
+	 * @param tableData Un vettore di vettori di stringhe per popolare la tabella con i dati recuperati.
+	 */
 	@Override
 	public void fetchConfederationDB(String countryType,
 																	 String superConfederationID,
@@ -88,6 +100,14 @@ public class PostgresImplConfederationDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulle confederazioni dal database per popolare una combo box.
+	 * <p>
+	 * @param countryType Il tipo di paese.
+	 * @param superConfederationID L'ID della super confederazione.
+	 * @param comboBoxData Un vettore di stringhe per popolare la combo box con i nomi delle confederazioni.
+	 * @param comboBoxMap Una mappa per associare i nomi delle confederazioni agli ID nel database.
+	 */
 	@Override
 	public void fetchConfederationDB(String countryType,
 																	 String superConfederationID,
@@ -116,6 +136,12 @@ public class PostgresImplConfederationDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulla confederazione a cui appartiene una squadra.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param confederationMap Una mappa per memorizzare le informazioni sulla confederazione recuperata.
+	 */
 	@Override
 	public void fetchConfederationDB(String teamID,
 																	 Map<String, String> confederationMap)

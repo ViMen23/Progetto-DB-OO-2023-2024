@@ -6,7 +6,7 @@ import database.DatabaseConnection;
 import java.sql.*;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia AdminDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia AdminDAO.
  */
 public class PostgresImplAdminDAO
 				implements AdminDAO

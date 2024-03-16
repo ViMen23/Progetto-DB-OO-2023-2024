@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia NationalityDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia NationalityDAO.
  */
 public class PostgresImplNationalityDAO
 				implements NationalityDAO
@@ -29,6 +29,12 @@ public class PostgresImplNationalityDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulla nazionalità di un giocatore dal database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di stringhe per popolare una tabella con i dati recuperati.
+	 */
 	@Override
 	public void fetchNationalityDB(String playerID,
 																 Vector<Vector<String>> tableData)
@@ -57,6 +63,13 @@ public class PostgresImplNationalityDAO
 	}
 
 
+	/**
+	 * Recupera informazioni dettagliate sulla nazionalità di un giocatore dal database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di oggetti per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchNationalityDB(String playerID,
 																 Vector<Vector<Object>> tableData,
@@ -94,6 +107,13 @@ public class PostgresImplNationalityDAO
 	}
 
 
+	/**
+	 * Aggiunge una nazionalità a un giocatore nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param countryID L'ID della nazionalità da aggiungere.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newNationalityDB(String playerID,
 																 String countryID)
@@ -121,6 +141,13 @@ public class PostgresImplNationalityDAO
 	}
 
 
+	/**
+	 * Elimina una nazionalità di un giocatore dal database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param countryID L'ID della nazionalità da eliminare.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deleteNationalityDB(String playerID,
 																		String countryID)

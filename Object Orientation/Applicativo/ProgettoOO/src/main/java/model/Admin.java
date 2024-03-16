@@ -1,11 +1,11 @@
 package model;
 
 /**
- * TYPE : class - model package
+ * Questa classe rappresenta un utente amministratore del sistema.
  * <p>
- * NAME : Admin
- * <p>
- * DESC: Classe che rappresenta il concetto astratto di amministratore dell'applicativo
+ * Un oggetto `Admin` ha le seguenti proprietà:
+ * <li> `username`: Nome utente dell'amministratore.
+ * <li> `password`: Password dell'amministratore.
  */
 public class Admin
 {
@@ -13,6 +13,14 @@ public class Admin
 	private final String password;
 
 
+	/**
+	 * Costruttore della classe `Admin`.
+	 * <p>
+	 * Crea un nuovo oggetto `Admin` con lo username e la password specificati.
+	 * <p>
+	 * @param username Nome utente dell'amministratore.
+	 * @param password Password dell'amministratore.
+	 */
 	public Admin(String username,
 							 String password)
 	{
@@ -21,11 +29,21 @@ public class Admin
 	}
 
 
+	/**
+	 * Restituisce lo username dell'amministratore.
+	 * <p>
+	 * @return Lo username dell'amministratore.
+	 */
 	public String getUsername()
 	{
 		return username;
 	}
 
+	/**
+	 * Restituisce la password dell'amministratore.
+	 * <p>
+	 * @return La password dell'amministratore.
+	 */
 	public String getPassword()
 	{
 		return password;

@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia PrizeDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia PrizeDAO.
  */
 public class PostgresImplPrizeDAO
 				implements PrizeDAO
@@ -30,6 +30,14 @@ public class PostgresImplPrizeDAO
 	}
 
 
+	/**
+	 * Assegna un premio a una squadra nel database.
+	 * <p>
+	 * @param teamID L'ID della squadra a cui assegnare il premio.
+	 * @param prizeID L'ID del premio da assegnare.
+	 * @param assignedYear L'anno in cui assegnare il premio.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newPrizeTeamDB(String teamID,
 															 String prizeID,
@@ -58,6 +66,15 @@ public class PostgresImplPrizeDAO
 		return message;
 	}
 
+
+	/**
+	 * Rimuove un premio assegnato a una squadra nel database.
+	 * <p>
+	 * @param teamID L'ID della squadra da cui rimuovere il premio.
+	 * @param prizeID L'ID del premio da rimuovere.
+	 * @param assignedYear L'anno in cui è stato assegnato il premio da rimuovere.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deletePrizeTeamDB(String teamID,
 																	String prizeID,
@@ -86,6 +103,13 @@ public class PostgresImplPrizeDAO
 		return message;
 	}
 
+
+	/**
+	 * Recupera i premi assegnati a una squadra specifica e popola una tabella con i risultati.
+	 * <p>
+	 * @param teamID L'ID della squadra di cui recuperare i premi.
+	 * @param tableData Un vettore di vettori di stringhe per popolare la tabella con i dati dei premi recuperati.
+	 */
 	@Override
 	public void fetchPrizeDB(String teamID,
 													 Vector<Vector<String>> tableData)
@@ -115,6 +139,13 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Recupera i premi assegnati a un giocatore specifico e popola una tabella con i risultati.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare i premi.
+	 * @param tableData Un vettore di vettori di stringhe per popolare la tabella con i dati dei premi recuperati.
+	 */
 	@Override
 	public void fetchPrizePlayerDB(String playerID,
 																 Vector<Vector<String>> tableData)
@@ -144,6 +175,14 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Recupera informazioni dettagliate sui premi assegnati a una squadra specifica per l'amministrazione e popola una tabella.
+	 * <p>
+	 * @param teamID L'ID della squadra di cui recuperare i premi.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con i dati dei premi recuperati e i dati aggiuntivi.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchTeamPrizeAdminDB(String teamID,
 																		Vector<Vector<Object>> tableData,
@@ -187,6 +226,13 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Recupera i premi assegnati alle squadre nel database e popola una combobox.
+	 * <p>
+	 * @param comboBoxData Un vettore di stringhe per popolare la combobox con i premi recuperati.
+	 * @param comboBoxMap Una mappa per associare i valori della combobox agli ID dei premi nel database.
+	 */
 	@Override
 	public void fetchTeamPrizeDB(Vector<String> comboBoxData,
 															 Map<String, String> comboBoxMap)
@@ -210,6 +256,13 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Recupera i premi disponibili nel database e popola una combobox per la selezione di un premio da assegnare a un giocatore.
+	 * <p>
+	 * @param comboBoxData Un vettore di stringhe per popolare la combobox con i premi recuperati.
+	 * @param comboBoxMap Una mappa per associare i valori della combobox agli ID dei premi nel database.
+	 */
 	@Override
 	public void fetchPlayerPrizeDB(Vector<String> comboBoxData,
 																 Map<String, String> comboBoxMap)
@@ -239,6 +292,14 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Recupera i premi assegnati a un giocatore specifico e popola una tabella con i risultati.
+	 * <p>
+	 * @param playerID L'ID del giocatore di cui recuperare i premi.
+	 * @param tableData Un vettore di vettori di oggetti per popolare la tabella con i dati dei premi recuperati e i dati aggiuntivi.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchPlayerPrizeDB(String playerID,
 																 Vector<Vector<Object>> tableData,
@@ -280,6 +341,15 @@ public class PostgresImplPrizeDAO
 		}
 	}
 
+
+	/**
+	 * Assegna un premio a un giocatore nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore a cui assegnare il premio.
+	 * @param prizeID L'ID del premio da assegnare.
+	 * @param assignedYear L'anno in cui assegnare il premio.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newPlayerPrizeDB(String playerID,
 																 String prizeID,
@@ -308,6 +378,15 @@ public class PostgresImplPrizeDAO
 		return message;
 	}
 
+
+	/**
+	 * Rimuove un premio assegnato a un giocatore nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore da cui rimuovere il premio.
+	 * @param prizeID L'ID del premio da rimuovere.
+	 * @param assignedYear L'anno in cui è stato assegnato il premio da rimuovere.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deletePlayerPrizeDB(String playerID,
 																		String prizeID,

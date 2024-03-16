@@ -7,12 +7,11 @@ import model.Team;
 
 import java.sql.*;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia PartecipationDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia PartecipationDAO.
  */
 public class PostgresImplPartecipationDAO
 				implements PartecipationDAO
@@ -32,6 +31,14 @@ public class PostgresImplPartecipationDAO
 	}
 
 
+	/**
+	 * Crea una nuova partecipazione di una squadra a una competizione nel database.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param competitionID L'ID della competizione.
+	 * @param competitionStartYear L'anno di inizio della competizione.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newPartecipationDB(String teamID,
 																	 String competitionID,
@@ -60,6 +67,15 @@ public class PostgresImplPartecipationDAO
 		return message;
 	}
 
+
+	/**
+	 * Elimina una partecipazione di una squadra a una competizione dal database.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param competitionID L'ID della competizione.
+	 * @param competitionStartYear L'anno di inizio della competizione da eliminare.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deletePartecipationDB(String teamID,
 																			String competitionID,
@@ -88,6 +104,14 @@ public class PostgresImplPartecipationDAO
 		return message;
 	}
 
+
+	/**
+	 * Recupera informazioni sulle partecipazioni di una squadra a competizioni dal database.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param competitionStartYear L'anno di inizio delle competizioni da recuperare.
+	 * @param tableData Un vettore di vettori di oggetti per popolare una tabella con i dati recuperati.
+	 */
 	@Override
 	public void fetchPartecipationDB(String teamID,
 																	 String competitionStartYear,
@@ -120,6 +144,15 @@ public class PostgresImplPartecipationDAO
 		}
 	}
 
+
+	/**
+	 * Recupera gli anni delle competizioni a cui una squadra ha partecipato o potrebbe partecipare.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param teamType Il tipo di squadra.
+	 * @param comboBoxData Un vettore di stringhe per popolare una combobox con gli anni delle competizioni.
+	 * @param comboBoxMap Una mappa per associare i valori della combobox ai valori del database.
+	 */
 	@Override
 	public void fetchPartecipationYearDB(String teamID,
 																			 String teamType,
@@ -159,6 +192,15 @@ public class PostgresImplPartecipationDAO
 		}
 	}
 
+
+	/**
+	 * Recupera informazioni sulle competizioni a cui una squadra ha partecipato in un determinato anno.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param competitionStartYear L'anno di inizio delle competizioni da recuperare.
+	 * @param comboBoxData Un vettore di stringhe per popolare una combobox con le competizioni.
+	 * @param comboBoxMap Una mappa per associare i valori della combobox ai valori del database.
+	 */
 	@Override
 	public void fetchPartecipationDB(String teamID,
 																	 String competitionStartYear,
@@ -188,6 +230,15 @@ public class PostgresImplPartecipationDAO
 		}
 	}
 
+
+	/**
+	 * Recupera informazioni dettagliate sulle partecipazioni di una squadra a competizioni dal database (sezione amministrativa).
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param competitionStartYear L'anno di inizio delle competizioni da recuperare.
+	 * @param tableData Un vettore di vettori di oggetti per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchPartecipationAdminDB(String teamID,
 																				String competitionStartYear,

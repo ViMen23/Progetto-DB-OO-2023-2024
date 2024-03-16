@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.Vector;
 
 /**
- * Implementazione specifica per PostgreSQL dell'interfaccia MilitancyDAO.
+ * Implementazione specifica per PostgresSQL dell'interfaccia MilitancyDAO.
  */
 public class PostgresImplMilitancyDAO
 				implements MilitancyDAO
@@ -30,6 +30,14 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulle militanze dei giocatori in una squadra a partire da un determinato anno.
+	 * <p>
+	 * @param teamID L'ID della squadra.
+	 * @param startYear L'anno di inizio da cui recuperare le militanze.
+	 * @param tableData Un vettore di vettori di stringhe per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchMilitancyDB(String teamID,
 															 String startYear,
@@ -80,6 +88,13 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulle militanze di un giocatore in squadre nazionali.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di stringhe per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchMilitancyNationalDB(String playerID,
 																			 Vector<Vector<String>> tableData,
@@ -117,6 +132,13 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Recupera informazioni sulle militanze di un giocatore in squadre di club.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di stringhe per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchMilitancyClubDB(String playerID,
 																	 Vector<Vector<String>> tableData,
@@ -161,6 +183,13 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Recupera informazioni dettagliate sulle militanze nazionali di un giocatore del database (sezione amministratore).
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di oggetti per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchMilitancyNationalAdminDB(String playerID,
 																						Vector<Vector<Object>> tableData,
@@ -202,6 +231,13 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Recupera informazioni dettagliate sulle militanze di club di un giocatore del database (sezione amministratore).
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param tableData Un vettore di vettori di oggetti per popolare una tabella con i dati recuperati.
+	 * @param tableMap Una mappa nidificata per associare i valori della tabella ai valori del database.
+	 */
 	@Override
 	public void fetchMilitancyClubAdminDB(String playerID,
 																				Vector<Vector<Object>> tableData,
@@ -250,6 +286,16 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Crea una nuova militanza di un giocatore in una squadra nel database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param teamID L'ID della squadra.
+	 * @param teamType Il tipo di squadra.
+	 * @param startYear L'anno di inizio della militanza.
+	 * @param seasonType Il tipo di stagione.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String newMilitancyDB(String playerID,
 															 String teamID,
@@ -284,6 +330,14 @@ public class PostgresImplMilitancyDAO
 	}
 
 
+	/**
+	 * Elimina una militanza di un giocatore in una squadra dal database.
+	 * <p>
+	 * @param playerID L'ID del giocatore.
+	 * @param teamID L'ID della squadra.
+	 * @param startYear L'anno di inizio della militanza da eliminare.
+	 * @return Un messaggio di conferma.
+	 */
 	@Override
 	public String deleteMilitancyDB(String playerID,
 																	String teamID,
