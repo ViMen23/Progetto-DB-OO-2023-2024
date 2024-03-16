@@ -10,11 +10,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia CompetitionDAO.
+ */
 public class PostgresImplCompetitionDAO
 				implements CompetitionDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplCompetitionDAO()
 	{
 		try {

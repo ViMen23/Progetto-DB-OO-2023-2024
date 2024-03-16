@@ -5,11 +5,17 @@ import database.DatabaseConnection;
 
 import java.sql.*;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia AdminDAO.
+ */
 public class PostgresImplAdminDAO
 				implements AdminDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplAdminDAO()
 	{
 		try {
@@ -20,6 +26,13 @@ public class PostgresImplAdminDAO
 	}
 
 
+	/**
+	 * Verifica se un utente è un amministratore nel database.
+	 * <p>
+	 * @param username Il nome utente da verificare.
+	 * @param password La password dell'utente.
+	 * @return True se l'utente è un amministratore, false altrimenti.
+	 */
 	@Override
 	public boolean isAdminDB(String username,
 													 String password)

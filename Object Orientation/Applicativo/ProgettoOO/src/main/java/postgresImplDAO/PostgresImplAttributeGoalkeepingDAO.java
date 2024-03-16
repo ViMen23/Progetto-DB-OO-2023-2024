@@ -7,11 +7,17 @@ import gui.GuiConfiguration;
 import java.sql.*;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia AttributeGoalkeepingDAO.
+ */
 public class PostgresImplAttributeGoalkeepingDAO
 				implements AttributeGoalkeepingDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplAttributeGoalkeepingDAO()
 	{
 		try {

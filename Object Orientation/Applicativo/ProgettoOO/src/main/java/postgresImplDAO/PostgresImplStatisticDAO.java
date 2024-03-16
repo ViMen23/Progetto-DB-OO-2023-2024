@@ -11,10 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia StatisticDAO.
+ */
 public class PostgresImplStatisticDAO
 				implements StatisticDAO
 {
 	private Connection conn;
+
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplStatisticDAO()
 	{
 		try {

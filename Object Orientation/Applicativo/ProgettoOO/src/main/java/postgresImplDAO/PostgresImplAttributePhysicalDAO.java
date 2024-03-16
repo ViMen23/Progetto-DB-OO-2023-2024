@@ -7,11 +7,17 @@ import gui.GuiConfiguration;
 import java.sql.*;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia AttributePhysicalDAO.
+ */
 public class PostgresImplAttributePhysicalDAO
 				implements AttributePhysicalDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplAttributePhysicalDAO()
 	{
 		try {

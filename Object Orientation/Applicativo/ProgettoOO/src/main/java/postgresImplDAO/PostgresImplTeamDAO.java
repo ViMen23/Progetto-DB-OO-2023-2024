@@ -11,11 +11,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia TeamDAO.
+ */
 public class PostgresImplTeamDAO
 				implements TeamDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplTeamDAO()
 	{
 		try {

@@ -8,11 +8,17 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia CountryDAO.
+ */
 public class PostgresImplCountryDAO
 				implements CountryDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplCountryDAO()
 	{
 		try {

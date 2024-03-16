@@ -9,11 +9,17 @@ import java.sql.*;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Implementazione specifica per PostgreSQL dell'interfaccia ConfederationDAO.
+ */
 public class PostgresImplConfederationDAO
 				implements ConfederationDAO
 {
 	private Connection conn;
 
+	/**
+	 * Costruttore della classe che stabilisce la connessione al database.
+	 */
 	public PostgresImplConfederationDAO()
 	{
 		try {
