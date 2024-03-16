@@ -5,10 +5,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * TYPE : class - database package
- * NAME : DatabaseConnection
- *
- * DESC: Classe che gestisce la connessione con il Database e il DBMS mediante il DriverManager appropriato
+ * Questa classe gestisce la connessione ad un database PostgreSQL.
+ * <p>
+ * Implementa il pattern Singleton per garantire un'unica istanza di connessione condivisa nell'applicazione.
  */
 public class DatabaseConnection
 {
