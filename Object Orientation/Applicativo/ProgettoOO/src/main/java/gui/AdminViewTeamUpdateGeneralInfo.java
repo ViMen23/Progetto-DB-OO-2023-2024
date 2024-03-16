@@ -12,6 +12,9 @@ import java.beans.PropertyChangeListener;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento delle informazioni generali di una squadra.
+ */
 public class AdminViewTeamUpdateGeneralInfo
 				extends JPanel
 {

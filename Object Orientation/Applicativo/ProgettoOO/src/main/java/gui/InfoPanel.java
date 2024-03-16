@@ -5,6 +5,9 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Questa classe rappresenta un pannello che visualizza una descrizione testuale.
+ */
 public class InfoPanel
 				extends JPanel
 {

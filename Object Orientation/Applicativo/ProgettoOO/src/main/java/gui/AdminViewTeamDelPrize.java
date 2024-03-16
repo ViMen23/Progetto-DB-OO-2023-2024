@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'eliminazione di un premio ad una squadra.
+ */
 public class AdminViewTeamDelPrize
 				extends JPanel
 {

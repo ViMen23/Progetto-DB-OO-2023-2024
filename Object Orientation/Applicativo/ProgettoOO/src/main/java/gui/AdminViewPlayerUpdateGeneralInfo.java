@@ -20,6 +20,9 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.*;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento delle informazioni generali di un giocatore.
+ */
 public class AdminViewPlayerUpdateGeneralInfo
 				extends JPanel
 {

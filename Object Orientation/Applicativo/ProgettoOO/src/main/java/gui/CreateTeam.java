@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta un pannello per la creazione di una nuova squadra.
+ */
 public class CreateTeam
 				extends JPanel
 {

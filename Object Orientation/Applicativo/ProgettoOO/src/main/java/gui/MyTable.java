@@ -5,6 +5,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * Questa classe rappresenta una componente Table personalizzata.
+ */
 public class MyTable
 			extends JTable
 {

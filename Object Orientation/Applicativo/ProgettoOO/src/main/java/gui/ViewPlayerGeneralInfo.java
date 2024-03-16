@@ -8,6 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che mostra le informazioni generali di un giocatore, tra cui ruoli e nazionalità.
+ */
 public class ViewPlayerGeneralInfo
 				extends JPanel
 {

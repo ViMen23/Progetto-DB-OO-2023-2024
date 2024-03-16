@@ -5,6 +5,9 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Pannello che contiene una tabella, un'area di testo opzionale e un'etichetta di titolo.
+ */
 public class TablePanel
 				extends JPanel
 {

@@ -9,6 +9,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Classe che rappresenta la vista principale per la gestione di un giocatore da parte dell'amministratore.
+ */
 public class AdminTopViewPlayer
 				extends JPanel
 {

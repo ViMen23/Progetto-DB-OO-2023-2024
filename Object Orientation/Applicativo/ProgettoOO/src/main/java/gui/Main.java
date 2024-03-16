@@ -3,6 +3,9 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Questa classe rappresenta il punto di ingresso principale dell'applicazione.
+ */
 public class Main
 {
 	private static void createAndShowGUI()
@@ -19,7 +22,6 @@ public class Main
 	
 	public static void main(String[] args)
 	{
-		// Pianifica un lavoro per la creazione e la visualizzazione della GUI di questa applicazione.
 		SwingUtilities.invokeLater(new Runnable() {
 				public void run()
 				{

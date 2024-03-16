@@ -12,6 +12,12 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * Questa classe rappresenta un pannello per la ricerca di confederazioni calcistiche.
+ * Offre vari filtri di ricerca. I risultati della ricerca
+ * vengono visualizzati in una tabella. Il pannello permette anche di
+ * visualizzare informazioni di riepilogo sulla ricerca effettuata.
+ */
 public class SearchConfederationPanel
 	extends JPanel
 {

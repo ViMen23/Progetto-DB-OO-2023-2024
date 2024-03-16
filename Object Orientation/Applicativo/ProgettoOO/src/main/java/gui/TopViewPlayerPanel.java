@@ -8,6 +8,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Pannello posizionato nella parte superiore della schermata di visualizzazione di un giocatore.
+ * <p>
+ * Presenta le informazioni generali del giocatore tramite un pannello `GeneralInfoPanel` e offre pulsanti per navigare a sezioni di dettaglio.
+ */
 public class TopViewPlayerPanel
 				extends JPanel
 {

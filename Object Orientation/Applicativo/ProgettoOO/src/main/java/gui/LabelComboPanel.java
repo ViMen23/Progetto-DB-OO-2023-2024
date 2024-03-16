@@ -5,6 +5,10 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * Questa classe rappresenta un pannello che combina una label e un combo box.
+ */
 public class LabelComboPanel
 				extends JPanel
 {

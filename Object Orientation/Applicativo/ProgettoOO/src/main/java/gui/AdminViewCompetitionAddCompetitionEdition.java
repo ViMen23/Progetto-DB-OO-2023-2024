@@ -16,6 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista principale per l'aggiunta di un'edizione di una competizione calcistica
+ * da parte dell'amministratore.
+ */
 public class AdminViewCompetitionAddCompetitionEdition
 				extends JPanel
 {

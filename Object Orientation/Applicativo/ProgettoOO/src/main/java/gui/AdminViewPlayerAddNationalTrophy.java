@@ -16,6 +16,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'aggiunta di una trofeo associato ad una competizione
+ * e ad una squadra nazionale per un giocatore.
+ */
 public class AdminViewPlayerAddNationalTrophy
 				extends JPanel
 {

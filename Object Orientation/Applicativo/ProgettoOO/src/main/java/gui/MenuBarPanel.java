@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Questa classe rappresenta un pannello che contiene una barra dei menu
+ * e un pannello figlio dinamico. La barra dei menu offre diverse funzionalità di navigazione
+ * e gestione dei contenuti dell'applicazione.
+ */
 public class MenuBarPanel
 				extends  JPanel
 {

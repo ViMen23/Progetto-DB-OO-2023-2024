@@ -14,10 +14,18 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 //TODO PER IL MOMENTO NELLA LABEL C'È IL NOME UTENTE CAPIRE SE SERVE E NEL CASO TOGLIERE
+/**
+ * Pannello di login per l'amministratore.
+ * <p>
+ * Questo pannello permette all'amministratore di effettuare il login inserendo username e password.
+ * <p>
+ * Il pannello controlla la validità dell'username e della password tramite espressioni regolari definite in `Regex`.
+ * Se il login è corretto, il pannello visualizza un messaggio di conferma e apre il pannello di navigazione dell'amministratore.
+ * In caso di login errato, viene visualizzato un messaggio di errore.
+ */
 public class AdminLoginPanel
 				extends JPanel
 {
-
 	public AdminLoginPanel(JLabel ctrlLabel)
 	{
 		MigLayout migLayout;

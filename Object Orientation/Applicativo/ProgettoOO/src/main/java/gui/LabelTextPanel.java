@@ -8,6 +8,9 @@ import javax.swing.event.CaretListener;
 import java.awt.*;
 import java.util.regex.Pattern;
 
+/**
+ * Questa classe rappresenta un pannello che combina una label e un text field.
+ */
 public class LabelTextPanel
 				extends JPanel
 {

@@ -7,6 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Questa classe rappresenta il pannello principale della vista amministratore per una competizione.
+ * <p>
+ * Il pannello visualizza le informazioni generali della competizione tramite un oggetto `GeneralInfoPanel` e fornisce un menu a tendina per gestire le edizioni della competizione.
+ */
 public class AdminTopViewCompetition
 				extends JPanel
 {

@@ -15,6 +15,9 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento attributi tecnici di un giocatore.
+ */
 public class AdminViewPlayerUpdateTechnicalAttribute
 				extends JPanel
 {

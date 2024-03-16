@@ -8,6 +8,9 @@ import java.awt.font.TextAttribute;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Classe che contenente la configurazione generale della gui e costanti.
+ */
 public class GuiConfiguration
 {
 	public static final int INPUT_COLUMN = 35;

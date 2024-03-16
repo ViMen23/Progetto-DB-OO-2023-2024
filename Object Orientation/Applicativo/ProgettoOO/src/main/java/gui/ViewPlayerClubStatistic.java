@@ -17,6 +17,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che consente di visualizzare le statistiche di un giocatore in squadre di tipo club.
+ * <p>
+ * L'utente può filtrare i dati.
+ */
 public class ViewPlayerClubStatistic
 				extends JPanel
 {

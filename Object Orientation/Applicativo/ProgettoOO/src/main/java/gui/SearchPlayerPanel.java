@@ -16,6 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe rappresenta un pannello per la ricerca di calciatori.
+ * Offre vari filtri di ricerca. I risultati della ricerca
+ * vengono visualizzati in una tabella. Il pannello permette anche di
+ * visualizzare informazioni di riepilogo sulla ricerca effettuata.
+ * Permette di cliccare sulla tabella per ottenere maggiori informazioni sui calciatori.
+ */
 public class SearchPlayerPanel
 							extends JPanel
 {

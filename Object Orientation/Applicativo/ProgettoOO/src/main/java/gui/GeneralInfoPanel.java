@@ -6,6 +6,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.Map;
 
+/**
+ * Classe che rappresenta un pannello informativo generico.
+ */
 public class GeneralInfoPanel
 				extends JPanel
 {

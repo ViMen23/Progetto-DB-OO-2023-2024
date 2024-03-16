@@ -14,6 +14,14 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * Classe che rappresenta la GUI per la ricerca di competizioni nella vista amministratore.
+ * <p>
+ * Permette agli utenti di cercare competizioni in base a vari criteri.
+ * <p>
+ * I risultati della ricerca vengono visualizzati in una tabella. L'amministratore puo'
+ * cliccare su una competizione nella tabella per visualizzare maggiori dettagli o modificarla.
+ */
 public class AdminSearchCompetition
 				extends JPanel
 {

@@ -8,6 +8,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Pannello posizionato nella parte superiore dell'interfaccia grafica per le ricerche, al di sotto del TopPanel.
+ */
 public class TopSearchPanel
 				extends JPanel
 {

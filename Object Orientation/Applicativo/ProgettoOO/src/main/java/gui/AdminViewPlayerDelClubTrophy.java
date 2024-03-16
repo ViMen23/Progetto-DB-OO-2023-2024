@@ -12,6 +12,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'eliminazione di una trofeo associato ad una competizione
+ * e ad una squadra di club per un giocatore.
+ */
 public class AdminViewPlayerDelClubTrophy
 				extends JPanel
 {

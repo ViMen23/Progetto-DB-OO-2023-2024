@@ -17,6 +17,9 @@ import java.time.Year;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento della data di ritiro di un giocatore.
+ */
 public class AdminViewPlayerUpdateRetiredDate
 				extends JPanel
 {

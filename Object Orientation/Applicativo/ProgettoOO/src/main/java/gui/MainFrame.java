@@ -5,6 +5,10 @@ import net.miginfocom.swing.MigLayout;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Questa classe rappresenta la finestra principale dell'applicazione.
+ * È un singleton, ovvero esiste una sola istanza della classe in esecuzione.
+ */
 public class MainFrame
 				extends JFrame
 {

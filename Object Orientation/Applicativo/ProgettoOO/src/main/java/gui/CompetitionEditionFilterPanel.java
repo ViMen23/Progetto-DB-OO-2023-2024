@@ -15,6 +15,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che permette di filtrare e visualizzare i dati statistici delle edizioni delle competizioni.
+ * <p>
+ * Offre una serie di filtri per selezionare il tipo di squadra, il paese, la competizione e la stagione.
+ * Dopo l'applicazione dei filtri, mostra una tabella con le statistiche delle edizioni corrispondenti.
+ */
 public class CompetitionEditionFilterPanel
 				extends JPanel
 {

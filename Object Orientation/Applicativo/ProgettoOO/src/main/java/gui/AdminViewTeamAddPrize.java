@@ -17,6 +17,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'aggiunta di un premio ad una squadra.
+ */
 public class AdminViewTeamAddPrize
 				extends JPanel
 {

@@ -13,6 +13,9 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento delle statistiche di club di un giocatore in una competizione.
+ */
 public class AdminViewPlayerUpdateClubStatistic
 				extends JPanel
 {

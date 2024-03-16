@@ -11,6 +11,11 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+/**
+ * Pannello che mostra la rosa e le partecipazioni a competizioni di una squadra per una specifica stagione.
+ * <p>
+ * L'utente può selezionare la stagione tramite una combo box.
+ */
 public class ViewTeamSeasonPanel
 				extends JPanel
 {

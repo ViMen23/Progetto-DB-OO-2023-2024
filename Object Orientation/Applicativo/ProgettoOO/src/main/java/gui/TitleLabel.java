@@ -3,6 +3,9 @@ package gui;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Estensione della classe `JLabel` per creare un'etichetta di titolo personalizzata.
+ */
 public class TitleLabel
 				extends JLabel
 {

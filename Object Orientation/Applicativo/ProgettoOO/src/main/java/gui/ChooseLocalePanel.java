@@ -14,6 +14,12 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+
+/**
+ * Pannello per la scelta della lingua dell'interfaccia.
+ * <p>
+ * Permette all'utente di selezionare la lingua desiderata tra quelle disponibili.
+ */
 public class ChooseLocalePanel
 				extends JPanel
 {
@@ -47,10 +53,6 @@ public class ChooseLocalePanel
 			} catch (Exception ignore) {
 
 			}
-		}
-
-		for (Locale locale : localeSet) {
-			System.out.println(GuiConfiguration.getMessage(locale.toString()));
 		}
 
 		localeComboBox = new JComboBox<>();

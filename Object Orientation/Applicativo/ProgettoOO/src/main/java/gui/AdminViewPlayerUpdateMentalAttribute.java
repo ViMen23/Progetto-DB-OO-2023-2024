@@ -15,7 +15,9 @@ import java.util.Map;
 import java.util.Vector;
 import java.util.List;
 
-
+/**
+ * Classe che rappresenta la vista per l'aggiornamento attributi mentali di un giocatore.
+ */
 public class AdminViewPlayerUpdateMentalAttribute
 				extends JPanel
 {

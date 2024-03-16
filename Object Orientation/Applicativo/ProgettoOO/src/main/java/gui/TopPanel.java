@@ -9,6 +9,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Pannello posizionato nella parte superiore dell'interfaccia grafica.
+ */
 public class TopPanel
 				extends JPanel
 {

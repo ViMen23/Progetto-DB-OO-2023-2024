@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'aggiornamento delle statistiche di un giocatore.
+ */
 public class AdminViewPlayerUpdateStatistic
 				extends JPanel
 {

@@ -14,6 +14,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'aggiunta di un tag ad un giocatore.
+ */
 public class AdminViewPlayerAddTag
 				extends JPanel
 {

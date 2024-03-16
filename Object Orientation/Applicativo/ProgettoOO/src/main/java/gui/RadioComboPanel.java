@@ -7,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Questa classe rappresenta un pannello che combina un radio button e, opzionalmente,
+ * una combo box.
+ */
 public class RadioComboPanel
 				extends JPanel
 {

@@ -15,6 +15,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello per la selezione di filtri per la ricerca di informazioni su calciatori o squadre.
+ * In base alla selezione effettuata, il pannello
+ * permette di popolare dinamicamente i successivi livelli di filtraggio.
+ * <p>
+ * L'utente può scegliere di visualizzare le informazioni sulla squadra selezionata o su un singolo
+ * calciatore appartenente ad essa.
+ */
 public class StepFilterPanel
 				extends JPanel
 {

@@ -16,6 +16,11 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che consente di visualizzare le statistiche di un giocatore in squadre di tipo nazionale.
+ * <p>
+ * L'utente può filtrare i dati.
+ */
 public class ViewPlayerNationalStatistic
 				extends JPanel
 {

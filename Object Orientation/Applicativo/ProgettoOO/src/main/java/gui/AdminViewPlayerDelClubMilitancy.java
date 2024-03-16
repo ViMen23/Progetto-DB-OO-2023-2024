@@ -11,7 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
-
+/**
+ * Classe che rappresenta la vista per l'eliminazione di una militanza in una squadra di club per un giocatore.
+ */
 public class AdminViewPlayerDelClubMilitancy
 				extends JPanel
 {

@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che presenta i trofei e premi di un giocatore.
+ */
 public class ViewPlayerCase
 				extends JPanel
 {

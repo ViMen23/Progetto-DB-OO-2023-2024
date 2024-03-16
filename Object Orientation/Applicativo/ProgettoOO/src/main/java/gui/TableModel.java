@@ -4,6 +4,9 @@ import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 
 
+/**
+ * Estensione della classe `DefaultTableModel` di Swing per gestire tabelle personalizzate.
+ */
 public class TableModel
 				extends DefaultTableModel
 {

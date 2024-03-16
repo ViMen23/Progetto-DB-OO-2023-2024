@@ -12,6 +12,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che presenta la cronologia della carriera sportiva di un giocatore.
+ */
 public class ViewPlayerCareer
 				extends JPanel
 {

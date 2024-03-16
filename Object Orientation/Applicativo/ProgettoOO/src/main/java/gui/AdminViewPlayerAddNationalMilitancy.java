@@ -14,6 +14,9 @@ import java.beans.PropertyChangeListener;
 import java.time.Year;
 import java.util.*;
 
+/**
+ * Classe che rappresenta la vista per l'aggiunta di una militanza in una squadra nazionale per un giocatore.
+ */
 public class AdminViewPlayerAddNationalMilitancy
 				extends JPanel
 {

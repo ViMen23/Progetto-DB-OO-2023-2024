@@ -8,6 +8,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Pannello che mostra le informazioni dettagliate di un giocatore,
+ * inclusi attributi (portiere, mentali, fisici, tecnici) e tag.
+ */
 public class ViewPlayerDetailedInfo
 				extends JPanel
 {

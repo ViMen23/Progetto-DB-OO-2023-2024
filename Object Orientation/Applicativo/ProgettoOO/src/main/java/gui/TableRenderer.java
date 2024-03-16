@@ -6,6 +6,9 @@ import javax.swing.border.Border;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
 
+/**
+ * Estensione della classe `DefaultTableCellRenderer` per personalizzare la resa visiva delle celle di una tabella JTable.
+ */
 public class TableRenderer
 				extends DefaultTableCellRenderer
 {

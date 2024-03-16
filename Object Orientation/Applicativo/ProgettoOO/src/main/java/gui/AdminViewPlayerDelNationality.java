@@ -11,6 +11,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'eliminazione di una nazionalita' ad un giocatore.
+ */
 public class AdminViewPlayerDelNationality
 				extends JPanel
 {

@@ -16,6 +16,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe rappresenta un pannello che consente di effettuare ricerche
+ * sui giocatori filtrando per militanza. Il pannello permette
+ * anche di navigare verso altri pannelli per visualizzare le informazioni
+ * dettagliate di un giocatore.
+ */
 public class MilitancyFilterPanel
 							extends JPanel
 {

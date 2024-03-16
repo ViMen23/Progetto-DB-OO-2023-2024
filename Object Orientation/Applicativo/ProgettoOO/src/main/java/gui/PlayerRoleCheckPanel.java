@@ -7,6 +7,9 @@ import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+/**
+ * Questa classe rappresenta un pannello che consente di selezionare i ruoli di un giocatore.
+ */
 public class PlayerRoleCheckPanel
 				extends JPanel
 {

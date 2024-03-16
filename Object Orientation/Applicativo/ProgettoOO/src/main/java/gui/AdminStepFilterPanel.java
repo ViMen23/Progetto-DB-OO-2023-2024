@@ -15,6 +15,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Questa classe rappresenta il pannello di filtro a step per la vista amministratore.
+ * <p>
+ * Il pannello consente agli amministratori di filtrare i dati in base a diversi criteri
+ * in sequenza, passo dopo passo.
+ * <p>
+ * In base ai filtri selezionati, il pannello aggiorna dinamicamente le combo box
+ * successive con i dati disponibili. Una volta selezionati tutti i criteri desiderati,
+ * l'amministratore può cliccare sul pulsante "Vai" per visualizzare i dettagli
+ * dell'elemento selezionato (competizione, squadra o giocatore).
+ */
 public class AdminStepFilterPanel
 				extends JPanel
 {

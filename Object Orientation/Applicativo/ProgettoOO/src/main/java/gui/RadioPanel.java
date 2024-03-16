@@ -7,6 +7,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Questa classe rappresenta un pannello che visualizza un gruppo di radio button
+ * creati a partire da un array di valori enum.
+ */
 public class RadioPanel
 				extends JPanel
 {

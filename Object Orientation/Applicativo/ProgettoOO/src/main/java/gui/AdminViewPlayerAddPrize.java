@@ -15,6 +15,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Vector;
 
+/**
+ * Classe che rappresenta la vista per l'aggiunta di una premio calcistico ad un giocatore.
+ */
 public class AdminViewPlayerAddPrize
 				extends JPanel
 {

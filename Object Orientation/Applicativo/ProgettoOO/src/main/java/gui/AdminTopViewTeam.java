@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Map;
 
+/**
+ * Classe che rappresenta la vista principale per la gestione di una squadra di calcio da parte dell'amministratore.
+ */
 public class AdminTopViewTeam
 				extends JPanel
 {

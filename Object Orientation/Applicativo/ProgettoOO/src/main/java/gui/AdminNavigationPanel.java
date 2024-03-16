@@ -8,6 +8,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+/**
+ * Pannello di navigazione dell'amministratore.
+ * <p>
+ * Questo pannello permette all'amministratore di accedere alle funzionalità di gestione.
+ * <p>
+ * Selezionando una voce dal menu di navigazione, il pannello principale viene nascosto e il pannello secondario viene aggiornato con la schermata corrispondente alla voce selezionata.
+ * <p>
+ * Il pannello include anche un bottone con l'icona di filtro che permette di accedere allo step di filtraggio per la ricerca avanzata.
+ */
 public class AdminNavigationPanel
 				extends  JPanel
 {
