@@ -3,12 +3,6 @@ package model;
 
 /**
  * Questa classe rappresenta una confederazione sportiva.
- * <p>
- * Una confederazione è caratterizzata da:
- *  <li> `shortName`: Nome abbreviato della confederazione.
- *  <li> `longName`: Nome completo della confederazione.
- *  <li> `country`: Paese in cui ha sede la confederazione.
- *  <li> `superConfederation`: Confederazione superiore di cui fa parte.
  */
 public class Confederation
 {

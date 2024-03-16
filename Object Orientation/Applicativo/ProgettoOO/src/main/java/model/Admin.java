@@ -2,10 +2,6 @@ package model;
 
 /**
  * Questa classe rappresenta un utente amministratore del sistema.
- * <p>
- * Un oggetto `Admin` ha le seguenti proprietà:
- * <li> `username`: Nome utente dell'amministratore.
- * <li> `password`: Password dell'amministratore.
  */
 public class Admin
 {

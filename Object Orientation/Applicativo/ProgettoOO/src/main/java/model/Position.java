@@ -2,11 +2,6 @@ package model;
 
 /**
  * Questa classe rappresenta una posizione di gioco.
- * <p>
- * Una posizione è caratterizzata da:
- *  <li> `role`: Ruolo principale associato alla posizione.
- *  <li> `code`: Codice identificativo della posizione.
- *  <li> `name`: Nome descrittivo della posizione.
  */
 public class Position
 {

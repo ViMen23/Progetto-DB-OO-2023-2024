@@ -2,15 +2,6 @@ package model;
 
 /**
  * Questa classe rappresenta un premio calcistico.
- * <p>
- * Un premio è caratterizzato da:
- *  <li> `type`: Tipo di premio.
- *  <li> `role`: Ruolo a cui è associato il premio.
- *  <li> `name`: Nome del premio.
- *  <li> `given`: Ente che assegna il premio.
- *  <li> `player`: Giocatore a cui è assegnato il premio.
- *  <li> `team`: Squadra a cui è assegnato il premio.
- *  <li> `assignedYear`: Anno di assegnazione del premio.
  */
 public class Prize
 {

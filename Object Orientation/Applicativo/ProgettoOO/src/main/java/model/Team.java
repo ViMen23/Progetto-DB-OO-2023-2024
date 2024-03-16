@@ -5,18 +5,6 @@ import java.util.*;
 
 /**
  * Questa classe rappresenta una squadra di calcio.
- * <p>
- * Una squadra è caratterizzata da:
- *  <li> `type`: Tipo di squadra.
- *  <li> `shortName`: Nome breve della squadra.
- *  <li> `longName`: Nome completo della squadra.
- *  <li> `country`: Nazione di appartenenza.
- *  <li> `confederation`: Confederazione di appartenenza.
- *  <li> `playerMap`: Una rosa di calciatori per una determinata stagione.
- *  <li> `competitionSet`: Insieme di competizioni a cui la squadra ha partecipato.
- *  <li> `trophySet`: Insieme di trofei vinti dalla squadra.
- *  <li> `prizeSet`: Insieme di riconoscimenti individuali ottenuti da giocatori della squadra.
- *  <li> `yearSet`: Insieme di anni in cui la squadra ha partecipato a competizioni.
  */
 public class Team
 {

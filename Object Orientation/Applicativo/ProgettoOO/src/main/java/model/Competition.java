@@ -4,13 +4,6 @@ import java.util.*;
 
 /**
  * Questa classe rappresenta una competizione calcistica.
- * <p>
- * Una competizione è caratterizzata da:
- *  <li> `type`: Tipo di competizione.
- *  <li> `teamType`: Tipo di squadra che partecipa alla competizione.
- *  <li> `name`: Nome della competizione.
- *  <li> `confederation`: Confederazione sportiva di riferimento.
- *  <li> `editionSet`: Insieme di edizioni della competizione.
  */
 public class Competition
 {

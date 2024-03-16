@@ -3,12 +3,6 @@ package model;
 
 /**
  * Questa classe rappresenta un paese.
- * <p>
- * Un paese è caratterizzato da:
- *  <li> `type`: Tipo di entità geografica.
- *  <li> `code`: Codice identificativo del paese.
- *  <li> `name`: Nome del paese.
- *  <li> `superCountry`: Paese o continente di appartenenza.
  */
 public class Country
 {

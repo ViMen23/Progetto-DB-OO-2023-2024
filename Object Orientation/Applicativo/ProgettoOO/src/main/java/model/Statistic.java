@@ -2,19 +2,6 @@ package model;
 
 /**
  * Questa classe rappresenta le statistiche di una partita di calcio.
- * <p>
- * Le statistiche sono associate a:
- *  <li> `team`: Squadra.
- *  <li> `competition`: Competizione.
- *  <li> `competitionYear`: Anno della competizione.
- *  <li> `match`: Numero di partite giocate.
- *  <li> `goalScored`: Gol segnati.
- *  <li> `penaltyScored`: Rigori segnati.
- *  <li> `assist`: Assist effettuati.
- *  <li> `yellowCard`: Cartellini gialli ricevuti.
- *  <li> `redCard`: Cartellini rossi ricevuti.
- *  <li> `goalConceded`: Gol subiti.
- *  <li> `penaltySaved`: Rigori parati.
  */
 public class Statistic
 {

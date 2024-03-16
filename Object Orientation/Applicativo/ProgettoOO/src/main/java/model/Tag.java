@@ -2,11 +2,6 @@ package model;
 
 /**
  * Questa classe rappresenta un tag da associare ad un calciatore.
- * <p>
- * Un tag è caratterizzato da:
- *  <li> `goalkeeper`: Indica se il tag è specifico per i portieri (vero) o per i giocatori di movimento (falso).
- *  <li> `positive`: Indica se il tag è positivo (vero) o negativo (falso).
- *  <li> `name`: Nome del tag.
  */
 public class Tag
 {

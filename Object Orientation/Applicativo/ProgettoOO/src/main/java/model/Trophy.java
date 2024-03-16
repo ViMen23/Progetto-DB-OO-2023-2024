@@ -3,15 +3,6 @@ package model;
 
 /**
  * Questa classe rappresenta un trofeo calcistico.
- * <p>
- * Un trofeo è caratterizzato da:
- *  <li> `type`: Tipo di trofeo.
- *  <li> `role`: Ruolo del vincitore.
- *  <li> `name`: Nome del trofeo.
- *  <li> `player`: Giocatore vincitore.
- *  <li> `team`: Squadra vincitrice.
- *  <li> `competition`: Competizione in cui è stato vinto il trofeo.
- *  <li> `competitionStartYear`: Anno di inizio della competizione.
  */
 public class Trophy
 {

@@ -5,32 +5,6 @@ import java.util.*;
 
 /**
  * Questa classe rappresenta un calciatore.
- * <p>
- * Un calciatore è caratterizzato da:
- *  <li> `name`: Nome del calciatore.
- *  <li> `surname`: Cognome del calciatore.
- *  <li> `dob`: Data di nascita.
- *  <li> `country`: Nazione di nascita.
- *  <li> `foot`: Piede preferito.
- *  <li> `position`: Posizione principale in campo.
- *  <li> `role`: Ruolo in campo.
- *  <li> `retiredDate`: Data di ritiro dall'attività agonistica.
- *  <li> `statisticMap`: Mappa che associa un oggetto `Statistic` al relativo valore.
- *  <li> `positionSet`: Insieme di posizioni che il calciatore può ricoprire in campo.
- *  <li> `countrySet`: Insieme di nazionalita'.
- *  <li> `attributeGoalkeepingMap`: Mappa che associa un attributo del portiere al relativo valore.
- *  <li> `attributeMentalMap`: Mappa che associa un attributo mentale al relativo valore.
- *  <li> `attributePhysicalMap`: Mappa che associa un attributo fisico al relativo valore.
- *  <li> `attributeTechnicalMap`: Mappa che associa un attributo tecnico al relativo valore.
- *  <li> `tagSet`: Insieme di tag che descrivono il calciatore.
- *  <li> `nationalCareer`: Mappa che associa la stagione alla squadra di club in cui ha giocato per la nazionale.
- *  <li> `clubCareer`: Mappa che associa la stagione alla squadra di club in cui ha giocato.
- *  <li> `trophyMap`: Mappa che associa un trofeo vinto dal calciatore al relativo anno di vittoria.
- *  <li> `prizeSet`: Insieme di premi individuali ottenuti dal calciatore.
- *  <li> `playSeason`: Insieme di stagioni in cui il calciatore ha giocato a livello professionistico.
- * <p>
- *  <li> `MIN_AGE`: Età minima per poter creare un calciatore.
- *  <li> `MAX_AGE`: Età massima per poter creare un calciatore.
  */
 public class Player
 {
