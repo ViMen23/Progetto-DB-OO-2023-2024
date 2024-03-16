@@ -70,8 +70,8 @@ public class ViewPlayerClubStatistic
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.ONE_CELL_GAP_0_10
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);
@@ -168,7 +168,7 @@ public class ViewPlayerClubStatistic
 						GuiConfiguration.getMessage("finalSeason"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlFinalSeason
 		);
 		centralPanel.add(finalSeasonPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT);

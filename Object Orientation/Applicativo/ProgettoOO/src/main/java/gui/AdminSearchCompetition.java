@@ -158,7 +158,7 @@ public class AdminSearchCompetition
 
 		continentTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.CONTINENT.toString(),
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlCountryType,
 						ctrlContinentName,
 						true
@@ -169,7 +169,7 @@ public class AdminSearchCompetition
 
 		nationTypeNamePanel = new RadioComboPanel(
 						Country.COUNTRY_TYPE.NATION.toString(),
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlCountryType,
 						ctrlNationName,
 						true

@@ -114,7 +114,7 @@ public class SearchPlayerPanel
 
 		playerSurnamePanel = new LabelTextPanel(
 						GuiConfiguration.getMessage("surname"),
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlPlayerSubSurname,
 						Regex.patternString
 		);
@@ -144,7 +144,7 @@ public class SearchPlayerPanel
 						GuiConfiguration.getMessage("minAge"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlPlayerMinAge
 		);
 		centralPanel.add(playerMinAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_BGAP_0_ADD_CONSTRAINT);
@@ -154,7 +154,7 @@ public class SearchPlayerPanel
 						GuiConfiguration.getMessage("maxAge"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlPlayerMaxAge
 		);
 		centralPanel.add(playerMaxAgePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
@@ -180,7 +180,7 @@ public class SearchPlayerPanel
 						GuiConfiguration.getMessage("NATION"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlNationName
 		);
 		centralPanel.add(nationTypeNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);

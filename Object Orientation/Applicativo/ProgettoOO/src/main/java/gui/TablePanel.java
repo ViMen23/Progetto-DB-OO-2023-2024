@@ -22,7 +22,7 @@ public class TablePanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
 						null
 		);
 
@@ -56,7 +56,7 @@ public class TablePanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
 						null
 		);
 
@@ -88,7 +88,7 @@ public class TablePanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
 						null
 		);
 
@@ -115,7 +115,7 @@ public class TablePanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
 						null
 		);
 

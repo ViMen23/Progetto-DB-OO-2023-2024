@@ -64,7 +64,7 @@ public class CreatePlayer
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 
@@ -77,7 +77,7 @@ public class CreatePlayer
 
 		migLayout = new MigLayout(
 						GuiConfiguration.CENTER_VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL,
+						GuiConfiguration.ONE_GROW_FILL_GAP_0_0_CELL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.ONE_CELL_GAP_0_LAYOUT_CONSTRAINT
 		);
 

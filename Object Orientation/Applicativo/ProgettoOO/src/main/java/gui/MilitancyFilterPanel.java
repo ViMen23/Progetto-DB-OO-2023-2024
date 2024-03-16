@@ -120,7 +120,7 @@ public class MilitancyFilterPanel
 						GuiConfiguration.getMessage("NATION"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlNationName
 		);
 		centralPanel.add(nationNamePanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);
@@ -159,7 +159,7 @@ public class MilitancyFilterPanel
 						GuiConfiguration.getMessage("toYear"),
 						false,
 						GuiConfiguration.TWO_CELL_SIZE_20P_40P_EXT_GAP_PUSH_INT_GAP_5P_LAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_CELL_GAP_0_10,
+						GuiConfiguration.ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT,
 						ctrlToYear
 		);
 		centralPanel.add(toYearPanel, GuiConfiguration.HGROUP_FIRST_COLUMN_ADD_CONSTRAINT);

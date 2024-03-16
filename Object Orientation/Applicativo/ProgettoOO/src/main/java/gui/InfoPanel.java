@@ -14,8 +14,8 @@ public class InfoPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
-						GuiConfiguration.ONE_GROW_FILL_CELL
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT
 		);
 
 		this.setLayout(migLayout);

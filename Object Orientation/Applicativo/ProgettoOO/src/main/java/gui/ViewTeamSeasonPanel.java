@@ -48,7 +48,7 @@ public class ViewTeamSeasonPanel
 
 		migLayout = new MigLayout(
 						GuiConfiguration.VLAYOUT_CONSTRAINT,
-						GuiConfiguration.ONE_GROW_FILL_CELL,
+						GuiConfiguration.ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT,
 						GuiConfiguration.THREE_CELL_EXT_GAP_0_INT_GAP_10_0_LAYOUT_CONSTRAINT
 		);
 

@@ -26,9 +26,9 @@ public class MainFrame
 
 		this.getContentPane().setBackground(new Color(210, 210, 210));
 
-		setLayout(migLayout);
+		this.setLayout(migLayout);
 
-		setExtendedState(JFrame.MAXIMIZED_VERT);
+		this.setExtendedState(JFrame.MAXIMIZED_VERT);
 
 	}
 

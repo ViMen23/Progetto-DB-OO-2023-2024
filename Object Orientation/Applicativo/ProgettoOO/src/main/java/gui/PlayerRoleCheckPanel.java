@@ -20,7 +20,7 @@ public class PlayerRoleCheckPanel
 
 		migLayout = new MigLayout(
 						null,
-						GuiConfiguration.FOUR_CELL_SIZE_15P_GAP_8P,
+						GuiConfiguration.FOUR_CELL_SIZE_15P_GAP_8P_LAYOUT_CONSTRAINT,
 						null
 		);
 

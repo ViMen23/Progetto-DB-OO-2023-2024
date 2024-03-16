@@ -67,13 +67,13 @@ public class GuiConfiguration
 	public static final String CENTER_LAYOUT_CONSTRAINT = "center";
 	public static final String CENTER_VLAYOUT_CONSTRAINT = "flowy, center";
 
-	public static final String ONE_CELL_GAP_0_10 = "0[]10";
+	public static final String ONE_CELL_GAP_0_10_LAYOUT_CONSTRAINT = "0[]10";
 	public static final String ONE_CELL_GAP_0_LAYOUT_CONSTRAINT = "0[]0";
 	public static final String ONE_CELL_GAP_50_LAYOUT_CONSTRAINT = "50[]50";
 	public static final String ONE_CELL_TOP_GAP_10_0_LAYOUT_CONSTRAINT = "10[top]0";
 	public static final String ONE_CELL_GAP_14P_LAYOUT_CONSTRAINT = "14%[]14%";
-	public static final String ONE_GROW_FILL_CELL = "[grow, fill]";
-	public static final String ONE_GROW_FILL_GAP_0_0_CELL = "0[grow, fill]0";
+	public static final String ONE_GROW_FILL_CELL_LAYOUT_CONSTRAINT = "[grow, fill]";
+	public static final String ONE_GROW_FILL_GAP_0_0_CELL_LAYOUT_CONSTRAINT = "0[grow, fill]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_10_LAYOUT_CONSTRAINT = "0[]10[]0";
 	public static final String TWO_CELL_EXT_GAP_0_INT_GAP_110_LAYOUT_CONSTRAINT = "0[]110[]0";
 	public static final String TWO_CELL_FILL_SIZE_55P_INT_GAP_6P_LAYOUT_CONSTRAITN = "[55%, fill]6%[]";
@@ -88,7 +88,7 @@ public class GuiConfiguration
 	public static final String THREE_CELL_EXT_GAP_PUSH_PUSH_INT_GAP_20_20_LAYOUT_CONSTRAINT = "20:push[]20[]20[]20:push";
 	public static final String THREE_CELL_SIZE_20P_INT_GAP_10P_LAYOUT_CONSTRAINT = "[20%]10%[20%]10%[20%]";
 	public static final String THREE_CELL_EXT_GAP_5P_INT_GAP_50P_5P_LAYOUT_CONSTRAINT = "5%[]50%[]5%[]5%";
-	public static final String FOUR_CELL_SIZE_15P_GAP_8P = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
+	public static final String FOUR_CELL_SIZE_15P_GAP_8P_LAYOUT_CONSTRAINT = "8%[15%]8%[15%]8%[15%]8%[15%]8%";
 	public static final String FOUR_CELL_EXT_GAP_2P_INT_GAP_5P_5P_3P_LAYOUT_CONSTRAINT = "2%[]5%[]5%[]3%[]2%";
 	public static final String FIVE_CELL_LAYOUT_CONSTRAINT = "0[]0[fill]10[]0[fill]20[]0";
 	public static final String SEVEN_CELL_LAYOUT_CONSTRAINT = "0[]0[fill][]0[fill][]0[fill]20[]0";
@@ -98,7 +98,7 @@ public class GuiConfiguration
 	public static final String HGROUP_FRAME_ADD_CONSTRAINT = "sgx frame";
 	public static final String HGROUP_FRAME_VGROW_ADD_CONSTRAINT = "sgx frame, growy";
 	public static final String HGROUP_GENERAL_DOCK_NORTH_ADD_CONSTRAINT = "sgx general, dock north";
-	public static final String HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT = "sgx general, dock center,";
+	public static final String HGROUP_GENERAL_DOCK_CENTER_ADD_CONSTRAINT = "sgx general, dock center";
 	public static final String HGROUP_GENERAL_DOCK_SOUTH_ADD_CONSTRAINT = "sgx general, dock south";
 	public static final String HGROUP_FIRST_COLUMN_ADD_CONSTRAINT = "sgx first_column";
 	public static final String HGROUP_FIRST_COLUMN_VSPLIT_TWO_BGAP_0_ADD_CONSTRAINT = "sgx first_column, split 2, flowy, gap bottom 0";
