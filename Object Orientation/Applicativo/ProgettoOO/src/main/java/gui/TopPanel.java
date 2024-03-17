@@ -93,13 +93,16 @@ public class TopPanel
 					);
 
 					if(null != ctrlLabel.getText()) {
-						loginButton.setText(ctrlLabel.getText());
+						loginButton.setText(GuiConfiguration.getMessage("logout"));
+						MainFrame.getMainFrameInstance().setTitle("Admin: " + ctrlLabel.getText());
 					}
+
 				}
 				else {
 					Controller.getInstance().logoutAdmin();
 					loginButton.setText(GuiConfiguration.getMessage("login"));
 					ctrlLabel.setText(null);
+					MainFrame.getMainFrameInstance().setTitle("FOOGO: football google");
 					GuiConfiguration.resetHomeFrame();
 				}
 			}

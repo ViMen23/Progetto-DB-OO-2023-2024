@@ -819,7 +819,7 @@ public class AdminTopViewPlayer
 					MainFrame.getMainFrameInstance().getContentPane().remove(parentPanel.getParent());
 
 					MainFrame.getMainFrameInstance().getContentPane().add(
-									new AdminNavigationPanel(new JPanel()),
+									new AdminNavigationPanel(new AdminStepFilterPanel()),
 									GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT
 					);
 				} catch(Exception ex) {

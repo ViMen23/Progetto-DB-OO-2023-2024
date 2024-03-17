@@ -45,16 +45,6 @@ public class ChooseLocalePanel
 		this.add(messageLabel, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
 		/*------------------------------------------------------------------------------------------------------*/
 
-		Set<Locale> localeSet = new HashSet<>();
-		for (Locale locale : Locale.getAvailableLocales()) {
-			try {
-				ResourceBundle resourceBundle = ResourceBundle.getBundle("guiBundle", locale);
-				localeSet.add(resourceBundle.getLocale());
-			} catch (Exception ignore) {
-
-			}
-		}
-
 		localeComboBox = new JComboBox<>();
 
 		this.add(localeComboBox, GuiConfiguration.HGROUP_ADD_CONSTRAINT);
@@ -104,7 +94,7 @@ public class ChooseLocalePanel
 							container.remove(component);
 						}
 					}
-					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					container.add(new AdminNavigationPanel(new AdminStepFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 
 				}
 				else {

@@ -107,7 +107,7 @@ public class AdminLoginPanel
 						}
 					}
 
-					container.add(new AdminNavigationPanel(new JPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
+					container.add(new AdminNavigationPanel(new AdminStepFilterPanel()), GuiConfiguration.HGROUP_FRAME_VGROW_ADD_CONSTRAINT);
 
 					ctrlLabel.setText(usernameTextField.getText());
 
