@@ -168,6 +168,8 @@ public class ViewTeamSeasonPanel
 				squadTable.setModel(new TableModel(squadTableData, GuiConfiguration.TEAM_SQUAD_TABLE_COLUMN_NAME));
 				squadTable.setPreferredScrollableViewportSize(squadTable.getPreferredSize());
 
+				squadTable.getColumnModel().getColumn(2).setCellRenderer(new TableRenderer());
+
 				string = GuiConfiguration.getMessage("participations");
 				string += " ";
 				string += ctrlSeason.getText();

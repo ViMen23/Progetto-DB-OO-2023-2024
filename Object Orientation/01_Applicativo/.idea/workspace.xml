@@ -5,13 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a2f99b09-3f10-4950-a364-2199c1c6708a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/main.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/main.pdf" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/sections/OO_section.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/sections/OO_section.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/DB/subsec_0.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/DB/subsec_0.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_1.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_1.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_2.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_2.tex" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateGoalkeepingAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateGoalkeepingAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateMentalAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateMentalAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdatePhysicalAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdatePhysicalAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateStatistic.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateStatistic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateTechnicalAttribute.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/AdminViewPlayerUpdateTechnicalAttribute.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/GuiConfiguration.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/GuiConfiguration.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/ViewTeamSeasonPanel.java" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/java/gui/ViewTeamSeasonPanel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/resources/guiBundle_en_US.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/resources/guiBundle_en_US.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ProgettoOO/src/main/resources/guiBundle_it_IT.properties" beforeDir="false" afterPath="$PROJECT_DIR$/ProgettoOO/src/main/resources/guiBundle_it_IT.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -62,7 +65,7 @@
       <updated>1708253261630</updated>
       <workItem from="1708253263848" duration="18000" />
       <workItem from="1708279843695" duration="21000" />
-      <workItem from="1710706261549" duration="1551000" />
+      <workItem from="1710706261549" duration="5399000" />
     </task>
     <servers />
   </component>

@@ -563,7 +563,6 @@ public class GuiConfiguration
 		try {
 			return currentResourceBundle.getString(key);
 		} catch(Exception e) {
-			System.err.println("Errore: " + e.getMessage());
 			return "";
 		}
 	}

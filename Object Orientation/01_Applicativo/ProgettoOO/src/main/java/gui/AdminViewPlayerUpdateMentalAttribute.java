@@ -29,6 +29,7 @@ public class AdminViewPlayerUpdateMentalAttribute
 		final Vector<Vector<String>> attributeTableData = new Vector<>();
 
 		final Vector<String> attributeValueVector = new Vector<>(List.of(
+						String.valueOf(0),
 						String.valueOf(1),
 						String.valueOf(2),
 						String.valueOf(3),

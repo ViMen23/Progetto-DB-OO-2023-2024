@@ -26,7 +26,7 @@ public class AdminViewPlayerUpdateStatistic
 	{
 		final Vector<String> statisticValueVector = new Vector<>();
 
-		for (int i = 0; i <= 100; ++i) {
+		for (int i = 0; i <= 1000; ++i) {
 			statisticValueVector.add(String.valueOf(i));
 		}
 
@@ -121,6 +121,9 @@ public class AdminViewPlayerUpdateStatistic
 
 		for (String key: statisticTableMap.keySet()) {
 			final int j = index;
+			if (null == statisticTableMap.get(key)) {
+				continue;
+			}
 			label = new JLabel(key);
 
 			panel.add(label);
