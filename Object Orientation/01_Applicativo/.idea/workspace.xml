@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="a2f99b09-3f10-4950-a364-2199c1c6708a" name="Changes" comment="" />
+    <list default="true" id="a2f99b09-3f10-4950-a364-2199c1c6708a" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/main.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/main.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/sections/OO_section.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/sections/OO_section.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/DB/subsec_0.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/DB/subsec_0.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_1.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_1.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_2.tex" beforeDir="false" afterPath="$PROJECT_DIR$/../../Database/00_documentazione/subsections/OO/subsec_2.tex" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -21,20 +29,26 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-3183f394aec4-920bfa72" />
+        <option value="jdk-21.0.2-openjdk-21.0.2-4caba194b151-78a6f59c" />
       </set>
     </attachedChunks>
   </component>
@@ -48,6 +62,7 @@
       <updated>1708253261630</updated>
       <workItem from="1708253263848" duration="18000" />
       <workItem from="1708279843695" duration="21000" />
+      <workItem from="1710706261549" duration="1551000" />
     </task>
     <servers />
   </component>
