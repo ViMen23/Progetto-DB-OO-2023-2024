@@ -1,22 +1,0 @@
-
-<<<<<<< Updated upstream
-i
-java:S1604f"(Make this anonymous inner class a lambda(ÛšÏÆûÿÿÿÿJ$bf13d233-71b4-4c35-a178-2edc3f6e5763
-i
-java:S1604"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$72351964-b1b7-4818-bc2c-d1ca55aee1b6
-¦
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÍîŠ¢úÿÿÿÿJ$7a7fe75b-df8c-4466-b6b2-0758c684866a
-¡
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(êÛ´äJ$3278575f-a008-4cfb-b19a-411d74e25e2b
-g	java:S106¤"+Replace this use of System.err by a logger.(ò× èJ$69aca153-68c2-42fd-a66c-45c457c364c8
-=======
-C
-java:S1604f"(Make this anonymous inner class a lambda(ÛšÏÆûÿÿÿÿ
-C
-java:S1604"(Make this anonymous inner class a lambda(¤Ù€Üüÿÿÿÿ
-€
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÍîŠ¢úÿÿÿÿ
-{
-java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(êÛ´ä
-A	java:S106¤"+Replace this use of System.err by a logger.(ò× è
->>>>>>> Stashed changes

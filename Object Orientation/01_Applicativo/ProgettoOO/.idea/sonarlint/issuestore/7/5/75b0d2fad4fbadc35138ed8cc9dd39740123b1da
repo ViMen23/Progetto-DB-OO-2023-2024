@@ -1,9 +1,0 @@
-
-{
-java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(øŽ”õ
-{
-java:S11499"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²
-{
-java:S1149G"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²
-€
-java:S1149U"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿ

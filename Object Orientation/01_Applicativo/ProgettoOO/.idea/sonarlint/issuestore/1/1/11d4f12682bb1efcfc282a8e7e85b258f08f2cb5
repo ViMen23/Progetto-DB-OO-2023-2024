@@ -1,108 +1,0 @@
-
-<<<<<<< Updated upstream
-b
-java:S1192W"LDefine a constant instead of duplicating this literal "yellow_card" 5 times.(ê…– 
-f
-java:S1192L"KDefine a constant instead of duplicating this literal "start_year" 3 times.(è°¡çüÿÿÿÿ
-d
-java:S1192Z"NDefine a constant instead of duplicating this literal "penalty_saved" 5 times.(õï‹È
-c
-java:S1192]"HDefine a constant instead of duplicating this literal "team_id" 3 times.(–„Òüÿÿÿÿ
-c
-java:S1192Y"NDefine a constant instead of duplicating this literal "goal_conceded" 5 times.(…Úƒ
-e
-java:S1192R"ODefine a constant instead of duplicating this literal "team_long_name" 3 times.(›¡ª
-^
-java:S1192X"IDefine a constant instead of duplicating this literal "red_card" 5 times.(Óø¡E
-b
-java:S1192T"LDefine a constant instead of duplicating this literal "goal_scored" 5 times.(®ĞŒ
-a
-java:S1192S"FDefine a constant instead of duplicating this literal "match" 6 times.(¦’÷œÿÿÿÿÿ
-_
-java:S1192}"IDefine a constant instead of duplicating this literal "Errore: " 5 times.(¹å›ğ
-\
-java:S1192V"GDefine a constant instead of duplicating this literal "assist" 6 times.(ÎÈ0
-j
-java:S1192U"ODefine a constant instead of duplicating this literal "penalty_scored" 5 times.(¬ßŒşøÿÿÿÿ
-7
-java:S1643M"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
-7
-java:S1643N"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
-8
-java:S1643¢"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
-8
-java:S1643£"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
-8
-java:S1643è"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
-8
-java:S1643é"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
-t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
-f
-java:S2095Ø"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(·¹ƒ
-k
-java:S2095Ü"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(í©Ù¸ùÿÿÿÿ
-k
-java:S2095‘"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ç·ğ­şÿÿÿÿ
-f
-java:S2095Ÿ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(™®¤ª
-e
-java:S20959"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¯ûö¾
-@	java:S106}"+Replace this use of System.out by a logger.(¹å›ğ
-A	java:S106Ä"+Replace this use of System.out by a logger.(¹å›ğ
-A	java:S106‡"+Replace this use of System.out by a logger.(¹å›ğ
-A	java:S106¹"+Replace this use of System.out by a logger.(¹å›ğ
-A	java:S106ñ"+Replace this use of System.out by a logger.(¹å›ğ
-=======
-ˆ
-java:S1192W"LDefine a constant instead of duplicating this literal "yellow_card" 5 times.(ê…– J$16f0a41c-f779-4f4d-b09a-3497f66a61af
-Œ
-java:S1192L"KDefine a constant instead of duplicating this literal "start_year" 3 times.(è°¡çüÿÿÿÿJ$a538790e-6f95-4bcc-85e5-099d671ce1c1
-Š
-java:S1192Z"NDefine a constant instead of duplicating this literal "penalty_saved" 5 times.(õï‹ÈJ$98ca4fe9-b3de-4ed6-b77f-3040f1eaddd9
-‰
-java:S1192]"HDefine a constant instead of duplicating this literal "team_id" 3 times.(–„ÒüÿÿÿÿJ$ac2ebb7c-95ab-4afd-905c-1caa709ab5bc
-‰
-java:S1192Y"NDefine a constant instead of duplicating this literal "goal_conceded" 5 times.(…ÚƒJ$0c942880-e898-4b33-8171-e3b115942399
-‹
-java:S1192R"ODefine a constant instead of duplicating this literal "team_long_name" 3 times.(›¡ªJ$f718f4ca-11c7-45f1-97ed-830e610069cb
-„
-java:S1192X"IDefine a constant instead of duplicating this literal "red_card" 5 times.(Óø¡EJ$fb116df4-b68a-44fe-accc-7e20265769f8
-ˆ
-java:S1192T"LDefine a constant instead of duplicating this literal "goal_scored" 5 times.(®ĞŒJ$37e72e61-ab97-4322-858f-499632310f7d
-‡
-java:S1192S"FDefine a constant instead of duplicating this literal "match" 6 times.(¦’÷œÿÿÿÿÿJ$dfb7e463-017f-449d-8967-d6d636ad3835
-…
-java:S1192}"IDefine a constant instead of duplicating this literal "Errore: " 5 times.(¹å›ğJ$dee367db-a3c4-4142-b509-2e4a7efd2d17
-‚
-java:S1192V"GDefine a constant instead of duplicating this literal "assist" 6 times.(ÎÈ0J$0feb8828-6282-4a3d-bd31-6937c0298f4c
-
-java:S1192U"ODefine a constant instead of duplicating this literal "penalty_scored" 5 times.(¬ßŒşøÿÿÿÿJ$5bd2bf4e-6eaf-43eb-8909-d22109900a0b
-]
-java:S1643M"Use a StringBuilder instead.(à³Á¨üÿÿÿÿJ$5914093b-a114-4230-87db-8399969bdae1
-]
-java:S1643N"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿJ$75be8a41-b858-42e0-91c2-614055e5d00b
-^
-java:S1643¢"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$d258807b-5696-4281-b050-8c4bea1996e5
-^
-java:S1643£"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$0bc335f7-869d-4a4c-92fc-73df8bbd079c
-^
-java:S1643è"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$50986ac1-f5c4-4568-bb83-c3c05702e9aa
-^
-java:S1643é"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$25de923b-bc58-48c8-b418-f55c5125bc8d
-š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰ÆøÿÿÿÿJ$aa163be5-6a89-478e-8b94-70dde62333b8
-‘
-java:S2095‘"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ç·ğ­şÿÿÿÿJ$3da219a4-a284-4b95-a6e2-a1397e229109
-Œ
-java:S2095Ø"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(·¹ƒJ$6e2275e6-58f0-4bda-94e5-75c92353f38d
-‹
-java:S20959"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¯ûö¾J$c131c6a0-634e-470a-b070-ccb27f2f70a9
-‘
-java:S2095Ü"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(í©Ù¸ùÿÿÿÿJ$d3699613-1ea4-4dec-a7e7-7bfde53b1443
-Œ
-java:S2095Ÿ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(™®¤ªJ$c8181f48-d93a-4ffa-9008-45952ee34441
-f	java:S106}"+Replace this use of System.out by a logger.(¹å›ğJ$2be9257d-c151-4ae7-b644-a4e51e1854b0
-g	java:S106Ä"+Replace this use of System.out by a logger.(¹å›ğJ$25deb920-ca64-4d3a-a195-1968e6ce4f44
-g	java:S106‡"+Replace this use of System.out by a logger.(¹å›ğJ$bd17a21c-1c8f-42ba-b654-a985611562ca
-g	java:S106¹"+Replace this use of System.out by a logger.(¹å›ğJ$7e86b3e1-ca5d-44c1-b69a-7c8d4517c646
-g	java:S106ñ"+Replace this use of System.out by a logger.(¹å›ğJ$2d788c4e-3915-4f8b-b13f-f53e56ccfe9c
->>>>>>> Stashed changes
