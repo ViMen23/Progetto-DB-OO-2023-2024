@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 i
 java:S1604R"(Make this anonymous inner class a lambda(«ªäóúÿÿÿÿJ$63cbd32e-ff45-470d-b42b-9f2e79157ca4
 d
@@ -6,3 +7,12 @@ java:S5411b"(Use a primitive boolean expression here.(Ï†¼–J$a644852d-bc27-40da
 ¡
 java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ìšƒÚJ$966230c3-6cb0-4ca6-97e8-235830260b26
 f	java:S106v"+Replace this use of System.err by a logger.(ò× èJ$675985ff-b208-4c32-a8da-6d9039e33622
+=======
+C
+java:S1604R"(Make this anonymous inner class a lambda(«ªäóúÿÿÿÿ
+>
+java:S5411b"(Use a primitive boolean expression here.(Ï†¼–
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ìšƒÚ
+@	java:S106v"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 d
 java:S1604#"(Make this anonymous inner class a lambda(‚€¥J$05b377c6-fd02-488e-bdcc-f876a10048e0
 d
@@ -7,3 +8,13 @@ d
 java:S1604E"(Make this anonymous inner class a lambda(‚€¥J$536298a9-808f-4e87-974d-2abd7d612bc2
 d
 java:S1604V"(Make this anonymous inner class a lambda(‚€¥J$17d99f9b-8b5c-4771-9ffe-39071a0cdc32
+=======
+>
+java:S1604#"(Make this anonymous inner class a lambda(‚€¥
+>
+java:S16044"(Make this anonymous inner class a lambda(‚€¥
+>
+java:S1604E"(Make this anonymous inner class a lambda(‚€¥
+>
+java:S1604V"(Make this anonymous inner class a lambda(‚€¥
+>>>>>>> Stashed changes

@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 ¦
 java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ä½ÎıÿÿÿÿJ$4264f6c0-668a-4000-896f-d38ff2e50737
 ¡
@@ -9,3 +10,15 @@ java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one s
 java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(–Ãê÷J$e6b138ee-1a5f-4672-a83c-e9496a40ca4f
 ¦
 java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŸÂ«³ıÿÿÿÿJ$c5144c3e-a205-44c3-a9ed-9057dc3abf40
+=======
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ä½Îıÿÿÿÿ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(°Òµ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(œÅñ€
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(–Ãê÷
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŸÂ«³ıÿÿÿÿ
+>>>>>>> Stashed changes

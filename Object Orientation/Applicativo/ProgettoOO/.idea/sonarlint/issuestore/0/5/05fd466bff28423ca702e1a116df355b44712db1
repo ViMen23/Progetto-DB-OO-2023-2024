@@ -1,5 +1,6 @@
 
 ‹
+<<<<<<< Updated upstream
 java:S1192«"NDefine a constant instead of duplicating this literal "errorNoAdmin" 32 times.(¥ìèíJ$17b589fe-ee16-42f9-8498-94a8d5317522
 ”
 java:S1192¬"RDefine a constant instead of duplicating this literal "errorMessageInput" 4 times.(ˆä«´øÿÿÿÿJ$f35e7a1e-99b8-4f2d-858d-09bbb3863246
@@ -171,3 +172,180 @@ y	java:S107Â"=Method has 14 parameters, which is greater than 7 authorized.(‹
 ~	java:S107ý"=Method has 15 parameters, which is greater than 7 authorized.(ÇØö©ýÿÿÿÿJ$25bef73a-5563-4779-98fe-9c2186f38c04
 }	java:S107´"<Method has 9 parameters, which is greater than 7 authorized.(„ÖË¨ûÿÿÿÿJ$5b06b850-7320-4991-beb5-378db3affae4
 y	java:S107å"=Method has 15 parameters, which is greater than 7 authorized.(—ü£ÅJ$97309dba-96b6-4ae8-bce2-35b04cfd7233
+=======
+java:S1192«"NDefine a constant instead of duplicating this literal "errorNoAdmin" 32 times.(¥ìèíJ$2e513665-c6a4-4ba3-844e-80ebfa32f953
+”
+java:S1192¬"RDefine a constant instead of duplicating this literal "errorMessageInput" 4 times.(ˆä«´øÿÿÿÿJ$ae0619c8-fea9-40d2-993a-65884ce6ef14
+¢
+java:S1149†"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$b63b6e4b-a1ee-4df5-9881-0cf7cb6157fd
+¢
+java:S1149 "eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$edccc2e8-7188-4386-837a-bf16ef52e499
+¢
+java:S1149Ì"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$d37b8627-18b5-4076-9ec6-749fdaf89965
+¢
+java:S1149æ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$b84b5954-5291-46df-8947-a17e6581033b
+¢
+java:S1149¶"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$b5a26414-7d40-48d4-8ebf-1bf31e0a2e6f
+¢
+java:S1149Ø"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$77553db1-2912-4704-91e8-c41e70f4d385
+¢
+java:S1149ó"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$ad7ad396-61c8-4e6c-a2b7-341e0f81165d
+¢
+java:S1149Š"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$7466687f-e6a0-408e-90cc-b03cb2d33fbc
+¢
+java:S1149¬"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$d3793717-fe8f-4214-8261-b1cd3cf0877d
+§
+java:S1149Ò"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$7d851d8f-e67b-4493-a188-9b9729cf1970
+§
+java:S1149ó"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$726d2d2a-d428-4308-b6c1-80c1455c0fca
+¢
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$d7928db9-0a0d-4ea2-a43a-1385c9e12782
+¢
+java:S1149ô"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$2758eedf-4f58-43d8-bd53-6e30cfeb0911
+¢
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$591fb941-e8dc-425a-a3e7-3258f0b06a5e
+¢
+java:S1149¨"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$d92201e1-8012-41cf-ba94-78cef25cb22a
+§
+java:S1149Ë"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$207175dd-6cea-4413-9a2d-4015c00368ab
+¢
+java:S1149ü"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$7c738cd6-e47c-4022-be28-15db31c91d6e
+¢
+java:S1149”"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$77a0e5be-ce86-464a-8d08-44a5876bd1d3
+¢
+java:S1149°"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$b07d9b61-fe3b-4ee9-a030-d6122cade4db
+¢
+java:S1149Î"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²J$079d89c5-e8aa-4ed5-bd5b-96ad28020e2c
+¢
+java:S1149î"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Á‘¡ÓJ$7cf1ba48-9211-430e-b0cb-4ab7bf5c61f8
+¢
+java:S1149ð"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÎëË¿J$8f98df98-60e1-470a-8220-479c6c6ab4c4
+§
+java:S1149ˆ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(áú×¥þÿÿÿÿJ$04704b2c-5104-404f-92f0-b4cedb51b853
+§
+java:S1149‰"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ñß¹ÁûÿÿÿÿJ$dd38a7fa-8090-47e6-90d4-d114d5ff2bba
+¢
+java:S1149±"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ýŽü¢J$36dd8111-627e-4a92-92fd-5a20e64f9e02
+§
+java:S1149È"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õýýâùÿÿÿÿJ$ebdc6bde-364b-4f07-ac1b-4ae6454defe7
+§
+java:S1149ï"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(×‚”øÿÿÿÿJ$10ca702c-447c-43b8-87f4-2a194f98a4f1
+§
+java:S1149	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(×‚”øÿÿÿÿJ$2478157b-ccc8-4102-be95-36480984aa4c
+¢
+java:S1149«	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(„åŠÆJ$1494d45e-915d-4b32-9499-608ccbc9b2d4
+¢
+java:S1149¬	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¸¸ÝÐJ$1c1e010b-fc75-4fa1-8abb-e309385cd85c
+§
+java:S1149Ä	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(—Ïª¤ùÿÿÿÿJ$dfe64d49-ce3c-4c58-b4f4-78d775aba53d
+§
+java:S1149Å	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Æƒ£îÿÿÿÿÿJ$2d4848ef-fd73-4a20-85f3-b9c1d98f520f
+¡
+java:S1149Æ	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(íè¤AJ$2bc4c5ff-673c-406d-977b-7f153ed1112f
+¡
+java:S1149Ç	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(“¸¬rJ$f158d6c1-36aa-442e-b88d-c7e8ba9e6518
+¡
+java:S1149È	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(»ÌÁtJ$1bf6a1f6-5481-4414-8e7a-59c80bc1c10e
+¢
+java:S1149â	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(çúÐÚJ$f08bed35-9bb7-4d2f-8c1b-0d866a048873
+§
+java:S1149ä	"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ý’èøúÿÿÿÿJ$55b7c43b-49f3-460a-96ec-cca7bb5c5216
+¢
+java:S1149„
+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢Ëø¸J$209e2a46-4393-446a-a69c-40e00f489446
+§
+java:S1149¥
+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ö‡‡ÓúÿÿÿÿJ$c77b459d-6b79-4c10-b9b1-ce535372eb17
+¡
+java:S1149§
+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ËØŽ,J$f0affe32-d380-4dc9-8639-25fd7ab8cc69
+¢
+java:S1149©
+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‡©©²J$10f392a0-d7de-4ab5-a2e1-9da01baf83d3
+¢
+java:S1149Å"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(àÑÈ¢J$37b881f8-de89-4fda-b32f-be56381ecfed
+¢
+java:S1149×"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ñðöJ$f6165a18-c95e-4600-a3c3-8c3f8e181a36
+§
+java:S1149é"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$3bd88ea5-c39d-4226-bc50-2e37ccd1af6b
+¢
+java:S1149±"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(„â¨±J$80264de5-f6aa-4c5b-b14f-97f542dfbb62
+¢
+java:S1149È"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(„â¨±J$de208bb4-4ca1-4f1d-b044-8ece4b08ffe8
+¢
+java:S1149ç"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢Ëø¸J$954a937b-ecc0-4077-afe9-5c3bd8adec4a
+¢
+java:S1149Ì"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÎëË¿J$999c4fd4-98ad-4c53-b4ae-3ecc651ca8c8
+¢
+java:S1149Ý"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‚„ŽÃJ$2cf5f0d0-2a01-4f02-9e4e-5be78f8de754
+¢
+java:S1149ô"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢þ¼J$1d29da40-5360-4d34-aea3-144ddbe2fa8a
+¢
+java:S1149‹"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(÷„þJ$fbe38e23-3775-4e20-8fa5-0e206c52bddf
+§
+java:S1149Ô"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$ef0ffecf-9477-440e-b356-9d4ce250123a
+§
+java:S1149ä"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$da1393a9-c372-45cc-b4eb-58ac14400fe2
+§
+java:S1149ó"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$d52ec1f0-c277-4224-a82e-a96cd13d49c6
+§
+java:S1149ƒ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$fc2bdfe9-5614-4be8-867c-96b07d4c96cb
+§
+java:S1149—"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$17e9cfd6-61db-43e7-93e9-f174ee41c69e
+§
+java:S1149æ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¯œªÏþÿÿÿÿJ$f8094d16-b19c-4bf9-a3e3-4a4e398225d0
+§
+java:S1149ô"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¶ëÔ÷ùÿÿÿÿJ$ec3c7790-1e19-4c1a-b7fc-c521dbbdfa93
+¢
+java:S1149…"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$b12b7e3e-2601-4ca9-9b60-c5b4c8ca7dba
+§
+java:S1149š"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$78a77e29-3381-4514-96cc-fd89c7be0f62
+§
+java:S1149±"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿJ$700664cb-c887-427a-ae66-b776a90f16f6
+§
+java:S1149È"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$145fe47c-5390-43c7-a216-2d4f7056ad0a
+¢
+java:S1149Ö"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ýó ßJ$31910546-14c7-4a17-8aa9-0c4082f5fc11
+¢
+java:S1149ç"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‹ž¹J$93f4927e-8839-4307-a789-abcc3559a3c4
+¢
+java:S1149ù"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$1c5fa706-f925-4561-abd6-f10f3cf7fe50
+§
+java:S1149ˆ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$5ac342ba-9140-4ac8-aa38-0f65ec820f8f
+¢
+java:S1149›"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$c9c2b681-8de0-4a27-a738-2a705b016dc7
+§
+java:S1149Ü"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$c824c232-f3e4-4d19-aab9-c17e1ca2b92e
+¢
+java:S1149§"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$97406e33-9242-490f-aaa1-c4d2173d4947
+§
+java:S1149¹"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$04fd5c1d-ee00-46ba-8d33-98dd7a9ea2cd
+¢
+java:S1149þ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$31364feb-4650-4de5-9f07-eaea81a3a2ad
+¢
+java:S1149Œ"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$4967dfa6-f3d4-4bd5-847d-07a18f8e8cc4
+¢
+java:S1149š"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$738ddac3-d6f9-4a82-92b5-de812be5e519
+¢
+java:S1149¨"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$656e9d84-5f3c-4473-b1a7-f55a83310694
+¢
+java:S1149›"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(½§é J$12ca7ffc-3e6a-4826-b7b6-3835e2528545
+§
+java:S1149­"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(š°ó¦øÿÿÿÿJ$e85efbe8-dc33-4398-95a0-a221a21882f4
+§
+java:S1149¿"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(£Á¥¦úÿÿÿÿJ$097d43ed-ac42-4717-9174-41e6cb33f338
+}	java:S107Ò"<Method has 8 parameters, which is greater than 7 authorized.(ð¥òÈÿÿÿÿÿJ$c4852155-8d9f-43cd-ab2a-b2e183bae7f1
+}	java:S107Ì"<Method has 8 parameters, which is greater than 7 authorized.(æŠŠþýÿÿÿÿJ$ba98084e-198d-4d1e-9bac-a3308e035fd8
+y	java:S107å"=Method has 12 parameters, which is greater than 7 authorized.(–£€üJ$e4caf64a-2f66-4640-a903-3ae68acbbbbf
+w	java:S107ý	"<Method has 9 parameters, which is greater than 7 authorized.(“ô­{J$2b52dc97-6188-458a-8281-b73ba433960e
+x	java:S107á"<Method has 8 parameters, which is greater than 7 authorized.(æåòŽJ$69f20de9-cf55-43b0-8eeb-14b356cc4761
+x	java:S107¡"<Method has 9 parameters, which is greater than 7 authorized.(æÎúûJ$7077ecec-2fa4-4c92-8634-8faace10473f
+y	java:S107Â"=Method has 14 parameters, which is greater than 7 authorized.(‹àúÄJ$85be4163-b587-466e-8283-a8748c095b5e
+~	java:S107ý"=Method has 15 parameters, which is greater than 7 authorized.(ÇØö©ýÿÿÿÿJ$d48a8807-36e4-442b-96de-b788ad06ce65
+}	java:S107´"<Method has 9 parameters, which is greater than 7 authorized.(„ÖË¨ûÿÿÿÿJ$0a5fb3fe-c84c-4505-8c2e-4e5d79498b3c
+y	java:S107å"=Method has 15 parameters, which is greater than 7 authorized.(—ü£ÅJ$e08e0454-9789-4c72-983e-4ffe7646b9b3
+w
+java:S2696I"6Make the enclosing method "static" or remove this set.(ª†Í¸þÿÿÿÿJ$445b42b0-a41b-49a5-8f3b-2409a8ca7e58
+w
+java:S2696T"6Make the enclosing method "static" or remove this set.(ïïË²ùÿÿÿÿJ$9ee1c91e-402f-4ccc-906d-12f63cd7022b
+>>>>>>> Stashed changes

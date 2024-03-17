@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 †
 java:S1192^"JDefine a constant instead of duplicating this literal "ERRORE: " 25 times.(ò× èJ$f0dda82f-060d-42d5-b972-8012cd38e0c6
 i
@@ -78,3 +79,84 @@ g	java:S106Ú"+Replace this use of System.err by a logger.(ò× èJ$67db0a8b-4ac
 g	java:S106ı"+Replace this use of System.err by a logger.(ò× èJ$5c7cd6c5-a942-40b2-a7d3-458cdfbfcf40
 g	java:S106”"+Replace this use of System.err by a logger.(ò× èJ$77cc0b12-f0ca-4e38-b1a7-8f84522aa215
 g	java:S106º"+Replace this use of System.err by a logger.(ò× èJ$134aec18-a67c-45d9-baeb-96451a95fd1e
+=======
+`
+java:S1192^"JDefine a constant instead of duplicating this literal "ERRORE: " 25 times.(ò× è
+C
+java:S1604Q"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+C
+java:S1604g"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604‹"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604¢"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Å"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Û"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ş"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604”"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604É"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ß"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ˆ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Ó"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604é"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604’"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604¨"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Í"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ã"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604‡"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604µ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Ì"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ğ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604‡"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+?
+java:S1604Ÿ"(Make this anonymous inner class a lambda(Èú†
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 52 to the 15 allowed.(¦‡Ğ¥ÿÿÿÿÿ
+@	java:S106^"+Replace this use of System.err by a logger.(ò× è
+@	java:S106u"+Replace this use of System.err by a logger.(ò× è
+A	java:S106˜"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¯"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ò"+Replace this use of System.err by a logger.(ò× è
+A	java:S106è"+Replace this use of System.err by a logger.(ò× è
+A	java:S106‹"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¡"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ö"+Replace this use of System.err by a logger.(ò× è
+A	java:S106í"+Replace this use of System.err by a logger.(ò× è
+A	java:S106•"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¬"+Replace this use of System.err by a logger.(ò× è
+A	java:S106à"+Replace this use of System.err by a logger.(ò× è
+A	java:S106÷"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ÿ"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¶"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ú"+Replace this use of System.err by a logger.(ò× è
+A	java:S106ğ"+Replace this use of System.err by a logger.(ò× è
+A	java:S106”"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¬"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ã"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ú"+Replace this use of System.err by a logger.(ò× è
+A	java:S106ı"+Replace this use of System.err by a logger.(ò× è
+A	java:S106”"+Replace this use of System.err by a logger.(ò× è
+A	java:S106º"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

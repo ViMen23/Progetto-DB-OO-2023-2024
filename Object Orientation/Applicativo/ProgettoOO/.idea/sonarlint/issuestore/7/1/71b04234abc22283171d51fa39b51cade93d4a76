@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰ÆøÿÿÿÿJ$51f9bbc2-99c9-4bc8-873c-88aa48044294
 
 java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(†âğÅüÿÿÿÿJ$2cbb1454-9f11-48eb-b7b2-65fd4982ad3b
@@ -62,3 +63,68 @@ java:S3599@",Use another way to initialize this instance.(ÁßiJ$7293724e-78ef-4
 java:S1171@"YMove the contents of this initializer to a standard constructor or to field initializers.(ÁßiJ$e82a66f8-90ed-43a8-8b14-09310cdf875f
 f	java:S106H"+Replace this use of System.out by a logger.(¹å›ğJ$368fc52e-e500-4aed-9b43-c18b5cba67f6
 g	java:S106‘"+Replace this use of System.out by a logger.(¹å›ğJ$95e8c9a8-f3bb-4411-bac9-22e74dd8443c
+=======
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+j
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(†âğÅüÿÿÿÿ
+j
+java:S2095u"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(…äÍüÿÿÿÿ
+A
+java:S35993",Use another way to initialize this instance.(œéÙK
+n
+java:S11713"YMove the contents of this initializer to a standard constructor or to field initializers.(œéÙK
+B
+java:S35994",Use another way to initialize this instance.(ÂòÇ
+o
+java:S11714"YMove the contents of this initializer to a standard constructor or to field initializers.(ÂòÇ
+B
+java:S35995",Use another way to initialize this instance.(±¡
+o
+java:S11715"YMove the contents of this initializer to a standard constructor or to field initializers.(±¡
+G
+java:S35996",Use another way to initialize this instance.(Õ‡•ãÿÿÿÿÿ
+t
+java:S11716"YMove the contents of this initializer to a standard constructor or to field initializers.(Õ‡•ãÿÿÿÿÿ
+G
+java:S35997",Use another way to initialize this instance.(ğÕÅüÿÿÿÿ
+t
+java:S11717"YMove the contents of this initializer to a standard constructor or to field initializers.(ğÕÅüÿÿÿÿ
+B
+java:S35998",Use another way to initialize this instance.(õò—¸
+o
+java:S11718"YMove the contents of this initializer to a standard constructor or to field initializers.(õò—¸
+G
+java:S35999",Use another way to initialize this instance.(ûíò†ùÿÿÿÿ
+t
+java:S11719"YMove the contents of this initializer to a standard constructor or to field initializers.(ûíò†ùÿÿÿÿ
+B
+java:S3599:",Use another way to initialize this instance.(®šÔÔ
+o
+java:S1171:"YMove the contents of this initializer to a standard constructor or to field initializers.(®šÔÔ
+G
+java:S3599;",Use another way to initialize this instance.(ƒÓ«øúÿÿÿÿ
+t
+java:S1171;"YMove the contents of this initializer to a standard constructor or to field initializers.(ƒÓ«øúÿÿÿÿ
+B
+java:S3599<",Use another way to initialize this instance.(´¦óç
+o
+java:S1171<"YMove the contents of this initializer to a standard constructor or to field initializers.(´¦óç
+G
+java:S3599=",Use another way to initialize this instance.(†Ë¹êÿÿÿÿÿ
+t
+java:S1171="YMove the contents of this initializer to a standard constructor or to field initializers.(†Ë¹êÿÿÿÿÿ
+B
+java:S3599>",Use another way to initialize this instance.(ÙÊéä
+o
+java:S1171>"YMove the contents of this initializer to a standard constructor or to field initializers.(ÙÊéä
+B
+java:S3599?",Use another way to initialize this instance.(Óó¸Æ
+o
+java:S1171?"YMove the contents of this initializer to a standard constructor or to field initializers.(Óó¸Æ
+A
+java:S3599@",Use another way to initialize this instance.(Áßi
+n
+java:S1171@"YMove the contents of this initializer to a standard constructor or to field initializers.(Áßi
+@	java:S106H"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106‘"+Replace this use of System.out by a logger.(¹å›ğ
+>>>>>>> Stashed changes

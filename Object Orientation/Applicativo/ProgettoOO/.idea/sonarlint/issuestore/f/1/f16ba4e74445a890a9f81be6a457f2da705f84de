@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 i
 java:S1604K"(Make this anonymous inner class a lambda(ü·İŞúÿÿÿÿJ$fd7b6c28-5aaa-41b5-aac3-33626e00cdb9
 i
@@ -11,3 +12,17 @@ i
 java:S5411c"(Use a primitive boolean expression here.(éÃ½ØûÿÿÿÿJ$381cb53a-0770-43c6-a31e-e91b85b7c492
 n
 java:S1135"2Complete the task associated to this TODO comment.(°ûÑ‹J$e2172ebb-a0cd-46df-bad8-813fa3d28032
+=======
+C
+java:S1604K"(Make this anonymous inner class a lambda(ü·İŞúÿÿÿÿ
+C
+java:S1604_"(Make this anonymous inner class a lambda(¹×û¬ıÿÿÿÿ
+C
+java:S1604z"(Make this anonymous inner class a lambda(‰á×·üÿÿÿÿ
+?
+java:S1604ƒ"(Make this anonymous inner class a lambda(¿ÿÉ
+C
+java:S5411c"(Use a primitive boolean expression here.(éÃ½Øûÿÿÿÿ
+H
+java:S1135"2Complete the task associated to this TODO comment.(°ûÑ‹
+>>>>>>> Stashed changes

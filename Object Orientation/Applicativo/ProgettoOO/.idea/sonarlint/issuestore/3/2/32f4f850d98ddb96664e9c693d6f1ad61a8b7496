@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 …
 java:S1192Z"IDefine a constant instead of duplicating this literal "ERRORE: " 8 times.(ò× èJ$cde0dc43-e888-4743-b85f-f1fae047e2b1
 i
@@ -27,3 +28,33 @@ g	java:S106Ï"+Replace this use of System.err by a logger.(ò× èJ$c66e8d16-c2e
 g	java:S106ô"+Replace this use of System.err by a logger.(ò× èJ$8e94af07-c57b-4153-afa3-d77407aa5f70
 g	java:S106Š"+Replace this use of System.err by a logger.(ò× èJ$894bcd7c-ebd3-4b46-a145-ce87522d25fa
 g	java:S106±"+Replace this use of System.err by a logger.(ò× èJ$38e0843f-6969-48d2-bec2-35eeeb907424
+=======
+_
+java:S1192Z"IDefine a constant instead of duplicating this literal "ERRORE: " 8 times.(ò× è
+C
+java:S1604M"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+C
+java:S1604p"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604‡"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604¬"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604Â"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ç"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+D
+java:S1604ı"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿ
+?
+java:S1604–"(Make this anonymous inner class a lambda(Èú†
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 18 to the 15 allowed.(³‰¢ÿ
+@	java:S106Z"+Replace this use of System.err by a logger.(ò× è
+@	java:S106}"+Replace this use of System.err by a logger.(ò× è
+A	java:S106”"+Replace this use of System.err by a logger.(ò× è
+A	java:S106¹"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Ï"+Replace this use of System.err by a logger.(ò× è
+A	java:S106ô"+Replace this use of System.err by a logger.(ò× è
+A	java:S106Š"+Replace this use of System.err by a logger.(ò× è
+A	java:S106±"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

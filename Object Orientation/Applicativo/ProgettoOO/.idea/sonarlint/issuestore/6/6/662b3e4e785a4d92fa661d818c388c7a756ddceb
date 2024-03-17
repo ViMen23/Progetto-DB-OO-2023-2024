@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 i
 java:S1604X"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$94275ba5-b996-463c-9c3f-34567c675189
 d
@@ -10,3 +11,16 @@ java:S1149!"eReplace the synchronized class "Vector" by an unsynchronized one s
 “
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Á¦ššùÿÿÿÿJ$97f8356b-8ee8-4743-9cc9-92c4033671fc
 f	java:S106v"+Replace this use of System.err by a logger.(ò× èJ$42125049-46c8-4a04-a96c-d5a578e56d41
+=======
+C
+java:S1604X"(Make this anonymous inner class a lambda(¤Ù€Üüÿÿÿÿ
+>
+java:S1604{"(Make this anonymous inner class a lambda(ôÇ¤
+?
+java:S1604"(Make this anonymous inner class a lambda(ØáöÛ
+z
+java:S1149!"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÙÓ¸ 
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(Á¦ššùÿÿÿÿ
+@	java:S106v"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

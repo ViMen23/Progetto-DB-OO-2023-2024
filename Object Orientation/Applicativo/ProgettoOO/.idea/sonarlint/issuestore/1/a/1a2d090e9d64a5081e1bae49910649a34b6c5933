@@ -1,5 +1,6 @@
 
 ˆ
+<<<<<<< Updated upstream
 java:S1192Ô"FDefine a constant instead of duplicating this literal "@fill" 4 times.(«ìêþÿÿÿÿJ$e9e23d5c-8c9a-4a84-b32e-81606dd82825
 ‰
 java:S1192à"GDefine a constant instead of duplicating this literal "noData" 4 times.(ÜÃ¹€þÿÿÿÿJ$8bbc114b-2c5e-4510-a341-12dccdeefcf3
@@ -32,3 +33,37 @@ java:S1149*"eReplace the synchronized class "Vector" by an unsynchronized one s
 “
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¾áçãüÿÿÿÿJ$01b0be07-f28a-4463-a42c-2c387372261f
 g	java:S106Ë"+Replace this use of System.err by a logger.(ò× èJ$5c67da6a-0546-400f-8f80-8c9e5ad6d135
+=======
+java:S1192Ô"FDefine a constant instead of duplicating this literal "@fill" 4 times.(«ìêþÿÿÿÿJ$52ad1a41-6dfc-41de-b186-c4059342e435
+‰
+java:S1192à"GDefine a constant instead of duplicating this literal "noData" 4 times.(ÜÃ¹€þÿÿÿÿJ$bc625c44-b8d2-4998-8b2e-2cb7805e4a72
+j
+java:S1604ª"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$55cd96b1-0dd9-4533-ab43-d281e7aa1651
+e
+java:S1604Ð"(Make this anonymous inner class a lambda(É¶ÇñJ$3ae9d7e1-37be-4098-9bbd-f9ed6047eed8
+d
+java:S1604ì"(Make this anonymous inner class a lambda(Ýá´UJ$15768ac7-cab5-4f2f-b1d2-56964c15d5d4
+j
+java:S1604‰"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿJ$c310e02d-1350-4c06-b665-2be0ef470eaa
+j
+java:S1604ª"(Make this anonymous inner class a lambda(’¿²üÿÿÿÿJ$4abb8f32-594e-4bde-a512-73a37a5321e6
+d
+java:S1604á"(Make this anonymous inner class a lambda(†³šYJ$ea893d26-1167-4fbf-beaf-ca0ee739dc6c
+d
+java:S1604ê"(Make this anonymous inner class a lambda(µ¯ÙlJ$9ce43b33-9d28-4688-a408-2b06e2713605
+j
+java:S1604ó"(Make this anonymous inner class a lambda(ôÇÁÅûÿÿÿÿJ$d1db2193-7b72-4f92-aadc-a7dd4e9b4742
+Y
+java:S1643Æ"Use a StringBuilder instead.(¡ÙîJ$ac9fb3aa-ab7b-48e0-959d-39521f558c5c
+X
+java:S1643Ç"Use a StringBuilder instead.(ÙÉÉJ$164969f3-97d4-41ee-968a-4f84e15ca512
+¦
+java:S1149$"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$28119886-852b-4073-a93f-7a9854f3b5bb
+¦
+java:S1149'"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ýÿÿÿÿJ$787a5770-e22f-40ff-a626-cab219b61976
+¡
+java:S1149*"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅðÀJ$abd144eb-dcbe-4ae0-85f7-c92b963dc0da
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¾áçãüÿÿÿÿJ$045f795f-bcf3-486e-9b1e-40f6de023b09
+g	java:S106Ë"+Replace this use of System.err by a logger.(ò× èJ$0942e170-1f32-4191-9907-6cbc76505e9a
+>>>>>>> Stashed changes

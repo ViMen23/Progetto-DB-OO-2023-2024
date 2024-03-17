@@ -1,5 +1,12 @@
 
+<<<<<<< Updated upstream
 ¡	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ8¡¿üËä1J$9454f8ca-2dd7-4f6c-adb9-ab5b8c0c92b2
 ’
 java:S2095+"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(î¨Îá8ÇÕ’Ìä1J$26d4b98f-2837-4f8e-bd9c-e528c8249e60
 m	java:S1068"+Replace this use of System.out by a logger.(¹å›ğ8ç¿üËä1J$36d6d484-94ac-4593-8a4d-186b272841b6
+=======
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+e
+java:S2095+"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(î¨Îá
+@	java:S1068"+Replace this use of System.out by a logger.(¹å›ğ
+>>>>>>> Stashed changes

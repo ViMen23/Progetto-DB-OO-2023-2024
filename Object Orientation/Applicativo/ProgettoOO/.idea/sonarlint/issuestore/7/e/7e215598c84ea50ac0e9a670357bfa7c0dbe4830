@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 …
 java:S1192["IDefine a constant instead of duplicating this literal "ERRORE: " 6 times.(ò× èJ$ccd44086-24b0-4390-8cff-c7648bf28f8a
 i
@@ -19,3 +20,25 @@ f	java:S106"+Replace this use of System.err by a logger.(ò× èJ$5ceb2128-069d
 g	java:S106‘"+Replace this use of System.err by a logger.(ò× èJ$288afd4c-53b5-4ddb-8756-68dfb2130e66
 g	java:S106£"+Replace this use of System.err by a logger.(ò× èJ$6076911a-0908-48c2-bea3-548b23588817
 g	java:S106´"+Replace this use of System.err by a logger.(ò× èJ$2e7a7da4-11c6-48ad-aa23-64a784a9ab02
+=======
+_
+java:S1192["IDefine a constant instead of duplicating this literal "ERRORE: " 6 times.(ò× è
+C
+java:S1604N"(Make this anonymous inner class a lambda(“ñæ–üÿÿÿÿ
+C
+java:S1604`"(Make this anonymous inner class a lambda(Œ™®†úÿÿÿÿ
+C
+java:S1604r"(Make this anonymous inner class a lambda(ÑåÜ£ûÿÿÿÿ
+?
+java:S1604„"(Make this anonymous inner class a lambda(µÇ”÷
+?
+java:S1604–"(Make this anonymous inner class a lambda(í‰°÷
+D
+java:S1604§"(Make this anonymous inner class a lambda(·«åÑøÿÿÿÿ
+@	java:S106["+Replace this use of System.err by a logger.(ò× è
+@	java:S106m"+Replace this use of System.err by a logger.(ò× è
+@	java:S106"+Replace this use of System.err by a logger.(ò× è
+A	java:S106‘"+Replace this use of System.err by a logger.(ò× è
+A	java:S106£"+Replace this use of System.err by a logger.(ò× è
+A	java:S106´"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

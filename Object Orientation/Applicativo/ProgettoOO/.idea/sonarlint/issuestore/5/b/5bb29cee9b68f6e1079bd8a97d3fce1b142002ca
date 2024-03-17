@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 ˆ
 java:S1192’"FDefine a constant instead of duplicating this literal "@fill" 3 times.(«ìêşÿÿÿÿJ$373f34d2-cd4f-4390-8a42-271165b3ae31
 ‰
@@ -28,3 +29,34 @@ java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one s
 
 java:S3776!"RRefactor this method to reduce its Cognitive Complexity from 56 to the 15 allowed.(÷á¹J$4a5310ac-42df-48d1-8612-8b6402922201
 g	java:S106Ö"+Replace this use of System.err by a logger.(ò× èJ$fb822e64-86dc-450d-887b-6492f9f2d085
+=======
+b
+java:S1192’"FDefine a constant instead of duplicating this literal "@fill" 3 times.(«ìêşÿÿÿÿ
+c
+java:S1192"GDefine a constant instead of duplicating this literal "noData" 3 times.(ÜÃ¹€şÿÿÿÿ
+?
+java:S1604³"(Make this anonymous inner class a lambda(Èú†
+D
+java:S1604Û"(Make this anonymous inner class a lambda(¡éÍÖúÿÿÿÿ
+D
+java:S1604ì"(Make this anonymous inner class a lambda(ÊÀÔ…úÿÿÿÿ
+D
+java:S1604ı"(Make this anonymous inner class a lambda(Ç…ÚËúÿÿÿÿ
+?
+java:S1604"(Make this anonymous inner class a lambda(É¶Çñ
+>
+java:S1604ª"(Make this anonymous inner class a lambda(İá´U
+>
+java:S1604Î"(Make this anonymous inner class a lambda(Ô™B
+?
+java:S1604Ş"(Make this anonymous inner class a lambda(°Äğ°
+€
+java:S1149+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿ
+€
+java:S1149."eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿ
+€
+java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(şù²‚üÿÿÿÿ
+h
+java:S3776!"RRefactor this method to reduce its Cognitive Complexity from 56 to the 15 allowed.(÷á¹
+A	java:S106Ö"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

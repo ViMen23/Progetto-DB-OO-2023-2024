@@ -30,6 +30,7 @@ java:S1643"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
 8
 java:S1643‚"Use a StringBuilder instead.(´Ã¶íúÿÿÿÿ
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+<<<<<<< Updated upstream
 j
 java:S2095\"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Û„ìšúÿÿÿÿ
 k
@@ -50,6 +51,28 @@ f
 java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(‹£ûÙ
 f
 java:S2095»"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(İşóÇ
+=======
+e
+java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ù¬œ
+k
+java:S2095Å"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©ø–Ãıÿÿÿÿ
+f
+java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(‹£ûÙ
+j
+java:S2095\"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Û„ìšúÿÿÿÿ
+f
+java:S2095„"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ù¬œ
+e
+java:S20954"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Õ×¥ì
+f
+java:S2095»"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(İşóÇ
+e
+java:S2095í"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(¤äá*
+k
+java:S2095î"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(œ Õ˜øÿÿÿÿ
+f
+java:S2095Ï"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ˆ³Á‘
+>>>>>>> Stashed changes
 @	java:S106C"+Replace this use of System.out by a logger.(¹å›ğ
 @	java:S106k"+Replace this use of System.out by a logger.(¹å›ğ
 A	java:S106¥"+Replace this use of System.out by a logger.(¹å›ğ

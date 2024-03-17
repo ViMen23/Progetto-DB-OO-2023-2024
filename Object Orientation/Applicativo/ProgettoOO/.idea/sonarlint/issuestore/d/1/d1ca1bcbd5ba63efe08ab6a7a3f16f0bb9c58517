@@ -12,16 +12,28 @@ java:S1643¬"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
 8
 java:S1643­"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
+<<<<<<< Updated upstream
 e
 java:S20952"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©ô‰
 j
 java:S2095W"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Æª¿Îþÿÿÿÿ
+=======
+j
+java:S2095W"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Æª¿Îþÿÿÿÿ
+e
+java:S2095y"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+e
+java:S20952"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©ô‰
+>>>>>>> Stashed changes
 k
 java:S2095£"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(›Á˜§ÿÿÿÿÿ
 f
 java:S2095Ó"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+<<<<<<< Updated upstream
 e
 java:S2095y"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+=======
+>>>>>>> Stashed changes
 f
 java:S2095ù"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
 @	java:S106@"+Replace this use of System.out by a logger.(¹å›ð

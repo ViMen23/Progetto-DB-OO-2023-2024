@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 Š
 java:S1192ğ"HDefine a constant instead of duplicating this literal "country" 7 times.(°¶äùÿÿÿÿJ$27edb58e-7342-42d9-9602-9760ca39fd77
 Š
@@ -195,3 +196,201 @@ g	java:S106…"+Replace this use of System.out by a logger.(ì­”J$b14f1709-f50
 g	java:S106¨"+Replace this use of System.err by a logger.(Íº³‚J$256bc19c-6379-4fa6-8f06-3eef63451b51
 l	java:S106¶"+Replace this use of System.err by a logger.(“Ç³­ùÿÿÿÿJ$ef8ff3ce-8bb9-4403-8a63-5f0cf5580469
 l	java:S106À"+Replace this use of System.out by a logger.(©şêÜúÿÿÿÿJ$bda39e10-74c4-4e62-b810-6c6b7b8f8184
+=======
+d
+java:S1192ğ"HDefine a constant instead of duplicating this literal "country" 7 times.(°¶äùÿÿÿÿ
+d
+java:S1192Š"HDefine a constant instead of duplicating this literal "select" 11 times.(ÀŞÒÿûÿÿÿÿ
+i
+java:S1192˜"MDefine a constant instead of duplicating this literal "penaltySaved" 4 times.(è’ğÓıÿÿÿÿ
+c
+java:S1192"LDefine a constant instead of duplicating this literal "competition" 7 times.(øã¾©
+^
+java:S1192ª"GDefine a constant instead of duplicating this literal "season" 9 times.(àÿı§
+c
+java:S1192—"MDefine a constant instead of duplicating this literal "goalConceded" 4 times.(±Û§
+d
+java:S1192–"HDefine a constant instead of duplicating this literal "redCard" 4 times.(Å¼³ÿÿÿÿÿ
+b
+java:S1192•"KDefine a constant instead of duplicating this literal "yellowCard" 4 times.(å‘§÷
+_
+java:S1192™"HDefine a constant instead of duplicating this literal "surname" 4 times.(®š¤ø
+^
+java:S1192¬"GDefine a constant instead of duplicating this literal "trophy" 3 times.(Öÿè
+e
+java:S1192ø"NDefine a constant instead of duplicating this literal "confederation" 3 times.(ûÑÖ÷
+b
+java:S1192‘"FDefine a constant instead of duplicating this literal "match" 4 times.(àı–äşÿÿÿÿ
+g
+java:S1192’"KDefine a constant instead of duplicating this literal "goalScored" 4 times.(œìº—úÿÿÿÿ
+c
+java:S1192”"GDefine a constant instead of duplicating this literal "assist" 4 times.(ÃˆÂüÿÿÿÿ
+j
+java:S1192“"NDefine a constant instead of duplicating this literal "penaltyScored" 4 times.(‹Ñ§Ÿùÿÿÿÿ
+q
+java:S1104t"VMake outputFont a static final constant or non-public and provide accessors if needed.(½¬×ıÿÿÿÿ
+p
+java:S1104u"ZMake outputBoldFont a static final constant or non-public and provide accessors if needed.(´‚œ¶
+v
+java:S1104v"[Make outputSmallFont a static final constant or non-public and provide accessors if needed.(­™ì“úÿÿÿÿ
+n
+java:S1104w"YMake outputRedFont a static final constant or non-public and provide accessors if needed.( øö?
+K
+java:S1444t"0Make this "public static outputFont" field final(½¬×ıÿÿÿÿ
+J
+java:S1444u"4Make this "public static outputBoldFont" field final(´‚œ¶
+P
+java:S1444v"5Make this "public static outputSmallFont" field final(­™ì“úÿÿÿÿ
+H
+java:S1444w"3Make this "public static outputRedFont" field final( øö?
+3
+java:S2386"Make this member "protected".(ïÖ¤
+3
+java:S2386"Make this member "protected".(Á‰Û»
+3
+java:S2386"Make this member "protected".(¹Ì¼µ
+8
+java:S2386"Make this member "protected".(Ÿ¾ãªıÿÿÿÿ
+3
+java:S2386"Make this member "protected".(€îëÌ
+3
+java:S2386"Make this member "protected".(ìÆƒ
+3
+java:S2386"Make this member "protected".(†ÌÙû
+8
+java:S2386 "Make this member "protected".(‘šÄŞıÿÿÿÿ
+8
+java:S2386!"Make this member "protected".(´æóæşÿÿÿÿ
+3
+java:S2386""Make this member "protected".(İ—Ñ
+3
+java:S2386#"Make this member "protected".(œ©
+3
+java:S2386$"Make this member "protected".(ŒÔµ¯
+3
+java:S2386%"Make this member "protected".(­ò„Î
+8
+java:S2386&"Make this member "protected".(—ŞşÎıÿÿÿÿ
+8
+java:S2386'"Make this member "protected".(©Ò•¬øÿÿÿÿ
+8
+java:S2386("Make this member "protected".(æ¾×†ùÿÿÿÿ
+8
+java:S2386)"Make this member "protected".(—ò¯úÿÿÿÿ
+3
+java:S2386*"Make this member "protected".( ¿õÿ
+3
+java:S2386+"Make this member "protected".(ôİşœ
+8
+java:S2386,"Make this member "protected".(Î½ıöşÿÿÿÿ
+8
+java:S2386-"Make this member "protected".(ôğÛÿÿÿÿÿ
+8
+java:S2386."Make this member "protected".(º¿üóÿÿÿÿÿ
+8
+java:S2386/"Make this member "protected".(‹§†áøÿÿÿÿ
+3
+java:S23860"Make this member "protected".(Äü×
+8
+java:S23861"Make this member "protected".(¦¯åÎùÿÿÿÿ
+8
+java:S23862"Make this member "protected".(—Ã„‚úÿÿÿÿ
+2
+java:S23863"Make this member "protected".(¼£
+8
+java:S23864"Make this member "protected".(¯”°ùùÿÿÿÿ
+8
+java:S23865"Make this member "protected".(ó±Ğòøÿÿÿÿ
+3
+java:S23866"Make this member "protected".(öØèŞ
+8
+java:S23867"Make this member "protected".(…¯Ğ·ıÿÿÿÿ
+3
+java:S23868"Make this member "protected".(Ú¯ü
+8
+java:S23869"Make this member "protected".(È“äéşÿÿÿÿ
+3
+java:S2386:"Make this member "protected".(Ä™—‡
+8
+java:S2386;"Make this member "protected".(‹îµªüÿÿÿÿ
+8
+java:S2386<"Make this member "protected".(˜ê”¨ÿÿÿÿÿ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ïÖ¤
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Á‰Û»
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¹Ì¼µ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ÿ¾ãªıÿÿÿÿ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(€îëÌ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ìÆƒ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(†ÌÙû
+€
+java:S1149 "eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‘šÄŞıÿÿÿÿ
+€
+java:S1149!"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(´æóæşÿÿÿÿ
+{
+java:S1149""eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(İ—Ñ
+{
+java:S1149#"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(œ©
+{
+java:S1149$"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŒÔµ¯
+{
+java:S1149%"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(­ò„Î
+€
+java:S1149&"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(—ŞşÎıÿÿÿÿ
+€
+java:S1149'"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(©Ò•¬øÿÿÿÿ
+€
+java:S1149("eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(æ¾×†ùÿÿÿÿ
+€
+java:S1149)"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(—ò¯úÿÿÿÿ
+{
+java:S1149*"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".( ¿õÿ
+{
+java:S1149+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ôİşœ
+€
+java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Î½ıöşÿÿÿÿ
+€
+java:S1149-"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ôğÛÿÿÿÿÿ
+€
+java:S1149."eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(º¿üóÿÿÿÿÿ
+€
+java:S1149/"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‹§†áøÿÿÿÿ
+{
+java:S11490"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Äü×
+€
+java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¦¯åÎùÿÿÿÿ
+€
+java:S11492"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(—Ã„‚úÿÿÿÿ
+z
+java:S11493"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¼£
+€
+java:S11494"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¯”°ùùÿÿÿÿ
+€
+java:S11495"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ó±Ğòøÿÿÿÿ
+{
+java:S11496"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(öØèŞ
+€
+java:S11497"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(…¯Ğ·ıÿÿÿÿ
+{
+java:S11498"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ú¯ü
+€
+java:S11499"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(È“äéşÿÿÿÿ
+{
+java:S1149:"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ä™—‡
+€
+java:S1149;"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(‹îµªüÿÿÿÿ
+€
+java:S1149<"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(˜ê”¨ÿÿÿÿÿ
+U
+java:S1118":Add a private constructor to hide the implicit public one.(ÙéšÎÿÿÿÿÿ
+A	java:S106…"+Replace this use of System.out by a logger.(ì­”
+A	java:S106¨"+Replace this use of System.err by a logger.(Íº³‚
+F	java:S106¶"+Replace this use of System.err by a logger.(“Ç³­ùÿÿÿÿ
+F	java:S106À"+Replace this use of System.out by a logger.(©şêÜúÿÿÿÿ
+>>>>>>> Stashed changes

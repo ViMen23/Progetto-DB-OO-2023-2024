@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 i
 java:S1604v"(Make this anonymous inner class a lambda(ÎÒêÀÿÿÿÿÿJ$41e2877e-b2cf-4059-882f-12c34830d25b
 j
@@ -11,3 +12,17 @@ java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one s
 java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ğÎèèúÿÿÿÿJ$8ec8c56d-4fef-4e2d-a7f8-3624280b78ac
 j	java:S108ˆ")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$147083fa-7753-41b2-ae99-c8abc9d8b266
 j	java:S108¡")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$e42a499f-9fa8-402c-8c97-188e8ec2beeb
+=======
+C
+java:S1604v"(Make this anonymous inner class a lambda(ÎÒêÀÿÿÿÿÿ
+D
+java:S1604"(Make this anonymous inner class a lambda(û­ˆçùÿÿÿÿ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(–Â¤üúÿÿÿÿ
+{
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÈÖ¿’
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ğÎèèúÿÿÿÿ
+D	java:S108ˆ")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+D	java:S108¡")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+>>>>>>> Stashed changes

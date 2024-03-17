@@ -1,9 +1,15 @@
 
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
 j
+<<<<<<< Updated upstream
 java:S2095u"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(³ªåÖýÿÿÿÿ
 j
 java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Î‚á‘úÿÿÿÿ
+=======
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Î‚á‘úÿÿÿÿ
+j
+java:S2095u"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(³ªåÖýÿÿÿÿ
+>>>>>>> Stashed changes
 G
 java:S35993",Use another way to initialize this instance.(„‘ó•ûÿÿÿÿ
 t

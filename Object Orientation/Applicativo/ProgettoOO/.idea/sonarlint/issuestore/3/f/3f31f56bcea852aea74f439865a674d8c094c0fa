@@ -2,12 +2,20 @@
 _
 java:S1192="IDefine a constant instead of duplicating this literal "Errore: " 4 times.(¹å›ð
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
+<<<<<<< Updated upstream
+=======
+e
+java:S2095|"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ìÌÈÔ
+>>>>>>> Stashed changes
 f
 java:S2095ž"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(™“Œ¬
 j
 java:S2095O"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(äŽ§Ìüÿÿÿÿ
+<<<<<<< Updated upstream
 e
 java:S2095|"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ìÌÈÔ
+=======
+>>>>>>> Stashed changes
 j
 java:S2095+"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(äŽ§Ìüÿÿÿÿ
 @	java:S106="+Replace this use of System.out by a logger.(¹å›ð

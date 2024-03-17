@@ -12,6 +12,7 @@ java:S1192Ô"IDefine a constant instead of duplicating this literal "prize_id" 
 h
 java:S1192~"RDefine a constant instead of duplicating this literal "prize_assign_year" 3 times.(‰ÿÿþ
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
+<<<<<<< Updated upstream
 f
 java:S2095À"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ô¥ý¹
 j
@@ -32,6 +33,28 @@ k
 java:S2095Ž"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãí§ùÿÿÿÿ
 j
 java:S2095V"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©¥ ¯ùÿÿÿÿ
+=======
+e
+java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ïþü
+e
+java:S2095µ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ïþü
+j
+java:S20951"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Âº¥”ÿÿÿÿÿ
+f
+java:S2095À"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ô¥ý¹
+k
+java:S2095é"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(í›ï¸ýÿÿÿÿ
+e
+java:S2095v"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ô¥ý¹
+f
+java:S2095ñ"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(•³Èå
+j
+java:S2095V"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©¥ ¯ùÿÿÿÿ
+f
+java:S2095"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(²ÄÈ¤
+k
+java:S2095Ž"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãí§ùÿÿÿÿ
+>>>>>>> Stashed changes
 @	java:S106?"+Replace this use of System.out by a logger.(¹å›ð
 @	java:S106d"+Replace this use of System.out by a logger.(¹å›ð
 A	java:S106Š"+Replace this use of System.out by a logger.(¹å›ð

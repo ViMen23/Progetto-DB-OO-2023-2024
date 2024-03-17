@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 
 java:S1192¤"LDefine a constant instead of duplicating this literal "competition" 3 times.(ÁüüøÿÿÿÿJ$d1ca4bab-db16-4e93-9f91-3319e6c7abd9
 ˆ
@@ -36,3 +37,42 @@ java:S11494"eReplace the synchronized class "Vector" by an unsynchronized one s
 
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 46 to the 15 allowed.(ªƒ²¸J$b9e89301-670d-45ed-a361-533747517534
 j	java:S108¸")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$45acf7b3-d7bf-41c4-84b9-4462f23efd43
+=======
+h
+java:S1192¤"LDefine a constant instead of duplicating this literal "competition" 3 times.(Áüüøÿÿÿÿ
+c
+java:S1192³"GDefine a constant instead of duplicating this literal "season" 3 times.(È‹¾†ÿÿÿÿÿ
+b
+java:S1192¦"FDefine a constant instead of duplicating this literal "@fill" 4 times.(«ìêşÿÿÿÿ
+c
+java:S1192²"GDefine a constant instead of duplicating this literal "noData" 4 times.(ÜÃ¹€şÿÿÿÿ
+?
+java:S1604È"(Make this anonymous inner class a lambda(Èú†
+D
+java:S1604‡"(Make this anonymous inner class a lambda(øÌ”“ÿÿÿÿÿ
+>
+java:S1604–"(Make this anonymous inner class a lambda(Æ¶o
+?
+java:S1604¢"(Make this anonymous inner class a lambda(É¶Çñ
+>
+java:S1604À"(Make this anonymous inner class a lambda(İá´U
+>
+java:S1604ß"(Make this anonymous inner class a lambda(Ààş9
+D
+java:S1604ÿ"(Make this anonymous inner class a lambda(’¿²üÿÿÿÿ
+?
+java:S1604™"(Make this anonymous inner class a lambda(•ºÆÎ
+€
+java:S1149("eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿ
+€
+java:S1149+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿ
+€
+java:S1149."eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(±›©Ğıÿÿÿÿ
+€
+java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(©¶Õ¹ùÿÿÿÿ
+€
+java:S11494"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¨ÒÈıÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 46 to the 15 allowed.(ªƒ²¸
+D	java:S108¸")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+>>>>>>> Stashed changes

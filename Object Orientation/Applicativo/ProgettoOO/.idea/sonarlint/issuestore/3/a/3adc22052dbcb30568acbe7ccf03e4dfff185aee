@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 
 java:S1192•"LDefine a constant instead of duplicating this literal "competition" 3 times.(ÅÆªúÿÿÿÿJ$02810309-d84c-40d2-8c9c-207cb0323084
 ƒ
@@ -33,3 +34,39 @@ java:S11492"eReplace the synchronized class "Vector" by an unsynchronized one s
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.(«÷Ú¼J$dd894524-889f-4fc1-91bf-a926a2db4d22
 k	java:S106}"+Replace this use of System.err by a logger.(”Ï©´ùÿÿÿÿJ$f0c4a0d2-cee3-4966-aadb-878c1017fd18
 j	java:S108Œ")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$f84350e8-3135-44db-ac24-95682bc5d818
+=======
+h
+java:S1192•"LDefine a constant instead of duplicating this literal "competition" 3 times.(ÅÆªúÿÿÿÿ
+]
+java:S1192"FDefine a constant instead of duplicating this literal "@fill" 4 times.(€ÇŠæ
+^
+java:S1192©"GDefine a constant instead of duplicating this literal "noData" 3 times.(ëˆøˆ
+>
+java:S1604n"(Make this anonymous inner class a lambda(˜ÄŠŒ
+?
+java:S1604Æ"(Make this anonymous inner class a lambda(Èú†
+D
+java:S1604š"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿ
+>
+java:S1604±"(Make this anonymous inner class a lambda(Ààş9
+?
+java:S1604É"(Make this anonymous inner class a lambda(»øèÛ
+>
+java:S1604å"(Make this anonymous inner class a lambda(÷ßûc
+?
+java:S1604ú"(Make this anonymous inner class a lambda(•ºÆÎ
+{
+java:S1149&"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅğÀ
+€
+java:S1149)"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(±›©Ğıÿÿÿÿ
+{
+java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ìÒãû
+€
+java:S1149/"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(“²ÃÎşÿÿÿÿ
+€
+java:S11492"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(úññüùÿÿÿÿ
+h
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 49 to the 15 allowed.(«÷Ú¼
+E	java:S106}"+Replace this use of System.err by a logger.(”Ï©´ùÿÿÿÿ
+D	java:S108Œ")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿ
+>>>>>>> Stashed changes

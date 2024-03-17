@@ -1,5 +1,6 @@
 
 e
+<<<<<<< Updated upstream
 java:S1604É"(Make this anonymous inner class a lambda(Èú†J$5bbe70e8-f98a-4dcd-bc8c-a087b1d06062
 d
 java:S1604¡"(Make this anonymous inner class a lambda(Æ¶oJ$cae56073-fe3a-4bf9-90d4-5457faf4c6a1
@@ -18,3 +19,23 @@ java:S1149/"eReplace the synchronized class "Vector" by an unsynchronized one s
 “
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 41 to the 15 allowed.(¡³ØüÿÿÿÿJ$2c1e56f4-0571-4909-9925-9b101f4217e5
 j	java:S108")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$115b2091-7704-4720-b97d-2463f2ab3511
+=======
+java:S1604É"(Make this anonymous inner class a lambda(Èú†J$6ff92779-0a0d-4557-91fc-c39519510b0f
+d
+java:S1604¡"(Make this anonymous inner class a lambda(Æ¶oJ$bce3e1de-0fb7-46b1-903d-f090e95f8e02
+e
+java:S1604®"(Make this anonymous inner class a lambda(É¶ÇñJ$af6e46c0-9765-47bd-9880-0d5d858a42c4
+d
+java:S1604Ò"(Make this anonymous inner class a lambda(İá´UJ$3df89974-8062-4e7d-9583-9fa171de5b4a
+e
+java:S1604í"(Make this anonymous inner class a lambda(•ºÆÎJ$b5543d1d-8614-4048-9ca5-2d7fe01cfcb2
+¦
+java:S1149)"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$64806e24-0fd5-44e7-a386-d7a2195f6475
+¦
+java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿJ$d6e1924f-0df6-4be8-9a03-fa3b2dd26896
+¦
+java:S1149/"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¡è‰øÿÿÿÿJ$61fa9f08-cfcd-4260-a2d5-4de03bec1b9b
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 41 to the 15 allowed.(¡³ØüÿÿÿÿJ$93d5bb2c-e663-4e9f-9c4c-3f9d439efee0
+j	java:S108")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$9daaf274-8d7e-44a7-ba63-ec92f9a108aa
+>>>>>>> Stashed changes

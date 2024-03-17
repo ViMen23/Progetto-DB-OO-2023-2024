@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 ‹
 java:S1192©"IDefine a constant instead of duplicating this literal "NATIONAL" 6 times.(Ëı´±úÿÿÿÿJ$bb580a80-de5a-47c1-8985-81b049d82a5c
 d
@@ -20,3 +21,26 @@ java:S1149%"eReplace the synchronized class "Vector" by an unsynchronized one s
 
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(’ÿÃ4J$601483df-fbdd-49f4-84be-4d5e916c0282
 g	java:S106Ÿ"+Replace this use of System.err by a logger.(ò× èJ$1c597bcd-a305-46d8-a79b-6148b56ee125
+=======
+e
+java:S1192©"IDefine a constant instead of duplicating this literal "NATIONAL" 6 times.(Ëı´±úÿÿÿÿ
+>
+java:S1604"(Make this anonymous inner class a lambda(Èú†
+D
+java:S1604¥"(Make this anonymous inner class a lambda(øÌ”“ÿÿÿÿÿ
+?
+java:S1604µ"(Make this anonymous inner class a lambda(¾áØš
+>
+java:S1604¾"(Make this anonymous inner class a lambda(Ö¾°
+?
+java:S1604È"(Make this anonymous inner class a lambda(É¶Çñ
+>
+java:S1604ä"(Make this anonymous inner class a lambda(İá´U
+€
+java:S1149""eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿ
+€
+java:S1149%"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿ
+g
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(’ÿÃ4
+A	java:S106Ÿ"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes

@@ -5,6 +5,7 @@ _
 java:S1192="IDefine a constant instead of duplicating this literal "Errore: " 5 times.(¹å›ð
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
 f
+<<<<<<< Updated upstream
 java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÊÌ½£
 f
 java:S2095¼"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÔÖ²ã
@@ -14,6 +15,17 @@ j
 java:S2095M"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ù¡¥Åûÿÿÿÿ
 j
 java:S2095m"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãºïûÿÿÿÿ
+=======
+java:S2095¼"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÔÖ²ã
+j
+java:S2095m"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãºïûÿÿÿÿ
+j
+java:S2095+"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãºïûÿÿÿÿ
+f
+java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÊÌ½£
+j
+java:S2095M"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(ù¡¥Åûÿÿÿÿ
+>>>>>>> Stashed changes
 @	java:S106="+Replace this use of System.out by a logger.(¹å›ð
 @	java:S106["+Replace this use of System.out by a logger.(¹å›ð
 A	java:S106‡"+Replace this use of System.out by a logger.(¹å›ð

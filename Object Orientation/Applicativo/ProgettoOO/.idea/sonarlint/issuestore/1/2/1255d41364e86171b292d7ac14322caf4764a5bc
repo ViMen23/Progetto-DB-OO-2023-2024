@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 g
 java:S1192Ú"KDefine a constant instead of duplicating this literal "start_year" 4 times.(è°¡çüÿÿÿÿ
 a
@@ -78,3 +79,84 @@ A	java:S106Ù"+Replace this use of System.out by a logger.(¹å›ğ
 A	java:S106Œ"+Replace this use of System.out by a logger.(¹å›ğ
 A	java:S106°"+Replace this use of System.out by a logger.(¹å›ğ
 A	java:S106Î"+Replace this use of System.out by a logger.(¹å›ğ
+=======
+
+java:S1192Ú"KDefine a constant instead of duplicating this literal "start_year" 4 times.(è°¡çüÿÿÿÿJ$b926b79b-e613-425f-8c8f-f04142a00210
+‡
+java:S1192š"JDefine a constant instead of duplicating this literal "player_id" 3 times.(Ääğ¢J$a6162d19-22d0-424f-a03c-956af5e22d89
+
+java:S1192b"TDefine a constant instead of duplicating this literal "player_retired_date" 3 times.(”Æ‰®J$0145a59b-d169-41bd-9d43-39a4e3e61406
+
+java:S1192^"MDefine a constant instead of duplicating this literal "country_name" 3 times.(¾¡…ıøÿÿÿÿJ$d7f7a0bc-42e9-43f4-9eee-e5ab20f63140
+
+java:S1192["LDefine a constant instead of duplicating this literal "player_name" 4 times.(şåŒşûÿÿÿÿJ$992199f7-4103-4e32-b5c6-1671b64e3dde
+‡
+java:S1192R"LDefine a constant instead of duplicating this literal "player_role" 4 times.(ÕŸ×J$c37a2c92-d4c1-4c79-b963-c8473fa13537
+
+java:S1192_"LDefine a constant instead of duplicating this literal "player_foot" 3 times.(ä™¢âùÿÿÿÿJ$97d7c22a-4ad3-48af-a1e7-69a71ade50cb
+
+java:S1192`"NDefine a constant instead of duplicating this literal "position_name" 3 times.(Ğ¹âùÿÿÿÿJ$112a6e5f-1694-4191-a971-47ef46832252
+†
+java:S1192]"KDefine a constant instead of duplicating this literal "player_dob" 3 times.(ò¦×}J$02437acb-60c0-4969-87c3-7f63d9fbef8b
+†
+java:S11928"JDefine a constant instead of duplicating this literal "Errore: " 12 times.(¹å›ğJ$9a3f8ced-029e-4a6d-bb6b-56a8e9d30733
+Š
+java:S1192\"ODefine a constant instead of duplicating this literal "player_surname" 4 times.(…ù†&J$ec0ec154-6309-4ec3-bde6-8221c5a3703b
+]
+java:S1643U"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$f27cc44b-4b46-404c-8f95-2d9a55953ea2
+]
+java:S1643V"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$23e83a53-8a34-4af0-9bde-a23a5abccfa8
+^
+java:S1643Œ"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$bffbd771-d636-449b-82ad-85013a0beb0c
+^
+java:S1643"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$44fc4084-813e-49b8-a809-0c4a447209d5
+^
+java:S1643Ş"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$ed356477-60f2-4ba4-b60a-cfc1fdd5e966
+^
+java:S1643ß"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$fb14cfc4-43a0-4269-9460-8382370114a0
+^
+java:S1643¢"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿJ$7490bdf7-0565-45c6-b575-e5d01ab924b6
+^
+java:S1643£"Use a StringBuilder instead.(ÿöşùÿÿÿÿJ$bff07f7d-cd20-4776-a2a6-5f0172bb8300
+^
+java:S1643Û"Use a StringBuilder instead.(à³Á¨üÿÿÿÿJ$48be2e1f-167e-4958-841a-e770721951c9
+^
+java:S1643Ü"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿJ$ddec45e1-5ffc-4a33-ae38-e049a34c77b2
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰ÆøÿÿÿÿJ$53978d12-e845-47e5-99a5-90b3f061fa5b
+
+java:S2095~"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ãÀâùÿÿÿÿJ$29ae697d-9618-463c-9eb7-fcaea6138552
+Œ
+java:S2095ş"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(âÔ¼¬J$74e4a7f7-d6e1-4c0d-9238-bc507985f0a0
+‘
+java:S2095Æ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ŒœÁ—ıÿÿÿÿJ$2982565d-79ad-4474-bc92-770621160ad3
+‘
+java:S2095¡"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¢ÙğšıÿÿÿÿJ$28dfa741-f8d1-44bf-a327-d97032942a39
+
+java:S2095J"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¬çÓ½ùÿÿÿÿJ$214092f1-f09e-44f6-84bf-7aad27228cf0
+‘
+java:S2095Ì"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ÿîå´ıÿÿÿÿJ$f3f209b6-6294-45fa-996a-bce1644cb439
+‘
+java:S2095Ñ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(„Ï•óúÿÿÿÿJ$cc4c84ac-7b20-4376-95ac-bf41a5fc4c22
+‘
+java:S2095Â"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(µæûÿÿÿÿJ$4679ca50-7e74-4c10-a2e8-c67860b6f519
+‹
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(—Çÿ¯J$6047742b-0fbc-49ef-a850-5c1836ab52d6
+‘
+java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ùæ‰¶ÿÿÿÿÿJ$8c6063a8-1f83-4b4c-b504-5374bc5b4c2b
+Œ
+java:S2095§"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(œ¼×´J$3bf32ef8-1437-4e20-84f1-9ae8eee69938
+Œ
+java:S2095ø"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(˜×õJ$73b47c24-5655-430a-9145-602a50df4562
+f	java:S1068"+Replace this use of System.out by a logger.(¹å›ğJ$8450e908-6915-4b14-b890-ca9292dde436
+f	java:S106j"+Replace this use of System.out by a logger.(¹å›ğJ$5020b4a8-4cbf-4b40-b6de-8401fc8c4a68
+g	java:S106¢"+Replace this use of System.out by a logger.(¹å›ğJ$e6611c34-9cfc-456a-9ad4-d1c276d25d3d
+g	java:S106ú"+Replace this use of System.out by a logger.(¹å›ğJ$4e60e6ae-bbf4-45db-86e8-4ee84823dfca
+g	java:S106½"+Replace this use of System.out by a logger.(¹å›ğJ$909ebe5a-b035-468d-9c2f-ced439812297
+g	java:S106í"+Replace this use of System.out by a logger.(¹å›ğJ$fd725753-f588-4ad7-868e-e003f1e59b97
+g	java:S106Š"+Replace this use of System.out by a logger.(¹å›ğJ$80d442c3-dcc4-4c55-9e07-4173693cdf70
+g	java:S106¹"+Replace this use of System.out by a logger.(¹å›ğJ$c1c313eb-1285-454a-8bf2-0d1e5c9a1905
+g	java:S106Ù"+Replace this use of System.out by a logger.(¹å›ğJ$8bab8a4d-d655-4015-998a-1f4ec4dad060
+g	java:S106Œ"+Replace this use of System.out by a logger.(¹å›ğJ$6541f61e-4cff-410a-a291-0b8d7096d3b8
+g	java:S106°"+Replace this use of System.out by a logger.(¹å›ğJ$d841503b-f2e6-4069-9697-f781eff74b79
+g	java:S106Î"+Replace this use of System.out by a logger.(¹å›ğJ$8a14aca2-03ed-476f-902b-0c0128b5c2d9
+>>>>>>> Stashed changes

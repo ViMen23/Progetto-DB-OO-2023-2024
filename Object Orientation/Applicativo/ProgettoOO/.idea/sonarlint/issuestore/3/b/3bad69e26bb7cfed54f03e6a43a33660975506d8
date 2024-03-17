@@ -12,16 +12,34 @@ java:S1643»"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
 8
 java:S1643¼"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
 t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
+<<<<<<< Updated upstream
 k
 java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Æƒòüÿÿÿÿ
 j
 java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¤¦ðÿÿÿÿÿ
 e
 java:S2095K"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(µ³‹±
+=======
+f
+java:S2095“"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ò²ø²
+k
+java:S2095ç"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Õ¹ÌÆùÿÿÿÿ
+f
+java:S2095ú"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ðñ’
+k
+java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Æƒòüÿÿÿÿ
+e
+java:S2095²"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(áœÓ
+f
+java:S2095µ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ò¾ŸŸ
+k
+java:S2095Þ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Õ¹ÌÆùÿÿÿÿ
+>>>>>>> Stashed changes
 e
 java:S2095n"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(³¡²ß
 k
 java:S2095Œ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÅÓÞ¬úÿÿÿÿ
+<<<<<<< Updated upstream
 k
 java:S2095ç"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Õ¹ÌÆùÿÿÿÿ
 f
@@ -40,6 +58,18 @@ f
 java:S2095Ô"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(öÒœ
 k
 java:S2095Þ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Õ¹ÌÆùÿÿÿÿ
+=======
+f
+java:S2095²"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¨§ÀÒ
+j
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¤¦ðÿÿÿÿÿ
+f
+java:S2095Ô"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(öÒœ
+e
+java:S2095¢"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ò™Ûe
+e
+java:S2095K"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(µ³‹±
+>>>>>>> Stashed changes
 @	java:S1068"+Replace this use of System.out by a logger.(¹å›ð
 @	java:S106W"+Replace this use of System.out by a logger.(¹å›ð
 @	java:S106|"+Replace this use of System.out by a logger.(¹å›ð

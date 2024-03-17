@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 i
 java:S1604I"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$67a78533-81ab-4d88-8a3e-bd47c73c32d9
 j
@@ -12,3 +13,18 @@ java:S3776"RRefactor this method to reduce its Cognitive Complexity from 30 to
 f	java:S106s"+Replace this use of System.err by a logger.(ò× èJ$eab790e2-c320-4413-b712-3bb7791f18cd
 u
 java:S2864z"4Iterate over the "entrySet" instead of the "keySet".(îÕ¥‡ûÿÿÿÿJ$c851f9a0-7f81-455c-8c3e-59d9d8c6d340
+=======
+C
+java:S1604I"(Make this anonymous inner class a lambda(¤Ù€Üüÿÿÿÿ
+D
+java:S1604†"(Make this anonymous inner class a lambda(ÛšÏÆûÿÿÿÿ
+?
+java:S1604"(Make this anonymous inner class a lambda(“Ìùæ
+€
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(„…¨•ıÿÿÿÿ
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.(¥ªÆñùÿÿÿÿ
+@	java:S106s"+Replace this use of System.err by a logger.(ò× è
+O
+java:S2864z"4Iterate over the "entrySet" instead of the "keySet".(îÕ¥‡ûÿÿÿÿ
+>>>>>>> Stashed changes

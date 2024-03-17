@@ -1,5 +1,6 @@
 
 d
+<<<<<<< Updated upstream
 java:S1604j"(Make this anonymous inner class a lambda(Èú†J$b41b6255-5cf4-44cf-939f-27457d124266
 e
 java:S1604¯"(Make this anonymous inner class a lambda(•ºÆÎJ$24dff9c8-a491-49a5-8f2a-753c8b699508
@@ -10,3 +11,15 @@ java:S1643¢"Use a StringBuilder instead.(¥µÏøÿÿÿÿJ$a19216f9-dbca-47b0-ac6b-
 ¦
 java:S1149#"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Œ±ûŞıÿÿÿÿJ$de7ee2c0-6d3d-419a-a365-6f0980d106bc
 j	java:S108Á")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$b6124271-0f02-4171-8ed1-66d8a2fe5e5d
+=======
+java:S1604j"(Make this anonymous inner class a lambda(Èú†J$fd3d395d-f389-4840-b6cb-ac2b256e067f
+e
+java:S1604¯"(Make this anonymous inner class a lambda(•ºÆÎJ$6c8b5a01-3c60-468d-a955-a69ba42de32f
+X
+java:S1643¡"Use a StringBuilder instead.(ÑƒJ$99edf16a-5f15-4bd9-a302-b5c539860b97
+^
+java:S1643¢"Use a StringBuilder instead.(¥µÏøÿÿÿÿJ$97386555-b7d6-4ff5-8b87-4b4319882c28
+¦
+java:S1149#"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Œ±ûŞıÿÿÿÿJ$915aab5d-65b3-487c-9eee-e8c65401eb11
+j	java:S108Á")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$03513d8f-21b6-4d63-8035-bfd0c60e461c
+>>>>>>> Stashed changes

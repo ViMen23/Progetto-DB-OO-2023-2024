@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 Š
 java:S1192"NDefine a constant instead of duplicating this literal "\u0041-\u005A" 9 times.(û–J$1a2ad766-31bc-443f-8aea-de697deb3ccb
 ƒ
@@ -39,3 +40,45 @@ _
 java:S6396F"#Remove this unnecessary quantifier.(ÔÌƒäJ$7bc05da2-c369-4a80-b4c4-effac8a657ca
 •
 java:S5843B"TSimplify this regular expression to reduce its complexity from 28 to the 20 allowed.(­ ŒõûÿÿÿÿJ$a9eb5f88-3bf9-4fdf-9882-05f0edc2920d
+=======
+
+java:S1192"NDefine a constant instead of duplicating this literal "\u00D8-\u00F6" 6 times.(Æ‘Œ±şÿÿÿÿJ$ccabb051-ca89-4ca4-b420-a8985f2b2223
+Š
+java:S1192"NDefine a constant instead of duplicating this literal "\u0100-\u017F" 6 times.(Àö†İJ$4ad30c12-dafa-4e72-a6f9-bfd4ad24a8e0
+
+java:S1192"NDefine a constant instead of duplicating this literal "\u00C0-\u00D6" 6 times.(ª ¡øÿÿÿÿJ$83075ff1-1a9b-4f31-9c73-dc3f39a2b127
+
+java:S1192"NDefine a constant instead of duplicating this literal "\u0061-\u007A" 9 times.(à“¡îüÿÿÿÿJ$c6d3c178-a5f2-4385-95d7-0743f28b3621
+ƒ
+java:S1192"GDefine a constant instead of duplicating this literal "\u002E" 5 times.(“Èâ¦J$6a7b6d12-cf27-4272-975c-1a68c94e1471
+Š
+java:S1192"NDefine a constant instead of duplicating this literal "\u0180-\u024F" 6 times.(£õ…ÏJ$9512fab1-5503-4530-8c60-1eeabd9e4c98
+ˆ
+java:S1192"GDefine a constant instead of duplicating this literal "\u002D" 3 times.(ËøíœúÿÿÿÿJ$bd7d4d40-51a9-40cd-becb-dc3ee892e7b4
+
+java:S1192"NDefine a constant instead of duplicating this literal "\u0030-\u0039" 6 times.(á•¿ÑøÿÿÿÿJ$62f3cbfb-bd30-4715-ae5c-2b0e51cb2d1f
+Š
+java:S1192"NDefine a constant instead of duplicating this literal "\u0041-\u005A" 9 times.(û–J$720c9618-90dd-4ddd-9e72-3f659ffd6e62
+
+java:S1192"NDefine a constant instead of duplicating this literal "\u00F8-\u00FF" 6 times.(ÂåšÿÿÿÿÿJ$84c27f50-d610-4bb7-96d3-46e3640fdf4e
+ƒ
+java:S1192"GDefine a constant instead of duplicating this literal "\u0259" 6 times.(Ö¤èÃJ$09bf5e31-1b5f-4855-87a4-0f345117b1b9
+š	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ªŸ‡ıÿÿÿÿJ$ece13406-6574-4a5c-a03c-8f55141e3ef8
+š	java:S115?"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(îŒççúÿÿÿÿJ$b09d53e1-a63f-4304-a3c8-9690b4ea570d
+š	java:S115B"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(­ ŒõûÿÿÿÿJ$f6a51cd4-142e-4488-b33d-0c3b9fa315a9
+š	java:S115J"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(¸¿‚´ùÿÿÿÿJ$c23abeec-1620-49cd-af62-049304cdd7d4
+•	java:S115y"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(ÅÈâJ$961614c6-d984-40a3-a2ba-7f68009d14d5
+v
+java:S1118
+":Add a private constructor to hide the implicit public one.(ÆğßæJ$a9accc92-8184-4b61-b3a8-d02d1c9a62d3
+d
+java:S6396C"#Remove this unnecessary quantifier.(Ë¥­¨úÿÿÿÿJ$baa621ec-8bc9-45ac-a5bb-0ee09fd1f0b1
+_
+java:S6396D"#Remove this unnecessary quantifier.(¸©ëJ$936a8dd8-d414-4e83-8304-1ba5b04980f9
+d
+java:S6396E"#Remove this unnecessary quantifier.(Øñ”šùÿÿÿÿJ$2323b785-25c8-4b78-9d39-047e3c37eb93
+_
+java:S6396F"#Remove this unnecessary quantifier.(ÔÌƒäJ$2739ee13-f151-4d67-b6d8-68375e3bfe0a
+•
+java:S5843B"TSimplify this regular expression to reduce its complexity from 28 to the 20 allowed.(­ ŒõûÿÿÿÿJ$54e0006a-4681-40af-bed7-d1a9eade49da
+>>>>>>> Stashed changes

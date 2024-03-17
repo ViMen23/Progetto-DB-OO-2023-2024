@@ -1,4 +1,5 @@
 
+<<<<<<< Updated upstream
 ƒ
 java:S1192¢"FDefine a constant instead of duplicating this literal "@fill" 4 times.(»¨Á¨J$8938fe6a-c463-4451-a868-c3253eb2cdbb
 ƒ
@@ -24,3 +25,30 @@ java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one s
 “
 java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(ƒ£ûÿÿÿÿJ$9a80d7bd-fbdd-4864-ade5-ce39a4fd5bd0
 g	java:S106™"+Replace this use of System.err by a logger.(ò× èJ$d0f0cc94-4eda-4bad-80b4-0feff9d362df
+=======
+]
+java:S1192¢"FDefine a constant instead of duplicating this literal "@fill" 4 times.(»¨Á¨
+]
+java:S1192©"GDefine a constant instead of duplicating this literal "noData" 4 times.(¸¡
+C
+java:S1604x"(Make this anonymous inner class a lambda(¤Ù€Üüÿÿÿÿ
+?
+java:S1604"(Make this anonymous inner class a lambda(ôÇ¤
+D
+java:S1604³"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿ
+>
+java:S1604Î"(Make this anonymous inner class a lambda(Ààş9
+D
+java:S1604è"(Make this anonymous inner class a lambda(Ùõìùÿÿÿÿ
+€
+java:S1149#"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¨º¾ıüÿÿÿÿ
+{
+java:S1149&"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅğÀ
+€
+java:S1149)"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(±›©Ğıÿÿÿÿ
+€
+java:S1149,"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ú¾ë·úÿÿÿÿ
+m
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(ƒ£ûÿÿÿÿ
+A	java:S106™"+Replace this use of System.err by a logger.(ò× è
+>>>>>>> Stashed changes
