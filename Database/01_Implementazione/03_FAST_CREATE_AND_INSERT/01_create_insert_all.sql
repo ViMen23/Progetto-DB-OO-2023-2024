@@ -21171,7 +21171,13 @@ VALUES
  ******************************************************************************/
 INSERT INTO fp_admin (username, password)
 VALUES
-('gioele', 'Gio3leIlMagn!fico');
+('ProfBarra', 'SilvioBarra1!'),
+('ProfTramontana', 'PorfirioTramontana1!'),
+('Admin1', 'AdminPass1!'),
+('Admin2', 'AdminPass2!'),
+('Admin3', 'AdminPass3!'),
+('Admin4', 'AdminPass4!'),
+('Admin5', 'AdminPass5!');
 --------------------------------------------------------------------------------
 
 
