@@ -1,0 +1,12 @@
+
+i
+java:S1604X"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$7fdffd30-eddb-4cf9-b388-621494e77ed3
+d
+java:S1604|"(Make this anonymous inner class a lambda(ôÇ¤J$c177f8e2-4592-42ce-8e5f-73be7371d85f
+j
+java:S1604‘"(Make this anonymous inner class a lambda(¶…«õÿÿÿÿÿJ$7403ad8c-1d8c-4718-974c-4a2b4295c6e7
+ 
+java:S1149 "eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÙÓ¸ J$7a383b92-ff5d-463d-aeb6-8c2ee692dbb2
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 16 to the 15 allowed.(ñéÅüÿÿÿÿJ$1e9ae21a-e9a9-4797-b713-3e33db3fece2
+f	java:S106w"+Replace this use of System.err by a logger.(ò× èJ$4e3f5bb6-a483-4173-8985-7ef5deefc746

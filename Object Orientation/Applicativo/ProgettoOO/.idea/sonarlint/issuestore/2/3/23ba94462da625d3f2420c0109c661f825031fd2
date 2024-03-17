@@ -1,0 +1,22 @@
+
+‹
+java:S1192©"IDefine a constant instead of duplicating this literal "NATIONAL" 6 times.(Ëı´±úÿÿÿÿJ$bb580a80-de5a-47c1-8985-81b049d82a5c
+d
+java:S1604"(Make this anonymous inner class a lambda(Èú†J$30cf6c3b-d435-423d-89bb-463634cf3c70
+j
+java:S1604¥"(Make this anonymous inner class a lambda(øÌ”“ÿÿÿÿÿJ$5e936083-baac-4739-a0cc-0086d7f72d57
+e
+java:S1604µ"(Make this anonymous inner class a lambda(¾áØšJ$46fcb8ed-7fa6-4035-95cf-8d7668118a2d
+d
+java:S1604¾"(Make this anonymous inner class a lambda(Ö¾°J$d6c7b1db-5f1c-4b20-9638-aad074a3212c
+e
+java:S1604È"(Make this anonymous inner class a lambda(É¶ÇñJ$4c2542a9-0a05-423b-b3b8-aba44b21fbaf
+d
+java:S1604ä"(Make this anonymous inner class a lambda(İá´UJ$5528b3b6-d24e-4f2f-bb8e-98b08410096d
+¦
+java:S1149""eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$e3a3cad5-fcd2-4374-ad9c-142522ec473c
+¦
+java:S1149%"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿJ$ead19438-9fb0-4934-99a4-7b2decfae5f3
+
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(’ÿÃ4J$601483df-fbdd-49f4-84be-4d5e916c0282
+g	java:S106Ÿ"+Replace this use of System.err by a logger.(ò× èJ$1c597bcd-a305-46d8-a79b-6148b56ee125

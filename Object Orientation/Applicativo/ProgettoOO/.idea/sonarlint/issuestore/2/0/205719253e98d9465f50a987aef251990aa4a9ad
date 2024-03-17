@@ -1,0 +1,26 @@
+
+ˆ
+java:S1192£"FDefine a constant instead of duplicating this literal "@fill" 4 times.(èŒ“øÿÿÿÿJ$6419bb12-598e-417f-9f78-71d7b52d94ce
+‰
+java:S1192ª"GDefine a constant instead of duplicating this literal "noData" 4 times.(‚¼É®üÿÿÿÿJ$25c04db1-57e3-42cf-bbf9-c913d4b62458
+i
+java:S1604y"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$a3fb7213-9deb-4a88-97d5-3ed571529082
+j
+java:S1604Ÿ"(Make this anonymous inner class a lambda(’¿²üÿÿÿÿJ$4f079ef2-5e11-4d9e-a7ed-463a6b492704
+j
+java:S1604´"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿJ$72a632b3-fb4e-4246-b151-2c82e775a682
+d
+java:S1604Ï"(Make this anonymous inner class a lambda(Ààş9J$3057b579-52bc-42a7-a951-fb49ad4f4243
+j
+java:S1604é"(Make this anonymous inner class a lambda(ÙõìùÿÿÿÿJ$0d587eb0-d198-44ad-8521-767246c69c61
+¦
+java:S1149$"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(©¶Õ¹ùÿÿÿÿJ$f0209bfe-9e7a-418a-b707-bb48fb89f2ad
+¡
+java:S1149'"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅğÀJ$4a21fea0-15e9-4ccc-8066-ee497bae2b3c
+¦
+java:S1149*"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(±›©ĞıÿÿÿÿJ$dc05caf9-a44a-473d-b8f1-b5e5d234ecf1
+¦
+java:S1149-"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ú¾ë·úÿÿÿÿJ$fbf39151-8769-4cf2-9c6d-1dbab7d5b44c
+
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 28 to the 15 allowed.(«Ú÷ÈJ$8a303d48-9ef0-4796-a56b-fb5a883eabbe
+g	java:S106š"+Replace this use of System.err by a logger.(ò× èJ$b707d547-623d-41cd-8a58-17021379b5b9

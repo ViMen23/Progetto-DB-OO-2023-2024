@@ -1,0 +1,30 @@
+
+ˆ
+java:S1192¢"FDefine a constant instead of duplicating this literal "@fill" 3 times.(«ìêşÿÿÿÿJ$7de50d78-26f4-475a-8c00-e2cb40d01fc2
+‰
+java:S1192®"GDefine a constant instead of duplicating this literal "noData" 3 times.(ÜÃ¹€şÿÿÿÿJ$8d2a5cd7-edb2-4048-9ef7-12164c97e898
+j
+java:S1604¸"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$ed52d741-938d-4332-b3b1-2f1775e324de
+j
+java:S1604â"(Make this anonymous inner class a lambda(¡éÍÖúÿÿÿÿJ$8e3be807-ee3f-4e36-aeac-c502a9ebb497
+j
+java:S1604ö"(Make this anonymous inner class a lambda(ÊÀÔ…úÿÿÿÿJ$85404981-220e-4f6b-8809-8c1236058f2c
+j
+java:S1604Š"(Make this anonymous inner class a lambda(¬îñûÿÿÿÿJ$0900ab59-5031-49d4-a7e2-484ee6dead7a
+e
+java:S1604"(Make this anonymous inner class a lambda(É¶ÇñJ$4d9cac09-9894-4962-b41d-b661efc20b58
+d
+java:S1604º"(Make this anonymous inner class a lambda(İá´UJ$571eccd7-5d34-4d1d-b039-03ff07651d84
+d
+java:S1604á"(Make this anonymous inner class a lambda(Ô™BJ$872bd0a2-c5b2-406b-ac1b-f69c530af010
+e
+java:S1604ô"(Make this anonymous inner class a lambda(°Äğ°J$e8b73c6c-e556-4b9d-abb3-1ee683b20b45
+¦
+java:S11494"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$454c91de-f116-432d-8c44-ce894b41472d
+¦
+java:S11497"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿJ$06072f9e-a0ad-4597-94b7-1d4a408b91ce
+¦
+java:S1149:"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(şù²‚üÿÿÿÿJ$2c804c92-65e2-45b9-b604-61761540e209
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 37 to the 15 allowed.(ÜêšùÿÿÿÿJ$8c111728-225d-479c-b196-49a055d06f94
+g	java:S106Ü"+Replace this use of System.err by a logger.(ò× èJ$d65ea518-61f9-4f08-bc7c-02a2fad5beca

@@ -1,0 +1,80 @@
+
+†
+java:S1192^"JDefine a constant instead of duplicating this literal "ERRORE: " 25 times.(ò× èJ$f0dda82f-060d-42d5-b972-8012cd38e0c6
+i
+java:S1604Q"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$7aefde3f-4182-495c-a9dc-fd77f4d133aa
+i
+java:S1604g"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$febb401e-a01a-4cf1-a001-712d3da2ea85
+j
+java:S1604‹"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$2414e707-13d0-453f-a56f-3ed71b2cf28b
+j
+java:S1604¢"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$3172fb9f-d95e-41a4-92cc-a4991433d115
+j
+java:S1604Å"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$520c17ba-b312-4c37-b5c0-1b01bfcd6a4f
+j
+java:S1604Û"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$48805979-64d1-4a6d-84f5-b583dd97cb8c
+j
+java:S1604ş"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$fc6f14eb-ba4c-4971-8e61-bfd785fba582
+j
+java:S1604”"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$83496efd-118b-4f05-9f54-1b01653cc87d
+j
+java:S1604É"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$9b23dc28-d02f-4b81-9b98-298a94ad2d0f
+j
+java:S1604ß"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$38c0158e-60f4-434c-a52c-e6030731bfcd
+j
+java:S1604ˆ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$56edebf9-1894-4bc4-88d6-2a3e8c6e7eff
+j
+java:S1604"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$0a216c9f-9d49-482a-ba5c-0c4cfa1f69f0
+j
+java:S1604Ó"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$319dcd3f-4bdc-457b-82ab-3eb299695324
+j
+java:S1604é"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$405b75ab-88b9-4568-8890-efaa3bba7d89
+j
+java:S1604’"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$1e7de84a-7943-4e68-a9fe-b007c2bdedc3
+j
+java:S1604¨"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$85f3e1d2-98bd-43bb-a865-3e6bd29fbb80
+j
+java:S1604Í"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$fc7d48f1-ac48-49b6-b156-bbc3ea3c16ac
+j
+java:S1604ã"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$afd5cdc2-fee4-4632-a0cc-ccf89207c46e
+j
+java:S1604‡"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$f63a0b49-71d1-49ae-aad4-29e9306543f1
+j
+java:S1604"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$2a8fa049-57e7-4a9d-8acf-ae0bd1b6cad0
+j
+java:S1604µ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$19b0fd00-ba49-42cd-bf00-b534e6331ee4
+j
+java:S1604Ì"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$f11fc7f6-92f2-4d04-a6f1-81cd1f8a42c5
+j
+java:S1604ğ"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$85f6989e-278d-4913-8e01-1606d472b740
+j
+java:S1604‡"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$93312d17-7318-405b-b539-4b3fb22d1581
+e
+java:S1604Ÿ"(Make this anonymous inner class a lambda(Èú†J$b107a56f-d51b-4e85-93c4-c0423a478ec4
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 52 to the 15 allowed.(¦‡Ğ¥ÿÿÿÿÿJ$0c9238be-22bb-41c0-ae1a-8fde6381f3e3
+f	java:S106^"+Replace this use of System.err by a logger.(ò× èJ$f965d462-73a4-4cc1-ab9c-f380e0870b34
+f	java:S106u"+Replace this use of System.err by a logger.(ò× èJ$2bbcbd16-9044-4de9-99c9-8ddafb53969e
+g	java:S106˜"+Replace this use of System.err by a logger.(ò× èJ$e78f8300-0ecc-4680-bd42-e96e0925629b
+g	java:S106¯"+Replace this use of System.err by a logger.(ò× èJ$86910439-6743-40f6-9179-7a171e4bd821
+g	java:S106Ò"+Replace this use of System.err by a logger.(ò× èJ$e54c1643-e6fd-48ac-8067-7a949cbd3840
+g	java:S106è"+Replace this use of System.err by a logger.(ò× èJ$d7b89cb9-46ae-4ab9-8356-8cb58dab731e
+g	java:S106‹"+Replace this use of System.err by a logger.(ò× èJ$c0b2c3c1-aaa4-4c15-b1d6-1d26dab4b744
+g	java:S106¡"+Replace this use of System.err by a logger.(ò× èJ$b975324a-fe22-4ddb-9351-3a77f80c36e7
+g	java:S106Ö"+Replace this use of System.err by a logger.(ò× èJ$03734d46-315b-4c08-914a-4b54f621161c
+g	java:S106í"+Replace this use of System.err by a logger.(ò× èJ$a08a2f8b-8966-4b1b-8dd1-f89bb0ba6c20
+g	java:S106•"+Replace this use of System.err by a logger.(ò× èJ$96cd60c3-2bb5-4af7-aa92-9238295b9c5c
+g	java:S106¬"+Replace this use of System.err by a logger.(ò× èJ$6c8f9568-c8a0-460a-904b-89f219cdda57
+g	java:S106à"+Replace this use of System.err by a logger.(ò× èJ$361a3a53-b014-4a41-9f69-ef4d2384797a
+g	java:S106÷"+Replace this use of System.err by a logger.(ò× èJ$077d0aea-d272-4c05-893c-eccab2e107bc
+g	java:S106Ÿ"+Replace this use of System.err by a logger.(ò× èJ$4572a5bb-11f3-4340-9d6a-4d0dfcc8a637
+g	java:S106¶"+Replace this use of System.err by a logger.(ò× èJ$72e5e7ce-4a51-410d-b685-884f00bb27bd
+g	java:S106Ú"+Replace this use of System.err by a logger.(ò× èJ$f96c7259-af15-4589-8a67-cd766e30e7cf
+g	java:S106ğ"+Replace this use of System.err by a logger.(ò× èJ$ec9b0f99-07b1-4109-aa10-774d6fb4221e
+g	java:S106”"+Replace this use of System.err by a logger.(ò× èJ$1a1c018b-07bd-460a-95ba-50db1d0427da
+g	java:S106¬"+Replace this use of System.err by a logger.(ò× èJ$e8aaee2d-7b0e-4b80-af94-31f762432241
+g	java:S106Ã"+Replace this use of System.err by a logger.(ò× èJ$0a817808-e1f9-455f-983b-c434a3136d3e
+g	java:S106Ú"+Replace this use of System.err by a logger.(ò× èJ$67db0a8b-4ac3-4300-a01f-33ef84092072
+g	java:S106ı"+Replace this use of System.err by a logger.(ò× èJ$5c7cd6c5-a942-40b2-a7d3-458cdfbfcf40
+g	java:S106”"+Replace this use of System.err by a logger.(ò× èJ$77cc0b12-f0ca-4e38-b1a7-8f84522aa215
+g	java:S106º"+Replace this use of System.err by a logger.(ò× èJ$134aec18-a67c-45d9-baeb-96451a95fd1e

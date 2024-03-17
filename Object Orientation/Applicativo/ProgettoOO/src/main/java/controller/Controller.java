@@ -13,7 +13,7 @@ import java.util.*;
 public class Controller
 {
 	private static Controller controllerInstance = null;
-	private static boolean adminConnected = false;
+	private boolean adminConnected = false;
 
 	/**
 	 * Costruttore privato.
@@ -54,7 +54,7 @@ public class Controller
 	 * @param password La password.
 	 * @return True se l'utente è un amministratore, false altrimenti.
 	 */
-	public Boolean isAdmin(String username,
+	public boolean isAdmin(String username,
 												 String password)
 	{
 		if (null == username || !(Regex.patternUsername.matcher(username).find())) {
@@ -91,7 +91,7 @@ public class Controller
 	 * <p>
 	 * @return True se l'amministratore è connesso, false altrimenti.
 	 */
-	public boolean isAdminConnected()
+	public Boolean isAdminConnected()
 	{
 		return adminConnected;
 	}

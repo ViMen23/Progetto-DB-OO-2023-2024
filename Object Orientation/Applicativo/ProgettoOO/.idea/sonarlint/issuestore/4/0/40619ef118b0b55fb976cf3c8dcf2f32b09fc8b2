@@ -1,0 +1,64 @@
+
+g
+java:S1192”"PDefine a constant instead of duplicating this literal "conf_short_name" 3 times.(Úäñ¡
+f
+java:S1192V"KDefine a constant instead of duplicating this literal "start_year" 9 times.(è°¡çüÿÿÿÿ
+ƒ
+java:S1192„"lDefine a constant instead of duplicating this literal "{call search_competition(?, ?, ?, ?, ?, ?)}" 3 times.(©‚
+_
+java:S1192Ç"HDefine a constant instead of duplicating this literal "comp_id" 5 times.(«¨›Õ
+f
+java:S1192“"ODefine a constant instead of duplicating this literal "comp_type_team" 3 times.(–ıÖæ
+`
+java:S11928"JDefine a constant instead of duplicating this literal "Errore: " 12 times.(¹å›ğ
+f
+java:S1192‘"JDefine a constant instead of duplicating this literal "comp_name" 7 times.(ìË‡¿øÿÿÿÿ
+d
+java:S1192•"MDefine a constant instead of duplicating this literal "country_name" 3 times.(ğŞ
+f
+java:S1192’"JDefine a constant instead of duplicating this literal "comp_type" 3 times.(”›µêûÿÿÿÿ
+7
+java:S1643W"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
+7
+java:S1643X"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
+8
+java:S1643ı"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
+8
+java:S1643ş"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+f
+java:S2095»"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©‚
+f
+java:S2095³"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©‚
+e
+java:S2095N"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Íë“
+f
+java:S2095„"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©‚
+e
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.( âöÜ
+k
+java:S2095‡"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ó•Îÿÿÿÿÿ
+f
+java:S2095°"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(´âá
+f
+java:S2095ã"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(³²Õã
+k
+java:S2095Ò"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Â¤ß¬øÿÿÿÿ
+k
+java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ãÛÅ­øÿÿÿÿ
+f
+java:S2095î"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Íë“
+f
+java:S2095ñ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(èÅÎ
+@	java:S1068"+Replace this use of System.out by a logger.(¹å›ğ
+@	java:S106j"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Ÿ"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Ï"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106ó"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106—"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Ú"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106½"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106ß"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106„"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106«"+Replace this use of System.out by a logger.(¹å›ğ

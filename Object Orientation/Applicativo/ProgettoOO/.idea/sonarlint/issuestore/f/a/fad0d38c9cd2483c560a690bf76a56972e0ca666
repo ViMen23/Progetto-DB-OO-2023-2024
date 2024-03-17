@@ -1,0 +1,8 @@
+
+i
+java:S1604O"(Make this anonymous inner class a lambda(«ªäóúÿÿÿÿJ$3a3e6e9d-afb3-4e3f-b4a3-eba682b11839
+i
+java:S5411_"(Use a primitive boolean expression here.(»ðÜÖþÿÿÿÿJ$2f5d4de4-3747-4f5a-8689-3d15ad8c6327
+¦
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ÜÆ úþÿÿÿÿJ$a83e4407-eb58-478d-a618-e6ed2973416e
+f	java:S106t"+Replace this use of System.err by a logger.(ò× èJ$76f8cabb-aed0-4f70-b596-f8d8d67bff5b

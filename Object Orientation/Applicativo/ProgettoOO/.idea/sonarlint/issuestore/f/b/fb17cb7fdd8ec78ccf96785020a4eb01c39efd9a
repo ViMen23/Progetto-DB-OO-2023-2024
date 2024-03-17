@@ -1,0 +1,14 @@
+
+i
+java:S1604I"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$67a78533-81ab-4d88-8a3e-bd47c73c32d9
+j
+java:S1604†"(Make this anonymous inner class a lambda(ÛšÏÆûÿÿÿÿJ$9dc1cc47-e094-4e5a-8b3a-dd2594b74b64
+e
+java:S1604ž"(Make this anonymous inner class a lambda(“ÌùæJ$09b235f4-1330-4716-a1b0-acee61fcb3e5
+¦
+java:S1149"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(„…¨•ýÿÿÿÿJ$f95c9a5e-b73f-4ed8-8c9c-c1b160132a4d
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 30 to the 15 allowed.(¥ªÆñùÿÿÿÿJ$f2cd8647-9f3d-44c0-abe0-ed0a0e9ffe3b
+f	java:S106s"+Replace this use of System.err by a logger.(ò× èJ$eab790e2-c320-4413-b712-3bb7791f18cd
+u
+java:S2864z"4Iterate over the "entrySet" instead of the "keySet".(îÕ¥‡ûÿÿÿÿJ$c851f9a0-7f81-455c-8c3e-59d9d8c6d340

@@ -1,0 +1,32 @@
+
+ˆ
+java:S1192"FDefine a constant instead of duplicating this literal "@fill" 5 times.(«ìêşÿÿÿÿJ$bbabfe95-aafb-4c6a-bc45-3bc510219082
+‰
+java:S1192™"GDefine a constant instead of duplicating this literal "noData" 3 times.(ÜÃ¹€şÿÿÿÿJ$921e7d8a-e657-4963-9875-8d53810d8196
+e
+java:S1604º"(Make this anonymous inner class a lambda(Èú†J$e13d3372-5a57-4748-a4bb-8927a24da58f
+j
+java:S1604ÿ"(Make this anonymous inner class a lambda(øÌ”“ÿÿÿÿÿJ$3dd2b01e-8c2d-4eeb-9c18-76b60e25163a
+e
+java:S1604‰"(Make this anonymous inner class a lambda(É¶ÇñJ$6a26d0d6-23c7-4284-a595-f9c6f34b13f0
+d
+java:S1604¥"(Make this anonymous inner class a lambda(İá´UJ$9237ac08-ed54-42b6-a549-39e44dad499e
+j
+java:S1604Â"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿJ$89b272de-fb01-4f8d-bf62-c5c563d9ae2b
+j
+java:S1604ã"(Make this anonymous inner class a lambda(Æöä‚ùÿÿÿÿJ$a2835b1c-d3ec-4d12-8a21-753a2d7efcdd
+e
+java:S1604û"(Make this anonymous inner class a lambda(¿‡ÚÙJ$f255dd4b-615e-43b4-a72d-c2203e53350e
+e
+java:S1604"(Make this anonymous inner class a lambda(•ºÆÎJ$c46e0b19-b9a6-4abe-a952-798558b22b26
+¦
+java:S1149("eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$bbc999e2-58c7-4f1b-94c5-36d3299364d8
+¦
+java:S1149+"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿJ$0ac08d4d-7e4c-4d2e-929d-2cdf53b9d6a1
+¡
+java:S1149."eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅğÀJ$48e83d9f-f1c1-438a-a748-e2b09f884da0
+¦
+java:S11491"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(â¬Œ¦ùÿÿÿÿJ$fa1bd165-25ee-494d-9bae-d68f493ccb18
+
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 45 to the 15 allowed.(ÀÇ©‹J$527d70e0-a83d-4950-a501-3527991056d4
+j	java:S108Ÿ")Either remove or fill this block of code.(Æ¸Û‚øÿÿÿÿJ$b717462b-d325-4809-92c0-ad5015b2b717

@@ -1,0 +1,32 @@
+
+g
+java:S1192«"KDefine a constant instead of duplicating this literal "start_year" 4 times.(è°¡çüÿÿÿÿ
+f
+java:S1192‚"JDefine a constant instead of duplicating this literal "comp_name" 3 times.(ìË‡¿øÿÿÿÿ
+v
+java:S1192y"`Define a constant instead of duplicating this literal "{call partecipation_team(?, ?)}" 3 times.(ÑæõË
+_
+java:S1192@"IDefine a constant instead of duplicating this literal "Errore: " 6 times.(¹å›ğ
+8
+java:S1643¬"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
+8
+java:S1643­"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+e
+java:S20952"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©ô‰
+j
+java:S2095W"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Æª¿Îşÿÿÿÿ
+k
+java:S2095£"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(›Á˜§ÿÿÿÿÿ
+f
+java:S2095Ó"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+e
+java:S2095y"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+f
+java:S2095ù"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÑæõË
+@	java:S106@"+Replace this use of System.out by a logger.(¹å›ğ
+@	java:S106e"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106¿"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106å"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106•"+Replace this use of System.out by a logger.(¹å›ğ

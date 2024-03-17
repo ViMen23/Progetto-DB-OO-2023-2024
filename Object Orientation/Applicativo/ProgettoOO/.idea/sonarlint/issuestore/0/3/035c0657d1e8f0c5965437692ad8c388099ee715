@@ -1,0 +1,13 @@
+
+_
+java:S11926"IDefine a constant instead of duplicating this literal "Errore: " 3 times.(¹å›ğ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+e
+java:S2095n"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(á£Á
+j
+java:S2095+"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(§·öŞùÿÿÿÿ
+e
+java:S2095L"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(á£Á
+@	java:S1066"+Replace this use of System.out by a logger.(¹å›ğ
+@	java:S106\"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106„"+Replace this use of System.out by a logger.(¹å›ğ

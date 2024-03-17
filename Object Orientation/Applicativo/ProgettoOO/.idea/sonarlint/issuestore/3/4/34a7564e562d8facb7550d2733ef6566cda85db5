@@ -1,0 +1,10 @@
+
+{
+java:S1149'"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²
+€
+java:S1149E"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿ
+€
+java:S1149U"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(õ¸…÷ýÿÿÿÿ
+{
+java:S1149c"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(äÒ“²
+W	java:S107;"=Method has 12 parameters, which is greater than 7 authorized.(·ºòìúÿÿÿÿ

@@ -1,0 +1,16 @@
+
+_
+java:S11927"IDefine a constant instead of duplicating this literal "Errore: " 4 times.(¹å›ð
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«Ý‰Æøÿÿÿÿ
+e
+java:S2095–"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ôÕ¬*
+j
+java:S2095,"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÝÈŸ¤ÿÿÿÿÿ
+e
+java:S2095v"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ñâî„
+e
+java:S2095K"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ñâî„
+@	java:S1067"+Replace this use of System.out by a logger.(¹å›ð
+@	java:S106b"+Replace this use of System.out by a logger.(¹å›ð
+A	java:S106†"+Replace this use of System.out by a logger.(¹å›ð
+A	java:S106¦"+Replace this use of System.out by a logger.(¹å›ð

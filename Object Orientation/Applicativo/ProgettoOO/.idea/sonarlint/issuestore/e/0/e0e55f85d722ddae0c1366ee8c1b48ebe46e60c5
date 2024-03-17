@@ -1,0 +1,21 @@
+
+…
+java:S1192^"IDefine a constant instead of duplicating this literal "ERRORE: " 6 times.(ò× èJ$6b163213-8a7d-40b2-be82-d86ad8150ca4
+i
+java:S1604Q"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$fa97881d-5f61-4700-b348-fde61b4dc9fa
+i
+java:S1604t"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$4f98ef3d-895d-4628-8d4b-313f786ce928
+j
+java:S1604Š"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$a90954f5-85f7-4132-afb4-278bd288dfa9
+j
+java:S1604­"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$31be52a7-2d34-49d4-9ab3-989b91d3eb18
+j
+java:S1604Ã"(Make this anonymous inner class a lambda(‹â¦şÿÿÿÿJ$57a36a9b-1ff4-4551-b864-1b95d1b3ceef
+e
+java:S1604Ú"(Make this anonymous inner class a lambda(Èú†J$281fa4a4-6b29-41f0-96cd-3b4b4befc8e1
+f	java:S106^"+Replace this use of System.err by a logger.(ò× èJ$abb93542-40fd-48f2-b67e-79b012cc0657
+g	java:S106"+Replace this use of System.err by a logger.(ò× èJ$564abd1c-41d4-4dac-aab3-d559b5278604
+g	java:S106—"+Replace this use of System.err by a logger.(ò× èJ$14569ad2-1625-42fb-8d6e-cf6bf5c71f57
+g	java:S106º"+Replace this use of System.err by a logger.(ò× èJ$8b170560-f800-4f66-b322-68925b01422f
+g	java:S106Ğ"+Replace this use of System.err by a logger.(ò× èJ$25c63f19-5d8c-47fc-a014-a466b18d092d
+g	java:S106ç"+Replace this use of System.err by a logger.(ò× èJ$6ebab201-2f73-491e-87f0-f6b7686c2b36

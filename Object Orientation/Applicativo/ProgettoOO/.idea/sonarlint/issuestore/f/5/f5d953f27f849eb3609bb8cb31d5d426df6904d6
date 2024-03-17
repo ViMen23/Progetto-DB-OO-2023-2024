@@ -1,0 +1,40 @@
+
+š	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰ÆøÿÿÿÿJ$806885a7-e0bf-4824-b1d6-3bbf5311f123
+‹
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ŞşóŸJ$7380c941-77bc-42f7-91f8-88c297db2a26
+Š
+java:S2095c"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ÌéšJ$051c1987-4721-4bcc-a428-0b347e284edf
+m
+java:S35993",Use another way to initialize this instance.(¼Î‹ÿÿÿÿÿJ$fcca7773-864c-465e-9cda-bc5e57bd5b9b
+š
+java:S11713"YMove the contents of this initializer to a standard constructor or to field initializers.(¼Î‹ÿÿÿÿÿJ$48e995b1-2643-4a4f-8c2a-ffaa96f805ae
+h
+java:S35994",Use another way to initialize this instance.(õ£¥–J$766d10b9-4a27-4677-a64c-7d190245d8a2
+•
+java:S11714"YMove the contents of this initializer to a standard constructor or to field initializers.(õ£¥–J$49227c83-7c7c-4467-859b-6cbd31d6fc5d
+g
+java:S35995",Use another way to initialize this instance.(äš¸1J$d42ddc46-3a07-4a65-8858-0884511e42f0
+”
+java:S11715"YMove the contents of this initializer to a standard constructor or to field initializers.(äš¸1J$53377c2a-68df-48dd-844f-f55e2d35acf2
+m
+java:S35996",Use another way to initialize this instance.(¥˜òøÿÿÿÿJ$1f3793c2-cdd8-4ff6-9bdf-da4f074ec03d
+š
+java:S11716"YMove the contents of this initializer to a standard constructor or to field initializers.(¥˜òøÿÿÿÿJ$4ac1469e-47e4-4b57-bac7-29b4816c5069
+h
+java:S35997",Use another way to initialize this instance.(Ñº¬ŞJ$d9f82731-12ac-4a97-b356-c882c6f7f61d
+•
+java:S11717"YMove the contents of this initializer to a standard constructor or to field initializers.(Ñº¬ŞJ$f43d79de-e3ed-421e-9ae3-9058ab33aa97
+m
+java:S35998",Use another way to initialize this instance.(óŸâıÿÿÿÿJ$c4467e1e-83a5-481f-b667-56e4056bd6f3
+š
+java:S11718"YMove the contents of this initializer to a standard constructor or to field initializers.(óŸâıÿÿÿÿJ$30429e92-3e0e-4cd5-9f15-3d1d9c5061d5
+m
+java:S35999",Use another way to initialize this instance.(¦¯öÏûÿÿÿÿJ$a3bdc81f-8122-496e-80ab-8e02d3a4e320
+š
+java:S11719"YMove the contents of this initializer to a standard constructor or to field initializers.(¦¯öÏûÿÿÿÿJ$cdf6e9a0-1fce-40cd-b987-73e4a3151b71
+m
+java:S3599:",Use another way to initialize this instance.(’ƒ‰çùÿÿÿÿJ$74feea76-9ad8-48a7-8ed3-e2bc3ac7d477
+š
+java:S1171:"YMove the contents of this initializer to a standard constructor or to field initializers.(’ƒ‰çùÿÿÿÿJ$8261d1bb-1bdf-452c-be4d-e43dfd27d002
+f	java:S106B"+Replace this use of System.out by a logger.(¹å›ğJ$69559e2b-5440-45b8-b3fd-3953eeac85b0
+f	java:S106y"+Replace this use of System.out by a logger.(¹å›ğJ$bba5e05b-a106-4ff5-8355-6eaae26580b8

@@ -1,0 +1,44 @@
+
+c
+java:S1192€"LDefine a constant instead of duplicating this literal "prize_given" 4 times.(ÆÿÍƒ
+f
+java:S1192"KDefine a constant instead of duplicating this literal "prize_name" 6 times.(…Œ­ùûÿÿÿÿ
+b
+java:S1192¢"KDefine a constant instead of duplicating this literal "prize_year" 3 times.(Æ­£
+`
+java:S1192?"JDefine a constant instead of duplicating this literal "Errore: " 10 times.(¹å›ğ
+`
+java:S1192Ô"IDefine a constant instead of duplicating this literal "prize_id" 4 times.(šÿ•
+h
+java:S1192~"RDefine a constant instead of duplicating this literal "prize_assign_year" 3 times.(‰ÿÿş
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+f
+java:S2095À"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ô¥ı¹
+j
+java:S20951"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Âº¥”ÿÿÿÿÿ
+f
+java:S2095ñ"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(•³Èå
+k
+java:S2095é"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(í›ï¸ıÿÿÿÿ
+e
+java:S2095š"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ïşü
+f
+java:S2095"OUse try-with-resources or close this "PreparedStatement" in a "finally" clause.(²ÄÈ¤
+e
+java:S2095µ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ïşü
+e
+java:S2095v"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ô¥ı¹
+k
+java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ãí§ùÿÿÿÿ
+j
+java:S2095V"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(©¥ ¯ùÿÿÿÿ
+@	java:S106?"+Replace this use of System.out by a logger.(¹å›ğ
+@	java:S106d"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Š"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106®"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106á"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106ÿ"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106£"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Ô"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106÷"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106œ"+Replace this use of System.out by a logger.(¹å›ğ

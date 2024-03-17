@@ -1,0 +1,34 @@
+
+ˆ
+java:S1192Ô"FDefine a constant instead of duplicating this literal "@fill" 4 times.(«ìêşÿÿÿÿJ$e9e23d5c-8c9a-4a84-b32e-81606dd82825
+‰
+java:S1192à"GDefine a constant instead of duplicating this literal "noData" 4 times.(ÜÃ¹€şÿÿÿÿJ$8bbc114b-2c5e-4510-a341-12dccdeefcf3
+j
+java:S1604ª"(Make this anonymous inner class a lambda(¤Ù€ÜüÿÿÿÿJ$8220462f-2c18-4d34-94c5-43276a19919c
+e
+java:S1604Ğ"(Make this anonymous inner class a lambda(É¶ÇñJ$b3dc4fca-ecbb-400c-85fa-68358babac42
+d
+java:S1604ì"(Make this anonymous inner class a lambda(İá´UJ$98d77865-d20f-479e-9d32-0d3ac1ae02bf
+j
+java:S1604‰"(Make this anonymous inner class a lambda(üË«õøÿÿÿÿJ$9fdd9424-860b-471b-a0a7-1cb13af4899d
+j
+java:S1604ª"(Make this anonymous inner class a lambda(’¿²üÿÿÿÿJ$14f3231a-0e48-4035-b29b-6864dc95705f
+d
+java:S1604á"(Make this anonymous inner class a lambda(†³šYJ$7ba3ea1f-3ec3-40f8-8476-93965dcb84ad
+d
+java:S1604ê"(Make this anonymous inner class a lambda(µ¯ÙlJ$0f0c2473-166e-49c7-99c5-d65e67abab13
+j
+java:S1604ó"(Make this anonymous inner class a lambda(ôÇÁÅûÿÿÿÿJ$b740f198-3eca-4b07-a293-f215fbdbba3b
+Y
+java:S1643Æ"Use a StringBuilder instead.(¡ÙîJ$cd5b46dc-b042-489b-91fd-34d4ce6ceebb
+X
+java:S1643Ç"Use a StringBuilder instead.(ÙÉÉJ$33b9a5e7-6e56-4ea6-8e14-6aaf89d51e7f
+¦
+java:S1149$"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(ŠµÛöùÿÿÿÿJ$b448bea9-c0d5-4b5e-b89b-075e27ab91b8
+¦
+java:S1149'"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(Ï±¥¬ıÿÿÿÿJ$bf799eae-d813-4697-9339-4c82d7cd446f
+¡
+java:S1149*"eReplace the synchronized class "Vector" by an unsynchronized one such as "ArrayList" or "LinkedList".(¢ÅğÀJ$510f3e09-a8e5-49e6-9f07-71a5407902f6
+“
+java:S3776"RRefactor this method to reduce its Cognitive Complexity from 34 to the 15 allowed.(¾áçãüÿÿÿÿJ$01b0be07-f28a-4463-a42c-2c387372261f
+g	java:S106Ë"+Replace this use of System.err by a logger.(ò× èJ$5c67da6a-0546-400f-8f80-8c9e5ad6d135

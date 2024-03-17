@@ -1,0 +1,80 @@
+
+g
+java:S1192Ú"KDefine a constant instead of duplicating this literal "start_year" 4 times.(è°¡çüÿÿÿÿ
+a
+java:S1192š"JDefine a constant instead of duplicating this literal "player_id" 3 times.(Ääğ¢
+j
+java:S1192b"TDefine a constant instead of duplicating this literal "player_retired_date" 3 times.(”Æ‰®
+h
+java:S1192^"MDefine a constant instead of duplicating this literal "country_name" 3 times.(¾¡…ıøÿÿÿÿ
+g
+java:S1192["LDefine a constant instead of duplicating this literal "player_name" 4 times.(şåŒşûÿÿÿÿ
+a
+java:S1192R"LDefine a constant instead of duplicating this literal "player_role" 4 times.(ÕŸ×
+g
+java:S1192_"LDefine a constant instead of duplicating this literal "player_foot" 3 times.(ä™¢âùÿÿÿÿ
+i
+java:S1192`"NDefine a constant instead of duplicating this literal "position_name" 3 times.(Ğ¹âùÿÿÿÿ
+`
+java:S1192]"KDefine a constant instead of duplicating this literal "player_dob" 3 times.(ò¦×}
+`
+java:S11928"JDefine a constant instead of duplicating this literal "Errore: " 12 times.(¹å›ğ
+d
+java:S1192\"ODefine a constant instead of duplicating this literal "player_surname" 4 times.(…ù†&
+7
+java:S1643U"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
+7
+java:S1643V"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
+8
+java:S1643Œ"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
+8
+java:S1643"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
+8
+java:S1643Ş"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
+8
+java:S1643ß"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
+8
+java:S1643¢"Use a StringBuilder instead.(Í¤Ò‚ıÿÿÿÿ
+8
+java:S1643£"Use a StringBuilder instead.(ÿöşùÿÿÿÿ
+8
+java:S1643Û"Use a StringBuilder instead.(à³Á¨üÿÿÿÿ
+8
+java:S1643Ü"Use a StringBuilder instead.(¯ô¤µøÿÿÿÿ
+t	java:S120"ZRename this package name to match the regular expression '^[a-z_]+(\.[a-z_][a-z0-9_]*)*$'.(«İ‰Æøÿÿÿÿ
+k
+java:S2095Æ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ŒœÁ—ıÿÿÿÿ
+k
+java:S2095Ñ"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(„Ï•óúÿÿÿÿ
+f
+java:S2095ş"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(âÔ¼¬
+e
+java:S2095-"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(—Çÿ¯
+k
+java:S2095Ì"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ÿîå´ıÿÿÿÿ
+k
+java:S2095¡"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¢Ùğšıÿÿÿÿ
+j
+java:S2095J"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(¬çÓ½ùÿÿÿÿ
+k
+java:S2095"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(Ùæ‰¶ÿÿÿÿÿ
+j
+java:S2095~"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(ãÀâùÿÿÿÿ
+f
+java:S2095§"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(œ¼×´
+k
+java:S2095Â"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(µæûÿÿÿÿ
+f
+java:S2095ø"OUse try-with-resources or close this "CallableStatement" in a "finally" clause.(˜×õ
+@	java:S1068"+Replace this use of System.out by a logger.(¹å›ğ
+@	java:S106j"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106¢"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106ú"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106½"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106í"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Š"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106¹"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Ù"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Œ"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106°"+Replace this use of System.out by a logger.(¹å›ğ
+A	java:S106Î"+Replace this use of System.out by a logger.(¹å›ğ
