@@ -2,6 +2,7 @@ package postgresImplDAO;
 
 import dao.TagDAO;
 import database.DatabaseConnection;
+import gui.GuiConfiguration;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class PostgresImplTagDAO
 			while (rs.next()) {
 				Vector<String> vector = new Vector<>();
 
-				vector.add(rs.getString("tag_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("tag_name")));
 
 				tableData.add(vector);
 			}
@@ -79,7 +80,7 @@ public class PostgresImplTagDAO
 			ResultSet rs = ps.executeQuery();
 
 			while (rs.next()) {
-				comboBoxData.add(rs.getString("tag_name"));
+				comboBoxData.add(GuiConfiguration.getMessage(rs.getString("tag_name")));
 				comboBoxMap.put(comboBoxData.getLast(), rs.getString("tag_id"));
 			}
 
@@ -118,7 +119,7 @@ public class PostgresImplTagDAO
 				Vector<Object> vector = new Vector<>();
 
 				vector.add(false);
-				vector.add(rs.getString("tag_name"));
+				vector.add(GuiConfiguration.getMessage(rs.getString("tag_name")));
 
 				tableData.add(vector);
 				tagMap.put(row, rs.getString("tag_id"));

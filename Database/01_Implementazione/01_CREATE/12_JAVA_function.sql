@@ -5149,11 +5149,62 @@ AS
 $$  
 DECLARE 
 
+    type_comp       text;
+    type_team       text;
+
     count_row       integer;
     output_message  text;
 
 BEGIN
 
+    output_message = '';
+
+    SELECT
+        fp_competition.type::text,
+        fp_competition.team_type::text
+    INTO
+        type_comp,
+        type_team
+    FROM
+        fp_play
+        JOIN
+        fp_competition
+            ON
+            fp_play.competition_id = fp_competition.id
+    WHERE
+        fp_play.id = id_play::integer;
+
+
+    IF ('LEAGUE' = type_comp) THEN
+        IF (new_match::integer > 40) THEN
+            output_message = 'errorMessageUpdateMatch';
+        END IF;
+	
+	ELSIF ('SUPER_CUP' = type_comp) THEN
+        IF (new_match::integer > 6) THEN
+            output_message = 'errorMessageUpdateMatch';
+        END IF;
+	
+	ELSIF ('CUP' = type_comp) THEN
+
+		IF ('CLUB' = type_team) THEN
+            IF (new_match::integer > 128) THEN
+                output_message = 'errorMessageUpdateMatch';
+            END IF;
+	
+		ELSIF ('NATIONAL' = type_team) THEN
+            IF (new_match::integer > 48) THEN
+                output_message = 'errorMessageUpdateMatch';
+            END IF;
+			
+	
+		END IF;
+
+	END IF;
+
+    IF (output_message = 'errorMessageUpdateMatch') THEN
+        RETURN output_message;
+    END IF;
 
 	UPDATE
 		fp_play

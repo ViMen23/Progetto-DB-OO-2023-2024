@@ -20850,6 +20850,7 @@ VALUES
 --------------------------------------------------------------------------------
 
 
+
 /******************************************************************************* 
  * PROJECT NAME : FOOTBALL PLAYER DATABASE                                    
  *                                                                            
@@ -20869,287 +20870,287 @@ VALUES
 (
 	'FALSE',
 	'TRUE',
-	'Get Forward Whenever Possible'
+	'getForwardWheneverPossible'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Stays Back At All Times'
+	'staysBackAtAllTimes'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Comes Deep to Get Ball'
+	'comesDeepToGetBall'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Dribble Down The Left or Right Flank'
+	'dribbleDownTheLeftOrRightFlank'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Dribble Through The Center of The Park'
+	'dribbleThroughTheCenterOfThePark'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Runs With The Ball More Often'
+	'runsWithTheBallMoreOften'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Runs With The Ball Occasionally'
+	'runsWithTheBallOccasionally'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Hugs The Touchline'
+	'hugsTheTouchline'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Cuts Inside From Right or Left or Both Wings'
+	'cutsInsideFromRightOrLeftOrBothWings'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Gets Into The Opposition Area Whenever Possible'
+	'getsIntoTheOppositionAreaWheneverPossible'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Arrives Late In The Opposition Area'
+	'arrivesLateInTheOppositionArea'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Try To Beat The Offside Trap'
+	'tryToBeatTheOffsideTrap'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Plays With Back To Goal'
+	'playsWithBackToGoal'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Mainly Stays Inside The Penalty Area Whenever Possible'
+	'mainlyStaysInsideThePenaltyAreaWheneverPossible'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Moves Into Channels'
+	'movesIntoChannels'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Plays One-Twos'
+	'playsOneTwos'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Knock The Ball Past His Opponent When Taking Him On'
+	'knockTheBallPastHisOpponentWhenTakingHimOn'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Tries Killer Balls Often'
+	'triesKillerBallsOften'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Plays No Through Balls'
+	'playsNoThroughBalls'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Tries Long Range Passes'
+	'triesLongRangePasses'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Plays Short Simple Passes'
+	'playsShortSimplePasses'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Slow Down Play Now And Then'
+	'slowDownPlayNowAndThen'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Dwells on Ball'
+	'dwellsOnBall'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Look For the Pass Rather Than Attempting to Score'
+	'lookForThePassRatherThanAttemptingToScore'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Dictates Tempo'
+	'dictatesTempo'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Likes To Switch Ball To The Other Flank'
+	'likesToSwitchBallToTheOtherFlank'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Likes Ball Played Into Feet'
+	'likesBallPlayedIntoFeet'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Shoots From Distance'
+	'shootsFromDistance'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Refrains From Taking Long Shots'
+	'refrainsFromTakingLongShots'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Try to Lob the Keeper in One-on-Ones'
+	'tryToLobTheKeeperInOneOnOnes'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Likes to Round Keeper'
+	'likesToRoundKeeper'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Shoots With Power'
+	'shootsWithPower'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Places Shots'
+	'placesShots'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Attempts First Time Shots'
+	'attemptsFirstTimeShots'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Attempts Overhead Kicks'
+	'attemptsOverheadKicks'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Hits Free Kicks With Power'
+	'hitsFreeKicksWithPower'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Tries Long Range Free Kicks'
+	'triesLongRangeFreeKicks'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Throw Himself Into Tackles'
+	'throwHimselfIntoTackles'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Does Not Dives Into Tackles'
+	'doesNotDivesIntoTackles'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Marks Opponents Tightly'
+	'marksOpponentsTightly'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Brings Ball Out of Defence'
+	'bringsBallOutOfDefence'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Tries To Play Way Out of Trouble'
+	'triesToPlayWayOutOfTrouble'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Tries Tricks'
+	'triesTricks'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Curls Balls'
+	'curlsBalls'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Uses Outside of Foot'
+	'usesOutsideOfFoot'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Likes To Beat Man Repeatedly'
+	'likesToBeatManRepeatedly'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Moves The Ball to Right or Left Foot Before Dribble Attempt'
+	'movesTheBallToRightOrLeftFootBeforeDribbleAttempt'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Attempts to Develop Weaker Footer'
+	'attemptsToDevelopWeakerFooter'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Avoids Using Weaker Foot'
+	'avoidsUsingWeakerFoot'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Possess Long Flat Throw'
+	'possessLongFlatThrow'
 ),
 (
 	'TRUE',
 	'TRUE',
-	'Uses Long Throws to Start Counter Attacks'
+	'usesLongThrowsToStartCounterAttacks'
 ),
 (
 	'TRUE',
 	'TRUE',
-	'Tries Long Range Free Kicks GK'
+	'triesLongRangeFreeKicksGK'
 ),
 (
 	'TRUE',
 	'TRUE',
-	'Attempts to Develop Weaker Footer GK'
+	'attemptsToDevelopWeakerFooterGK'
 ),
 (
 	'TRUE',
 	'TRUE',
-	'Avoids Using Weaker Foot GK'
-),
-(
-	'FALSE',
-	'TRUE',
-	'Gets Crowd Going'
-),
-(
-	'FALSE',
-	'FALSE',
-	'Argues With Officials'
+	'avoidsUsingWeakerFootGK'
 ),
 (
 	'FALSE',
 	'TRUE',
-	'Winds Up Opponents'
+	'getsCrowdGoing'
+),
+(
+	'FALSE',
+	'FALSE',
+	'arguesWithOfficials'
+),
+(
+	'FALSE',
+	'TRUE',
+	'windsUpOpponents'
 );
 --------------------------------------------------------------------------------
 
@@ -32195,11 +32196,62 @@ AS
 $$  
 DECLARE 
 
+    type_comp       text;
+    type_team       text;
+
     count_row       integer;
     output_message  text;
 
 BEGIN
 
+    output_message = '';
+
+    SELECT
+        fp_competition.type::text,
+        fp_competition.team_type::text
+    INTO
+        type_comp,
+        type_team
+    FROM
+        fp_play
+        JOIN
+        fp_competition
+            ON
+            fp_play.competition_id = fp_competition.id
+    WHERE
+        fp_play.id = id_play::integer;
+
+
+    IF ('LEAGUE' = type_comp) THEN
+        IF (new_match::integer > 40) THEN
+            output_message = 'errorMessageUpdateMatch';
+        END IF;
+	
+	ELSIF ('SUPER_CUP' = type_comp) THEN
+        IF (new_match::integer > 6) THEN
+            output_message = 'errorMessageUpdateMatch';
+        END IF;
+	
+	ELSIF ('CUP' = type_comp) THEN
+
+		IF ('CLUB' = type_team) THEN
+            IF (new_match::integer > 128) THEN
+                output_message = 'errorMessageUpdateMatch';
+            END IF;
+	
+		ELSIF ('NATIONAL' = type_team) THEN
+            IF (new_match::integer > 48) THEN
+                output_message = 'errorMessageUpdateMatch';
+            END IF;
+			
+	
+		END IF;
+
+	END IF;
+
+    IF (output_message = 'errorMessageUpdateMatch') THEN
+        RETURN output_message;
+    END IF;
 
 	UPDATE
 		fp_play
